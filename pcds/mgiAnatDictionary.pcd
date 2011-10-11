@@ -2,7 +2,7 @@ Module: mgiAnatDictionary
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jun 30 06:38:09 2011";
+      lastWritten = "Tue Oct 11 10:39:10 2011";
         {
           DictionaryModule = Module : MGI;
           Group: Widget
@@ -607,12 +607,6 @@ Module: mgiAnatDictionary
                                                   }
                                                   {
                                                     RIKENFANTOM = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TreeFam = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TreeFamGene = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;

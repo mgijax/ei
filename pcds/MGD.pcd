@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jun 30 06:38:13 2011";
+      lastWritten = "Tue Oct 11 10:39:05 2011";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -403,12 +403,6 @@ Module: MGD
                                                   }
                                                   {
                                                     RIKENFANTOM = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TreeFam = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TreeFamGene = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
@@ -2121,12 +2115,6 @@ Module: MGD
                                                     RIKENFANTOM = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    TreeFam = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TreeFamGene = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     UniGene = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -3219,12 +3207,6 @@ Module: MGD
                                     managed = True;
                                 }
                                 {
-                                  TreeFam = AccToggle : mgiOption;
-                                }
-                                {
-                                  TreeFamGene = AccToggle : mgiOption;
-                                }
-                                {
                                   UniGene = AccToggle : mgiOption;
                                 }
                                 {
@@ -3892,12 +3874,6 @@ Module: MGD
                                                   }
                                                   {
                                                     RIKENFANTOM = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TreeFam = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TreeFamGene = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
@@ -7325,12 +7301,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     RIKENFANTOM = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    TreeFam = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TreeFamGene = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     UniGene = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -9375,12 +9345,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     RIKENFANTOM = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    TreeFam = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TreeFamGene = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     UniGene = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -9857,12 +9821,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     RIKENFANTOM = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TreeFam = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TreeFamGene = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
@@ -10963,12 +10921,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     RIKENFANTOM = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TreeFam = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TreeFamGene = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
@@ -12711,12 +12663,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     RIKENFANTOM = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TreeFam = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TreeFamGene = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
@@ -14727,12 +14673,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     RIKENFANTOM = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    TreeFam = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TreeFamGene = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     UniGene = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -16708,16 +16648,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     RIKENFANTOM = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    TreeFam = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
-                                                    TreeFamGene = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
                                                     UniGene = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
@@ -17128,63 +17058,18 @@ Shift<Key>Tab: prev-tab-group()
                                         Group: Widget
                                           activateCallback = "D:ClearGO";
                                       }
-                                      {
-                                        Clear1 = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Clear2 = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        separator2 = XmSeparator;
-                                      }
-                                      {
-                                        Previous = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Next = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Bottom = MenuPush : mgiMenu;
-                                      }
                                 }
                           }
                           {
                             Edit = Edit : mgiMenu;
-                                Popups:
-                                {
-                                  EditPulldown = MenuPulldown : mgiMenu;
-                                }
                           }
                           {
                             View = View : mgiMenu;
-                                Popups:
-                                {
-                                  ViewPulldown = MenuPulldown : mgiMenu;
-                                      {
-                                        Strain = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Tissue = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Cross = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        RI = MenuPush : mgiMenu;
-                                      }
-                                }
                           }
                           {
                             Reports = MenuCascade;
                             Group: Widget
                               managed = True;
-                          }
-                          {
-                            Utilities = Utilities : mgiMenu;
-                                Popups:
-                                {
-                                  UtilitiesPulldown = MenuPulldown : mgiMenu;
-                                }
                           }
                     }
                     {
@@ -17204,12 +17089,6 @@ Shift<Key>Tab: prev-tab-group()
                               resizePolicy = resize_any;
                                 {
                                   ID = ID : mgiDataTypes;
-                                      {
-                                        label = XmLabel;
-                                      }
-                                      {
-                                        text = text;
-                                      }
                                 }
                                 {
                                   VocAnnotTypeMenu = VocAnnotTypeMenu : mgiOption;
@@ -17255,12 +17134,6 @@ Shift<Key>Tab: prev-tab-group()
                                     leftOffset = 10;
                                       {
                                         ObjectID = ID : mgiDataTypes;
-                                            {
-                                              label = XmLabel;
-                                            }
-                                            {
-                                              text = text;
-                                            }
                                       }
                                       {
                                         AccessionID = CharText : mgiDataTypes;
@@ -17455,15 +17328,6 @@ Shift<Key>Tab: prev-tab-group()
                                       Popups:
                                       {
                                         CompletePulldown : YesNoPulldown = OptionPulldown;
-                                            {
-                                              SearchAll = SearchAll : mgiOption;
-                                            }
-                                            {
-                                              Yes = Yes : mgiOption;
-                                            }
-                                            {
-                                              No = No : mgiOption;
-                                            }
                                       }
                                 }
                                 {
@@ -17484,9 +17348,6 @@ Shift<Key>Tab: prev-tab-group()
                                         Group: Widget
                                           labelString = " ";
                                       }
-                                      {
-                                        text = text;
-                                      }
                                 }
                                 {
                                   ReferenceGeneMenu = YesNoMenu : mgiOption;
@@ -17505,15 +17366,6 @@ Shift<Key>Tab: prev-tab-group()
                                       Popups:
                                       {
                                         ReferenceGenePulldown : YesNoPulldown = OptionPulldown;
-                                            {
-                                              SearchAll = SearchAll : mgiOption;
-                                            }
-                                            {
-                                              Yes = Yes : mgiOption;
-                                            }
-                                            {
-                                              No = No : mgiOption;
-                                            }
                                       }
                                 }
                           }
@@ -17623,58 +17475,21 @@ Shift<Key>Tab: prev-tab-group()
                                     topOffset = 1;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                      {
-                                        Clear = XmCascadeButton;
-                                            Popups:
-                                            {
-                                              ClearPulldown = XmPulldownMenu;
-                                            }
-                                      }
                                 }
                                 {
                                   RecordCount = RecordCount : mgiDataTypes;
                                   Group: Widget
                                     managed = False;
-                                      {
-                                        label = XmLabel;
-                                      }
-                                      {
-                                        text = text;
-                                      }
                                 }
                                 {
                                   CreationDate = CreationDate : mgiDataTypes;
                                   Group: Widget
                                     managed = False;
-                                      {
-                                        label = XmLabel;
-                                      }
-                                      {
-                                        text = text;
-                                      }
                                 }
                                 {
                                   ModifiedDate = ModifiedDate : mgiDataTypes;
                                   Group: Widget
                                     managed = False;
-                                      {
-                                        label = XmLabel;
-                                      }
-                                      {
-                                        text = text;
-                                      }
-                                }
-                                {
-                                  ModificationHistory = ModificationHistory : mgiTable;
-                                      {
-                                        Table = mgiTable : mgiTable;
-                                      }
-                                      {
-                                        AddRow = TablePush : mgiTable;
-                                      }
-                                      {
-                                        DeleteRow = TablePush : mgiTable;
-                                      }
                                 }
                           }
                     }
@@ -17739,15 +17554,6 @@ Shift<Key>Tab: prev-tab-group()
                       ReportDialog = ReportDialog : mgiDialog;
                           {
                             FileSelection = FileSelection;
-                                {
-                                  filler = XmSeparator;
-                                }
-                                {
-                                  Print = XmPushButton;
-                                }
-                                {
-                                  Delete = XmPushButton;
-                                }
                           }
                           {
                             Lookup = XmFrame;
@@ -17766,42 +17572,6 @@ Shift<Key>Tab: prev-tab-group()
                                                 keys = "GORefs.py";
                                             }
                                       }
-                                      {
-                                        PrinterList = LookupList;
-                                            {
-                                              Label = LookupLabel;
-                                            }
-                                            {
-                                              List = list;
-                                            }
-                                      }
-                                      {
-                                        PrintOrient = Choice : mgiDataTypes;
-                                            {
-                                              PrintOrientBox = XmRowColumn;
-                                                  {
-                                                    Portrait = toggle : mgiDataTypes;
-                                                  }
-                                                  {
-                                                    Landscape = toggle : mgiDataTypes;
-                                                  }
-                                            }
-                                      }
-                                      {
-                                        PrintColumn = Choice : mgiDataTypes;
-                                            {
-                                              PrintColumnBox = XmRowColumn;
-                                                  {
-                                                    OneColumn = toggle : mgiDataTypes;
-                                                  }
-                                                  {
-                                                    TwoColumn = toggle : mgiDataTypes;
-                                                  }
-                                            }
-                                      }
-                                      {
-                                        Output = XmScrolledText;
-                                      }
                                 }
                           }
                     }
@@ -17810,24 +17580,6 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       WhichItem = WhichItem : mgiDialog;
-                          {
-                            ItemList = LookupList : mgiLookup;
-                                {
-                                  Label = LookupLabel;
-                                }
-                                {
-                                  List = list;
-                                }
-                          }
-                          {
-                            separator = XmSeparator;
-                          }
-                          {
-                            Buttons = XmRowColumn;
-                                {
-                                  Cancel = DialogPush : mgiDialog;
-                                }
-                          }
                     }
                     {
                       VerifyItemAdd = VerifyItemAdd : mgiDialog;
@@ -17844,12 +17596,6 @@ Shift<Key>Tab: prev-tab-group()
                           }
                           {
                             Note = Notes : mgiDataTypes;
-                                {
-                                  label = XmLabel;
-                                }
-                                {
-                                  text = scrolledText;
-                                }
                           }
                           {
                             separator = XmSeparator;

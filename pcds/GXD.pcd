@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Jul 20 13:53:06 2011";
+      lastWritten = "Tue Oct 11 10:39:03 2011";
       copy = false;
       inCreateMenu = true;
         {
@@ -472,12 +472,6 @@ Module: GXD
                                                   }
                                                   {
                                                     RIKENFANTOM = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TreeFam = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TreeFamGene = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
@@ -1482,12 +1476,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     RIKENFANTOM = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TreeFam = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TreeFamGene = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
@@ -3568,12 +3556,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     RIKENFANTOM = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TreeFam = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TreeFamGene = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;

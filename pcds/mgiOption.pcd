@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Aug  3 10:45:16 2011";
+      lastWritten = "Tue Oct 11 10:38:59 2011";
       copy = false;
       inCreateMenu = true;
         {
@@ -337,18 +337,6 @@ Module: mgiOption
                         labelString = "RIKEN (FANTOM)";
                       Group: User
                         defaultValue = 26;
-                    }
-                    {
-                      TreeFam = AccToggle : mgiOption;
-                      Group: User
-                        defaultValue = 86;
-                    }
-                    {
-                      TreeFamGene = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = "TreeFam/Gene";
-                      Group: User
-                        defaultValue = 88;
                     }
                     {
                       UniGene = AccToggle : mgiOption;
