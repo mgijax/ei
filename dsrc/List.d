@@ -540,9 +540,9 @@ rules:
 	SelectLookupListItem does
 	  list_w : widget := SelectLookupListItem.source_widget;
 	  top : widget := SelectLookupListItem.source_widget.root;
+	  scrollToRow : boolean := SelectLookupListItem.scrollToRow;
 	  targetWidget : widget := list_w.targetWidget;
 	  isTable : boolean := false;
-	  scrollToRow : boolean := false;
 	  i : integer;
 	  pos : integer;
 	  item : string;
@@ -607,7 +607,6 @@ rules:
 		end if;
 		i := i + 1;
 	      end while;
-	      scrollToRow := true;
 	    else
 	      return;
 	    end if;
@@ -693,12 +692,12 @@ rules:
             send(CommitTableCellEdit, 0);
 
 	    -- Scroll to table row
---	    if (scrollToRow) then
+	    if (scrollToRow) then
 	      TraverseToTableCell.table := table;
 	      TraverseToTableCell.row := row;
 	      TraverseToTableCell.column := column + 1;
 	      send(TraverseToTableCell, 0);
---	    end if;
+	    end if;
 
 	  -- Non-table text widget
 

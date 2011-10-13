@@ -45,5 +45,7 @@ SelectListItem [deselect : boolean := true;];   -- Copy Selected List Item to Se
 
 SelectLookupListItem [source_widget : widget;   -- LookupList Callback for Single Selection
 		      item_position : integer;  -- Copies Selected Item/Key to appropriate widget
-		      row : integer := -1;];    -- If row = -1 (default), then copy item to current row
+		      row : integer := -1;      -- If row = -1 (default), then copy item to current row
 						-- If row = -2, then copy item to next available row
+                      scrollToRow : boolean := true;]; -- default is to scroll
+

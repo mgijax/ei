@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Oct 11 10:39:03 2011";
+      lastWritten = "Thu Oct 13 07:59:30 2011";
       copy = false;
       inCreateMenu = true;
         {
@@ -3904,6 +3904,41 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       InSituResultDialog = InSituResultDialog : mgiDialog;
+                          {
+                            EditForm = EditForm : MGI;
+                          }
+                          {
+                            separator = XmSeparator;
+                          }
+                          {
+                            Buttons = Buttons;
+                          }
+                          {
+                            Lookup = Lookup : mgiLookup;
+                                {
+                                  panedWindow = XmPanedWindow;
+                                      {
+                                        QueryList = QueryList;
+                                      }
+                                      {
+                                        CVInSituResult = CVInSituResult : mgiCV;
+                                      }
+                                      {
+                                        ImagePaneList = LookupList : mgiLookup;
+                                      }
+                                      {
+                                        ADClipboard = ADClipboard : mgiLookup;
+                                            {
+                                              Label = LookupLabel;
+                                            }
+                                            {
+                                              List = list;
+                                              Group: Widget
+                                                multipleSelectionCallback = "D:SelectLookupListItem(scrollToRow=false)";
+                                            }
+                                      }
+                                }
+                          }
                     }
                     {
                       NextRecordDialog = NextRecordDialog : mgiDialog;
