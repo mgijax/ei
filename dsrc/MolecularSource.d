@@ -327,8 +327,9 @@ rules:
 	  end if;
 
 	  if (from_cloneset) then
-	    from := from + ", MGI_Set_CloneLibrary_View csv, MGI_SetMember csm ";
-	    where := where + "\nand csv._Set_key = csm._Set_key" +
+	    from := from + ", MGI_Set csv, MGI_SetMember csm ";
+	    where := where + "\nand csv._MGIType_key = 5" +
+		"\nand csv._Set_key = csm._Set_key" +
 		"\nand s._Source_key = csm._Object_key";
 	  end if;
 

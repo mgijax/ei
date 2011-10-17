@@ -3,7 +3,7 @@ Module: mgiLookup
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Jul  5 10:49:15 2011";
+      lastWritten = "Mon Oct 17 12:11:00 2011";
         {
           LookupLabel = XmPushButton;
           Group: Widget
@@ -502,7 +502,7 @@ Module: mgiLookup
             vip_x = 90;
             vip_y = 690;
           Group: User
-            cmd = "select _Set_key, name from MGI_Set_CloneLibrary_View order by name";
+            cmd = "select _Set_key, name from MGI_Set where _MGIType_key = 5 order by name";
               {
                 Label = LookupLabel : mgiLookup;
                 Group: Widget

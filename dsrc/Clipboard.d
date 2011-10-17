@@ -327,7 +327,7 @@ rules:
           itemList : string_list;
           item : string;
           notify : boolean := false;
-	  key : integer;
+	  key : integer := 1;
 	  setFirst : boolean := false;
  
           if (reason != TBL_REASON_ENTER_CELL_END) then
@@ -346,14 +346,15 @@ rules:
             item := itemList.next;
 	    key := clipboard->List.keys.find(item);
             (void) XmListSelectPos(clipboard->List, key, notify);
-
-	    -- Set the first item as the first visible position in the list
-
-	    if (not setFirst) then
-	      (void) XmListSetPos(clipboard->List, key);
-	      setFirst := true;
-	    end if;
           end while;
+
+	  -- Set the first item as the first visible position in the list
+
+	  --if (not setFirst) then
+	  --  (void) XmListSetPos(clipboard->List, key);
+	  --  setFirst := true;
+	  --end if;
+
         end does;
  
 --

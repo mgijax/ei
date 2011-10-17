@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Oct 11 10:39:05 2011";
+      lastWritten = "Mon Oct 17 12:19:01 2011";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -1902,11 +1902,22 @@ Module: MGD
                                       }
                                       {
                                         SourceForm = SourceForm : MGI;
+                                        Group: Widget
+                                          rubberPositioning = False;
+                                          resizePolicy = resize_any;
                                             {
                                               SourceID = ID : mgiDataTypes;
                                             }
                                             {
                                               Library = CharText : mgiDataTypes;
+                                              Group: Constraint
+                                                leftAttachment = attach_form;
+                                                leftOffset = 5;
+                                                rightAttachment = attach_none;
+                                                topAttachment = attach_form;
+                                                topOffset = 5;
+                                                bottomAttachment = attach_none;
+                                                resizable = true;
                                             }
                                             {
                                               mgiCitation = mgiCitation : mgiDataTypes;
@@ -3606,12 +3617,11 @@ Module: MGD
                                         Group: Constraint
                                           leftAttachment = attach_form;
                                           rightAttachment = attach_none;
-                                          topAttachment = attach_widget;
+                                          topAttachment = attach_form;
                                           topOffset = 5;
                                           bottomAttachment = attach_none;
                                           resizable = true;
                                           leftOffset = 5;
-                                          topWidget = ViewAttributeHistory;
                                       }
                                       {
                                         mgiCitation = mgiCitation;

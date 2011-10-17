@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Oct 11 10:38:59 2011";
+      lastWritten = "Mon Oct 17 12:09:44 2011";
       copy = false;
       inCreateMenu = true;
         {
@@ -2758,7 +2758,7 @@ Module: mgiOption
               {
                 CloneLibraryPulldown : OptionPulldown = OptionPulldown : mgiOption;
                 Group: User
-                  sql = "select _Set_key, name from MGI_Set_CloneLibrary_View order by name";
+                  sql = "select _Set_key, name from MGI_Set where _MGIType_key = 5 order by name";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }

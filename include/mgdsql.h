@@ -312,8 +312,9 @@ where _Probe_key = "
 /* MolecularSource.d */
 
 #define molsource_sql_1a "select m._Set_key, m._SetMember_key, v.name  \
-from MGI_Set_CloneLibrary_View v, MGI_SetMember m \
-where v._Set_key = m._Set_key \
+from MGI_Set v, MGI_SetMember m \
+where v._MGIType_key = 5 \
+and v._Set_key = m._Set_key \
 and m._Object_key = "
 #define molsource_sql_1b "\norder by m.sequenceNum"
 
