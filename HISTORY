@@ -1,11 +1,13 @@
 ### Remember to update Configuration:CVS_TAG with most recen tag
 
-TAG: ei-4-4-2-?
-DATE: 10/13/2011
+TAG: ei-4-4-2-2
+DATE: 10/20/2011
 STAFF: lec
 CHANGES:
 1) TR10873/List.de,List.d/SelectLooupListItem.d/scrollToRow = true (default)
-   set to 'false' for ADClipboard
+   testing set to 'false' for ADClipboard
+   this tag contains the default value of 'true'
+2) TR10841/removed call to Attribute/History; obsolete
 
 TAG: ei-4-4-2-1
 DATE: 10/11/2011
