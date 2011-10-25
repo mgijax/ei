@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Oct  7 08:36:09 2010";
+      lastWritten = "Mon Oct 24 13:25:21 2011";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -998,6 +998,8 @@ Module: mgiDialog
                                   List = list;
                                   Group: Widget
                                     visibleItemCount = 30;
+                                    multipleSelectionCallback = "D:SelectLookupListItem(scrollToRow = false)";
+                                    singleSelectionCallback = "D:SelectLookupListItem(scrollToRow = false)";
                                   Group: User
                                     targetWidget = Results;
                                     targetKey = 4;

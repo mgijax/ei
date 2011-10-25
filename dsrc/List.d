@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- lec  10/25/2011
+--	TR10873/SelectLookupListItem; add 'scrollToRow'
+--
 -- lec  02/08/2011
 --	TR10583/LoadList.loadsmall/maxList
 --
