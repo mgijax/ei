@@ -93,15 +93,14 @@ print ""
 print "Marker Homology"
 print ""
 
-select jnum, substring(short_citation,1,25), _Homology_key, _Marker_key, _Class_key, symbol from HMD_Homology_View where _Marker_key = KEY
+select * from HMD_Homology_View where _Marker_key = KEY
 go
 
 print ""
 print "Marker Mapping"
 print ""
 
-select jnum, substring(short_citation,1,25), _Expt_key, _Marker_key, sequenceNum, symbol
-from MLD_Expt_Marker_View where _Marker_key = KEY order by sequenceNum
+select * from MLD_Expt_Marker_View where _Marker_key = KEY order by sequenceNum
 go
 
 print ""
