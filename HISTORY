@@ -1,5 +1,19 @@
 ### Remember to update Configuration:CVS_TAG with most recen tag
 
+TAG: ei-4-4-2-4
+DATE: 10/25/2011
+STAFF: lec
+CHANGES:
+1) TR10785/Post GO/Notes (TR10044) Tweaks/added sort order
+2) removed obsolete/unused Verify.d/Verify.de
+VerifyChromosome :translation [];
+VerifyDate :translation [];
+VerifyAnyMarker :translation [];
+VerifyMarkerAlleles : translation [];
+VerifyNomenMarker : translation [];
+VerifyTissueAge :translation []
+VerifyYesNo [];
+
 TAG: ei-4-4-2-3
 DATE: 10/25/2011
 STAFF: lec

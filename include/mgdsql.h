@@ -490,7 +490,7 @@ order by sequenceNum"
 
 #define sequence_sql_1 "select ac._Object_key, ac.accID + ',' + v1.term + ',' + v2.term, v1.term, ac.accID, ac.preferred\n"
 #define sequence_sql_2 "select * from SEQ_Sequence_View where _Sequence_key = "
-#define sequence_sql_3 "\nselect * from SEQ_Sequence_Raw where _Sequence_key = "
+#define sequence_sql_3 "select * from SEQ_Sequence_Raw where _Sequence_key = "
 
 #define sequence_sql_4a "\nselect s._Assoc_key, p._Source_key, p.name, p.age  \
 from SEQ_Source_Assoc s, PRB_Source p \
@@ -533,7 +533,7 @@ and p._CellLine_key = t._Term_key \
 and s._Sequence_key = "
 #define sequence_sql_9b "\norder by p._Organism_key\n"
 
-#define sequence_sql_10 "\nselect distinct mgiType, jnum, markerID, symbol 
+#define sequence_sql_10 "\nselect distinct mgiType, jnum, markerID, symbol \
 from SEQ_Marker_Cache_View where _Sequence_key = "
 
 #define sequence_sql_11 "\nselect distinct mgiType, jnum, probeID, name \

@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Oct 17 12:19:01 2011";
+      lastWritten = "Wed Oct 26 11:19:40 2011";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -5733,7 +5733,7 @@ Module: MGD
                         xrtTblEditableSeries = "(all 0-6 False)";
                         xrtTblPixelWidthSeries = "(all 0-5 0)";
                         xrtTblTraversableSeries = "(all 0-6 False)";
-                        xrtTblValidateCellCallback = "D:VerifyMarker,\nD:VerifyExptChromosome,\nD:VerifyAllele,\nD:VerifyExptAssay,\nD:VerifyYesNo,\nD:CommitTableCellEdit";
+                        xrtTblValidateCellCallback = "D:VerifyMarker,\nD:VerifyExptChromosome,\nD:VerifyAllele,\nD:VerifyExptAssay,\nD:CommitTableCellEdit";
                         xrtTblVisibleRows = 10;
                         xrtTblMaxLengthSeries = "(all 7 40)(all 8 20)(all 9 80)(all 10 255)";
                         userDefinedAttributes = "markerKey:Int(Int)=\"2\"\nalleleKey:StringTable=\"4\"\nassayKey:Int(Int)=\"5\"\nmarkerSymbol:Int(Int)=\"7\"\nmarkerChr:Int(Int)=\"3\"\nmarkerColumns:Int(Int)=\"1\"\nalleleSymbol:StringTable=\"8\"\nassay:Int(Int)=\"9\"\ndescription:Int(Int)=\"10\"\nyesno:Int(Int)=\"11\"\n";
@@ -6979,9 +6979,6 @@ Shift<Key>Tab: prev-tab-group()
                                         Group: Widget
                                           columns = 8;
                                           maxLength = 8;
-                                          translations = "#override
-Shift<Key>Tab: prev-tab-group()
-<Key>Tab: VerifyChromosome()";
                                         Group: User
                                           required = True;
                                       }
@@ -14095,7 +14092,7 @@ Shift<Key>Tab: prev-tab-group()
                         xrtTblEditableSeries = "(all 0-7 False)";
                         xrtTblPixelWidthSeries = "(all 0-6 0)";
                         xrtTblTraversableSeries = "(all 0-7 False)";
-                        xrtTblValidateCellCallback = "D:VerifyMarker,\nD:VerifyExptChromosome,\nD:VerifyAllele,\nD:VerifyExptAssay,\nD:VerifyYesNo,\nD:CommitTableCellEdit";
+                        xrtTblValidateCellCallback = "D:VerifyMarker,\nD:VerifyExptChromosome,\nD:VerifyAllele,\nD:VerifyExptAssay,\nD:CommitTableCellEdit";
                         xrtTblVisibleRows = 10;
                         xrtTblMaxLengthSeries = "(all 8 40)(all 9 20)(all 10 80)(all 11 255)";
                         userDefinedAttributes = "markerKey:Int(Int)=\"2\"\nalleleKey:StringTable(StringTable)=\"5\"\nassayKey:Int(Int)=\"6\"\nmarkerSymbol:Int(Int)=\"8\"\nmarkerChr:Int(Int)=\"4\"\nmarkerColumns:Int(Int)=\"1\"\nalleleSymbol:StringTable(StringTable)=\"9\"\nassay:Int(Int)=\"10\"\ndescription:Int(Int)=\"11\"\nyesno:Int(Int)=\"12\"\ncurrentMarkerKey:Int(Int)=\"3\"\n";
@@ -16122,7 +16119,7 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblNumColumns = 15;
                                           xrtTblPixelWidthSeries = "(all 0-5 0)";
                                           xrtTblTraversableSeries = "(all 0-6 False)";
-                                          xrtTblValidateCellCallback = "D:VerifyMarker(allowWithdrawn = true),\nD:VerifyReference,\nD:VerifyDate,\nD:CommitTableCellEdit";
+                                          xrtTblValidateCellCallback = "D:VerifyMarker(allowWithdrawn = true),\nD:VerifyReference,\nD:CommitTableCellEdit";
                                           userDefinedAttributes = "markerKey:Int(Int)=\"2\"\nrefsKey:Int(Int)=\"3\"\nmarkerSymbol:Int(Int)=\"7\"\nmarkerName:Int(Int)=\"8\"\neventDate:Int(Int)=\"9\"\njnum:Int(Int)=\"10\"\ncitation:Int(Int)=\"11\"\nevent:Int(Int)=\"12\"\nmarkerChr:Int(Int)=\"-1\"\nmarkerColumns:Int(Int)=\"1\"\ndate:Int(Int)=\"9\"\neventKey:Int(Int)=\"4\"\neventReasonKey:Int(Int)=\"5\"\neventReason:Int(Int)=\"13\"\nmodifiedBy:Int=\"14\"\n";
                                           xrtTblVisibleRows = 5;
                                           xrtTblAllowCellResize = resize_horizontal;
@@ -17794,6 +17791,18 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
+                                  GOAnnotSortMenu = GOAnnotSortMenu : mgiOption;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = VocAnnotTypeMenu;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = mgiAccession;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    topOffset = 5;
+                                }
+                                {
                                   Annotation = Table : mgiTable;
                                   Group: Widget
                                     rubberPositioning = False;
@@ -17804,7 +17813,7 @@ Shift<Key>Tab: prev-tab-group()
                                     rightAttachment = attach_form;
                                     topAttachment = attach_widget;
                                     topWidget = mgiAccession;
-                                    topOffset = 25;
+                                    topOffset = 40;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                       {
@@ -17987,13 +17996,12 @@ Shift<Key>Tab: prev-tab-group()
                                     orientation = horizontal;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = VocAnnotTypeMenu;
+                                    leftWidget = ReferenceGeneMenu;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    topWidget = VocAnnotTypeMenu;
-                                    topOffset = 5;
+                                    topWidget = ReferenceGeneMenu;
                                 }
                                 {
                                   CompleteMenu = YesNoMenu : mgiOption;

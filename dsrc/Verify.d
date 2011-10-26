@@ -1285,8 +1285,7 @@ rules:
 
 	  dbproc : opaque := mgi_dbopen();
 
-	  cmd : string := "select _Object_key, description from GXD_Genotype_Summary_View " +
-		"where mgiID = " + mgi_DBprstr(genotypeID) + "\n";
+	  cmd : string := verify_genotype_sql_1 + mgi_DBprstr(genotypeID);
 
           (void) dbcmd(dbproc, cmd);
           (void) dbsqlexec(dbproc);
@@ -1358,17 +1357,7 @@ rules:
 
 	  dbproc : opaque := mgi_dbopen();
 
-	  cmd := "select p._ImagePane_key, substring(i.figureLabel,1,20), a1.accID , a2.accID" +
-                 " from IMG_ImagePane p, IMG_Image i, ACC_Accession a1, ACC_Accession a2, VOC_Term t" +
-                 " where p._Image_key = i._Image_key" +
-                 " and p._Image_key = a1._Object_key" +
-                 " and a1._MGIType_key = 9" +
-		 " and a1.accID = " + mgi_DBprstr(mgiID) +
-                 " and p._Image_key = a2._Object_key" +
-                 " and a2._MGIType_key = 9" +
-                 " and a2._LogicalDB_key = 19" +
-		 " and i._ImageType_key = t._Term_key" +
-		 " and t.term = 'Full Size'";
+	  cmd := verify_imagepane_sql_1 + mgi_DBprstr(mgiID);
 
           (void) dbcmd(dbproc, cmd);
           (void) dbsqlexec(dbproc);
@@ -1852,17 +1841,12 @@ rules:
 
 	  -- Search for Marker in the database
 
-	  select : string := "select _Marker_key, _Marker_Status_key, symbol, chromosome, cytogeneticOffset, substring(name,1,25) " +
-			     "from MRK_Marker where _Organism_key = " + organismKey + 
-			     " and symbol = " + mgi_DBprstr(value) + "\n";
+	  select : string := verify_marker_sql_1a + organismKey + verify_marker_sql_1b + mgi_DBprstr(value);
 
 	  -- If searching Nomen as well....
 
 	  if (VerifyMarker.allowNomen) then
-	    select := select + "union\n" +
-		"select -1, " + STATUS_APPROVED + ", symbol, chromosome, null, substring(name, 1, 25) " +
-		"\nfrom " + mgi_DBtable(NOM_MARKER_VALID_VIEW) +
-		"\nwhere symbol = " + mgi_DBprstr(value) +  "\n";
+	    select := select + verify_marker_sql_2 + mgi_DBprstr(value);
 	  end if;
 
 	  -- Insert results into string list for loading into Marker selection list
@@ -1948,7 +1932,7 @@ rules:
             message := "Symbol '" + value + "' has been Withdrawn\n\n" +
                        "The current symbol(s) are:\n\n";
 
-            select := "select current_symbol from MRK_Current_View where _Marker_key = " + whichMarker;
+            select := verify_marker_sql_3 + whichMarker;
             dbproc := mgi_dbopen();
             (void) dbcmd(dbproc, select);
             (void) dbsqlexec(dbproc);
@@ -1983,18 +1967,10 @@ rules:
 	  i : integer := 1;
 
           if (isTable and VerifyMarker.verifyOtherOrganism) then
-            select := "select cytogeneticOffset, name, mgiID, _Accession_key " +
-                      "from MRK_Mouse_View " +
-                      "where _Marker_key = " + whichMarker + "\n" +
-                      "select cytogeneticOffset, name " +
-                      "from MRK_Marker " +
-                      "where _Marker_key = " + whichMarker + "\n" +
-                      "and _Organism_key != " + MOUSE + "\n" +
-                      "select _Marker_key, accID, _Accession_key " +
-                      "from MRK_NonMouse_View " +
-                      "where _Marker_key = " + whichMarker +
-                      " and LogicalDB = 'Entrez Gene'";
- 
+	    select := verify_marker_sql_4 + whichMarker +
+	              verify_marker_sql_5 + whichMarker +
+	              verify_marker_sql_6 + whichMarker;
+
             dbproc := mgi_dbopen();
             (void) dbcmd(dbproc, select);
             (void) dbsqlexec(dbproc);
@@ -2027,10 +2003,9 @@ rules:
               -- Check if record already exists for same Class/Organism/different Marker
  
               message := "";
-              select := "select count(*) from HMD_Homology_View " +
-                        "where _Class_key = " + top->ID->text.value +
-                        " and _Organism_key = " + organismKey +
-                        " and _Marker_key != " + whichMarker;
+              select := verify_marker_sql_7a + top->ID->text.value +
+                        verify_marker_sql_7b + organismKey +
+                        verify_marker_sql_7c + whichMarker;
  
               if ((integer) mgi_sql1(select) > 0) then
                 message := "This Homology Class already contains a Symbol for this Organism\n";
@@ -2064,8 +2039,7 @@ rules:
 
 	    -- Get MGI Acc ID if Mouse and Accession Widget defined
 	    if (organismKey = MOUSE and accessionWidget != nil) then
-	      markerMGIAccID := mgi_sql1("select mgiID from MRK_Mouse_View " +
-		"where _Marker_key = " + whichMarker);
+	      markerMGIAccID := mgi_sql1(verify_marker_sql_8 + whichMarker);
 	      accessionWidget->AccessionID->text.value := markerMGIAccID;
 	    end if;
 
@@ -2149,7 +2123,7 @@ rules:
 
 	  (void) busy_cursor(top);
 
-	  select : string := "select chromosome from MRK_Mouse_View where _Marker_key = " + valueKey;
+	  select : string := verify_markerchromosome_sql_1 + valueKey;
           dbproc :opaque := mgi_dbopen();
           (void) dbcmd(dbproc, select);
           (void) dbsqlexec(dbproc);
@@ -2257,25 +2231,16 @@ rules:
 	  end if;
 
 	  if (mgi_DBtable(tableID) = "PRB_Marker") then
-	    numRecs := mgi_sql1("select count(pm._Probe_key) from PRB_Marker pm, PRB_Probe p, VOC_Term t " +
-		  " where pm._Probe_key = " + accID +
-		  " and pm._Marker_key = " + markerID +
-		  " and pm._Probe_key = p._Probe_key" +
-		  " and p._SegmentType_key = t._Term_key" +
-		  " and t.term != 'primer'" +
-		  " and pm.relationship in ('E', 'H') " +
-		  " union" +
-	          " select count(pm._Probe_key) from PRB_Marker pm, PRB_Probe p, VOC_Term t " +
-		  " where pm._Probe_key = " + accID +
-		  " and pm._Marker_key = " + markerID +
-		  " and pm._Probe_key = p._Probe_key" +
-		  " and p._SegmentType_key = t._Term_key" +
-		  " and t.term = 'primer'" +
-		  " and pm.relationship = 'A' ");
+	    numRecs := mgi_sql1(verify_markerintable_sql_1a + 
+				verify_markerintable_sql_1b + accID + 
+				verify_markerintable_sql_1c + markerID +
+				verify_markerintable_sql_2a +
+				verify_markerintable_sql_2b + accID + 
+				verify_markerintable_sql_2c + markerID);
 	  else
-	    numRecs := mgi_sql1("select count(*) from " + mgi_DBtable(tableID) +
-		  " where " + mgi_DBkey(tableID) + " = " + accID +
-		  " and _Marker_key = " + markerID);
+	    numRecs := mgi_sql1(verify_markerintable_sql_3a + mgi_DBtable(tableID) +
+		  		verify_markerintable_sql_3b + mgi_DBkey(tableID) + verify_markerintable_sql_3c + accID +
+		  		verify_markerintable_sql_3d + markerID);
 	  end if;
 
 	  if ((integer) numRecs > 0) then
@@ -2364,8 +2329,7 @@ rules:
 	  citation : string;
 	  isReview : string;
 
-	  select : string := 
-	      "select _Refs_key, short_citation, isReviewArticle from BIB_View where jnum = " + value;
+	  select : string := verify_reference_sql_1 + value;
 
 	  dbproc := mgi_dbopen();
           (void) dbcmd(dbproc, select);
@@ -2585,7 +2549,7 @@ rules:
 	  (void) busy_cursor(top);
 
 	  isNOGO : string;
-	  select : string := "exec BIB_isNOGO " + value;
+	  select : string := verify_goreference_sql_1 + value;
 
 	  dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, select);
@@ -2729,9 +2693,7 @@ rules:
 
 	  -- Search for Organism in the database
 
-	  select : string := "select _Organism_key, commonName, organism " +
-			     "from MGI_Organism_Marker_View " +
-			     " where commonName = " + mgi_DBprstr(value) + "\n";
+	  select : string := verify_organism_sql_1 + mgi_DBprstr(value);
 
 	  -- Insert results into string list for loading into Organism selection list
 	  -- Insert chromosomes into string list for future reference
@@ -2986,8 +2948,7 @@ rules:
 
 	  -- Search for Species in the database
 
-	  select : string := 
-	      "select _Term_key, term from VOC_Term where _Vocab_key = 26 and term = " + mgi_DBprstr(value) + "\n";
+	  select : string := verify_strainspecies_sql_1 + mgi_DBprstr(value);
 
 	  -- Insert results into string list for loading into Species selection list
 
@@ -3124,8 +3085,8 @@ rules:
 	  defaultStrainType : string;
           i : integer;
 
-	  defaultSpecies := mgi_sql1("select _Term_key from VOC_Term where _Vocab_key = 26 and term = 'laboratory mouse'");
-	  defaultStrainType := mgi_sql1("select _Term_key from VOC_Term where _Vocab_key = 55 and term = 'Not Specified'");
+	  defaultSpecies := mgi_sql1(verify_strains_sql_1);
+	  defaultStrainType := mgi_sql1(verify_strains_sql_2);
  
           -- Parse Strains
  
@@ -3139,7 +3100,7 @@ rules:
           while (strains.more) do
             s := strains.next;
 	    sUpper := s.raise_case;
-            cmd := "select _Strain_key, strain, private from PRB_Strain where strain = " + mgi_DBprstr(sUpper);
+            cmd := verify_strains_sql_3 + mgi_DBprstr(sUpper);
             (void) dbcmd(dbproc, cmd);
             (void) dbsqlexec(dbproc);
             while (dbresults(dbproc) != NO_MORE_RESULTS) do
@@ -3194,8 +3155,7 @@ rules:
 			       global_loginKey + "," + global_loginKey + ")\n";
                 send(ExecSQL, 0);
                 added := added + s + "\n";
-                strainKeys := strainKeys + 
-			mgi_sql1("select " + mgi_DBkey(STRAIN) + " from " + mgi_DBtable(STRAIN) + " where strain = " + mgi_DBprstr(s)) + ", ";
+                strainKeys := strainKeys + mgi_sql1(verify_strains_sql_4 + mgi_DBprstr(s));
               end if;
             end if;
  
@@ -3312,7 +3272,7 @@ rules:
           -- If the Tissue does not exist, then add it
  
           dbproc : opaque := mgi_dbopen();
-          cmd := "select _Tissue_key, tissue from PRB_Tissue where tissue = " + mgi_DBprstr(value);
+          cmd := verify_tissue_sql_1 + mgi_DBprstr(value);
           (void) dbcmd(dbproc, cmd);
           (void) dbsqlexec(dbproc);
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
@@ -3352,8 +3312,7 @@ rules:
                              mgi_DBprstr(value) + ",0)\n";
               send(ExecSQL, 0);
               added := true;
-              tissueKey := mgi_sql1("select " + mgi_DBkey(TISSUE) + " from " + mgi_DBtable(TISSUE) + 
-		  " where tissue = " + mgi_DBprstr(value)) + ", ";
+              tissueKey := mgi_sql1(verify_tissue_sql_2 + mgi_DBprstr(value));
             end if;
           end if;
  
@@ -3430,7 +3389,7 @@ rules:
           -- If the User does not exist, then add it
  
           dbproc : opaque := mgi_dbopen();
-          cmd := "select _User_key, login from " + mgi_DBtable(MGI_USER) + " where login = " + mgi_DBprstr(value);
+          cmd := verify_user_sql_1 + mgi_DBprstr(value);
           (void) dbcmd(dbproc, cmd);
           (void) dbsqlexec(dbproc);
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
