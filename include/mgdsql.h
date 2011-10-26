@@ -11,14 +11,10 @@
 /* Allele.d */
 
 #define allele_sql_1 "select _Term_key from VOC_Term where _Vocab_key = 37 and term = "
-#define allele_sql_2 "select _Term_key from VOC_Term where _Vocab_key = 70 \
-and term = 'Not Specified'"
-#define allele_sql_3 "select _Term_key from VOC_Term where _Vocab_key = 73 \
-and term = 'Curated'"
-#define allele_sql_4 "select _Term_key from VOC_Term where _Vocab_key = 35 \
-and term = 'Not Applicable'"
-#define allele_sql_5 "select _Term_key from VOC_Term where _Vocab_key = 35 \
-and term = 'Not Specified'"
+#define allele_sql_2 "select _Term_key from VOC_Term where _Vocab_key = 70 and term = 'Not Specified'"
+#define allele_sql_3 "select _Term_key from VOC_Term where _Vocab_key = 73 and term = 'Curated'"
+#define allele_sql_4 "select _Term_key from VOC_Term where _Vocab_key = 35 and term = 'Not Applicable'"
+#define allele_sql_5 "select _Term_key from VOC_Term where _Vocab_key = 35 and term = 'Not Specified'"
 
 #define allele_sql_6a "select d._Derivation_key from ALL_CellLine_Derivation d, ALL_CellLine c \
 where d._DerivationType_key = "
@@ -59,16 +55,14 @@ from ALL_CellLine_View where isMutant = 0 and cellLine = "
 
 /* AlleleDerivation.d */
 
-#define derivation_sql_1a "select _Derivation_key from ALL_CellLine_Derivation \
-where _Vector_key = "
+#define derivation_sql_1a "select _Derivation_key from ALL_CellLine_Derivation where _Vector_key = "
 #define derivation_sql_1b " and _VectorType_key = "
 #define derivation_sql_1c " and _ParentCellLine_key = "
 #define derivation_sql_1d " and _DerivationType_key = "
 #define derivation_sql_1e " and _Creator_key = "
 
 #define derivation_sql_2 "select * from ALL_CellLine_Derivation_View where _Derivation_key = "
-#define derivation_sql_3 "select count(_CellLine_key) \
-from ALL_CellLine_View where _Derivation_key = "
+#define derivation_sql_3 "select count(_CellLine_key) from ALL_CellLine_View where _Derivation_key = "
 #define derivation_sql_4 "select distinct _CellLine_key, cellLine, _Strain_key, \
 cellLineStrain, _CellLine_Type_key \
 from ALL_CellLine_View \
@@ -112,12 +106,11 @@ from VOC_Annot_View tdc where tdc._AnnotType_key = "
 #define marker_sql_6b " and tdc._LogicalDB_key = "
 #define marker_sql_6c " and tdc._Object_key = "
 
-#define marker_sql_7a "\nselect _Alias_key, alias \
-from MRK_Alias_View where _Marker_key = "
+#define marker_sql_7a "\nselect _Alias_key, alias from MRK_Alias_View where _Marker_key = "
 
-#define marker_sql_8	"\nselect symbol from MRK_Mouse_View where mgiID = "
+#define marker_sql_8 "\nselect symbol from MRK_Mouse_View where mgiID = "
 
-#define marker_sql_9	"\nselect count(*) from ALL_Allele where _Marker_key = "
+#define marker_sql_9 "\nselect count(*) from ALL_Allele where _Marker_key = "
 
 #define marker_sql_10a "declare @isInvalid integer \
 select @isInvalid = 0 \
@@ -139,8 +132,7 @@ and a._MGIType_key = 3 \
 and a._LogicalDB_key = "
 #define marker_sql_12b " and a.accID = "
 
-#define marker_sql_13 "select * from MRK_EventReason where _Marker_EventReason_key >= -1 \
-order by eventReason"
+#define marker_sql_13 "select * from MRK_EventReason where _Marker_EventReason_key >= -1 order by eventReason"
 
 /* Genotype.d */
 
@@ -173,7 +165,8 @@ where _Object_key = "
 #define govoc_sql_6c " order by description\n"
 
 #define govoc_sql_7a "select a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier, \
-e.*, substring(v.dagAbbrev,1,3) as dagAbbrev, hasProperty = 'y', e.modification_date \
+e.*, substring(v.dagAbbrev,1,3) as dagAbbrev, hasProperty = 'y', \
+e.modification_date, e.creation_date, e.jnum, e.evidenceCode \
 from VOC_Annot_View a, VOC_Evidence_View e, DAG_Node_View v \
 where a._AnnotType_key = 1000 \
 and a._Annot_key = e._Annot_key \
@@ -183,29 +176,30 @@ and a._Object_key = "
 #define govoc_sql_7b "\nand exists (select 1 from VOC_Evidence_Property p where e._AnnotEvidence_key = p._AnnotEvidence_key) \
 union \
 select a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier, \
-e.*, substring(v.dagAbbrev,1,3) as dagAbbrev, hasProperty = 'n', e.modification_date \
+e.*, substring(v.dagAbbrev,1,3) as dagAbbrev, hasProperty = 'n', \
+e.modification_date, e.creation_date, e.jnum, e.evidenceCode \
 from VOC_Annot_View a, VOC_Evidence_View e, DAG_Node_View v \
 where a._AnnotType_key = 1000 \
 and a._Annot_key = e._Annot_key \
 and a._Vocab_key = v._Vocab_key \
 and a._Term_key = v._Object_key \
 and a._Object_key = "
-#define govoc_sql_7c "\nand not exists (select 1 from VOC_Evidence_Property p where e._AnnotEvidence_key = p._AnnotEvidence_key) \
-order by v.dagAbbrev, e.modification_date desc, a.term\n"
+#define govoc_sql_7c "\nand not exists (select 1 from VOC_Evidence_Property p where e._AnnotEvidence_key = p._AnnotEvidence_key)"
+#define govoc_sql_orderA "\norder by v.dagAbbrev, e.modification_date desc, a.term\n"
+#define govoc_sql_orderB "\norder by e.creation_date desc, a.term\n"
+#define govoc_sql_orderC "\norder by a.accID, a.term\n"
+#define govoc_sql_orderD "\norder by e.jnum, a.term\n"
+#define govoc_sql_orderE "\norder by e.evidenceCode, a.term\n"
+#define govoc_sql_orderF "\norder by e.modification_date desc, a.term\n"
 
 #define govoc_sql_9 "select isReferenceGene, completion_date \
 from GO_Tracking_View where _Marker_key = "
 
-#define govoc_sql_10a "select r._Refs_key, jnum, short_citation from BIB_GOXRef_View r  \
-where r._Marker_key = "
-#define govoc_sql_10b "\nand not exists (select 1 from VOC_Annot a, VOC_Evidence e \
-where _AnnotType_key = "
-#define govoc_sql_10c "\nand a._Annot_key = e._Annot_key  \
-and e._Refs_key = r._Refs_key) \
-order by r.jnum desc\n"
+#define govoc_sql_10a "select r._Refs_key, jnum, short_citation from BIB_GOXRef_View r  where r._Marker_key = "
+#define govoc_sql_10b "\nand not exists (select 1 from VOC_Annot a, VOC_Evidence e where _AnnotType_key = "
+#define govoc_sql_10c "\nand a._Annot_key = e._Annot_key  and e._Refs_key = r._Refs_key) order by r.jnum desc\n"
 
-#define govoc_sql_11a "select r._Refs_key, jnum, short_citation from BIB_GOXRef_View r  \
-where r._Marker_key = "
+#define govoc_sql_11a "select r._Refs_key, jnum, short_citation from BIB_GOXRef_View r where r._Marker_key = "
 #define govoc_sql_11b "\nand not exists (select 1 from VOC_Annot a, VOC_Evidence e \
 where a._Annot_key = e._Annot_key \
 and e._Refs_key = r._Refs_key \
@@ -292,11 +286,9 @@ from MLD_Statistics_View where _Expt_key = "
 #define molecular_sql_2 "select _Term_key from VOC_Term where _Vocab_key = 10 and term = 'primer'"
 #define molecular_sql_3 "select _Probe_key from PRB_Probe where _Probe_key = "
 #define molecular_sql_4 "\nexec PRB_reloadSequence "
-#define molecular_sql_5 "select _Reference_key, short_citation from PRB_Reference_View \
-where _Probe_key = "
+#define molecular_sql_5 "select _Reference_key, short_citation from PRB_Reference_View where _Probe_key = "
 #define molecular_sql_6 "select * from PRB_Probe_View where _Probe_key = "
-#define molecular_sql_7 "\nselect parentKey, parentClone, parentNumeric from PRB_Parent_View \
-where _Probe_key = "
+#define molecular_sql_7 "\nselect parentKey, parentClone, parentNumeric from PRB_Parent_View where _Probe_key = "
 #define molecular_sql_8a "\nselect rtrim(note) from PRB_Notes where _Probe_key = "
 #define molecular_sql_8b "\norder by sequenceNum\n"
 #define molecular_sql_9a "\nselect * from PRB_Marker_View where _Probe_key = "
@@ -541,7 +533,7 @@ and p._CellLine_key = t._Term_key \
 and s._Sequence_key = "
 #define sequence_sql_9b "\norder by p._Organism_key\n"
 
-#define sequence_sql_10 "\nselect distinct mgiType, jnum, markerID, symbol \
+#define sequence_sql_10 "\nselect distinct mgiType, jnum, markerID, symbol 
 from SEQ_Marker_Cache_View where _Sequence_key = "
 
 #define sequence_sql_11 "\nselect distinct mgiType, jnum, probeID, name \
