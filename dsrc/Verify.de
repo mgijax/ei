@@ -16,11 +16,7 @@ VerifyAllele :translation [verifyAdd : boolean := false;];
 
 VerifyAntibodyType [];
 
-VerifyChromosome :translation [];
-
 VerifyCellLine [ignoreRow : integer := -1;];
-
-VerifyDate :translation [];
 
 VerifyFloat [];
 
@@ -38,8 +34,6 @@ VerifyItem : translation [];
 
 VerifyItemAdd [];
 
-VerifyAnyMarker :translation [];
-
 VerifyMarker :translation [source_widget : widget;
 			   allowWithdrawn : boolean := false;
 			   allowNomen : boolean := false;
@@ -49,10 +43,6 @@ VerifyMarkerChromosome :translation [source_widget : widget;
 				     allowMismatch : boolean := true;];
 
 VerifyMarkerInTable :translation [];
-
-VerifyMarkerAlleles : translation [];
-
-VerifyNomenMarker : translation [];
 
 VerifyReference :translation [];
 
@@ -72,8 +62,6 @@ VerifyStrengthPattern [];
 
 VerifyTissue [ignoreRow : integer := -1;];
 
-VerifyTissueAge :translation [];
-
 VerifyUser [];
 
 VerifyVocabEvidenceCode [];
@@ -83,8 +71,6 @@ VerifyVocabQualifier [];
 VerifyVocabTermAccID [];
 
 VerifyWesternBlot :translation [];
-
-VerifyYesNo [];
 
 WhichItem [];
  

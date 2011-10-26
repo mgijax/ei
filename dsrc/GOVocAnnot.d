@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- 10/25/2011	lec
+--	TR 10785/GOVocAnnot.d;add sort order
+--
 -- 11/15/2010	lec
 --	TR 10044/GO-Notes/GO Properties
 --
@@ -914,6 +917,10 @@ rules:
 
 	Select does
 	  value : string;
+	  sortOrder : string;
+	  resetBackground : boolean := true;
+	  newBackground : string;
+	  newColor : string := BACKGROUNDNORMAL;
 
           (void) busy_cursor(top);
 
@@ -943,9 +950,37 @@ rules:
 
 	  top->ReportDialog.select := govoc_sql_5a + dbView + govoc_sql_5b + currentRecordKey;
 
-	  cmd : string := govoc_sql_6a + dbView + govoc_sql_6b + currentRecordKey + govoc_sql_6c +
-	                  govoc_sql_7a + currentRecordKey + govoc_sql_7b + currentRecordKey + govoc_sql_7c +
-			  govoc_sql_9 + currentRecordKey;
+	  -- start the query
+
+	  cmd : string := govoc_sql_6a + dbView + govoc_sql_6b + currentRecordKey + govoc_sql_6c + \
+	                  govoc_sql_7a + currentRecordKey + govoc_sql_7b + currentRecordKey + govoc_sql_7c; 
+
+	  -- select the sort order
+
+	  sortOrder := top->GOAnnotSortMenu.menuHistory.name;
+	  if (sortOrder = "sortA") then
+	    cmd := cmd + govoc_sql_orderA;
+	    resetBackground := true;
+	  elsif (sortOrder = "sortB") then
+	    cmd := cmd + govoc_sql_orderB;
+	    resetBackground := false;
+	  elsif (sortOrder = "sortC") then
+	    cmd := cmd + govoc_sql_orderC;
+	    resetBackground := false;
+	  elsif (sortOrder = "sortD") then
+	    cmd := cmd + govoc_sql_orderD;
+	    resetBackground := false;
+	  elsif (sortOrder = "sortE") then
+	    cmd := cmd + govoc_sql_orderE;
+	    resetBackground := false;
+	  elsif (sortOrder = "sortF") then
+	    cmd := cmd + govoc_sql_orderF;
+	    resetBackground := false;
+	  end if;
+	  -- end select the sort order
+
+	  -- finish up the query
+	  cmd := cmd + govoc_sql_9 + currentRecordKey;
 
 	  row : integer := 0;
 	  i : integer;
@@ -1027,45 +1062,48 @@ rules:
 
 	  -- Reset Background
 
-	  newBackground : string := annotTable.saveBackgroundSeries;
+	  if (resetBackground) then
 
-	  -- Stripe rows by DAG; alternate; 
-	  -- that is, every other new DAG will change the color
+	    newBackground := annotTable.saveBackgroundSeries;
 
-	  newColor : string := BACKGROUNDNORMAL;
-	  i := 1;
+	    -- Stripe rows by DAG; alternate; 
+	    -- that is, every other new DAG will change the color
 
-	  while (i < mgi_tblNumRows(annotTable)) do
+	    newColor := BACKGROUNDNORMAL;
+	    i := 1;
+  
+	    while (i < mgi_tblNumRows(annotTable)) do
 
-	    -- break when empty row is found
-            if (mgi_tblGetCell(annotTable, i, annotTable.editMode) = TBL_ROW_EMPTY) then
-	      break;
-	    end if;
-
-	    if (mgi_tblGetCell(annotTable, i, annotTable.dag) != 
-		mgi_tblGetCell(annotTable, i-1, annotTable.dag)) then
-	      if (newColor = BACKGROUNDNORMAL) then
-		newColor := BACKGROUNDALT1;
-	      else
-		newColor := BACKGROUNDNORMAL;
+	      -- break when empty row is found
+              if (mgi_tblGetCell(annotTable, i, annotTable.editMode) = TBL_ROW_EMPTY) then
+	        break;
 	      end if;
-	    end if;
-	    newBackground := newBackground + "(" + (string) i + " all " + newColor + ")";
-	    i := i + 1;
-	  end while;
 
-	  -- Set all root term rows to red
-	  i := 0;
-	  while (i < mgi_tblNumRows(annotTable)) do
-	    value := mgi_tblGetCell(annotTable, i, annotTable.termAccID);
-	    if (value = "GO:0008150" or value = "GO:0005575" or value = "GO:0003674") then
-	      newBackground := newBackground + "(" + (string) i + " all Red)";
-	    end if;
-	    i := i + 1;
-	  end while;
+	      if (mgi_tblGetCell(annotTable, i, annotTable.dag) != 
+		  mgi_tblGetCell(annotTable, i-1, annotTable.dag)) then
+	        if (newColor = BACKGROUNDNORMAL) then
+		  newColor := BACKGROUNDALT1;
+	        else
+		  newColor := BACKGROUNDNORMAL;
+	        end if;
+	      end if;
+	      newBackground := newBackground + "(" + (string) i + " all " + newColor + ")";
+	      i := i + 1;
+	    end while;
 
-	  annotTable.xrtTblBackgroundSeries := newBackground;
+	    -- Set all root term rows to red
+	    i := 0;
+	    while (i < mgi_tblNumRows(annotTable)) do
+	      value := mgi_tblGetCell(annotTable, i, annotTable.termAccID);
+	      if (value = "GO:0008150" or value = "GO:0005575" or value = "GO:0003674") then
+	        newBackground := newBackground + "(" + (string) i + " all " + BACKGROUNDALT2 + ")";
+	      end if;
+	      i := i + 1;
+	    end while;
 
+	    annotTable.xrtTblBackgroundSeries := newBackground;
+
+	  end if;
 	  -- End Reset Background
 
 	  send(SelectGOReferences, 0);

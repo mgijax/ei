@@ -16,6 +16,15 @@
 --
 -- History
 --
+-- 10/26/2011
+--	- VerifyChromosome; removed unnecessary validation
+--	- VerifyDate; removed unnecessary validation
+--	- VerifyAnyMarker; not used anywhere
+--	- VerifyMarkerAlleles; not used anywhere
+--	- VerifyNomenMarker; not used anywhere
+--	- VerifyTissueAge; not used anywhere
+--	- VerifyYesNo; remove unnecessary validation
+--
 -- 03/29/2011	lec
 --	- TR 10650; VerifyGOInferredFrom; add 'IC'
 --
@@ -242,6 +251,7 @@ dmodule Verify is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
+#include <mgisql.h>
 
 devents:
 
@@ -649,15 +659,10 @@ rules:
 
 	        whichMarker := 1;
  
-                select := "select _Allele_key, _Marker_key, symbol, markerSymbol " +
-			  "from " + mgi_DBtable(ALL_ALLELE_VIEW) +
-                          " where symbol = " + mgi_DBprstr(value) +
-			  " and term in (" + 
-			  mgi_DBprstr(ALL_STATUS_APPROVED) + "," +
-			  mgi_DBprstr(ALL_STATUS_AUTOLOAD) + ")";
+		select := verify_allele_sql_1 + mgi_DBprstr(value);
 
 	        if (markerKey.length > 0 and markerKey != "NULL") then
-                  select := select + " and _Marker_key = " + markerKey;
+                  select := select + verify_allele_sql_2 + markerKey;
 	        end if;
 
                 dbproc := mgi_dbopen();
@@ -879,8 +884,7 @@ rules:
 
 	  -- Search for CellLine in the database
 
-	  select : string := 
-	      "select _Term_key, term from VOC_Term where _Vocab_key = 18 and term = " + mgi_DBprstr(value) + "\n";
+	  select : string := verify_cellline_sql_1 + mgi_DBprstr(value);
 
 	  -- Insert results into string list for loading into CellLine selection list
 
@@ -950,171 +954,6 @@ rules:
 	    top->mgiCellLine->ObjectID->text.value := whichCellLine;
             (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
 	  end if;
-
-	  (void) reset_cursor(top);
-	end does;
-
---
---
---
--- VerifyChromosome
---
--- Activated from:  Table ValidateCellCallback
--- Activated from:  Chromosome->text translation
---
--- Checks if Chromosome value for Organism exists in Marker Chromosome table.
---
--- Also, raises the case of the Chromosome value so it is in upper case.
---
--- 	UDAs required:  organismKey (unique identifier of marker organism)
--- 	UDAs required:  markerChr (column of chromosome value in table)
---
-
-	VerifyChromosome does
-          sourceWidget : widget := VerifyChromosome.source_widget;
-          top : widget := sourceWidget.top;
-	  value : string;
-	  organismKey : string;
-	  isTable : boolean;
-	  select : string;
-	  where : string;
-
-	  -- Relevant for Tables only
-	  row : integer := 0;
-	  column : integer := 0;
-	  reason : integer := 0;
-
-	  isTable := mgi_tblIsTable(sourceWidget);
-
-	  -- Determine Table processing vs. Text processing
-
-	  if (isTable) then
-	    row := VerifyChromosome.row;
-	    column := VerifyChromosome.column;
-	    reason := VerifyChromosome.reason;
-	    value := VerifyChromosome.value;
-	    value := value.raise_case;
-	    mgi_tblSetCell(sourceWidget, row, column, value);
-
-	    if (reason = TBL_REASON_VALIDATE_CELL_END) then
-	      return;
-	    end if;
-
-	    if (column != sourceWidget.markerChr) then
-	      return;
-	    end if;
-	  else
-	    value := top->Chromosome->text.value;
-	    value := value.raise_case;
-	    top->Chromosome->text.value := value;
-	  end if;
-
-	  (void) busy_cursor(top);
-
-	  if (isTable) then
-            organismKey := mgi_tblGetCell(sourceWidget, row, sourceWidget.organismKey);
-	  else
-	    organismKey := top->mgiOrganism->ObjectID->text.value;
-	  end if;
-
-	  -- If no organism entered, cannot verify value
-
-	  if (organismKey.length > 0) then
-	    select := "select count(*) from MRK_Chromosome ";
-	    where := " where _Organism_key = " + organismKey +
-		  " and chromosome = " + mgi_DBprstr(value) + "\n";
-
-	    if ((integer) mgi_sql1(select + where) = 0) then
-              StatusReport.source_widget := top;
-	      StatusReport.message := "Invalid Chromosome value for Organism:\n\n" + value + "\n";
-              send(StatusReport);
-	      VerifyChromosome.doit := (integer) false;
-	    end if;
-	  end if;
-
-	  if (not isTable) then
-            (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
-	  end if;
-
-	  (void) reset_cursor(top);
-	end does;
-
---
--- VerifyDate
---
---	Verify Date for Text or Table - must be in YYYY format
---	If Text, assumes use of mgiDate template
---	If Table, assumes table.date is defined as column value
---
-
-	VerifyDate does
-	  sourceWidget : widget := VerifyDate.source_widget;
-	  dateTop : widget := VerifyDate.source_widget.ancestor_by_class("XmRowColumn");
-	  top : widget := sourceWidget.top;
-	  isTable : boolean;
-	  value : string;
-
-	  -- These variables are only relevant for Tables
-	  row : integer;
-	  column : integer;
-	  reason : integer;
-
-	  isTable := mgi_tblIsTable(sourceWidget);
-
-	  if (isTable) then
-	    row := VerifyDate.row;
-	    column := VerifyDate.column;
-	    reason := VerifyDate.reason;
-	    value := VerifyDate.value;
-
-	    -- If date column is not defined, return
-
-	    if (sourceWidget.is_defined("date") = nil) then
-	      return;
-	    end if;
-
-	    -- If not in the date column, return
-
-	    if (column != sourceWidget.date) then
-	      return;
-	    end if;
-
-	    if (reason = TBL_REASON_VALIDATE_CELL_END) then
-	      return;
-	    end if;
-	  else
-	    value := dateTop->Date->text.value;
-	  end if;
-
-	  -- If the Date is null or contains a wildcard, return
-
-	  if (value.length = 0 or strstr(value, "%") != nil) then
-	    if (not isTable) then
-              (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
-	    end if;
-	    return;
-	  end if;
-
-	  (void) busy_cursor(top);
-
-          validDate : string := mgi_year(value);
- 
-	  -- If date is not valid
-	  --   Display an error message, disallow edit to date field
-
-          if (validDate.length > 0) then
-	    if (not isTable) then
-              (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
-	    end if;
-	  else
-	    if (isTable) then
-	      VerifyDate.doit := (integer) false;
-	    end if;
-            StatusReport.source_widget := top.root;
-            StatusReport.message := "Must enter a valid Year (YYYY) in Date field.";
-            send(StatusReport);
-            top.allowEdit := false;
-          end if;
 
 	  (void) reset_cursor(top);
 	end does;
@@ -1874,19 +1713,6 @@ rules:
 	end does;
 
 --
--- VerifyAnyMarker
---
--- Call VerifyMarker() (a translation) with allowWithdrawn = true
--- to allow ANY valid marker (withdrawn or approved) to be used
---
-
-	VerifyAnyMarker does
-	  VerifyMarker.source_widget := VerifyAnyMarker.source_widget;
-	  VerifyMarker.allowWithdrawn := true;
-	  send(VerifyMarker, 0);
-	end does;
-
---
 -- VerifyMarker
 --
 --	Verify Mouse Marker Symbol entered in TextField or Table
@@ -2463,93 +2289,6 @@ rules:
             StatusReport.message := message;
             send(StatusReport);
 	  end if;
-	end does;
-
---
--- VerifyMarkerAlleles
---
--- Determines is Marker contains non-Approved Alleles
--- Displays message if it does
---
--- If Text, assumes use of mgiMarker template
--- If Table, assumes table.markerKey, table.markerSymbol are defined
---
-
-	VerifyMarkerAlleles does
-	  sourceWidget : widget := VerifyMarkerAlleles.source_widget;
-	  top : widget := sourceWidget.top;
-	  isTable : boolean;
-	  value : string;
-	  select : string;
-
-	  -- These variables are only relevant for Tables
-	  row : integer;
-	  column : integer;
-	  reason : integer;
-
-	  (void) busy_cursor(top);
-
-	  isTable := mgi_tblIsTable(sourceWidget);
-
-	  -- Processing for Table
-
-	  if (isTable) then
-	    row := VerifyMarkerAlleles.row;
-	    column := VerifyMarkerAlleles.column;
-	    reason := VerifyMarkerAlleles.reason;
-
-	    if (reason = TBL_REASON_VALIDATE_CELL_END) then
-	      (void) reset_cursor(top);
-	      return;
-	    end if;
-					   
-	    -- If not in the marker column, return
-
-            if (column != sourceWidget.markerSymbol) then
-	      (void) reset_cursor(top);
-              return;
-            end if;
-
-	    value := mgi_tblGetCell(sourceWidget, row, sourceWidget.markerKey);
-
-	  -- Processing for Text
-
-	  else
-	    value := top->mgiMarker->ObjectID->text.value;
-	  end if;
-
-	  if (value.length = 0 or value = "NULL") then
-	    (void) reset_cursor(top);
-	    return;
-	  end if;
-
-	  select := "select count(a._Allele_key) from ALL_Allele a, VOC_Term t " +
-	  	"where a._Marker_key = " + value + 
-	  	" and a._Allele_Status_key = t._Term_key" +
-		" and term not in (" + 
-		  mgi_DBprstr(ALL_STATUS_APPROVED) + "," +
-		  mgi_DBprstr(ALL_STATUS_AUTOLOAD) + ")";
-
-          if ((integer) mgi_sql1(select) > 0) then
-                StatusReport.source_widget := top.root;
-                StatusReport.message := "This Marker has non-Approved Allele Symbols.\n" +
-			"Please check these records before entering your new Allele Symbol.\n";
-                send(StatusReport);
-          end if;
-
-	  (void) reset_cursor(top);
-	end does;
-
---
--- VerifyNomenMarker
---
--- Call VerifyMarker() (a translation) with allowNomen = true
---
-
-	VerifyNomenMarker does
-	  VerifyMarker.source_widget := VerifyNomenMarker.source_widget;
-	  VerifyMarker.allowNomen := true;
-	  send(VerifyMarker, 0);
 	end does;
 
 --
@@ -3640,28 +3379,6 @@ rules:
 	end does;
 
 --
--- VerifyTissueAge
---
--- Activated from:  top->Tissue->Verify->text translation
---
---	Verify that if Tissue = 'unfertilized egg', Age will equal 'Not Applicable'
---	and Age->text will be blank.
---
-
-	VerifyTissueAge does
-          top : widget := VerifyTissueAge.source_widget.root;
-          tissue : widget := VerifyTissueAge.source_widget;
-
-	  if (tissue.value = "unfertilized egg") then
-            SetOption.source_widget := top->AgeMenu;
-            SetOption.value := "Not Applicable";
-            send(SetOption, 0);
-	    top->Age->text.value := "";
-	  end if;
-
-	end does;
-
---
 -- VerifyUser
 --
 --      Verify User entered into Table Row
@@ -4248,58 +3965,6 @@ rules:
 		" does not recognize product in Western blot.\n\n";
             send(StatusReport);
 	  end if;
-	end does;
-
---
--- VerifyYesNo
---
---	Verify Y/N/y/n/Yes/No/yes/no entered
---	If Table, assumes table.yesnoKey UDA
---
-
-	VerifyYesNo does
-	  table : widget := VerifyYesNo.source_widget;
-	  top : widget := table.top;
-	  row : integer := VerifyYesNo.row;
-	  column : integer := VerifyYesNo.column;
-	  reason : integer := VerifyYesNo.reason;
-	  value : string := VerifyYesNo.value.lower_case;
-
-	  -- If not in the Yes/No, return
-
-	  if (column != table.yesno) then
-	    return;
-	  end if;
-
-	  if (reason = TBL_REASON_VALIDATE_CELL_END) then
-	    return;
-	  end if;
-
-	  (void) busy_cursor(top);
-
-	  -- If the Yes/No is null, default to Yes
-
-	  if (value.length = 0) then
-	    value := "yes";
-	    (void) mgi_tblSetCell(table, row, table.yesno, "yes");
-	  end if;
-
-	  if (value != "y" and value != "n" and value != "yes" and value != "no") then
-            StatusReport.source_widget := top.root;
-            StatusReport.message := "Invalid Yes/No Value";
-            send(StatusReport);
-	    VerifyYesNo.doit := false;
-	  else
-	    if (value[1] = 'y') then
-	      value := "yes";
-	      (void) mgi_tblSetCell(table, row, table.yesno, "yes");
-	    else
-	      value := "no";
-	      (void) mgi_tblSetCell(table, row, table.yesno, "no");
-	    end if;
-	  end if;
-
-	  (void) reset_cursor(top);
 	end does;
 
 --
