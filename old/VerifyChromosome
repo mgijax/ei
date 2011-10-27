@@ -1,0 +1,85 @@
+--
+--
+--
+-- VerifyChromosome
+--
+-- Activated from:  Table ValidateCellCallback
+-- Activated from:  Chromosome->text translation
+--
+-- Checks if Chromosome value for Organism exists in Marker Chromosome table.
+--
+-- Also, raises the case of the Chromosome value so it is in upper case.
+--
+-- 	UDAs required:  organismKey (unique identifier of marker organism)
+-- 	UDAs required:  markerChr (column of chromosome value in table)
+--
+
+	VerifyChromosome does
+          sourceWidget : widget := VerifyChromosome.source_widget;
+          top : widget := sourceWidget.top;
+	  value : string;
+	  organismKey : string;
+	  isTable : boolean;
+	  cmd : string;
+
+	  -- Relevant for Tables only
+	  row : integer := 0;
+	  column : integer := 0;
+	  reason : integer := 0;
+
+	  isTable := mgi_tblIsTable(sourceWidget);
+
+	  -- Determine Table processing vs. Text processing
+
+	  if (isTable) then
+	    row := VerifyChromosome.row;
+	    column := VerifyChromosome.column;
+	    reason := VerifyChromosome.reason;
+	    value := VerifyChromosome.value;
+	    value := value.raise_case;
+	    mgi_tblSetCell(sourceWidget, row, column, value);
+
+	    if (reason = TBL_REASON_VALIDATE_CELL_END) then
+	      return;
+	    end if;
+
+	    if (column != sourceWidget.markerChr) then
+	      return;
+	    end if;
+	  else
+	    value := top->Chromosome->text.value;
+	    value := value.raise_case;
+	    top->Chromosome->text.value := value;
+	  end if;
+
+	  (void) busy_cursor(top);
+
+	  if (isTable) then
+            organismKey := mgi_tblGetCell(sourceWidget, row, sourceWidget.organismKey);
+	  else
+	    organismKey := top->mgiOrganism->ObjectID->text.value;
+	  end if;
+
+	  -- If no organism entered, cannot verify value
+
+	  if (organismKey.length > 0) then
+	    cmd := verify_chromosome_sql_1a + organismKey + verify_chromosome_sql_1b + mgi_DBprstr(value);
+
+	    if ((integer) mgi_sql1(cmd) = 0) then
+              StatusReport.source_widget := top;
+	      StatusReport.message := "Invalid Chromosome value for Organism:\n\n" + value + "\n";
+              send(StatusReport);
+	      VerifyChromosome.doit := (integer) false;
+	    end if;
+	  end if;
+
+	  if (not isTable) then
+            (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
+	  end if;
+
+	  (void) reset_cursor(top);
+	end does;
+
+--
+-- VerifyDate
+--

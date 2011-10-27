@@ -1,0 +1,12 @@
+--
+-- VerifyNomenMarker
+--
+-- Call VerifyMarker() (a translation) with allowNomen = true
+--
+
+	VerifyNomenMarker does
+	  VerifyMarker.source_widget := VerifyNomenMarker.source_widget;
+	  VerifyMarker.allowNomen := true;
+	  send(VerifyMarker, 0);
+	end does;
+

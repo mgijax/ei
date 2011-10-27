@@ -1,0 +1,13 @@
+--
+-- VerifyAnyMarker
+--
+-- Call VerifyMarker() (a translation) with allowWithdrawn = true
+-- to allow ANY valid marker (withdrawn or approved) to be used
+--
+
+	VerifyAnyMarker does
+	  VerifyMarker.source_widget := VerifyAnyMarker.source_widget;
+	  VerifyMarker.allowWithdrawn := true;
+	  send(VerifyMarker, 0);
+	end does;
+
