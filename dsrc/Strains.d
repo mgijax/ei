@@ -307,7 +307,7 @@ rules:
 	   pcmd : string;
 	   permOK : integer;
 
-	   pcmd := "exec MGI_checkUserRole 'StrainJAXModule'," + mgi_DBprstr(global_login);
+	   pcmd := strain_sql_12 + mgi_DBprstr(global_login);
 		
 	   permOK := (integer) mgi_sql1(pcmd);
 
@@ -1094,10 +1094,10 @@ rules:
 
           row : integer := 0;
  
+	  cmd := strain_sql_7 + currentRecordKey;
+
 	  if (SelectReferenceMGI.doCount) then
-	    cmd := "execute PRB_getStrainReferences " + currentRecordKey + ",1\n";
-	  else
-	    cmd := "execute PRB_getStrainReferences " + currentRecordKey + "\n";
+	    cmd := cmd + strain_sql_8;
 	  end if;
 
           dbproc : opaque := mgi_dbopen();
@@ -1150,10 +1150,9 @@ rules:
 
           row : integer := 0;
  
+	  cmd := strain_sql_9 + currentRecordKey;
 	  if (SelectDataSets.doCount) then
-	    cmd := "execute PRB_getStrainDataSets " + currentRecordKey + ",1\n";
-	  else
-	    cmd := "execute PRB_getStrainDataSets " + currentRecordKey + "\n";
+	    cmd := cmd + strain_sql_9;
 	  end if;
 
           dbproc : opaque := mgi_dbopen();
@@ -1223,7 +1222,7 @@ rules:
  
           (void) busy_cursor(dialog);
 
-	  cmd := "exec " + mgi_DBtable(STRAIN_MERGE) +  " " +
+	  cmd := strain_sql_10 +
 		  dialog->Strain1->StrainID->text.value + "," +
 	          dialog->Strain2->StrainID->text.value + "\n";
 	  
@@ -1309,7 +1308,7 @@ rules:
 	    return;
 	  end if;
 
-	  strainCount := mgi_sql1("select count(*) from " + mgi_DBtable(STRAIN) + " where strain = " + mgi_DBprstr(value));
+	  strainCount := mgi_sql1(strain_sql_11 + mgi_DBprstr(value));
 
 	  if ((integer) strainCount > 0) then
             StatusReport.source_widget := top;

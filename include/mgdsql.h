@@ -554,4 +554,11 @@ from SEQ_Allele_View where _Sequence_key = "
 mgiID, description, modifiedBy, modification_date \
 from PRB_Strain_Genotype_View where _Strain_key = "
 
+#define strain_sql_7 "execute PRB_getStrainReferences "
+#define strain_sql_8 ",1"
+#define strain_sql_9 "execute PRB_getStrainDataSets "
+#define strain_sql_10 "exec PRB_mergeStrain "
+#define strain_sql_11 "select count(*) from PRB_Strain where strain = "
+#define strain_sql_12 "exec MGI_checkUserRole 'StrainJAXModule',"
+
 #endif

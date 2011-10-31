@@ -206,7 +206,7 @@ and pm.relationship in ('E', 'H')"
 
 #define verify_markerintable_sql_2a "\nunion \
 select count(pm._Probe_key) from PRB_Marker pm, PRB_Probe p, VOC_Term t  \
-and pm._Probe_key = p._Probe_key \
+where pm._Probe_key = p._Probe_key \
 and p._SegmentType_key = t._Term_key \
 and t.term = 'primer' \
 and pm.relationship = 'A'"
