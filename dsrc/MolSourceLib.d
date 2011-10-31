@@ -188,7 +188,7 @@ rules:
 
 	  -- ageMin/ageMax are set from the stored procedure MGI_resetAgeMinMax
 
-          add := add + mgi_DBprstr(age) + "," +
+          add := add + mgi_DBprstr(age) + ",-1,-1," +
             	       isCuratorEdited + "," +
 		       global_loginKey + "," + global_loginKey + ")\n" +
 		       "exec MGI_resetAgeMinMax " + mgi_DBtable(PRB_SOURCE) + ", @" + keyLabel + "\n" +

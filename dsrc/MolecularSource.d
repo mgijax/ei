@@ -13,6 +13,9 @@
 --
 -- History
 --
+-- lec	10/31/2011
+--	- removed age min/max default so manually add the "default" -1,-1
+--
 -- lec	07/25/2003
 --	- JSAM
 --
