@@ -9,7 +9,7 @@ Add
 
 . At most one Primary Image Pane is allowed.
 
-. if Status = 'Approvied': Approved By = current user, Approved Date = current date
+. if Status = 'Approved': Approved By = current user, Approved Date = current date
 
 . default Inheritance Mode = Not Applicable
 
