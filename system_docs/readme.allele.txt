@@ -3,12 +3,6 @@ Allele module notes (Allele.d)
 
 Add
 
-. Original: At most one Original Reference is required
-
-. Transmission: At most one Transmission Reference is allowed.
-
-. At most one Primary Image Pane is allowed.
-
 . if Status = 'Approved': Approved By = current user, Approved Date = current date
 
 . default Inheritance Mode = Not Applicable
@@ -25,15 +19,7 @@ Add
   else
 	strain = Not Applicable
 
-. if isWildType = true, then modify mutant cell line
-
 Modify
-
-. Original: At most one Original Reference is required
-
-. Transmission: At most one Transmission Reference is allowed.
-
-. At most one Primary Image Pane is allowed.
 
 . Confirm changes to Mutant, Parent, Strain
 
@@ -51,7 +37,15 @@ Modify
 
 Add/Modify:
 
+. Original: At most one Original Reference is required
+
+. Transmission: At most one Transmission Reference is allowed.
+
 . if Name = "wild type" or "wild-type": ALL_Allele.isWildType = true
+
+. if isWildType = true, then add mutant cell line
+
+. At most one Primary Image Pane is allowed.
 
 . Marker Associations
   . if the marker symbol is blank, print a warning:
