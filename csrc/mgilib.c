@@ -2350,7 +2350,7 @@ char *mgi_DBinsert(int table, char *keyName)
 	    break;
     case PRB_SOURCE:
     case PRB_SOURCE_MASTER:
-            sprintf(buf, "insert %s (%s, _SegmentType_key, _Vector_key, _Organism_key, _Strain_key, _Tissue_key, _Gender_key, _CellLine_key, _Refs_key, name, description, age, isCuratorEdited, _CreatedBy_key, _ModifiedBy_key)",
+            sprintf(buf, "insert %s (%s, _SegmentType_key, _Vector_key, _Organism_key, _Strain_key, _Tissue_key, _Gender_key, _CellLine_key, _Refs_key, name, description, age, ageMin, ageMax, isCuratorEdited, _CreatedBy_key, _ModifiedBy_key)",
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case PRB_STRAIN_GENOTYPE:
