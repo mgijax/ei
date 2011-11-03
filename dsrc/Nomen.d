@@ -197,6 +197,8 @@ locals:
         accTable : widget;		-- Accession Table
         accRefTable : widget;		-- Accession Reference Table
 
+	-- this column is always set to the default
+	-- this column can be removed (see TR10841)
 	curationState : string := "";	-- Default Curation State
 
 rules:
