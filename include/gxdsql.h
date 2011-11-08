@@ -78,7 +78,7 @@ where i._Image_key = "
 #define image_sql_6b " and i._ThumbnailImage_key = a._Object_key \
 and a._LogicalDB_key = 1 and a.prefixPart = 'MGI:' and a.preferred = 1"
 #define image_sql_7 "select distinct i._Image_key, \
-i.jnumID + ';' + i.figureLabel + ';' + i.imageType \
+i.jnumID || ';' || i.figureLabel || ';' || i.imageType \
 from IMG_Image_View i \
 where _Refs_key = "
 #define image_sql_8 "\norder by i.jnum\n"

@@ -488,7 +488,7 @@ order by sequenceNum"
 
 /* Sequence.d */
 
-#define sequence_sql_1 "select ac._Object_key, ac.accID + ',' + v1.term + ',' + v2.term, v1.term, ac.accID, ac.preferred\n"
+#define sequence_sql_1 "select ac._Object_key, ac.accID || ',' || v1.term || ',' || v2.term, v1.term, ac.accID, ac.preferred\n"
 #define sequence_sql_2 "select * from SEQ_Sequence_View where _Sequence_key = "
 #define sequence_sql_3 "select * from SEQ_Sequence_Raw where _Sequence_key = "
 
