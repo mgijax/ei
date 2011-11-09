@@ -87,6 +87,9 @@
 #
 # History
 #
+#	lec	11/09/2011
+#	- ported inner/outer join to ansi standard
+#
 #	lec	09/26/2011
 #	- TR 10859/fix AID
 #
@@ -459,10 +462,13 @@ def isDuplicate(rec, rectags):
 
 	# If pubmed id already exists in database, skip add
 
-	cmd = 'select ac.accID from ACC_Accession ac ' + \
-	      'where ac._MGIType_key = 1 ' + \
-	      'and ac._LogicalDB_key = 29 ' + \
-	      'and ac.accID = "' + rec['PMID'] + '"'
+	cmd = '''
+	      select ac.accID 
+	      from ACC_Accession ac
+	      where ac._MGIType_key = 1
+	      and ac._LogicalDB_key = 29
+	      and ac.accID = "%s"
+	      ''' % (rec['PMID'])
 
         results = db.sql(cmd, 'auto')
 
@@ -487,8 +493,7 @@ def isSubmission(rec, rectags):
 	#
 	'''
 
-	cmd = 'select _Refs_key from BIB_Refs ' + \
-               'where journal = "Submission" '
+	cmd = 'select _Refs_key from BIB_Refs where journal = "Submission" '
 
 	if rec['PAU'] != 'NULL':
 	      cmd = cmd + ' and _primary = "' + rec['PAU'] + '"'
@@ -496,11 +501,9 @@ def isSubmission(rec, rectags):
 	      cmd = cmd + ' and _primary = ' + rec['PAU']
 
 	if rec['AU'] != 'NULL':
-	      cmd = cmd + ' and (authors like "' + rec['AU'] + '"' + \
-	                  ' or authors2 like "%s" ' % rec['AU2']
+	      cmd = cmd + ' and (authors like "' + rec['AU'] + '"' + ' or authors2 like "%s" ' % rec['AU2']
 	else:
-	      cmd = cmd + ' and (authors = ' + rec['AU'] + \
-	                  ' or authors2 = ' + rec['AU2']
+	      cmd = cmd + ' and (authors = ' + rec['AU'] + ' or authors2 = ' + rec['AU2']
 
         cmd = cmd + ' or substring(title,1,25) = "%s") ' % rec['TISHORT']
 
@@ -554,15 +557,17 @@ def doUpdate(rec, rectags):
 
 	# If pubmed id already exists in database, allow update
 
-	cmd = 'select v._Refs_key, v.title, v.abstract, v.jnum, pmid = ac.accID, doiid = ac2.accID ' + \
-	      'from BIB_All_View v, ACC_Accession ac, ACC_Accession ac2 ' + \
-	      'where v._Refs_key = ac._Object_key ' + \
-	      'and ac._MGIType_key = 1 ' + \
-	      'and ac._LogicalDB_key = 29 ' + \
-	      'and ac.accID = "' + rec['PMID'] + '" ' + \
-	      'and v._Refs_key *= ac2._Object_key ' + \
-	      'and ac2._MGIType_key = 1 ' + \
-	      'and ac2._LogicalDB_key = 65 '
+	cmd = '''
+	      select v._Refs_key, v.title, v.abstract, v.jnum, pmid = ac.accID, doiid = ac2.accID
+	      from BIB_All_View v
+	      		INNER JOIN ACC_Accession ac on (v._Refs_key = ac._Object_key 
+	        			and ac._MGIType_key = 1 
+	        			and ac._LogicalDB_key = 29 
+	        			and ac.accID = "%s")
+	      		LEFT OUTER JOIN ACC_Accession ac2 on (v._Refs_key = ac2._Object_key
+	      				and ac2._MGIType_key = 1
+	      				and ac2._LogicalDB_key = 65)
+	      ''' % (rec['PMID'])
 
         results = db.sql(cmd, 'auto')
 
@@ -609,27 +614,30 @@ def doUpdate(rec, rectags):
 		cmd.append('begin transaction')
 		update = []
 
-		update.append('update BIB_Refs set ' + \
-			'refType = "ART",' + \
-        		'authors = %s,' % rec['AU'] + \
-        		'authors2 = %s,' % rec['AU2'] + \
-        		'_primary = %s,' % rec['PAU'] + \
-        		'title = %s,' % rec['TI'] + \
-        		'title2 = %s,' % rec['TI2'] + \
-        		'issue = %s,' % rec['IP'] + \
-        		'date = %s,' % rec['DP'] + \
-        		'year = %s,' % rec['YR'] + \
-        		'pgs = %s,' % rec['PG'] + \
-        		'journal = %s,' % rec['TA'] + \
-        		'vol = %s' % rec['VI'])
+		update.append('''
+			update BIB_Refs set 
+			refType = "ART",
+        		authors = %s,
+        		authors2 = %s,
+        		_primary = %s,
+        		title = %s,
+        		title2 = %s,
+        		issue = %s,
+        		date = %s,
+        		year = %s,
+        		pgs = %s,
+        		journal = %s,
+        		vol = %s
+			''' % (rec['AU'], rec['AU2'], rec['PAU'], rec['TI'], rec['TI2'], \
+			       rec['IP'], rec['DP'], rec['YR'], rec['PG'], rec['TA'], rec['VI']))
  
 		# If record has abstract and abstract is not null, update it
 		if rec.has_key('AB') and rec['AB'] != 'NULL':
 			update.append('abstract = %s' % rec['AB'])
 
-        	update.append('_ModifiedBy_key = %s, ' % userKey + \
-			'modification_date = getdate() ' + \
-			'where _Refs_key = %d' % refKey)
+        	update.append('''
+			_ModifiedBy_key = %s, modification_date = getdate() where _Refs_key = %d
+			''' % (userKey, refKey))
 		cmd.append(string.join(update, ','))
 
 		# Add PubMed ID
@@ -687,9 +695,11 @@ def doAdd(rec, rectags):
 	cmd.append('begin transaction')
 
 	# Make sure 'declare' is prepended to Transact SQL command
-	cmd.append('declare @nextRef int\n' + \
-		'select @nextRef = max(_Refs_key) + 1 from BIB_Refs\n' + \
-		'%s values(@nextRef,%d,"ART",%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,"Y",0,%s,%s,%s)' \
+	cmd.append('''
+		declare @nextRef int\n
+		select @nextRef = max(_Refs_key) + 1 from BIB_Refs\n
+		%s values(@nextRef,%d,"ART",%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,"Y",0,%s,%s,%s)
+		''' 
 		% (INSERTBIB, REVIEWSTATUS, rec['AU'], rec['AU2'], rec['PAU'], \
 		rec['TI'], rec['TI2'], rec['TA'], rec['VI'], rec['IP'], \
 		rec['DP'], rec['YR'], rec['PG'], rec['AB'], userKey, userKey))
@@ -697,8 +707,7 @@ def doAdd(rec, rectags):
 	cmd.append('execute ACC_assignJ @nextRef,%s' % nextJnum)
 
 	if rec.has_key('PMID'):
-		cmd.append('exec ACC_insert @nextRef,%s,%d,%s' \
-			% (rec['PMID'], PUBMEDKEY, MGITYPE))
+		cmd.append('exec ACC_insert @nextRef,%s,%d,%s' % (rec['PMID'], PUBMEDKEY, MGITYPE))
 
 	if rec.has_key('AID'):
 	        cmd.append('exec ACC_insert @nextRef,%s,%d,%s' % (rec['AID'], DOIKEY, MGITYPE))
