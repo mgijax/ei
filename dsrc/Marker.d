@@ -809,7 +809,7 @@ rules:
 
 	  from := " from " + mgi_DBtable(MRK_MARKER) + " m";
 	  from := from + ",MRK_Current_View mu";
-	  where := "where m._Organism_key = " + MOUSE;
+	  where := "where m._Organism_key = 1";
 	  where := where + "\nand mu.current_symbol in (";
 
 	  if (dialog.eventKey = EVENT_RENAME) then
@@ -1388,7 +1388,7 @@ rules:
 	  value : string;
 
 	  from := " from " + mgi_DBtable(MRK_MARKER) + " m";
-	  where := "where m._Organism_key = " + MOUSE;
+	  where := "where m._Organism_key = 1";
 
 	  -- Cannot search both Accession tables at once
 

@@ -837,7 +837,7 @@ rules:
           -- Delete records first, then process inserts/updates/deletes, then re-order sequence numbers
  
 	  if (deleteCmd.length > 0 or tmpCmd.length > 0) then
-            cmd := cmd + deleteCmd + tmpCmd + ROLLBACK;
+            cmd := cmd + deleteCmd + tmpCmd;
 
 	    if (resetSequenceNum) then
               cmd := cmd + "exec MGI_resetSequenceNum '" + mgi_DBtable(MLD_EXPT_MARKER) + "'," + currentExptKey + "\n";
@@ -1053,7 +1053,7 @@ rules:
           -- Delete records first, then process inserts/updates/deletes, then re-order sequence numbers
  
 	  if (deleteCmd.length > 0 or tmpCmd.length > 0) then
-            cmd := cmd + deleteCmd + tmpCmd + ROLLBACK;
+            cmd := cmd + deleteCmd + tmpCmd;
             cmd := cmd + "exec MGI_resetSequenceNum '" + mgi_DBtable(MLD_MCHAPLOTYPE) + "'," + currentExptKey + "\n";
 	  end if;
         end does;
@@ -1156,7 +1156,7 @@ rules:
           -- Delete records first, then process inserts/updates/deletes, then re-order sequence numbers
  
 	  if (deleteCmd.length > 0 or tmpCmd.length > 0) then
-            cmd := cmd + deleteCmd + tmpCmd + ROLLBACK;
+            cmd := cmd + deleteCmd + tmpCmd;
             cmd := cmd + "exec MGI_resetSequenceNum '" + mgi_DBtable(MLD_MC2POINT) + "'," + currentExptKey + "\n";
 	  end if;
         end does;
@@ -1371,7 +1371,7 @@ rules:
           -- Delete records first, then process inserts/updates/deletes, then re-order sequence numbers
  
 	  if (deleteCmd.length > 0 or tmpCmd.length > 0) then
-            cmd := cmd + deleteCmd + tmpCmd + ROLLBACK;
+            cmd := cmd + deleteCmd + tmpCmd;
             cmd := cmd + "exec MGI_resetSequenceNum '" + mgi_DBtable(MLD_FISH_REGION) + "'," + currentExptKey + "\n";
 	  end if;
         end does;
@@ -1518,7 +1518,7 @@ rules:
           -- Delete records first, then process inserts/updates/deletes, then re-order sequence numbers
  
 	  if (deleteCmd.length > 0 or tmpCmd.length > 0) then
-            cmd := cmd + deleteCmd + tmpCmd + ROLLBACK;
+            cmd := cmd + deleteCmd + tmpCmd;
             cmd := cmd + "exec MGI_resetSequenceNum '" + mgi_DBtable(MLD_CONCORDANCE) + "'," + currentExptKey + "\n";
 	  end if;
         end does;
@@ -1666,7 +1666,7 @@ rules:
           -- Delete records first, then process inserts/updates/deletes, then re-order sequence numbers
  
 	  if (deleteCmd.length > 0 or tmpCmd.length > 0) then
-            cmd := cmd + deleteCmd + tmpCmd + ROLLBACK;
+            cmd := cmd + deleteCmd + tmpCmd;
             cmd := cmd + "exec MGI_resetSequenceNum '" + mgi_DBtable(MLD_INSITU_REGION) + "'," + currentExptKey + "\n";
 	  end if;
         end does;
@@ -1891,7 +1891,7 @@ rules:
           -- Delete records first, then process inserts/updates/deletes, then re-order sequence numbers
  
 	  if (deleteCmd.length > 0 or tmpCmd.length > 0) then
-            cmd := cmd + deleteCmd + tmpCmd + ROLLBACK;
+            cmd := cmd + deleteCmd + tmpCmd;
             cmd := cmd + "exec MGI_resetSequenceNum '" + mgi_DBtable(MLD_RIHAPLOTYPE) + "'," + currentExptKey + "\n";
 	  end if;
         end does;
@@ -1998,7 +1998,7 @@ rules:
           -- Delete records first, then process inserts/updates/deletes, then re-order sequence numbers
  
 	  if (deleteCmd.length > 0 or tmpCmd.length > 0) then
-            cmd := cmd + deleteCmd + tmpCmd + ROLLBACK;
+            cmd := cmd + deleteCmd + tmpCmd;
             cmd := cmd + "exec MGI_resetSequenceNum '" + mgi_DBtable(MLD_RI2POINT) + "'," + currentExptKey + "\n";
 	  end if;
         end does;
@@ -2112,7 +2112,7 @@ rules:
           -- Delete records first, then process inserts/updates/deletes, then re-order sequence numbers
  
 	  if (deleteCmd.length > 0 or tmpCmd.length > 0) then
-            cmd := cmd + deleteCmd + tmpCmd + ROLLBACK;
+            cmd := cmd + deleteCmd + tmpCmd;
             cmd := cmd + "exec MGI_resetSequenceNum '" + mgi_DBtable(MLD_STATISTICS) + "'," + currentExptKey + "\n";
 	  end if;
 

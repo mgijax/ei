@@ -655,7 +655,7 @@ rules:
 	  value : string;
 
 	  from  := " from " + mgi_DBtable(MRK_MARKER) + " m";
-	  where := " where m._Organism_key = " + MOUSE;
+	  where := " where m._Organism_key = 1";
 
 	  if (top->mgiMarker->Marker->text.value.length > 0) then
 	    where := where + "\nand m.symbol like " + mgi_DBprstr(top->mgiMarker->Marker->text.value);

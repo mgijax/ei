@@ -1331,7 +1331,7 @@ rules:
 
           if (from_gmarker) then
 	    from := from + ",MRK_Marker l1";
-	    where := "\nand l1._Organism_key = " + MOUSE + "\nand l1._Marker_key = g._Marker_key" + where;
+	    where := "\nand l1._Organism_key = 1\nand l1._Marker_key = g._Marker_key" + where;
 	  end if;
 
           if (from_probe) then
@@ -1376,7 +1376,7 @@ rules:
 
           if (from_rmarker) then
 	    from := from + ",MRK_Marker l2";
-	    where := "\nand l2._Organism_key = " + MOUSE + "\nand l2._Marker_key = rv._Marker_key" + where;
+	    where := "\nand l2._Organism_key = 1\nand l2._Marker_key = rv._Marker_key" + where;
 	  end if;
 
           if (where.length > 0) then

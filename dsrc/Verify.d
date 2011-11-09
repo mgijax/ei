@@ -1708,7 +1708,7 @@ rules:
 --
 --	Invalid Markers include:
 --		Withdrawn Markers (status = WITHDRAWN)
---		non-Mouse Markers (organism != MOUSE)
+--		non-Mouse Markers (organism != 1)
 --
 --	If Text, assumes use of mgiMarker template
 --	If Table, assumes table.markerKey, table.markerSymbol are defined
@@ -1817,7 +1817,7 @@ rules:
 	  chromosome : string_list := create string_list();
 	  status : string_list := create string_list();
 	  band : string_list := create string_list();
-	  organismKey : string := MOUSE;
+	  organismKey : string := "1";
 
           if (isTable and VerifyMarker.verifyOtherOrganism) then
             organismKey := mgi_tblGetCell(sourceWidget, VerifyMarker.row, sourceWidget.organismKey);
@@ -2038,7 +2038,7 @@ rules:
 	    top->mgiMarker->Marker->text.value := whichSymbol;
 
 	    -- Get MGI Acc ID if Mouse and Accession Widget defined
-	    if (organismKey = MOUSE and accessionWidget != nil) then
+	    if (organismKey = "1" and accessionWidget != nil) then
 	      markerMGIAccID := mgi_sql1(verify_marker_sql_8 + whichMarker);
 	      accessionWidget->AccessionID->text.value := markerMGIAccID;
 	    end if;

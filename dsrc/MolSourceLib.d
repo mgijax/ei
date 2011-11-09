@@ -99,7 +99,7 @@ rules:
 	  strainKey : string := "";
 	  defaultStrainKeyNS : string := NOTSPECIFIED;
 	  defaultStrainKeyNA : string := NOTAPPLICABLE;
-	  defaultOrganismKey : string := MOUSE;
+	  defaultOrganismKey : string := "1";
 	  defaultOrganismKeyNS : string := "76";
 
 	  top.sql := "";

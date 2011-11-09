@@ -33,8 +33,6 @@ extern char *global_version;
 #define NEWKEY		-1
 #define	KEYNAME		"key"
 #define	NOKEY  		"\0"
-#define	SEQKEYNAME	"seqKey"
-#define ROLLBACK 	"if @@error != 0\nbegin\nrollback transaction\nend\n"
 
 #define	NOTSPECIFIED	"-1"
 #define NOTAPPLICABLE	"-2"
@@ -44,16 +42,12 @@ extern char *global_version;
 #define YES		"1"
 #define NO 		"0"
 
-#define INTERNALCURATIONSTATE	"Internal"
-
 #define BROADCASTOFFICIAL       "official"
 #define BROADCASTINTERIM        "interim"
 
 /* Table Definitions must be unique */
 
 /* MGD Tables */
-
-#define NO_TABLE		0
 
 #define BIB_REFS		100
 #define BIB_BOOKS		101
@@ -331,9 +325,6 @@ extern char *global_version;
 /* Stored procedures */
 
 #define NOM_TRANSFERSYMBOL	2000
-
-#define	MOUSE		"1"
-#define HUMAN		"2"
 
 #define	BACKGROUNDNORMAL	"Wheat"
 #define	BACKGROUNDALT1		"Thistle"

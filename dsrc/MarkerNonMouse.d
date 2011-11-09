@@ -352,7 +352,7 @@ rules:
 	  from_notes    : boolean := false;
 
 	  from := " from " + mgi_DBtable(MRK_MARKER) + " m";
-	  where := "where m._Organism_key != " + MOUSE;	-- exclude mouse markers
+	  where := "where m._Organism_key != 1";
 
 	  -- Cannot search both Accession tables at once
 
@@ -530,7 +530,7 @@ rules:
 --
 
         SetEntrezGene does
-	  if (top->mgiOrganism->ObjectID->text.value = HUMAN) then
+	  if (top->mgiOrganism->ObjectID->text.value = "2") then
 	    top->Lookup->mgiAccessionTable->AccSourcePulldown->EntrezGene.required := true;
 	  else
 	    top->Lookup->mgiAccessionTable->AccSourcePulldown->EntrezGene.required := false;
