@@ -195,7 +195,6 @@ rules:
 	  i : integer := 1;
           editMode : string;
           key : string;
-	  annotEvidenceKey : string;
 	  propertyStanza : string;
 	  propertyTermKey : string;
 	  propertyValue : string;

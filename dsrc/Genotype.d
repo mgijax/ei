@@ -901,7 +901,7 @@ rules:
 	  end if;
 
 	  select := "select distinct g._Genotype_key, " +
-	     "g.strain + ',' + ap.allele1 + ',' + ap.allele2\n" + 
+	     "g.strain || ',' || ap.allele1 || ',' || ap.allele2\n" + 
 	     from + "\n" + where;
 
 	  -- Reference search
