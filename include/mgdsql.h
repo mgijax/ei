@@ -449,7 +449,7 @@ chromosome, cytogeneticOffset, name \
 from HMD_Homology_View "
 #define orthology_sql_6b "\norder by _Organism_key\n"
 
-#define orthology_sql_7a "\nselect distinct hm._Marker_key, a.accID, a._Accession_key \
+#define orthology_sql_7a "\nselect distinct hm._Marker_key, a.accID, a._Accession_key, a._Organism_key \
 from HMD_Homology h, HMD_Homology_Marker hm, MRK_Acc_View a "
 #define orthology_sql_7b "and h._Homology_key = hm._Homology_key \
 and hm._Marker_key = a._Object_key \
@@ -458,7 +458,7 @@ and a.prefixPart = 'MGI:' \
 and a.preferred = 1 \
 order by a._Organism_key\n"
 
-#define orthology_sql_8a "select distinct hm._Marker_key, a.accID, a._Accession_key \
+#define orthology_sql_8a "select distinct hm._Marker_key, a.accID, a._Accession_key, a._Organism_key \
 from HMD_Homology h, HMD_Homology_Marker hm, MRK_Marker m, MRK_Acc_View a "
 #define orthology_sql_8b "\nand h._Homology_key = hm._Homology_key \
 and hm._Marker_key = m._Marker_key \
@@ -554,9 +554,9 @@ from SEQ_Allele_View where _Sequence_key = "
 mgiID, description, modifiedBy, modification_date \
 from PRB_Strain_Genotype_View where _Strain_key = "
 
-#define strain_sql_7 "execute PRB_getStrainReferences "
+#define strain_sql_7 "exec PRB_getStrainReferences "
 #define strain_sql_8 ",1"
-#define strain_sql_9 "execute PRB_getStrainDataSets "
+#define strain_sql_9 "exec PRB_getStrainDataSets "
 #define strain_sql_10 "exec PRB_mergeStrain "
 #define strain_sql_11 "select count(*) from PRB_Strain where strain = "
 #define strain_sql_12 "exec MGI_checkUserRole 'StrainJAXModule',"

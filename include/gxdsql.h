@@ -71,14 +71,14 @@ where n.noteType = 'Caption' and n._Object_key = "
 #define image_sql_3b "\norder by n.sequenceNum\n"
 #define image_sql_4a "\nselect n._Note_key, n.note from MGI_Note_Image_View n \
 where n.noteType = 'Copyright' and n._Object_key = "
-#define image_sql_4b "order by n.sequenceNum\n"
+#define image_sql_4b "\norder by n.sequenceNum\n"
 #define image_sql_5 "\nselect * from IMG_ImagePane where _Image_key = "
 #define image_sql_6a "\nselect a._Object_key, a.accID from IMG_Image_Acc_View a, IMG_Image i \
 where i._Image_key = "
 #define image_sql_6b " and i._ThumbnailImage_key = a._Object_key \
 and a._LogicalDB_key = 1 and a.prefixPart = 'MGI:' and a.preferred = 1"
 #define image_sql_7 "select distinct i._Image_key, \
-i.jnumID || ';' || i.figureLabel || ';' || i.imageType \
+i.jnumID || ';' || i.figureLabel || ';' || i.imageType, i.jnum, i.imageType \
 from IMG_Image_View i \
 where _Refs_key = "
 #define image_sql_8 "\norder by i.jnum\n"
