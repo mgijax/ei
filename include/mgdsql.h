@@ -126,7 +126,7 @@ where _MGIType_key = 2 and _LogicalDB_key = "
 #define marker_sql_11c " and accID = "
 
 #define marker_sql_12a "select a.accID from PRB_Notes p, ACC_Accession a \
-where p.note like '%staff have found evidence of artifact in the sequence of this molecular%' \
+where lower(p.note) like lower('%staff have found evidence of artifact in the sequence of this molecular%') \
 and p._Probe_key = a._Object_key \
 and a._MGIType_key = 3 \
 and a._LogicalDB_key = "
