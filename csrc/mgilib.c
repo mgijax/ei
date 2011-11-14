@@ -215,7 +215,7 @@ char *mgi_DBprstr(char *value)
     while (newValue[--i] == ' ')
       newValue[i] = '\0';
 
-    sprintf(buf, "\"%s\"", mgi_escape_quotes(newValue));
+    sprintf(buf, "\'%s\'", mgi_escape_quotes(newValue));
   }
 
   return(buf);
@@ -271,7 +271,7 @@ char *mgi_DBprstr2(char *value)
   }
   else
   {
-    sprintf(buf, "\"%s\"", mgi_escape_quotes(value));
+    sprintf(buf, "\'%s\'", mgi_escape_quotes(value));
   }
 
   return(buf);
@@ -348,7 +348,7 @@ char *mgi_DBprnotestr(char *value)
       newValue[i++] = *s;
     }
 
-    sprintf(buf, "\"%s\"", mgi_escape_quotes(newValue));
+    sprintf(buf, "\'%s\'", mgi_escape_quotes(newValue));
   }
 
   return(buf);
