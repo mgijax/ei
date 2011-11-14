@@ -2,7 +2,7 @@ Module: mgiDataTypes
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jul 23 13:40:43 2009";
+      lastWritten = "Wed Nov  9 13:59:39 2011";
         {
           toggle = XmToggleButton;
           Group: Widget
@@ -276,7 +276,6 @@ Shift<Key>Tab: prev-tab-group()
             vip_x = 60;
             vip_y = 2890;
           Group: User
-            verifyDialog = TissueDialog;
             verifyTable = 323;
             verifyKey = TissueID;
               {
@@ -311,7 +310,6 @@ Shift<Key>Tab: prev-tab-group()
             vip_x = 60;
             vip_y = 2725;
           Group: User
-            verifyDialog = StrainDialog;
             verifyTable = 322;
             verifyKey = StrainID;
               {
@@ -658,7 +656,6 @@ Shift<Key>Tab: prev-tab-group()
             vip_y = 2615;
           Group: User
             verifyTable = 321;
-            verifyDialog = RIDialog;
             verifyKey = RIID;
               {
                 Verify = CharText;
@@ -739,7 +736,6 @@ Shift<Key>Tab: prev-tab-group()
             vip_x = 60;
             vip_y = 2065;
           Group: User
-            verifyDialog = CrossDialog;
             verifyKey = CrossID;
             verifyTable = 320;
               {
@@ -848,7 +844,7 @@ Shift<Key>Tab: prev-tab-group()
         {
           mgiVerify = XmRowColumn;
           Group: Widget
-            userDefinedAttributes = "verifyDialog:String(String)\nverifyTable:Int(Int)\nverifyAdd:Boolean(Boolean)=\"True\"\nverifyChars:Int(Int)=\"-1\"\nverifyNotSpecified:Boolean(Boolean)=\"True\"\nverifyKey:Widget(Widget)\nverifyPrivate:Boolean=\"True\"\n";
+            userDefinedAttributes = "verifyTable:Int(Int)\nverifyAdd:Boolean(Boolean)=\"True\"\nverifyChars:Int(Int)=\"-1\"\nverifyNotSpecified:Boolean(Boolean)=\"True\"\nverifyKey:Widget(Widget)\nverifyPrivate:Boolean(Boolean)=\"True\"\n";
           Group: Control
             vip_x = 60;
             vip_y = 2945;

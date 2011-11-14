@@ -1,0 +1,24 @@
+--
+-- Name    : Verify.de
+-- Creator : lec
+-- Verify.de 12/31/98
+--
+-- Purpose:
+--
+-- This is the companion D event declarations file for Verify.d.
+--
+
+VerifyChromosome :translation [];
+
+VerifyDate :translation [];
+
+VerifyAnyMarker :translation [];
+
+VerifyMarkerAlleles : translation [];
+
+VerifyNomenMarker : translation [];
+
+VerifyTissueAge :translation []
+
+VerifyYesNo [];
+

@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Oct 20 13:58:23 2011";
+      lastWritten = "Wed Nov  9 13:41:41 2011";
       copy = false;
       inCreateMenu = true;
         {
@@ -2836,19 +2836,6 @@ Shift<Key>Tab: prev-tab-group()
                           }
                     }
               }
-              Popups:
-              {
-                StatusDialog = StatusDialog;
-              }
-              {
-                WorkingDialog = WorkingDialog;
-              }
-              {
-                StrainDialog = StrainDialog : mgiDialog;
-              }
-              {
-                TissueDialog = TissueDialog : mgiDialog;
-              }
         }
         {
           AssayModule = Module : MGI;
@@ -2929,29 +2916,6 @@ Shift<Key>Tab: prev-tab-group()
                                         Group: Widget
                                           activateCallback = "D:CreateMGIModule(name = \"Genotype\")";
                                           labelString = Genotypes;
-                                      }
-                                }
-                          }
-                          {
-                            View = View;
-                                Popups:
-                                {
-                                  ViewPulldown = MenuPulldown : mgiMenu;
-                                      {
-                                        Strain = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Tissue = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Cross = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                      {
-                                        RI = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          managed = False;
                                       }
                                 }
                           }

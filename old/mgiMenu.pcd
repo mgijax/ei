@@ -3,7 +3,7 @@ Module: mgiMenu
       autoCuil = False;
       dDialogFile = "mgimenus_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Nov  9 13:29:43 2011";
+      lastWritten = "Thu Jul 16 06:11:40 2009";
         {
           MenuCascade = XmCascadeButton;
           Group: Widget
@@ -106,6 +106,30 @@ Module: mgiMenu
               Popups:
               {
                 ViewPulldown = MenuPulldown : mgiMenu;
+                    {
+                      Strain = MenuPush : mgiMenu;
+                      Group: Widget
+                        labelString = "Strain Listing";
+                        activateCallback = "D:ManageSelectionList(dialog = \"StrainDialog\")";
+                    }
+                    {
+                      Tissue = MenuPush : mgiMenu;
+                      Group: Widget
+                        labelString = "Tissue Listing";
+                        activateCallback = "D:ManageSelectionList(dialog = \"TissueDialog\")";
+                    }
+                    {
+                      Cross = MenuPush : mgiMenu;
+                      Group: Widget
+                        labelString = "Cross Listing";
+                        activateCallback = "D:ManageSelectionList(dialog = \"CrossDialog\")";
+                    }
+                    {
+                      RI = MenuPush : mgiMenu;
+                      Group: Widget
+                        labelString = "RI Set Listing";
+                        activateCallback = "D:ManageSelectionList(dialog = \"RIDialog\")";
+                    }
               }
         }
         {
