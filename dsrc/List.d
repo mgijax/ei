@@ -107,9 +107,6 @@ rules:
 --
 --	Copy Selected Item to Widget w/ Focus
 --
---	The 'targetWidget' must be of type mgiCaption:Verify
---	and must accept the dialog (verifyDialog).
---
 
 	CopySelectionItem does
 	  top : widget := CopySelectionItem.source_widget.top;
@@ -153,24 +150,6 @@ rules:
 	    StatusReport.source_widget := top.root;
 	    StatusReport.message := "Invalid field has been selected.\n\n" +
 	      "Choose the field where you wish the selected item to be placed.";
-	    send(StatusReport);
-	    return;
-	  end if;
-
-	  if (verify.is_defined("verifyDialog") = nil) then
-	    StatusReport.source_widget := top.root;
-	    StatusReport.message := "Invalid field has been selected.\n\n" +
-	      "Choose the field where you wish the selected item to be placed.";
-	    send(StatusReport);
-	    return;
-	  end if;
-
-	  -- If Verify template is not applicable to Dialog, return
-
-	  if (verify.verifyDialog != top.child_by_class("XmForm").name) then
-	    StatusReport.source_widget := top.root;
-	    StatusReport.message := "Invalid field has been selected.\n\n" +
-	      "This field cannot accept this type of item.\n\nChoose another field.";
 	    send(StatusReport);
 	    return;
 	  end if;

@@ -37,7 +37,7 @@ devents:
 	INITIALLY [parent : widget;
 		   launchedFrom : widget;];
 	Add :local [];
-	BuildDynamicComponents :local [];
+	--BuildDynamicComponents :local [];
 	Delete :local [];
 	Exit :local [];
 	Init :local [];
@@ -88,7 +88,7 @@ rules:
 	  orig_database := global_database;
 
           -- Build Dynamic GUI Components
-          send(BuildDynamicComponents, 0);
+          --send(BuildDynamicComponents, 0);
  
 	  -- Prevent multiple instances of the form
 
@@ -113,12 +113,9 @@ rules:
 -- Initialize lookup lists
 --
 
-	BuildDynamicComponents does
+--	BuildDynamicComponents does
 	  -- Dynamically create Database Menu
-
-	  InitOptionMenu.option := top->DatabaseMenu;
-	  send(InitOptionMenu, 0);
-	end does;
+--	end does;
 
 --
 -- Init
