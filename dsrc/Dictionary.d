@@ -504,8 +504,7 @@ rules:
              cmd := cmd + "if @@error != 0 \n" +
                           "begin \n" +
                           "   rollback transaction \n" +
-                          "   raiserror 99999 \"Update " +
-                          " of preferredName failed \" " +
+                          "   raiserror 99999 \'Update of preferredName failed \' " +
                           "    return \n" +
                           "end \n";
           end if;

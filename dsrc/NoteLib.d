@@ -769,7 +769,7 @@ rules:
 	          cmd := cmd + 
 		       mgi_DBinsert(tableID, NOKEY) + key + "," + 
 		       (string) i + "," + 
-		       mgi_DBprstr(noteType) + ",\" \")\n";
+		       mgi_DBprstr(noteType) + ",' ')\n";
 		end if;
 	    elsif (noteType.length > 0) then
               cmd := cmd + 

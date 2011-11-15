@@ -1467,7 +1467,7 @@ rules:
 	  defaultStrainType : string;
 
 	  select := "select count(*) from " + table + " where ";
-	  where := name + " = \"" + item.value + "\"";
+	  where := name + " = '" + item.value + "'";
 	  order := "\norder by standard desc," + name;
 
 	  if ((integer) mgi_sql1(select + where) > 0) then
@@ -1492,16 +1492,16 @@ rules:
             -- Use exact match if verifyChars is -1
  
             elsif (verifyChars < 0) then
-              where := name + " = \"" + item.value + "\"";
+              where := name + " = '" + item.value + "'";
  
             -- Use like if verifyChars is 0
  
             elsif (verifyChars = 0) then
-              where := name + " like \"" + item.value + "%\"";
+              where := name + " like '" + item.value + "%'";
  
             -- Use like w/ substring if verifyChars > 0
             else
-              where := name + " like \"" + item.value->substr(1, verifyChars) + "%\"";
+              where := name + " like '" + item.value->substr(1, verifyChars) + "%'";
             end if;
 	  end if;
 

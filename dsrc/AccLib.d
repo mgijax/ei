@@ -527,9 +527,9 @@ rules:
                     accName = "MGD-INEX-" or accName = "MGD-TEXT-" or
 		    accName = "MGD-TXEX-" or accName = "MGD-PMEX-" or
 		    accName = "E" or accName = "J:") then
-		  accID := "\"" + accName + accID + "\"";
+		  accID := "\'" + accName + accID + "\'";
 		else
-	          accID := "\"" + accID + "\"";
+	          accID := "\'" + accID + "\'";
 		end if;
 	      else
 	        accID := "NULL";
@@ -561,11 +561,11 @@ rules:
 
                 elsif (accName != "J:" and refsKey = "-1") then
                   cmd := cmd + exec + " ACC_insert " + objectKey + "," + 
-		         accID + "," + logicalKey + ",\"" + mgi_DBtype(tableID) + "\"," +
+		         accID + "," + logicalKey + ",\'" + mgi_DBtype(tableID) + "\'," +
 			 refsKey + "," + preferred + "," + private + "\n";
 	        elsif (accName != "J:") then
                   cmd := cmd + exec + " ACCRef_process " + objectKey + "," + refsKey + "," +
-		         accID + "," + logicalKey + ",\"" + mgi_DBtype(tableID) + "\"" +
+		         accID + "," + logicalKey + ",\'" + mgi_DBtype(tableID) + "\'" +
 			 "," + preferred + "," + private + "\n";
 		end if;
 
@@ -707,7 +707,7 @@ rules:
 		end if;
 
 		if (accID.length > 0) then
-	          table.sqlWhere := table.sqlWhere + "\nand ac.accID like \"" + accID + "\"";
+	          table.sqlWhere := table.sqlWhere + "\nand ac.accID like \'" + accID + "\'";
 		end if;
 
 		if (refsKey.length > 0) then

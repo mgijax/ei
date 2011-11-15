@@ -807,15 +807,15 @@ rules:
           end if;
  
           if (top->AgeMenu.menuHistory.searchValue != "%") then
-            where := where + " and s.age like \"" + top->AgeMenu.menuHistory.defaultValue;
+            where := where + " and s.age like '" + top->AgeMenu.menuHistory.defaultValue;
 
             if (top->Age->text.value.length > 0) then
-              where := where + " " + top->Age->text.value + "\"";
+              where := where + " " + top->Age->text.value + "'";
             else
-              where := where + "%\"";
+              where := where + "%'";
             end if;
           elsif (top->AgeMenu.menuHistory.searchValue = "%" and top->Age->text.value.length > 0) then
-            where := where + " and s.age like \"%" + top->Age->text.value + "\"";
+            where := where + " and s.age like '%" + top->Age->text.value + "'";
           end if;
  
           if (top->Description->text.value.length > 0) then
