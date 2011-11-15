@@ -2468,7 +2468,7 @@ Module: mgiOption
               {
                 EvidenceVocabPulldown : OptionPulldown = OptionPulldown;
                 Group: User
-                  sql = "select _Vocab_key, name from VOC_Vocab \nwhere isSimple = 1 \nunion\nselect -1, \"Not Specified\"\norder by name";
+                  sql = "select _Vocab_key, name from VOC_Vocab \nwhere isSimple = 1 \nunion\nselect -1, 'Not Specified'\norder by name";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
