@@ -496,7 +496,7 @@ def isSubmission(rec, rectags):
 	#
 	'''
 
-	cmd = 'select _Refs_key from BIB_Refs where journal = \'Submission\' '
+	cmd = 'select _Refs_key from BIB_Refs where journal = \'Submission\''
 
 	if rec['PAU'] != 'NULL':
 	      cmd = cmd + ' and _primary = \'' + rec['PAU'] + '\''
