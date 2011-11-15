@@ -19,6 +19,7 @@ D:stored proc:
 E:sybase-to-postres
 	grep 'getdate' */*
 	grep 'convert' */*
+	grep '= 0'     */* ==> true/false
 	grep 'like'    */*
 		- add "lower()" to all varchar queries
 

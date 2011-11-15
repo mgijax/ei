@@ -61,10 +61,10 @@
 
 /* MolSourceLib.d */
 
-#define molsource_sql_1a "select _Term_key from VOC_Term where _Vocab_key = 10 and term = \""
-#define molsource_sql_1b "\""
-#define molsource_sql_2a "select _Term_key from VOC_Term where _Vocab_key = 24 and term = \""
-#define molsource_sql_2b "\""
+#define molsource_sql_1a "select _Term_key from VOC_Term where _Vocab_key = 10 and term = '"
+#define molsource_sql_1b "'"
+#define molsource_sql_2a "select _Term_key from VOC_Term where _Vocab_key = 24 and term = '"
+#define molsource_sql_2b "'"
 #define molsource_sql_3 "select _Term_key from VOC_Term where _Vocab_key = 18 and term = 'Not Specified'"
 #define molsource_sql_4 "select _Term_key from VOC_Term where _Vocab_key = 18 and term = 'Not Applicable'"
 #define molsource_sql_5 "select * from PRB_Source where _Source_key = "
