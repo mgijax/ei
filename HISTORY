@@ -1,16 +1,16 @@
 ### Remember to update Configuration:CVS_TAG with most recen tag
 
-TAG: ei-4-4-2-?
-DATE: 11/14/2011
+TAG: ei-4-4-2-7
+DATE: 11/15/2011
 STAFF: lec
 CHANGES:
 1) see readme.scrum
    ansi standard changes
    obsolete motif (pcds)
 
+TAG: ei-4-4-2-6
 TAG: ei-4-4-2-5
 TAG: ei-4-4-2-4
-TAG: ei-4-4-2-6
 DATE: 11/01/2011
 STAFF: lec
 CHANGES:
