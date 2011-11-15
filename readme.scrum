@@ -1,0 +1,28 @@
+
+B:csrc libraries
+	grep mgilib */*
+	grep syblib */*
+
+C:non-ansi sql:
+	grep 'declare ' */*
+	grep '*=' */*
+	grep 'cmd' pcds/*.pcd | grep '*='
+	grep 'sql' pcds/*.pcd | grep '*='
+
+	grep 'order by' */*
+		- added columns to 'select distinct' that were not in 'order by'
+
+D:stored proc:
+	grep 'exec ' */*
+
+
+E:sybase-to-postres
+	grep 'getdate' */*
+	grep 'convert' */*
+	grep 'like'    */*
+		- add "lower()" to all varchar queries
+
+works:
+	'not in' clause
+	'not null' clause
+

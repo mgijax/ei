@@ -160,7 +160,7 @@ char *global_loginKey;        /* Set in Application dModule; holds login key val
 	the value of buf is: NULL
 
 	buf = mgi_DBprstr("Cook")
-	the value of buf is: \"Cook\"
+	the value of buf is: \'Cook\'
 
 	buf = mgi_DBprstr("NULL")
 	the value of buf is: NULL
@@ -241,7 +241,7 @@ char *mgi_DBprstr(char *value)
 	the value of buf is: NULL
 
 	buf = mgi_DBprstr("Cook")
-	the value of buf is: \"Cook\"
+	the value of buf is: \'Cook\'
 
 	buf = mgi_DBprstr("NULL")
 	the value of buf is: NULL
@@ -301,7 +301,7 @@ char *mgi_DBprstr2(char *value)
 	the value of buf is: NULL
 
 	buf = mgi_DBprnotestr("Cook")
-	the value of buf is: \"Cook\"
+	the value of buf is: \'Cook\'
 
 	buf = mgi_DBprnotestr("NULL")
 	the value of buf is: NULL
@@ -2916,11 +2916,11 @@ Boolean mgi_DBisAnchorMarker(char *key)
 	  a string that has all "-characters replaced with "". 
 
    example:
-    char *str = "ab"cd";
+    char *str = 'ab'cd';
 	buf = mgi_escape_quotes(str)
 
 	buf contains:
-	   ab""cd 
+	   ab''cd 
     - which will be interpreted by Sybase as ab"cd.
 */
 
@@ -2933,9 +2933,9 @@ char *mgi_escape_quotes(char *txt)
  
     while((c = *tp++) != '\0') {
         switch(c) {
-            case '"':  /* double the quotes */
-                *ob++ = '"';
-                *ob++ = '"';
+            case '\'':  /* double the quotes */
+                *ob++ = '\'';
+                *ob++ = '\'';
                 break;
             default:
                 *ob++ = c;

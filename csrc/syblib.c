@@ -455,6 +455,12 @@ void mgi_execute_search(Widget dialog, Widget list, char *cmd, int table, char *
       send_status("Setting of DBROWCOUNT Failed.", 0);
   }
 
+  /*
+   * convert to using lower()
+   * replace:  A like B
+   * with:     lower(A) like lower(B)
+  */
+
   dbcmd(search_proc, cmd);
   dbsqlsend(search_proc);
   return;
