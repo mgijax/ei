@@ -101,32 +101,38 @@ fp.write('Start Date/Time:  %s' % (mgi_utils.date()) + CRT + LB + HR)
 
 # read terms & synonyms into dictionary
 terms = []
-cmd = 'select distinct term ' + \
-	'from VOC_Term ' + \
-	'where _Vocab_key = 4 ' + \
-	'and term not like "%(sensu %" and term != "cell" '
+cmd = '''
+	select distinct term 
+	from VOC_Term 
+	where _Vocab_key = 4 
+	and term not like '%(sensu %' and term != 'cell' 
+	'''
 results = db.sql(cmd, 'auto')
 for r in results:
 	terms.append(r['term'])
 
-cmd = 'select distinct s.synonym ' + \
-	'from VOC_Term v, MGI_Synonym s ' + \
-	'where v._Vocab_key = 4 ' + \
-	'and v._Term_key = s._Object_key ' + \
-	'and s._MGIType_key = 13 '
+cmd = '''
+      select distinct s.synonym 
+      from VOC_Term v, MGI_Synonym s 
+      where v._Vocab_key = 4 
+      and v._Term_key = s._Object_key 
+      and s._MGIType_key = 13
+      '''
 results = db.sql(cmd, 'auto')
 for r in results:
 	terms.append(r['synonym'])
 
 # select no-go references for given marker key
-cmd = 'select r.jnumID, r.title, r.short_citation, r.abstract ' + \
-	'from BIB_GOXRef_View r ' +  \
-	'where r._Marker_key = %d ' % (markerKey) + \
-	' and not exists (select 1 from VOC_Annot a, VOC_Evidence e ' + \
-	' where a._AnnotType_key = 1000 ' + \
-	' and a._Annot_key = e._Annot_key ' + \
-	' and e._Refs_key = r._Refs_key) ' + \
-	' order by r.jnum desc'
+cmd = '''
+      select r.jnumID, r.title, r.short_citation, r.abstract 
+      from BIB_GOXRef_View r 
+      where r._Marker_key = %d
+      and not exists (select 1 from VOC_Annot a, VOC_Evidence e 
+      where a._AnnotType_key = 1000 
+      and a._Annot_key = e._Annot_key 
+      and e._Refs_key = r._Refs_key) 
+      order by r.jnum desc
+      ''' % (markerKey)
 results = db.sql(cmd, 'auto')
 
 ref = {}		# {'J:, Citation + Abstract' : number of GO Terms matched}
