@@ -2921,18 +2921,20 @@ Boolean mgi_DBisAnchorMarker(char *key)
 
 	buf contains:
 	   ab''cd 
-    - which will be interpreted by Sybase as ab"cd.
+    - which will be interpreted by Sybase as ab'cd.
 */
 
 char *mgi_escape_quotes(char *txt)
 {
     int c;
     static char outbuf[TEXTBUFSIZ];
-    char *ob=outbuf;
-    char *tp=txt;
+    char *ob = outbuf;
+    char *tp = txt;
  
-    while((c = *tp++) != '\0') {
-        switch(c) {
+    while ((c = *tp++) != '\0') 
+    {
+        switch(c) 
+	{
             case '\'':  /* double the quotes */
                 *ob++ = '\'';
                 *ob++ = '\'';
@@ -2942,7 +2944,7 @@ char *mgi_escape_quotes(char *txt)
                 break;
         }
     }
+
     *ob = '\0';
- 
     return outbuf;
 }

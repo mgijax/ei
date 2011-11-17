@@ -1,0 +1,60 @@
+#!/bin/sh
+
+#
+# sql that is ansi-standard:
+#	'not in' clause
+#	'not null' clause
+#	'rtrim' clause
+
+#dsrc/*.d
+#csrc/*.c
+#pcds/*.pcd
+#
+#B:SQL
+#	needs total conversion from sybase format to postgres
+#	grep 'like'
+#		- add "lower()" to all varchar queries
+rm -rf B.txt B.txt.sort
+touch B.txt
+grep 'declare ' ../dsrc/*.d >> C.txt
+grep 'getdate' ../dsrc/*.d >> B.txt
+grep 'convert' ../dsrc/*.d >> B.txt
+grep '= 0"' ../dsrc/*.d >> B.txt
+grep ' like' ../dsrc/*.d >> B.txt
+grep 'declare ' ../csrc/*.c >> C.txt
+grep 'getdate' ../csrc/*.c >> B.txt
+grep 'convert' ../pcds/*.pcd >> B.txt
+grep '= 0"' ../pcds/*.pcd >> B.txt
+grep ' like' ../pcds/*.pcd >> B.txt
+grep 'getdate' ../pcds/*.pcd >> B.txt
+sort B.txt > B.txt.sort
+
+#
+#C:agnostic
+#	can be converted to a non-ansi format
+#	grep 'order by' */*
+#		- added columns to 'select distinct' that were not in 'order by'
+#
+rm -rf C.txt C.txt.sort
+touch C.txt
+grep '*= ' ../dsrc/*.d >> C.txt
+grep 'cmd' ../pcds/*.pcd | grep '*=' >> C.txt
+grep 'sql' ../pcds/*.pcd | grep '*=' >> C.txt
+grep '*= ' ../csrc/*.c >> C.txt
+grep 'cmd' ../csrc/*.c | grep '*=' >> C.txt
+grep 'sql' ../csrc/*.c | grep '*=' >> C.txt
+sort C.txt > C.txt.sort
+
+#D:stored proc:
+rm -rf D.txt D.txt.sort
+touch D.txt
+grep 'exec ' ../dsrc/*.d >> D.txt
+grep 'exec ' ../csrc/*.c >> D.txt
+sort D.txt > D.txt.sort
+
+#E:library
+rm -rf E.txt E.txt.sort
+touch E.txt
+grep 'dbclose' ../dsrc/*.d >> E.txt
+grep 'dbclose' ../csrc/*.c >> E.txt
+sort E.txt > E.txt.sort

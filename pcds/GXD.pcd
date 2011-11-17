@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Nov  9 13:41:41 2011";
+      lastWritten = "Thu Nov 17 13:27:54 2011";
       copy = false;
       inCreateMenu = true;
         {
@@ -57,6 +57,20 @@ Module: GXD
                             View = View : mgiMenu;
                             Group: Widget
                               managed = True;
+                                Popups:
+                                {
+                                  ViewPulldown = MenuPulldown : mgiMenu;
+                                      {
+                                        Strain = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          managed = True;
+                                      }
+                                      {
+                                        Tissue = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          managed = True;
+                                      }
+                                }
                           }
                     }
                     {
@@ -2836,6 +2850,19 @@ Shift<Key>Tab: prev-tab-group()
                           }
                     }
               }
+              Popups:
+              {
+                StatusDialog = StatusDialog;
+              }
+              {
+                WorkingDialog = WorkingDialog;
+              }
+              {
+                StrainDialog = StrainDialog : mgiDialog;
+              }
+              {
+                TissueDialog = TissueDialog : mgiDialog;
+              }
         }
         {
           AssayModule = Module : MGI;
@@ -2916,6 +2943,29 @@ Shift<Key>Tab: prev-tab-group()
                                         Group: Widget
                                           activateCallback = "D:CreateMGIModule(name = \"Genotype\")";
                                           labelString = Genotypes;
+                                      }
+                                }
+                          }
+                          {
+                            View = View;
+                                Popups:
+                                {
+                                  ViewPulldown = MenuPulldown : mgiMenu;
+                                      {
+                                        Strain = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        Tissue = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        Cross = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                      {
+                                        RI = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          managed = False;
                                       }
                                 }
                           }

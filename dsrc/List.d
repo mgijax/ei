@@ -107,6 +107,9 @@ rules:
 --
 --	Copy Selected Item to Widget w/ Focus
 --
+--	The 'targetWidget' must be of type mgiCaption:Verify
+--	and must accept the dialog (verifyDialog).
+--
 
 	CopySelectionItem does
 	  top : widget := CopySelectionItem.source_widget.top;
@@ -150,6 +153,24 @@ rules:
 	    StatusReport.source_widget := top.root;
 	    StatusReport.message := "Invalid field has been selected.\n\n" +
 	      "Choose the field where you wish the selected item to be placed.";
+	    send(StatusReport);
+	    return;
+	  end if;
+
+	  if (verify.is_defined("verifyDialog") = nil) then
+	    StatusReport.source_widget := top.root;
+	    StatusReport.message := "Invalid field has been selected.\n\n" +
+	      "Choose the field where you wish the selected item to be placed.";
+	    send(StatusReport);
+	    return;
+	  end if;
+
+	  -- If Verify template is not applicable to Dialog, return
+
+	  if (verify.verifyDialog != top.child_by_class("XmForm").name) then
+	    StatusReport.source_widget := top.root;
+	    StatusReport.message := "Invalid field has been selected.\n\n" +
+	      "This field cannot accept this type of item.\n\nChoose another field.";
 	    send(StatusReport);
 	    return;
 	  end if;
@@ -336,7 +357,7 @@ rules:
           accIDs : string_list := create string_list();
 	  item : string;
 	  row: integer := 0;
-	  maxList : integer := list_w->List.maxList;
+	  maxList : integer := 100;
  
           if (LoadList.source_widget != nil) then
             (void) busy_cursor(LoadList.source_widget.top);
@@ -345,6 +366,10 @@ rules:
 	  if (list_w = nil) then
 	    list_w := LoadList.source_widget.parent;
 	  end if;
+
+	  if (list_w->List.is_defined("maxList") = nil) then
+	    maxList := list_w->List.maxList;
+          end if;
 
           if (list_w.cmd.length = 0) then
             (void) reset_cursor(LoadList.source_widget.top);

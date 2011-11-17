@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Nov  9 13:40:25 2011";
+      lastWritten = "Thu Nov 17 13:32:01 2011";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -589,6 +589,20 @@ Module: MGD
                 MainForm = XmForm;
                     {
                       MainMenu = MainMenu;
+                          {
+                            File = File : mgiMenu;
+                          }
+                          {
+                            Commands = Commands : mgiMenu;
+                          }
+                          {
+                            Edit = Edit : mgiMenu;
+                          }
+                          {
+                            View = View : mgiMenu;
+                            Group: Widget
+                              managed = True;
+                          }
                     }
                     {
                       Edit = XmFrame;
@@ -820,6 +834,20 @@ Module: MGD
                 MainForm = XmForm;
                     {
                       MainMenu = MainMenu;
+                          {
+                            File = File : mgiMenu;
+                          }
+                          {
+                            Commands = Commands : mgiMenu;
+                          }
+                          {
+                            Edit = Edit : mgiMenu;
+                          }
+                          {
+                            View = View : mgiMenu;
+                            Group: Widget
+                              managed = True;
+                          }
                     }
                     {
                       Edit = XmFrame;
@@ -1223,6 +1251,20 @@ Module: MGD
                 MainForm = XmForm;
                     {
                       MainMenu = MainMenu;
+                          {
+                            File = File : mgiMenu;
+                          }
+                          {
+                            Commands = Commands : mgiMenu;
+                          }
+                          {
+                            Edit = Edit : mgiMenu;
+                          }
+                          {
+                            View = View : mgiMenu;
+                            Group: Widget
+                              managed = True;
+                          }
                     }
                     {
                       Edit = XmFrame;
@@ -1820,6 +1862,14 @@ Module: MGD
                                         Group: User
                                           form1 = MolMasterForm;
                                           form2 = MolReferenceForm;
+                                      }
+                                      {
+                                        Strain = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        Tissue = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          managed = True;
                                       }
                                 }
                           }
@@ -6719,6 +6769,25 @@ Shift<Key>Tab: prev-tab-group()
                           }
                     }
               }
+              Popups:
+              {
+                StatusDialog = StatusDialog;
+              }
+              {
+                WorkingDialog = WorkingDialog;
+              }
+              {
+                StrainDialog = StrainDialog : mgiDialog;
+              }
+              {
+                TissueDialog = TissueDialog : mgiDialog;
+              }
+              {
+                RIDialog = RIDialog : mgiDialog;
+              }
+              {
+                CrossDialog = CrossDialog : mgiDialog;
+              }
         }
         {
           MarkerNonMouseModule = Module : MGI;
@@ -8644,7 +8713,7 @@ Shift<Key>Tab: prev-tab-group()
                                             {
                                               ReferenceTypePulldown = OptionPulldown : mgiOption;
                                               Group: User
-                                                sql = "select _RefAssocType_key, assocType, allowOnlyOne, seq = 1 from MGI_RefType_Allele_View where assocType = 'Indexed'\nunion\nselect _RefAssocType_key, assocType, allowOnlyOne, seq = 2 from MGI_RefType_Allele_View where assocType != 'Indexed'\norder by seq, assocType";
+                                                sql = "select _RefAssocType_key, assocType, allowOnlyOne, seq = 1 from MGI_RefType_Allele_View where assocType = \"Indexed\"\nunion\nselect _RefAssocType_key, assocType, allowOnlyOne, seq = 2 from MGI_RefType_Allele_View where assocType != \"Indexed\"\norder by seq, assocType";
                                                 tableForm = Reference;
                                             }
                                       }
@@ -10089,6 +10158,17 @@ Shift<Key>Tab: prev-tab-group()
                           }
                           {
                             View = View;
+                            Group: Widget
+                              managed = True;
+                                Popups:
+                                {
+                                  ViewPulldown = MenuPulldown : mgiMenu;
+                                      {
+                                        Strain = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          managed = True;
+                                      }
+                                }
                           }
                           {
                             Merge = MenuCascade : mgiMenu;
@@ -11153,6 +11233,38 @@ Shift<Key>Tab: prev-tab-group()
                 MainForm = XmForm;
                     {
                       MainMenu = MainMenu : mgiMenu;
+                          {
+                            File = File : mgiMenu;
+                          }
+                          {
+                            Commands = Commands : mgiMenu;
+                          }
+                          {
+                            Edit = Edit : mgiMenu;
+                          }
+                          {
+                            View = View : mgiMenu;
+                                Popups:
+                                {
+                                  ViewPulldown = MenuPulldown : mgiMenu;
+                                      {
+                                        Strain = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        Tissue = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        Cross = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                      {
+                                        RI = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                }
+                          }
                     }
                     {
                       EditForm = EditForm : MGI;
@@ -14191,6 +14303,22 @@ Shift<Key>Tab: prev-tab-group()
                                         Group: User
                                           form1 = ExptMasterForm;
                                           form2 = ExptDetailForm;
+                                      }
+                                      {
+                                        Strain = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        Tissue = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        Cross = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          managed = True;
+                                      }
+                                      {
+                                        RI = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          managed = True;
                                       }
                                 }
                           }
