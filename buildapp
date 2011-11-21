@@ -1,4 +1,4 @@
-#!/bin/csh
+#!/bin/csh -f
 
 #
 # Builds a TeleUSE app using uxb.conf. 

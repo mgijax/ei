@@ -1,4 +1,4 @@
-#!/bin/csh
+#!/bin/csh -f
 
 #
 # Does a 'uxb clean' on all EI apps directories, and removes

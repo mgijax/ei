@@ -1,4 +1,4 @@
-#!/bin/csh
+#!/bin/csh -f
 
 #
 # Cleans a TeleUSE Application using uxb.conf. 

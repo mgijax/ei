@@ -1,4 +1,4 @@
-#!/bin/csh
+#!/bin/csh -f
 
 #
 # Builds all EI apps as compiled applications

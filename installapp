@@ -1,4 +1,4 @@
-#!/bin/csh
+#!/bin/csh -f
 
 #
 # Builds (if necessary) and installs a compiled/interpreted version of 
