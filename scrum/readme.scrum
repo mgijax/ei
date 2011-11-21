@@ -50,51 +50,51 @@ grep 'exec ' ../csrc/*.c >> D.txt
 grep 'exec ' ../pcds/*.pcd >> D.txt
 sort D.txt > D.txt.sort
 
-#E:csrc library
+#E:sybase library
 rm -rf E.txt E.txt.sort
 touch E.txt
-grep 'mgi_dbinit' ../dsrc/*.d >> E.txt
-grep 'mgi_dbopen' ../dsrc/*.d >> E.txt
-grep 'mgi_dbexit' ../dsrc/*.d >> E.txt
-grep 'mgi_execute_search' ../dsrc/*.d >> E.txt
-grep 'mgi_getstr' ../dsrc/*.d >> E.txt
-grep 'mgi_key' ../dsrc/*.d >> E.txt
+grep 'dbcancel' ../dsrc/*.d >> E.txt
+grep 'dbcmd' ../dsrc/*.d >> E.txt
+grep 'dbclose' ../dsrc/*.d >> E.txt
+grep 'dbcolname' ../dsrc/*.d >> E.txt
+grep 'dbcollen' ../dsrc/*.d >> E.txt
+grep 'dbcoltype' ../dsrc/*.d >> E.txt
+grep 'dbexit' ../dsrc/*.d >> E.txt
+grep 'dblogin' ../dsrc/*.d >> E.txt
+grep 'dbloginfree' ../dsrc/*.d >> E.txt
+grep 'dbinit' ../dsrc/*.d >> E.txt
+grep 'dbname' ../dsrc/*.d >> E.txt
+grep 'dbnextrow' ../dsrc/*.d >> E.txt
+grep 'dbopen' ../dsrc/*.d >> E.txt
+grep 'dbresults' ../dsrc/*.d >> E.txt
+grep 'dbsqlexec' ../dsrc/*.d >> E.txt
+grep 'dbuse' ../dsrc/*.d >> E.txt
+grep 'dbcancel' ../csrc/*.c >> E.txt
+grep 'dbcmd' ../csrc/*.c >> E.txt
+grep 'dbclose' ../csrc/*.c >> E.txt
+grep 'dbcolname' ../csrc/*.c >> E.txt
+grep 'dbcollen' ../csrc/*.c >> E.txt
+grep 'dbcoltype' ../csrc/*.c >> E.txt
+grep 'dbexit' ../csrc/*.c >> E.txt
+grep 'dblogin' ../csrc/*.c >> E.txt
+grep 'dbloginfree' ../csrc/*.c >> E.txt
+grep 'dbinit' ../csrc/*.c >> E.txt
+grep 'dbname' ../csrc/*.c >> E.txt
+grep 'dbnextrow' ../csrc/*.c >> E.txt
+grep 'dbopen' ../csrc/*.c >> E.txt
+grep 'dbresults' ../csrc/*.c >> E.txt
+grep 'dbsqlexec' ../csrc/*.c >> E.txt
+grep 'dbuse' ../csrc/*.c >> E.txt
 sort E.txt > E.txt.sort
 
-#F:sybase library
+#F:csrc library
 rm -rf F.txt F.txt.sort
 touch F.txt
-grep 'dbcancel' ../dsrc/*.d >> F.txt
-grep 'dbcmd' ../dsrc/*.d >> F.txt
-grep 'dbclose' ../dsrc/*.d >> F.txt
-grep 'dbcolname' ../dsrc/*.d >> F.txt
-grep 'dbcollen' ../dsrc/*.d >> F.txt
-grep 'dbcoltype' ../dsrc/*.d >> F.txt
-grep 'dbexit' ../dsrc/*.d >> F.txt
-grep 'dblogin' ../dsrc/*.d >> F.txt
-grep 'dbloginfree' ../dsrc/*.d >> F.txt
-grep 'dbinit' ../dsrc/*.d >> F.txt
-grep 'dbname' ../dsrc/*.d >> F.txt
-grep 'dbnextrow' ../dsrc/*.d >> F.txt
-grep 'dbopen' ../dsrc/*.d >> F.txt
-grep 'dbresults' ../dsrc/*.d >> F.txt
-grep 'dbsqlexec' ../dsrc/*.d >> F.txt
-grep 'dbuse' ../dsrc/*.d >> F.txt
-grep 'dbcancel' ../csrc/*.c >> F.txt
-grep 'dbcmd' ../csrc/*.c >> F.txt
-grep 'dbclose' ../csrc/*.c >> F.txt
-grep 'dbcolname' ../csrc/*.c >> F.txt
-grep 'dbcollen' ../csrc/*.c >> F.txt
-grep 'dbcoltype' ../csrc/*.c >> F.txt
-grep 'dbexit' ../csrc/*.c >> F.txt
-grep 'dblogin' ../csrc/*.c >> F.txt
-grep 'dbloginfree' ../csrc/*.c >> F.txt
-grep 'dbinit' ../csrc/*.c >> F.txt
-grep 'dbname' ../csrc/*.c >> F.txt
-grep 'dbnextrow' ../csrc/*.c >> F.txt
-grep 'dbopen' ../csrc/*.c >> F.txt
-grep 'dbresults' ../csrc/*.c >> F.txt
-grep 'dbsqlexec' ../csrc/*.c >> F.txt
-grep 'dbuse' ../csrc/*.c >> F.txt
+grep 'mgi_dbinit' ../dsrc/*.d >> F.txt
+grep 'mgi_dbopen' ../dsrc/*.d >> F.txt
+grep 'mgi_dbexit' ../dsrc/*.d >> F.txt
+grep 'mgi_execute_search' ../dsrc/*.d >> F.txt
+grep 'mgi_getstr' ../dsrc/*.d >> F.txt
+grep 'mgi_key' ../dsrc/*.d >> F.txt
 sort F.txt > F.txt.sort
 
