@@ -1,5 +1,8 @@
 ### Remember to update Configuration:CVS_TAG with most recen tag
 
+TAG: ei-4-4-2-11
+1) add -f to csh
+
 TAG: ei-4-4-2-10
 1) re-installed Strain, Tissue, Cross, RI lists
 
