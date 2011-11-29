@@ -90,12 +90,10 @@ rules:
 
 	  cmd := evidenceproperty_sql_1a + mgi_DBtable(tableID) + evidenceproperty_sql_1b;
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+	  dbproc : opaque := mgi_dbexec(cmd);
 
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	       (void) mgi_tblSetCell(table, row, table.propertyTermKey, mgi_getstr(dbproc, 1));
 	       (void) mgi_tblSetCell(table, row, table.propertyTerm,  mgi_getstr(dbproc, 2));
 	       (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_EMPTY);
@@ -103,7 +101,7 @@ rules:
 	    end while;
 	  end while;
 
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  if (top->EvidencePropertyMenu.subMenuId.numChildren = 0) then
 	    InitOptionMenu.option := top->EvidencePropertyMenu;
@@ -149,12 +147,10 @@ rules:
 		 evidenceproperty_sql_2d;
 
 	  row : integer := 0;
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 
 	      (void) mgi_tblSetCell(table, row, table.propertyKey, mgi_getstr(dbproc, 1));
 	      (void) mgi_tblSetCell(table, row, table.annotEvidenceKey, mgi_getstr(dbproc, 2));
@@ -169,7 +165,7 @@ rules:
 
             end while;
           end while;
-          (void) dbclose(dbproc);
+          (void) mgi_dbclose(dbproc);
 
 	  lastRow := mgi_tblNumRows(table);
 	  while (row <= lastRow) do

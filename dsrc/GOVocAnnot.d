@@ -986,12 +986,10 @@ rules:
 	  i : integer;
 	  results : integer := 1;
 	  objectLoaded : boolean := false;
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
 	        if (not objectLoaded) then
 	          top->mgiAccession->ObjectID->text.value := mgi_getstr(dbproc, 1);
@@ -1055,7 +1053,7 @@ rules:
 	    results := results + 1;
           end while;
  
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  -- Sort by DAG; not needed; sorting is handled in govoc_sql_7
 	  --(void) mgi_tblSort(annotTable, annotTable.dag);
@@ -1155,12 +1153,10 @@ rules:
 		 govoc_sql_11c;
 
 	  row : integer := 0;
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 1));
 	      (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 2));
 	      (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 3));
@@ -1168,7 +1164,7 @@ rules:
 	    end while;
           end while;
  
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 	end does;
 
 --

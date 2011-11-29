@@ -686,12 +686,10 @@ rules:
 	  cmd : string := mpvoc_sql_2a + annotTypeKey + mpvoc_sql_2b + currentRecordKey + mpvoc_sql_2c;
 
 	  row : integer := 0;
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      (void) mgi_tblSetCell(headerTable, row, headerTable.annotHeaderKey, mgi_getstr(dbproc, 1));
 	      (void) mgi_tblSetCell(headerTable, row, headerTable.headerTermKey, mgi_getstr(dbproc, 2));
 	      (void) mgi_tblSetCell(headerTable, row, headerTable.headerTerm, mgi_getstr(dbproc, 3));
@@ -704,7 +702,7 @@ rules:
             end while;
           end while;
  
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	end does;
 
@@ -975,12 +973,10 @@ rules:
 	  i : integer;
 	  results : integer := 1;
 	  objectLoaded : boolean := false;
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
 	        if (not objectLoaded) then
 	          top->mgiAccession->ObjectID->text.value := mgi_getstr(dbproc, 1);
@@ -1022,7 +1018,7 @@ rules:
 	    results := results + 1;
           end while;
  
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  -- Reset Background
 
@@ -1334,18 +1330,17 @@ rules:
 	    row := row + 1;
 	  end while; 
 
-          dbproc : opaque := mgi_dbopen();
+          dbproc : opaque;
 
           while (i < annotclipboard->List.items.count) do
 	    key := annotclipboard->List.keys[i];
 
 	    cmd := mpvoc_sql_9a + annotTypeKey + mpvoc_sql_9b + key;
 
-            (void) dbcmd(dbproc, cmd);
-            (void) dbsqlexec(dbproc);
+	    dbproc := mgi_dbexec(cmd);
  
-            while (dbresults(dbproc) != NO_MORE_RESULTS) do
-              while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+            while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+              while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.clipAnnotEvidenceKey, key);
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.termKey, mgi_getstr(dbproc, 1));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.term, mgi_getstr(dbproc, 2));
@@ -1363,9 +1358,10 @@ rules:
             end while;
  
             i := i + 1;
+	    (void) mgi_dbclose(dbproc);
+
           end while;
 
-	  (void) dbclose(dbproc);
 	  (void) reset_cursor(top);
 
 	end does;
@@ -1416,15 +1412,13 @@ rules:
 	  select : string := 
 	      mpvoc_sql_10a + currentRecordKey + mpvoc_sql_10b + refsKey + mpvoc_sql_10c;
 
-	  dbproc := mgi_dbopen();
-          (void) dbcmd(dbproc, select);
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  dbproc := mgi_dbexec(select);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      alleles.append(mgi_getstr(dbproc, 1));
 	    end while;
 	  end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  -- Create an association between this J: and the Alleles that are missing this reference association
 

@@ -665,11 +665,9 @@ rules:
                   select := select + verify_allele_sql_2 + markerKey;
 	        end if;
 
-                dbproc := mgi_dbopen();
-                (void) dbcmd(dbproc, select);
-                (void) dbsqlexec(dbproc);
-                while (dbresults(dbproc) != NO_MORE_RESULTS) do
-                  while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+                dbproc := mgi_dbexec(select);
+                while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+                  while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	            alleleKeys.insert(mgi_getstr(dbproc, 1), alleleKeys.count + 1);
 	            markerKeys.insert(mgi_getstr(dbproc, 2), markerKeys.count + 1);
 	            alleleSymbols.insert(mgi_getstr(dbproc, 3), alleleSymbols.count + 1);
@@ -678,7 +676,7 @@ rules:
 			mgi_getstr(dbproc, 3) + "'", results.count + 1);
                   end while;
                 end while;
-               (void) dbclose(dbproc);
+               (void) mgi_dbclose(dbproc);
  
 	        -- Add items to Marker List
                 -- If keys doesn't exist already, create it
@@ -888,16 +886,14 @@ rules:
 
 	  -- Insert results into string list for loading into CellLine selection list
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, select);
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  dbproc : opaque := mgi_dbexec(select);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
               keys.insert(mgi_getstr(dbproc, 1), keys.count + 1);
               results.insert(mgi_getstr(dbproc, 2), results.count + 1);
             end while;
           end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  -- Add items to CellLine List
           -- If keys doesn't exist already, create it
@@ -1283,21 +1279,18 @@ rules:
 
 	  (void) busy_cursor(top);
 
-	  dbproc : opaque := mgi_dbopen();
-
 	  cmd : string := verify_genotype_sql_1 + mgi_DBprstr(genotypeID);
 
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  dbproc : opaque := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (mgi_getstr(dbproc, 1) != "") then
 	        genotypeKey := mgi_getstr(dbproc, 1);
 	        genotypeName := mgi_getstr(dbproc, 2);
 	      end if;
 	    end while;
 	  end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  if (genotypeKey.length > 0) then
 	    (void) mgi_tblSetCell(table, row, table.genotype, genotypeID);
@@ -1355,14 +1348,11 @@ rules:
 
 	  (void) busy_cursor(top);
 
-	  dbproc : opaque := mgi_dbopen();
-
 	  cmd := verify_imagepane_sql_1 + mgi_DBprstr(mgiID);
 
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  dbproc : opaque := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (mgi_getstr(dbproc, 1) != "") then
 		paneKey := mgi_getstr(dbproc, 1);
 		figureLabel := mgi_getstr(dbproc, 2);
@@ -1371,7 +1361,7 @@ rules:
 	      end if;
 	    end while;
 	  end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  if (paneKey.length > 0) then
 	    (void) mgi_tblSetCell(table, row, table.paneKey, paneKey);
@@ -1521,11 +1511,9 @@ rules:
 	    select := "select _Term_key, term, standard = 1, private = 0 from " + table + " where ";
 	  end if;
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, select + where + order);
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  dbproc : opaque := mgi_dbexec(select + where + order);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      keys.insert(mgi_getstr(dbproc, 1), keys.count + 1);
 	      results.insert(mgi_getstr(dbproc, 2), results.count + 1);
 	      std.insert(mgi_getstr(dbproc, 3), std.count + 1);
@@ -1533,7 +1521,7 @@ rules:
 
 	    end while;
 	  end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  -- Add items to Item List
           -- If keys doesn't exist already, create it
@@ -1852,11 +1840,9 @@ rules:
 	  -- Insert results into string list for loading into Marker selection list
 	  -- Insert chromosomes into string list for future reference
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, select);
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  dbproc : opaque := mgi_dbexec(select);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
               keys.insert(mgi_getstr(dbproc, 1), keys.count + 1);
               status.insert(mgi_getstr(dbproc, 2), chromosome.count + 1);
               symbols.insert(mgi_getstr(dbproc, 3), symbols.count + 1);
@@ -1869,7 +1855,7 @@ rules:
 		", Band " + band[band.count], results.count + 1);
             end while;
           end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  -- Add items to Marker List
           -- If keys doesn't exist already, create it
@@ -1933,15 +1919,13 @@ rules:
                        "The current symbol(s) are:\n\n";
 
             select := verify_marker_sql_3 + whichMarker;
-            dbproc := mgi_dbopen();
-            (void) dbcmd(dbproc, select);
-            (void) dbsqlexec(dbproc);
-            while (dbresults(dbproc) != NO_MORE_RESULTS) do
-              while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+            dbproc := mgi_dbexec(select);
+            while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+              while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
                 message := message + "  " + mgi_getstr(dbproc, 1);
               end while;
             end while;
-            (void) dbclose(dbproc);
+            (void) mgi_dbclose(dbproc);
 
             StatusReport.source_widget := top.root;
             StatusReport.message := message;
@@ -1971,11 +1955,9 @@ rules:
 	              verify_marker_sql_5 + whichMarker +
 	              verify_marker_sql_6 + whichMarker;
 
-            dbproc := mgi_dbopen();
-            (void) dbcmd(dbproc, select);
-            (void) dbsqlexec(dbproc);
-            while (dbresults(dbproc) != NO_MORE_RESULTS and not found) do
-              while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+            dbproc := mgi_dbexec(select);
+            while (mgi_dbresults(dbproc) != NO_MORE_RESULTS and not found) do
+              while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
                 if (i = 1) then
                   (void) mgi_tblSetCell(sourceWidget, VerifyMarker.row, sourceWidget.markerChr, whichChrom);
                   (void) mgi_tblSetCell(sourceWidget, VerifyMarker.row, sourceWidget.markerCyto, mgi_getstr(dbproc, 1));
@@ -1995,8 +1977,8 @@ rules:
               end while;
               i := i + 1;
             end while;
-            (void) dbcancel(dbproc);
-            (void) dbclose(dbproc);
+            (void) mgi_dbcancel(dbproc);
+            (void) mgi_dbclose(dbproc);
 
             if (top->ID->text.value.length > 0) then
  
@@ -2124,15 +2106,13 @@ rules:
 	  (void) busy_cursor(top);
 
 	  select : string := verify_markerchromosome_sql_1 + valueKey;
-          dbproc :opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, select);
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          dbproc :opaque := mgi_dbexec(select);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      comparisonChr := mgi_getstr(dbproc, 1);
             end while;
           end while;
-          (void) dbclose(dbproc);
+          (void) mgi_dbclose(dbproc);
 
 	  -- Verify Chromosome
 
@@ -2331,17 +2311,15 @@ rules:
 
 	  select : string := verify_reference_sql_1 + value;
 
-	  dbproc := mgi_dbopen();
-          (void) dbcmd(dbproc, select);
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  dbproc := mgi_dbexec(select);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      key := mgi_getstr(dbproc, 1);
 	      citation := mgi_getstr(dbproc, 2);
 	      isReview := mgi_getstr(dbproc, 3);
 	    end while;
 	  end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  -- If J# is valid
 	  --   Copy the Key into the Key field
@@ -2551,15 +2529,13 @@ rules:
 	  isNOGO : string;
 	  select : string := verify_goreference_sql_1 + value;
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, select);
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  dbproc : opaque := mgi_dbexec(select);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      isNOGO := mgi_getstr(dbproc, 1);
 	    end while;
 	  end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  -- If isNOGO is true, display a warning message
 
@@ -2698,17 +2674,15 @@ rules:
 	  -- Insert results into string list for loading into Organism selection list
 	  -- Insert chromosomes into string list for future reference
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, select);
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  dbproc : opaque := mgi_dbexec(select);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
               keys.insert(mgi_getstr(dbproc, 1), keys.count + 1);
               names.insert(mgi_getstr(dbproc, 2), names.count + 1);
               results.insert(mgi_getstr(dbproc, 3), results.count + 1);
             end while;
           end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  -- Add items to Organism List
           -- If keys doesn't exist already, create it
@@ -2952,16 +2926,14 @@ rules:
 
 	  -- Insert results into string list for loading into Species selection list
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, select);
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  dbproc : opaque := mgi_dbexec(select);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
               keys.insert(mgi_getstr(dbproc, 1), keys.count + 1);
               results.insert(mgi_getstr(dbproc, 2), results.count + 1);
             end while;
           end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  -- Add items to Species List
           -- If keys doesn't exist already, create it
@@ -3095,22 +3067,23 @@ rules:
           -- For each Strain, try to get key from the database
           -- If the Strain does not exist, then add it
  
-          dbproc : opaque := mgi_dbopen();
+          dbproc : opaque;
           strains.rewind;
+
           while (strains.more) do
             s := strains.next;
 	    sUpper := s.raise_case;
             cmd := verify_strains_sql_3 + mgi_DBprstr(sUpper);
-            (void) dbcmd(dbproc, cmd);
-            (void) dbsqlexec(dbproc);
-            while (dbresults(dbproc) != NO_MORE_RESULTS) do
-              while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	    dbproc := mgi_dbexec(cmd);
+            while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+              while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
                 keys.insert(mgi_getstr(dbproc, 1), keys.count + 1);
                 results.insert(mgi_getstr(dbproc, 2).raise_case, results.count + 1);
                 private.insert(mgi_getstr(dbproc, 3), private.count + 1);
               end while;
             end while;
- 
+            (void) mgi_dbclose(dbproc);
+
             -- Set i to index of string for exact match
             i := results.find(sUpper);
  
@@ -3160,7 +3133,6 @@ rules:
             end if;
  
           end while;
-          (void) dbclose(dbproc);
  
           -- Tell user what Strains were added
  
@@ -3271,16 +3243,15 @@ rules:
           -- Try to get key from the database
           -- If the Tissue does not exist, then add it
  
-          dbproc : opaque := mgi_dbopen();
           cmd := verify_tissue_sql_1 + mgi_DBprstr(value);
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          dbproc : opaque := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
               keys.insert(mgi_getstr(dbproc, 1), keys.count + 1);
               results.insert(mgi_getstr(dbproc, 2), results.count + 1);
             end while;
           end while;
+          (void) mgi_dbclose(dbproc);
  
           -- Set i to index of string for exact match
           i := results.find(value);
@@ -3315,8 +3286,6 @@ rules:
               tissueKey := mgi_sql1(verify_tissue_sql_2 + mgi_DBprstr(value));
             end if;
           end if;
- 
-          (void) dbclose(dbproc);
  
           -- Tell user what Tissue was added
  
@@ -3388,17 +3357,15 @@ rules:
           -- Try to get key from the database
           -- If the User does not exist, then add it
  
-          dbproc : opaque := mgi_dbopen();
           cmd := verify_user_sql_1 + mgi_DBprstr(value);
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          dbproc : opaque := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
               keys.insert(mgi_getstr(dbproc, 1), keys.count + 1);
               results.insert(mgi_getstr(dbproc, 2), results.count + 1);
             end while;
           end while;
-          (void) dbclose(dbproc);
+          (void) mgi_dbclose(dbproc);
  
           -- Set i to index of string for exact match
           i := results.find(value);
@@ -3497,16 +3464,14 @@ rules:
 		"where abbreviation = " + mgi_DBprstr(value) + 
 		" and _Vocab_key = " + (string) table.vocabEvidenceKey;
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, select);
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  dbproc : opaque := mgi_dbexec(select);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      evidenceKey := mgi_getstr(dbproc, 1);
 	      evidence    := mgi_getstr(dbproc, 2);
 	    end while;
 	  end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  -- If Evidence Code is valid
 	  --   Copy the Keys into the Key fields
@@ -3629,16 +3594,14 @@ rules:
 		"where abbreviation = " + mgi_DBprstr(value) + 
 		" and _Vocab_key = " + (string) table.vocabQualifierKey;
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, select);
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  dbproc : opaque := mgi_dbexec(select);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      qualifierKey := mgi_getstr(dbproc, 1);
 	      qualifier    := mgi_getstr(dbproc, 2);
 	    end while;
 	  end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  -- If Qualifier is valid
 	  --   Copy the Keys into the Key fields
@@ -3808,11 +3771,9 @@ rules:
 	    select := select + " and t.isObsolete = 0 ";
 	  end if;
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, select);
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  dbproc : opaque := mgi_dbexec(select);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
 	        termAcc := mgi_getstr(dbproc, 1);
 	        termKey := mgi_getstr(dbproc, 2);
@@ -3823,7 +3784,7 @@ rules:
 	    end while;
 	    results := results + 1;
 	  end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  -- If Acc ID is valid
 	  --   Copy the Keys into the Key fields
@@ -3936,6 +3897,86 @@ rules:
           top : widget := WhichItem.source_widget.root;
 
 	  WhichItem.source_widget.row := WhichItem.item_position;
+	end does;
+
+--
+-- VerifyDate
+--
+--	Verify Date for Text or Table - must be in YYYY format
+--	If Text, assumes use of mgiDate template
+--	If Table, assumes table.date is defined as column value
+--
+
+	VerifyDate does
+	  sourceWidget : widget := VerifyDate.source_widget;
+	  dateTop : widget := VerifyDate.source_widget.ancestor_by_class("XmRowColumn");
+	  top : widget := sourceWidget.top;
+	  isTable : boolean;
+	  value : string;
+
+	  -- These variables are only relevant for Tables
+	  row : integer;
+	  column : integer;
+	  reason : integer;
+
+	  isTable := mgi_tblIsTable(sourceWidget);
+
+	  if (isTable) then
+	    row := VerifyDate.row;
+	    column := VerifyDate.column;
+	    reason := VerifyDate.reason;
+	    value := VerifyDate.value;
+
+	    -- If date column is not defined, return
+
+	    if (sourceWidget.is_defined("date") = nil) then
+	      return;
+	    end if;
+
+	    -- If not in the date column, return
+
+	    if (column != sourceWidget.date) then
+	      return;
+	    end if;
+
+	    if (reason = TBL_REASON_VALIDATE_CELL_END) then
+	      return;
+	    end if;
+	  else
+	    value := dateTop->Date->text.value;
+	  end if;
+
+	  -- If the Date is null or contains a wildcard, return
+
+	  if (value.length = 0 or strstr(value, "%") != nil) then
+	    if (not isTable) then
+              (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
+	    end if;
+	    return;
+	  end if;
+
+	  (void) busy_cursor(top);
+
+          validDate : string := mgi_year(value);
+ 
+	  -- If date is not valid
+	  --   Display an error message, disallow edit to date field
+
+          if (validDate.length > 0) then
+	    if (not isTable) then
+              (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
+	    end if;
+	  else
+	    if (isTable) then
+	      VerifyDate.doit := (integer) false;
+	    end if;
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "Must enter a valid Year (YYYY) in Date field.";
+            send(StatusReport);
+            top.allowEdit := false;
+          end if;
+
+	  (void) reset_cursor(top);
 	end does;
 
 end dmodule;

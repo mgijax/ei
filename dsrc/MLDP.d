@@ -2829,12 +2829,10 @@ rules:
           results : integer := 1;
           row : integer := 0;
  
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
               if (results = 1) then
                 top->ExptDetailForm->ID->text.value := mgi_getstr(dbproc, 1);
 		top->CreationDate->text.value := mgi_getstr(dbproc, 4);
@@ -2879,15 +2877,13 @@ rules:
           end while;
 
 	  cmd := mldb_sql_6a + top->mgiCitation->ObjectID->text.value + mldb_sql_6b;
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
               top->referenceNote->Note->text.value := top->referenceNote->Note->text.value + mgi_getstr(dbproc, 1);
             end while;
           end while;
  
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
           LoadAcc.table := accTable;
           LoadAcc.objectKey := currentExptKey;
@@ -2938,13 +2934,11 @@ rules:
                  mldp_sql_8a + currentExptKey + mldp_sql_8b +
 		 mldp_sql_9a + currentExptKey + mldp_sql_9b;
  
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    row := 0;
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
 		ExptForm->Female->text.value            := mgi_getstr(dbproc, 6) + mgi_getstr(dbproc, 7);
 		ExptForm->Male->text.value              := mgi_getstr(dbproc, 8) + mgi_getstr(dbproc, 9);
@@ -2991,7 +2985,7 @@ rules:
 	    results := results + 1;
 	  end while;
 
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  send(SelectStatistics, 0);
 	end does;
@@ -3024,12 +3018,10 @@ rules:
 	  fallele1, fallele2 : string;
 	  mallele1, mallele2 : string;
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      ExptForm->FStrain->StrainID->text.value := mgi_getstr(dbproc, 3);
 	      fallele1                                := mgi_getstr(dbproc, 4);
 	      fallele2                                := mgi_getstr(dbproc, 5);
@@ -3055,7 +3047,7 @@ rules:
 	    end while;
 	  end while;
 
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  -- Set Cross values to not-modified
 
@@ -3197,12 +3189,10 @@ rules:
 
           cmd := mldp_sql_12 + currentRIKey;
  
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      ExptForm->mgiRISet->Verify->text.value  := mgi_getstr(dbproc, 1);
 	      ExptForm->mgiRISet->Origin->text.value  := mgi_getstr(dbproc, 2);
 	      ExptForm->mgiRISet->Abbrev1->text.value := mgi_getstr(dbproc, 3);
@@ -3211,7 +3201,7 @@ rules:
 	    end while;
 	  end while;
 
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  -- Set RI values to not-modified
 
@@ -3244,13 +3234,11 @@ rules:
           cmd := mldp_sql_13 + currentExptKey +
 		 mldp_sql_14a + currentExptKey + mldp_sql_14b;
  
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    row := 0;
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
 	        ExptForm->Band->text.value             := mgi_getstr(dbproc, 5);
 	        ExptForm->Strain->Verify->text.value   := mgi_getstr(dbproc, 16);
@@ -3275,7 +3263,7 @@ rules:
 	    results := results + 1;
 	  end while;
 
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 	end does;
 
 --
@@ -3300,13 +3288,11 @@ rules:
           cmd := mldp_sql_15 + currentExptKey +
                  mldb_sql_16a + currentExptKey + mldp_sql_16b;
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    row := 0;
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
 		 ExptForm->ChrOrMarker.set  := (boolean)((integer) mgi_getstr(dbproc, 1));
                  ExptForm->Band->text.value := mgi_getstr(dbproc, 2);
@@ -3338,7 +3324,7 @@ rules:
 	    results := results + 1;
 	  end while;
 
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 	end does;
 
 --
@@ -3362,13 +3348,11 @@ rules:
           cmd := mldp_sql_17 + currentExptKey +
 		 mldp_sql_18a + currentExptKey + mldp_sql_18b;
  
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    row := 0;
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
 	        ExptForm->Band->text.value             := mgi_getstr(dbproc, 5);
 	        ExptForm->Strain->Verify->text.value   := mgi_getstr(dbproc, 16);
@@ -3392,7 +3376,7 @@ rules:
 	    results := results + 1;
 	  end while;
 
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 	end does;
 
 --
@@ -3416,13 +3400,11 @@ rules:
           cmd := mldp_sql19 + currentExptKey +
 		 mldp_sql_20a + currentExptKey + mldp_sql_20b;
  
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    row := 0;
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
 	        ExptForm->GeneOrder->text.value := mgi_getstr(dbproc, 3);
 		ExptForm->Definitive.set        := (boolean)((integer) mgi_getstr(dbproc, 2));
@@ -3461,7 +3443,7 @@ rules:
 	    results := results + 1;
 	  end while;
 
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 	end does;
 
 --
@@ -3486,13 +3468,11 @@ rules:
 		 mldp_sql22a + currentExptKey + mldp_sql_22b +
 		 mldp_sql_23a + currentExptKey + mldp_sql_23b;
  
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    row := 0;
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
 	        ExptForm->Animal->text.value            := mgi_getstr(dbproc, 1);
 	        ExptForm->mgiRISet->RIID->text.value    := mgi_getstr(dbproc, 2);
@@ -3527,7 +3507,7 @@ rules:
 	    results := results + 1;
 	  end while;
 
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  send(SelectStatistics, 0);
 	end does;
@@ -3547,13 +3527,11 @@ rules:
  
           cmd := mldp_sql_24a + currentExptKey + mldp_sql_24b;
  
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             row := 0;
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
               (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 1));
               (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 1));
               (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 2));
@@ -3568,7 +3546,7 @@ rules:
               row := row + 1;
             end while;
           end while;
-          (void) dbclose(dbproc);
+          (void) mgi_dbclose(dbproc);
         end does;
  
 --

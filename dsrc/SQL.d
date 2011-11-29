@@ -224,31 +224,26 @@ rules:
             return;
           end if;
  
-	  -- Log command
-
-	  (void) mgi_writeLog(get_time() + "CMD:" + ExecSQL.cmd + "\n");
-
 	  -- Execute cmd
 
 	  newID := "";
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, ExecSQL.cmd);
-          (void) dbsqlexec(dbproc);
-	  (void) mgi_writeLog("CMD END:  " + get_time() + "\n");
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  dbproc : opaque;
+	  
+	  dbproc := mgi_dbexec(ExecSQL.cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      newID := mgi_getstr(dbproc, 1);
 	    end while;
 	  end while;
+	  mgi_dbclose(dbproc);
 
 	  -- Process @@error w/in same DBPROCESS
 	  -- Process @@transtate w/in same DBPROCESS
 
 	  result : integer := 1;
-          (void) dbcmd(dbproc, "select @@error\nselect @@transtate");
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  dbproc := mgi_dbexec("select @@error\nselect @@transtate");
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (result = 1) then
 	        error := (integer) mgi_getstr(dbproc, 1);
 	      else
@@ -257,8 +252,7 @@ rules:
 	      result := result + 1;
 	    end while;
 	  end while;
-
-	  dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  (void) mgi_writeLog("\n@@error:  " + (string) error + "\n");
 	  (void) mgi_writeLog("@@transtate:  " + (string) transtate + "\n");

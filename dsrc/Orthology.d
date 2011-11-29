@@ -792,12 +792,12 @@ rules:
 	         orthology_sql_7a + orthology_sql_3 + classKey + orthology_sql_4 + refKey + orthology_sql_7b +
 		 orthology_sql_8a + orthology_sql_3 + classKey + orthology_sql_4 + refKey + orthology_sql_8b;
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
+	  dbproc : opaque;
+	  
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    row := 0;
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
 	  	top->ID->text.value := mgi_getstr(dbproc, 1);
 		top->mgiCitation->Jnum->text.value := mgi_getstr(dbproc, 2);
@@ -844,6 +844,7 @@ rules:
 	    end while;
 	    results := results + 1;
 	  end while;
+	  (void) mgi_dbclose(dbproc);
 
 	  -- Get Assay info for all Homologies for the Class:Reference composite
 	  -- Get Orthology keys
@@ -871,12 +872,11 @@ rules:
 	  i : integer;
 	  results := 1;
 
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    homKey := "";
 	    row := -1;
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
 	        -- Stay on the same row for Orthology/Assay pair
 
@@ -930,8 +930,7 @@ rules:
 	    end while;
 	    results := results + 1;
 	  end while;
-
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  top->QueryList->List.row := Select.item_position;
 
@@ -985,17 +984,15 @@ rules:
 	  cmd := "select _Organism_key, organism from MGI_Organism_Homology_View " +
 		 "where _Organism_key in " + defaultOrganismKeys + " order by _Organism_key";
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  dbproc : opaque := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
               mgi_tblSetCell(table, row, table.organismKey, mgi_getstr(dbproc, 1));
               mgi_tblSetCell(table, row, table.organism, mgi_getstr(dbproc, 2));
 	      row := row + 1;
 	    end while;
 	  end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  table.xrtTblEditableSeries := "(all 0-4 False) (0-2 " + (string) table.organism + " False)";
 

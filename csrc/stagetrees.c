@@ -244,7 +244,7 @@ void stagetrees_init(Widget outliner, Widget progressMeter)
 void stagetrees_destroy()
 {
    stagetrees_unloadStages(False);   /* get rid of all non-stages nodes and structures */
-   dbclose(stagetrees.dbproc);  /* close our connection to the DB */
+   (void) mgi_dbclose(stagetrees.dbproc);  /* close our connection to the DB */
 
    /* finally, get rid of the stagesroot widget */
    /* XtDestroyWidget(stagetrees.stagesroot); */

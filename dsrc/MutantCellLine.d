@@ -521,12 +521,10 @@ rules:
 
 	  results : integer := 1;
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+	  dbproc : opaque := mgi_dbexec(cmd);
 
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 
 	      if (results = 1) then
 	        top->ID->text.value := mgi_getstr(dbproc, 1);
@@ -574,7 +572,7 @@ rules:
 	    results := results + 1;
 	  end while;
 
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
           LoadAcc.table := accTable;
           LoadAcc.objectKey := currentRecordKey;
@@ -608,12 +606,10 @@ rules:
 
 	  cmd := mutant_sql_4 + top->mgiParentCellLine->ObjectID->text.value;
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+	  dbproc : opaque := mgi_dbexec(cmd);
 
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 
 	      top->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 1);
 	      top->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 2);
@@ -636,7 +632,7 @@ rules:
 
 	    end while;
 	  end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	end does;
 
@@ -656,12 +652,10 @@ rules:
 
 	  cmd := mutant_sql_5 + top->mgiParentCellLine->Derivation->ObjectID->text.value;
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+	  dbproc : opaque := mgi_dbexec(cmd);
 
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 
 	      top->mgiParentCellLine->Derivation->ObjectID->text.value := mgi_getstr(dbproc, 1);
 	      top->mgiParentCellLine->Derivation->CharText->text.value := mgi_getstr(dbproc, 2);
@@ -691,7 +685,7 @@ rules:
 
 	    end while;
 	  end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	end does;
 
@@ -736,11 +730,9 @@ rules:
 
 	  select : string := mutant_sql_6 + mgi_DBprstr(value);
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, select);
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  dbproc : opaque := mgi_dbexec(select);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 
 	      top->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 1);
 	      top->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 2);
@@ -768,7 +760,7 @@ rules:
 
             end while;
           end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  -- If ID is null, then value is invalid
 

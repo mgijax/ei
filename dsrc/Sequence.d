@@ -696,12 +696,10 @@ rules:
 	  nonRawRow : integer := 1;
 	  row : integer := 0;
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
 		table := top->Control->ModificationHistory->Table;
 
@@ -813,7 +811,7 @@ rules:
 	    nonRawRow := 1;
           end while;
 
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
  
 	  table := sourceTable;
 	  row := 0;

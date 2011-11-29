@@ -177,15 +177,14 @@ rules:
 	  newColor : string := BACKGROUNDALT1;
 	  row : integer := 0;
 
-	  dbproc : opaque := mgi_dbopen();
-
 	  -- create a string list of row/assay key pairs
 	  assayKeys := create string_list();
 	  
-          (void) dbcmd(dbproc, index_sql_1);
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  dbproc : opaque;
+
+	  dbproc := mgi_dbexec(index_sql_1);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      assayKeys.insert(mgi_getstr(dbproc, 1), assayKeys.count + 1);
 	      rowLabels := rowLabels + mgi_getstr(dbproc, 2) + ",";
 
@@ -201,6 +200,7 @@ rules:
 	      row := row + 1;
 	    end while;
 	  end while;
+	  (void) mgi_dbclose(dbproc);
 
 	  -- Set Column Labels/Stage Keys
 
@@ -209,17 +209,15 @@ rules:
 	  -- create a string list of column/term pairs
 	  stageTerms := create string_list();
 
-          (void) dbcmd(dbproc, index_sql_2);
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  dbproc := mgi_dbexec(index_sql_2);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      columnLabels := columnLabels + mgi_getstr(dbproc, 2) + ",";
 	      stageKeys.insert(mgi_getstr(dbproc, 1), stageKeys.count + 1);
 	      stageTerms.insert(mgi_getstr(dbproc, 2), stageTerms.count + 1);
 	    end while;
 	  end while;
-
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  table.batch;
 	  table.xrtTblNumRows := assayKeys.count;
@@ -646,12 +644,10 @@ rules:
 	  results : integer := 1;
 	  row : integer;
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
 	        top->ID->text.value           := mgi_getstr(dbproc, 1);
 	        top->mgiCitation->ObjectID->text.value := mgi_getstr(dbproc, 2);
@@ -694,7 +690,7 @@ rules:
 	    end while;
 	    results := results + 1;
           end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  -- start set coded bit
 	  -- TR 10432

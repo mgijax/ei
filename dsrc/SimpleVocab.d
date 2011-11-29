@@ -554,13 +554,11 @@ rules:
 	  results : integer := 1;
 	  row : integer := 0;
 	  definition : string;
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    row := 0;
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
 	        top->ID->text.value           := mgi_getstr(dbproc, 1);
 	        top->Name->text.value         := mgi_getstr(dbproc, 6);
@@ -606,7 +604,7 @@ rules:
 	    results := results + 1;
           end while;
  
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  -- Set Option Menu for row 0
 
@@ -646,20 +644,18 @@ rules:
 
 	  cmd := simple_sql_5a + synTypeKey + simple_sql_5b + termKey + simple_sql_5c;
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
 	  row := 0;
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	     (void) mgi_tblSetCell(synTable, row, synTable.synKey, mgi_getstr(dbproc, 1));
 	     (void) mgi_tblSetCell(synTable, row, synTable.synonym, mgi_getstr(dbproc, 2));
 	     (void) mgi_tblSetCell(synTable, row, synTable.editMode, TBL_ROW_NOCHG);
 	     row := row + 1;
 	    end while;
 	  end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	end does;
 

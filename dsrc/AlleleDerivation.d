@@ -558,12 +558,11 @@ rules:
 
 	  cmd := derivation_sql_2 + currentRecordKey;
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
-
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  dbproc : opaque;
+	  
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 
 	      top->ID->text.value := mgi_getstr(dbproc, 1);
 	      top->EditForm->DerivationName->text.value := mgi_getstr(dbproc, 2);
@@ -603,17 +602,16 @@ rules:
 
 	    end while;
 	  end while;
+	  (void) mgi_dbclose(dbproc);
 
 	  cmd := derivation_sql_3 + top->ID->text.value;
-
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      top->NumberOfMutants->text.value := mgi_getstr(dbproc, 1);
 	    end while;
 	  end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
           LoadNoteForm.notew := top->mgiNoteForm;
           LoadNoteForm.tableID := MGI_NOTE_DERIVATION_VIEW;
@@ -644,12 +642,10 @@ rules:
 
 	  cmd := derivation_sql_4 + top->mgiParentCellLine->ObjectID->text.value;
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+	  dbproc : opaque := mgi_dbexec(cmd);
 
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      top->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 1);
 	      top->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 2);
 	      top->mgiParentCellLine->ParentStrain->StrainID->text.value := mgi_getstr(dbproc, 3);
@@ -659,7 +655,7 @@ rules:
               send(SetOption, 0);
 	    end while;
 	  end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	end does;
 
@@ -696,11 +692,9 @@ rules:
 
 	  select : string := derivation_sql_5 + mgi_DBprstr(value);
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, select);
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  dbproc : opaque := mgi_dbexec(select);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      top->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 1);
 	      top->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 2);
 	      top->mgiParentCellLine->ParentStrain->StrainID->text.value := mgi_getstr(dbproc, 3);
@@ -710,7 +704,7 @@ rules:
               send(SetOption, 0);
             end while;
           end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  -- If ID is null, then value is invalid
 

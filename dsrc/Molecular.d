@@ -1481,12 +1481,10 @@ rules:
 	  results : integer := 1;
 	  row : integer := 0;
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
 	        top->MolMasterForm->ID->text.value := mgi_getstr(dbproc, 1);
 	        top->MolMasterForm->Name->text.value := mgi_getstr(dbproc, 2);
@@ -1551,7 +1549,7 @@ rules:
 	    results := results + 1;
           end while;
 
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
  
           if (not top->Control->References.set) then
 	    (void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byUser, prb_createdBy);
@@ -1621,11 +1619,9 @@ rules:
 	  strains : string := "";
 	  strainKeys : string := "";
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 
             if (results = 4) then
 	      row := -1;
@@ -1633,7 +1629,7 @@ rules:
 	      row := 0;
 	    end if;
 
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
               if (results = 1) then
                 top->MolReferenceForm->ReferenceID->text.value := mgi_getstr(dbproc, 1);
                 top->MolReferenceForm->mgiCitation->Citation->text.value := mgi_getstr(dbproc, 12);
@@ -1692,7 +1688,7 @@ rules:
             end while;
             results := results + 1;
           end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
  
 	  -- Don't forget last record
 

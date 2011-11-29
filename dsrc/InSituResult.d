@@ -582,11 +582,9 @@ rules:
 		 insitu_sql_4a + specimenKey + insitu_sql_4b +
 		 insitu_sql_5a + specimenKey + insitu_sql_5b;
 
-          dbproc :opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          dbproc :opaque := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
 		(void) mgi_tblSetCell(table, row, table.resultKey, mgi_getstr(dbproc, 1));
 		(void) mgi_tblSetCell(table, row, table.strengthKey, mgi_getstr(dbproc, 3));
@@ -655,7 +653,7 @@ rules:
 	    end while;
 	    results := results + 1;
 	  end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
           -- Initialize Option Menus for row 0
  

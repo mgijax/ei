@@ -972,13 +972,11 @@ rules:
 	         strain_sql_5 + currentRecordKey +
 	         strain_sql_6 + currentRecordKey;
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    row := 0;
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
 	        top->ID->text.value := mgi_getstr(dbproc, 1);
 		top->strainSpecies->ObjectID->text.value := mgi_getstr(dbproc, 2);
@@ -1032,7 +1030,7 @@ rules:
 	    results := results + 1;
           end while;
  
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
           LoadStrainAlleleTypeTable.table := top->Marker->Table;
 	  LoadStrainAlleleTypeTable.tableID := PRB_STRAIN_MARKER_VIEW;
@@ -1100,12 +1098,10 @@ rules:
 	    cmd := cmd + strain_sql_8;
 	  end if;
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (SelectReferenceMGI.doCount) then
 		row := (integer) mgi_getstr(dbproc, 1);
               else
@@ -1116,7 +1112,7 @@ rules:
             end while;
           end while;
 
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  top->ReferenceMGI->Records.labelString := (string) row + " Records";
 	  (void) reset_cursor(top);
@@ -1155,12 +1151,10 @@ rules:
 	    cmd := cmd + strain_sql_9;
 	  end if;
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (SelectDataSets.doCount) then
 		row := (integer) mgi_getstr(dbproc, 1);
               else
@@ -1171,7 +1165,7 @@ rules:
             end while;
           end while;
 
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  top->DataSets->Records.labelString := (string) row + " Records";
 	  (void) reset_cursor(top);

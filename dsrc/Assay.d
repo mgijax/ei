@@ -2450,11 +2450,11 @@ rules:
 	  knockInPrep : string;
 	  table : widget := top->Control->ModificationHistory->Table;
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, select);
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          dbproc : opaque;
+	  
+	  dbproc := mgi_dbexec(select);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
 	        top->ID->text.value := mgi_getstr(dbproc, 1);
                 top->mgiCitation->ObjectID->text.value := mgi_getstr(dbproc, 3);
@@ -2523,6 +2523,7 @@ rules:
 	    end while;
 	    results := results + 1;
           end while;
+	  (void) mgi_dbclose(dbproc);
 
 	  if (antibodyPrep) then
 	    select := assay_sql_5 + currentAssay + "\n";
@@ -2531,11 +2532,10 @@ rules:
 	  end if;
 
 	  if (antibodyPrep or probePrep) then
-            (void) dbcmd(dbproc, select);
-            (void) dbsqlexec(dbproc);
+	    dbproc := mgi_dbexec(select);
  
-            while (dbresults(dbproc) != NO_MORE_RESULTS) do
-              while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+            while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+              while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	        if (antibodyPrep) then
 	          prepDetailForm->PrepID->text.value := mgi_getstr(dbproc, 2);
 	          prepDetailForm->AntibodyAccession->ObjectID->text.value := mgi_getstr(dbproc, 3);
@@ -2576,7 +2576,7 @@ rules:
 	      end while;
             end while;
 	  end if;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  -- Select InSitu information
 
@@ -2646,12 +2646,11 @@ rules:
 	  select := assay_sql_7 + currentAssay +
 		    assay_sql_8a + currentAssay + assay_sql_8b;
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, select);
-          (void) dbsqlexec(dbproc);
- 
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          dbproc : opaque;
+	  
+	  dbproc := mgi_dbexec(select);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
 		numRows := (integer) mgi_getstr(dbproc, 1);
 
@@ -2689,6 +2688,7 @@ rules:
 	    end while;
 	    results := results + 1;
           end while;
+	  (void) mgi_dbclose(dbproc);
 
 	  -- Determine number of InSitu Results per Specimen
 
@@ -2702,18 +2702,17 @@ rules:
 	    end if;
 
 	    select :=  assay_sql_9 + key;
-            (void) dbcmd(dbproc, select);
-            (void) dbsqlexec(dbproc);
+	    dbproc := mgi_dbexec(select);
  
-            while (dbresults(dbproc) != NO_MORE_RESULTS) do
-              while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+            while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+              while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	        (void) mgi_tblSetCell(table, row, table.results, mgi_getstr(dbproc, 1));
 	      end while;
 	    end while;
+	    (void) mgi_dbclose(dbproc);
 
 	    row := row + 1;
 	  end while;
-	  (void) dbclose(dbproc);
 
 	  -- Initialize Option Menus for row 0
 
@@ -2742,12 +2741,10 @@ rules:
 	            assay_sql_11a + currentAssay + assay_sql_11b +
 	            assay_sql_12 + currentAssay;
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, select);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(select);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
 		numRows := (integer) mgi_getstr(dbproc, 1);
 
@@ -2808,7 +2805,7 @@ rules:
 	    end while;
 	    results := results + 1;
           end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  -- Initialize Option Menus for row 0
 
@@ -2844,11 +2841,9 @@ rules:
 
 	  select := assay_sql_13a + currentAssay + assay_sql_13b;
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, select);
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          dbproc : opaque := mgi_dbexec(select);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      (void) mgi_tblSetCell(table, row, table.rowKey, mgi_getstr(dbproc, 1));
 	      (void) mgi_tblSetCell(table, row, table.unitsKey, mgi_getstr(dbproc, 3));
 	      (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 4));
@@ -2859,7 +2854,7 @@ rules:
 	      row := row + 1;
 	    end while;
           end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  -- Initialize Option Menus for row 0
 
@@ -2968,15 +2963,13 @@ rules:
 
 	  select := assay_sql_15a + currentAssay + assay_sql_15b;
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, select);
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          dbproc : opaque := mgi_dbexec(select);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      lanes.insert(mgi_getstr(dbproc, 1), lanes.count + 1);
             end while;
           end while;
-          (void) dbclose(dbproc);
+          (void) mgi_dbclose(dbproc);
 
 	  -- Load the Gel Lane keys into the Gel Row table
 
@@ -3025,11 +3018,9 @@ rules:
 
 	  select := assay_sql_16a + currentAssay + assay_sql_16b;
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, select);
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          dbproc : opaque := mgi_dbexec(select);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 
 	      row := (integer) mgi_getstr(dbproc, 11) - 1;
 
@@ -3062,7 +3053,7 @@ rules:
 
 	    end while;
           end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  -- For first row, if Lane Control != No and no Strength, then Strength = Not Applicable
 	  i := 0;

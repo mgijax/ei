@@ -386,12 +386,10 @@ rules:
 
 	  table : widget := top->CloneLibrarySet->Table;
 	  row : integer := 0;
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, scmd);
-          (void) dbsqlexec(dbproc);
+	  dbproc : opaque := mgi_dbexec(scmd);
 
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
               (void) mgi_tblSetCell(table, row, table.setKey, mgi_getstr(dbproc, 1));
               (void) mgi_tblSetCell(table, row, table.memberKey, mgi_getstr(dbproc, 2));
               (void) mgi_tblSetCell(table, row, table.cloneLibrary, mgi_getstr(dbproc, 3));
@@ -399,7 +397,7 @@ rules:
 	      row := row + 1;
 	    end while;
           end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
           top->QueryList->List.row := Select.item_position;
 

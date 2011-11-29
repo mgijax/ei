@@ -6,6 +6,21 @@
  * Sybase DB-Library routines for User Interface
  * Needs to be converted to use CT-Library
  *
+ * lec	11/29/2011
+ *
+ *	as part of the move to postgres and database agnostic-ity
+ *	the syblib library will provice wrappers around each
+ *	sybase library call.
+ *	a complementary postgres library will be installed
+ *	so that we will be able to swap-out the syblib and pglib libraries
+ *	when we are ready to migrate to postgres
+ *
+ *	- add mgi_dbcancel(); wrapper around dbcancel
+ *	- add mgi_dbclose(); wrapper around dbclose
+ *	- add mgi_dbexec; wrapper around dbcmd, dbsqlexec
+ *	- add mgi_dbresults; wrapper around dbresults
+ *	- add mgi_dbnextrow; wrapper around dbnextrow
+ *
  * lec	04/17/2000
  *	- TR 1177; TEXTBUF replacing BUFSIZ
  *
@@ -48,7 +63,11 @@ char *global_database;  	/* Set in Application dModule; holds database value */
 char *global_server;    	/* Set in Application dModule; holds server value */
 char *global_radar;    		/* Set in Application dModule; holds radar db value */
 
-/* Establish initial connection to the server and initialize global LOGINREC */
+/* 
+*
+* Establish initial connection to the server and initialize global LOGINREC
+*
+*/
 
 int mgi_dbinit(char *user, char *pwd)
 {
@@ -161,7 +180,11 @@ int mgi_dbinit(char *user, char *pwd)
   return(1);
 }
 
-/* Free the LOGINREC and disconnect from the Server */
+/*
+*
+* Free the LOGINREC and disconnect from the Server
+*
+*/
 
 void mgi_dbexit()
 {
@@ -172,9 +195,14 @@ void mgi_dbexit()
   }
 }
 
-/* Return a DBPROCESS using global LOGINREC already initialized */
-/* Use the global_server variable to connect to the appropriate server */
-/* Use the global_database variable to connect to the appropriate database */
+/*
+*
+* Open connection to server
+* Return a DBPROCESS using global LOGINREC already initialized
+* Use the global_server variable to connect to the appropriate server
+* Use the global_database variable to connect to the appropriate database
+*
+*/
 
 DBPROCESS *mgi_dbopen()
 {
@@ -208,7 +236,88 @@ DBPROCESS *mgi_dbopen()
   return(dbproc);
 }
 
-/* Return specified column value from current DBPROCESS as string */
+/*
+*
+* wrapper around dbcancel
+*
+* dbcancel: cancel the current command batch
+*
+*/
+
+void mgi_dbcancel(DBPROCESS *dbproc)
+{
+  (void) dbcancel(dbproc);
+  return;
+}
+
+/*
+*
+* close the portal...to avoid memory leaks
+*
+*/
+
+void mgi_dbclose(DBPROCESS *dbproc)
+{
+  (void) dbclose(dbproc);
+  return;
+}
+
+/* 
+*
+* execute the query
+* 
+* RETCODE dbcmd: add text to the DBPROCESS command buffer
+*
+* RETCODE dbsqlexec:  send command batch to server
+*
+*/
+
+DBPROCESS *mgi_dbexec(char *cmd)
+{
+  DBPROCESS *dbproc = mgi_dbopen();
+
+  (void) mgi_writeLog(cmd);
+  (void) mgi_writeLog("\n\n");
+
+  dbcmd(dbproc, cmd);
+  dbsqlexec(dbproc);
+
+  return(dbproc);
+}
+
+/*
+*
+* wrapper around dbresults
+*
+* dbresults: set up the results of the next query
+*
+*/
+
+RETCODE mgi_dbresults(DBPROCESS *dbproc)
+{
+  return(dbresults(dbproc));
+}
+
+/*
+*
+* wrapper around dbnextrow
+*
+* dbnextrow: read the next result row into the 
+*	row buffer and into any program variables 
+*	that are bound to column data
+*
+*/
+
+STATUS mgi_dbnextrow(DBPROCESS *dbproc)
+{
+  return(dbnextrow(dbproc));
+}
+
+/*
+*
+* Return specified column value from current DBPROCESS as string
+*
+*/
 
 char *mgi_getstr(DBPROCESS *dbproc, int column)
 {
@@ -244,9 +353,13 @@ char *mgi_getstr(DBPROCESS *dbproc, int column)
   return(buf);
 }
 
-/* Return "citation" string for table */
-/* The "citation" string is what normally appears in the returned Query List */
-/* in the User interface and should uniquely identify the record for the User */
+/* 
+*
+* Return "citation" string for table
+* The "citation" string is what normally appears in the returned Query List
+* in the User interface and should uniquely identify the record for the User
+*
+*/
  
 char *mgi_citation(DBPROCESS *dbproc, int table)
 {
@@ -285,8 +398,12 @@ char *mgi_citation(DBPROCESS *dbproc, int table)
   return(buf);
 }
  
-/* Returns the unique identifier key for a table to QueryNoInterrupt */
-/* Currently, the first column is always assumed to contain the unique identifier */
+/* 
+*
+* Returns the unique identifier key for a table to QueryNoInterrupt
+* Currently, the first column is always assumed to contain the unique identifier
+*
+*/
  
 char *mgi_key(DBPROCESS *dbproc, int table)
 {
@@ -304,7 +421,11 @@ char *mgi_key(DBPROCESS *dbproc, int table)
   return(buf);
 }
  
-/* Returns first result of an SQL command */
+/*
+*
+* Returns first result of an SQL command
+*
+*/
 
 char *mgi_sql1(char *cmd)
 {
@@ -331,9 +452,13 @@ char *mgi_sql1(char *cmd)
   return(buf);
 }
 
-/* Processes SQL command sent by User.  Determines if server result has arrived. */
-/* If so, verifies correctness of results and sets up results for processing */
-/* by dbnextrow. */
+/*
+*
+* Processes SQL command sent by User.  Determines if server result has arrived.
+* If so, verifies correctness of results and sets up results for processing
+* by dbnextrow.
+*
+*/
 
 int mgi_process_sql(Widget dialog)
 {
@@ -354,9 +479,13 @@ int mgi_process_sql(Widget dialog)
   return ((ret == DBRESULT) ? 1 : 0);
 }
 
-/* Processes results of SQL command and places results in Query Results lists. */
-/* If SQL command finishes before User clicks the CANCEL button, */
-/* disable the CANCEL callback and clean up. */
+/* 
+*
+* Processes results of SQL command and places results in Query Results lists.
+* If SQL command finishes before User clicks the CANCEL button,
+* disable the CANCEL callback and clean up.
+*
+*/
 
 int mgi_process_results(Widget dialog)
 {
@@ -380,10 +509,14 @@ int mgi_process_results(Widget dialog)
   return ((ret == NO_MORE_ROWS) ? 1 : 0);
 }
 
-/* Cancels outstanding SQL query by removing the Work procedure, */
-/* and cancelling the remaining SQL results (dbcanquery). */
-/* The first result in the results list is selected and control returned */
-/* to the User. */
+/* 
+*
+* Cancels outstanding SQL query by removing the Work procedure,
+* and cancelling the remaining SQL results (dbcanquery).
+* The first result in the results list is selected and control returned
+* to the User.
+*
+*/
 
 XtCallbackProc mgi_cancel_search(Widget dialog)
 {
@@ -416,14 +549,18 @@ XtCallbackProc mgi_cancel_search(Widget dialog)
   return;
 }
 
-/* Execute interruptable SQL search by using a Work Procedure */
-/* mgi_process_sql is the Work Procedure which may be interruppted at any time */
-/* by the User clicking the CANCEL button */
-/* When the User clicks the CANCEL button, the mgi_cancel_search routine is called */
-/* to clean up */
-/* NOTE:  this is called from DEvent 'Query'.  Once 'Query' executes this routine, */
-/* control passes back to the X manager.  Any loose ends after the query is completed */
-/* should be done in DEvent 'QueryEnd' */
+/* 
+*
+* Execute interruptable SQL search by using a Work Procedure 
+* mgi_process_sql is the Work Procedure which may be interruppted at any time 
+* by the User clicking the CANCEL button
+* When the User clicks the CANCEL button, the mgi_cancel_search routine is called 
+* to clean up 
+* NOTE:  this is called from DEvent 'Query'.  Once 'Query' executes this routine, 
+* control passes back to the X manager.  Any loose ends after the query is completed 
+* should be done in DEvent 'QueryEnd'
+*
+*/
 
 void mgi_execute_search(Widget dialog, Widget list, char *cmd, int table, char *rowcount)
 {
@@ -455,18 +592,16 @@ void mgi_execute_search(Widget dialog, Widget list, char *cmd, int table, char *
       send_status("Setting of DBROWCOUNT Failed.", 0);
   }
 
-  /*
-   * convert to using lower()
-   * replace:  A like B
-   * with:     lower(A) like lower(B)
-  */
-
   dbcmd(search_proc, cmd);
   dbsqlsend(search_proc);
   return;
 }
 
-/* Error handler for Sybase */
+/* 
+*
+* Error handler for Sybase
+*
+*/
 
 int mgi_err_handler(DBPROCESS *dbproc, int severity, int dberr, int oserr, char *dberrstr, char *oserrstr)
 {
@@ -508,7 +643,11 @@ int mgi_err_handler(DBPROCESS *dbproc, int severity, int dberr, int oserr, char 
   }
 }
  
-/* Message handler for Sybase */
+/* 
+*
+* Message handler for Sybase
+*
+*/
 
 int mgi_msg_handler(DBPROCESS *dbproc, DBINT msgno, int msgstate, int severity, char *msgtext, char *srvname, char *procname, DBUSMALLINT line)
 {
@@ -530,7 +669,11 @@ int mgi_msg_handler(DBPROCESS *dbproc, DBINT msgno, int msgstate, int severity, 
   return(FAIL);
 }
 
-/* Send event QueryEnd */
+/* 
+*
+* Send event QueryEnd
+*
+*/
 
 static void query_end()
 {
@@ -550,7 +693,11 @@ static void query_end()
   }
 }
 
-/* Send event InsertList */
+/* 
+*
+* Send event InsertList
+*
+*/
 
 static void send_insertlist()
 {
@@ -573,7 +720,11 @@ static void send_insertlist()
   }
 }
 
-/* Send event StatusReport */
+/* 
+*
+* Send event StatusReport
+*
+*/
 
 static void send_status(char *msg, int appendMsg)
 {

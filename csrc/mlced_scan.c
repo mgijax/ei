@@ -616,8 +616,7 @@ long checkmarkup(char *locustext)
  * See check_tags.  This does what check_tags does, except it acts
  * on a single tag.
  *
- * requires: dbproc is a active dbprocess.
- *           tag is a null-terminated string.
+ * requires: tag is a null-terminated string.
  *           reason is the error code associated with an error in 'tag'.
  *           symlist is the list of symbols associated with this tag
  *              if tag isn't a current symbol (a withdrawal or split has
@@ -625,7 +624,7 @@ long checkmarkup(char *locustext)
  * returns: 0 if there are no errors with this tag, 1 if there are.
  */
 
-int check_tag(DBPROCESS *dbproc, char *tag, int *reason, xrtlist *symlist)
+int check_tag(char *tag, int *reason, xrtlist *symlist)
 {
 	int inmgd,count;
 	int iscurrent=0; /* set to true if this symbol can be considered current,
@@ -635,16 +634,17 @@ int check_tag(DBPROCESS *dbproc, char *tag, int *reason, xrtlist *symlist)
 	tu_status_t status;
 	xrtlist slist = createStringList(MAXTAGLEN); 
 
+	DBPROCESS *dbproc;
+
 	sprintf(cmd, 
 		"select _Current_key, _Marker_key, current_symbol, symbol from MRK_Current_View where symbol = '%s'", tag);
 
-	dbcmd(dbproc, cmd);
-        dbsqlexec(dbproc);
+	dbproc = mgi_dbexec(cmd);
 
 	inmgd=0;  /* if we have at least one row, then we know we have an MGD entry for this symbol */
 
-	while (dbresults(dbproc) != NO_MORE_RESULTS){
-        while (dbnextrow(dbproc) != NO_MORE_ROWS){
+	while (mgi_dbresults(dbproc) != NO_MORE_RESULTS){
+        while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS){
             strcpy(cs, mgi_getstr(dbproc, 3));
             strcpy(sym, mgi_getstr(dbproc, 4));
 			if(strncmp(sym,tag,MAXTAGLEN) == 0) 
@@ -656,6 +656,7 @@ int check_tag(DBPROCESS *dbproc, char *tag, int *reason, xrtlist *symlist)
 					iscurrent = 1;
 			}
         }
+	(void) mgi_dbclose(dbproc);
     }
 
 	if (!inmgd)  {
@@ -694,16 +695,14 @@ xrtlist check_tags(xrtlist taglist)
 	tag_check_ptr tc;
 	int i,tagcount,reason;
 	xrtlist symlist;
-	DBPROCESS *dbproc;
-	
 	tagcount = XrtGearListGetItemCount(taglist);	
+
 	/* check each tag */ 
-	dbproc = mgi_dbopen();
 
 	for(i=0;i<tagcount;i++) {
 		tr = (tag_ptr) TagList_getitem(taglist,i);
 		tag = tr->tagstr;
-		if(check_tag(dbproc, tag, &reason, &symlist) != 0) {
+		if(check_tag(tag, &reason, &symlist) != 0) {
 			tc = createTagCheck(); 
             if (!tc)
             {
@@ -715,8 +714,6 @@ xrtlist check_tags(xrtlist taglist)
 			TagCheckList_append(prob_list,tc);
 		}
 	} 
-
-	dbclose(dbproc);
 
 	return prob_list;
 }

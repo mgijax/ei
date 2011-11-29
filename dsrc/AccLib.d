@@ -258,12 +258,10 @@ rules:
 	  i : integer := 1;
 	  row : integer := 0;
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
  
               logicalDBkey := mgi_getstr(dbproc, 1);
               prefix := mgi_getstr(dbproc, 4);
@@ -361,7 +359,7 @@ rules:
               row := row + 1;
             end while;
           end while;
-          (void) dbclose(dbproc);
+          (void) mgi_dbclose(dbproc);
 
 	  -- If sort column is specified, sort it
 
@@ -926,11 +924,9 @@ rules:
 	  cmd : string := mgi_DBaccSelect(tableID, mgiTypeKey, accNumeric);
 	  objectLoaded : boolean := false;
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          dbproc : opaque := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (not objectLoaded) then
                 top->ObjectID->text.value      := mgi_getstr(dbproc, 1);
                 top->AccessionID->text.value   := mgi_getstr(dbproc, 2);
@@ -942,7 +938,7 @@ rules:
 	      end if;
             end while;
           end while;
-          (void) dbclose(dbproc);
+          (void) mgi_dbclose(dbproc);
  
           if (top->AccessionName->text.value.length = 0) then
             StatusReport.source_widget := top.root;

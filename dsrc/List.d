@@ -391,12 +391,10 @@ rules:
 	    return;
 	  end if;
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, list_w.cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(list_w.cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 
 	      -- If not allowing dups, then if key already exists, skip the row
 
@@ -436,7 +434,7 @@ rules:
 
           end while;
  
-          (void) dbclose(dbproc);
+          (void) mgi_dbclose(dbproc);
  
 	  -- If keys doesn't exist already, create it
 	  -- Even if no results are returned

@@ -135,12 +135,10 @@ rules:
 	    cmd := notelib_sql_2a + mgi_DBtable(tableID) + notelib_sql_2b;
 	  end if;
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 		label := mgi_getstr(dbproc, 2);
 
 		-- Read up to the first blank space
@@ -176,7 +174,7 @@ rules:
 		x->NotePush.labelString := label + " Notes";
 	    end while;
 	  end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	end does;
 
@@ -227,12 +225,10 @@ rules:
 		   notelib_sql_4b + objectKey + notelib_sql_4c;
 	  end if;
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      noteTypeKey := (integer) mgi_getstr(dbproc, 1);
 	      note := mgi_getstr(dbproc, 2);
 
@@ -297,7 +293,7 @@ rules:
 
             end while;
           end while;
-          (void) dbclose(dbproc);
+          (void) mgi_dbclose(dbproc);
 
 	  -- Set Notes Display
 

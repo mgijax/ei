@@ -340,12 +340,11 @@ rules:
 	  
           results : integer := 1;
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
-
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  dbproc : opaque;
+	  
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 
 	      if (results = 1) then
 	        top->ID->text.value := mgi_getstr(dbproc, 1);
@@ -367,17 +366,16 @@ rules:
 
 	    end while;
 	  end while;
+	  (void) mgi_dbclose(dbproc);
 
 	  cmd := nonmutant_sql_2 + currentRecordKey;
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      top->NumberOfMutants->text.value := mgi_getstr(dbproc, 1);
 	    end while;
 	  end while;
-
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  top->QueryList->List.row := Select.item_position;
 	  Clear.source_widget := top;

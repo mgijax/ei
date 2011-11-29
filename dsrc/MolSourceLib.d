@@ -323,12 +323,10 @@ rules:
 			 molsource_sql_9 + key +
 			 molsource_sql_10 + key;
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 
 	      if (results = 1) then
 
@@ -404,7 +402,7 @@ rules:
 	    results := results + 1;
           end while;
  
-          (void) dbclose(dbproc);
+          (void) mgi_dbclose(dbproc);
 
 --	  if (sourceForm->Library.managed) then
 --	    LoadNoteForm.notew := sourceForm->mgiNoteForm;
@@ -880,12 +878,10 @@ rules:
 
 	  cmd := molsource_sql_11 + sourceKey;
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	       row := -1;
 	       if (mgi_getstr(dbproc, 1) = "name") then
 		 row := historyTable.library;
@@ -913,7 +909,7 @@ rules:
 	       end if;
 	    end while;
 	  end while;
-          (void) dbclose(dbproc);
+          (void) mgi_dbclose(dbproc);
 
 	  top->MolecularSourceAttributeHistoryDialog.managed := true;
 	end does;

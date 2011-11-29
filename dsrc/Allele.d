@@ -2012,13 +2012,11 @@ rules:
 	  results : integer := 1;
 	  row : integer := 0;
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+	  dbproc : opaque := mgi_dbexec(cmd);
 
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    row := 0;
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
 		table := top->Control->ModificationHistory->Table;
 	        top->ID->text.value           := mgi_getstr(dbproc, 1);
@@ -2144,7 +2142,7 @@ rules:
 	    results := results + 1;
 	  end while;
 
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
           LoadRefTypeTable.table := top->Reference->Table;
 	  LoadRefTypeTable.tableID := MGI_REFERENCE_ALLELE_VIEW;
@@ -2227,12 +2225,10 @@ rules:
 
 	  cmd := allele_sql_13 + top->mgiParentCellLine->ObjectID->text.value;
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+	  dbproc : opaque := mgi_dbexec(cmd);
 
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 		 top->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 1);
 		 top->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 2);
 	         top->mgiParentCellLine->Strain->StrainID->text.value := mgi_getstr(dbproc, 3);
@@ -2245,7 +2241,7 @@ rules:
 	    end while;
 	  end while;
 
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 	end does;
 
 --
@@ -2343,11 +2339,9 @@ rules:
 
 	  (void) mgi_writeLog(select);
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, select);
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  dbproc : opaque := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      (void) mgi_tblSetCell(cellLineTable, row, cellLineTable.cellLineKey, mgi_getstr(dbproc, 1));
 	      (void) mgi_tblSetCell(cellLineTable, row, cellLineTable.cellLine, mgi_getstr(dbproc, 2));
 	      (void) mgi_tblSetCell(cellLineTable, row, cellLineTable.creator, mgi_getstr(dbproc, 14));
@@ -2369,7 +2363,7 @@ rules:
 	      --row := row + 1;
             end while;
           end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  -- If ID is empty, then value is invalid
 
@@ -2455,11 +2449,9 @@ rules:
 
 	  select : string := allele_sql_15 + mgi_DBprstr(value);
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, select);
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  dbproc : opaque := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      top->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 1);
 	      top->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 2);
 	      top->mgiParentCellLine->Strain->StrainID->text.value := mgi_getstr(dbproc, 3);
@@ -2471,7 +2463,7 @@ rules:
               send(SetOption, 0);
             end while;
           end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  -- If ID is null, then value is invalid
 

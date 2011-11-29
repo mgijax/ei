@@ -339,12 +339,10 @@ rules:
 	  cmd : string := "select * from " + mgi_DBtable(VOC_ANNOTTYPE) + 
 		          " where " + mgi_DBkey(VOC_ANNOTTYPE) + " = " + currentRecordKey + "\n";
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	        top->Name->text.value := mgi_getstr(dbproc, 5);
 
                 SetOption.source_widget := top->MGITypeMenu;
@@ -362,7 +360,7 @@ rules:
             end while;
           end while;
  
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
           top->QueryList->List.row := Select.item_position;
 

@@ -873,13 +873,11 @@ rules:
 	  newValue : string;
 	  i : integer := 0;
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    row := 0;
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 
 	      -- Required Antibody Information
 	      if (results = 1) then
@@ -974,7 +972,7 @@ rules:
 	    results := results + 1;
           end while;
 
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
  
           LoadRefTypeTable.table := top->Reference->Table;
 	  LoadRefTypeTable.tableID := MGI_REFERENCE_ANTIBODY_VIEW;

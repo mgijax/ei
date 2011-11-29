@@ -908,13 +908,11 @@ rules:
 
 	  row : integer := 0;
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+	  dbproc : opaque := mgi_dbexec(cmd);
 
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    row := 0;
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      top->ID->text.value             := mgi_getstr(dbproc, 1);
 	      top->Symbol->text.value         := mgi_getstr(dbproc, 7);
 	      top->Name->text.value           := mgi_getstr(dbproc, 8);
@@ -952,7 +950,7 @@ rules:
 	      row := row + 1;
 	    end while;
 	  end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
           LoadRefTypeTable.table := top->Reference->Table;
 	  LoadRefTypeTable.tableID := MGI_REFERENCE_NOMEN_VIEW;

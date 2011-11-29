@@ -99,12 +99,10 @@ rules:
 
 	  cmd := notetype_sql_1a + mgi_DBtable(tableID) + notetype_sql_1b;
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+	  dbproc : opaque := mgi_dbexec(cmd);
 
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	       (void) mgi_tblSetCell(table, row, table.noteTypeKey, mgi_getstr(dbproc, 1));
 	       (void) mgi_tblSetCell(table, row, table.noteType,  mgi_getstr(dbproc, 3));
 	       (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_EMPTY);
@@ -113,7 +111,7 @@ rules:
 	    end while;
 	  end while;
 
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  if (top->NoteTypeMenu.subMenuId.numChildren = 0) then
 	    InitOptionMenu.option := top->NoteTypeMenu;
@@ -160,12 +158,10 @@ rules:
 		 notetype_sql_2d;
 
 	  row : integer := -1;
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 
 	      noteKey := mgi_getstr(dbproc, 1);
 
@@ -188,7 +184,7 @@ rules:
 	      prevNoteKey := noteKey;
             end while;
           end while;
-          (void) dbclose(dbproc);
+          (void) mgi_dbclose(dbproc);
 	end does;
 
 --

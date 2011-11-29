@@ -54,21 +54,20 @@ char *getIdbySymbol(symtext,current)
 char *symtext;
 Boolean current;
 {
-	DBPROCESS *dbproc = mgi_dbopen();	
-	char cmd[BUFSIZ];
-	static char idtext[MAXMKLEN],
+    DBPROCESS *dbproc;
+    char cmd[BUFSIZ];
+    static char idtext[MAXMKLEN],
                 sym[MAXSYMLEN],
                 csym[MAXSYMLEN];
-	int foundit = 0;
+    int foundit = 0;
 
-	sprintf(cmd, "select _Current_key, _Marker_key, current_symbol, symbol from MRK_Current_View where symbol = '%s'", symtext);
+    sprintf(cmd, "select _Current_key, _Marker_key, current_symbol, symbol from MRK_Current_View where symbol = '%s'", symtext);
 
-    dbcmd(dbproc, cmd);
-    dbsqlexec(dbproc);
+    dbproc = mgi_dbexec(cmd);	
  
-    while (dbresults(dbproc) != NO_MORE_RESULTS)
+    while (mgi_dbresults(dbproc) != NO_MORE_RESULTS)
     {
-		while (dbnextrow(dbproc) != NO_MORE_ROWS)
+		while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS)
         {
 			strcpy(csym, mgi_getstr(dbproc, 3)); /* current symbol */
 			strcpy(sym, mgi_getstr(dbproc, 4));  /* symbol         */
@@ -94,7 +93,7 @@ Boolean current;
 		}
 	}
 
-	(void) dbclose(dbproc);
+	(void) mgi_dbclose(dbproc);
 
 	if(!foundit)
 		strcpy(idtext,"");
@@ -111,22 +110,21 @@ Boolean current;
 Boolean symbolinMLC(symidtext)
 char *symidtext;
 {
-	DBPROCESS *dbproc = mgi_dbopen();
+    DBPROCESS *dbproc;
     char cmd[BUFSIZ];
     int foundit = 0;
  
  
     sprintf(cmd, "select _Marker_key from MLC_Text where _Marker_key = %s", symidtext);
  
-    dbcmd(dbproc, cmd);
-    dbsqlexec(dbproc);
+    dbproc = mgi_dbexec(cmd);
  
-    while (dbresults(dbproc) != NO_MORE_RESULTS){
-        while (dbnextrow(dbproc) != NO_MORE_ROWS){
+    while (mgi_dbresults(dbproc) != NO_MORE_RESULTS){
+        while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS){
             foundit = 1;
         }
     }
-    (void) dbclose(dbproc);
+    (void) mgi_dbclose(dbproc);
  
     if(foundit)
 		return True;
