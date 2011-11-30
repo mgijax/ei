@@ -2339,7 +2339,7 @@ rules:
 
 	  (void) mgi_writeLog(select);
 
-	  dbproc : opaque := mgi_dbexec(cmd);
+	  dbproc : opaque := mgi_dbexec(select);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      (void) mgi_tblSetCell(cellLineTable, row, cellLineTable.cellLineKey, mgi_getstr(dbproc, 1));
@@ -2449,7 +2449,7 @@ rules:
 
 	  select : string := allele_sql_15 + mgi_DBprstr(value);
 
-	  dbproc : opaque := mgi_dbexec(cmd);
+	  dbproc : opaque := mgi_dbexec(select);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      top->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 1);

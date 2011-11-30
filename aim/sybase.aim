@@ -15,7 +15,6 @@ CALLS
 	ENTRY 
 
 	 mgi_dbinit("char *", "char *")                  : "int";
-	 mgi_dbopen()                                    : "DBPROCESS *";
 	 mgi_dbcancel("DBPROCESS *");
 	 mgi_dbclose("DBPROCESS *");
 	 mgi_dbexit();
