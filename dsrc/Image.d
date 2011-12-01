@@ -70,9 +70,9 @@
 dmodule Image is
 
 #include <mgilib.h>
-#include <syblib.h>
 #include <pglib.h>
 #include <tables.h>
+#include <gxdsql.h>
 
 devents:
 
@@ -231,11 +231,11 @@ rules:
 	  if (global_application = "MGD") then
 	      defaultMGITypeKey := top->MGITypePulldown->Alleles.defaultValue;
 	      defaultImageClassKey := "6481782";
-	      orderBy := "\norder by i.jnum\n";
+	      orderBy := image_sql_8;
 	  else
 	      defaultMGITypeKey := top->MGITypePulldown->Expression.defaultValue;
 	      defaultImageClassKey := "6481781";
-	      orderBy := "\norder by i.imageType, i.jnum\n";
+	      orderBy := image_sql_9;
 	  end if;
 	end does;
 
@@ -266,8 +266,8 @@ rules:
 	  -- get the copyright if it has not already been retrieved
 
 	  if (top->Copyright->text.value.length = 0) then
-	    top->Copyright->text.value := mgi_sql1("declare @copyright varchar(255)\nexec BIB_getCopyright " + top->mgiCitation->ObjectID->text.value + ", @copyright output\nselect @copyright");
---	    top->Copyright->text.value := mgi_sql1("exec BIB_getCopyright " + top->mgiCitation->ObjectID->text.value);
+	    top->Copyright->text.value := 
+		mgi_sql1(image_sql_1a + top->mgiCitation->ObjectID->text.value + image_sql_1b);
           end if;
 
 	  currentRecordKey := "@" + KEYNAME;
@@ -385,12 +385,8 @@ rules:
 	    -- for big loads (like J:153498), this will take a while
 	    -- we may want to attach the reference check (see Assay.d/python_image_cache)
 	    -- in order to skip this step, if it's taking too long
-	    from := "from IMG_Image_View i";
-	    where := "where _Refs_key = " + refsKey;
             QueryNoInterrupt.source_widget := top;
-	    QueryNoInterrupt.select := "select distinct i._Image_key, " + 
-		  "i.jnumID + \";\" + i.figureLabel + \";\" + i.imageType\n" + 
-		  from + "\n" + where + orderBy;
+	    QueryNoInterrupt.select := image_sql_7 + refsKey + orderBy;
 	    QueryNoInterrupt.table := IMG_IMAGE;
 	    QueryNoInterrupt.selectItem := false;
             send(QueryNoInterrupt, 0);
@@ -460,8 +456,8 @@ rules:
 	  -- get the copyright if it has not already been retrieved
 
 	  if (top->Copyright->text.value.length = 0) then
-	    top->Copyright->text.value := mgi_sql1("declare @copyright varchar(255)\nexec BIB_getCopyright " + top->mgiCitation->ObjectID->text.value + ", @copyright output\nselect @copyright");
---	    top->Copyright->text.value := mgi_sql1("exec BIB_getCopyright " + top->mgiCitation->ObjectID->text.value);
+	    top->Copyright->text.value := 
+		mgi_sql1(image_sql_1a + top->mgiCitation->ObjectID->text.value + image_sql_1b);
           end if;
 
 	  cmd := "";
@@ -747,7 +743,7 @@ rules:
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
 	  Query.select := "select distinct i._Image_key, " + 
-			"i.jnumID + \"; \" + i.imageType + \"; \" + i.figureLabel\n" +
+			"i.jnumID || '; ' || i.imageType || '; ' || i.figureLabel, i.jnum, i.imageType\n" +
 			from + "\n" + where + orderBy;
 	  Query.table := IMG_IMAGE;
 	  send(Query, 0);
@@ -794,34 +790,21 @@ rules:
 	  -- Initialize global current record key
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from IMG_Image_View where _Image_key = " + currentRecordKey + "\n" +
-
-		 "select n._Note_key, n.note from MGI_Note_Image_View n \n" + 
-		 "where n.noteType = 'Caption' and n._Object_key = " + currentRecordKey + "\n" +
-		 "order by n.sequenceNum\n" +
-
-		 "select n._Note_key, n.note from MGI_Note_Image_View n \n" + 
-		 "where n.noteType = 'Copyright' and n._Object_key = " + currentRecordKey + "\n" +
-		 "order by n.sequenceNum\n" +
-
-	         "select * from IMG_ImagePane where _Image_key = " + currentRecordKey + "\n" +
-
-		 "select a._Object_key, a.accID from IMG_Image_Acc_View a, IMG_Image i " +
-		 "where i._Image_key = " + currentRecordKey + "\n" +
-		 "and i._ThumbnailImage_key = a._Object_key\n" +
-		 "and a._LogicalDB_key = 1 and a.prefixPart = 'MGI:' and a.preferred = 1";
+	  cmd := image_sql_2 + currentRecordKey +
+		 image_sql_3a + currentRecordKey + image_sql_3b +
+		 image_sql_4a + currentRecordKey + image_sql_4b +
+		 image_sql_5 + currentRecordKey +
+		 image_sql_6a + currentRecordKey + image_sql_6b;
 
 	  results : integer := 1;
 	  row : integer;
 	  table : widget;
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    row := 0;
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
 		table := top->Control->ModificationHistory->Table;
 
@@ -876,7 +859,7 @@ rules:
 	    results := results + 1;
           end while;
 
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
  
 	  -- Load Notes
 

@@ -23,7 +23,6 @@
 dmodule SynTypeTableLib is
 
 #include <mgilib.h>
-#include <syblib.h>
 #include <pglib.h>
 #include <tables.h>
 
@@ -96,12 +95,10 @@ rules:
 	  cmd := "select _SynonymType_key, _MGIType_key, synonymType, allowOnlyOne from " + mgi_DBtable(tableID) + 
 		  "\norder by allowOnlyOne desc, _SynonymType_key";
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+	  dbproc : opaque := mgi_dbexec(cmd);
 
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	       (void) mgi_tblSetCell(table, row, table.synTypeKey, mgi_getstr(dbproc, 1));
 	       (void) mgi_tblSetCell(table, row, table.synType,  mgi_getstr(dbproc, 3));
 	       (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_EMPTY);
@@ -110,7 +107,7 @@ rules:
 	    end while;
 	  end while;
 
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  if (top->SynonymTypeMenu.subMenuId.numChildren = 0) then
 	    InitOptionMenu.option := top->SynonymTypeMenu;
@@ -153,12 +150,10 @@ rules:
 		 " order by  allowOnlyOne desc, _SynonymType_key";
 
 	  row : integer := 0;
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 
 	      (void) mgi_tblSetCell(table, row, table.synKey, mgi_getstr(dbproc, 1));
 	      (void) mgi_tblSetCell(table, row, table.synTypeKey, mgi_getstr(dbproc, 2));
@@ -179,7 +174,7 @@ rules:
               row := row + 1;
             end while;
           end while;
-          (void) dbclose(dbproc);
+          (void) mgi_dbclose(dbproc);
 
 	  -- Re-set the form
 

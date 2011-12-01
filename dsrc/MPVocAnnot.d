@@ -36,9 +36,9 @@
 dmodule MPVocAnnot is
 
 #include <mgilib.h>
-#include <syblib.h>
 #include <pglib.h>
 #include <tables.h>
+#include <mgdsql.h>
 
 devents:
 
@@ -466,7 +466,7 @@ rules:
 
 	      if (clipAnnotEvidenceKey.length > 0) then
 		-- add notes
-		cmd := cmd + "exec VOC_copyAnnotEvidenceNotes " + clipAnnotEvidenceKey + ",@" + keyName + "\n";
+		cmd := cmd + mpvoc_sql_0 + clipAnnotEvidenceKey + ",@" + keyName + "\n";
 	      end if;
 
             elsif (editMode = TBL_ROW_MODIFY) then
@@ -498,7 +498,7 @@ rules:
 
 	  ModifySQL.transaction := true;
 	  if (cmd != nil) then
-	    if (strstr(cmd, "exec VOC_copyAnnotEvidenceNotes") != nil) then
+	    if (strstr(cmd, mpvoc_sql_0) != nil) then
 	      ModifySQL.transaction := false;
 	    end if;
           end if;
@@ -508,7 +508,7 @@ rules:
 	  ModifySQL.reselect := false;
           send(ModifySQL, 0);
 
-	  cmd := "\nexec VOC_processAnnotHeader " + annotTypeKey + "," + currentRecordKey + "\n";
+	  cmd := mpvoc_sql_1 + annotTypeKey + "," + currentRecordKey + "\n";
           ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
 	  ModifySQL.reselect := true;
@@ -620,7 +620,7 @@ rules:
 	  -- lose their 'isNormal' bit.  We use a stored procedure to
 	  -- recompute these.
 
-	  cmd := "\nexec VOC_processAnnotHeader " + annotTypeKey + "," + currentRecordKey + "\n";
+	  cmd := mpvoc_sql_1 + annotTypeKey + "," + currentRecordKey + "\n";
 	  ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
 	  ModifySQL.reselect := true;
@@ -683,19 +683,13 @@ rules:
 
 	LoadHeader does
 
-	  cmd : string := "select _AnnotHeader_key, _Term_key, term, approvedBy, approval_date, sequenceNum from " + 
-			  mgi_DBtable(VOC_ANNOTHEADER_VIEW) + 
-			  " where _AnnotType_key = " + annotTypeKey +
-			  " and _Object_key = " + currentRecordKey + 
-			  " order by sequenceNum";
+	  cmd : string := mpvoc_sql_2a + annotTypeKey + mpvoc_sql_2b + currentRecordKey + mpvoc_sql_2c;
 
 	  row : integer := 0;
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      (void) mgi_tblSetCell(headerTable, row, headerTable.annotHeaderKey, mgi_getstr(dbproc, 1));
 	      (void) mgi_tblSetCell(headerTable, row, headerTable.headerTermKey, mgi_getstr(dbproc, 2));
 	      (void) mgi_tblSetCell(headerTable, row, headerTable.headerTerm, mgi_getstr(dbproc, 3));
@@ -708,7 +702,7 @@ rules:
             end while;
           end while;
  
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	end does;
 
@@ -947,7 +941,6 @@ rules:
 --
 
 	Select does
-	  orderBy : string;
 	  value : string;
 
           (void) busy_cursor(top);
@@ -971,34 +964,19 @@ rules:
 
 	  -- Set the ReportDialog.select to query the currently selected record only
 
-	  top->ReportDialog.select := "select distinct _Object_key, description " +
-			  "from " + dbView + " where _Object_key = " + currentRecordKey;
+	  top->ReportDialog.select := mpvoc_sql_6a + dbView + mpvoc_sql_6b + currentRecordKey;
 
-	  orderBy := "e.jnum, a.term\n";
-
-	  cmd : string := "select _Object_key, accID, description, short_description" +
-			  " from " + dbView + 
-			  " where _Object_key = " + currentRecordKey + 
-			  " and prefixPart = 'MGI:' and preferred = 1 " + 
-			  " order by description\n" +
-	                  "select a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier, e.*" +
-			  " from " + mgi_DBtable(VOC_ANNOT_VIEW) + " a," +
-			    mgi_DBtable(VOC_EVIDENCE_VIEW) + " e" +
-		          " where a._AnnotType_key = " + annotTypeKey +
-			  " and a._Object_key = " + currentRecordKey + 
-			  " and a._Annot_key = e._Annot_key " +
-			  " order by " + orderBy;
+	  cmd : string := mpvoc_sql_7a + dbView + mpvoc_sql_7b + currentRecordKey + mpvoc_sql_7c +
+			  mpvoc_sql_8a + annotTypeKey + mpvoc_sql_8b + currentRecordKey + mpvoc_sql_8c;
 
 	  row : integer := 0;
 	  i : integer;
 	  results : integer := 1;
 	  objectLoaded : boolean := false;
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
 	        if (not objectLoaded) then
 	          top->mgiAccession->ObjectID->text.value := mgi_getstr(dbproc, 1);
@@ -1040,7 +1018,7 @@ rules:
 	    results := results + 1;
           end while;
  
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  -- Reset Background
 
@@ -1126,20 +1104,19 @@ rules:
 	  annotTypeKey := (string) top->VocAnnotTypeMenu.menuHistory.defaultValue;
 	  annotType := top->VocAnnotTypeMenu.menuHistory.labelString;
 	  mgiTypeKey := (string) top->VocAnnotTypeMenu.menuHistory.mgiTypeKey;
-	  dbView := mgi_sql1("select dbView from ACC_MGIType where _MGIType_key = " + mgiTypeKey);
+	  dbView := mgi_sql1(mpvoc_sql_3 + mgiTypeKey);
 	  top->mgiAccession.mgiTypeKey := mgiTypeKey;
 	  annotTable.vocabKey := top->VocAnnotTypeMenu.menuHistory.vocabKey;
 	  annotTable.vocabEvidenceKey := top->VocAnnotTypeMenu.menuHistory.evidenceKey;
 	  annotTable.vocabQualifierKey := top->VocAnnotTypeMenu.menuHistory.qualifierKey;
 	  annotTable.annotVocab := top->VocAnnotTypeMenu.menuHistory.annotVocab;
 
-	  top->EvidenceCodeList.cmd := "select _Term_key, abbreviation " +
-		"from VOC_Term where _Vocab_key = " + (string) evidenceKey + " order by abbreviation";
+	  top->EvidenceCodeList.cmd := mpvoc_sql_4a + (string) evidenceKey + mpvoc_sql_4b;
           LoadList.list := top->EvidenceCodeList;
 	  send(LoadList, 0);
 
 	  defaultQualifierKey := 
-	      mgi_sql1("select _Term_key from VOC_Term where _Vocab_key = " + (string) annotTable.vocabQualifierKey + " and term is null");
+	      mgi_sql1(mpvoc_sql_5 + (string) annotTable.vocabQualifierKey);
 
 	  (void) reset_cursor(mgi);
 	end does;
@@ -1353,29 +1330,17 @@ rules:
 	    row := row + 1;
 	  end while; 
 
-          dbproc : opaque := mgi_dbopen();
+          dbproc : opaque;
 
           while (i < annotclipboard->List.items.count) do
 	    key := annotclipboard->List.keys[i];
 
-	    cmd := "select a._Term_key, t.term, t.sequenceNum, ac.accID, a._Qualifier_key, qualifier = q.term, " +
-		   "e._EvidenceTerm_key, et.abbreviation, et.sequenceNum " +
-		   " from VOC_Annot a, ACC_Accession ac, VOC_Term t, VOC_Evidence e, VOC_Term et, VOC_Term q " +
-		   " where a._AnnotType_key = " + annotTypeKey +
-		   " and a._Term_key = ac._Object_key " + 
-		   " and ac._MGIType_key = 13 " + 
-		   " and ac.preferred = 1 " +
-		   " and a._Term_key = t._Term_key " +
-		   " and a._Annot_key = e._Annot_key " +
-		   " and e._AnnotEvidence_key = " + key + 
-		   " and e._EvidenceTerm_key = et._Term_key " +
-		   " and a._Qualifier_key = q._Term_key";
+	    cmd := mpvoc_sql_9a + annotTypeKey + mpvoc_sql_9b + key;
 
-            (void) dbcmd(dbproc, cmd);
-            (void) dbsqlexec(dbproc);
+	    dbproc := mgi_dbexec(cmd);
  
-            while (dbresults(dbproc) != NO_MORE_RESULTS) do
-              while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+            while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+              while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.clipAnnotEvidenceKey, key);
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.termKey, mgi_getstr(dbproc, 1));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.term, mgi_getstr(dbproc, 2));
@@ -1393,9 +1358,10 @@ rules:
             end while;
  
             i := i + 1;
+	    (void) mgi_dbclose(dbproc);
+
           end while;
 
-	  (void) dbclose(dbproc);
 	  (void) reset_cursor(top);
 
 	end does;
@@ -1444,22 +1410,15 @@ rules:
 	  -- Ignore wild type alleles
 
 	  select : string := 
-	      "select g._Allele_key from GXD_AlleleGenotype g, ALL_Allele a " +
-	      "where g._Genotype_key = " + currentRecordKey +
-	      "\nand g._Allele_key = a._Allele_key " +
-	      "\nand a.isWildType = 0 " +
-	      "\nand not exists (select 1 from MGI_Reference_Assoc a where a._MGIType_key = 11 " +
-	      "\nand a._Object_key = g._Allele_key and a._Refs_key = " + refsKey + ")";
+	      mpvoc_sql_10a + currentRecordKey + mpvoc_sql_10b + refsKey + mpvoc_sql_10c;
 
-	  dbproc := mgi_dbopen();
-          (void) dbcmd(dbproc, select);
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  dbproc := mgi_dbexec(select);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      alleles.append(mgi_getstr(dbproc, 1));
 	    end while;
 	  end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  -- Create an association between this J: and the Alleles that are missing this reference association
 

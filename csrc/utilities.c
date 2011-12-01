@@ -16,8 +16,8 @@
  *        and check for date equal to empty string.
  */
 
+#include <mgilib.h>
 #include <utilities.h>
-#include <syblib.h>
 
 /* keep_busy
  *

@@ -24,7 +24,6 @@
 dmodule Translation is
 
 #include <mgilib.h>
-#include <syblib.h>
 #include <pglib.h>
 #include <tables.h>
 
@@ -477,13 +476,11 @@ rules:
 	  cmd : string := "select * from " + mgi_DBtable(MGI_TRANSLATIONTYPE) +
 			  " where " + mgi_DBkey(MGI_TRANSLATIONTYPE) + " = " + currentRecordKey + "\n";
 
-          dbproc : opaque := mgi_dbopen();
-
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
- 
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          dbproc : opaque;
+	  
+	  dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      top->ID->text.value   := mgi_getstr(dbproc, 1);
 	      top->Compression->text.value := mgi_getstr(dbproc, 5);
               SetOption.source_widget := top->TranslationTypeMenu;
@@ -496,6 +493,7 @@ rules:
 	      send(SetMGIType, 0);
 	    end while;
 	  end while;
+	  (void) mgi_dbclose(dbproc);
 
 	  -- Query for specific bad name/good name records based on Translation Type
 
@@ -512,11 +510,10 @@ rules:
 	  row : integer := 0;
 	  isDuplicate : boolean := false;
 
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+	  dbproc := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 
 	      isDuplicate := false;
 
@@ -548,8 +545,7 @@ rules:
 
             end while;
           end while;
- 
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  send(StripeRows, 0);
 
@@ -721,11 +717,9 @@ rules:
 	    select := select + " where accID = " + mgi_DBprstr(value);
 	  end if;
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, select);
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  dbproc : opaque := mgi_dbexec(select);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      objectKey := mgi_getstr(dbproc, 1);
 	      mgiTerm  := mgi_getstr(dbproc, 2);
 
@@ -736,7 +730,7 @@ rules:
 	      end if;
 	    end while;
 	  end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  -- If value is valid
 	  --   Copy the Key into the Key field

@@ -66,9 +66,9 @@
 dmodule Reference is
 
 #include <mgilib.h>
-#include <syblib.h>
 #include <pglib.h>
 #include <tables.h>
+#include <mgdsql.h>
 
 devents:
 
@@ -236,22 +236,19 @@ rules:
 	  labels : string := "";
 	  row : integer := 0;
 
-	  dbproc : opaque := mgi_dbopen();
-
-	  cmd := "select _DataSet_key, abbreviation, inMGIprocedure from BIB_DataSet " + 
-		"where inMGIprocedure is not null and isObsolete = 0 " +
-		"order by sequenceNum";
-
-	  (void) dbcmd(dbproc, cmd);
-	  (void) dbsqlexec(dbproc);
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  dbproc : opaque;
+	  
+	  cmd := ref_sql_1;
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      (void) mgi_tblSetCell(statusTable, row, statusTable.dataSetKey, mgi_getstr(dbproc, 1));
 	      (void) mgi_tblSetCell(statusTable, row, statusTable.existsProc, mgi_getstr(dbproc, 3));
 	      labels := labels + mgi_getstr(dbproc, 2) + ",";
 	      row := row + 1;
 	    end while;
 	  end while;
+	  (void) mgi_dbclose(dbproc);
 
 	  -- Set appropriate table attritbutes
 	  statusTable.batch;
@@ -262,20 +259,17 @@ rules:
 	  labels := "";
 	  row := 0;
 
-	  cmd := "select _DataSet_key, abbreviation from BIB_DataSet " +
-		"where inMGIprocedure is null and isObsolete = 0 " +
-		"order by sequenceNum";
-
-	  (void) dbcmd(dbproc, cmd);
-	  (void) dbsqlexec(dbproc);
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  cmd := ref_sql_2;
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      (void) mgi_tblSetCell(nonstatusTable, row, nonstatusTable.dataSetKey, mgi_getstr(dbproc, 1));
 	      (void) mgi_tblSetCell(nonstatusTable, row, nonstatusTable.existsProc, "");
 	      labels := labels + mgi_getstr(dbproc, 2) + ",";
 	      row := row + 1;
 	    end while;
 	  end while;
+	  (void) mgi_dbclose(dbproc);
 
 	  -- Set appropriate table attritbutes
 	  nonstatusTable.batch;
@@ -283,7 +277,6 @@ rules:
 	  nonstatusTable.xrtTblVisibleRows := row;
 	  nonstatusTable.unbatch;
 
-	  (void) dbclose(dbproc);
 	end does;
 
 --
@@ -880,18 +873,16 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from BIB_All2_View where _Refs_key = " + currentRecordKey + "\n" +
-	         "select * from BIB_Books where _Refs_key = " + currentRecordKey + "\n" +
-	         "select rtrim(note) from BIB_Notes where _Refs_key = " + currentRecordKey + " order by sequenceNum";
+	  cmd := ref_sql_3 + currentRecordKey +
+	         ref_sql_4 + currentRecordKey + "\n" +
+	         ref_sql_5a + currentRecordKey + ref_sql_5b;
 
 	  top->Notes->text.value := "";
 
-	  dbproc : opaque := mgi_dbopen();
-	  (void) dbcmd(dbproc, cmd);
-	  (void) dbsqlexec(dbproc);
+	  dbproc : opaque := mgi_dbexec(cmd);
 
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
 	        top->ID->text.value        := mgi_getstr(dbproc, 1);
 	        top->Authors->text.value   := mgi_getstr(dbproc, 4) + mgi_getstr(dbproc, 5);
@@ -942,7 +933,7 @@ rules:
 	    results := results + 1;
 	  end while;
 
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  top->QueryList->List.row := Select.item_position;
 
@@ -1054,13 +1045,11 @@ rules:
 	  send(ClearTable, 0);
 	  send(InitDataSets, 0);
 
-	  cmd := "select _Assoc_key, _DataSet_key, isNeverUsed from BIB_DataSet_Assoc where _Refs_key = " + currentRecordKey;
+	  cmd := ref_sql_6 + currentRecordKey;
 
-	  dbproc : opaque := mgi_dbopen();
-	  (void) dbcmd(dbproc, cmd);
-	  (void) dbsqlexec(dbproc);
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  dbproc : opaque := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 
 	      -- the statusTable ones
 
@@ -1115,7 +1104,7 @@ rules:
 	    row := row + 1;
 	  end while;
 
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 	end does;
 
 --

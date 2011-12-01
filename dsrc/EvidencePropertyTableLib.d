@@ -21,9 +21,9 @@
 dmodule EvidencePropertyTableLib is
 
 #include <mgilib.h>
-#include <syblib.h>
 #include <pglib.h>
 #include <tables.h>
+#include <mgisql.h>
 
 -- See EvidencePropertyTableLib.de for D event declarations
 
@@ -88,15 +88,12 @@ rules:
 	  cmd : string;
 	  row : integer := 0;
 
-	  cmd := "select _EvidenceProperty_key, propertyTerm from " + mgi_DBtable(tableID) + 
-		  "\norder by propertyTerm";
+	  cmd := evidenceproperty_sql_1a + mgi_DBtable(tableID) + evidenceproperty_sql_1b;
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+	  dbproc : opaque := mgi_dbexec(cmd);
 
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	       (void) mgi_tblSetCell(table, row, table.propertyTermKey, mgi_getstr(dbproc, 1));
 	       (void) mgi_tblSetCell(table, row, table.propertyTerm,  mgi_getstr(dbproc, 2));
 	       (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_EMPTY);
@@ -104,7 +101,7 @@ rules:
 	    end while;
 	  end while;
 
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  if (top->EvidencePropertyMenu.subMenuId.numChildren = 0) then
 	    InitOptionMenu.option := top->EvidencePropertyMenu;
@@ -132,6 +129,8 @@ rules:
 	  labelString : string := LoadEvidencePropertyTable.labelString;
 	  editMode : string := LoadEvidencePropertyTable.editMode;
 	  cmd : string;
+	  nextSeqNum : integer := 0;
+	  lastRow : integer;
 
 	  ClearTable.table := table;
 	  send(ClearTable, 0);
@@ -142,18 +141,16 @@ rules:
 	    editMode := TBL_ROW_NOCHG;
 	  end if;
 
-          cmd := "select * " +
-	  	 " from " + mgi_DBtable(tableID) +
-		 " where " + mgi_DBkey(tableID) + " = " + objectKey +
-		 " order by stanza, sequenceNum";
+          cmd := evidenceproperty_sql_2a + mgi_DBtable(tableID) +
+		 evidenceproperty_sql_2b + mgi_DBkey(tableID) + 
+		 evidenceproperty_sql_2c + objectKey +
+		 evidenceproperty_sql_2d;
 
 	  row : integer := 0;
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 
 	      (void) mgi_tblSetCell(table, row, table.propertyKey, mgi_getstr(dbproc, 1));
 	      (void) mgi_tblSetCell(table, row, table.annotEvidenceKey, mgi_getstr(dbproc, 2));
@@ -164,10 +161,19 @@ rules:
 	      (void) mgi_tblSetCell(table, row, table.propertyValue, mgi_getstr(dbproc, 6));
 	      (void) mgi_tblSetCell(table, row, table.editMode, editMode);
               row := row + 1;
+	      nextSeqNum := (integer) mgi_getstr(dbproc, 5);
 
             end while;
           end while;
-          (void) dbclose(dbproc);
+          (void) mgi_dbclose(dbproc);
+
+	  lastRow := mgi_tblNumRows(table);
+	  while (row <= lastRow) do
+	    nextSeqNum := nextSeqNum + 1;
+	    (void) mgi_tblSetCell(table, row, table.seqNum, (string) nextSeqNum);
+            row := row + 1;
+          end while;
+
 	end does;
 
 --
@@ -185,7 +191,6 @@ rules:
 	  i : integer := 1;
           editMode : string;
           key : string;
-	  annotEvidenceKey : string;
 	  propertyStanza : string;
 	  propertyTermKey : string;
 	  propertyValue : string;
@@ -193,6 +198,7 @@ rules:
 	  set : string := "";
 	  keyName : string := "propertyKey";
 	  keyDefined : boolean := false;
+	  lastStanza : string := "0";
  
           if (objectKey.length = 0) then
             StatusReport.source_widget := table.top;
@@ -211,6 +217,14 @@ rules:
 	    propertyTermKey := mgi_tblGetCell(table, row, table.propertyTermKey);
 	    propertyValue := mgi_tblGetCell(table, row, table.propertyValue);
 	    seqNum := mgi_tblGetCell(table, row, table.seqNum);
+
+	    --if (lastStanza != propertyStanza) then
+	     --  seqNum := 1;
+	    --else
+	    --   seqNum := seqNum + 1;
+            --end if;
+
+	   -- lastStanza := propertyStanza;
 
             if (editMode = TBL_ROW_ADD) then
 

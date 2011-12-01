@@ -78,9 +78,9 @@
 dmodule InSituResult is
 
 #include <mgilib.h>
-#include <syblib.h>
 #include <pglib.h>
 #include <tables.h>
+#include <gxdsql.h>
 
 devents:
 
@@ -278,8 +278,7 @@ rules:
 	  -- Copy the appropriate values to the target table
 
 	  count : string;
-          count := mgi_sql1("select count(*) from GXD_InSituResult " +
-			    "where _Specimen_key = " + specimenKey);
+          count := mgi_sql1(insitu_sql_1 + specimenKey);
 	  (void) mgi_tblSetCell(target, mgi_tblGetCurrentRow(target), top.targetColumn, count);
 
 	  if (InSituResultCommit.quit) then
@@ -499,7 +498,7 @@ rules:
 	  -- check image list
 	  -- if image cache count <= our configured value, then ok
 	  refKey : string := top.root->mgiCitation->ObjectID->text.value;
-	  refCount : string := mgi_sql1("select count(*) from IMG_Image where _Refs_key = " + refKey);
+	  refCount : string := mgi_sql1(insitu_sql_2 + refKey);
 	  if (integer) refCount <= (integer) python_image_cache then
 	    PythonImageCache.objectKey := refKey;
 	    send(PythonImageCache, 0);
@@ -535,7 +534,7 @@ rules:
 	  newCmd := saveCmd + " " + key;
 	  top->ImagePaneList.cmd := newCmd + "\norder by paneLabel";
 
-	  refCount := mgi_sql1("select count(*) from IMG_Image where _Refs_key = " + key);
+	  refCount := mgi_sql1(insitu_sql_2 + key);
 	  if (integer) refCount > (integer) assay_image_lookup then
 	    LoadList.loadsmall := true;
 	  end if;
@@ -579,18 +578,13 @@ rules:
 	  ClipboardLoad.source_widget := top->ADClipboard->Label;
 	  send(ClipboardLoad, 0);
 
-	  cmd := "select * from GXD_InSituResult_View where _Specimen_key = " + specimenKey +
-		"\norder by sequenceNum\n" +
-		"select _Result_key, _ImagePane_key, figurepaneLabel from GXD_ISResultImage_View " +
-		"where _Specimen_key = " + specimenKey + "\norder by sequenceNum\n" +
-		"select _Result_key, _Structure_key from GXD_ISResultStructure_View " +
-		"where _Specimen_key = " + specimenKey + "\norder by sequenceNum\n";
+	  cmd := insitu_sql_3a + specimenKey + insitu_sql_3b +
+		 insitu_sql_4a + specimenKey + insitu_sql_4b +
+		 insitu_sql_5a + specimenKey + insitu_sql_5b;
 
-          dbproc :opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          dbproc :opaque := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
 		(void) mgi_tblSetCell(table, row, table.resultKey, mgi_getstr(dbproc, 1));
 		(void) mgi_tblSetCell(table, row, table.strengthKey, mgi_getstr(dbproc, 3));
@@ -659,7 +653,7 @@ rules:
 	    end while;
 	    results := results + 1;
 	  end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
           -- Initialize Option Menus for row 0
  

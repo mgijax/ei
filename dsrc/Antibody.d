@@ -60,9 +60,9 @@
 dmodule Antibody is
 
 #include <mgilib.h>
-#include <syblib.h>
 #include <pglib.h>
 #include <tables.h>
+#include <gxdsql.h>
 
 devents:
 
@@ -98,7 +98,7 @@ locals:
 
 	cmd : string;
 	set : string;
-	select : string := "select distinct g._Antibody_key, g.antibodyName\n";
+	select : string := antibody_sql_1;
 	from : string;
 	where : string;
 	unionalias : string;
@@ -856,22 +856,15 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from GXD_Antibody_View where _Antibody_key = " + currentRecordKey + "\n" +
+	  cmd := antibody_sql_2 + currentRecordKey + "\n" +
 
-		 "select _Antigen_key, _Source_key, antigenName, mgiID, regionCovered, antigenNote " +
-		 "from GXD_AntibodyAntigen_View where _Antibody_key = " + currentRecordKey + "\n" +
+		 antibody_sql_3 + currentRecordKey + "\n" +
 
-		 "select _Marker_key, symbol, chromosome " +
-		 "from GXD_AntibodyMarker_View where _Antibody_key = " + currentRecordKey + 
-		 "\norder by symbol\n" +
+		 antibody_sql_4a + currentRecordKey + antibody_sql_4b +
 
-		 "select _AntibodyAlias_key, _Refs_key, alias " + 
-		 "from GXD_AntibodyAlias_View where _Antibody_key = " + currentRecordKey + 
-		 "\norder by alias, _AntibodyAlias_key\n" +
+		 antibody_sql_5a + currentRecordKey + antibody_sql_5b +
 
-		 "select _AntibodyAlias_key, _Refs_key, alias, jnum, short_citation " + 
-		 "from GXD_AntibodyAliasRef_View where _Antibody_key = " + currentRecordKey + 
-		 "\norder by alias, _AntibodyAlias_key\n";
+		 antibody_sql_6a + currentRecordKey + antibody_sql_6b;
 
 	  table : widget;
 	  results : integer := 1;
@@ -880,13 +873,11 @@ rules:
 	  newValue : string;
 	  i : integer := 0;
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    row := 0;
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 
 	      -- Required Antibody Information
 	      if (results = 1) then
@@ -981,7 +972,7 @@ rules:
 	    results := results + 1;
           end while;
 
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
  
           LoadRefTypeTable.table := top->Reference->Table;
 	  LoadRefTypeTable.tableID := MGI_REFERENCE_ANTIBODY_VIEW;

@@ -78,9 +78,9 @@ dmodule Dictionary is
 
 -- standard includes
 #include <mgilib.h>
-#include <syblib.h>
 #include <pglib.h>
 #include <tables.h>
+#include <gxdsql.h>
 
 -- ADI-specific includes
 #include <dictionary.h>
@@ -307,12 +307,12 @@ rules:
 
 	   -- set stage key
 	   defaultStageKey := 
-	     mgi_sql1("select _Stage_key from GXD_TheilerStage where stage = " + (string) current_stagenum );
+	     mgi_sql1(dictionary_sql_1 + (string) current_stagenum );
 
 	   -- set system key = user selection or TS default
 
 	   defaultSystemKey := 
-	     mgi_sql1("select _defaultSystem_key from GXD_TheilerStage where _Stage_key = " + defaultStageKey);
+	     mgi_sql1(dictionary_sql_2 + defaultStageKey);
 
 	   if (not isADSystem) then
              InitOptionMenu.option := addDialog->ADSystemMenu;
@@ -504,8 +504,7 @@ rules:
              cmd := cmd + "if @@error != 0 \n" +
                           "begin \n" +
                           "   rollback transaction \n" +
-                          "   raiserror 99999 \"Update " +
-                          " of preferredName failed \" " +
+                          "   raiserror 99999 \'Update of preferredName failed \' " +
                           "    return \n" +
                           "end \n";
           end if;

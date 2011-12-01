@@ -136,9 +136,9 @@
 dmodule Nomen is
 
 #include <mgilib.h>
-#include <syblib.h>
 #include <pglib.h>
 #include <tables.h>
+#include <mgdsql.h>
 
 devents:
 
@@ -197,6 +197,8 @@ locals:
         accTable : widget;		-- Accession Table
         accRefTable : widget;		-- Accession Reference Table
 
+	-- this column is always set to the default
+	-- this column can be removed (see TR10841)
 	curationState : string := "";	-- Default Curation State
 
 rules:
@@ -254,14 +256,11 @@ rules:
 	  -- Dynamically create Marker Event, Event Reason, Status, 
 	  -- Type and Chromosome Menus
 
-	  top->MarkerEventMenu.subMenuId.sql := 
-		"select * from " + mgi_DBtable(MRK_EVENT) + 
-		" where " + mgi_DBkey(MRK_EVENT) + " in (1,2) order by " + mgi_DBcvname(MRK_EVENT);
+	  top->MarkerEventMenu.subMenuId.sql := nomen_sql_1;
 	  InitOptionMenu.option := top->MarkerEventMenu;
 	  send(InitOptionMenu, 0);
 
-	  top->MarkerStatusMenu.subMenuId.sql := 
-		"select _Term_key, term from " + mgi_DBtable(NOM_STATUS) + " order by _Term_key";
+	  top->MarkerStatusMenu.subMenuId.sql := nomen_sql_2; 
 	  InitOptionMenu.option := top->MarkerStatusMenu;
 	  send(InitOptionMenu, 0);
 
@@ -321,7 +320,7 @@ rules:
 
 	  resettables.append(top->AccessionReference->Table);
 
-	  curationState := mgi_sql1("select _Term_key from VOC_Term_CurationState_View where term = " + mgi_DBprstr(INTERNALCURATIONSTATE));
+	  curationState := mgi_sql1(nomen_sql_3);
 
           -- Set Row Count
           SetRowCount.source_widget := top;
@@ -538,9 +537,11 @@ rules:
 	  end if;
 
 	  if (not (global_login = "mgd_dbo" or
-	           global_login = "ljm" or global_login = "lmm" or 
-		   global_login = "cml" or global_login = "rjc" or
-		   global_login = "bobs" or global_login = "tier4") and
+	           global_login = "mmh" or 
+	           global_login = "lmm" or 
+		   global_login = "cml" or 
+		   global_login = "rjc" or
+		   global_login = "tier4") and
               top->MarkerStatusMenu.menuHistory.modified and
 	      top->MarkerStatusMenu.menuHistory.labelString != STATUS_PENDING) then
             StatusReport.source_widget := top;
@@ -903,18 +904,15 @@ rules:
 	  table : widget;
 	  currentNomenKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from NOM_Marker_View " +
-		 " where _Nomen_key = " + currentNomenKey + "\n";
+	  cmd := nomen_sql_4 + currentNomenKey;
 
 	  row : integer := 0;
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+	  dbproc : opaque := mgi_dbexec(cmd);
 
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    row := 0;
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      top->ID->text.value             := mgi_getstr(dbproc, 1);
 	      top->Symbol->text.value         := mgi_getstr(dbproc, 7);
 	      top->Name->text.value           := mgi_getstr(dbproc, 8);
@@ -952,7 +950,7 @@ rules:
 	      row := row + 1;
 	    end while;
 	  end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
           LoadRefTypeTable.table := top->Reference->Table;
 	  LoadRefTypeTable.tableID := MGI_REFERENCE_NOMEN_VIEW;

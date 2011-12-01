@@ -19,9 +19,9 @@
 dmodule MutantCellLine is
 
 #include <mgilib.h>
-#include <syblib.h>
 #include <pglib.h>
 #include <tables.h>
+#include <mgdsql.h>
 
 devents:
 
@@ -179,8 +179,7 @@ rules:
 
 	  -- Confirm changes to MCL Name
 
-          mclName : string := mgi_sql1("select cellLine from ALL_CellLine " +
-		"where cellLine = " + mgi_DBprstr(top->EditForm->CellLine->text.value));
+          mclName : string := mgi_sql1(mutant_sql_1 + mgi_DBprstr(top->EditForm->CellLine->text.value));
 
 	  if (mclName.length > 0) then
 
@@ -319,8 +318,7 @@ rules:
 
 	  -- Confirm changes to MCL Name
 
-          mclName : string := mgi_sql1("select cellLine from ALL_CellLine " +
-		"where cellLine = " + mgi_DBprstr(top->EditForm->CellLine->text.value));
+          mclName : string := mgi_sql1(mutant_sql_1 + mgi_DBprstr(top->EditForm->CellLine->text.value));
 
 	  if (top->EditForm->CellLine->text.modified and mclName.length > 0) then
 
@@ -519,18 +517,14 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from " + mgi_DBtable(ALL_CELLLINE_VIEW) + " where _CellLine_key = " + currentRecordKey + "\n" +
-
-	         "select symbol from " + mgi_DBtable(ALL_ALLELE_CELLLINE_VIEW) + " where _MutantCellLine_key = " + currentRecordKey;
+	  cmd := mutant_sql_2 + currentRecordKey + mutant_sql_3 + currentRecordKey;
 
 	  results : integer := 1;
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+	  dbproc : opaque := mgi_dbexec(cmd);
 
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 
 	      if (results = 1) then
 	        top->ID->text.value := mgi_getstr(dbproc, 1);
@@ -578,7 +572,7 @@ rules:
 	    results := results + 1;
 	  end while;
 
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
           LoadAcc.table := accTable;
           LoadAcc.objectKey := currentRecordKey;
@@ -610,17 +604,12 @@ rules:
 	      return;
 	  end if;
 
-	  cmd := "select distinct _CellLine_key, cellLine, " +
-		"_Strain_key, cellLineStrain, _CellLine_Type_key from " + 
-		mgi_DBtable(ALL_CELLLINE_VIEW) +
-		" where " + mgi_DBkey(ALL_CELLLINE_VIEW) + " = " + top->mgiParentCellLine->ObjectID->text.value;
+	  cmd := mutant_sql_4 + top->mgiParentCellLine->ObjectID->text.value;
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+	  dbproc : opaque := mgi_dbexec(cmd);
 
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 
 	      top->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 1);
 	      top->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 2);
@@ -643,7 +632,7 @@ rules:
 
 	    end while;
 	  end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	end does;
 
@@ -661,20 +650,12 @@ rules:
 	      return;
 	  end if;
 
-	  cmd := "select _Derivation_key, name, " +
-                "parentCellLine_key, parentCellLine, " +
-		"parentCellLineStrain_key, parentCellLineStrain, " +
-		"_Vector_key, vector, " +
-		"_Creator_key, _DerivationType_key, _VectorType_key, parentCellLineType_key " +
-		"from " + mgi_DBtable(ALL_CELLLINE_DERIVATION_VIEW) +
-		" where _Derivation_key = " + top->mgiParentCellLine->Derivation->ObjectID->text.value;
+	  cmd := mutant_sql_5 + top->mgiParentCellLine->Derivation->ObjectID->text.value;
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+	  dbproc : opaque := mgi_dbexec(cmd);
 
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 
 	      top->mgiParentCellLine->Derivation->ObjectID->text.value := mgi_getstr(dbproc, 1);
 	      top->mgiParentCellLine->Derivation->CharText->text.value := mgi_getstr(dbproc, 2);
@@ -704,7 +685,7 @@ rules:
 
 	    end while;
 	  end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	end does;
 
@@ -747,18 +728,11 @@ rules:
 
 	  -- Search for value in the database
 
-	  select : string := "select distinct _CellLine_key, cellLine, " +
-		"_Strain_key, cellLineStrain, _CellLine_Type_key, " +
-		"_Vector_key, vector, " +
-		"_Creator_key, _VectorType_key from " + 
-		mgi_DBtable(ALL_CELLLINE_VIEW) +
-		" where isMutant = 0 and cellLine = " + mgi_DBprstr(value);
+	  select : string := mutant_sql_6 + mgi_DBprstr(value);
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, select);
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  dbproc : opaque := mgi_dbexec(select);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 
 	      top->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 1);
 	      top->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 2);
@@ -786,7 +760,7 @@ rules:
 
             end while;
           end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  -- If ID is null, then value is invalid
 
@@ -888,17 +862,13 @@ rules:
 	    return;
 	  end if;
 	      
-          derivationKey := mgi_sql1("select d._Derivation_key " +
-                         "from ALL_CellLine_Derivation d, ALL_CellLine c " +
-                         "where d._DerivationType_key = " + derivationTypeKey +
-                         " and d._ParentCellLine_key = " + parentKey +
-                         " and d._Creator_key = " + creatorKey +
-                         " and d._VectorType_key = " + vectorTypeKey +
-                         " and d._Vector_key = " + vectorKey +
-                         " and d._ParentCellLine_key = c._CellLine_key " +
-                         " and c._Strain_key = " + strainKey +
-                         " and c._CellLine_Type_key = " + cellLineTypeKey +
-                         " and c.isMutant = 0 ");
+          derivationKey := mgi_sql1(mutant_sql_7a + derivationTypeKey +
+                         mutant_sql_7b + parentKey +
+                         mutant_sql_7c + creatorKey +
+                         mutant_sql_7d + vectorTypeKey +
+                         mutant_sql_7e + vectorKey +
+                         mutant_sql_7f + strainKey +
+                         mutant_sql_7g + cellLineTypeKey);
 
 	  -- if derivation has been determined, then display the rest of the derivation attributes
 	  if (derivationKey.length > 0) then

@@ -36,9 +36,9 @@
 dmodule MarkerNonMouse is
 
 #include <mgilib.h>
-#include <syblib.h>
 #include <pglib.h>
 #include <tables.h>
+#include <mgdsql.h>
 
 devents:
 
@@ -175,7 +175,7 @@ rules:
 --
 
 	Add does
-	  curationState : string := mgi_sql1("select _Term_key from VOC_Term_CurationState_View where term = 'internal'");
+	  curationState : string := mgi_sql1(nonmouse_sql_1);
 
 	  if (not top.allowEdit) then
 	    return;
@@ -352,7 +352,7 @@ rules:
 	  from_notes    : boolean := false;
 
 	  from := " from " + mgi_DBtable(MRK_MARKER) + " m";
-	  where := "where m._Organism_key != " + MOUSE;	-- exclude mouse markers
+	  where := "where m._Organism_key != 1";
 
 	  -- Cannot search both Accession tables at once
 
@@ -472,21 +472,15 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select _Marker_key, _Organism_key, symbol, name, chromosome, " +
-		 "cytogeneticOffset, organism, creation_date, modification_date " +
-		 "from MRK_Marker_View where _Marker_key = " + currentRecordKey + "\n" +
-	         "select rtrim(note) from MRK_Notes " +
-		 "where _Marker_key = " + currentRecordKey +
-		 " order by sequenceNum\n";
+	  cmd := nonmouse_sql_2 + currentRecordKey +
+	         nonmouse_sql_3a + currentRecordKey + nonmouse_sql_3b;
 
 	  results : integer := 1;
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+	  dbproc : opaque := mgi_dbexec(cmd);
 
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
 	        top->ID->text.value           := mgi_getstr(dbproc, 1);
 	        top->Symbol->text.value       := mgi_getstr(dbproc, 3);
@@ -504,7 +498,7 @@ rules:
 	    results := results + 1;
 	  end while;
 
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
           LoadAcc.table := accTable;
           LoadAcc.objectKey := currentRecordKey;
@@ -534,7 +528,7 @@ rules:
 --
 
         SetEntrezGene does
-	  if (top->mgiOrganism->ObjectID->text.value = HUMAN) then
+	  if (top->mgiOrganism->ObjectID->text.value = "2") then
 	    top->Lookup->mgiAccessionTable->AccSourcePulldown->EntrezGene.required := true;
 	  else
 	    top->Lookup->mgiAccessionTable->AccSourcePulldown->EntrezGene.required := false;

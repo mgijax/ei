@@ -76,9 +76,9 @@
 dmodule Genotype is
 
 #include <mgilib.h>
-#include <syblib.h>
 #include <pglib.h>
 #include <tables.h>
+#include <mgdsql.h>
 
 devents:
 
@@ -577,7 +577,8 @@ rules:
 	    end if;
 
             if (compoundKey.length = 0) then
-              compoundKey := mgi_sql1("select _Term_key from VOC_Term_ALLCompound_View where term = 'Not Applicable'");
+	      -- not specified key
+              compoundKey := "847167";
             end if;
 
             if (editMode = TBL_ROW_ADD) then
@@ -900,7 +901,7 @@ rules:
 	  end if;
 
 	  select := "select distinct g._Genotype_key, " +
-	     "g.strain + ',' + ap.allele1 + ',' + ap.allele2\n" + 
+	     "g.strain || ',' || ap.allele1 || ',' || ap.allele2, g.strain, ap.allele1\n" + 
 	     from + "\n" + where;
 
 	  -- Reference search
@@ -909,7 +910,7 @@ rules:
           value := mgi_tblGetCell(top->Reference->Table, 0, top->Reference->Table.refsKey);
           if (value.length > 0) then
 	    Query.source_widget := top;
-	    Query.select := "exec MGI_searchGenotypeByRef " + value + "\n";
+	    Query.select := genotype_sql_2 + value + "\n";
 	    Query.table := (integer) NOTSPECIFIED;
 	    send(Query, 0);
 	  elsif (assayKey.length > 0) then
@@ -1022,30 +1023,16 @@ rules:
 	  row : integer := 0;
 	  table : widget;
 
-	  cmd := "select * from " + mgi_DBtable(GXD_GENOTYPE_VIEW) +
-		" where _Genotype_key = " + currentRecordKey + "\n" +
+	  cmd := genotype_sql_3 + currentRecordKey +
+	         genotype_sql_4a + currentRecordKey + genotype_sql_4b +
+		 genotype_sql_5a + currentRecordKey + genotype_sql_5b +
+		 genotype_sql_6a + currentRecordKey + genotype_sql_6b + mgiTypeKey + genotype_sql_6c;
 
-	         "select * from " + mgi_DBtable(GXD_ALLELEPAIR_VIEW) + 
-		 " where _Genotype_key = " + currentRecordKey + "\norder by sequenceNum\n" +
+          dbproc : opaque := mgi_dbexec(cmd);
 
-		 "select note, sequenceNum from " + mgi_DBtable(MGI_NOTE_GENOTYPE_VIEW) +
-		 " where _Object_key = " + currentRecordKey + 
-		 " and noteType = 'Combination Type 1'" + "\norder by sequenceNum\n" +
-
-		 "select _Assoc_key, _ImagePane_key, _ImageClass_key, figureLabel, term, " +
-		 "mgiID, pixID, isPrimary " +
-		 "from " + mgi_DBtable(IMG_IMAGEPANE_ASSOC_VIEW) +
-		 " where _Object_key = " + currentRecordKey +
-		 " and _MGIType_key = " + mgiTypeKey +
-		 " order by isPrimary desc, mgiID\n";
-
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
-
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    row := 0;
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
                 top->ID->text.value := mgi_getstr(dbproc, 1);
                 top->EditForm->Strain->StrainID->text.value := mgi_getstr(dbproc, 2);
@@ -1109,7 +1096,7 @@ rules:
 	    results := results + 1;
 	  end while;
 
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  LoadAcc.table := accTable;
 	  LoadAcc.objectKey := currentRecordKey;
@@ -1152,13 +1139,11 @@ rules:
 	  (void) busy_cursor(top);
 
 	  cmd := "exec GXD_getGenotypesDataSets " + currentRecordKey;
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
 
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    row := 0;
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 1));
 	      (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 2));
 	      (void) mgi_tblSetCell(table, row, table.dataSet, mgi_getstr(dbproc, 3));
@@ -1166,7 +1151,7 @@ rules:
 	    end while;
 	  end while;
 
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  top->Reference->Records.labelString := (string) row + " Records";
 

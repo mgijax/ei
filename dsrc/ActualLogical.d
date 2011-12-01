@@ -26,9 +26,9 @@
 dmodule ActualLogical is
 
 #include <mgilib.h>
-#include <syblib.h>
 #include <pglib.h>
 #include <tables.h>
+#include <mgisql.h>
 
 devents:
 
@@ -380,22 +380,17 @@ rules:
           table : widget;
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from ACC_LogicalDB_View " +
-		 "where _LogicalDB_key = " + currentRecordKey +
-		 " order by name\n" +
-	         "select * from ACC_ActualDB where _LogicalDB_key = " + currentRecordKey + 
-		 " order by name\n";
+	  cmd := actuallogical_sql_1a + currentRecordKey + actuallogical_sql_1b +
+		 actuallogical_sql_2a + currentRecordKey + actuallogical_sql_2b;
 
 	  results : integer := 1;
 	  row : integer := 0;
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    row := 0;
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
 	        top->ID->text.value           := mgi_getstr(dbproc, 1);
                 top->Name->text.value         := mgi_getstr(dbproc, 2);
@@ -429,7 +424,7 @@ rules:
 	    results := results + 1;
           end while;
  
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
           top->QueryList->List.row := Select.item_position;
 

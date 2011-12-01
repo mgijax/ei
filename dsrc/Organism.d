@@ -32,9 +32,9 @@
 dmodule Organism is
 
 #include <mgilib.h>
-#include <syblib.h>
 #include <pglib.h>
 #include <tables.h>
+#include <mgisql.h>
 
 devents:
 
@@ -348,7 +348,7 @@ rules:
           end while;
 
 	  if (deleteCmd.length > 0 or tmpCmd.length > 0) then
-	    cmd := cmd + deleteCmd + tmpCmd + ROLLBACK;
+	    cmd := cmd + deleteCmd + tmpCmd;
 	    cmd := cmd + "exec MGI_resetSequenceNum '" + mgi_DBtable(MRK_CHROMOSOME) + "'," + currentRecordKey + "\n";
 	  end if;
         end does;
@@ -532,30 +532,24 @@ rules:
           table : widget;
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from MGI_Organism_View where _Organism_key = " + currentRecordKey +
-		 " order by commonName\n" +
-	         "select _MGIType_key, typeName from MGI_Organism_MGIType_View " +
-		 "where _Organism_key = " + currentRecordKey + "order by typeName\n" +
-	         "select * from MRK_Chromosome where _Organism_key = " + currentRecordKey + 
-		 " order by sequenceNum\n";
+	  cmd := organism_sql_1a + currentRecordKey + organism_sql_1b +
+	         organism_sql_2a + currentRecordKey + organism_sql_2b +
+	         organism_sql_3a + currentRecordKey + organism_sql_3b;
 
 	  -- For Mouse, retrieve Anchor information
 
 	  if (currentRecordKey = "1") then
-		cmd := cmd + "select chromosome, _Marker_key, symbol from MRK_Anchors_View " +
-                             "order by chromosome\n";
+		cmd := cmd + organism_sql_4;
 	  end if;
 
 	  results : integer := 1;
 	  row : integer := 0;
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    row := 0;
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
 	        top->ID->text.value      := mgi_getstr(dbproc, 1);
                 top->Latin->text.value   := mgi_getstr(dbproc, 3);
@@ -591,7 +585,7 @@ rules:
 	    results := results + 1;
           end while;
  
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
           LoadAcc.table := accTable;
           LoadAcc.objectKey := currentRecordKey;

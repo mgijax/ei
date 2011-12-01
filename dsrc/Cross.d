@@ -21,8 +21,8 @@
 dmodule Cross is
 
 #include <mgilib.h>
-#include <syblib.h>
 #include <pglib.h>
+#include <mgdsql.h>
 
 devents:
 
@@ -423,15 +423,12 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from CRS_Cross_View where _Cross_key = " + currentRecordKey + 
-		 " order by whoseCross\n";
+	  cmd := cross_sql_1a + currentRecordKey + cross_sql_1b;
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      top->ID->text.value                := mgi_getstr(dbproc, 1);
 	      top->FStrain->StrainID->text.value := mgi_getstr(dbproc, 3);
 	      top->FAllele1->text.value          := mgi_getstr(dbproc, 4);
@@ -460,7 +457,7 @@ rules:
             end while;
           end while;
  
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
           top->QueryList->List.row := Select.item_position;
 	  Clear.source_widget := top;

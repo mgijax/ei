@@ -29,7 +29,6 @@
 dmodule TablesColumns is
 
 #include <mgilib.h>
-#include <syblib.h>
 #include <pglib.h>
 #include <tables.h>
 
@@ -38,7 +37,7 @@ devents:
 	INITIALLY [parent : widget;
 		   launchedFrom : widget;];
 	Add :local [];
-	BuildDynamicComponents :local [];
+	--BuildDynamicComponents :local [];
 	Delete :local [];
 	Exit :local [];
 	Init :local [];
@@ -89,7 +88,7 @@ rules:
 	  orig_database := global_database;
 
           -- Build Dynamic GUI Components
-          send(BuildDynamicComponents, 0);
+          --send(BuildDynamicComponents, 0);
  
 	  -- Prevent multiple instances of the form
 
@@ -114,12 +113,9 @@ rules:
 -- Initialize lookup lists
 --
 
-	BuildDynamicComponents does
+--	BuildDynamicComponents does
 	  -- Dynamically create Database Menu
-
-	  InitOptionMenu.option := top->DatabaseMenu;
-	  send(InitOptionMenu, 0);
-	end does;
+--	end does;
 
 --
 -- Init
@@ -195,7 +191,7 @@ rules:
 	  set : string := "";
 
 	  if (top->Description->text.modified) then
-	    set := set + "description = " + mgi_DBprstr(top->Description->text.value) + ",";
+	    set := set + "description = " + mgi_DBprstr2(top->Description->text.value) + ",";
 	  end if;
 
 	  if (cmd.length > 0 or set.length > 0) then
@@ -245,8 +241,8 @@ rules:
             example := mgi_tblGetCell(table, row, table.example);
  
             if (editMode = TBL_ROW_MODIFY) then
-              set := "description = " + mgi_DBprstr(description) + "," +
-		     "example = " + mgi_DBprstr(example);
+              set := "description = " + mgi_DBprstr2(description) + "," +
+		     "example = " + mgi_DBprstr2(example);
               cmd := cmd + mgi_DBupdate(MGI_COLUMNS, currentKey + ":" + column, set);
             end if;
  
@@ -276,26 +272,26 @@ rules:
 	  where := where + top->ModifiedDate.sql;
 
           if (top->Name->text.value.length > 0) then
-	    where := where + "\nand table_name like " + mgi_DBprstr(top->Name->text.value);
+	    where := where + "\nand table_name like " + mgi_DBprstr2(top->Name->text.value);
 	  end if;
 	    
           if (top->Description->text.value.length > 0) then
-	    where := where + "\nand table_description like " + mgi_DBprstr(top->Description->text.value);
+	    where := where + "\nand table_description like " + mgi_DBprstr2(top->Description->text.value);
 	  end if;
 
 	  value := mgi_tblGetCell(top->Columns->Table, 0, top->Columns->Table.columnName);
 	  if (value.length > 0) then
-	    where := where + "\nand column_name like " + mgi_DBprstr(value);
+	    where := where + "\nand column_name like " + mgi_DBprstr2(value);
 	  end if;
 
 	  value := mgi_tblGetCell(top->Columns->Table, 0, top->Columns->Table.description);
 	  if (value.length > 0) then
-	    where := where + "\nand column_description like " + mgi_DBprstr(value);
+	    where := where + "\nand column_description like " + mgi_DBprstr2(value);
 	  end if;
 
 	  value := mgi_tblGetCell(top->Columns->Table, 0, top->Columns->Table.example);
 	  if (value.length > 0) then
-	    where := where + "\nand example like " + mgi_DBprstr(value);
+	    where := where + "\nand example like " + mgi_DBprstr2(value);
 	  end if;
 
 	  if (where.length > 0) then
@@ -356,21 +352,19 @@ rules:
 
 	  cmd := "select table_name, table_description, creation_date, modification_date " +
 		 " from MGI_Table_Column_View" +
-		 " where table_name = " + mgi_DBprstr(currentKey) + "\n" +
+		 " where table_name = " + mgi_DBprstr2(currentKey) + "\n" +
 		 "select column_name, column_description, example from MGI_Table_Column_View" +
-		 " where table_name = " + mgi_DBprstr(currentKey) + 
+		 " where table_name = " + mgi_DBprstr2(currentKey) + 
 		 " order by column_name\n";
 
           table : widget := top->Columns->Table;
 	  results : integer := 1;
 	  row : integer := 0;
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+	  dbproc : opaque := mgi_dbexec(cmd);
 
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
 		if (top->ID->text.value.length = 0) then
 	          top->ID->text.value           := mgi_getstr(dbproc, 1);
@@ -390,7 +384,7 @@ rules:
 	    results := results + 1;
 	  end while;
 
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  top->QueryList->List.row := Select.item_position;
 	  Clear.source_widget := top;

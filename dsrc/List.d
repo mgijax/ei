@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- lec  10/25/2011
+--	TR10873/SelectLookupListItem; add 'scrollToRow'
+--
 -- lec  02/08/2011
 --	TR10583/LoadList.loadsmall/maxList
 --
@@ -69,7 +72,6 @@
 dmodule List is
 
 #include <mgilib.h>
-#include <syblib.h>
 #include <pglib.h>
 #include <tables.h>
 
@@ -355,7 +357,7 @@ rules:
           accIDs : string_list := create string_list();
 	  item : string;
 	  row: integer := 0;
-	  maxList : integer := list_w->List.maxList;
+	  maxList : integer := 100;
  
           if (LoadList.source_widget != nil) then
             (void) busy_cursor(LoadList.source_widget.top);
@@ -364,6 +366,10 @@ rules:
 	  if (list_w = nil) then
 	    list_w := LoadList.source_widget.parent;
 	  end if;
+
+	  if (list_w->List.is_defined("maxList") = nil) then
+	    maxList := list_w->List.maxList;
+          end if;
 
           if (list_w.cmd.length = 0) then
             (void) reset_cursor(LoadList.source_widget.top);
@@ -385,12 +391,10 @@ rules:
 	    return;
 	  end if;
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, list_w.cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(list_w.cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 
 	      -- If not allowing dups, then if key already exists, skip the row
 
@@ -430,7 +434,7 @@ rules:
 
           end while;
  
-          (void) dbclose(dbproc);
+          (void) mgi_dbclose(dbproc);
  
 	  -- If keys doesn't exist already, create it
 	  -- Even if no results are returned
@@ -541,9 +545,9 @@ rules:
 	SelectLookupListItem does
 	  list_w : widget := SelectLookupListItem.source_widget;
 	  top : widget := SelectLookupListItem.source_widget.root;
+	  scrollToRow : boolean := SelectLookupListItem.scrollToRow;
 	  targetWidget : widget := list_w.targetWidget;
 	  isTable : boolean := false;
-	  scrollToRow : boolean := false;
 	  i : integer;
 	  pos : integer;
 	  item : string;
@@ -608,7 +612,6 @@ rules:
 		end if;
 		i := i + 1;
 	      end while;
-	      scrollToRow := true;
 	    else
 	      return;
 	    end if;
@@ -694,12 +697,12 @@ rules:
             send(CommitTableCellEdit, 0);
 
 	    -- Scroll to table row
---	    if (scrollToRow) then
+	    if (scrollToRow) then
 	      TraverseToTableCell.table := table;
 	      TraverseToTableCell.row := row;
 	      TraverseToTableCell.column := column + 1;
 	      send(TraverseToTableCell, 0);
---	    end if;
+	    end if;
 
 	  -- Non-table text widget
 

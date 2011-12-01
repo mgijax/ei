@@ -13,9 +13,6 @@
 --
 -- History
 --
--- lec	05/10/2011
---	- TR10648/remove Super Standard
---
 -- lec	04/15/2008
 --	TR 8511; remove IMSRMenu
 --
@@ -85,9 +82,9 @@
 dmodule Strains is
 
 #include <mgilib.h>
-#include <syblib.h>
 #include <pglib.h>
 #include <tables.h>
+#include <mgdsql.h>
 
 devents:
 
@@ -141,9 +138,6 @@ locals:
 	speciesNotSpecified : string;
 	strainTypeNotSpecified : string;
 
-	superTermKey : string;
-	superAnnotKey : string;
-	superAnnotTypeKey : string := "1004";
 	attributeAnnotTypeKey : string := "1009";
 	reviewAnnotTypeKey : string := "1008";
 	genericQualifierKey : string := "53"; -- generic annotation qualifier key
@@ -258,9 +252,8 @@ rules:
           LoadList.list := top->NeedsReviewList;
 	  send(LoadList, 0);
 
-	  superTermKey := mgi_sql1("select _Term_key from VOC_Term where term = 'super standard'");
-	  speciesNotSpecified := mgi_sql1("select _Term_key from VOC_Term_StrainSpecies_View where term = 'Not Specified'");
-	  strainTypeNotSpecified := mgi_sql1("select _Term_key from VOC_Term_StrainType_View where term = 'Not Specified'");
+	  speciesNotSpecified := mgi_sql1(strain_sql_1);
+	  strainTypeNotSpecified := mgi_sql1(strain_sql_2);
 
           -- Set Row Count
           SetRowCount.source_widget := top;
@@ -314,7 +307,7 @@ rules:
 	   pcmd : string;
 	   permOK : integer;
 
-	   pcmd := "exec MGI_checkUserRole 'StrainJAXModule'," + mgi_DBprstr(global_login);
+	   pcmd := strain_sql_12 + mgi_DBprstr(global_login);
 		
 	   permOK := (integer) mgi_sql1(pcmd);
 
@@ -361,7 +354,6 @@ rules:
 	  send(ModifyAttribute, 0);
 	  send(ModifyNeedsReview, 0);
 	  send(ModifyGenotype, 0);
-	  superAnnotKey := NO;
 
 	  --  Process Markers/Alleles
 
@@ -831,7 +823,7 @@ rules:
             value := mgi_tblGetCell(top->StrainAttribute->Table, row, top->StrainAttribute->Table.termKey);
 
             if (value.length > 0 and value != "NULL") then
-	      from := from + ",PRB_Strain_Attribute_View v";
+	      from := from + ",PRB_Strain_AttributeVOC_Term_StrainSpecies_View_View v";
 	      where := where + "\nand s._Strain_key = v._Strain_key";
 	      where := where + "\nand v._Term_key = " + value;
 	    end if;
@@ -971,32 +963,20 @@ rules:
           end if;
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
-	  superAnnotKey := NO;
 	  results : integer := 1;
 	  row : integer;
 	  table : widget;
 
-	  cmd := "select * from " + mgi_DBtable(STRAIN_VIEW) +
-		 " where " + mgi_DBkey(STRAIN) + " = " + currentRecordKey + "\n" +
+	  cmd := strain_sql_3 + currentRecordKey +
+	         strain_sql_4 + currentRecordKey +
+	         strain_sql_5 + currentRecordKey +
+	         strain_sql_6 + currentRecordKey;
 
-		 "select * from PRB_Strain_Attribute_View " +
-		 "where _Strain_key = " + currentRecordKey + "\n" +
-
-		 "select * from PRB_Strain_NeedsReview_View " +
-		 "where _Strain_key = " + currentRecordKey + "\n" +
-
-		 "select distinct _StrainGenotype_key, _Genotype_key, _Qualifier_key, qualifier, " +
-				  "mgiID, description, modifiedBy, modification_date " +
-		 "from PRB_Strain_Genotype_View " +
-		 "where _Strain_key = " + currentRecordKey + "\n";
-
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    row := 0;
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
 	        top->ID->text.value := mgi_getstr(dbproc, 1);
 		top->strainSpecies->ObjectID->text.value := mgi_getstr(dbproc, 2);
@@ -1050,7 +1030,7 @@ rules:
 	    results := results + 1;
           end while;
  
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
           LoadStrainAlleleTypeTable.table := top->Marker->Table;
 	  LoadStrainAlleleTypeTable.tableID := PRB_STRAIN_MARKER_VIEW;
@@ -1112,18 +1092,16 @@ rules:
 
           row : integer := 0;
  
+	  cmd := strain_sql_7 + currentRecordKey;
+
 	  if (SelectReferenceMGI.doCount) then
-	    cmd := "execute PRB_getStrainReferences " + currentRecordKey + ",1\n";
-	  else
-	    cmd := "execute PRB_getStrainReferences " + currentRecordKey + "\n";
+	    cmd := cmd + strain_sql_8;
 	  end if;
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (SelectReferenceMGI.doCount) then
 		row := (integer) mgi_getstr(dbproc, 1);
               else
@@ -1134,7 +1112,7 @@ rules:
             end while;
           end while;
 
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  top->ReferenceMGI->Records.labelString := (string) row + " Records";
 	  (void) reset_cursor(top);
@@ -1168,18 +1146,15 @@ rules:
 
           row : integer := 0;
  
+	  cmd := strain_sql_9 + currentRecordKey;
 	  if (SelectDataSets.doCount) then
-	    cmd := "execute PRB_getStrainDataSets " + currentRecordKey + ",1\n";
-	  else
-	    cmd := "execute PRB_getStrainDataSets " + currentRecordKey + "\n";
+	    cmd := cmd + strain_sql_9;
 	  end if;
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (SelectDataSets.doCount) then
 		row := (integer) mgi_getstr(dbproc, 1);
               else
@@ -1190,7 +1165,7 @@ rules:
             end while;
           end while;
 
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  top->DataSets->Records.labelString := (string) row + " Records";
 	  (void) reset_cursor(top);
@@ -1241,7 +1216,7 @@ rules:
  
           (void) busy_cursor(dialog);
 
-	  cmd := "exec " + mgi_DBtable(STRAIN_MERGE) +  " " +
+	  cmd := strain_sql_10 +
 		  dialog->Strain1->StrainID->text.value + "," +
 	          dialog->Strain2->StrainID->text.value + "\n";
 	  
@@ -1327,7 +1302,7 @@ rules:
 	    return;
 	  end if;
 
-	  strainCount := mgi_sql1("select count(*) from " + mgi_DBtable(STRAIN) + " where strain = " + mgi_DBprstr(value));
+	  strainCount := mgi_sql1(strain_sql_11 + mgi_DBprstr(value));
 
 	  if ((integer) strainCount > 0) then
             StatusReport.source_widget := top;

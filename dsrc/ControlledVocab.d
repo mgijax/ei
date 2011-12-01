@@ -44,8 +44,8 @@
 dmodule ControlledVocab is
 
 #include <mgilib.h>
-#include <syblib.h>
 #include <pglib.h>
+#include <mgisql.h>
 
 devents:
 
@@ -393,13 +393,13 @@ rules:
 	  Query.source_widget := top;
 
 	  if (tableID = MGI_NOTETYPE) then
-	    qry := "select _NoteType_key, noteType, _MGIType_key, private, creation_date, modification_date";
+	    qry := controlledvocab_sql_1;
 	  elsif (tableID = MGI_REFASSOCTYPE) then
-	    qry := "select _RefAssocType_key, assoctype, _MGIType_key, allowOnlyOne, creation_date, modification_date";
+	    qry := controlledvocab_sql_2;
 	  elsif (tableID = MGI_SYNONYMTYPE) then
-	    qry := "select _SynonymType_key, synonymType, _MGIType_key, creation_date, modification_date";
+	    qry := controlledvocab_sql_3;
 	  else
-	    qry := "select distinct *";
+	    qry := controlledvocab_sql_4;
 	  end if;
 
 	  Query.select := qry + " " + from + " " + where + "\norder by " + tableName;
@@ -428,25 +428,23 @@ rules:
 	  key : string := top->QueryList->List.keys[Select.item_position];
 
 	  if (tableID = MGI_NOTETYPE) then
-	    cmd := "select _NoteType_key, noteType, _MGIType_key, private, creation_date, modification_date";
+	    cmd := controlledvocab_sql_1;
 	  elsif (tableID = MGI_REFASSOCTYPE) then
-	    cmd := "select _RefAssocType_key, assoctype, _MGIType_key, allowOnlyOne, creation_date, modification_date";
+	    cmd := controlledvocab_sql_2;
 	  elsif (tableID = MGI_SYNONYMTYPE) then
-	    cmd := "select _SynonymType_key, synonymType, _MGIType_key, creation_date, modification_date";
+	    cmd := controlledvocab_sql_3;
 	  else
-	    cmd := "select *";
+	    cmd := controlledvocab_sql_5;
 	  end if;
 
 	  cmd := cmd + " from ";
 
 	  cmd := cmd + table + " where " + tableKey + " = " + key + " order by " + tableName;
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      top->ID->text.value   := mgi_getstr(dbproc, 1);
 	      top->Name->text.value := mgi_getstr(dbproc, 2);
 
@@ -495,7 +493,7 @@ rules:
             end while;
           end while;
  
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
           top->QueryList->List.row := Select.item_position;
 

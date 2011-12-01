@@ -96,9 +96,9 @@
 dmodule Orthology is
 
 #include <mgilib.h>
-#include <syblib.h>
 #include <pglib.h>
 #include <tables.h>
+#include <mgdsql.h>
 
 devents:
 
@@ -732,9 +732,7 @@ rules:
 	  if (top->Inferred.set) then
 	    cmd := "select distinct h._Class_key\n" + from + "\n" + where + "\n";
 	    classKey := mgi_sql1(cmd);
-	    Query.select := "select distinct h.classRef, h.short_citation, h.jnum " +
-			    "from HMD_Homology_View h " +
-			    "where h._Class_key = " + classKey + "\norder by h.short_citation\n";
+	    Query.select := orthology_sql_2a + classKey + orthology_sql_2b;
 	  else
 	    Query.select := "select distinct h.classRef, h.short_citation, h.jnum\n" + 
 			    from + "\n" + where + "\norder by h.short_citation\n";
@@ -789,41 +787,17 @@ rules:
 	  -- Get Mouse Accession info
 	  -- Get non-Mouse Accession info
 
-	  cmd := "select distinct _Class_key, jnum, short_citation, _Refs_key, " +
-		 "creation_date, modification_date " +
-		 "from HMD_Homology_View" + classRefWhere +
+	  cmd := orthology_sql_5 + orthology_sql_3 + classKey + orthology_sql_4 + refKey +
+		 orthology_sql_6a + orthology_sql_3 + classKey + orthology_sql_4 + refKey + orthology_sql_6b +
+	         orthology_sql_7a + orthology_sql_3 + classKey + orthology_sql_4 + refKey + orthology_sql_7b +
+		 orthology_sql_8a + orthology_sql_3 + classKey + orthology_sql_4 + refKey + orthology_sql_8b;
 
-	         "select distinct _Marker_key, _Organism_key, organism, symbol, " +
-		 "chromosome, cytogeneticOffset, name " +
-		 "from HMD_Homology_View " + classRefWhere +
-		 " order by _Organism_key\n" +
-
-	         "select distinct hm._Marker_key, a.accID, a._Accession_key " +
-		 "from HMD_Homology h, HMD_Homology_Marker hm, MRK_Acc_View a" +
-		 classRefWhere +
-		 "and h._Homology_key = hm._Homology_key " +
-		 "and hm._Marker_key = a._Object_key " +
-		 "and a._LogicalDB_key = 1 " +
-		 "and a.prefixPart = 'MGI:' " +
-		 "and a.preferred = 1 " +
-		 " order by a._Organism_key\n" +
-
-		 "select distinct hm._Marker_key, a.accID, a._Accession_key " +
-		 "from HMD_Homology h, HMD_Homology_Marker hm, MRK_Marker m, MRK_Acc_View a" +
-		 classRefWhere +
-		 "and h._Homology_key = hm._Homology_key " +
-		 "and hm._Marker_key = m._Marker_key " +
-		 "and m._Organism_key != 1 " +
-		 "and hm._Marker_key = a._Object_key " +
-		 "and a._LogicalDB_key = 55 " +
-		 " order by a._Organism_key\n";
-
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
+	  dbproc : opaque;
+	  
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    row := 0;
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
 	  	top->ID->text.value := mgi_getstr(dbproc, 1);
 		top->mgiCitation->Jnum->text.value := mgi_getstr(dbproc, 2);
@@ -870,6 +844,7 @@ rules:
 	    end while;
 	    results := results + 1;
 	  end while;
+	  (void) mgi_dbclose(dbproc);
 
 	  -- Get Assay info for all Homologies for the Class:Reference composite
 	  -- Get Orthology keys
@@ -897,12 +872,11 @@ rules:
 	  i : integer;
 	  results := 1;
 
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    homKey := "";
 	    row := -1;
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
 	        -- Stay on the same row for Orthology/Assay pair
 
@@ -956,8 +930,7 @@ rules:
 	    end while;
 	    results := results + 1;
 	  end while;
-
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  top->QueryList->List.row := Select.item_position;
 
@@ -1011,17 +984,15 @@ rules:
 	  cmd := "select _Organism_key, organism from MGI_Organism_Homology_View " +
 		 "where _Organism_key in " + defaultOrganismKeys + " order by _Organism_key";
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  dbproc : opaque := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
               mgi_tblSetCell(table, row, table.organismKey, mgi_getstr(dbproc, 1));
               mgi_tblSetCell(table, row, table.organism, mgi_getstr(dbproc, 2));
 	      row := row + 1;
 	    end while;
 	  end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  table.xrtTblEditableSeries := "(all 0-4 False) (0-2 " + (string) table.organism + " False)";
 

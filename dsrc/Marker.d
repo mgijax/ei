@@ -151,8 +151,9 @@
 dmodule Marker is
 
 #include <mgilib.h>
-#include <syblib.h>
+#include <pglib.h>
 #include <tables.h>
+#include <mgdsql.h>
 
 devents:
 
@@ -309,9 +310,7 @@ rules:
           LoadList.list := top->TDCList;
           send(LoadList, 0);
 
-          top->WithdrawalDialog->MarkerEventReasonMenu.subMenuId.sql := 
-            "select * from " + mgi_DBtable(MRK_EVENTREASON) + 
-            " where " + mgi_DBkey(MRK_EVENTREASON) + " >= -1 order by " + mgi_DBcvname(MRK_EVENTREASON);
+          top->WithdrawalDialog->MarkerEventReasonMenu.subMenuId.sql := marker_sql_13;
 	  InitOptionMenu.option := top->WithdrawalDialog->MarkerEventReasonMenu;
 	  send(InitOptionMenu, 0);
 
@@ -443,8 +442,7 @@ rules:
           if (top->markerAccession->ObjectID->text.value.length > 0) then
             top->mgiMarker->ObjectID->text.value := top->markerAccession->ObjectID->text.value;
             top->mgiMarker->Marker->text.value := 
-		mgi_sql1("select symbol from MRK_Mouse_View " +
-		"where mgiID = " + mgi_DBprstr(top->markerAccession->AccessionID->text.value));
+		mgi_sql1(marker_sql_8 + mgi_DBprstr(top->markerAccession->AccessionID->text.value));
 	    VerifyMarkerChromosome.source_widget := top->mgiMarker->Marker->text;
 	    send(VerifyMarkerChromosome, 0);
 	  else
@@ -581,7 +579,7 @@ rules:
 
 	  dialog->currentMarker->Marker->text.value := top->Symbol->text.value;
 	  alleleCount : string;
-	  alleleCount := mgi_sql1("select count(*) from ALL_Allele where _Marker_key = " + currentRecordKey);
+	  alleleCount := mgi_sql1(marker_sql_9 + currentRecordKey);
 	  if ((integer) alleleCount > 0) then
 	    dialog->hasAlleles.set := true;
           else
@@ -811,7 +809,7 @@ rules:
 
 	  from := " from " + mgi_DBtable(MRK_MARKER) + " m";
 	  from := from + ",MRK_Current_View mu";
-	  where := "where m._Organism_key = " + MOUSE;
+	  where := "where m._Organism_key = 1";
 	  where := where + "\nand mu.current_symbol in (";
 
 	  if (dialog.eventKey = EVENT_RENAME) then
@@ -837,7 +835,7 @@ rules:
 	  where := where + ")\nand m._Marker_key = mu._Marker_key";
 
 	  QueryNoInterrupt.source_widget := top;
-	  QueryNoInterrupt.select := "select distinct m._Marker_key, m.symbol\n" + from + "\n" + 
+	  QueryNoInterrupt.select := "select distinct m._Marker_key, m.symbol, m._Marker_Type_key\n" + from + "\n" + 
 			             where + "\norder by m._Marker_Type_key, m.symbol\n";
 	  QueryNoInterrupt.table := MRK_MARKER;
 	  send(QueryNoInterrupt, 0);
@@ -1390,7 +1388,7 @@ rules:
 	  value : string;
 
 	  from := " from " + mgi_DBtable(MRK_MARKER) + " m";
-	  where := "where m._Organism_key = " + MOUSE;
+	  where := "where m._Organism_key = 1";
 
 	  -- Cannot search both Accession tables at once
 
@@ -1644,7 +1642,7 @@ rules:
 	  (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
-	  Query.select := "select distinct m._Marker_key, m.symbol\n" + from + "\n" + 
+	  Query.select := "select distinct m._Marker_key, m.symbol, m._Marker_Type_key\n" + from + "\n" + 
 			  where + "\norder by m._Marker_Type_key, m.symbol\n";
 	  Query.table := MRK_MARKER;
 	  send(Query, 0);
@@ -1694,37 +1692,21 @@ rules:
 	  table : widget;
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select _Marker_key, _Marker_Type_key, _Marker_Status_key, symbol, name, chromosome, " +
-		 "cytogeneticOffset, createdBy, creation_date, modifiedBy, modification_date " +
-		 "from MRK_Marker_View where _Marker_key = " + currentRecordKey + "\n" +
+	  cmd := marker_sql_1 + currentRecordKey +
 
-	         "select source, str(offset,10,2) from MRK_Offset " +
-		 "where _Marker_key = " + currentRecordKey +
-		 " order by source\n" +
+	         marker_sql_2a + currentRecordKey + marker_sql_2b +
 
-	         "select _Marker_Event_key, _Marker_EventReason_key, _History_key, sequenceNum, " +
-		 "name, event_display, event, eventReason, history, modifiedBy " +
-		 "from MRK_History_View " +
-		 "where _Marker_key = " + currentRecordKey +
-		 " order by sequenceNum, _History_key\n" +
+	         marker_sql_3a + currentRecordKey + marker_sql_3b +
 
-	         "select h.sequenceNum, h._Refs_key, b.jnum, b.short_citation " +
-		 "from MRK_History h, BIB_View b " +
-		 "where h._Marker_key = " + currentRecordKey +
-		 "and h._Refs_key = b._Refs_key " + 
-		 " order by h.sequenceNum, h._History_key\n" +
+	         marker_sql_4a + currentRecordKey + marker_sql_4b +
 
-	         "select _Current_key, current_symbol from MRK_Current_View " +
-		 "where _Marker_key = " + currentRecordKey + "\n" +
+	         marker_sql_5a + currentRecordKey +
 
-	         "select tdc._Annot_key, tdc._Term_key, tdc.accID, tdc.term " +
-		 " from " + mgi_DBtable(VOC_ANNOT_VIEW) + " tdc " +
-		 "where tdc._AnnotType_key = " + annotTypeKey +
-		 " and tdc._LogicalDB_key = " + defaultLogicalDBKey +
-		 " and tdc._Object_key = " + currentRecordKey + "\n" +
+	         marker_sql_6a + annotTypeKey +
+		 marker_sql_6b + defaultLogicalDBKey +
+		 marker_sql_6c + currentRecordKey +
 
-	         "select _Alias_key, alias from MRK_Alias_View " +
-		 "where _Marker_key = " + currentRecordKey + "\n";
+	         marker_sql_7a + currentRecordKey + "\n";
 
 	  results : integer := 1;
 	  row : integer := 0;
@@ -1732,13 +1714,12 @@ rules:
 	  seqRow : integer := 0;
 	  seqNum1, seqNum2 : string;
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+	  -- dbproc is PGconn *connection
+	  dbproc : opaque := mgi_dbexec(cmd);
 
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    row := 0;
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
 		table := top->Control->ModificationHistory->Table;
 	        top->ID->text.value           := mgi_getstr(dbproc, 1);
@@ -1844,7 +1825,7 @@ rules:
 	    results := results + 1;
 	  end while;
 
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  -- Initialize Offset rows which do not exist
 	  row := 0;
@@ -2004,10 +1985,9 @@ rules:
 	  -- see ACC_Accession_Insert trigger
 	  -- This error must be fixed
 
-	  isInvalid := mgi_sql1("declare @isInvalid integer select @isInvalid = 0 " +
-		   "if (select " + mgi_DBprstr(value) + ") not like '[A-Z][0-9][0-9][0-9][0-9][0-9]' and " +
-		   "(select " + mgi_DBprstr(value) + ") not like '[A-Z][A-Z][0-9][0-9][0-9][0-9][0-9][0-9]' " +
-		   "begin select @isInvalid = 1 end select @isInvalid");
+	  isInvalid := mgi_sql1(marker_sql_10a + mgi_DBprstr(value) +
+		       marker_sql_10b + mgi_DBprstr(value) + 
+		       marker_sql_10c);
 
 	  if (isInvalid = "1") then
 	    VerifyMarkerAcc.doit := (integer) false;
@@ -2025,11 +2005,9 @@ rules:
 
 	  if (currentRecordKey.length > 0) then
 
-	    accID := mgi_sql1("select accID from ACC_Accession " +
-			"where _MGIType_key = 2 " +
-			" and _LogicalDB_key = " + logicalKey + 
-			" and _Object_key != " + currentRecordKey +
-			" and accID = " + mgi_DBprstr(value));
+	    accID := mgi_sql1(marker_sql_11a + logicalKey + 
+			marker_sql_11b + currentRecordKey +
+			marker_sql_11c + mgi_DBprstr(value));
 
 	    if (accID.length > 0) then
 	      message := message + "This Accession ID is already associated with another marker.\n\n" + value + "\n\n";
@@ -2039,12 +2017,8 @@ rules:
 
 	  -- check if the sequence accession ID is associated with a problem clone (via its note)
 
-	  accID := mgi_sql1("select a.accID from PRB_Notes p, ACC_Accession a " +
-		" where p.note like '%staff have found evidence of artifact in the sequence of this molecular%' " +
-		" and p._Probe_key = a._Object_key " +
-		" and a._MGIType_key = 3 " +
-		" and a._LogicalDB_key = " + logicalKey +
-		" and a.accID = " + mgi_DBprstr(value));
+	  accID := mgi_sql1(marker_sql_12a + logicalKey +
+		            marker_sql_12b + mgi_DBprstr(value));
 
 	  if (accID.length > 0) then
 	    message := message + "This Accession ID is curated as a problem sequence.\n" +

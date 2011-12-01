@@ -131,7 +131,6 @@
 */
 
 #include <mgilib.h>
-#include <syblib.h>
 
 char *global_application;     /* Set in Application dModule; holds main application value */
 char *global_version;         /* Set in Application dModule; holds main application version value */
@@ -160,7 +159,7 @@ char *global_loginKey;        /* Set in Application dModule; holds login key val
 	the value of buf is: NULL
 
 	buf = mgi_DBprstr("Cook")
-	the value of buf is: \"Cook\"
+	the value of buf is: \'Cook\'
 
 	buf = mgi_DBprstr("NULL")
 	the value of buf is: NULL
@@ -215,7 +214,7 @@ char *mgi_DBprstr(char *value)
     while (newValue[--i] == ' ')
       newValue[i] = '\0';
 
-    sprintf(buf, "\"%s\"", mgi_escape_quotes(newValue));
+    sprintf(buf, "\'%s\'", mgi_escape_quotes(newValue));
   }
 
   return(buf);
@@ -241,7 +240,7 @@ char *mgi_DBprstr(char *value)
 	the value of buf is: NULL
 
 	buf = mgi_DBprstr("Cook")
-	the value of buf is: \"Cook\"
+	the value of buf is: \'Cook\'
 
 	buf = mgi_DBprstr("NULL")
 	the value of buf is: NULL
@@ -271,7 +270,7 @@ char *mgi_DBprstr2(char *value)
   }
   else
   {
-    sprintf(buf, "\"%s\"", mgi_escape_quotes(value));
+    sprintf(buf, "\'%s\'", mgi_escape_quotes(value));
   }
 
   return(buf);
@@ -301,7 +300,7 @@ char *mgi_DBprstr2(char *value)
 	the value of buf is: NULL
 
 	buf = mgi_DBprnotestr("Cook")
-	the value of buf is: \"Cook\"
+	the value of buf is: \'Cook\'
 
 	buf = mgi_DBprnotestr("NULL")
 	the value of buf is: NULL
@@ -348,7 +347,7 @@ char *mgi_DBprnotestr(char *value)
       newValue[i++] = *s;
     }
 
-    sprintf(buf, "\"%s\"", mgi_escape_quotes(newValue));
+    sprintf(buf, "\'%s\'", mgi_escape_quotes(newValue));
   }
 
   return(buf);
@@ -1703,9 +1702,6 @@ char *mgi_DBtable(int table)
     case NOM_MARKER_VALID_VIEW:
 	    strcpy(buf, "NOM_Marker_Valid_View");
 	    break;
-    case NOM_STATUS:
-	    strcpy(buf, "VOC_Term_NomenStatus_View");
-	    break;
     case NOM_TRANSFERSYMBOL:
 	    strcpy(buf, "NOM_transferToMGD");
 	    break;
@@ -2353,7 +2349,7 @@ char *mgi_DBinsert(int table, char *keyName)
 	    break;
     case PRB_SOURCE:
     case PRB_SOURCE_MASTER:
-            sprintf(buf, "insert %s (%s, _SegmentType_key, _Vector_key, _Organism_key, _Strain_key, _Tissue_key, _Gender_key, _CellLine_key, _Refs_key, name, description, age, isCuratorEdited, _CreatedBy_key, _ModifiedBy_key)",
+            sprintf(buf, "insert %s (%s, _SegmentType_key, _Vector_key, _Organism_key, _Strain_key, _Tissue_key, _Gender_key, _CellLine_key, _Refs_key, name, description, age, ageMin, ageMax, isCuratorEdited, _CreatedBy_key, _ModifiedBy_key)",
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case PRB_STRAIN_GENOTYPE:
@@ -2662,16 +2658,6 @@ char *mgi_DBdelete(int table, char *key)
               sprintf(buf, "delete from %s where _Class_key = %s and _Refs_key = %s\n", 
 		mgi_DBtable(table), tokens[0], tokens[1]);
 	      break;
-      case MLC_TEXT_ALL:
-	      sprintf(buf, "delete from %s where %s = %s\n  \
-			    delete from MRK_Classes where %s = %s\n  \
-			    delete from MLC_Marker where %s = %s  \
-			    delete from MLC_Reference where %s = %s\n", \
-			mgi_DBtable(table), mgi_DBkey(table), key, \
-			mgi_DBkey(table), key, \
-			mgi_DBkey(table), key, \
-			mgi_DBkey(table), key);
-	      break;
       case MGI_COLUMNS:
 	      tokens = (char **) mgi_splitfields(key, ":");
               sprintf(buf, "delete from %s where table_name = '%s' and column_name = '%s'\n", 
@@ -2929,33 +2915,35 @@ Boolean mgi_DBisAnchorMarker(char *key)
 	  a string that has all "-characters replaced with "". 
 
    example:
-    char *str = "ab"cd";
+    char *str = 'ab'cd';
 	buf = mgi_escape_quotes(str)
 
 	buf contains:
-	   ab""cd 
-    - which will be interpreted by Sybase as ab"cd.
+	   ab''cd 
+    - which will be interpreted by Sybase as ab'cd.
 */
 
 char *mgi_escape_quotes(char *txt)
 {
     int c;
     static char outbuf[TEXTBUFSIZ];
-    char *ob=outbuf;
-    char *tp=txt;
+    char *ob = outbuf;
+    char *tp = txt;
  
-    while((c = *tp++) != '\0') {
-        switch(c) {
-            case '"':  /* double the quotes */
-                *ob++ = '"';
-                *ob++ = '"';
+    while ((c = *tp++) != '\0') 
+    {
+        switch(c) 
+	{
+            case '\'':  /* double the quotes */
+                *ob++ = '\'';
+                *ob++ = '\'';
                 break;
             default:
                 *ob++ = c;
                 break;
         }
     }
+
     *ob = '\0';
- 
     return outbuf;
 }
