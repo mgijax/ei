@@ -1,8 +1,9 @@
 ### Remember to update Configuration:CVS_TAG with most recen tag
 
+TAG: ei-4-4-2-14
 TAG: ei-4-4-2-13
 TAG: ei-4-4-2-12
-DATE: 11/29/2011
+DATE: 12/01/2011
 STAFF: lec
 CHANGES:
 1) syblib.c, aim/sybase.aim include/syblib.h

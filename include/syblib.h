@@ -46,8 +46,4 @@ extern char *global_database;
 extern char *global_server;
 extern char *global_radar;
 
-#define TEXTBUFSIZ      200000
-#define ROWLIMIT 	"2000"
-#define NOROWLIMIT 	"0"
-
 #endif

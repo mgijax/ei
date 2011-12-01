@@ -131,7 +131,6 @@
 */
 
 #include <mgilib.h>
-#include <syblib.h>
 
 char *global_application;     /* Set in Application dModule; holds main application value */
 char *global_version;         /* Set in Application dModule; holds main application version value */

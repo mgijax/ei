@@ -30,6 +30,10 @@ extern char *mgi_escape_quotes(char *);
 extern char *global_application;
 extern char *global_version;
 
+#define TEXTBUFSIZ      200000
+#define ROWLIMIT        "2000"
+#define NOROWLIMIT      "0"
+
 #define NEWKEY		-1
 #define	KEYNAME		"key"
 #define	NOKEY  		"\0"
