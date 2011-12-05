@@ -20,7 +20,7 @@
 
 #include <mlced.h>
 #include <mlced_scan.h>
-#include <syblib.h>
+#include <mgilib.h>
 #include <ux_uims.h>
 
 #define MAXCITATIONLEN 256    /* maximum length of a citation string */
