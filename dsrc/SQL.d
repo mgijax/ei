@@ -8,7 +8,7 @@
 --
 -- AddSQL, ModifySQL, DeleteSQL all call ExecSQL which actually executes
 -- the SQL commands.  ExecSQL then processes any error messages returned
--- from the Sybase error handler defined in pglib.c.
+-- from the Sybase error handler defined in syblib.c.
 --
 -- The Query events handle all dynamic searching w/in the EI.
 --
@@ -76,7 +76,7 @@
 dmodule SQL is
 
 #include <mgilib.h>
-#include <pglib.h>
+#include <syblib.h>
 
 locals:
 	queryList : widget;

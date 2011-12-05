@@ -36,7 +36,7 @@
 dmodule MPVocAnnot is
 
 #include <mgilib.h>
-#include <pglib.h>
+#include <syblib.h>
 #include <tables.h>
 #include <mgdsql.h>
 
@@ -682,12 +682,11 @@ rules:
 --
 
 	LoadHeader does
-
 	  cmd : string := mpvoc_sql_2a + annotTypeKey + mpvoc_sql_2b + currentRecordKey + mpvoc_sql_2c;
-
 	  row : integer := 0;
-          dbproc : opaque := mgi_dbexec(cmd);
- 
+          dbproc : opaque;
+	  
+	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      (void) mgi_tblSetCell(headerTable, row, headerTable.annotHeaderKey, mgi_getstr(dbproc, 1));
@@ -701,7 +700,6 @@ rules:
 	      row := row + 1;
             end while;
           end while;
- 
 	  (void) mgi_dbclose(dbproc);
 
 	end does;
@@ -966,18 +964,16 @@ rules:
 
 	  top->ReportDialog.select := mpvoc_sql_6a + dbView + mpvoc_sql_6b + currentRecordKey;
 
-	  cmd : string := mpvoc_sql_7a + dbView + mpvoc_sql_7b + currentRecordKey + mpvoc_sql_7c +
-			  mpvoc_sql_8a + annotTypeKey + mpvoc_sql_8b + currentRecordKey + mpvoc_sql_8c;
-
 	  row : integer := 0;
 	  i : integer;
-	  results : integer := 1;
 	  objectLoaded : boolean := false;
-          dbproc : opaque := mgi_dbexec(cmd);
- 
+	  cmd : string;
+          dbproc : opaque;
+	  
+	  cmd := mpvoc_sql_7a + dbView + mpvoc_sql_7b + currentRecordKey + mpvoc_sql_7c;
+	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
 	        if (not objectLoaded) then
 	          top->mgiAccession->ObjectID->text.value := mgi_getstr(dbproc, 1);
 	          top->mgiAccession->AccessionID->text.value := mgi_getstr(dbproc, 2);
@@ -987,37 +983,40 @@ rules:
 	          top->mgiAccession->AccessionName->text.value := 
 		    top->mgiAccession->AccessionName->text.value + ";" + mgi_getstr(dbproc, 4);
 		end if;
-	      elsif (results = 2) then
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.annotEvidenceKey, mgi_getstr(dbproc, 7));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.annotKey, mgi_getstr(dbproc, 8));
+            end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
 
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.termKey, mgi_getstr(dbproc, 1));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.term, mgi_getstr(dbproc, 2));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.termAccID, mgi_getstr(dbproc, 4));
+	  cmd := mpvoc_sql_8a + annotTypeKey + mpvoc_sql_8b + currentRecordKey + mpvoc_sql_8c;
+	  dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.annotEvidenceKey, mgi_getstr(dbproc, 7));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.annotKey, mgi_getstr(dbproc, 8));
 
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.qualifierKey, mgi_getstr(dbproc, 5));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.qualifier, mgi_getstr(dbproc, 6));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.termKey, mgi_getstr(dbproc, 1));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.term, mgi_getstr(dbproc, 2));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.termAccID, mgi_getstr(dbproc, 4));
 
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidenceKey, mgi_getstr(dbproc, 9));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidence, mgi_getstr(dbproc, 16));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.qualifierKey, mgi_getstr(dbproc, 5));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.qualifier, mgi_getstr(dbproc, 6));
 
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.refsKey, mgi_getstr(dbproc, 10));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.jnum, mgi_getstr(dbproc, 19));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.citation, mgi_getstr(dbproc, 20));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.evidenceKey, mgi_getstr(dbproc, 9));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.evidence, mgi_getstr(dbproc, 16));
 
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.editor, mgi_getstr(dbproc, 22));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.modifiedDate, mgi_getstr(dbproc, 15));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.createdBy, mgi_getstr(dbproc, 21));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.createdDate, mgi_getstr(dbproc, 14));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.refsKey, mgi_getstr(dbproc, 10));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.jnum, mgi_getstr(dbproc, 19));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.citation, mgi_getstr(dbproc, 20));
 
-		(void) mgi_tblSetCell(annotTable, row, annotTable.editMode, TBL_ROW_NOCHG);
-	      end if;
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.editor, mgi_getstr(dbproc, 22));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.modifiedDate, mgi_getstr(dbproc, 15));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.createdBy, mgi_getstr(dbproc, 21));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.createdDate, mgi_getstr(dbproc, 14));
+
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.editMode, TBL_ROW_NOCHG);
 	      row := row + 1;
             end while;
-	    row := 0;
-	    results := results + 1;
           end while;
- 
 	  (void) mgi_dbclose(dbproc);
 
 	  -- Reset Background
@@ -1336,31 +1335,24 @@ rules:
 	    key := annotclipboard->List.keys[i];
 
 	    cmd := mpvoc_sql_9a + annotTypeKey + mpvoc_sql_9b + key;
-
 	    dbproc := mgi_dbexec(cmd);
- 
             while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
               while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.clipAnnotEvidenceKey, key);
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.termKey, mgi_getstr(dbproc, 1));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.term, mgi_getstr(dbproc, 2));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.termAccID, mgi_getstr(dbproc, 4));
-
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.qualifierKey, mgi_getstr(dbproc, 5));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.qualifier, mgi_getstr(dbproc, 6));
-
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidenceKey, mgi_getstr(dbproc, 7));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidence, mgi_getstr(dbproc, 8));
-
 		(void) mgi_tblSetCell(annotTable, row, annotTable.editMode, TBL_ROW_ADD);
 		row := row + 1;
               end while;
             end while;
- 
             i := i + 1;
-	    (void) mgi_dbclose(dbproc);
-
           end while;
+	  (void) mgi_dbclose(dbproc);
 
 	  (void) reset_cursor(top);
 

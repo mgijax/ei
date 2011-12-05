@@ -36,7 +36,7 @@
 dmodule Tissues is
 
 #include <mgilib.h>
-#include <pglib.h>
+#include <syblib.h>
 
 devents:
 

@@ -82,7 +82,7 @@
 dmodule Strains is
 
 #include <mgilib.h>
-#include <pglib.h>
+#include <syblib.h>
 #include <tables.h>
 #include <mgdsql.h>
 
@@ -963,21 +963,16 @@ rules:
           end if;
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
-	  results : integer := 1;
 	  row : integer;
 	  table : widget;
+          dbproc : opaque;
 
-	  cmd := strain_sql_3 + currentRecordKey +
-	         strain_sql_4 + currentRecordKey +
-	         strain_sql_5 + currentRecordKey +
-	         strain_sql_6 + currentRecordKey;
-
-          dbproc : opaque := mgi_dbexec(cmd);
- 
+	  row := 0;
+	  table := top->ModificationHistory->Table;
+	  cmd := strain_sql_3 + currentRecordKey;
+          dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
-	    row := 0;
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
 	        top->ID->text.value := mgi_getstr(dbproc, 1);
 		top->strainSpecies->ObjectID->text.value := mgi_getstr(dbproc, 2);
 		top->strainSpecies->Species->text.value := mgi_getstr(dbproc, 11);
@@ -986,7 +981,6 @@ rules:
                 top->Name->text.value := mgi_getstr(dbproc, 4);
 		origStrainName := top->Name->text.value;
 
-	        table := top->ModificationHistory->Table;
 		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 13));
 		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 9));
 		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 14));
@@ -998,23 +992,47 @@ rules:
                 SetOption.source_widget := top->PrivateMenu;
                 SetOption.value := mgi_getstr(dbproc, 6);
                 send(SetOption, 0);
+	        row := row + 1;
+            end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
 
-	      elsif (results = 2) then
-		table := top->StrainAttribute->Table;
+	  row := 0;
+	  table := top->StrainAttribute->Table;
+	  cmd := strain_sql_4 + currentRecordKey;
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
                 (void) mgi_tblSetCell(table, row, table.annotCurrentKey, mgi_getstr(dbproc, 1));
                 (void) mgi_tblSetCell(table, row, table.termKey, mgi_getstr(dbproc, 3));
                 (void) mgi_tblSetCell(table, row, table.term, mgi_getstr(dbproc, 4));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+	        row := row + 1;
+            end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
 
-	      elsif (results = 3) then
-		table := top->NeedsReview->Table;
+	  row := 0;
+	  table := top->NeedsReview->Table;
+	  cmd := strain_sql_5 + currentRecordKey;
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
                 (void) mgi_tblSetCell(table, row, table.annotCurrentKey, mgi_getstr(dbproc, 1));
                 (void) mgi_tblSetCell(table, row, table.termKey, mgi_getstr(dbproc, 3));
                 (void) mgi_tblSetCell(table, row, table.term, mgi_getstr(dbproc, 4));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+	        row := row + 1;
+            end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
 
-	      elsif (results = 4) then
-		table := top->Genotype->Table;
+	  row := 0;
+	  table := top->Genotype->Table;
+	  cmd := strain_sql_6 + currentRecordKey;
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
                 (void) mgi_tblSetCell(table, row, table.strainGenotypeKey, mgi_getstr(dbproc, 1));
                 (void) mgi_tblSetCell(table, row, table.genotypeKey, mgi_getstr(dbproc, 2));
                 (void) mgi_tblSetCell(table, row, table.qualifierKey, mgi_getstr(dbproc, 3));
@@ -1024,12 +1042,9 @@ rules:
                 (void) mgi_tblSetCell(table, row, table.modifiedBy, mgi_getstr(dbproc, 7));
                 (void) mgi_tblSetCell(table, row, table.modifiedDate, mgi_getstr(dbproc, 8));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-	      end if;
-	      row := row + 1;
+	        row := row + 1;
             end while;
-	    results := results + 1;
           end while;
- 
 	  (void) mgi_dbclose(dbproc);
 
           LoadStrainAlleleTypeTable.table := top->Marker->Table;
@@ -1091,28 +1106,31 @@ rules:
           end if;
 
           row : integer := 0;
+          dbproc : opaque;
  
 	  cmd := strain_sql_7 + currentRecordKey;
-
-	  if (SelectReferenceMGI.doCount) then
-	    cmd := cmd + strain_sql_8;
-	  end if;
-
-          dbproc : opaque := mgi_dbexec(cmd);
+          dbproc := mgi_dbexec(cmd);
  
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (SelectReferenceMGI.doCount) then
-		row := (integer) mgi_getstr(dbproc, 1);
-              else
                 (void) mgi_tblSetCell(table, row, table.accID, mgi_getstr(dbproc, 1));
                 (void) mgi_tblSetCell(table, row, table.dataSet, mgi_getstr(dbproc, 2));
                 row := row + 1;
-	      end if;
             end while;
           end while;
-
 	  (void) mgi_dbclose(dbproc);
+
+	  if (SelectReferenceMGI.doCount) then
+	    cmd := cmd + strain_sql_8;
+            dbproc := mgi_dbexec(cmd);
+ 
+            while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+              while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+		row := (integer) mgi_getstr(dbproc, 1);
+              end while;
+            end while;
+	    (void) mgi_dbclose(dbproc);
+	  end if;
 
 	  top->ReferenceMGI->Records.labelString := (string) row + " Records";
 	  (void) reset_cursor(top);
@@ -1145,27 +1163,29 @@ rules:
           end if;
 
           row : integer := 0;
- 
-	  cmd := strain_sql_9 + currentRecordKey;
-	  if (SelectDataSets.doCount) then
-	    cmd := cmd + strain_sql_9;
-	  end if;
-
           dbproc : opaque := mgi_dbexec(cmd);
- 
+
+	  cmd := strain_sql_9 + currentRecordKey;
+          dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (SelectDataSets.doCount) then
-		row := (integer) mgi_getstr(dbproc, 1);
-              else
                 (void) mgi_tblSetCell(table, row, table.accID, mgi_getstr(dbproc, 1));
                 (void) mgi_tblSetCell(table, row, table.dataSet, mgi_getstr(dbproc, 2));
                 row := row + 1;
-	      end if;
             end while;
           end while;
-
 	  (void) mgi_dbclose(dbproc);
+
+	  if (SelectDataSets.doCount) then
+	    cmd := strain_sql_9;
+            dbproc := mgi_dbexec(cmd);
+            while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+              while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+		row := (integer) mgi_getstr(dbproc, 1);
+              end while;
+            end while;
+	    (void) mgi_dbclose(dbproc);
+	  end if;
 
 	  top->DataSets->Records.labelString := (string) row + " Records";
 	  (void) reset_cursor(top);

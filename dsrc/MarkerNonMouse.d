@@ -36,7 +36,7 @@
 dmodule MarkerNonMouse is
 
 #include <mgilib.h>
-#include <pglib.h>
+#include <syblib.h>
 #include <tables.h>
 #include <mgdsql.h>
 
@@ -472,32 +472,32 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := nonmouse_sql_2 + currentRecordKey +
-	         nonmouse_sql_3a + currentRecordKey + nonmouse_sql_3b;
-
-	  results : integer := 1;
-
-	  dbproc : opaque := mgi_dbexec(cmd);
-
+	  dbproc : opaque;
+	  
+	  cmd := nonmouse_sql_2 + currentRecordKey;
+	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
-	        top->ID->text.value           := mgi_getstr(dbproc, 1);
-	        top->Symbol->text.value       := mgi_getstr(dbproc, 3);
-	        top->Name->text.value         := mgi_getstr(dbproc, 4);
-	        top->Chromosome->text.value   := mgi_getstr(dbproc, 5);
-	        top->Cyto->text.value         := mgi_getstr(dbproc, 6);
-	        top->CreationDate->text.value := mgi_getstr(dbproc, 8);
-	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 9);
-		top->mgiOrganism->ObjectID->text.value := mgi_getstr(dbproc, 2);
-		top->mgiOrganism->Organism->text.value := mgi_getstr(dbproc, 7);
-	      elsif (results = 2) then
-		top->Notes->text.value := top->Notes->text.value + mgi_getstr(dbproc, 1);
-	      end if;
+	      top->ID->text.value           := mgi_getstr(dbproc, 1);
+	      top->Symbol->text.value       := mgi_getstr(dbproc, 3);
+	      top->Name->text.value         := mgi_getstr(dbproc, 4);
+	      top->Chromosome->text.value   := mgi_getstr(dbproc, 5);
+	      top->Cyto->text.value         := mgi_getstr(dbproc, 6);
+	      top->CreationDate->text.value := mgi_getstr(dbproc, 8);
+	      top->ModifiedDate->text.value := mgi_getstr(dbproc, 9);
+	      top->mgiOrganism->ObjectID->text.value := mgi_getstr(dbproc, 2);
+	      top->mgiOrganism->Organism->text.value := mgi_getstr(dbproc, 7);
 	    end while;
-	    results := results + 1;
 	  end while;
+	  (void) mgi_dbclose(dbproc);
 
+	  cmd := nonmouse_sql_3a + currentRecordKey + nonmouse_sql_3b;
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      top->Notes->text.value := top->Notes->text.value + mgi_getstr(dbproc, 1);
+	    end while;
+	  end while;
 	  (void) mgi_dbclose(dbproc);
 
           LoadAcc.table := accTable;

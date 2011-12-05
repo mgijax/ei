@@ -26,7 +26,7 @@
 dmodule ActualLogical is
 
 #include <mgilib.h>
-#include <pglib.h>
+#include <syblib.h>
 #include <tables.h>
 #include <mgisql.h>
 
@@ -379,51 +379,53 @@ rules:
 
           table : widget;
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
-
-	  cmd := actuallogical_sql_1a + currentRecordKey + actuallogical_sql_1b +
-		 actuallogical_sql_2a + currentRecordKey + actuallogical_sql_2b;
-
-	  results : integer := 1;
 	  row : integer := 0;
+          dbproc : opaque;
 
-          dbproc : opaque := mgi_dbexec(cmd);
- 
+	  row := 0;
+	  cmd := actuallogical_sql_1a + currentRecordKey + actuallogical_sql_1b;
+	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
-	    row := 0;
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
-	        top->ID->text.value           := mgi_getstr(dbproc, 1);
-                top->Name->text.value         := mgi_getstr(dbproc, 2);
-                top->Description->text.value  := mgi_getstr(dbproc, 3);
-		top->mgiOrganism->ObjectID->text.value := mgi_getstr(dbproc, 4);
-		top->mgiOrganism->Organism->text.value := mgi_getstr(dbproc, 9);
-                top->CreationDate->text.value := mgi_getstr(dbproc, 7);
-                top->ModifiedDate->text.value := mgi_getstr(dbproc, 8);
-	      elsif (results = 2) then
-                table := top->ActualDB->Table;
-		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-		(void) mgi_tblSetCell(table, row, table.actualKey, mgi_getstr(dbproc, 1));
-		(void) mgi_tblSetCell(table, row, table.actualName, mgi_getstr(dbproc, 3));
-		(void) mgi_tblSetCell(table, row, table.url, mgi_getstr(dbproc, 5));
-		(void) mgi_tblSetCell(table, row, table.delimiter, mgi_getstr(dbproc, 7));
-
-                SetOption.source_widget := top->ActiveMenu;
-                SetOption.value := mgi_getstr(dbproc, 4);
-                SetOption.copyToTable := true;
-                SetOption.tableRow := row;
-                send(SetOption, 0);
-
-                SetOption.source_widget := top->MultipleMenu;
-                SetOption.value := mgi_getstr(dbproc, 6);
-                SetOption.copyToTable := true;
-                SetOption.tableRow := row;
-                send(SetOption, 0);
-	      end if;
+	      top->ID->text.value           := mgi_getstr(dbproc, 1);
+              top->Name->text.value         := mgi_getstr(dbproc, 2);
+              top->Description->text.value  := mgi_getstr(dbproc, 3);
+	      top->mgiOrganism->ObjectID->text.value := mgi_getstr(dbproc, 4);
+	      top->mgiOrganism->Organism->text.value := mgi_getstr(dbproc, 9);
+              top->CreationDate->text.value := mgi_getstr(dbproc, 7);
+              top->ModifiedDate->text.value := mgi_getstr(dbproc, 8);
 	      row := row + 1;
             end while;
-	    results := results + 1;
           end while;
- 
+	  (void) mgi_dbclose(dbproc);
+
+	  row := 0;
+	  cmd := actuallogical_sql_2a + currentRecordKey + actuallogical_sql_2b;
+          table := top->ActualDB->Table;
+	  dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+	      (void) mgi_tblSetCell(table, row, table.actualKey, mgi_getstr(dbproc, 1));
+	      (void) mgi_tblSetCell(table, row, table.actualName, mgi_getstr(dbproc, 3));
+	      (void) mgi_tblSetCell(table, row, table.url, mgi_getstr(dbproc, 5));
+	      (void) mgi_tblSetCell(table, row, table.delimiter, mgi_getstr(dbproc, 7));
+
+              SetOption.source_widget := top->ActiveMenu;
+              SetOption.value := mgi_getstr(dbproc, 4);
+              SetOption.copyToTable := true;
+              SetOption.tableRow := row;
+              send(SetOption, 0);
+
+              SetOption.source_widget := top->MultipleMenu;
+              SetOption.value := mgi_getstr(dbproc, 6);
+              SetOption.copyToTable := true;
+              SetOption.tableRow := row;
+              send(SetOption, 0);
+
+	      row := row + 1;
+            end while;
+          end while;
 	  (void) mgi_dbclose(dbproc);
 
           top->QueryList->List.row := Select.item_position;

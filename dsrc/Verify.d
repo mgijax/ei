@@ -249,7 +249,7 @@
 dmodule Verify is
 
 #include <mgilib.h>
-#include <pglib.h>
+#include <syblib.h>
 #include <tables.h>
 #include <mgisql.h>
 
@@ -1518,7 +1518,6 @@ rules:
 	      results.insert(mgi_getstr(dbproc, 2), results.count + 1);
 	      std.insert(mgi_getstr(dbproc, 3), std.count + 1);
 	      private.insert(mgi_getstr(dbproc, 4), private.count + 1);
-
 	    end while;
 	  end while;
 	  (void) mgi_dbclose(dbproc);
@@ -3747,8 +3746,8 @@ rules:
 	  termKey : string;
 	  term : string;
 	  dag : string;
-	  results : integer := 1;
 	  isHeader : string;
+	  dbproc : opaque;
 
 	  select : string := "select t.accID, t._Term_key, t.term " +
 		"from VOC_Term_View t " +
@@ -3759,8 +3758,19 @@ rules:
 	    select := select + " and t.isObsolete = 0 ";
 	  end if;
 
-	  select := select + 
-	  	"select rtrim(d.dagAbbrev) " +
+	  select := select;
+
+	  dbproc := mgi_dbexec(select);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	        termAcc := mgi_getstr(dbproc, 1);
+	        termKey := mgi_getstr(dbproc, 2);
+	        term    := mgi_getstr(dbproc, 3);
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  select := "select rtrim(d.dagAbbrev) " +
 		"from VOC_Term_View t, DAG_Node_View d " +
 		"where t.accID = " + mgi_DBprstr(value) + 
 		" and t._Vocab_key = " + (string) sourceWidget.vocabKey +
@@ -3771,18 +3781,11 @@ rules:
 	    select := select + " and t.isObsolete = 0 ";
 	  end if;
 
-	  dbproc : opaque := mgi_dbexec(select);
+	  dbproc := mgi_dbexec(select);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
-	        termAcc := mgi_getstr(dbproc, 1);
-	        termKey := mgi_getstr(dbproc, 2);
-	        term    := mgi_getstr(dbproc, 3);
-	      elsif (results = 2) then
 	        dag := mgi_getstr(dbproc, 1);
-	      end if;
 	    end while;
-	    results := results + 1;
 	  end while;
 	  (void) mgi_dbclose(dbproc);
 

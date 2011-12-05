@@ -42,7 +42,7 @@
 dmodule Antigen is
 
 #include <mgilib.h>
-#include <pglib.h>
+#include <syblib.h>
 #include <tables.h>
 #include <gxdsql.h>
 
@@ -418,43 +418,45 @@ rules:
 	  -- Initialize global current record key
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := antigen_sql_1 + currentRecordKey + "\n" +
-		 antigen_sql_2a + currentRecordKey + antigen_sql_2b;
 
 	  results : integer := 1;
 	  row : integer := 0;
 	  table : widget;
-
-          dbproc : opaque := mgi_dbexec(cmd);
- 
+          dbproc : opaque;
+	  
+	  cmd := antigen_sql_1 + currentRecordKey + "\n";
+	  table := top->ModificationHistory->Table;
+	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
-	        top->ID->text.value             := mgi_getstr(dbproc, 1);
-	        top->Name->text.value           := mgi_getstr(dbproc, 3);
-	        top->Region->text.value         := mgi_getstr(dbproc, 4);
-	        top->Note->text.value           := mgi_getstr(dbproc, 5);
-	        top->SourceForm->SourceID->text.value := mgi_getstr(dbproc, 2);
-	        DisplayMolecularSource.source_widget := top;
-	        send(DisplayMolecularSource, 0);
+	      top->ID->text.value             := mgi_getstr(dbproc, 1);
+	      top->Name->text.value           := mgi_getstr(dbproc, 3);
+	      top->Region->text.value         := mgi_getstr(dbproc, 4);
+	      top->Note->text.value           := mgi_getstr(dbproc, 5);
+	      top->SourceForm->SourceID->text.value := mgi_getstr(dbproc, 2);
+	      DisplayMolecularSource.source_widget := top;
+	      send(DisplayMolecularSource, 0);
 
-		table := top->ModificationHistory->Table;
-		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 22));
-		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 8));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 23));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 9));
-
-	      elsif (results = 2) then
-	        table := top->Antibody->Table;
-		(void) mgi_tblSetCell(table, row, table.accID, mgi_getstr(dbproc, 1));
-		(void) mgi_tblSetCell(table, row, table.antibody, mgi_getstr(dbproc, 2));
-		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-		row := row + 1;
-	      end if;
+	      (void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 22));
+	      (void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 8));
+	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 23));
+	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 9));
 	    end while;
-	    results := results + 1;
           end while;
+	  (void) mgi_dbclose(dbproc);
 
+	  row := 0;
+	  cmd := antigen_sql_2a + currentRecordKey + antigen_sql_2b;
+	  table := top->Antibody->Table;
+	  dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      (void) mgi_tblSetCell(table, row, table.accID, mgi_getstr(dbproc, 1));
+	      (void) mgi_tblSetCell(table, row, table.antibody, mgi_getstr(dbproc, 2));
+	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+	      row := row + 1;
+	    end while;
+          end while;
 	  (void) mgi_dbclose(dbproc);
  
 	  -- Load Accession numbers

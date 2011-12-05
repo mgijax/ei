@@ -19,7 +19,7 @@
 dmodule MutantCellLine is
 
 #include <mgilib.h>
-#include <pglib.h>
+#include <syblib.h>
 #include <tables.h>
 #include <mgdsql.h>
 
@@ -516,17 +516,13 @@ rules:
           (void) busy_cursor(top);
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
+	  dbproc : opaque;
 
-	  cmd := mutant_sql_2 + currentRecordKey + mutant_sql_3 + currentRecordKey;
-
-	  results : integer := 1;
-
-	  dbproc : opaque := mgi_dbexec(cmd);
-
+	  cmd := mutant_sql_2 + currentRecordKey;
+	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 
-	      if (results = 1) then
 	        top->ID->text.value := mgi_getstr(dbproc, 1);
 	        top->EditForm->CellLine->text.value := mgi_getstr(dbproc, 2);
 
@@ -562,16 +558,17 @@ rules:
                 send(SetOption, 0);
 
 		top->EditForm->Symbol->text.value := "";
-
-	      elsif (results = 2) then
-		top->EditForm->Symbol->text.value := mgi_getstr(dbproc, 1);
-
-	      end if;
-
 	    end while;
-	    results := results + 1;
 	  end while;
+	  (void) mgi_dbclose(dbproc);
 
+	  cmd := mutant_sql_3 + currentRecordKey;
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+		top->EditForm->Symbol->text.value := mgi_getstr(dbproc, 1);
+	    end while;
+	  end while;
 	  (void) mgi_dbclose(dbproc);
 
           LoadAcc.table := accTable;
@@ -605,17 +602,14 @@ rules:
 	  end if;
 
 	  cmd := mutant_sql_4 + top->mgiParentCellLine->ObjectID->text.value;
-
 	  dbproc : opaque := mgi_dbexec(cmd);
 
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-
 	      top->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 1);
 	      top->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 2);
 	      top->mgiParentCellLine->ParentStrain->StrainID->text.value := mgi_getstr(dbproc, 3);
 	      top->mgiParentCellLine->ParentStrain->Verify->text.value := mgi_getstr(dbproc, 4);
-
 	      top->mgiParentCellLine->Derivation->ObjectID->text.value := "";
 	      top->mgiParentCellLine->Derivation->CharText->text.value := "";
 
@@ -651,12 +645,10 @@ rules:
 	  end if;
 
 	  cmd := mutant_sql_5 + top->mgiParentCellLine->Derivation->ObjectID->text.value;
-
 	  dbproc : opaque := mgi_dbexec(cmd);
 
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-
 	      top->mgiParentCellLine->Derivation->ObjectID->text.value := mgi_getstr(dbproc, 1);
 	      top->mgiParentCellLine->Derivation->CharText->text.value := mgi_getstr(dbproc, 2);
 	      top->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 3);
@@ -729,7 +721,6 @@ rules:
 	  -- Search for value in the database
 
 	  select : string := mutant_sql_6 + mgi_DBprstr(value);
-
 	  dbproc : opaque := mgi_dbexec(select);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do

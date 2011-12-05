@@ -66,7 +66,7 @@
 dmodule MolSourceLib is
 
 #include <mgilib.h>
-#include <pglib.h>
+#include <syblib.h>
 #include <tables.h>
 #include <mgisql.h>
 
@@ -315,20 +315,13 @@ rules:
 	  end if;
 
 	  table : widget;
-	  results : integer := 1;
-          cmd :string := molsource_sql_5 + key +
-			 molsource_sql_6 + key +
-			 molsource_sql_7 + key +
-			 molsource_sql_8 + key +
-			 molsource_sql_9 + key +
-			 molsource_sql_10 + key;
+	  cmd : string;
+          dbproc : opaque;
 
-          dbproc : opaque := mgi_dbexec(cmd);
- 
+          cmd := molsource_sql_5 + key;
+          dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-
-	      if (results = 1) then
 
 		if (sourceForm->Library.managed) then
                   sourceForm->Library->text.value := mgi_getstr(dbproc, 10);
@@ -367,41 +360,64 @@ rules:
                 SetOption.value := mgi_getstr(dbproc, 7);
                 send(SetOption, 0);
 
-	      elsif (results = 2) then
+            end while;
+          end while;
+          (void) mgi_dbclose(dbproc);
 
+	  cmd := molsource_sql_6 + key;
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
                 sourceForm->Strain->Verify->text.value := mgi_getstr(dbproc, 2);
                 sourceForm->Strain->StrainID->text.value := mgi_getstr(dbproc, 1);
+            end while;
+          end while;
+          (void) mgi_dbclose(dbproc);
 
-	      elsif (results = 3) then
-
+	  cmd := molsource_sql_7 + key;
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
                 sourceForm->Tissue->Verify->text.value := mgi_getstr(dbproc, 2);
                 sourceForm->Tissue->TissueID->text.value := mgi_getstr(dbproc, 1);
+            end while;
+          end while;
+          (void) mgi_dbclose(dbproc);
 
-	      elsif (results = 4) then
-
+	  cmd := molsource_sql_8 + key;
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
                 sourceForm->CellLine->Verify->text.value := mgi_getstr(dbproc, 2);
                 sourceForm->CellLine->CellLineID->text.value := mgi_getstr(dbproc, 1);
+            end while;
+          end while;
+          (void) mgi_dbclose(dbproc);
 
-	      elsif (results = 5) then
-
+	  cmd := molsource_sql_9 + key;
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	        if (DisplayMolecularSource.master) then
 		  (void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 1));
 		  (void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 2));
 		  (void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 3));
 		  (void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 4));
                 end if;
+            end while;
+          end while;
+          (void) mgi_dbclose(dbproc);
 
-	      elsif (results = 6) then
+	  cmd := molsource_sql_10 + key;
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	        if (sourceForm->mgiCitation.managed) then
                   sourceForm->mgiCitation->Jnum->text.value := mgi_getstr(dbproc, 1);
                   sourceForm->mgiCitation->Citation->text.value := mgi_getstr(dbproc, 2);
 		end if;
-	      end if;
-
             end while;
-	    results := results + 1;
           end while;
- 
           (void) mgi_dbclose(dbproc);
 
 --	  if (sourceForm->Library.managed) then
@@ -877,7 +893,6 @@ rules:
           end if;
 
 	  cmd := molsource_sql_11 + sourceKey;
-
           dbproc : opaque := mgi_dbexec(cmd);
  
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do

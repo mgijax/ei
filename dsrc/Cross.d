@@ -21,7 +21,7 @@
 dmodule Cross is
 
 #include <mgilib.h>
-#include <pglib.h>
+#include <syblib.h>
 #include <mgdsql.h>
 
 devents:

@@ -76,7 +76,7 @@
 dmodule Genotype is
 
 #include <mgilib.h>
-#include <pglib.h>
+#include <syblib.h>
 #include <tables.h>
 #include <mgdsql.h>
 
@@ -1022,80 +1022,93 @@ rules:
 	  results : integer := 1;
 	  row : integer := 0;
 	  table : widget;
+          dbproc : opaque;
 
-	  cmd := genotype_sql_3 + currentRecordKey +
-	         genotype_sql_4a + currentRecordKey + genotype_sql_4b +
-		 genotype_sql_5a + currentRecordKey + genotype_sql_5b +
-		 genotype_sql_6a + currentRecordKey + genotype_sql_6b + mgiTypeKey + genotype_sql_6c;
-
-          dbproc : opaque := mgi_dbexec(cmd);
-
+	  cmd := genotype_sql_3 + currentRecordKey;
+	  table := top->Control->ModificationHistory->Table;
+	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
-	    row := 0;
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
-                top->ID->text.value := mgi_getstr(dbproc, 1);
-                top->EditForm->Strain->StrainID->text.value := mgi_getstr(dbproc, 2);
-                top->EditForm->Strain->Verify->text.value := mgi_getstr(dbproc, 10);
-		table := top->Control->ModificationHistory->Table;
-		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 13));
-		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 8));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 14));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 9));
+              top->ID->text.value := mgi_getstr(dbproc, 1);
+              top->EditForm->Strain->StrainID->text.value := mgi_getstr(dbproc, 2);
+              top->EditForm->Strain->Verify->text.value := mgi_getstr(dbproc, 10);
+	      (void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 13));
+	      (void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 8));
+	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 14));
+	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 9));
 
-                SetOption.source_widget := top->ConditionalMenu;
-                SetOption.value := mgi_getstr(dbproc, 3);
-                send(SetOption, 0);
+              SetOption.source_widget := top->ConditionalMenu;
+              SetOption.value := mgi_getstr(dbproc, 3);
+              send(SetOption, 0);
 
-                SetOption.source_widget := top->GenotypeExistsAsMenu;
-                SetOption.value := mgi_getstr(dbproc, 5);
-                send(SetOption, 0);
-
-	      elsif (results = 2) then
-	  	table := top->AllelePair->Table;
-	        (void) mgi_tblSetCell(table, row, table.pairKey, mgi_getstr(dbproc, 1));
-	        (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 8));
-	        (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 8));
-	        (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 5));
-	        (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 13));
-	        (void) mgi_tblSetCell(table, row, table.markerChr, mgi_getstr(dbproc, 14));
-	        (void) mgi_tblSetCell(table, row, (integer) table.alleleKey[1], mgi_getstr(dbproc, 3));
-	        (void) mgi_tblSetCell(table, row, (integer) table.alleleKey[2], mgi_getstr(dbproc, 4));
-	        (void) mgi_tblSetCell(table, row, (integer) table.alleleSymbol[1], mgi_getstr(dbproc, 15));
-	        (void) mgi_tblSetCell(table, row, (integer) table.alleleSymbol[2], mgi_getstr(dbproc, 16));
-		(void) mgi_tblSetCell(table, row, table.stateKey, mgi_getstr(dbproc, 6));
-		(void) mgi_tblSetCell(table, row, table.state, mgi_getstr(dbproc, 17));
-		(void) mgi_tblSetCell(table, row, table.compoundKey, mgi_getstr(dbproc, 7));
-		(void) mgi_tblSetCell(table, row, table.compound, mgi_getstr(dbproc, 18));
-		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-		row := row + 1;
-	      elsif (results = 3) then
-	          top->EditForm->CombinationNote1->text.value := top->EditForm->CombinationNote1->text.value +
-			mgi_getstr(dbproc, 1);
-	      elsif (results = 4) then
-		(void) mgi_tblSetCell(imgTable, row, imgTable.assocKey, mgi_getstr(dbproc, 1));
-		(void) mgi_tblSetCell(imgTable, row, imgTable.paneKey, mgi_getstr(dbproc, 2));
-		(void) mgi_tblSetCell(imgTable, row, imgTable.imageClassKey, mgi_getstr(dbproc, 3));
-		(void) mgi_tblSetCell(imgTable, row, imgTable.figureLabel, mgi_getstr(dbproc, 4));
-		(void) mgi_tblSetCell(imgTable, row, imgTable.imageClass, mgi_getstr(dbproc, 5));
-		(void) mgi_tblSetCell(imgTable, row, imgTable.mgiID, mgi_getstr(dbproc, 6));
-		(void) mgi_tblSetCell(imgTable, row, imgTable.pixID, mgi_getstr(dbproc, 7));
-		(void) mgi_tblSetCell(imgTable, row, imgTable.isPrimaryKey, mgi_getstr(dbproc, 8));
-		(void) mgi_tblSetCell(imgTable, row, imgTable.editMode, TBL_ROW_NOCHG);
-
-		if (mgi_getstr(dbproc, 8) = YES) then
-		    (void) mgi_tblSetCell(imgTable, row, imgTable.isPrimary, "Yes");
-	        else
-		    (void) mgi_tblSetCell(imgTable, row, imgTable.isPrimary, "No");
-		end if;
-
-		row := row + 1;
-
-	      end if;
+              SetOption.source_widget := top->GenotypeExistsAsMenu;
+              SetOption.value := mgi_getstr(dbproc, 5);
+              send(SetOption, 0);
 	    end while;
-	    results := results + 1;
 	  end while;
+	  (void) mgi_dbclose(dbproc);
 
+	  row := 0;
+	  cmd := genotype_sql_4a + currentRecordKey + genotype_sql_4b;
+	  table := top->AllelePair->Table;
+	  dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      (void) mgi_tblSetCell(table, row, table.pairKey, mgi_getstr(dbproc, 1));
+	      (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 8));
+	      (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 8));
+	      (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 5));
+	      (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 13));
+	      (void) mgi_tblSetCell(table, row, table.markerChr, mgi_getstr(dbproc, 14));
+	      (void) mgi_tblSetCell(table, row, (integer) table.alleleKey[1], mgi_getstr(dbproc, 3));
+	      (void) mgi_tblSetCell(table, row, (integer) table.alleleKey[2], mgi_getstr(dbproc, 4));
+	      (void) mgi_tblSetCell(table, row, (integer) table.alleleSymbol[1], mgi_getstr(dbproc, 15));
+	      (void) mgi_tblSetCell(table, row, (integer) table.alleleSymbol[2], mgi_getstr(dbproc, 16));
+	      (void) mgi_tblSetCell(table, row, table.stateKey, mgi_getstr(dbproc, 6));
+	      (void) mgi_tblSetCell(table, row, table.state, mgi_getstr(dbproc, 17));
+	      (void) mgi_tblSetCell(table, row, table.compoundKey, mgi_getstr(dbproc, 7));
+	      (void) mgi_tblSetCell(table, row, table.compound, mgi_getstr(dbproc, 18));
+	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+	      row := row + 1;
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  cmd := genotype_sql_5a + currentRecordKey + genotype_sql_5b;
+	  dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      top->EditForm->CombinationNote1->text.value := top->EditForm->CombinationNote1->text.value +
+			mgi_getstr(dbproc, 1);
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  row := 0;
+	  cmd := genotype_sql_6a + currentRecordKey + genotype_sql_6b + mgiTypeKey + genotype_sql_6c;
+	  dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      (void) mgi_tblSetCell(imgTable, row, imgTable.assocKey, mgi_getstr(dbproc, 1));
+	      (void) mgi_tblSetCell(imgTable, row, imgTable.paneKey, mgi_getstr(dbproc, 2));
+	      (void) mgi_tblSetCell(imgTable, row, imgTable.imageClassKey, mgi_getstr(dbproc, 3));
+	      (void) mgi_tblSetCell(imgTable, row, imgTable.figureLabel, mgi_getstr(dbproc, 4));
+	      (void) mgi_tblSetCell(imgTable, row, imgTable.imageClass, mgi_getstr(dbproc, 5));
+	      (void) mgi_tblSetCell(imgTable, row, imgTable.mgiID, mgi_getstr(dbproc, 6));
+	      (void) mgi_tblSetCell(imgTable, row, imgTable.pixID, mgi_getstr(dbproc, 7));
+	      (void) mgi_tblSetCell(imgTable, row, imgTable.isPrimaryKey, mgi_getstr(dbproc, 8));
+	      (void) mgi_tblSetCell(imgTable, row, imgTable.editMode, TBL_ROW_NOCHG);
+      
+	      if (mgi_getstr(dbproc, 8) = YES) then
+	          (void) mgi_tblSetCell(imgTable, row, imgTable.isPrimary, "Yes");
+	      else
+	          (void) mgi_tblSetCell(imgTable, row, imgTable.isPrimary, "No");
+	      end if;
+
+	      row := row + 1;
+
+	    end while;
+	  end while;
 	  (void) mgi_dbclose(dbproc);
 
 	  LoadAcc.table := accTable;

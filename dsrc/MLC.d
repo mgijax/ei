@@ -17,7 +17,7 @@
 -- Dependencies:
 --
 --    C:
---    mgilib.c mlced_scan.c mlced_util.c pglib.c utilities.c mlced_nomen.c
+--    mgilib.c mlced_scan.c mlced_util.c syblib.c utilities.c mlced_nomen.c
 --
 --    D:
 --      Verify.d Lib.d Report.d Table.d
@@ -89,7 +89,7 @@
 dmodule MLC is
 
 #include <mgilib.h>
-#include <pglib.h>
+#include <syblib.h>
 #include <tables.h>
 #include <mlced_scan.h>
 #include <mlced_nomen.h>
@@ -705,70 +705,82 @@ rules:
  
 	  top->Description->text.value := "";
 
-	  cmd := mlc_sql_1 + currentMarkerKey +
-		 mlc_sql_2a + currentMarkerKey + mlc_sql_2b +
-		 mlc_sql_3a + currentMarkerKey + mlc_sql_3b +
-		 mlc_sql_4 + currentMarkerKey;
-
 	  table : widget;
-	  results : integer := 1;
 	  row : integer := 0;
-
-	  dbproc : opaque := mgi_dbexec(cmd);
-
+	  dbproc : opaque;
+	  
+	  cmd := mlc_sql_1 + currentMarkerKey;
+	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
-	    row := 0;
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
-		-- Note: mgiMarker->ObjectID->text will contain _Marker_key 
-		-- for displayed record until a new record is selected for display
-		top->mgiMarker->ObjectID->text.value := mgi_getstr(dbproc, 1);
-		top->mgiMarker->Marker->text.value   := mgi_getstr(dbproc, 2);
-		top->Name->text.value                := mgi_getstr(dbproc, 3);
-		SetOption.source_widget := top->ChromosomeMenu;
-		SetOption.value := mgi_getstr(dbproc, 4);
-		send(SetOption, 0);
-	      elsif (results = 2) then
-		table := top->Class->Table;
-		(void) mgi_tblSetCell(table, row, table.classCurrentKey, mgi_getstr(dbproc, 1));
-		(void) mgi_tblSetCell(table, row, table.classKey, mgi_getstr(dbproc, 1));
-		(void) mgi_tblSetCell(table, row, table.className, mgi_getstr(dbproc, 2));
-		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-	      elsif (results = 3) then
-		table := top->Reference->Table;
-		(void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 2));
-		(void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 2));
-		(void) mgi_tblSetCell(table, row, table.refsCurrentKey, mgi_getstr(dbproc, 1));
-		(void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 1));
-		(void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 3));
-		(void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 4));
-		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-	      elsif (results = 4) then
+	      -- Note: mgiMarker->ObjectID->text will contain _Marker_key 
+	      -- for displayed record until a new record is selected for display
+	      top->mgiMarker->ObjectID->text.value := mgi_getstr(dbproc, 1);
+	      top->mgiMarker->Marker->text.value   := mgi_getstr(dbproc, 2);
+	      top->Name->text.value                := mgi_getstr(dbproc, 3);
+	      SetOption.source_widget := top->ChromosomeMenu;
+	      SetOption.value := mgi_getstr(dbproc, 4);
+	      send(SetOption, 0);
+	    end while;
+	  end while;
+ 	  (void) mgi_dbclose(dbproc);
 
-		SetOption.source_widget := top->MLCModeMenu;
-		SetOption.value := mgi_getstr(dbproc, 1);
-		SetOption.setDefault := true;
-		send(SetOption, 0);
-
-		SetOption.source_widget := top->IsDeletedMenu;
-		SetOption.value := mgi_getstr(dbproc, 2);
-		send(SetOption, 0);
-
-		top->Description->text.value  
-			:= mlced_dbDescToEI(mgi_getstr(dbproc, 3), (integer) currentMarkerKey);
-
-		top->CreationDate->text.value := mgi_getstr(dbproc, 4);
-		top->ModifiedDate->text.value := mgi_getstr(dbproc, 5);
-		top->ModifiedBy->text.value   := mgi_getstr(dbproc, 6);
-
-		MLCexists := true;
-	      end if;
-			
+	  row := 0;
+	  cmd := mlc_sql_2a + currentMarkerKey + mlc_sql_2b;
+	  table := top->Class->Table;
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      (void) mgi_tblSetCell(table, row, table.classCurrentKey, mgi_getstr(dbproc, 1));
+	      (void) mgi_tblSetCell(table, row, table.classKey, mgi_getstr(dbproc, 1));
+	      (void) mgi_tblSetCell(table, row, table.className, mgi_getstr(dbproc, 2));
+	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	      row := row + 1;
 	    end while;
-	    results := results + 1;
 	  end while;
+ 	  (void) mgi_dbclose(dbproc);
 
+	  row := 0;
+	  cmd := mlc_sql_3a + currentMarkerKey + mlc_sql_3b;
+	  table := top->Reference->Table;
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+ 	      (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 2));
+	      (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 2));
+	      (void) mgi_tblSetCell(table, row, table.refsCurrentKey, mgi_getstr(dbproc, 1));
+	      (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 1));
+	      (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 3));
+	      (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 4));
+	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+	      row := row + 1;
+	    end while;
+	  end while;
+ 	  (void) mgi_dbclose(dbproc);
+
+	  cmd := mlc_sql_4 + currentMarkerKey;
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      SetOption.source_widget := top->MLCModeMenu;
+	      SetOption.value := mgi_getstr(dbproc, 1);
+	      SetOption.setDefault := true;
+	      send(SetOption, 0);
+
+	      SetOption.source_widget := top->IsDeletedMenu;
+	      SetOption.value := mgi_getstr(dbproc, 2);
+	      send(SetOption, 0);
+
+	      top->Description->text.value  
+		      := mlced_dbDescToEI(mgi_getstr(dbproc, 3), (integer) currentMarkerKey);
+
+	      top->CreationDate->text.value := mgi_getstr(dbproc, 4);
+	      top->ModifiedDate->text.value := mgi_getstr(dbproc, 5);
+	      top->ModifiedBy->text.value   := mgi_getstr(dbproc, 6);
+
+	      MLCexists := true;
+	    end while;
+	  end while;
  	  (void) mgi_dbclose(dbproc);
 
 	  top->QueryList->List.row := Select.item_position;

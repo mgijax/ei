@@ -23,7 +23,7 @@
 dmodule SynTypeTableLib is
 
 #include <mgilib.h>
-#include <pglib.h>
+#include <syblib.h>
 #include <tables.h>
 
 -- See SynTypeTableLib.de for D event declarations
@@ -106,7 +106,6 @@ rules:
 	       row := row + 1;
 	    end while;
 	  end while;
-
 	  (void) mgi_dbclose(dbproc);
 
 	  if (top->SynonymTypeMenu.subMenuId.numChildren = 0) then

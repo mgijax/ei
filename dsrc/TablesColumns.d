@@ -29,7 +29,7 @@
 dmodule TablesColumns is
 
 #include <mgilib.h>
-#include <pglib.h>
+#include <syblib.h>
 #include <tables.h>
 
 devents:
@@ -350,22 +350,16 @@ rules:
 
 	  currentKey := top->QueryList->List.keys[Select.item_position];
 
+          table : widget := top->Columns->Table;
+	  row : integer := 0;
+	  dbproc : opaque;
+	  
 	  cmd := "select table_name, table_description, creation_date, modification_date " +
 		 " from MGI_Table_Column_View" +
-		 " where table_name = " + mgi_DBprstr2(currentKey) + "\n" +
-		 "select column_name, column_description, example from MGI_Table_Column_View" +
-		 " where table_name = " + mgi_DBprstr2(currentKey) + 
-		 " order by column_name\n";
-
-          table : widget := top->Columns->Table;
-	  results : integer := 1;
-	  row : integer := 0;
-
-	  dbproc : opaque := mgi_dbexec(cmd);
-
+		 " where table_name = " + mgi_DBprstr2(currentKey) + "\n";
+	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
 		if (top->ID->text.value.length = 0) then
 	          top->ID->text.value           := mgi_getstr(dbproc, 1);
 	          top->Name->text.value         := mgi_getstr(dbproc, 1);
@@ -373,17 +367,24 @@ rules:
 	          top->CreationDate->text.value := mgi_getstr(dbproc, 3);
 	          top->ModifiedDate->text.value := mgi_getstr(dbproc, 4);
 		end if;
-	      elsif (results = 2) then
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  row := 0;
+	  cmd := "select column_name, column_description, example from MGI_Table_Column_View" +
+		 " where table_name = " + mgi_DBprstr2(currentKey) + 
+		 " order by column_name\n";
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
                 (void) mgi_tblSetCell(table, row, table.columnName, mgi_getstr(dbproc, 1));
                 (void) mgi_tblSetCell(table, row, table.description, mgi_getstr(dbproc, 2));
                 (void) mgi_tblSetCell(table, row, table.example, mgi_getstr(dbproc, 3));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 		row := row + 1;
-	      end if;
 	    end while;
-	    results := results + 1;
 	  end while;
-
 	  (void) mgi_dbclose(dbproc);
 
 	  top->QueryList->List.row := Select.item_position;

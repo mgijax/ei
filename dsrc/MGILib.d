@@ -49,8 +49,8 @@
 dmodule MGILib is
 
 #include <mgilib.h>
-#include <pglib.h>
-#include <pglib.h>
+#include <syblib.h>
+#include <mgisql.h>
 
 locals:
 	top : widget;
@@ -173,24 +173,15 @@ rules:
 	  -- Login to Server; Set MGD_DBSERVER and MGD_DBNAME env variables
 	  -- If successful, destroy Login window and create main menu window
 
-	  (void) mgi_writeLog(global_login + "\n");
-	  (void) mgi_writeLog(global_passwd + "\n");
-
-	  --if (mgi_pdbinit(global_login, global_passwd) = 0) then
-	  --  (void) mgi_writeLog("postgres:  successfully connected to server\n");
-	  --end if;
+	  --(void) mgi_writeLog(global_login + "\n");
+	  --(void) mgi_writeLog(global_passwd + "\n");
 
 	  if (mgi_dbinit(global_login, global_passwd) = 1) then
 	    title := global_server + ":" + global_database;
 	    mgi := top;
 
-	    --mgi_psql1("select _User_key from MGI_User where login = '" + global_login + "'");
-	    --global_loginKey := 
---		mgi_psql1("select _User_key from Mgi_user where login = 'lec'");
-	    --(void) mgi_writeLog("postgres:  " + global_loginKey + "\n");
-
 	    global_loginKey := 
-		mgi_sql1("select _User_key from MGI_User_Active_View where login = '" + global_login + "'");
+		mgi_sql1(mgilib_sql_1a + global_login + mgilib_sql_1b);
 
             if (global_loginKey.length = 0) then
 	      StatusReport.source_widget := top;

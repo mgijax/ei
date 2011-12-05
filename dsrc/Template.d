@@ -29,7 +29,7 @@
 dmodule Template is
 
 #include <mgilib.h>
-#include <pglib.h>
+#include <syblib.h>
 #include <tables.h>
 
 devents:

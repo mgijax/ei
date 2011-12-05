@@ -38,7 +38,7 @@
 dmodule RefTypeTableLib is
 
 #include <mgilib.h>
-#include <pglib.h>
+#include <syblib.h>
 #include <tables.h>
 
 -- See RefTypeTableLib.de for D event declarations

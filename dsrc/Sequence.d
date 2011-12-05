@@ -31,7 +31,7 @@
 dmodule Sequence is
 
 #include <mgilib.h>
-#include <pglib.h>
+#include <syblib.h>
 #include <tables.h>
 #include <mgdsql.h>
 
@@ -679,30 +679,16 @@ rules:
 
           table : widget;
 	  currentKey := top->QueryList->List.keys[Select.item_position];
-
-	  cmd := sequence_sql_2 + currentKey +
-		 sequence_sql_3 + currentKey +
-		 sequence_sql_4a + currentKey + sequence_sql_4b +
-		 sequence_sql_5a + currentKey + sequence_sql_5b +
-		 sequence_sql_6a + currentKey + sequence_sql_6b +
-		 sequence_sql_7a + currentKey + sequence_sql_7b +
-		 sequence_sql_8a + currentKey + sequence_sql_8b +
-		 sequence_sql_9a + currentKey + sequence_sql_9b +
-		 sequence_sql_10 + currentKey +
-		 sequence_sql_11 + currentKey +
-		 sequence_sql_12 + currentKey;
-
 	  results : integer := 1;
 	  nonRawRow : integer := 1;
 	  row : integer := 0;
-
-          dbproc : opaque := mgi_dbexec(cmd);
+          dbproc : opaque;
  
+	  table := top->Control->ModificationHistory->Table;
+	  cmd := sequence_sql_2 + currentKey;
+          dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
-		table := top->Control->ModificationHistory->Table;
-
 	        top->ID->text.value              := mgi_getstr(dbproc, 1);
 	        top->Description->text.value     := mgi_getstr(dbproc, 8);
 	        top->Version->text.value         := mgi_getstr(dbproc, 9);
@@ -736,9 +722,14 @@ rules:
                 SetOption.source_widget := top->VirtualMenu;
                 SetOption.value := mgi_getstr(dbproc, 11);
                 send(SetOption, 0);
+            end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
 
-	      elsif (results = 2) then
-
+	  cmd := sequence_sql_3 + currentKey;
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	        top->RawType->text.value := mgi_getstr(dbproc, 2);
 		(void) mgi_tblSetCell(sourceTable, rawRow, sourceTable.library, mgi_getstr(dbproc, 3));
 		(void) mgi_tblSetCell(sourceTable, rawRow, sourceTable.organism, mgi_getstr(dbproc, 4));
@@ -748,71 +739,136 @@ rules:
 		(void) mgi_tblSetCell(sourceTable, rawRow, sourceTable.gender, mgi_getstr(dbproc, 8));
 		(void) mgi_tblSetCell(sourceTable, rawRow, sourceTable.cellLine, mgi_getstr(dbproc, 9));
 		(void) mgi_tblSetCell(sourceTable, rawRow, sourceTable.editMode, TBL_ROW_NOCHG);
+            end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
 
-	      elsif (results = 3) then
-
+	  nonRawRow := 1;
+	  cmd := sequence_sql_4a + currentKey + sequence_sql_4b;
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.assocKey, mgi_getstr(dbproc, 1));
 		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.sourceKey, mgi_getstr(dbproc, 2));
 		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.library, mgi_getstr(dbproc, 3));
-
 	        DisplayMolecularAge.source_widget := sourceTable;
 	        DisplayMolecularAge.row := nonRawRow;
 	        DisplayMolecularAge.age := mgi_getstr(dbproc, 4);
 	        send(DisplayMolecularAge, 0);
-
 		nonRawRow := nonRawRow + 1;
+            end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
 
-	      elsif (results = 4) then
-
+	  nonRawRow := 1;
+	  cmd := sequence_sql_5a + currentKey + sequence_sql_5b;
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.organismKey, mgi_getstr(dbproc, 2));
 		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.organism, mgi_getstr(dbproc, 3));
-
 		nonRawRow := nonRawRow + 1;
+            end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
 
-	      elsif (results = 5) then
-
+	  nonRawRow := 1;
+	  cmd := sequence_sql_6a + currentKey + sequence_sql_6b;
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.strainKeys, mgi_getstr(dbproc, 2));
 		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.strains, mgi_getstr(dbproc, 3));
-
 		nonRawRow := nonRawRow + 1;
+            end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
 
-	      elsif (results = 6) then
-
+	  nonRawRow := 1;
+	  cmd := sequence_sql_7a + currentKey + sequence_sql_7b;
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.tissueKey, mgi_getstr(dbproc, 2));
 		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.tissue, mgi_getstr(dbproc, 3));
-
 		nonRawRow := nonRawRow + 1;
+            end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
 
-	      elsif (results = 7) then
-
+	  nonRawRow := 1;
+	  cmd := sequence_sql_8a + currentKey + sequence_sql_8b;
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.genderKey, mgi_getstr(dbproc, 2));
 		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.gender, mgi_getstr(dbproc, 3));
-
 		nonRawRow := nonRawRow + 1;
+            end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
 
-	      elsif (results = 8) then
-
+	  nonRawRow := 1;
+	  cmd := sequence_sql_9a + currentKey + sequence_sql_9b;
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.cellLineKey, mgi_getstr(dbproc, 2));
 		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.cellLine, mgi_getstr(dbproc, 3));
-
-
 		nonRawRow := nonRawRow + 1;
+            end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
 
-	      elsif (results >= 9) then
-		table := top->ObjectAssociation->Table;
+	  --
+	  -- the next 3 results are all displayed in the same table
+	  -- do *not* reset row to 0
+	  --
+
+	  row := 0;
+	  table := top->ObjectAssociation->Table;
+	  cmd := sequence_sql_10 + currentKey;
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 		(void) mgi_tblSetCell(table, row, table.objectType, mgi_getstr(dbproc, 1));
 		(void) mgi_tblSetCell(table, row, table.mgiID, mgi_getstr(dbproc, 3));
 		(void) mgi_tblSetCell(table, row, table.objectName, mgi_getstr(dbproc, 4));
 		(void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 2));
 		row := row + 1;
-	      end if;
             end while;
-	    results := results + 1;
-	    nonRawRow := 1;
           end while;
-
 	  (void) mgi_dbclose(dbproc);
  
+	  table := top->ObjectAssociation->Table;
+	  cmd := sequence_sql_11 + currentKey;
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+		(void) mgi_tblSetCell(table, row, table.objectType, mgi_getstr(dbproc, 1));
+		(void) mgi_tblSetCell(table, row, table.mgiID, mgi_getstr(dbproc, 3));
+		(void) mgi_tblSetCell(table, row, table.objectName, mgi_getstr(dbproc, 4));
+		(void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 2));
+		row := row + 1;
+            end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  table := top->ObjectAssociation->Table;
+	  cmd := sequence_sql_12 + currentKey;
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+		(void) mgi_tblSetCell(table, row, table.objectType, mgi_getstr(dbproc, 1));
+		(void) mgi_tblSetCell(table, row, table.mgiID, mgi_getstr(dbproc, 3));
+		(void) mgi_tblSetCell(table, row, table.objectName, mgi_getstr(dbproc, 4));
+		(void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 2));
+		row := row + 1;
+            end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
+
+
 	  table := sourceTable;
 	  row := 0;
 	  while (row < mgi_tblNumRows(table)) do

@@ -96,7 +96,7 @@
 dmodule Orthology is
 
 #include <mgilib.h>
-#include <pglib.h>
+#include <syblib.h>
 #include <tables.h>
 #include <mgdsql.h>
 
@@ -781,32 +781,32 @@ rules:
 	  row : integer := 0;
 	  results : integer := 1;
 	  markerKey : string := "";
+	  dbproc : opaque;
 
 	  -- Get Reference info
 	  -- Get Marker info
 	  -- Get Mouse Accession info
 	  -- Get non-Mouse Accession info
 
-	  cmd := orthology_sql_5 + orthology_sql_3 + classKey + orthology_sql_4 + refKey +
-		 orthology_sql_6a + orthology_sql_3 + classKey + orthology_sql_4 + refKey + orthology_sql_6b +
-	         orthology_sql_7a + orthology_sql_3 + classKey + orthology_sql_4 + refKey + orthology_sql_7b +
-		 orthology_sql_8a + orthology_sql_3 + classKey + orthology_sql_4 + refKey + orthology_sql_8b;
-
-	  dbproc : opaque;
-	  
+	  cmd := orthology_sql_5 + orthology_sql_3 + classKey + orthology_sql_4 + refKey;
 	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
-	    row := 0;
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
 	  	top->ID->text.value := mgi_getstr(dbproc, 1);
 		top->mgiCitation->Jnum->text.value := mgi_getstr(dbproc, 2);
 		top->mgiCitation->Citation->text.value := mgi_getstr(dbproc, 3);
 		top->mgiCitation->ObjectID->text.value := mgi_getstr(dbproc, 4);
           	top->CreationDate->text.value := mgi_getstr(dbproc, 5);
           	top->ModifiedDate->text.value := mgi_getstr(dbproc, 6);
-	      elsif (results = 2) then
-		row := 0;
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  row := 0;
+	  cmd := orthology_sql_6a + orthology_sql_3 + classKey + orthology_sql_4 + refKey + orthology_sql_6b;
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 		while (mgi_tblGetCell(markerTable, row, markerTable.organismKey) != "" and
 		       mgi_tblGetCell(markerTable, row, markerTable.organismKey) != mgi_getstr(dbproc, 2)) do
 		  row := row + 1;
@@ -820,7 +820,15 @@ rules:
                 mgi_tblSetCell(markerTable, row, markerTable.markerCyto, mgi_getstr(dbproc, 6));
                 mgi_tblSetCell(markerTable, row, markerTable.markerName, mgi_getstr(dbproc, 7));
                 mgi_tblSetCell(markerTable, row, markerTable.editMode, TBL_ROW_NOCHG);
-	      elsif (results = 3 or results = 4) then
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  row := 0;
+	  cmd := orthology_sql_7a + orthology_sql_3 + classKey + orthology_sql_4 + refKey + orthology_sql_7b;
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	        if (row <= mgi_tblNumRows(markerTable)) then
 		  markerKey := mgi_tblGetCell(markerTable, row, markerTable.markerKey);
 		  row := row + 1;
@@ -839,10 +847,37 @@ rules:
 		    end if;
 		  end if;
 		end if;
-	      end if;
-	      row := row + 1;
+	        row := row + 1;
 	    end while;
-	    results := results + 1;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  -- continuation of above; do *not* reset row = 0
+	  -- row := 0;
+	  cmd := orthology_sql_8a + orthology_sql_3 + classKey + orthology_sql_4 + refKey + orthology_sql_8b;
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	        if (row <= mgi_tblNumRows(markerTable)) then
+		  markerKey := mgi_tblGetCell(markerTable, row, markerTable.markerKey);
+		  row := row + 1;
+
+		  if (mgi_getstr(dbproc, 1).length > 0) then
+		    while (markerKey != mgi_getstr(dbproc, 1) and row <= mgi_tblNumRows(markerTable)) do
+		      markerKey := mgi_tblGetCell(markerTable, row, markerTable.markerKey);
+		      row := row + 1;
+		    end while;
+
+		    row := row - 1;
+
+		    if (row <= mgi_tblNumRows(markerTable)) then
+                      mgi_tblSetCell(markerTable, row, markerTable.accID, mgi_getstr(dbproc, 2));
+                      mgi_tblSetCell(markerTable, row, markerTable.accKey, mgi_getstr(dbproc, 3));
+		    end if;
+		  end if;
+		end if;
+	        row := row + 1;
+	    end while;
 	  end while;
 	  (void) mgi_dbclose(dbproc);
 
@@ -851,33 +886,28 @@ rules:
 	  -- Get Organism keys
 	  -- Get Assays
 
-	  cmd := "select distinct a._Homology_key, a._Assay_key, a.assay, s._Organism_key " +
-	         "from HMD_Homology h, HMD_Homology_Assay_View a, HMD_Homology_Marker m, MRK_Marker s " +
-		 classRefWhere +
-	         "and h._Homology_key = m._Homology_key " +
-	         "and m._Marker_key = s._Marker_key " +
-	         "and m._Homology_key = a._Homology_key " + 
-	         "order by a._Homology_key, a._Assay_key, s._Organism_key\n" +
-	         "select distinct n._Homology_key, n.sequenceNum, n.notes " +
-	         "from HMD_Homology h, HMD_Notes n " +
-		 classRefWhere +
-	         "and h._Homology_key = n._Homology_key " +
-	         "order by n._Homology_key, n.sequenceNum\n";
-
 	  homKey : string := "";
 	  assayKey : string := "";
 	  organismKey : string := "";
 	  note : string := "";
 	  j : integer;
 	  i : integer;
-	  results := 1;
+
+	  homKey := "";
+	  row := -1;
+
+	  cmd := "select distinct a._Homology_key, a._Assay_key, a.assay, s._Organism_key " +
+	         "from HMD_Homology h, HMD_Homology_Assay_View a, HMD_Homology_Marker m, MRK_Marker s " +
+		 classRefWhere +
+	         "and h._Homology_key = m._Homology_key " +
+	         "and m._Marker_key = s._Marker_key " +
+	         "and m._Homology_key = a._Homology_key " + 
+	         "order by a._Homology_key, a._Assay_key, s._Organism_key\n";
 
 	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
-	    homKey := "";
-	    row := -1;
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
+
 	        -- Stay on the same row for Orthology/Assay pair
 
 	        if (homKey != mgi_getstr(dbproc, 1) or
@@ -907,7 +937,24 @@ rules:
 		  i := i + 1;
 		  j := j + 1;
 	        end while;
-	      elsif (results = 2) then
+
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  homKey := "";
+	  row := -1;
+
+	  cmd := "select distinct n._Homology_key, n.sequenceNum, n.notes " +
+	         "from HMD_Homology h, HMD_Notes n " +
+		 classRefWhere +
+	         "and h._Homology_key = n._Homology_key " +
+	         "order by n._Homology_key, n.sequenceNum\n";
+
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+
 	        homKey := mgi_getstr(dbproc, 1);
 
 	        -- Find row for given Orthology key
@@ -926,9 +973,8 @@ rules:
 		  note := note + mgi_getstr(dbproc, 3);
                   mgi_tblSetCell(assayTable, row, assayTable.notes, note);
 	        end if;
-	      end if;
+
 	    end while;
-	    results := results + 1;
 	  end while;
 	  (void) mgi_dbclose(dbproc);
 

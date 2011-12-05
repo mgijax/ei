@@ -32,7 +32,7 @@
 dmodule Organism is
 
 #include <mgilib.h>
-#include <pglib.h>
+#include <syblib.h>
 #include <tables.h>
 #include <mgisql.h>
 
@@ -532,25 +532,19 @@ rules:
           table : widget;
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := organism_sql_1a + currentRecordKey + organism_sql_1b +
-	         organism_sql_2a + currentRecordKey + organism_sql_2b +
-	         organism_sql_3a + currentRecordKey + organism_sql_3b;
-
 	  -- For Mouse, retrieve Anchor information
 
 	  if (currentRecordKey = "1") then
 		cmd := cmd + organism_sql_4;
 	  end if;
 
-	  results : integer := 1;
 	  row : integer := 0;
+          dbproc : opaque;
 
-          dbproc : opaque := mgi_dbexec(cmd);
- 
+	  cmd := organism_sql_1a + currentRecordKey + organism_sql_1b;
+          dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
-	    row := 0;
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
 	        top->ID->text.value      := mgi_getstr(dbproc, 1);
                 top->Latin->text.value   := mgi_getstr(dbproc, 3);
                 top->Common->text.value  := mgi_getstr(dbproc, 2);
@@ -559,32 +553,55 @@ rules:
 		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 6));
 		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 9));
 		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 7));
-	      elsif (results = 2) then
-                table := top->OrganismType->Table;
+            end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  row := 0;
+          table := top->OrganismType->Table;
+	  cmd := organism_sql_2a + currentRecordKey + organism_sql_2b;
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 		(void) mgi_tblSetCell(table, row, table.currentTypeKey, mgi_getstr(dbproc, 1));
 		(void) mgi_tblSetCell(table, row, table.typeKey, mgi_getstr(dbproc, 2));
 		(void) mgi_tblSetCell(table, row, table.typeName, mgi_getstr(dbproc, 2));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-	      elsif (results = 3) then
-                table := top->Chromosome->Table;
+		row := row + 1;
+            end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  row := 0;
+          table := top->Chromosome->Table;
+	  cmd := organism_sql_3a + currentRecordKey + organism_sql_3b;
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 		(void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 4));
 		(void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 4));
 		(void) mgi_tblSetCell(table, row, table.chrKey, mgi_getstr(dbproc, 1));
 		(void) mgi_tblSetCell(table, row, table.chr, mgi_getstr(dbproc, 3));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-	      elsif (results = 4) then
-                table := top->Anchor->Table;
-		(void) mgi_tblSetCell(table, row, table.markerCurrentKey, mgi_getstr(dbproc, 2));
-		(void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 2));
-		(void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 3));
-		(void) mgi_tblSetCell(table, row, table.markerChr, mgi_getstr(dbproc, 1));
-		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-	      end if;
+		row := row + 1;
+            end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  row := 0;
+          table := top->Anchor->Table;
+	  cmd := organism_sql_4;
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      (void) mgi_tblSetCell(table, row, table.markerCurrentKey, mgi_getstr(dbproc, 2));
+	      (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 2));
+	      (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 3));
+	      (void) mgi_tblSetCell(table, row, table.markerChr, mgi_getstr(dbproc, 1));
+	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	      row := row + 1;
             end while;
-	    results := results + 1;
           end while;
- 
 	  (void) mgi_dbclose(dbproc);
 
           LoadAcc.table := accTable;

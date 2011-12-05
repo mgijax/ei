@@ -110,7 +110,7 @@
 dmodule GOVocAnnot is
 
 #include <mgilib.h>
-#include <pglib.h>
+#include <syblib.h>
 #include <tables.h>
 #include <mgdsql.h>
 
@@ -952,8 +952,30 @@ rules:
 
 	  -- start the query
 
-	  cmd : string := govoc_sql_6a + dbView + govoc_sql_6b + currentRecordKey + govoc_sql_6c + \
-	                  govoc_sql_7a + currentRecordKey + govoc_sql_7b + currentRecordKey + govoc_sql_7c; 
+	  row : integer := 0;
+	  i : integer;
+	  cmd : string;
+	  objectLoaded : boolean := false;
+          dbproc : opaque;
+	  
+	  cmd := govoc_sql_6a + dbView + govoc_sql_6b + currentRecordKey + govoc_sql_6c;
+	  dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      if (not objectLoaded) then
+	        top->mgiAccession->ObjectID->text.value := mgi_getstr(dbproc, 1);
+	        top->mgiAccession->AccessionID->text.value := mgi_getstr(dbproc, 2);
+	        top->mgiAccession->AccessionName->text.value := mgi_getstr(dbproc, 3);
+		objectLoaded := true;
+	      else
+	        top->mgiAccession->AccessionName->text.value := 
+		    top->mgiAccession->AccessionName->text.value + ";" + mgi_getstr(dbproc, 4);
+	      end if;
+            end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  cmd := govoc_sql_7a + currentRecordKey + govoc_sql_7b + currentRecordKey + govoc_sql_7c; 
 
 	  -- select the sort order
 
@@ -979,80 +1001,62 @@ rules:
 	  end if;
 	  -- end select the sort order
 
-	  -- finish up the query
-	  cmd := cmd + govoc_sql_9 + currentRecordKey;
-
-	  row : integer := 0;
-	  i : integer;
-	  results : integer := 1;
-	  objectLoaded : boolean := false;
-          dbproc : opaque := mgi_dbexec(cmd);
- 
+	  row := 0;
+	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
-	        if (not objectLoaded) then
-	          top->mgiAccession->ObjectID->text.value := mgi_getstr(dbproc, 1);
-	          top->mgiAccession->AccessionID->text.value := mgi_getstr(dbproc, 2);
-	          top->mgiAccession->AccessionName->text.value := mgi_getstr(dbproc, 3);
-		  objectLoaded := true;
-		else
-	          top->mgiAccession->AccessionName->text.value := 
-		    top->mgiAccession->AccessionName->text.value + ";" + mgi_getstr(dbproc, 4);
-		end if;
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.annotEvidenceKey, mgi_getstr(dbproc, 7));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.annotKey, mgi_getstr(dbproc, 8));
 
-	      elsif (results = 2) then
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.annotEvidenceKey, mgi_getstr(dbproc, 7));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.annotKey, mgi_getstr(dbproc, 8));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.termKey, mgi_getstr(dbproc, 1));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.term, mgi_getstr(dbproc, 2));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.termAccID, mgi_getstr(dbproc, 4));
 
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.termKey, mgi_getstr(dbproc, 1));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.term, mgi_getstr(dbproc, 2));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.termAccID, mgi_getstr(dbproc, 4));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.qualifierKey, mgi_getstr(dbproc, 5));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.qualifier, mgi_getstr(dbproc, 6));
 
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.qualifierKey, mgi_getstr(dbproc, 5));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.qualifier, mgi_getstr(dbproc, 6));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.evidenceKey, mgi_getstr(dbproc, 9));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.evidence, mgi_getstr(dbproc, 16));
 
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidenceKey, mgi_getstr(dbproc, 9));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidence, mgi_getstr(dbproc, 16));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.refsKey, mgi_getstr(dbproc, 10));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.jnum, mgi_getstr(dbproc, 19));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.citation, mgi_getstr(dbproc, 20));
 
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.refsKey, mgi_getstr(dbproc, 10));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.jnum, mgi_getstr(dbproc, 19));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.citation, mgi_getstr(dbproc, 20));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.inferredFrom, mgi_getstr(dbproc, 11));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.editor, mgi_getstr(dbproc, 22));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.modifiedDate, mgi_getstr(dbproc, 15));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.createdBy, mgi_getstr(dbproc, 21));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.createdDate, mgi_getstr(dbproc, 14));
 
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.inferredFrom, mgi_getstr(dbproc, 11));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.editor, mgi_getstr(dbproc, 22));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.modifiedDate, mgi_getstr(dbproc, 15));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.createdBy, mgi_getstr(dbproc, 21));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.createdDate, mgi_getstr(dbproc, 14));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.dag, mgi_getstr(dbproc, 23));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.hasProperty, mgi_getstr(dbproc, 24));
 
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.dag, mgi_getstr(dbproc, 23));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.hasProperty, mgi_getstr(dbproc, 24));
-
-		(void) mgi_tblSetCell(annotTable, row, annotTable.editMode, TBL_ROW_NOCHG);
-
-	      elsif (results = 3) then
-
-                SetOption.source_widget := top->ReferenceGeneMenu;
-                SetOption.value := mgi_getstr(dbproc, 1);
-                send(SetOption, 0);
-
-		top->CompleteDate->text.value := mgi_getstr(dbproc, 2);
-
-		if (mgi_getstr(dbproc, 2) != "") then
-                  SetOption.value := YES;
-                else
-                  SetOption.value := NO;
-                end if;
-                SetOption.source_widget := top->CompleteMenu;
-                send(SetOption, 0);
-
-	      end if;
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.editMode, TBL_ROW_NOCHG);
 	      row := row + 1;
             end while;
-	    row := 0;
-	    results := results + 1;
           end while;
- 
+	  (void) mgi_dbclose(dbproc);
+
+	  cmd := govoc_sql_9 + currentRecordKey;
+	  dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+              SetOption.source_widget := top->ReferenceGeneMenu;
+              SetOption.value := mgi_getstr(dbproc, 1);
+              send(SetOption, 0);
+
+	      top->CompleteDate->text.value := mgi_getstr(dbproc, 2);
+
+	      if (mgi_getstr(dbproc, 2) != "") then
+                SetOption.value := YES;
+              else
+                SetOption.value := NO;
+              end if;
+
+              SetOption.source_widget := top->CompleteMenu;
+              send(SetOption, 0);
+            end while;
+          end while;
 	  (void) mgi_dbclose(dbproc);
 
 	  -- Sort by DAG; not needed; sorting is handled in govoc_sql_7

@@ -78,7 +78,7 @@ dmodule Dictionary is
 
 -- standard includes
 #include <mgilib.h>
-#include <pglib.h>
+#include <syblib.h>
 #include <tables.h>
 #include <gxdsql.h>
 
