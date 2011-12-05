@@ -853,7 +853,7 @@ rules:
 --
 
 	Select does
-	  results : integer := 1;
+	  dbproc : opaque;
 
 	  -- Initialize Accession number Matrix
 
@@ -872,18 +872,12 @@ rules:
 	  (void) busy_cursor(top);
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
-
-	  cmd := ref_sql_3 + currentRecordKey +
-	         ref_sql_4 + currentRecordKey + "\n" +
-	         ref_sql_5a + currentRecordKey + ref_sql_5b;
-
 	  top->Notes->text.value := "";
 
-	  dbproc : opaque := mgi_dbexec(cmd);
-
+	  cmd := ref_sql_3 + currentRecordKey;
+	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
 	        top->ID->text.value        := mgi_getstr(dbproc, 1);
 	        top->Authors->text.value   := mgi_getstr(dbproc, 4) + mgi_getstr(dbproc, 5);
 	        top->PrimaryAuthor->text.value := mgi_getstr(dbproc, 6);
@@ -920,19 +914,30 @@ rules:
 	        top->BookForm->Place->text.value     := "";
 	        top->BookForm->Publisher->text.value := "";
 	        top->BookForm->Series->text.value    := "";
-	      elsif (results = 2) then
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  cmd := ref_sql_4 + currentRecordKey + "\n";
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	        top->BookForm->Editors->text.value   := mgi_getstr(dbproc, 2);
 	        top->BookForm->Title->text.value     := mgi_getstr(dbproc, 3);
 	        top->BookForm->Place->text.value     := mgi_getstr(dbproc, 4);
 	        top->BookForm->Publisher->text.value := mgi_getstr(dbproc, 5);
 	        top->BookForm->Series->text.value    := mgi_getstr(dbproc, 6);
-	      elsif (results = 3) then
-	        top->Notes->text.value := top->Notes->text.value + mgi_getstr(dbproc, 1);
-	      end if;
 	    end while;
-	    results := results + 1;
 	  end while;
+	  (void) mgi_dbclose(dbproc);
 
+	  cmd := ref_sql_5a + currentRecordKey + ref_sql_5b;
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	        top->Notes->text.value := top->Notes->text.value + mgi_getstr(dbproc, 1);
+	    end while;
+	  end while;
 	  (void) mgi_dbclose(dbproc);
 
 	  top->QueryList->List.row := Select.item_position;

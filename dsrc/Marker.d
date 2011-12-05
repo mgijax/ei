@@ -1690,67 +1690,65 @@ rules:
           (void) busy_cursor(top);
 
 	  table : widget;
+	  dbproc : opaque;
+
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
-
-	  cmd := marker_sql_1 + currentRecordKey +
-
-	         marker_sql_2a + currentRecordKey + marker_sql_2b +
-
-	         marker_sql_3a + currentRecordKey + marker_sql_3b +
-
-	         marker_sql_4a + currentRecordKey + marker_sql_4b +
-
-	         marker_sql_5a + currentRecordKey +
-
-	         marker_sql_6a + annotTypeKey +
-		 marker_sql_6b + defaultLogicalDBKey +
-		 marker_sql_6c + currentRecordKey +
-
-	         marker_sql_7a + currentRecordKey + "\n";
-
-	  results : integer := 1;
-	  row : integer := 0;
+	  row : integer;
 	  source : string;
 	  seqRow : integer := 0;
 	  seqNum1, seqNum2 : string;
 
-	  dbproc : opaque := mgi_dbexec(cmd);
+	  table := top->Control->ModificationHistory->Table;
+	  cmd := marker_sql_1 + currentRecordKey + "\n";
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      top->ID->text.value           := mgi_getstr(dbproc, 1);
+	      top->Symbol->text.value       := mgi_getstr(dbproc, 4);
+	      top->Name->text.value         := mgi_getstr(dbproc, 5);
+	      top->Cyto->text.value         := mgi_getstr(dbproc, 7);
+	      (void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 8));
+	      (void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 9));
+	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 10));
+	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 11));
+              SetOption.source_widget := top->MarkerTypeMenu;
+              SetOption.value := mgi_getstr(dbproc, 2);
+              send(SetOption, 0);
+              SetOption.source_widget := top->MarkerStatusMenu;
+              SetOption.value := mgi_getstr(dbproc, 3);
+              send(SetOption, 0);
+              SetOption.source_widget := top->ChromosomeMenu;
+              SetOption.value := mgi_getstr(dbproc, 6);
+              send(SetOption, 0);
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
 
+	  table := top->Offset->Table;
+	  cmd := marker_sql_2a + currentRecordKey + marker_sql_2b + "\n";
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      source := mgi_getstr(dbproc, 1);
+              (void) mgi_tblSetCell(table, (integer) source, table.sourceKey, source);
+              (void) mgi_tblSetCell(table, (integer) source, table.offset, mgi_getstr(dbproc, 2));
+	      (void) mgi_tblSetCell(table, (integer) source, table.editMode, TBL_ROW_NOCHG);
+
+	      if (integer) source = 0 then
+	          top->cMposition->text.value := mgi_getstr(dbproc, 2);
+              end if;
+
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  row := 0;
+	  table := top->History->Table;
+	  cmd :=  marker_sql_3a + currentRecordKey + marker_sql_3b + "\n";
+	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    row := 0;
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
-		table := top->Control->ModificationHistory->Table;
-	        top->ID->text.value           := mgi_getstr(dbproc, 1);
-	        top->Symbol->text.value       := mgi_getstr(dbproc, 4);
-	        top->Name->text.value         := mgi_getstr(dbproc, 5);
-	        top->Cyto->text.value         := mgi_getstr(dbproc, 7);
-		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 8));
-		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 9));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 10));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 11));
-                SetOption.source_widget := top->MarkerTypeMenu;
-                SetOption.value := mgi_getstr(dbproc, 2);
-                send(SetOption, 0);
-                SetOption.source_widget := top->MarkerStatusMenu;
-                SetOption.value := mgi_getstr(dbproc, 3);
-                send(SetOption, 0);
-                SetOption.source_widget := top->ChromosomeMenu;
-                SetOption.value := mgi_getstr(dbproc, 6);
-                send(SetOption, 0);
-	      elsif (results = 2) then
-		table := top->Offset->Table;
-		source := mgi_getstr(dbproc, 1);
-                (void) mgi_tblSetCell(table, (integer) source, table.sourceKey, source);
-                (void) mgi_tblSetCell(table, (integer) source, table.offset, mgi_getstr(dbproc, 2));
-		(void) mgi_tblSetCell(table, (integer) source, table.editMode, TBL_ROW_NOCHG);
-
-		if (integer) source = 0 then
-	            top->cMposition->text.value := mgi_getstr(dbproc, 2);
-                end if;
-
-	      elsif (results = 3) then
-		table := top->History->Table;
                 (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 4));
                 (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 4));
                 (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 3));
@@ -1778,9 +1776,18 @@ rules:
           	  send(SetOptions, 0);
 		end if;
 
-	      elsif (results = 4) then
-	        table := top->History->Table;
+	      row := row + 1;
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
 
+	  row := 0;
+	  table := top->History->Table;
+	  cmd := marker_sql_4a + currentRecordKey + marker_sql_4b + "\n";
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    row := 0;
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 		-- Some _Refs_keys are still NULL, so they won't return a J:
 
 		seqRow := 0;
@@ -1800,30 +1807,60 @@ rules:
 	          (void) mgi_tblSetCell(table, seqRow, table.jnum, mgi_getstr(dbproc, 3));
 	          (void) mgi_tblSetCell(table, seqRow, table.jnum + 1, mgi_getstr(dbproc, 4));
 		end if;
-	      elsif (results = 5) then
-		table := top->Current->Table;
-                (void) mgi_tblSetCell(table, row, table.markerCurrentKey, mgi_getstr(dbproc, 1));
-                (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 1));
-                (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 2));
-		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-	      elsif (results = 6) then
-		table := top->TDCVocab->Table;
-                (void) mgi_tblSetCell(table, row, table.annotKey, mgi_getstr(dbproc, 1));
-                (void) mgi_tblSetCell(table, row, table.termKey, mgi_getstr(dbproc, 2));
-                (void) mgi_tblSetCell(table, row, table.termAccID, mgi_getstr(dbproc, 3));
-                (void) mgi_tblSetCell(table, row, table.term, mgi_getstr(dbproc, 4));
-	      elsif (results = 7) then
-		table := top->Alias->Table;
-                (void) mgi_tblSetCell(table, row, table.markerCurrentKey, mgi_getstr(dbproc, 1));
-                (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 1));
-                (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 2));
-		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-	      end if;
+
 	      row := row + 1;
 	    end while;
-	    results := results + 1;
 	  end while;
+	  (void) mgi_dbclose(dbproc);
 
+	  row := 0;
+	  table := top->Current->Table;
+	  cmd := marker_sql_5a + currentRecordKey + "\n";
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    row := 0;
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+              (void) mgi_tblSetCell(table, row, table.markerCurrentKey, mgi_getstr(dbproc, 1));
+              (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 1));
+              (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 2));
+	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+	      row := row + 1;
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  row := 0;
+	  table := top->TDCVocab->Table;
+	  cmd := marker_sql_6a + annotTypeKey +
+		 marker_sql_6b + defaultLogicalDBKey +
+		 marker_sql_6c + currentRecordKey + "\n";
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    row := 0;
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+              (void) mgi_tblSetCell(table, row, table.annotKey, mgi_getstr(dbproc, 1));
+              (void) mgi_tblSetCell(table, row, table.termKey, mgi_getstr(dbproc, 2));
+              (void) mgi_tblSetCell(table, row, table.termAccID, mgi_getstr(dbproc, 3));
+              (void) mgi_tblSetCell(table, row, table.term, mgi_getstr(dbproc, 4));
+	      row := row + 1;
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  row := 0;
+	  table := top->Alias->Table;
+	  cmd := marker_sql_7a + currentRecordKey + "\n";
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    row := 0;
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+              (void) mgi_tblSetCell(table, row, table.markerCurrentKey, mgi_getstr(dbproc, 1));
+              (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 1));
+              (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 2));
+	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+	      row := row + 1;
+	    end while;
+	  end while;
 	  (void) mgi_dbclose(dbproc);
 
 	  -- Initialize Offset rows which do not exist

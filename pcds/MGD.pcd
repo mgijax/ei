@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Dec  1 06:50:52 2011";
+      lastWritten = "Thu Dec  1 11:14:09 2011";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -6528,7 +6528,7 @@ Shift<Key>Tab: prev-tab-group()
             vip_x = 80;
             vip_y = 30;
           Group: User
-            initDialog = "StrainDialog\nTissueDialog\nRIDialog\nCrossDialog";
+            initDialog = "StrainDialog\nTissueDialog";
               {
                 MGDForm = XmForm;
                     {
@@ -6781,12 +6781,6 @@ Shift<Key>Tab: prev-tab-group()
               }
               {
                 TissueDialog = TissueDialog : mgiDialog;
-              }
-              {
-                RIDialog = RIDialog : mgiDialog;
-              }
-              {
-                CrossDialog = CrossDialog : mgiDialog;
               }
         }
         {
@@ -11233,38 +11227,6 @@ Shift<Key>Tab: prev-tab-group()
                 MainForm = XmForm;
                     {
                       MainMenu = MainMenu : mgiMenu;
-                          {
-                            File = File : mgiMenu;
-                          }
-                          {
-                            Commands = Commands : mgiMenu;
-                          }
-                          {
-                            Edit = Edit : mgiMenu;
-                          }
-                          {
-                            View = View : mgiMenu;
-                                Popups:
-                                {
-                                  ViewPulldown = MenuPulldown : mgiMenu;
-                                      {
-                                        Strain = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Tissue = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Cross = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                      {
-                                        RI = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                }
-                          }
                     }
                     {
                       EditForm = EditForm : MGI;
@@ -14303,22 +14265,6 @@ Shift<Key>Tab: prev-tab-group()
                                         Group: User
                                           form1 = ExptMasterForm;
                                           form2 = ExptDetailForm;
-                                      }
-                                      {
-                                        Strain = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Tissue = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Cross = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          managed = True;
-                                      }
-                                      {
-                                        RI = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          managed = True;
                                       }
                                 }
                           }

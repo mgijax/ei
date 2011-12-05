@@ -656,43 +656,19 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
+	  row : integer := 0;
+	  i : integer;
+	  objectLoaded : boolean := false;
+          dbproc : opaque;
+ 
 	  cmd := "select _Object_key, accID, description, short_description" +
 		  " from " + dbView + 
 		  " where _Object_key = " + currentRecordKey + 
 		  " and prefixPart = 'MGI:' and preferred = 1 " + 
-		  " order by description\n" +
-
-	          "select a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier, e.*" +
-		  " from " + mgi_DBtable(VOC_ANNOT_VIEW) + " a," +
-		    mgi_DBtable(VOC_EVIDENCE_VIEW) + " e" +
-		  " where a._AnnotType_key = " + annotTypeKey +
-		  " and a._LogicalDB_key = " + defaultLogicalDBKey +
-		  " and a._Object_key = " + currentRecordKey + 
-		  " and a._Annot_key = e._Annot_key " +
-		  " order by a.term\n" +
-
-		  "select distinct n._Note_key, n._Object_key, n.note, n.sequenceNum" + 
-		  " from " + 
-		    mgi_DBtable(VOC_ANNOT) + " a, " +
-		    mgi_DBtable(VOC_EVIDENCE) + " e, " +
-		    mgi_DBtable(MGI_NOTE_VOCEVIDENCE_VIEW) + " n" +
-		  " where a._Object_key = " + currentRecordKey +
-		  " and a._Annot_key = e._Annot_key" +
-		  " and e._AnnotEvidence_key = n._Object_key" +
-		  " order by n._Object_key, n.sequenceNum\n" +
-			  
-		  "select _Marker_Type_key from MRK_Marker" +
-		  " where _Marker_key = " + currentRecordKey + "\n";
-
-	  row : integer := 0;
-	  i : integer;
-	  results : integer := 1;
-	  objectLoaded : boolean := false;
-          dbproc : opaque := mgi_dbexec(cmd);
- 
+		  " order by description\n";
+          dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
 	        if (not objectLoaded) then
 	          top->mgiAccession->ObjectID->text.value := mgi_getstr(dbproc, 1);
 	          top->mgiAccession->AccessionID->text.value := mgi_getstr(dbproc, 2);
@@ -702,7 +678,22 @@ rules:
 	          top->mgiAccession->AccessionName->text.value := 
 		    top->mgiAccession->AccessionName->text.value + ";" + mgi_getstr(dbproc, 4);
 		end if;
-	      elsif (results = 2) then
+            end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  row := 0;
+	  cmd := "select a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier, e.*" +
+		  " from " + mgi_DBtable(VOC_ANNOT_VIEW) + " a," +
+		    mgi_DBtable(VOC_EVIDENCE_VIEW) + " e" +
+		  " where a._AnnotType_key = " + annotTypeKey +
+		  " and a._LogicalDB_key = " + defaultLogicalDBKey +
+		  " and a._Object_key = " + currentRecordKey + 
+		  " and a._Annot_key = e._Annot_key " +
+		  " order by a.term\n";
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.annotEvidenceKey, mgi_getstr(dbproc, 7));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.annotKey, mgi_getstr(dbproc, 8));
 
@@ -726,7 +717,24 @@ rules:
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.createdDate, mgi_getstr(dbproc, 14));
 
 		(void) mgi_tblSetCell(annotTable, row, annotTable.editMode, TBL_ROW_NOCHG);
-	      elsif (results = 3) then
+
+		row := row + 1;
+            end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  cmd := "select distinct n._Note_key, n._Object_key, n.note, n.sequenceNum" + 
+		  " from " + 
+		    mgi_DBtable(VOC_ANNOT) + " a, " +
+		    mgi_DBtable(VOC_EVIDENCE) + " e, " +
+		    mgi_DBtable(MGI_NOTE_VOCEVIDENCE_VIEW) + " n" +
+		  " where a._Object_key = " + currentRecordKey +
+		  " and a._Annot_key = e._Annot_key" +
+		  " and e._AnnotEvidence_key = n._Object_key" +
+		  " order by n._Object_key, n.sequenceNum\n";
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
                 objectKey := mgi_getstr(dbproc, 2);
 		i := 0;
 		while (i < mgi_tblNumRows(annotTable)) do
@@ -737,17 +745,22 @@ rules:
 		  end if;
 		  i := i + 1;
 		end while;
-	      elsif (results = 4) then
+            end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  row := 0;
+	  cmd := "select _Marker_Type_key from MRK_Marker" +
+		  " where _Marker_key = " + currentRecordKey + "\n";
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
                 SetOption.source_widget := top->MarkerTypeMenu;
                 SetOption.value := mgi_getstr(dbproc, 1);
                 send(SetOption, 0);
-	      end if;
-	      row := row + 1;
+		row := row + 1;
             end while;
-	    row := 0;
-	    results := results + 1;
           end while;
- 
 	  (void) mgi_dbclose(dbproc);
 
           top->QueryList->List.row := Select.item_position;

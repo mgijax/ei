@@ -106,7 +106,6 @@ rules:
 	       row := row + 1;
 	    end while;
 	  end while;
-
 	  (void) mgi_dbclose(dbproc);
 
 	  if (top->SynonymTypeMenu.subMenuId.numChildren = 0) then

@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Oct 24 13:25:21 2011";
+      lastWritten = "Thu Dec  1 11:14:47 2011";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -1013,92 +1013,6 @@ Module: mgiDialog
                 ExitDialog = ExitDialog : mgiDialog;
                 Group: Widget
                   okCallback = "D:InSituResultExit";
-              }
-        }
-        {
-          RIDialog = SelectDialog;
-          Group: Widget
-            rubberPositioning = False;
-            resizePolicy = resize_any;
-          Group: Control
-            vip_x = 120;
-            vip_y = 1955;
-              {
-                ItemList = LookupList : mgiLookup;
-                Group: User
-                  cmd = "select _RISet_key, designation from RI_RISet_View order by designation";
-                    {
-                      Label = LookupLabel;
-                      Group: Widget
-                        labelString = "0 RI Sets";
-                      Group: User
-                        defaultLabel = "RI Sets";
-                    }
-                    {
-                      List = list;
-                      Group: Widget
-                        singleSelectionCallback = "D:SelectListItem,\nD:CopySelectionItem,\nD:SelectRILookup";
-                    }
-              }
-              {
-                Selection = CharText : mgiDataTypes;
-              }
-              {
-                SelectionKey = ID : mgiDataTypes;
-              }
-              {
-                separator = XmSeparator;
-                Group: Constraint
-                  leftAttachment = attach_form;
-                  rightAttachment = attach_form;
-                  topAttachment = attach_widget;
-                  topWidget = Selection;
-                  topOffset = 5;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-              }
-        }
-        {
-          CrossDialog = SelectDialog;
-          Group: Widget
-            rubberPositioning = False;
-            resizePolicy = resize_any;
-          Group: Control
-            vip_x = 120;
-            vip_y = 1625;
-              {
-                ItemList = LookupList : mgiLookup;
-                Group: User
-                  cmd = "select _Cross_key = -1, display = \"Anonymous\", whoseCross = \"Anonymous\"\nunion\nselect _Cross_key, display, whoseCross from CRS_Cross_View where displayed = 1\norder by whoseCross";
-                    {
-                      Label = LookupLabel;
-                      Group: Widget
-                        labelString = "0 Crosses";
-                      Group: User
-                        defaultLabel = Crosses;
-                    }
-                    {
-                      List = list;
-                      Group: Widget
-                        singleSelectionCallback = "D:SelectListItem,\nD:CopySelectionItem,\nD:SelectCrossLookup";
-                    }
-              }
-              {
-                Selection = CharText : mgiDataTypes;
-              }
-              {
-                SelectionKey = ID : mgiDataTypes;
-              }
-              {
-                separator = XmSeparator;
-                Group: Constraint
-                  leftAttachment = attach_form;
-                  rightAttachment = attach_form;
-                  topAttachment = attach_widget;
-                  topWidget = Selection;
-                  topOffset = 5;
-                  bottomAttachment = attach_none;
-                  resizable = true;
               }
         }
         {

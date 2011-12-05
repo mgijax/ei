@@ -547,19 +547,14 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := simple_sql_2 + currentRecordKey +
-		 simple_sql_3a + currentRecordKey + simple_sql_3b +
-		 simple_sql_4a + currentRecordKey + simple_sql_4b;
-
-	  results : integer := 1;
 	  row : integer := 0;
 	  definition : string;
-          dbproc : opaque := mgi_dbexec(cmd);
- 
+          dbproc : opaque;
+
+	  cmd := simple_sql_2 + currentRecordKey;
+	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
-	    row := 0;
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
 	        top->ID->text.value           := mgi_getstr(dbproc, 1);
 	        top->Name->text.value         := mgi_getstr(dbproc, 6);
 	        top->mgiCitation->ObjectID->text.value := mgi_getstr(dbproc, 2);
@@ -573,7 +568,15 @@ rules:
                 SetOption.source_widget := top->ACCPrivateMenu;
                 SetOption.value := mgi_getstr(dbproc, 5);
                 send(SetOption, 0);
-	      elsif (results = 2) then
+            end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  row := 0;
+	  cmd := simple_sql_3a + currentRecordKey + simple_sql_3b;
+	  dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 		(void) mgi_tblSetCell(termTable, row, termTable.currentSeqNum, mgi_getstr(dbproc, 5));
 		(void) mgi_tblSetCell(termTable, row, termTable.seqNum, mgi_getstr(dbproc, 5));
 		(void) mgi_tblSetCell(termTable, row, termTable.termKey, mgi_getstr(dbproc, 1));
@@ -584,7 +587,15 @@ rules:
 		(void) mgi_tblSetCell(termTable, row, termTable.isObsolete, mgi_getstr(dbproc, 14));
 		(void) mgi_tblSetCell(termTable, row, termTable.editMode, TBL_ROW_NOCHG);
 		row := row + 1;
-	      elsif (results = 3) then
+            end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  row := 0;
+          cmd := simple_sql_4a + currentRecordKey + simple_sql_4b;
+	  dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 		row := 0;
 		while (mgi_tblGetCell(termTable, row, termTable.termKey) != "" and
 		       mgi_tblGetCell(termTable, row, termTable.termKey) != mgi_getstr(dbproc, 1)) do
@@ -599,11 +610,8 @@ rules:
 
 		(void) mgi_tblSetCell(termTable, row, termTable.definition, definition);
 		(void) mgi_tblSetCell(termTable, row, termTable.editMode, TBL_ROW_NOCHG);
-	      end if;
             end while;
-	    results := results + 1;
           end while;
- 
 	  (void) mgi_dbclose(dbproc);
 
 	  -- Set Option Menu for row 0

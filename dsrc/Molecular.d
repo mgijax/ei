@@ -1472,20 +1472,13 @@ rules:
 
           table : widget := top->MolMarkerForm->Marker->Table;
 	  currentMasterKey := top->QueryList->List.keys[Select.item_position];
-
-	  cmd := molecular_sql_6 + currentMasterKey +
-		 molecular_sql_7 + currentMasterKey +
-		 molecular_sql_8a + currentMasterKey + molecular_sql_8b +
-	         molecular_sql_9a + currentMasterKey + molecular_sql_9b;
-
-	  results : integer := 1;
 	  row : integer := 0;
+          dbproc : opaque;
 
-          dbproc : opaque := mgi_dbexec(cmd);
- 
+	  cmd := molecular_sql_6 + currentMasterKey;
+          dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
 	        top->MolMasterForm->ID->text.value := mgi_getstr(dbproc, 1);
 	        top->MolMasterForm->Name->text.value := mgi_getstr(dbproc, 2);
 	        top->MolMasterForm->Region->text.value := mgi_getstr(dbproc, 9);
@@ -1522,15 +1515,34 @@ rules:
 		top->MolDetailForm->SourceForm->SourceID->text.value := mgi_getstr(dbproc, 4);
 		DisplayMolecularSource.source_widget := detailForm;
 		send(DisplayMolecularSource, 0);
+            end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
 
-	      elsif (results = 2) then
+	  cmd := molecular_sql_7 + currentMasterKey;
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	        top->MolDetailForm->ParentClone->ObjectID->text.value := mgi_getstr(dbproc, 1);
 	        top->MolDetailForm->ParentClone->AccessionName->text.value := mgi_getstr(dbproc, 2);
 	        top->MolDetailForm->ParentClone->AccessionID->text.value := mgi_getstr(dbproc, 3);
+            end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
 
-	      elsif (results = 3) then
+	  cmd := molecular_sql_8a + currentMasterKey + molecular_sql_8b;
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	        top->MolMarkerForm->MolNote->text.value := top->MolMarkerForm->MolNote->text.value + mgi_getstr(dbproc, 1);
-	      elsif (results = 4) then
+            end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  cmd := molecular_sql_9a + currentMasterKey + molecular_sql_9b;
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 		mgi_tblSetCell(table, row, table.markerCurrentKey, mgi_getstr(dbproc, 3));
 		mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 3));
 		mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 4));
@@ -1544,11 +1556,8 @@ rules:
 		mgi_tblSetCell(table, row, table.modifiedDate, mgi_getstr(dbproc, 11));
 		mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	        row := row + 1;
-	      end if;
             end while;
-	    results := results + 1;
           end while;
-
 	  (void) mgi_dbclose(dbproc);
  
           if (not top->Control->References.set) then
@@ -1604,11 +1613,6 @@ rules:
 
           currentReferenceKey := top->ReferenceList->List.keys[SelectReference.item_position];
  
-          cmd := molecular_sql_10 + currentReferenceKey +
-                 molecular_sql_11a + currentReferenceKey + molecular_sql_11b +
-		 molecular_sql_12 + currentReferenceKey +
-		 molecular_sql_13a + currentReferenceKey + molecular_sql_13b;
- 
           top->MolReferenceForm->Notes->text.value := "";
 	  table : widget;
           results : integer := 1;
@@ -1618,19 +1622,12 @@ rules:
 	  new_allele : string;
 	  strains : string := "";
 	  strainKeys : string := "";
+          dbproc : opaque;
 
-          dbproc : opaque := mgi_dbexec(cmd);
- 
+          cmd := molecular_sql_10 + currentReferenceKey;
+          dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
-
-            if (results = 4) then
-	      row := -1;
-            else
-	      row := 0;
-	    end if;
-
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-              if (results = 1) then
                 top->MolReferenceForm->ReferenceID->text.value := mgi_getstr(dbproc, 1);
                 top->MolReferenceForm->mgiCitation->Citation->text.value := mgi_getstr(dbproc, 12);
                 top->MolReferenceForm->mgiCitation->Jnum->text.value := mgi_getstr(dbproc, 10);
@@ -1644,19 +1641,42 @@ rules:
 		ref_modifiedBy := mgi_getstr(dbproc, 14);
 		ref_creation_date := mgi_getstr(dbproc, 8);
 		ref_modification_date := mgi_getstr(dbproc, 9);
-              elsif (results = 2) then
+            end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
+
+          cmd := molecular_sql_11a + currentReferenceKey + molecular_sql_11b;
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
                 top->MolReferenceForm->Notes->text.value := top->MolReferenceForm->Notes->text.value + 
 			mgi_getstr(dbproc, 1);
-              elsif (results = 3) then
-                table := top->MolReferenceForm->Alias->Table;
+            end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  row := 0;
+          table := top->MolReferenceForm->Alias->Table;
+	  cmd := molecular_sql_12 + currentReferenceKey;
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 
 		mgi_tblSetCell(table, row, table.aliasKey, mgi_getstr(dbproc, 1));
 		mgi_tblSetCell(table, row, table.alias, mgi_getstr(dbproc, 2));
 		mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 
 	        row := row + 1;
-              elsif (results = 4) then
-		table := top->MolReferenceForm->RFLV->Table;
+            end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  row := -1;
+	  table := top->MolReferenceForm->RFLV->Table;
+	  cmd := molecular_sql_13a + currentReferenceKey + molecular_sql_13b;
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
  
                 new_allele := mgi_getstr(dbproc, 9);
  
@@ -1684,9 +1704,7 @@ rules:
 		end if;
 
 	        prev_allele := new_allele;
-	      end if;
             end while;
-            results := results + 1;
           end while;
 	  (void) mgi_dbclose(dbproc);
  

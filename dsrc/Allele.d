@@ -1992,156 +1992,179 @@ rules:
 	  -- the marker clip of the template allele is preserved
 
 	  top->markerDescription->Note->text.value := "";
-
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
-
-	  cmd := allele_sql_7 + currentRecordKey +
-
-	         allele_sql_8 + currentRecordKey +
-
-	         allele_sql_9 + currentRecordKey +
-
-	         allele_sql_10a + currentRecordKey + allele_sql_10b +
-
-	         allele_sql_11a + currentRecordKey +
-		 allele_sql_11b + mgiTypeKey +
-		 allele_sql_11c +
-
-		 allele_sql_12 + currentRecordKey;
-
 	  results : integer := 1;
 	  row : integer := 0;
-
-	  dbproc : opaque := mgi_dbexec(cmd);
-
+	  dbproc : opaque;
+	  
+	  row := 0;
+	  cmd := allele_sql_7 + currentRecordKey;
+	  table := top->Control->ModificationHistory->Table;
+	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
-	    row := 0;
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
-		table := top->Control->ModificationHistory->Table;
-	        top->ID->text.value           := mgi_getstr(dbproc, 1);
-	        top->Symbol->text.value       := mgi_getstr(dbproc, 8);
-	        top->Name->text.value         := mgi_getstr(dbproc, 9);
-		origAlleleSymbol := top->Symbol->text.value;
+	      top->ID->text.value           := mgi_getstr(dbproc, 1);
+	      top->Symbol->text.value       := mgi_getstr(dbproc, 8);
+	      top->Name->text.value         := mgi_getstr(dbproc, 9);
+	      origAlleleSymbol := top->Symbol->text.value;
 
-		(void) mgi_tblSetCell(table, table.approvedBy, table.byDate, mgi_getstr(dbproc, 17));
-		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 18));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 19));
+	      (void) mgi_tblSetCell(table, table.approvedBy, table.byDate, mgi_getstr(dbproc, 17));
+	      (void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 18));
+	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 19));
 
-		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 24));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 25));
-		(void) mgi_tblSetCell(table, table.approvedBy, table.byUser, mgi_getstr(dbproc, 26));
+	      (void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 24));
+	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 25));
+	      (void) mgi_tblSetCell(table, table.approvedBy, table.byUser, mgi_getstr(dbproc, 26));
 
-		-- If the Marker key is null, then use the Nomen Symbol field
-		if (mgi_getstr(dbproc, 2) = "") then
-		  (void) mgi_tblSetCell(markerTable, 0, markerTable.markerKey, mgi_getstr(dbproc, 2));
-		  (void) mgi_tblSetCell(markerTable, 0, markerTable.markerSymbol, mgi_getstr(dbproc, 10));
-		end if;
-
-		-- Strain of Origin
-		top->StrainOfOrigin->StrainID->text.value := mgi_getstr(dbproc, 3);
-		top->StrainOfOrigin->Verify->text.value := mgi_getstr(dbproc, 23);
-
-                SetOption.source_widget := top->InheritanceModeMenu;
-                SetOption.value := mgi_getstr(dbproc, 4);
-                send(SetOption, 0);
-
-                SetOption.source_widget := top->AlleleTypeMenu;
-                SetOption.value := mgi_getstr(dbproc, 5);
-                send(SetOption, 0);
-
-                SetOption.source_widget := top->AlleleStatusMenu;
-                SetOption.value := mgi_getstr(dbproc, 6);
-                send(SetOption, 0);
-
-                SetOption.source_widget := top->AlleleTransmissionMenu;
-                SetOption.value := mgi_getstr(dbproc, 7);
-                send(SetOption, 0);
-
-                SetOption.source_widget := top->MixedMenu;
-                SetOption.value := mgi_getstr(dbproc, 13);
-                send(SetOption, 0);
-
-                SetOption.source_widget := top->ExtinctMenu;
-                SetOption.value := mgi_getstr(dbproc, 12);
-                send(SetOption, 0);
-
-		-- Parent Cell Line info
-		top->mgiParentCellLine->Strain->StrainID->text.value := "";
-		top->mgiParentCellLine->Strain->Verify->text.value := "";
-		top->mgiParentCellLine->ObjectID->text.value := "";
-		top->mgiParentCellLine->CellLine->text.value := "";
-		top->mgiParentCellLine->Derivation->ObjectID->text.value := "";
-		top->mgiParentCellLine->Derivation->CharText->text.value := "";
-
-	      elsif (results = 2) then
-		(void) mgi_tblSetCell(markerTable, row, markerTable.assocKey, mgi_getstr(dbproc, 1));
-		(void) mgi_tblSetCell(markerTable, row, markerTable.markerKey, mgi_getstr(dbproc, 2));
-		(void) mgi_tblSetCell(markerTable, row, markerTable.markerSymbol, mgi_getstr(dbproc, 3));
-		(void) mgi_tblSetCell(markerTable, row, markerTable.refsKey, mgi_getstr(dbproc, 4));
-		(void) mgi_tblSetCell(markerTable, row, markerTable.jnum, mgi_getstr(dbproc, 5));
-		(void) mgi_tblSetCell(markerTable, row, markerTable.citation, mgi_getstr(dbproc, 6));
-		(void) mgi_tblSetCell(markerTable, row, markerTable.statusKey, mgi_getstr(dbproc, 7));
-		(void) mgi_tblSetCell(markerTable, row, markerTable.status, mgi_getstr(dbproc, 8));
-		(void) mgi_tblSetCell(markerTable, row, markerTable.modifiedBy, mgi_getstr(dbproc, 9));
-		(void) mgi_tblSetCell(markerTable, row, markerTable.modifiedDate, mgi_getstr(dbproc, 10));
-		(void) mgi_tblSetCell(markerTable, row, markerTable.editMode, TBL_ROW_NOCHG);
-
-	      elsif (results = 3) then
-		(void) mgi_tblSetCell(molmutationTable, row, molmutationTable.mutationCurrentKey, mgi_getstr(dbproc, 1));
-		(void) mgi_tblSetCell(molmutationTable, row, molmutationTable.mutationKey, mgi_getstr(dbproc, 1));
-		(void) mgi_tblSetCell(molmutationTable, row, molmutationTable.mutation, mgi_getstr(dbproc, 2));
-		(void) mgi_tblSetCell(molmutationTable, row, molmutationTable.editMode, TBL_ROW_NOCHG);
-
-	      elsif (results = 4) then
-                top->markerDescription->Note->text.value := 
-			top->markerDescription->Note->text.value + mgi_getstr(dbproc, 1);
-
-	      elsif (results = 5) then
-		(void) mgi_tblSetCell(imgTable, row, imgTable.assocKey, mgi_getstr(dbproc, 1));
-		(void) mgi_tblSetCell(imgTable, row, imgTable.paneKey, mgi_getstr(dbproc, 2));
-		(void) mgi_tblSetCell(imgTable, row, imgTable.imageClassKey, mgi_getstr(dbproc, 3));
-		(void) mgi_tblSetCell(imgTable, row, imgTable.figureLabel, mgi_getstr(dbproc, 4));
-		(void) mgi_tblSetCell(imgTable, row, imgTable.imageClass, mgi_getstr(dbproc, 5));
-		(void) mgi_tblSetCell(imgTable, row, imgTable.mgiID, mgi_getstr(dbproc, 6));
-		(void) mgi_tblSetCell(imgTable, row, imgTable.pixID, mgi_getstr(dbproc, 7));
-		(void) mgi_tblSetCell(imgTable, row, imgTable.isPrimaryKey, mgi_getstr(dbproc, 8));
-		(void) mgi_tblSetCell(imgTable, row, imgTable.editMode, TBL_ROW_NOCHG);
-
-		if (mgi_getstr(dbproc, 8) = YES) then
-		    (void) mgi_tblSetCell(imgTable, row, imgTable.isPrimary, "Yes");
-	        else
-		    (void) mgi_tblSetCell(imgTable, row, imgTable.isPrimary, "No");
-		end if;
-
-	      elsif (results = 6) then
-		top->mgiParentCellLine->Strain->StrainID->text.value := mgi_getstr(dbproc, 10);
-		top->mgiParentCellLine->Strain->Verify->text.value := mgi_getstr(dbproc, 11);
-		top->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 16);
-		top->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 17);
-		top->mgiParentCellLine->Derivation->ObjectID->text.value := mgi_getstr(dbproc, 18);
-		top->mgiParentCellLine->Derivation->CharText->text.value := mgi_getstr(dbproc, 19);
-
-		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.assocKey, mgi_getstr(dbproc, 1));
-		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.cellLineKey, mgi_getstr(dbproc, 3));
-		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.cellLine, mgi_getstr(dbproc, 8));
-		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.creatorKey, mgi_getstr(dbproc, 12));
-		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.creator, mgi_getstr(dbproc, 13));
-		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.vectorKey, mgi_getstr(dbproc, 14));
-		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.modifiedBy, mgi_getstr(dbproc, 23));
-		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.modifiedDate, mgi_getstr(dbproc, 7));
-		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.editMode, TBL_ROW_NOCHG);
-
-                SetOption.source_widget := top->mgiParentCellLine->AlleleCellLineTypeMenu;
-                SetOption.value := mgi_getstr(dbproc, 20);
-                send(SetOption, 0);
-
+	      -- If the Marker key is null, then use the Nomen Symbol field
+	      if (mgi_getstr(dbproc, 2) = "") then
+	        (void) mgi_tblSetCell(markerTable, 0, markerTable.markerKey, mgi_getstr(dbproc, 2));
+	        (void) mgi_tblSetCell(markerTable, 0, markerTable.markerSymbol, mgi_getstr(dbproc, 10));
 	      end if;
+
+	      -- Strain of Origin
+	      top->StrainOfOrigin->StrainID->text.value := mgi_getstr(dbproc, 3);
+	      top->StrainOfOrigin->Verify->text.value := mgi_getstr(dbproc, 23);
+
+              SetOption.source_widget := top->InheritanceModeMenu;
+              SetOption.value := mgi_getstr(dbproc, 4);
+              send(SetOption, 0);
+
+              SetOption.source_widget := top->AlleleTypeMenu;
+              SetOption.value := mgi_getstr(dbproc, 5);
+              send(SetOption, 0);
+
+              SetOption.source_widget := top->AlleleStatusMenu;
+              SetOption.value := mgi_getstr(dbproc, 6);
+              send(SetOption, 0);
+
+              SetOption.source_widget := top->AlleleTransmissionMenu;
+              SetOption.value := mgi_getstr(dbproc, 7);
+              send(SetOption, 0);
+
+              SetOption.source_widget := top->MixedMenu;
+              SetOption.value := mgi_getstr(dbproc, 13);
+              send(SetOption, 0);
+
+              SetOption.source_widget := top->ExtinctMenu;
+              SetOption.value := mgi_getstr(dbproc, 12);
+              send(SetOption, 0);
+
+	      -- Parent Cell Line info
+	      top->mgiParentCellLine->Strain->StrainID->text.value := "";
+	      top->mgiParentCellLine->Strain->Verify->text.value := "";
+	      top->mgiParentCellLine->ObjectID->text.value := "";
+	      top->mgiParentCellLine->CellLine->text.value := "";
+	      top->mgiParentCellLine->Derivation->ObjectID->text.value := "";
+	      top->mgiParentCellLine->Derivation->CharText->text.value := "";
+
 	      row := row + 1;
 	    end while;
-	    results := results + 1;
 	  end while;
+	  (void) mgi_dbclose(dbproc);
 
+	  row := 0;
+	  cmd := allele_sql_8 + currentRecordKey;
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      (void) mgi_tblSetCell(markerTable, row, markerTable.assocKey, mgi_getstr(dbproc, 1));
+	      (void) mgi_tblSetCell(markerTable, row, markerTable.markerKey, mgi_getstr(dbproc, 2));
+	      (void) mgi_tblSetCell(markerTable, row, markerTable.markerSymbol, mgi_getstr(dbproc, 3));
+	      (void) mgi_tblSetCell(markerTable, row, markerTable.refsKey, mgi_getstr(dbproc, 4));
+	      (void) mgi_tblSetCell(markerTable, row, markerTable.jnum, mgi_getstr(dbproc, 5));
+	      (void) mgi_tblSetCell(markerTable, row, markerTable.citation, mgi_getstr(dbproc, 6));
+	      (void) mgi_tblSetCell(markerTable, row, markerTable.statusKey, mgi_getstr(dbproc, 7));
+	      (void) mgi_tblSetCell(markerTable, row, markerTable.status, mgi_getstr(dbproc, 8));
+	      (void) mgi_tblSetCell(markerTable, row, markerTable.modifiedBy, mgi_getstr(dbproc, 9));
+	      (void) mgi_tblSetCell(markerTable, row, markerTable.modifiedDate, mgi_getstr(dbproc, 10));
+	      (void) mgi_tblSetCell(markerTable, row, markerTable.editMode, TBL_ROW_NOCHG);
+	      row := row + 1;
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  row := 0;
+	  cmd := allele_sql_9 + currentRecordKey;
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      (void) mgi_tblSetCell(molmutationTable, row, molmutationTable.mutationCurrentKey, mgi_getstr(dbproc, 1));
+	      (void) mgi_tblSetCell(molmutationTable, row, molmutationTable.mutationKey, mgi_getstr(dbproc, 1));
+	      (void) mgi_tblSetCell(molmutationTable, row, molmutationTable.mutation, mgi_getstr(dbproc, 2));
+	      (void) mgi_tblSetCell(molmutationTable, row, molmutationTable.editMode, TBL_ROW_NOCHG);
+	      row := row + 1;
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  row := 0;
+	  cmd := allele_sql_10a + currentRecordKey + allele_sql_10b;
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+              top->markerDescription->Note->text.value := 
+		top->markerDescription->Note->text.value + mgi_getstr(dbproc, 1);
+	      row := row + 1;
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  row := 0;
+	  cmd := allele_sql_11a + currentRecordKey + allele_sql_11b + mgiTypeKey + allele_sql_11c;
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      (void) mgi_tblSetCell(imgTable, row, imgTable.assocKey, mgi_getstr(dbproc, 1));
+	      (void) mgi_tblSetCell(imgTable, row, imgTable.paneKey, mgi_getstr(dbproc, 2));
+	      (void) mgi_tblSetCell(imgTable, row, imgTable.imageClassKey, mgi_getstr(dbproc, 3));
+	      (void) mgi_tblSetCell(imgTable, row, imgTable.figureLabel, mgi_getstr(dbproc, 4));
+	      (void) mgi_tblSetCell(imgTable, row, imgTable.imageClass, mgi_getstr(dbproc, 5));
+	      (void) mgi_tblSetCell(imgTable, row, imgTable.mgiID, mgi_getstr(dbproc, 6));
+	      (void) mgi_tblSetCell(imgTable, row, imgTable.pixID, mgi_getstr(dbproc, 7));
+	      (void) mgi_tblSetCell(imgTable, row, imgTable.isPrimaryKey, mgi_getstr(dbproc, 8));
+	      (void) mgi_tblSetCell(imgTable, row, imgTable.editMode, TBL_ROW_NOCHG);
+
+	      if (mgi_getstr(dbproc, 8) = YES) then
+	        (void) mgi_tblSetCell(imgTable, row, imgTable.isPrimary, "Yes");
+	      else
+	        (void) mgi_tblSetCell(imgTable, row, imgTable.isPrimary, "No");
+	      end if;
+
+	      row := row + 1;
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  row := 0;
+	  cmd := allele_sql_12 + currentRecordKey;
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      top->mgiParentCellLine->Strain->StrainID->text.value := mgi_getstr(dbproc, 10);
+	      top->mgiParentCellLine->Strain->Verify->text.value := mgi_getstr(dbproc, 11);
+	      top->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 16);
+	      top->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 17);
+	      top->mgiParentCellLine->Derivation->ObjectID->text.value := mgi_getstr(dbproc, 18);
+	      top->mgiParentCellLine->Derivation->CharText->text.value := mgi_getstr(dbproc, 19);
+
+	      (void) mgi_tblSetCell(cellLineTable, row, cellLineTable.assocKey, mgi_getstr(dbproc, 1));
+	      (void) mgi_tblSetCell(cellLineTable, row, cellLineTable.cellLineKey, mgi_getstr(dbproc, 3));
+	      (void) mgi_tblSetCell(cellLineTable, row, cellLineTable.cellLine, mgi_getstr(dbproc, 8));
+	      (void) mgi_tblSetCell(cellLineTable, row, cellLineTable.creatorKey, mgi_getstr(dbproc, 12));
+	      (void) mgi_tblSetCell(cellLineTable, row, cellLineTable.creator, mgi_getstr(dbproc, 13));
+	      (void) mgi_tblSetCell(cellLineTable, row, cellLineTable.vectorKey, mgi_getstr(dbproc, 14));
+	      (void) mgi_tblSetCell(cellLineTable, row, cellLineTable.modifiedBy, mgi_getstr(dbproc, 23));
+	      (void) mgi_tblSetCell(cellLineTable, row, cellLineTable.modifiedDate, mgi_getstr(dbproc, 7));
+	      (void) mgi_tblSetCell(cellLineTable, row, cellLineTable.editMode, TBL_ROW_NOCHG);
+
+              SetOption.source_widget := top->mgiParentCellLine->AlleleCellLineTypeMenu;
+              SetOption.value := mgi_getstr(dbproc, 20);
+              send(SetOption, 0);
+
+	      row := row + 1;
+	    end while;
+	  end while;
 	  (void) mgi_dbclose(dbproc);
 
           LoadRefTypeTable.table := top->Reference->Table;

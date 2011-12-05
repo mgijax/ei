@@ -905,13 +905,10 @@ rules:
 	  currentNomenKey := top->QueryList->List.keys[Select.item_position];
 
 	  cmd := nomen_sql_4 + currentNomenKey;
-
 	  row : integer := 0;
-
 	  dbproc : opaque := mgi_dbexec(cmd);
 
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
-	    row := 0;
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      top->ID->text.value             := mgi_getstr(dbproc, 1);
 	      top->Symbol->text.value         := mgi_getstr(dbproc, 7);

@@ -337,16 +337,11 @@ rules:
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
 	  cmd := nonmutant_sql_1 + currentRecordKey;
-	  
-          results : integer := 1;
-
 	  dbproc : opaque;
 	  
 	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-
-	      if (results = 1) then
 	        top->ID->text.value := mgi_getstr(dbproc, 1);
                 top->EditForm->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 1);
                 top->EditForm->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 2);
@@ -361,9 +356,6 @@ rules:
                 SetOption.source_widget := top->EditForm->mgiParentCellLine->AlleleCellLineTypeMenu;
                 SetOption.value := mgi_getstr(dbproc, 3);
                 send(SetOption, 0);
-
-	      end if;
-
 	    end while;
 	  end while;
 	  (void) mgi_dbclose(dbproc);
