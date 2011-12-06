@@ -12,6 +12,11 @@
 /* PythonLib.d : no sql */
 /* Report.d : no sql */
 
+/* SQL.d */
+
+#define sql_sql_1 "select @@error"
+#define sql_sql_2 "select @@transtate"
+
 /* AccLib.d */
 
 #define acclib_sql_1 "select _LogicalDB_Key, _Assoc_key, accID, prefixPart, numericPart, preferred"

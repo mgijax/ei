@@ -77,6 +77,7 @@ dmodule SQL is
 
 #include <mgilib.h>
 #include <syblib.h>
+#include <mgisql.h>
 
 locals:
 	queryList : widget;
@@ -238,23 +239,25 @@ rules:
 	  mgi_dbclose(dbproc);
 
 	  -- Process @@error w/in same DBPROCESS
-	  -- Process @@transtate w/in same DBPROCESS
 
-	  result : integer := 1;
-	  dbproc := mgi_dbexec("select @@error\nselect @@transtate");
+	  dbproc := mgi_dbexec(sql_sql_1);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (result = 1) then
-	        error := (integer) mgi_getstr(dbproc, 1);
-	      else
-	        transtate := (integer) mgi_getstr(dbproc, 1);
-	      end if;
-	      result := result + 1;
+	      error := (integer) mgi_getstr(dbproc, 1);
 	    end while;
 	  end while;
 	  (void) mgi_dbclose(dbproc);
-
 	  (void) mgi_writeLog("\n@@error:  " + (string) error + "\n");
+
+	  -- Process @@transtate w/in same DBPROCESS
+
+	  dbproc := mgi_dbexec(sql_sql_2);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	        transtate := (integer) mgi_getstr(dbproc, 1);
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
 	  (void) mgi_writeLog("@@transtate:  " + (string) transtate + "\n");
 
 	  -- Fatal Errors

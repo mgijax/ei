@@ -3748,8 +3748,9 @@ rules:
 	  dag : string;
 	  isHeader : string;
 	  dbproc : opaque;
+	  select : string;
 
-	  select : string := "select t.accID, t._Term_key, t.term " +
+	  select := "select t.accID, t._Term_key, t.term " +
 		"from VOC_Term_View t " +
 		"where t.accID = " + mgi_DBprstr(value) + 
 		" and t._Vocab_key = " + (string) sourceWidget.vocabKey + "\n";
@@ -3757,8 +3758,6 @@ rules:
 	  if (not searchObsolete) then
 	    select := select + " and t.isObsolete = 0 ";
 	  end if;
-
-	  select := select;
 
 	  dbproc := mgi_dbexec(select);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do

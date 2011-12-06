@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Nov 17 13:31:07 2011";
+      lastWritten = "Mon Dec  5 14:21:06 2011";
       copy = false;
       inCreateMenu = true;
         {
@@ -1907,7 +1907,7 @@ Module: mgiOption
               {
                 ChromosomePulldown : OptionPulldown = OptionPulldown;
                 Group: User
-                  sql = "select chromosome, label = chromosome, sequenceNum \nfrom MRK_Chromosome where _Organism_key = 1\norder by sequenceNum";
+                  sql = "select chromosome, chromosome as label, sequenceNum \nfrom MRK_Chromosome where _Organism_key = 1\norder by sequenceNum";
                   childTemplate = ChromToggle;
                     {
                       SearchAll = SearchAll : mgiOption;
