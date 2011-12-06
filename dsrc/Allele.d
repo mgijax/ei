@@ -88,7 +88,7 @@
 dmodule Allele is
 
 #include <mgilib.h>
-#include <syblib.h>
+#include <pglib.h>
 #include <tables.h>
 #include <mgdsql.h>
 
@@ -223,6 +223,9 @@ rules:
 
 	BuildDynamicComponents does
 	  -- Dynamically create Menus
+
+          LoadList.list := top->StemCellLineList;
+	  send(LoadList, 0);
 
 	  InitOptionMenu.option := top->AlleleTypeMenu;
 	  send(InitOptionMenu, 0);

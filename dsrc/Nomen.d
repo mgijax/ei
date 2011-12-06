@@ -136,7 +136,7 @@
 dmodule Nomen is
 
 #include <mgilib.h>
-#include <syblib.h>
+#include <pglib.h>
 #include <tables.h>
 #include <mgdsql.h>
 
@@ -1032,7 +1032,7 @@ rules:
 	  end if;
 
 	  (void) busy_cursor(top);
-	  (void) mgi_sql1("exec " + "NOM_verifyMarker " + mgi_DBprstr(value));
+	  (void) mgi_sp("exec " + "NOM_verifyMarker " + mgi_DBprstr(value));
 
 	  (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
 	  (void) reset_cursor(top);

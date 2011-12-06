@@ -8,7 +8,7 @@
 --
 -- AddSQL, ModifySQL, DeleteSQL all call ExecSQL which actually executes
 -- the SQL commands.  ExecSQL then processes any error messages returned
--- from the Sybase error handler defined in syblib.c.
+-- from the Sybase error handler defined in pglib.c.
 --
 -- The Query events handle all dynamic searching w/in the EI.
 --
@@ -76,7 +76,8 @@
 dmodule SQL is
 
 #include <mgilib.h>
-#include <syblib.h>
+#include <pglib.h>
+#include <mgisql.h>
 
 locals:
 	queryList : widget;
@@ -101,7 +102,7 @@ rules:
 
 	  -- If a Job Stream has not finished, then disallow Add
 
-	  jobStream := mgi_sql1("exec " + global_radar + "..APP_EIcheck");
+	  jobStream := mgi_sp("exec " + global_radar + "..APP_EIcheck");
 	  if ((getenv("EIDEBUG") = "0") and (integer) jobStream > 0) then
 	    StatusReport.source_widget := top;
 	    StatusReport.message := "\nERROR:  Add functionality is unavailable.  A data load job is running.";
@@ -180,7 +181,7 @@ rules:
 	  top : widget := DeleteSQL.list.top;
 	  jobStream : string;
 
-	  jobStream := mgi_sql1("exec " + global_radar + "..APP_EIcheck");
+	  jobStream := mgi_sp("exec " + global_radar + "..APP_EIcheck");
 	  if ((getenv("EIDEBUG") = "0") and (integer) jobStream > 0) then
 	    StatusReport.source_widget := top;
 	    StatusReport.message := "\nERROR:  Delete functionality is unavailable.  A data load job is running.";
@@ -238,23 +239,25 @@ rules:
 	  mgi_dbclose(dbproc);
 
 	  -- Process @@error w/in same DBPROCESS
-	  -- Process @@transtate w/in same DBPROCESS
 
-	  result : integer := 1;
-	  dbproc := mgi_dbexec("select @@error\nselect @@transtate");
+	  dbproc := mgi_dbexec(sql_sql_1);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (result = 1) then
-	        error := (integer) mgi_getstr(dbproc, 1);
-	      else
-	        transtate := (integer) mgi_getstr(dbproc, 1);
-	      end if;
-	      result := result + 1;
+	      error := (integer) mgi_getstr(dbproc, 1);
 	    end while;
 	  end while;
 	  (void) mgi_dbclose(dbproc);
-
 	  (void) mgi_writeLog("\n@@error:  " + (string) error + "\n");
+
+	  -- Process @@transtate w/in same DBPROCESS
+
+	  dbproc := mgi_dbexec(sql_sql_2);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	        transtate := (integer) mgi_getstr(dbproc, 1);
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
 	  (void) mgi_writeLog("@@transtate:  " + (string) transtate + "\n");
 
 	  -- Fatal Errors
@@ -280,7 +283,7 @@ rules:
 	  cmd : string;
 	  jobStream : string;
 
-	  jobStream := mgi_sql1("exec " + global_radar + "..APP_EIcheck");
+	  jobStream := mgi_sp("exec " + global_radar + "..APP_EIcheck");
 	  if ((getenv("EIDEBUG") = "0") and (integer) jobStream > 0) then
 	    StatusReport.source_widget := top;
 	    StatusReport.message := "\nERROR:  Modify functionality is unavailable.  A data load job is running.";
@@ -336,82 +339,47 @@ rules:
 	end does;
 
 --
--- Query
+-- Query - copy of QUeryNoInterrupt
 --
---	Perform database query allowing interruption
---	Initialize Report Dialog.select attribute
+--	Perform database query w/out allowing interuption
 --	Store results in QueryList
 --
 
-	Query does
-	  dialog : widget := Query.source_widget->SearchDialog;
-	  rowcount : string;
+        Query does
+          list_w : widget;
+	  top : widget;
 
-	  if (Query.rowcount.length = 0) then
-	    rowcount := ROWLIMIT;
-	  else
-	    rowcount := Query.rowcount;
-	  end if;
-
-	  dialog.messageString := "Search In Progress";
-
-	  if (rowcount > NOROWLIMIT) then
-	    dialog.messageString := dialog.messageString +
-		"\n\nOnly the first " + rowcount + " records will be returned.";
-	  end if;
-
-	  (void) mgi_writeLog(get_time() + "QUERY:" + Query.select + "\n");
-
-	  -- Set Report selection; Report generation will use the last query the User executed
-
-	  Query.source_widget->ReportDialog.select := Query.select;
-	  Query.source_widget->ReportDialog.printSelect := Query.printSelect;
-
-	  if (Query.list_w = nil) then
-	    queryList := Query.source_widget->QueryList;
-	  else
-	    queryList := Query.list_w;
-	  end if;
+          if (Query.list_w = nil) then
+            list_w := Query.source_widget->QueryList;
+          else  
+            list_w := Query.list_w;
+          end if;
 
 	  -- Clear List before performing new search
 
-          ClearList.source_widget := queryList;
+          ClearList.source_widget := list_w;
           send(ClearList, 0);
 
-	  (void) reset_cursor(Query.source_widget);
+	  (void) mgi_writeLog(get_time() + "QUERY:" + Query.select + "\n");
 
-	  -- Use a Work Procedure to enable User to interrupt the Query 
+	  list_w.cmd := Query.select;
+	  LoadList.list := list_w;
+	  send(LoadList, 0);
 
-	  (void) mgi_execute_search(dialog, queryList, Query.select, Query.table, rowcount);
-
-	  -- Anything to be done after the search has completed must be done in
-	  -- QueryEnd, since the main X event handler will get control back as
-	  -- soon as the SQL command is sent to the DB Server.
-	end does;
-
---
--- QueryEnd
---
--- Called from mgi_cancel_search once interruptable search is completed
--- Select first value in list if at least one item in list
---
-
-	QueryEnd does
-	  top : widget := queryList.top;
-
+	  top := list_w.top;
 	  if (top.is_defined("allowSelect") != nil) then
 	    top.allowSelect := true;
 	  end if;
 
-          if (queryList->List.itemCount > 0) then
-            queryList->List.row := 1;
-            (void) XmListSelectPos(queryList->List, queryList->List.row, true);
-            queryList->Label.labelString := (string) queryList->List.itemCount + " " + 
-					    queryList->Label.defaultLabel;
-          end if;
+	  if (list_w->List.itemCount > 0) then
+            list_w->List.row := 1;
 
-	end does;
-
+	    --if (Query.selectItem) then
+            (void) XmListSelectPos(list_w->List, list_w->List.row, true);
+	    --end if;
+	  end if;
+        end does;
+ 
 --
 -- QueryNoInterrupt
 --

@@ -29,7 +29,7 @@
 dmodule TablesColumns is
 
 #include <mgilib.h>
-#include <syblib.h>
+#include <pglib.h>
 #include <tables.h>
 
 devents:

@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu May  5 08:10:29 2011";
+      lastWritten = "Thu Dec  1 11:07:38 2011";
       copy = false;
       inCreateMenu = true;
         {
@@ -57,6 +57,20 @@ Module: GXD
                             View = View : mgiMenu;
                             Group: Widget
                               managed = True;
+                                Popups:
+                                {
+                                  ViewPulldown = MenuPulldown : mgiMenu;
+                                      {
+                                        Strain = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          managed = True;
+                                      }
+                                      {
+                                        Tissue = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          managed = True;
+                                      }
+                                }
                           }
                     }
                     {
@@ -179,7 +193,7 @@ Module: GXD
                                             {
                                               ProbeOrganismPulldown = OptionPulldown;
                                               Group: User
-                                                sql = "select * from MGI_Organism_Antigen_View order by commonName";
+                                                sql = "select s.*\nfrom MGI_Organism s, MGI_Organism_MGIType t\nwhere s._Organism_key = t._Organism_key\nand t._MGIType_key = 7\norder by s.commonName";
                                             }
                                       }
                                       {
@@ -387,6 +401,9 @@ Module: GXD
                                                     PubMed = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    DXDOI = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     NSequence = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -471,12 +488,6 @@ Module: GXD
                                                     RIKENFANTOM = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    TreeFam = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TreeFamGene = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     UniGene = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -496,6 +507,12 @@ Module: GXD
                                                   }
                                                   {
                                                     MGIImage = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    BGEM = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    GUDMAP = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     CREX = AccToggle : mgiOption;
@@ -676,6 +693,9 @@ Module: GXD
                                                   }
                                                   {
                                                     EUCOMMProject = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Genentech = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EUCOMMCellLine = AccToggle : mgiOption;
@@ -1049,7 +1069,7 @@ Shift<Key>Tab: prev-tab-group()
                                             {
                                               ProbeOrganismPulldown = OptionPulldown;
                                               Group: User
-                                                sql = "select * from MGI_Organism_Antigen_View order by commonName";
+                                                sql = "select s.*\nfrom MGI_Organism s, MGI_Organism_MGIType t\nwhere s._Organism_key = t._Organism_key\nand t._MGIType_key = 7\norder by s.commonName";
                                             }
                                       }
                                       {
@@ -1385,6 +1405,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     PubMed = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    DXDOI = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     NSequence = AccToggle;
                                                   }
                                                   {
@@ -1469,12 +1492,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     RIKENFANTOM = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    TreeFam = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TreeFamGene = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     UniGene = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -1496,6 +1513,12 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     MGIImage = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    BGEM = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    GUDMAP = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     CREX = AccToggle : mgiOption;
@@ -1676,6 +1699,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     EUCOMMProject = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Genentech = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EUCOMMCellLine = AccToggle : mgiOption;
@@ -2920,29 +2946,6 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                           }
-                          {
-                            View = View;
-                                Popups:
-                                {
-                                  ViewPulldown = MenuPulldown : mgiMenu;
-                                      {
-                                        Strain = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Tissue = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Cross = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                      {
-                                        RI = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                }
-                          }
                     }
                     {
                       Edit = XmFrame;
@@ -3459,6 +3462,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     PubMed = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    DXDOI = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     NSequence = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -3543,12 +3549,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     RIKENFANTOM = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    TreeFam = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TreeFamGene = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     UniGene = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -3568,6 +3568,12 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     MGIImage = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    BGEM = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    GUDMAP = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     CREX = AccToggle : mgiOption;
@@ -3748,6 +3754,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     EUCOMMProject = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Genentech = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EUCOMMCellLine = AccToggle : mgiOption;

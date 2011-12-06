@@ -17,7 +17,7 @@
 -- Dependencies:
 --
 --    C:
---    mgilib.c mlced_scan.c mlced_util.c syblib.c utilities.c mlced_nomen.c
+--    mgilib.c mlced_scan.c mlced_util.c pglib.c utilities.c mlced_nomen.c
 --
 --    D:
 --      Verify.d Lib.d Report.d Table.d
@@ -89,7 +89,7 @@
 dmodule MLC is
 
 #include <mgilib.h>
-#include <syblib.h>
+#include <pglib.h>
 #include <tables.h>
 #include <mlced_scan.h>
 #include <mlced_nomen.h>

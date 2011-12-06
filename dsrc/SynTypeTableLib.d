@@ -23,7 +23,7 @@
 dmodule SynTypeTableLib is
 
 #include <mgilib.h>
-#include <syblib.h>
+#include <pglib.h>
 #include <tables.h>
 
 -- See SynTypeTableLib.de for D event declarations

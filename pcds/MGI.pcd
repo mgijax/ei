@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu May  5 08:10:30 2011";
+      lastWritten = "Thu Dec  1 11:07:37 2011";
       copy = false;
       inCreateMenu = true;
         {
@@ -852,10 +852,6 @@ Module: MGI
                         userDefinedAttributes = "memberKey:Int(Int)=\"1\"\nsetKey:Int(Int)=\"2\"\ncloneLibrary:Int(Int)=\"3\"\n";
                         xrtTblVisibleRows = 3;
                     }
-              }
-              Popups:
-              {
-                MolecularSourceAttributeHistoryDialog = MolecularSourceAttributeHistoryDialog : mgiDialog;
               }
         }
         {
@@ -3093,6 +3089,9 @@ Module: MGI
                                                     PubMed = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    DXDOI = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     NSequence = AccToggle;
                                                   }
                                                   {
@@ -3177,12 +3176,6 @@ Module: MGI
                                                     RIKENFANTOM = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    TreeFam = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TreeFamGene = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     UniGene = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -3202,6 +3195,16 @@ Module: MGI
                                                   }
                                                   {
                                                     MGIImage = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    BGEM = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    GUDMAP = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -3384,6 +3387,9 @@ Module: MGI
                                                   }
                                                   {
                                                     EUCOMMProject = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Genentech = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EUCOMMCellLine = AccToggle : mgiOption;

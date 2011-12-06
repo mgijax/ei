@@ -249,7 +249,7 @@
 dmodule Verify is
 
 #include <mgilib.h>
-#include <syblib.h>
+#include <pglib.h>
 #include <tables.h>
 #include <mgisql.h>
 
@@ -2351,8 +2351,8 @@ rules:
 	      copyright := "";
 	      if (top->Copyright != nil) then
 		if (top->Copyright->text.value.length = 0) then
-	          copyright := mgi_sql1("declare @copyright varchar(255)\nexec BIB_getCopyright " + key + ", @copyright output\nselect @copyright");
---	          copyright := mgi_sql1("exec BIB_getCopyright " + key);
+	          copyright := mgi_sp("declare @copyright varchar(255)\nexec BIB_getCopyright " + key + ", @copyright output\nselect @copyright");
+--	          copyright := mgi_sp("exec BIB_getCopyright " + key);
 		  if (copyright.length > 0) then
 		    top->Copyright->text.value := copyright;
 		  end if;
@@ -3657,7 +3657,7 @@ rules:
 	  if (top->VocAnnotTypeMenu.menuHistory.defaultValue = "1002") then
 	    termKey := mgi_tblGetCell(table, row, table.termKey);
 	    if (termKey.length > 0 and termKey != "NULL") then
-	      isHeader := mgi_sql1("exec VOC_isMPHeader " + mgi_tblGetCell(table, row, table.termKey));
+	      isHeader := mgi_sp("exec VOC_isMPHeader " + mgi_tblGetCell(table, row, table.termKey));
 	      if (isHeader = "1") then
 	        (void) mgi_tblSetCell(table, row, table.qualifierKey, MP_NORM_QUALIFIER_KEY);
 	        (void) mgi_tblSetCell(table, row, table.qualifier, MP_NORM_QUALIFIER);
@@ -3748,8 +3748,9 @@ rules:
 	  dag : string;
 	  isHeader : string;
 	  dbproc : opaque;
+	  select : string;
 
-	  select : string := "select t.accID, t._Term_key, t.term " +
+	  select := "select t.accID, t._Term_key, t.term " +
 		"from VOC_Term_View t " +
 		"where t.accID = " + mgi_DBprstr(value) + 
 		" and t._Vocab_key = " + (string) sourceWidget.vocabKey + "\n";
@@ -3757,8 +3758,6 @@ rules:
 	  if (not searchObsolete) then
 	    select := select + " and t.isObsolete = 0 ";
 	  end if;
-
-	  select := select;
 
 	  dbproc := mgi_dbexec(select);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
@@ -3822,7 +3821,7 @@ rules:
 
 	      if (top->VocAnnotTypeMenu != nil) then
 	        if (top->VocAnnotTypeMenu.menuHistory.defaultValue = "1002") then
-	          isHeader := mgi_sql1("exec VOC_isMPHeader " + mgi_tblGetCell(sourceWidget, row, sourceWidget.termKey));
+	          isHeader := mgi_sp("exec VOC_isMPHeader " + mgi_tblGetCell(sourceWidget, row, sourceWidget.termKey));
 	          if (isHeader = "1") then
 	            (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifierKey, "2181424");
 	            (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifier, "norm");

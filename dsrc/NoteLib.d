@@ -155,7 +155,8 @@ rules:
 		x.batch;
 		x->Note.noteTypeKey := (integer) mgi_getstr(dbproc, 1);
 		x->Note.noteType := label;
-		x->Note.private := (integer) mgi_getstr(dbproc, 3);
+		--x->Note.private := (integer) mgi_getstr(dbproc, 3);
+		x->Note.private := mgi_getstr(dbproc, 3);
 	        if (tableID = MGI_NOTETYPE_ALLELE_VIEW or 
 	            tableID = MGI_NOTETYPE_ALLDRIVER_VIEW or 
 	            tableID = MGI_NOTETYPE_DERIVATION_VIEW or 
@@ -659,7 +660,9 @@ rules:
 	    end if;
 	  elsif (noteWidget.noteTypeKey > 0) then
 	    noteType := (string) noteWidget.noteTypeKey;
-	    if (noteWidget.private >= 0) then
+	    --if (noteWidget.private >= 0) then
+	    --  noteType := noteType + "," + (string) noteWidget.private;
+	    if (noteWidget.private) then
 	      noteType := noteType + "," + (string) noteWidget.private;
 	    end if;
 	  elsif (noteWidget.noteType.length > 0) then

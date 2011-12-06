@@ -151,7 +151,7 @@
 dmodule Marker is
 
 #include <mgilib.h>
-#include <syblib.h>
+#include <pglib.h>
 #include <tables.h>
 #include <mgdsql.h>
 
@@ -1062,23 +1062,24 @@ rules:
 	  ModifySQL.reselect := false;
 	  send(ModifySQL, 0);
 
-	  if (cmd.length > 0) then
-	    cmd := "exec MRK_reloadLabel " + currentRecordKey +
-		   "\nexec MRK_reloadReference " + currentRecordKey;
+	  -- STORED PROCEDURE
+	  --if (cmd.length > 0) then
+	  --  cmd := "exec MRK_reloadLabel " + currentRecordKey +
+	--	   "\nexec MRK_reloadReference " + currentRecordKey;
 
-            if (modifySequenceCache) then
-	      cmd := cmd + "\nexec MRK_reloadSequence " + currentRecordKey;
-	    end if;
+--            if (modifySequenceCache) then
+--	      cmd := cmd + "\nexec MRK_reloadSequence " + currentRecordKey;
+--	    end if;
 
-	    cmd := cmd + "\nexec MRK_reloadLocation " + currentRecordKey;
+--	    cmd := cmd + "\nexec MRK_reloadLocation " + currentRecordKey;
 
-	    ModifySQL.cmd := cmd;
-	    ModifySQL.list := top->QueryList;
-	    ModifySQL.reselect := true;
-	    ModifySQL.transaction := false;
-	    send(ModifySQL, 0);
-          end if;
-
+--	    ModifySQL.cmd := cmd;
+--	    ModifySQL.list := top->QueryList;
+--	    ModifySQL.reselect := true;
+--	    ModifySQL.transaction := false;
+--	    send(ModifySQL, 0);
+--          end if;
+--
 	  if (modifySymbol) then
 	    PythonAlleleCombination.source_widget := top;
 	    PythonAlleleCombination.pythonevent := EVENT_ALLELECOMB_BYMARKER;

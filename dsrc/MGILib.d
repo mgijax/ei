@@ -49,7 +49,7 @@
 dmodule MGILib is
 
 #include <mgilib.h>
-#include <syblib.h>
+#include <pglib.h>
 #include <mgisql.h>
 
 locals:
@@ -191,16 +191,17 @@ rules:
 	      return;
 	    end if;
 
+	    -- STORED PROCEDURE
 	    -- If a Job Stream has not finished, then disallow Login
 	    -- If debugging is on, then allow the Login
 
-	    jobStream := mgi_sql1("exec " + global_radar + "..APP_EIcheck");
+	    jobStream := mgi_sp("exec " + global_radar + "..APP_EIcheck");
 	    if ((getenv("EIDEBUG") = "0") and ((integer) jobStream > 0)) then
-	      StatusReport.source_widget := top;
-	      StatusReport.message := "\nERROR:  EI is unavailable.  A data load job is running.";
-	      send(StatusReport, 0);
-	      (void) reset_cursor(top);
-	      return;
+	        StatusReport.source_widget := top;
+	        StatusReport.message := "\nERROR:  EI is unavailable.  A data load job is running.";
+	        send(StatusReport, 0);
+	        (void) reset_cursor(top);
+	        return;
 	    end if;
 
 	    -- Create top menu
@@ -271,9 +272,12 @@ rules:
 	   cmd : string;
 	   permOK : integer;
 
+	   -- STORED PROCEDURE
+	   return;
+
 	   cmd := "exec MGI_checkUserRole " + mgi_DBprstr(top.name) + "," + mgi_DBprstr(global_login);
 		
-	   permOK := (integer) mgi_sql1(cmd);
+	   permOK := (integer) mgi_sp(cmd);
 
 	   if (permOK = 0) then
 

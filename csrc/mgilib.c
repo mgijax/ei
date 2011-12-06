@@ -483,6 +483,9 @@ char *mgi_DBrecordCount(int table)
 
   memset(cmd, '\0', sizeof(cmd));
 
+  /* skip for now...until stored procedures are working */
+  return(cmd);
+
   switch (table)
   {
     default:

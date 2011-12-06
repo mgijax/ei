@@ -1,0 +1,65 @@
+
+1:
+make these changes and run build to make an EI version
+that will talk to a PostgreSQL database.
+
+include/mgilib.h/include <syblib.h>          ==> include <pglib.h>
+dsrc/*.d/include <syblib.h>                  ==> include <pglib.h>
+uxb.conf (mgd, gxd, mgi, mgiadmin)
+      AIM sybase.aim                         ==> AIM postgres.aim
+      INCLUDEDIR $SYBASE/OCS-12_5/include    ==> $POSTGRES_HOME/include
+      DINCLUDEDIR $SYBASE/OCS-12_5/include   ==> $POSTGRES_HOME/include
+      CSOURCE ../csrc/syblib.c               ==> ../csrc/pglib.c
+      APPLLIB -L$SYBASE/OCS-12_5/lib -lsybdb ==> -L$POSTGRES_HOME/lib -lpq
+
+2:
+comment out calls to anything with STORED PROCEDURES (exec) 
+
+3:
+edit SQL.d: 
+
+Query
+  . allows interruption of query
+
+QueryNoInterrupt
+  . not interupitioin of query
+
+For the sake of getting things to work with postgres, 
+I will remove the interrupt ability (at least temporarily)
+
+Copy Query with QueryNoInterrupt
+Basically both Query and QueryNoInterrupt will do the same thing
+
+Comment out 'selectItem' check
+--if (Query.selectItem) then
+(void) XmListSelectPos(list_w->List, list_w->List.row, true);
+--end if;
+
+4:
+"= 0" to "= false"
+
+pcds:  
+  - "allowOnlyOne = 0" ==> "allowOnlyOne = false"
+     MGD.pcd
+     MGINomen.pcd
+
+  - "c.isMutant = 0" ==> "c.isMutant = false"
+    mgiLookup.pcd
+
+include:
+mgdsql.h
+
+"= -1" to "is false"
+  - "private = -1" => "private is false" (int to boolean)
+
+ACC_Accession.private bit ==> boolean
+ACC_Accession.preferred bit ==> boolean
+mgiDataTypes.Notes.private = Int ==> Boolean
+NoteLib.d => check 'private" calls
+
+"seq = 1"
+
+5:
+include/mgdsql.h: replace 'offset' with 'cmOffset'
+	to_char(cmOffset, '9999.99')
+
