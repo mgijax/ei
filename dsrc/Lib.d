@@ -594,7 +594,7 @@ rules:
         NextJnum does
 	  top : widget := NextJnum.source_widget.root;
 
-          top->NextJnum->text.value := mgi_sql1("exec ACC_findMax 'J:'");
+          top->NextJnum->text.value := mgi_sp("exec ACC_findMax 'J:'");
         end does;
  
 --

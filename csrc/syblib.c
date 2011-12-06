@@ -423,6 +423,22 @@ char *mgi_key(DBPROCESS *dbproc, int table)
  
 /*
 *
+* wrapper around call to mgi_sql1()
+* for stored procedures
+*
+* just a way to be able to turn them off
+*
+*/
+
+char *mgi_sp(char *cmd)
+{
+  /* to turn off, just return a null */
+  /*return(NULL);*/
+  return(mgi_sql1(cmd));
+}
+
+/*
+*
 * Returns first result of an SQL command
 *
 */

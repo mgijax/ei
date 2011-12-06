@@ -26,6 +26,7 @@ CALLS
 	 mgi_citation("DBPROCESS *", "int")              : "char *";
 	 mgi_key("DBPROCESS *", "int")                   : "char *";
 	 mgi_sql1("char *")                              : "char *";
+	 mgi_sp("char *")                                : "char *";
 
 	 global_login					 : "char *";
 	 global_loginKey				 : "char *";

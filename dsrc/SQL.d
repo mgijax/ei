@@ -102,7 +102,7 @@ rules:
 
 	  -- If a Job Stream has not finished, then disallow Add
 
-	  jobStream := mgi_sql1("exec " + global_radar + "..APP_EIcheck");
+	  jobStream := mgi_sp("exec " + global_radar + "..APP_EIcheck");
 	  if ((getenv("EIDEBUG") = "0") and (integer) jobStream > 0) then
 	    StatusReport.source_widget := top;
 	    StatusReport.message := "\nERROR:  Add functionality is unavailable.  A data load job is running.";
@@ -181,7 +181,7 @@ rules:
 	  top : widget := DeleteSQL.list.top;
 	  jobStream : string;
 
-	  jobStream := mgi_sql1("exec " + global_radar + "..APP_EIcheck");
+	  jobStream := mgi_sp("exec " + global_radar + "..APP_EIcheck");
 	  if ((getenv("EIDEBUG") = "0") and (integer) jobStream > 0) then
 	    StatusReport.source_widget := top;
 	    StatusReport.message := "\nERROR:  Delete functionality is unavailable.  A data load job is running.";
@@ -283,7 +283,7 @@ rules:
 	  cmd : string;
 	  jobStream : string;
 
-	  jobStream := mgi_sql1("exec " + global_radar + "..APP_EIcheck");
+	  jobStream := mgi_sp("exec " + global_radar + "..APP_EIcheck");
 	  if ((getenv("EIDEBUG") = "0") and (integer) jobStream > 0) then
 	    StatusReport.source_widget := top;
 	    StatusReport.message := "\nERROR:  Modify functionality is unavailable.  A data load job is running.";

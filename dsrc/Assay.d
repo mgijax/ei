@@ -1339,7 +1339,7 @@ rules:
 	  duplicate : integer := DuplicateAssay.duplicate;
 
 	  (void) busy_cursor(top);
-	  newAssayKey := mgi_sql1("exec GXD_duplicateAssay " + currentAssay + "," + (string) duplicate);
+	  newAssayKey := mgi_sp("exec GXD_duplicateAssay " + currentAssay + "," + (string) duplicate);
 	  (void) reset_cursor(top);
 
           InsertList.list := top->QueryList;

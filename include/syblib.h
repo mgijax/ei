@@ -26,6 +26,7 @@ extern char *mgi_getstr(DBPROCESS *, int);
 extern char *mgi_citation(DBPROCESS *, int);
 extern char *mgi_key(DBPROCESS *, int);
 extern char *mgi_sql1(char *);
+extern char *mgi_sp(char *);
 
 extern int mgi_process_sql(Widget);
 extern int mgi_process_results(Widget);

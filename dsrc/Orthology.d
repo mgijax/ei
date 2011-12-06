@@ -369,7 +369,7 @@ rules:
 	  -- Merge Orthology Classes; record new _Class_key
 
 	  if (top->QueryList->List.sqlSuccessful) then
-	    SplitKey.key := mgi_sql1("exec HMD_updateClass " + classKey + "," + refKey + ",0");
+	    SplitKey.key := mgi_sp("exec HMD_updateClass " + classKey + "," + refKey + ",0");
 	    send(SplitKey, 0);
 	  end if;
 

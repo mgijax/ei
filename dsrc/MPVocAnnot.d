@@ -151,7 +151,7 @@ rules:
 
 	   cmd := "exec MGI_checkUserRole " + mgi_DBprstr(top.name) + "," + mgi_DBprstr(global_login);
 		
-	   permOK := (integer) mgi_sql1(cmd);
+	   permOK := (integer) mgi_sp(cmd);
 
 	   if (permOK = 0) then
 	     top->Annotation->Save.sensitive := false;
@@ -1435,7 +1435,7 @@ rules:
 	      alleles.open;
 	      while (alleles.more) do
 	        s := alleles.next;
-	        (void) mgi_sql1("exec MGI_insertReferenceAssoc 11," + s + "," + refsKey + ",'Used-FC'");
+	        (void) mgi_sp("exec MGI_insertReferenceAssoc 11," + s + "," + refsKey + ",'Used-FC'");
 	      end while;
 	      alleles.close;
 	    end if;
