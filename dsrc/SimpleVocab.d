@@ -154,11 +154,11 @@ rules:
           Clear.source_widget := top;
           send(Clear, 0);
 
-	  -- Perform initial search
-	  send(PrepareSearch, 0);
-	  send(Search, 0);
-
+	  -- set synonym type
 	  synTypeKey := mgi_sql1(simple_sql_1);
+
+	  -- Perform initial search
+	  send(Search, 0);
 
 	end does;
 
