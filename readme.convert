@@ -43,6 +43,9 @@ pcds:
      MGD.pcd
      MGINomen.pcd
 
+  - "isSimple = 1" ==> "isSimple = true"
+     mgiOption
+
   - "c.isMutant = 0" ==> "c.isMutant = false"
     mgiLookup.pcd
 
@@ -50,14 +53,8 @@ include:
 mgdsql.h
 
 "= -1" to "is false"
-  - "private = -1" => "private is false" (int to boolean)
-
-ACC_Accession.private bit ==> boolean
-ACC_Accession.preferred bit ==> boolean
-mgiDataTypes.Notes.private = Int ==> Boolean
-NoteLib.d => check 'private" calls
-
-"seq = 1"
+  - "private = -1" => 
+  NoteLib/private needs to be looked at
 
 5:
 include/mgdsql.h: replace 'offset' with 'cmOffset'
