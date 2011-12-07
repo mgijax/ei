@@ -54,9 +54,14 @@ mgdsql.h
 
 "= -1" to "is false"
   - "private = -1" => 
-  NoteLib/private needs to be looked at
+  NoteLib/private needs to be looked at:  int vs boolean
 
-5:
+5: include
 include/mgdsql.h: replace 'offset' with 'cmOffset'
 	to_char(cmOffset, '9999.99')
+
+6: dsrc
+SimpleVocab.d: "isSimple = 1" ==> "isSimple = false"
+Strains.d
+Translation.d
 

@@ -164,7 +164,7 @@ rules:
 	  send(SetPermissions, 0);
 
 	  -- Set Permissions JAX
-	  send(SetPermissionsJAX, 0);
+	  --send(SetPermissionsJAX, 0);
 
 	  -- Build Dynamic GUI Components
 	  send(BuildDynamicComponents, 0);
@@ -901,12 +901,12 @@ rules:
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
 
-	  if (from_reference) then
-	    Query.select := "exec PRB_getStrainByReference " + where;
-	  else
-	    Query.select := "select distinct s._Strain_key, s.strain\n" + 
+	  --if (from_reference) then
+	  --  Query.select := "exec PRB_getStrainByReference " + where;
+	  --else
+	  Query.select := "select distinct s._Strain_key, s.strain\n" + 
 		  from + "\n" + where + "\norder by s.strain\n";
-	  end if;
+	  --end if;
 
 	  Query.table := STRAIN;
 	  send(Query, 0);
