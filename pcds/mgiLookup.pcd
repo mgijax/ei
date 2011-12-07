@@ -700,7 +700,7 @@ Module: mgiLookup
             vip_x = 90;
             vip_y = 360;
           Group: User
-            cmd = "select _Derivation_key, name from ALL_CellLine_Derivation \nwhere name not like 'Not Specified%'\nand name not like \"Not Applicable%\"\norder by name";
+            cmd = "select _Derivation_key, name from ALL_CellLine_Derivation \nwhere name not like 'Not Specified%'\nand name not like 'Not Applicable%'\norder by name";
               {
                 Label = LookupLabel : mgiLookup;
                 Group: Widget

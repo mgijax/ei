@@ -2,7 +2,7 @@ Module: mgiDataTypes
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Dec  6 11:08:48 2011";
+      lastWritten = "Tue Dec  6 14:13:46 2011";
         {
           toggle = XmToggleButton;
           Group: Widget
@@ -132,7 +132,7 @@ Shift<Key>Tab: prev-tab-group()
           Notes = aligner : mgiDataTypes;
           Group: Widget
             xrtGearOrientation = vertical;
-            userDefinedAttributes = "sql:String(String)\nnoteType:String(String)\nnoteTypeKey:Int(Int)=\"-1\"\nprivate:Boolean(Boolean)=\"false\"\ntableID:Int(Int)\nmgiTypeKey:Int(Int)=\"-1\"\nnoteKey:Int(Int)=\"-1\"\n";
+            userDefinedAttributes = "sql:String(String)\nnoteType:String(String)\nnoteTypeKey:Int(Int)=\"-1\"\nprivate:Int(Int)=\"-1\"\ntableID:Int(Int)\nmgiTypeKey:Int(Int)=\"-1\"\nnoteKey:Int(Int)=\"-1\"\n";
           Group: Control
             vip_x = 60;
             vip_y = 1570;

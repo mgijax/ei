@@ -5717,7 +5717,7 @@ Module: MGD
                     {
                       ChromosomePulldown = OptionPulldown;
                       Group: User
-                        sql = "select chromosome, label = chromosome, sequenceNum \nfrom MRK_Chromosome where _Organism_key = 1\norder by sequenceNum";
+                        sql = "select chromosome, chromosome as label, sequenceNum \nfrom MRK_Chromosome where _Organism_key = 1\norder by sequenceNum";
                     }
               }
               {
@@ -7317,7 +7317,7 @@ Shift<Key>Tab: prev-tab-group()
                                 {
                                   OrganismList = OrganismList : mgiLookup;
                                   Group: User
-                                    cmd = "select _Organism_key, organism from MGI_Organism_Marker_View where _Organism_key = 2 order by organism\nselect _Organism_key, organism from MGI_Organism_Marker_View where _Organism_key > 2 order by organism\n";
+                                    cmd = "select _Organism_key, organism from MGI_Organism_Marker_View order by organism";
                                       {
                                         Label = LookupLabel;
                                       }
@@ -8707,7 +8707,7 @@ Shift<Key>Tab: prev-tab-group()
                                             {
                                               ReferenceTypePulldown = OptionPulldown : mgiOption;
                                               Group: User
-                                                sql = "select _RefAssocType_key, assocType, allowOnlyOne, seq = 1 from MGI_RefType_Allele_View where assocType = 'Indexed'\nunion\nselect _RefAssocType_key, assocType, allowOnlyOne, seq = 2 from MGI_RefType_Allele_View where assocType != 'Indexed'\norder by seq, assocType";
+                                                sql = "select _RefAssocType_key, assocType, allowOnlyOne, 1 as seq from MGI_RefType_Allele_View where assocType = 'Indexed'\nunion\nselect _RefAssocType_key, assocType, allowOnlyOne, 2 as seq from MGI_RefType_Allele_View where assocType != 'Indexed'\norder by seq, assocType";
                                                 tableForm = Reference;
                                             }
                                       }
@@ -13977,7 +13977,7 @@ Shift<Key>Tab: prev-tab-group()
                     {
                       ChromosomePulldown = OptionPulldown;
                       Group: User
-                        sql = "select chromosome, label = chromosome, sequenceNum \nfrom MRK_Chromosome where _Organism_key = 1\norder by sequenceNum";
+                        sql = "select chromosome, chromosome as label, sequenceNum \nfrom MRK_Chromosome where _Organism_key = 1\norder by sequenceNum";
                     }
               }
               {
