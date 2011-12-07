@@ -273,7 +273,7 @@ Module: mgiLookup
             vip_x = 90;
             vip_y = 1515;
           Group: User
-            cmd = "select c._CellLine_key, cellLine = c.cellLine || ';' || s.strain\nfrom ALL_CellLine c, PRB_Strain s\nwhere c.isMutant = 0 and c._CellLine_Type_key = 3982968\nand c._Strain_key = s._Strain_key\nunion\nselect c._CellLine_key, c.cellLine + \";\" + s.strain + \";\" + vt.term\nfrom ALL_CellLine c, PRB_Strain s, VOC_Term vt\nwhere c.isMutant = 0 and c._CellLine_Type_key != 3982968\nand c._Strain_key = s._Strain_key\nand c._CellLine_Type_key = vt._Term_key\norder by cellLine\n";
+            cmd = "select c._CellLine_key, c.cellLine || ';' || s.strain as cellLine\nfrom ALL_CellLine c, PRB_Strain s\nwhere c.isMutant = 0 and c._CellLine_Type_key = 3982968\nand c._Strain_key = s._Strain_key\nunion\nselect c._CellLine_key, c.cellLine || ';' || s.strain || ';' || vt.term as cellLine\nfrom ALL_CellLine c, PRB_Strain s, VOC_Term vt\nwhere c.isMutant = 0 and c._CellLine_Type_key != 3982968\nand c._Strain_key = s._Strain_key\nand c._CellLine_Type_key = vt._Term_key\norder by cellLine\n";
               {
                 Label = LookupLabel : mgiLookup;
                 Group: Widget
@@ -700,7 +700,7 @@ Module: mgiLookup
             vip_x = 90;
             vip_y = 360;
           Group: User
-            cmd = "select _Derivation_key, name from ALL_CellLine_Derivation \nwhere name not like 'Not Specified%'\nand name not like \"Not Applicable%\"\norder by name";
+            cmd = "select _Derivation_key, name from ALL_CellLine_Derivation \nwhere name not like 'Not Specified%'\nand name not like 'Not Applicable%'\norder by name";
               {
                 Label = LookupLabel : mgiLookup;
                 Group: Widget
