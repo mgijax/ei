@@ -55,6 +55,7 @@
 
 #include <mgilib.h>
 #include <pglib.h>
+#include <utilities.h>
 
 /*
 *
@@ -344,6 +345,20 @@ char *mgi_getstr(PGconn *conn, int column)
   strcpy(buf, PQgetvalue(res, currentRow, column));
   /*printf("mgi_getstr: %s\n", buf);*/
 
+  /* 
+  *
+  * add translations:
+  *
+  * "t" (true) ==> 1
+  * "f" (false) ==> 0
+  *
+  */
+
+  if (strcmp(buf, "t") == 0)
+    strcpy(buf, "1");
+  else if (strcmp(buf, "f") == 0)
+    strcpy(buf, "0");
+
   return(buf);
 }
 
@@ -375,6 +390,7 @@ char *mgi_citation(PGconn *conn, int table)
     case MGI_ORGANISM:
          strcpy(buf, mgi_getstr(conn, 2));
          strcat(buf, " (");
+
          strcat(buf, mgi_getstr(conn, 3));
          strcat(buf, ")");
          break;

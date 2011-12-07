@@ -36,7 +36,6 @@ Comment out 'selectItem' check
 --end if;
 
 4:
-"= 0" to "= false"
 
 pcds:  
   - "allowOnlyOne = 0" ==> "allowOnlyOne = false"
@@ -46,15 +45,19 @@ pcds:
   - "isSimple = 1" ==> "isSimple = true"
      mgiOption
 
-  - "c.isMutant = 0" ==> "c.isMutant = false"
+  - "isMutant = 0" ==> "isMutant = false"
     mgiLookup.pcd
 
 include:
-mgdsql.h
+  - "isMutant = 0" ==> "isMutant = false"
+    mgdsql.h
+    mgisql.h
 
-"= -1" to "is false"
-  - "private = -1" => 
-  NoteLib/private needs to be looked at:  int vs boolean
+  - "isWildType = 0" ==> "isWildType = false"
+    mgisql.h
+
+  - "isObsolete = 0" ==> "isObsolete = false"
+    mgisql.h
 
 5: include
 include/mgdsql.h: replace 'offset' with 'cmOffset'
