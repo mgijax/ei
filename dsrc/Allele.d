@@ -2360,8 +2360,6 @@ rules:
 
 	  select := allele_sql_14 + mgi_DBprstr(value) + "\n";
 
-	  (void) mgi_writeLog(select);
-
 	  dbproc : opaque := mgi_dbexec(select);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
