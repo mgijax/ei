@@ -1,5 +1,17 @@
 ### Remember to update Configuration:CVS_TAG with most recen tag
 
+TAG: ei-4-4-2-18
+DATE:
+STAFF: lec
+CHANGES:
+1) more agnostic edits to pcds
+pcds/mgiOption.pcd
+pcds/mgiLookup.pcd
+pcds/MGIAdmin.pcd
+pcds/MGD.pcd
+2) */uxb.conf:  re-sorted DMODULE list
+3) fixed bug in dsrc/SimpleVocab.d
+
 TAG: ei-4-4-2-17
 TAG: ei-4-4-2-16
 TAG: ei-4-4-2-15
