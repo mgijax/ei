@@ -30,13 +30,13 @@
 * mgi_dbclose		done
 * mgi_dbexit		done
 *
-* mgi_dbexec		in progress
-* mgi_dbresults		in progress
-* mgi_dbnextrow		in progress
+* mgi_dbexec		works
+* mgi_dbresults		works
+* mgi_dbnextrow		works
 *
 * mgi_execute_search
-* mgi_getstr		1/2 done
-* mgi_citation
+* mgi_getstr		works
+* mgi_citation		no changes needed
 * mgi_key
 * mgi_sql1		done
 *
@@ -125,7 +125,11 @@ int mgi_dbinit(char *user, char *pwd)
 
 /*
 *
+* wrapper around PQfinish
+*
 * Free the connection; frees memory used by PGconn object
+*
+* PQfinish(PGconn *conn)
 *
 */
 
@@ -156,8 +160,9 @@ void mgi_dbcancel(PGconn *conn)
 
 /*
 *
-* close the portal...to avoid memory leaks
+* wrapper around PQclear
 *
+* close the portal...to avoid memory leaks
 * frees the storage associated with a PGresult
 *
 * void PQclear(PGresult *res);
@@ -212,6 +217,17 @@ PGconn *mgi_dbexec(char *cmd)
   *	PGresult *res
   *
   * see mgi_dbresults for the next step
+  */
+
+  /* 
+  *
+  * query translations
+  *
+  */
+
+  cmd = mgi_lowersub(cmd);
+  /*
+  printf("after lowersub: %s\n", cmd);
   */
 
   /* execute search */
@@ -491,3 +507,100 @@ void mgi_execute_search(Widget dialog, Widget list, char *cmd, int table, char *
   return;
 }
 
+/* 
+*
+* mgi_lowersub
+*
+* substitues:
+*
+* xxxx like xxxx ==> lower(xxxx) like lower(xxxx)
+*
+*/
+
+char *mgi_lowersub(char *str)
+{
+  static char newstr[TEXTBUFSIZ];
+  char pat[TEXTBUFSIZ];
+  char repl[TEXTBUFSIZ];
+
+  char *s1, *s2, *ns;
+  int i;
+
+  memset(newstr, '\0', sizeof(newstr));
+  memset(pat, '\0', sizeof(pat));
+  memset(repl, '\0', sizeof(repl));
+
+  s1 = str;
+  ns = newstr;
+
+  /*
+  * find first pattern
+  */
+  s2 = strstr(s1, " like ");
+
+  /* if we found the pattern.... */
+
+  if (s2 == NULL)
+    return(s1);
+
+  /* 
+  * iterate to the end of the pattern
+  *
+  * printf("str: %s\n", str);
+  */
+
+  s1 = s2;
+  *s1--;
+  i = 0;
+  while (*s1 != ' ')
+  {
+    i++;
+    *s1--;
+  }
+  strncat(pat, ++s1, i);
+  strcat(repl, "lower(");
+  strncat(repl, s1, i);
+  strcat(repl, ")");
+
+  /* 
+  * iterate thru the beginning of the pattern
+  *
+  * printf("str: %s\n", str);
+  */
+
+  s1 = s2;
+  while (*s1 != '\'')
+  {
+    *s1++;
+  }
+  s2 = s1;
+  s2++;
+  i = 1;
+  while (*s2 != '\'')
+  {
+    i++;
+    *s2++;
+  }
+  strcat(pat, " like ");
+  strncat(pat, s1, i+1);
+  strcat(repl, " like lower(");
+  strncat(repl, s1, i+1);
+  strcat(repl, ")");
+
+  /*
+  printf("pat: %s\n", pat);
+  printf("repl: %s\n", repl);
+  */
+
+  /*
+  * simple replacement of pattern to replacement
+  */
+
+  ns = mgi_simplesub(pat, repl, str);
+
+  /*
+  printf("ns: %s\n", ns);
+  */
+
+  return ns;
+}
