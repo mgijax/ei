@@ -1513,11 +1513,12 @@ rules:
 	        top->MolDetailForm->ParentClone->AccessionName->text.value := "";
 
 		top->MolDetailForm->SourceForm->SourceID->text.value := mgi_getstr(dbproc, 4);
-		DisplayMolecularSource.source_widget := detailForm;
-		send(DisplayMolecularSource, 0);
             end while;
           end while;
 	  (void) mgi_dbclose(dbproc);
+
+	  DisplayMolecularSource.source_widget := detailForm;
+	  send(DisplayMolecularSource, 0);
 
 	  cmd := molecular_sql_7 + currentMasterKey;
           dbproc := mgi_dbexec(cmd);

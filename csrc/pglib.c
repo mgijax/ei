@@ -211,6 +211,11 @@ void mgi_dbclose(PGconn *conn)
 
 PGconn *mgi_dbexec(char *cmd)
 {
+  static char newstr[TEXTBUFSIZ];
+  char *ns = cmd;
+
+  memset(newstr, '\0', sizeof(newstr));
+
   /*
   *
   * store results in the global variable
@@ -223,15 +228,32 @@ PGconn *mgi_dbexec(char *cmd)
   *
   * query translations
   *
+  * a) lower case
+  * b) "preferred = 1" => "preferred is true"
+  * c) "convert(varchar(5), e.tag)" => etag
+  * d) "str(pcntrecomb,6,2), str(stderr,6,2)" ==> 
+  *		to_char(pcntrecomb, '99.99'), to_char(stderr, '99.99')
+  *
   */
 
   cmd = mgi_lowersub(cmd);
+
+  strcpy(newstr, cmd);
+  ns = mgi_simplesub("preferred = 1", "preferred is true", newstr);
+  strcpy(newstr, ns);
+
+  ns = mgi_simplesub("convert(varchar(5), e.tag)", "e.tag", newstr);
+  strcpy(newstr, ns);
+
+  ns = mgi_simplesub("str(pcntrecomb,6,2), str(stderr,6,2)", "to_char(pcntrecomb, '99.99'), to_char(stderr, '99.99')", newstr);
+  strcpy(newstr, ns);
+
   /*
-  printf("after lowersub: %s\n", cmd);
+  printf("new cmd: %s\n", ns);
   */
 
   /* execute search */
-  res = PQexec(conn, cmd);
+  res = PQexec(conn, ns);
 
   /* set maxResults */
   maxResults = 0;
