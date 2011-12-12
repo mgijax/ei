@@ -29,7 +29,7 @@
 #define acclib_sql_8 " order by _Assoc_key, _LogicalDB_key";
 #define acclib_sql_9 " order by _LogicalDB_key, preferred desc, prefixPart, numericPart"
 #define acclib_sql_10a "select _Object_key from SEQ_Sequence_Acc_View where _LogicalDB_key = "
-#define acclib_sql_10b " and accID = "
+#define acclib_sql_10b " and accID like "
 
 /* ActualLogical.d */
 
@@ -61,14 +61,14 @@
 
 /* MGILib.d */
 
-#define mgilib_sql_1a "select _User_key from MGI_User_Active_View where login = '"
+#define mgilib_sql_1a "select _User_key from MGI_User_Active_View where login like '"
 #define mgilib_sql_1b "'"
 
 /* MolSourceLib.d */
 
 #define molsource_sql_1a "select _Term_key from VOC_Term where _Vocab_key = 10 and term = '"
 #define molsource_sql_1b "'"
-#define molsource_sql_2a "select _Term_key from VOC_Term where _Vocab_key = 24 and term = '"
+#define molsource_sql_2a "select _Term_key from VOC_Term where _Vocab_key = 24 and term '"
 #define molsource_sql_2b "'"
 #define molsource_sql_3 "select _Term_key from VOC_Term where _Vocab_key = 18 and term = 'Not Specified'"
 #define molsource_sql_4 "select _Term_key from VOC_Term where _Vocab_key = 18 and term = 'Not Applicable'"
@@ -152,12 +152,12 @@ where _MGIType_key = 13 and synonymType = 'exact'"
 
 #define verify_allele_sql_1 "select _Allele_key, _Marker_key, symbol, markerSymbol \
 from ALL_Allele_View \
-where term in ('Approved', 'Autoload') and symbol = " 
+where term in ('Approved', 'Autoload') and symbol like " 
 #define verify_allele_sql_2 " and _Marker_key = "
 
-#define verify_cellline_sql_1 "select _Term_key, term from VOC_Term where _Vocab_key = 18 and term = "
+#define verify_cellline_sql_1 "select _Term_key, term from VOC_Term where _Vocab_key = 18 and term like "
 
-#define verify_genotype_sql_1 "select _Object_key, description from GXD_Genotype_Summary_View where mgiID = "
+#define verify_genotype_sql_1 "select _Object_key, description from GXD_Genotype_Summary_View where mgiID like "
 
 #define verify_imagepane_sql_1 "select p._ImagePane_key, substring(i.figureLabel,1,20), a1.accID , a2.accID \
 from IMG_ImagePane p, IMG_Image i, ACC_Accession a1, ACC_Accession a2, VOC_Term t \
@@ -169,18 +169,18 @@ and a2._MGIType_key = 9 \
 and a2._LogicalDB_key = 19 \
 and i._ImageType_key = t._Term_key \
 and t.term = 'Full Size' \
-and a1.accID = "
+and a1.accID like "
 
 #define verify_marker_sql_1a "select _Marker_key, _Marker_Status_key, symbol, chromosome, \
 cytogeneticOffset, substring(name,1,25) \
 from MRK_Marker where _Organism_key = "
 
-#define verify_marker_sql_1b "\nand symbol = "
+#define verify_marker_sql_1b "\nand symbol like "
 
 #define verify_marker_sql_2 "\nunion\n \
 select -1, 1, symbol, chromosome, null, substring(name, 1, 25) \
 from NOM_Marker_Valid_View \
-where symbol = "
+where symbol like "
 
 #define verify_marker_sql_3 "select current_symbol from MRK_Current_View where _Marker_key = "
 
@@ -223,23 +223,23 @@ and pm.relationship = 'A'"
 #define verify_markerintable_sql_3c " = "
 #define verify_markerintable_sql_3d "\nand _Marker_key = "
 
-#define verify_reference_sql_1 "select _Refs_key, short_citation, isReviewArticle from BIB_View where jnum = "
+#define verify_reference_sql_1 "select _Refs_key, short_citation, isReviewArticle from BIB_View where jnum like "
 
 #define verify_goreference_sql_1 "exec BIB_isNOGO "
 
 #define verify_organism_sql_1 "select _Organism_key, commonName, organism \
-from MGI_Organism_Marker_View where commonName = "
+from MGI_Organism_Marker_View where commonName like "
 
-#define verify_strainspecies_sql_1 "select _Term_key, term from VOC_Term where _Vocab_key = 26 and term = "
+#define verify_strainspecies_sql_1 "select _Term_key, term from VOC_Term where _Vocab_key = 26 and term like "
 
 #define verify_strains_sql_1 "select _Term_key from VOC_Term where _Vocab_key = 26 and term = 'laboratory mouse'"
 #define verify_strains_sql_2 "select _Term_key from VOC_Term where _Vocab_key = 55 and term = 'Not Specified'"
-#define verify_strains_sql_3 "select _Strain_key, strain, private from PRB_Strain where strain = "
-#define verify_strains_sql_4 "select _Strain_key from PRB_Strain where strain = "
+#define verify_strains_sql_3 "select _Strain_key, strain, private from PRB_Strain where strain like "
+#define verify_strains_sql_4 "select _Strain_key from PRB_Strain where strain like "
 
-#define verify_tissue_sql_1 "select _Tissue_key, tissue from PRB_Tissue where tissue = "
-#define verify_tissue_sql_2 "select _Tissue_key from PRB_Tissue where tissue = "
+#define verify_tissue_sql_1 "select _Tissue_key, tissue from PRB_Tissue where tissue like "
+#define verify_tissue_sql_2 "select _Tissue_key from PRB_Tissue where tissue like "
 
-#define verify_user_sql_1 "select _User_key, login from MGI_User where login = "
+#define verify_user_sql_1 "select _User_key, login from MGI_User where login like "
 
 #endif

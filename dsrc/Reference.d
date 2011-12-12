@@ -1091,6 +1091,7 @@ rules:
 	      end while;
 	    end while;
 	  end while;
+	  (void) mgi_dbclose(dbproc);
 
 	  -- Now fill in used/not used values
 	  row := 0;
@@ -1109,7 +1110,6 @@ rules:
 	    row := row + 1;
 	  end while;
 
-	  (void) mgi_dbclose(dbproc);
 	end does;
 
 --
