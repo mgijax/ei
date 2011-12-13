@@ -486,7 +486,7 @@ char *mgi_key(PGconn *conn, int table)
 char *mgi_sp(char *cmd)
 {
   /* to turn off, just return a null */
-  return(NULL);
+  return("0");
   /*return(mgi_sql1(cmd));*/
 }
 

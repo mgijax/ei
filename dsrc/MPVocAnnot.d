@@ -150,7 +150,6 @@ rules:
 	   permOK : integer;
 
 	   cmd := "exec MGI_checkUserRole " + mgi_DBprstr(top.name) + "," + mgi_DBprstr(global_login);
-		
 	   permOK := (integer) mgi_sp(cmd);
 
 	   if (permOK = 0) then
