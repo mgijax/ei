@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Dec  1 11:07:37 2011";
+      lastWritten = "Tue Dec 13 13:28:55 2011";
       copy = false;
       inCreateMenu = true;
         {
@@ -1988,12 +1988,6 @@ Module: MGI
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                      Popups:
-                                      {
-                                        TranslationTypePulldown = OptionPulldown : mgiOption;
-                                        Group: User
-                                          childTemplate = MGITypeToggle;
-                                      }
                                 }
                                 {
                                   MGITypeMenu = MGITypeMenu : mgiOption;
