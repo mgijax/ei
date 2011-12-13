@@ -249,7 +249,7 @@
 dmodule Verify is
 
 #include <mgilib.h>
-#include <syblib.h>
+#include <pglib.h>
 #include <tables.h>
 #include <mgisql.h>
 
@@ -1947,34 +1947,44 @@ rules:
           -- Populate information for Homology
  
           found : boolean := false;
-	  i : integer := 1;
 
           if (isTable and VerifyMarker.verifyOtherOrganism) then
-	    select := verify_marker_sql_4 + whichMarker +
-	              verify_marker_sql_5 + whichMarker +
-	              verify_marker_sql_6 + whichMarker;
 
+	    select := verify_marker_sql_4 + whichMarker;
             dbproc := mgi_dbexec(select);
             while (mgi_dbresults(dbproc) != NO_MORE_RESULTS and not found) do
               while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-                if (i = 1) then
                   (void) mgi_tblSetCell(sourceWidget, VerifyMarker.row, sourceWidget.markerChr, whichChrom);
                   (void) mgi_tblSetCell(sourceWidget, VerifyMarker.row, sourceWidget.markerCyto, mgi_getstr(dbproc, 1));
                   (void) mgi_tblSetCell(sourceWidget, VerifyMarker.row, sourceWidget.markerName, mgi_getstr(dbproc, 2));
                   (void) mgi_tblSetCell(sourceWidget, VerifyMarker.row, sourceWidget.accID, mgi_getstr(dbproc, 3));
                   (void) mgi_tblSetCell(sourceWidget, VerifyMarker.row, sourceWidget.accKey, mgi_getstr(dbproc, 4));
                   found := true;
-                elsif (i = 2) then
+              end while;
+            end while;
+            (void) mgi_dbcancel(dbproc);
+            (void) mgi_dbclose(dbproc);
+
+	    select := verify_marker_sql_5 + whichMarker;
+            dbproc := mgi_dbexec(select);
+            while (mgi_dbresults(dbproc) != NO_MORE_RESULTS and not found) do
+              while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
                   (void) mgi_tblSetCell(sourceWidget, VerifyMarker.row, sourceWidget.markerChr, whichChrom);
                   (void) mgi_tblSetCell(sourceWidget, VerifyMarker.row, sourceWidget.markerCyto, mgi_getstr(dbproc, 1));
                   (void) mgi_tblSetCell(sourceWidget, VerifyMarker.row, sourceWidget.markerName, mgi_getstr(dbproc, 2));
-                elsif (i = 3) then
+              end while;
+            end while;
+            (void) mgi_dbcancel(dbproc);
+            (void) mgi_dbcancel(dbproc);
+
+	    select := verify_marker_sql_6 + whichMarker;
+            dbproc := mgi_dbexec(select);
+            while (mgi_dbresults(dbproc) != NO_MORE_RESULTS and not found) do
+              while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
                   (void) mgi_tblSetCell(sourceWidget, VerifyMarker.row, sourceWidget.accID, mgi_getstr(dbproc, 2));
                   (void) mgi_tblSetCell(sourceWidget, VerifyMarker.row, sourceWidget.accKey, mgi_getstr(dbproc, 3));
                   found := true;
-                end if;
               end while;
-              i := i + 1;
             end while;
             (void) mgi_dbcancel(dbproc);
             (void) mgi_dbclose(dbproc);

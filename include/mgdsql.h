@@ -164,9 +164,11 @@ where _Object_key = "
 #define govoc_sql_6b " where prefixPart = 'MGI:' and preferred = 1 and _Object_key = "
 #define govoc_sql_6c " order by description\n"
 
-#define govoc_sql_7a "select a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier, \
-e.*, substring(v.dagAbbrev,1,3) as dagAbbrev, hasProperty = 'y', \
-e.modification_date, e.creation_date, e.jnum, e.evidenceCode \
+#define govoc_sql_7a "(select a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier, \
+e._AnnotEvidence_key, e._Annot_key, e._EvidenceTerm_key, e._Refs_key, e.inferredFrom, \
+e.creation_date, e.modification_date,  \
+e.evidenceCode, e.jnum, e.short_citation, e.createdBy, e.modifiedBy, \
+substring(v.dagAbbrev,1,3) as dagAbbrev, 'y' as hasProperty \
 from VOC_Annot_View a, VOC_Evidence_View e, DAG_Node_View v \
 where a._AnnotType_key = 1000 \
 and a._Annot_key = e._Annot_key \
@@ -176,21 +178,23 @@ and a._Object_key = "
 #define govoc_sql_7b "\nand exists (select 1 from VOC_Evidence_Property p where e._AnnotEvidence_key = p._AnnotEvidence_key) \
 union \
 select a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier, \
-e.*, substring(v.dagAbbrev,1,3) as dagAbbrev, hasProperty = 'n', \
-e.modification_date, e.creation_date, e.jnum, e.evidenceCode \
+e._AnnotEvidence_key, e._Annot_key, e._EvidenceTerm_key, e._Refs_key, e.inferredFrom, \
+e.creation_date, e.modification_date,  \
+e.evidenceCode, e.jnum, e.short_citation, e.createdBy, e.modifiedBy, \
+substring(v.dagAbbrev,1,3) as dagAbbrev, 'n' as hasProperty \
 from VOC_Annot_View a, VOC_Evidence_View e, DAG_Node_View v \
 where a._AnnotType_key = 1000 \
 and a._Annot_key = e._Annot_key \
 and a._Vocab_key = v._Vocab_key \
 and a._Term_key = v._Object_key \
 and a._Object_key = "
-#define govoc_sql_7c "\nand not exists (select 1 from VOC_Evidence_Property p where e._AnnotEvidence_key = p._AnnotEvidence_key)"
-#define govoc_sql_orderA "\norder by v.dagAbbrev, e.modification_date desc, a.term\n"
-#define govoc_sql_orderB "\norder by e.creation_date desc, a.term\n"
-#define govoc_sql_orderC "\norder by a.accID, a.term\n"
-#define govoc_sql_orderD "\norder by e.jnum, a.term\n"
-#define govoc_sql_orderE "\norder by e.evidenceCode, a.term\n"
-#define govoc_sql_orderF "\norder by e.modification_date desc, a.term\n"
+#define govoc_sql_7c "\nand not exists (select 1 from VOC_Evidence_Property p where e._AnnotEvidence_key = p._AnnotEvidence_key))"
+#define govoc_sql_orderA "\norder by dagAbbrev, modification_date desc, term\n"
+#define govoc_sql_orderB "\norder by creation_date desc, term\n"
+#define govoc_sql_orderC "\norder by accID, term\n"
+#define govoc_sql_orderD "\norder by jnum, term\n"
+#define govoc_sql_orderE "\norder by evidenceCode, term\n"
+#define govoc_sql_orderF "\norder by modification_date desc, term\n"
 
 #define govoc_sql_9 "select isReferenceGene, completion_date \
 from GO_Tracking_View where _Marker_key = "
