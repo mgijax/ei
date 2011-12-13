@@ -314,7 +314,7 @@ rules:
           from := top->SourceForm.sqlFrom;
 
 	  -- only allow this form to search for Named (non-Anonymous) libraries
-          where := top->SourceForm.sqlWhere + "\nand s.name != null";
+          where := top->SourceForm.sqlWhere + "\nand s.name is not null";
 
           SearchAcc.table := accTable;
           SearchAcc.objectKey := "s." + mgi_DBkey(PRB_SOURCE_MASTER);

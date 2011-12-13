@@ -135,15 +135,21 @@ rules:
 	  ClearTable.table := table;
 	  send(ClearTable, 0);
 
-          cmd := "select *, c = convert(integer, chromosome) from " + mgi_DBtable(tableID) + 
-	      " where " + mgi_DBkey(STRAIN) + " = " + objectKey + 
-	      "\nand chromosome not in ('X', 'Y', 'MT', 'UN', 'XY') " +
-	      "union " +
-              "select *, c = 20 from " + mgi_DBtable(tableID) + 
-	      " where " + mgi_DBkey(STRAIN) + " = " + objectKey + 
-	      "\nand chromosome in ('X', 'Y', 'MT', 'UN', 'XY') " +
-	      "\norder by _Qualifier_key, c, symbol"
-	      ;
+          cmd := "(select _StrainMarker_key, _Marker_key, _Allele_key, _Qualifier_key, " +
+              "symbol, chromosome, alleleSymbol, qualifier, " +
+              "chromosome as chrorder " +
+              "from " + mgi_DBtable(tableID) +
+              " where " + mgi_DBkey(STRAIN) + " = " + objectKey +
+              "\nand chromosome not in ('X', 'Y', 'MT', 'UN', 'XY') " +
+              "union " +
+              "select _StrainMarker_key, _Marker_key, _Allele_key, _Qualifier_key, " +
+              "symbol, chromosome, alleleSymbol, qualifier, " +
+              "'99' as chrorder " +
+              "from " + mgi_DBtable(tableID) +
+              " where " + mgi_DBkey(STRAIN) + " = " + objectKey +
+              "\nand chromosome in ('X', 'Y', 'MT', 'UN', 'XY')) " +
+              "\norder by _Qualifier_key, chrorder, symbol"
+              ;
 
 	  row : integer := 0;
           dbproc : opaque := mgi_dbexec(cmd);
@@ -154,14 +160,14 @@ rules:
 	      (void) mgi_tblSetCell(table, row, table.primaryKey, mgi_getstr(dbproc, 1));
 
 	      (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 3));
-	      (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 10));
-	      (void) mgi_tblSetCell(table, row, table.markerChr, mgi_getstr(dbproc, 11));
+	      (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 5));
+	      (void) mgi_tblSetCell(table, row, table.markerChr, mgi_getstr(dbproc, 6));
 
-	      (void) mgi_tblSetCell(table, row, (integer) table.alleleKey[1], mgi_getstr(dbproc, 4));
-	      (void) mgi_tblSetCell(table, row, (integer) table.alleleSymbol[1], mgi_getstr(dbproc, 13));
+	      (void) mgi_tblSetCell(table, row, (integer) table.alleleKey[1], mgi_getstr(dbproc, 3));
+	      (void) mgi_tblSetCell(table, row, (integer) table.alleleSymbol[1], mgi_getstr(dbproc, 7));
 
-	      (void) mgi_tblSetCell(table, row, table.qualifierKey, mgi_getstr(dbproc, 5));
-	      (void) mgi_tblSetCell(table, row, table.qualifier, mgi_getstr(dbproc, 14));
+	      (void) mgi_tblSetCell(table, row, table.qualifierKey, mgi_getstr(dbproc, 4));
+	      (void) mgi_tblSetCell(table, row, table.qualifier, mgi_getstr(dbproc, 8));
 
 	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
               row := row + 1;
