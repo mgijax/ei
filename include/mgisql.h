@@ -223,7 +223,7 @@ and pm.relationship = 'A'"
 #define verify_markerintable_sql_3c " = "
 #define verify_markerintable_sql_3d "\nand _Marker_key = "
 
-#define verify_reference_sql_1 "select _Refs_key, short_citation, isReviewArticle from BIB_View where jnum like "
+#define verify_reference_sql_1 "select _Refs_key, short_citation, isReviewArticle from BIB_View where jnum = "
 
 #define verify_goreference_sql_1 "exec BIB_isNOGO "
 
