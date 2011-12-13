@@ -233,6 +233,7 @@ PGconn *mgi_dbexec(char *cmd)
   * c) "convert(varchar(5), e.tag)" => etag
   * d) "str(pcntrecomb,6,2), str(stderr,6,2)" ==> 
   *		to_char(pcntrecomb, '99.99'), to_char(stderr, '99.99')
+  * e) "isObsolete = 0" => "isObsolete is false"
   *
   */
 
@@ -245,7 +246,11 @@ PGconn *mgi_dbexec(char *cmd)
   ns = mgi_simplesub("convert(varchar(5), e.tag)", "e.tag", newstr);
   strcpy(newstr, ns);
 
-  ns = mgi_simplesub("str(pcntrecomb,6,2), str(stderr,6,2)", "to_char(pcntrecomb, '99.99'), to_char(stderr, '99.99')", newstr);
+  ns = mgi_simplesub("str(pcntrecomb,6,2), str(stderr,6,2)", \
+	"to_char(pcntrecomb, '99.99'), to_char(stderr, '99.99')", newstr);
+  strcpy(newstr, ns);
+
+  ns = mgi_simplesub("isObsolete = 0", "isObsolete is false", newstr);
   strcpy(newstr, ns);
 
   /*

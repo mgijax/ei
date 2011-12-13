@@ -48,6 +48,8 @@ pcds:
   - "isMutant = 0" ==> "isMutant = false"
     mgiLookup.pcd
 
+  - "seq as 1" ==> 1 as seq
+
 include:
   - "isMutant = 0" ==> "isMutant = false"
     mgdsql.h
