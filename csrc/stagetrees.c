@@ -594,12 +594,10 @@ static void stagetrees_internalLoadStages(int countdstages, int *distinctstages)
 void stagetrees_loadStages(char *from, char *where)
 {
     char buf[BUFSIZ];
-    DBPROCESS *dbproc = stagetrees_getdbproc(stagetrees);
 
     int distinctstages[MAXSTAGE];
-    int countdstages; /* a count of the number of distinct stages we are 
-                         processing */
-    DBINT iresult;
+    /* a count of the number of distinct stages we are processing */
+    int countdstages = 0;
 
     /* determine what stages are affected by the current query.  It would
        be nice to read them from the results already obtained, but the
@@ -609,22 +607,19 @@ void stagetrees_loadStages(char *from, char *where)
     sprintf(buf,"select distinct(t.stage) %s %s", from, where); 
 
     /* do query to obtain affected stages */
+    /* assume we have no affected stages */
 
-    dbcmd(dbproc, buf);
-    dbsqlexec(dbproc);
-
-    countdstages = 0;  /* assume we have no affected stages */
-
-    while (dbresults(dbproc) != NO_MORE_RESULTS)
+    DBPROCESS *dbproc;
+    dbproc = mgi_dbexec(buf);
+    while (mgi_dbresults(dbproc) != NO_MORE_RESULTS)
     {
-       dbbind(dbproc, 1, INTBIND, (DBINT) 0, 
-             (BYTE *) &iresult); 
-       while (dbnextrow(dbproc) != NO_MORE_ROWS)
+       while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS)
        {
            if (countdstages < MAXSTAGE)
-              distinctstages[countdstages++] = iresult; 
+              distinctstages[countdstages++] = atoi(mgi_getstr(dbproc, 1));
        }
     }
+    (void) mgi_dbclose(dbproc);
 
  /* cut here, provide countdstages and distinctstages as load args */
 
@@ -838,7 +833,6 @@ void stagetree_AddStructureNames(StageTree *stagetree, char *snmaxmod)
        or replacing names/aliases according to their _StructureName_key. */
     char buf[BUFSIZ];
     int stage = stagetree_getStage(stagetree);
-    DBPROCESS *dbproc = stagetrees_getdbproc(stagetrees);
     StructureName tmpstn;
 
     sprintf(buf,"select sn.* "
@@ -850,27 +844,33 @@ void stagetree_AddStructureNames(StageTree *stagetree, char *snmaxmod)
                 "and sn.modification_date > '%s' ",
                 stage, snmaxmod);
 
-    dbcmd(dbproc, buf);
-    dbsqlexec(dbproc);
-
-    while (dbresults(dbproc) != NO_MORE_RESULTS)
+    DBPROCESS *dbproc;
+    dbproc = mgi_dbexec(buf);
+    while (mgi_dbresults(dbproc) != NO_MORE_RESULTS)
     {
        dbbind(dbproc, 1, INTBIND, (DBINT) 0, 
              (BYTE *) &(tmpstn._StructureName_key)); 
+
        dbbind(dbproc, 2, INTBIND, (DBINT) 0, 
              (BYTE *) &(tmpstn._Structure_key)); 
+
        dbbind(dbproc, 3, STRINGBIND, (DBINT) 0, tmpstn.structure);
+
        dbbind(dbproc, 4, BITBIND, (DBINT) 0, (BYTE *) &(tmpstn.mgiAdded)); 
+
        dbbind(dbproc, 5, DATETIMEBIND, (DBINT) 0, 
              (BYTE *) &(tmpstn.creation_date));
+
        dbbind(dbproc, 6, DATETIMEBIND, (DBINT) 0, 
              (BYTE *) &(tmpstn.modification_date));
-       while (dbnextrow(dbproc) != NO_MORE_ROWS)
+
+       while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS)
        {
           /* tu_printf("DEBUG: Adding a structure name\n"); */
           stagetree_AddStructureName(stagetree, &tmpstn);
        }
     }
+    (void) mgi_dbclose(dbproc);
 }
 
 void stagetree_AddStructure(StageTree *stagetree, Structure *st)
@@ -991,7 +991,6 @@ void stagetree_AddStructures(StageTree *stagetree, char *smaxmod)
 
     char buf[BUFSIZ];
     int stage = stagetree_getStage(stagetree);
-    DBPROCESS *dbproc = stagetrees_getdbproc(stagetrees);
     Structure tmpst; /* a temporary structure used for reading DB results */
 
     sprintf(buf,"select s.*, t.stage "
@@ -1002,11 +1001,9 @@ void stagetree_AddStructures(StageTree *stagetree, char *smaxmod)
                 "order by s.treeDepth asc ",
                  stage, smaxmod);
 
-
-    dbcmd(dbproc, buf);
-    dbsqlexec(dbproc);
-
-    while (dbresults(dbproc) != NO_MORE_RESULTS)
+    DBPROCESS *dbproc;
+    dbproc = mgi_dbexec(buf);
+    while (mgi_dbresults(dbproc) != NO_MORE_RESULTS)
     {
        dbbind(dbproc, 1, INTBIND, (DBINT) 0, (BYTE *) &(tmpst._Structure_key));
        dbbind(dbproc, 2, INTBIND, (DBINT) 0, (BYTE *) &(tmpst._Parent_key));
@@ -1028,12 +1025,13 @@ void stagetree_AddStructures(StageTree *stagetree, char *smaxmod)
        dbbind(dbproc, 15, INTBIND, (DBINT) 0, (BYTE *) &(tmpst.stage)); 
 
        /* iterate through the Structure results. */
-       while (dbnextrow(dbproc) != NO_MORE_ROWS)
+       while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS)
        {
           /* tu_printf("DEBUG: Adding a structure\n"); */
           stagetree_AddStructure(stagetree, &tmpst);
        }
     }
+    (void) mgi_dbclose(dbproc);
 }
 
 Structure *stagetree_getStructureByKey(StageTree *stagetree, DBINT sk)

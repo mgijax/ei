@@ -13,6 +13,9 @@
 --
 -- History:
 --
+-- lec	12/14/2011
+--	- InitRefTypeTable; modify select query
+--
 -- lec	02/28/2011
 --	- TR 10584/add modification date/by to MGI_REFERENCE_STRAIN_VIEW
 --
@@ -115,7 +118,9 @@ rules:
 	  --end if;
 
 	  cmd := "select _RefAssocType_key, assocType, allowOnlyOne, _MGIType_key from " + 
-		  mgi_DBtable(tableID) + orderBy;
+		  mgi_DBtable(tableID) + 
+		  " where assocType in ('Original', 'Transmission', 'Molecular', 'Indexed') " +
+		  orderBy;
 
 	  dbproc : opaque := mgi_dbexec(cmd);
 
@@ -136,6 +141,9 @@ rules:
 
 	  (void) mgi_dbclose(dbproc);
 
+	  --
+	  -- load the drop-down list
+	  --
 	  if (top->ReferenceTypeMenu.subMenuId.numChildren = 0) then
 	    InitOptionMenu.option := top->ReferenceTypeMenu;
 	    send(InitOptionMenu, 0);
