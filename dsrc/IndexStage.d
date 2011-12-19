@@ -637,18 +637,15 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := index_sql_3 + currentRecordKey +
-		 index_sql_4a + currentRecordKey + index_sql_4b;
-
 	  table : widget;
-	  results : integer := 1;
 	  row : integer;
+          dbproc : opaque;
 
-          dbproc : opaque := mgi_dbexec(cmd);
- 
+	  table := top->ModificationHistory->Table;
+	  cmd := index_sql_3 + currentRecordKey;
+          dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
 	        top->ID->text.value           := mgi_getstr(dbproc, 1);
 	        top->mgiCitation->ObjectID->text.value := mgi_getstr(dbproc, 2);
 	        top->mgiMarker->ObjectID->text.value := mgi_getstr(dbproc, 3);
@@ -665,15 +662,19 @@ rules:
                 SetOption.value := mgi_getstr(dbproc, 5);
                 send(SetOption, 0);
 
-		table := top->ModificationHistory->Table;
 		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 15));
 		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 9));
 		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 16));
 		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 10));
+	    end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
 
-	      elsif (results = 2) then
-		table := top->Stage->Table;
-
+	  table := top->Stage->Table;
+	  cmd := index_sql_4a + currentRecordKey + index_sql_4b;
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 		-- find the row for the assay key
 		row := 0;
 		while (row < mgi_tblNumRows(table)) do
@@ -686,9 +687,7 @@ rules:
 		-- place an "X" in the correct column (stage)
 		(void) mgi_tblSetCell(table, row, stageKeys.find(mgi_getstr(dbproc, 3)), "X");
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-	      end if;
 	    end while;
-	    results := results + 1;
           end while;
 	  (void) mgi_dbclose(dbproc);
 
