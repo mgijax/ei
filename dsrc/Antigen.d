@@ -434,8 +434,6 @@ rules:
 	      top->Region->text.value         := mgi_getstr(dbproc, 4);
 	      top->Note->text.value           := mgi_getstr(dbproc, 5);
 	      top->SourceForm->SourceID->text.value := mgi_getstr(dbproc, 2);
-	      DisplayMolecularSource.source_widget := top;
-	      send(DisplayMolecularSource, 0);
 
 	      (void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 22));
 	      (void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 8));
@@ -459,6 +457,9 @@ rules:
           end while;
 	  (void) mgi_dbclose(dbproc);
  
+	  DisplayMolecularSource.source_widget := top;
+	  send(DisplayMolecularSource, 0);
+
 	  -- Load Accession numbers
 
           LoadAcc.table := accTable;

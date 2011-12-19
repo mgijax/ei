@@ -916,11 +916,12 @@ rules:
 	      top->Region->text.value := mgi_getstr(dbproc, 5);
 	      top->AntigenNote->text.value := mgi_getstr(dbproc, 6);
 	      top->SourceForm->SourceID->text.value := mgi_getstr(dbproc, 2);
-	      DisplayMolecularSource.source_widget := top;
-	      send(DisplayMolecularSource, 0);
 	    end while;
           end while;
 	  (void) mgi_dbclose(dbproc);
+
+	  DisplayMolecularSource.source_widget := top;
+	  send(DisplayMolecularSource, 0);
 
 	  row := 0;
 	  cmd := antibody_sql_4a + currentRecordKey + antibody_sql_4b;
