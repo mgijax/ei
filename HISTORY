@@ -8,6 +8,7 @@ CHANGES:
    dsrc/Antibody.d
    move DisplayMolecularSource out of dbproc/while/loop
 2) IndexStage.d; separated multi-select statements
+3) Genotype.d: *= changed to INNER/LEFT OUTER JOIN
 
 TAG: ei-4-4-2-19
 TAG: ei-4-4-2-18
