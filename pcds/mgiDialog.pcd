@@ -578,7 +578,7 @@ Module: mgiDialog
               {
                 ItemList = LookupList : mgiLookup;
                 Group: User
-                  cmd = "select _Strain_key, strain from PRB_Strain where private = 0 order by strain";
+                  cmd = "select _Strain_key, strain from PRB_Strain where private is false order by strain";
                     {
                       Label = LookupLabel;
                       Group: Widget
@@ -989,7 +989,7 @@ Module: mgiDialog
                           {
                             ADClipboard = ADClipboard : mgiLookup;
                             Group: User
-                              cmd = "select distinct _Structure_key, dbName from GXD_ISResultStructure_View where _Specimen_key = ";
+                              cmd = "select distinct _Structure_key, dbName, sequenceNum from GXD_ISResultStructure_View where _Specimen_key = ";
                               orderBy = sequenceNum;
                                 {
                                   Label = LookupLabel;

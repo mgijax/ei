@@ -410,7 +410,7 @@ Module: mgiLookup
             vip_x = 90;
             vip_y = 965;
           Group: User
-            cmd = "select distinct g._Genotype_key, g.dbName || ',' || ap.allele1 || ',' || ap.allele2, g.mgiID \nfrom GXD_Genotype_View g, GXD_Specimen s, GXD_AllelePair_View ap \nwhere s._Genotype_key = g._Genotype_key and g._Genotype_key *= ap._Genotype_key and s._Assay_key =";
+            cmd = "select distinct g._Genotype_key, g.dbName || ',' || ap.allele1 || ',' || ap.allele2, g.mgiID \nfrom GXD_Genotype_View g LEFT OUTER JOIN GXD_AllelePair_View ap on (g._Genotype_key = ap._Genotype_key), GXD_Specimen s \nwhere s._Genotype_key = g._Genotype_key and s._Assay_key =";
               {
                 Label = LookupLabel : mgiLookup;
               }
@@ -428,7 +428,7 @@ Module: mgiLookup
             vip_x = 90;
             vip_y = 910;
           Group: User
-            cmd = "select distinct g._Genotype_key, g.dbName || ',' || ap.allele1 || ',' || ap.allele2, g.mgiID \nfrom GXD_Genotype_View g, GXD_GelLane s, GXD_AllelePair_View ap \nwhere s._Genotype_key = g._Genotype_key and g._Genotype_key *= ap._Genotype_key and s._Assay_key =";
+            cmd = "select distinct g._Genotype_key, g.dbName || ',' || ap.allele1 || ',' || ap.allele2, g.mgiID \nfrom GXD_Genotype_View g LEFT OUTER JOIN GXD_AllelePair_View ap on (g._Genotype_key = ap._Genotype_key), GXD_GelLane s \nwhere s._Genotype_key = g._Genotype_key and s._Assay_key =";
               {
                 Label = LookupLabel : mgiLookup;
               }

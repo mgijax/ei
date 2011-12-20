@@ -1,7 +1,7 @@
 ### Remember to update Configuration:CVS_TAG with most recen tag
 
-TAG:
-DATE: 12/19/2011
+TAG: ei-4-4-2-20
+DATE: 12/20/2011
 STAFF: lec
 CHANGES:
 1) dsrc/Antigen.d
@@ -9,6 +9,7 @@ CHANGES:
    move DisplayMolecularSource out of dbproc/while/loop
 2) IndexStage.d; separated multi-select statements
 3) Genotype.d: *= changed to INNER/LEFT OUTER JOIN
+4) pcds/mgiLookup.pcd: *= changed to INNER/LEFT OUTER JOIN
 
 TAG: ei-4-4-2-19
 TAG: ei-4-4-2-18
