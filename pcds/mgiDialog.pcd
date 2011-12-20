@@ -578,7 +578,7 @@ Module: mgiDialog
               {
                 ItemList = LookupList : mgiLookup;
                 Group: User
-                  cmd = "select _Strain_key, strain from PRB_Strain where private is false order by strain";
+                  cmd = "select _Strain_key, strain from PRB_Strain where private = 0 order by strain";
                     {
                       Label = LookupLabel;
                       Group: Widget

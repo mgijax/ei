@@ -1,5 +1,6 @@
 ### Remember to update Configuration:CVS_TAG with most recen tag
 
+TAG: ei-4-4-2-21
 TAG: ei-4-4-2-20
 DATE: 12/20/2011
 STAFF: lec
@@ -10,6 +11,7 @@ CHANGES:
 2) IndexStage.d; separated multi-select statements
 3) Genotype.d: *= changed to INNER/LEFT OUTER JOIN
 4) pcds/mgiLookup.pcd: *= changed to INNER/LEFT OUTER JOIN
+5) fix pcds/mgi.sql.h: molsource_sql_2a
 
 TAG: ei-4-4-2-19
 TAG: ei-4-4-2-18
