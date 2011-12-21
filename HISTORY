@@ -1,5 +1,17 @@
 ### Remember to update Configuration:CVS_TAG with most recen tag
 
+TAG: ei-4-4-2-??
+DATE: 12/21/2011
+STAFF: lec
+CHANGES:
+1) TR10936/add "Treatment" to Allele/Reference
+2) add "(" ")" around union/order by
+Allele.d
+Antibody.d
+Sequence.d
+
+TAG: ei-4-4-2-19
+TAG: ei-4-4-2-18
 TAG: ei-4-4-2-21
 TAG: ei-4-4-2-20
 DATE: 12/20/2011
