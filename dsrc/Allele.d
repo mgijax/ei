@@ -1886,11 +1886,11 @@ rules:
 	  (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
-	  Query.select := "select distinct a._Allele_key, a.symbol, a.statusNum\n" + 
+	  Query.select := "(select distinct a._Allele_key, a.symbol, a.statusNum\n" + 
 	                  from + "\n" + 
 			  where + 
 			  union + 
-			  "\norder by a.statusNum, a.symbol\n";
+			  ")\norder by a.statusNum, a.symbol\n";
 	  Query.table := ALL_ALLELE;
 	  send(Query, 0);
           (void) reset_cursor(top);
