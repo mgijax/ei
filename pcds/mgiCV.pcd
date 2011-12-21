@@ -97,7 +97,7 @@ Module: mgiCV
                     {
                       ADClipboard = ADClipboard : mgiLookup;
                       Group: User
-                        cmd = "select distinct _Structure_key, dbName from GXD_GelLaneStructure_View where _Assay_key = ";
+                        cmd = "select distinct _Structure_key, dbName, sequenceNum from GXD_GelLaneStructure_View where _Assay_key = ";
                         orderBy = sequenceNum;
                           {
                             Label = LookupLabel;
@@ -411,7 +411,7 @@ Module: mgiCV
                       Group: Widget
                         managed = False;
                       Group: User
-                        cmd = "select distinct i._Structure_key, i.dbName from GXD_ISResultStructure_View i, GXD_Specimen s where s._Specimen_key = i._Specimen_key and s._Assay_key = ";
+                        cmd = "select distinct i._Structure_key, i.dbName, i.sequenceNum from GXD_ISResultStructure_View i, GXD_Specimen s where s._Specimen_key = i._Specimen_key and s._Assay_key = ";
                         orderBy = "i.sequenceNum";
                           {
                             Label = LookupLabel;

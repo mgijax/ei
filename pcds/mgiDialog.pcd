@@ -989,7 +989,7 @@ Module: mgiDialog
                           {
                             ADClipboard = ADClipboard : mgiLookup;
                             Group: User
-                              cmd = "select distinct _Structure_key, dbName from GXD_ISResultStructure_View where _Specimen_key = ";
+                              cmd = "select distinct _Structure_key, dbName, sequenceNum from GXD_ISResultStructure_View where _Specimen_key = ";
                               orderBy = sequenceNum;
                                 {
                                   Label = LookupLabel;

@@ -403,7 +403,6 @@ rules:
 	  refsKey : string;
 	  refsType : string;
 	  originalRefs : integer := 0;
-	  transRefs : integer := 0;
 	  mixedRefs : integer := 0;
 	  isMixed : integer := 0;
 
@@ -429,10 +428,6 @@ rules:
 	        originalRefs := originalRefs + 1;
 	      end if;
 
-	      if (refsType = "Transmission") then
-	        transRefs := transRefs + 1;
-	      end if;
-
 	      if (refsType = "Mixed") then
 	        mixedRefs := mixedRefs + 1;
 	      end if;
@@ -446,14 +441,6 @@ rules:
 	  if (originalRefs != 1) then
             StatusReport.source_widget := top;
             StatusReport.message := "At most one Original Reference is required.";
-            send(StatusReport);
-            return;
-	  end if;
-
-	  -- Transmission; must have at most one reference
-	  if (transRefs > 1) then
-            StatusReport.source_widget := top;
-            StatusReport.message := "At most one Transmission Reference is allowed.";
             send(StatusReport);
             return;
 	  end if;
@@ -681,9 +668,7 @@ rules:
 	  refsKey : string;
 	  refsType : string;
 	  originalRefs : integer := 0;
-	  transRefs1 : integer := 0;
-	  transRefs2 : integer := 0;
-	  mixedRefs : integer := 0;
+	  transRefs : integer := 0;
 
 	  modifyCache := false;
 	  modifyCacheCre := false;
@@ -701,24 +686,15 @@ rules:
 	    refsKey := mgi_tblGetCell(refTable, row, refTable.refsKey);
 	    refsType := mgi_tblGetCell(refTable, row, refTable.refsType);
 
-	    -- any change to the mixed reference will be verified
-	    if (refsType = "Mixed" and editMode != TBL_ROW_EMPTY and editMode != TBL_ROW_NOCHG) then
-              mixedRefs := mixedRefs + 1;
-	    end if;
-
 	    -- any change to the transmission reference will be verified
 	    if (refsType = "Transmission" and editMode != TBL_ROW_EMPTY and editMode != TBL_ROW_NOCHG) then
-              transRefs1 := transRefs1 + 1;
+              transRefs := transRefs + 1;
 	    end if;
 
 	    if (refsKey != "NULL" and refsKey.length > 0 and editMode != TBL_ROW_DELETE) then
 
 	      if (refsType = "Original") then
 	        originalRefs := originalRefs + 1;
-	      end if;
-
-	      if (refsType = "Transmission") then
-	        transRefs2 := transRefs2 + 1;
 	      end if;
 
 	    end if;
@@ -729,14 +705,6 @@ rules:
 	  if (originalRefs != 1) then
             StatusReport.source_widget := top;
             StatusReport.message := "At most one Original Reference is required.";
-            send(StatusReport);
-	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
-            return;
-	  end if;
-
-	  if (transRefs2 > 1) then
-            StatusReport.source_widget := top;
-            StatusReport.message := "At most one Transmission Reference is allowed.";
             send(StatusReport);
 	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
             return;
@@ -798,7 +766,7 @@ rules:
 
 	  -- Confirm changes to Allele Germline Transmission
 
-	  if (transRefs1 > 0 or top->AlleleTransmissionMenu.menuHistory.modified) then
+	  if (transRefs > 0 or top->AlleleTransmissionMenu.menuHistory.modified) then
 
 	    top->VerifyAlleleGermlineTransmission.doModify := false;
             top->VerifyAlleleGermlineTransmission.managed := true;
@@ -810,26 +778,6 @@ rules:
             end while;
  
             if (not top->VerifyAlleleGermlineTransmission.doModify) then
-	      return;
-	    end if;
-	  end if;
-
-	  -- end Confirm changes
-
-	  -- Confirm changes to Allele Mixed
-
-	  if (mixedRefs > 0 or top->MixedMenu.menuHistory.modified) then
-
-	    top->VerifyAlleleMixed.doModify := false;
-            top->VerifyAlleleMixed.managed := true;
- 
-            -- Keep busy while user verifies the modification is okay
- 
-            while (top->VerifyAlleleMixed.managed = true) do
-              (void) keep_busy();
-            end while;
- 
-            if (not top->VerifyAlleleMixed.doModify) then
 	      return;
 	    end if;
 	  end if;
@@ -1192,7 +1140,6 @@ rules:
 	             ",_Refs_key = " + refsKey +
 	             ",_Status_key = " + statusKey;
 	      cmd := cmd + mgi_DBupdate(ALL_MARKER_ASSOC, key, set);
-	      printWarning := true;
 
 	    elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
 	      cmd := cmd + mgi_DBdelete(ALL_MARKER_ASSOC, key);
@@ -1210,7 +1157,7 @@ rules:
 
 	  if (printWarning) then
             StatusReport.source_widget := top.root;
-            StatusReport.message := "A Marker has been changed or deleted.\nPlease verify the Allele Symbol.";
+            StatusReport.message := "A Marker has been deleted.\nPlease verify the Allele Symbol.";
             send(StatusReport);
           end if;
 
@@ -1939,11 +1886,11 @@ rules:
 	  (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
-	  Query.select := "select distinct a._Allele_key, a.symbol, a.statusNum\n" + 
+	  Query.select := "(select distinct a._Allele_key, a.symbol, a.statusNum\n" + 
 	                  from + "\n" + 
 			  where + 
 			  union + 
-			  "\norder by a.statusNum, a.symbol\n";
+			  ")\norder by a.statusNum, a.symbol\n";
 	  Query.table := ALL_ALLELE;
 	  send(Query, 0);
           (void) reset_cursor(top);
@@ -2359,8 +2306,6 @@ rules:
 	  -- Search for value in the database
 
 	  select := allele_sql_14 + mgi_DBprstr(value) + "\n";
-
-	  (void) mgi_writeLog(select);
 
 	  dbproc : opaque := mgi_dbexec(select);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do

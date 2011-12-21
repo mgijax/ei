@@ -802,7 +802,7 @@ rules:
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
-	  Query.select := select + from + "\n" + where + unionalias + "\norder by g.antibodyName\n";
+	  Query.select := "(" + select + from + "\n" + where + unionalias + ")\norder by g.antibodyName\n";
 	  Query.table := GXD_ANTIBODY;
 	  send(Query, 0);
 	  (void) reset_cursor(top);

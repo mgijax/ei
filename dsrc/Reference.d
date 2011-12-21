@@ -885,7 +885,7 @@ rules:
 	        top->mgiJournal->Verify->text.value := mgi_getstr(dbproc, 9);
 	        top->Volume->text.value    := mgi_getstr(dbproc, 10);
 	        top->Issue->text.value     := mgi_getstr(dbproc, 11);
-	        top->mgiDate->Date->text.value := mgi_getstr(dbproc, 12);
+	        top->mgiDate->Date->text.value      := mgi_getstr(dbproc, 12);
 	        top->Page->text.value      := mgi_getstr(dbproc, 14);
 	        top->Abstract->text.value  := mgi_getstr(dbproc, 16);
 		(void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byUser, mgi_getstr(dbproc, 27));
@@ -1093,10 +1093,7 @@ rules:
 	  end while;
 	  (void) mgi_dbclose(dbproc);
 
-	  -- STORED PROCEDURE
 	  -- Now fill in used/not used values
-	  return;
-
 	  row := 0;
 	  while (row < mgi_tblNumRows(statusTable)) do
 	    -- has this reference been used?

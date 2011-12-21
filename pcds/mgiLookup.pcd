@@ -273,7 +273,7 @@ Module: mgiLookup
             vip_x = 90;
             vip_y = 1515;
           Group: User
-            cmd = "select c._CellLine_key, c.cellLine || ';' || s.strain as cellLine\nfrom ALL_CellLine c, PRB_Strain s\nwhere c.isMutant = false and c._CellLine_Type_key = 3982968\nand c._Strain_key = s._Strain_key\nunion\nselect c._CellLine_key, c.cellLine || ';' || s.strain || ';' || vt.term as cellLine\nfrom ALL_CellLine c, PRB_Strain s, VOC_Term vt\nwhere c.isMutant = false and c._CellLine_Type_key != 3982968\nand c._Strain_key = s._Strain_key\nand c._CellLine_Type_key = vt._Term_key\norder by cellLine\n";
+            cmd = "select c._CellLine_key, c.cellLine || ';' || s.strain as cellLine\nfrom ALL_CellLine c, PRB_Strain s\nwhere c.isMutant is false and c._CellLine_Type_key = 3982968\nand c._Strain_key = s._Strain_key\nunion\nselect c._CellLine_key, c.cellLine || ';' || s.strain || ';' || vt.term as cellLine\nfrom ALL_CellLine c, PRB_Strain s, VOC_Term vt\nwhere c.isMutant is false and c._CellLine_Type_key != 3982968\nand c._Strain_key = s._Strain_key\nand c._CellLine_Type_key = vt._Term_key\norder by cellLine\n";
               {
                 Label = LookupLabel : mgiLookup;
                 Group: Widget
@@ -410,7 +410,7 @@ Module: mgiLookup
             vip_x = 90;
             vip_y = 965;
           Group: User
-            cmd = "select distinct g._Genotype_key, g.dbName  || ',' || ap.allele1 || ',' || ap.allele2, g.mgiID \nfrom GXD_Genotype_View g, GXD_Specimen s, GXD_AllelePair_View ap \nwhere s._Genotype_key = g._Genotype_key and g._Genotype_key *= ap._Genotype_key and s._Assay_key =";
+            cmd = "select distinct g._Genotype_key, g.dbName || ',' || ap.allele1 || ',' || ap.allele2, g.mgiID \nfrom GXD_Genotype_View g LEFT OUTER JOIN GXD_AllelePair_View ap on (g._Genotype_key = ap._Genotype_key), GXD_Specimen s \nwhere s._Genotype_key = g._Genotype_key and s._Assay_key =";
               {
                 Label = LookupLabel : mgiLookup;
               }
@@ -428,7 +428,7 @@ Module: mgiLookup
             vip_x = 90;
             vip_y = 910;
           Group: User
-            cmd = "select distinct g._Genotype_key, g.dbName || ',' || ap.allele1 || ',' || ap.allele2, g.mgiID \nfrom GXD_Genotype_View g, GXD_GelLane s, GXD_AllelePair_View ap \nwhere s._Genotype_key = g._Genotype_key and g._Genotype_key *= ap._Genotype_key and s._Assay_key =";
+            cmd = "select distinct g._Genotype_key, g.dbName || ',' || ap.allele1 || ',' || ap.allele2, g.mgiID \nfrom GXD_Genotype_View g LEFT OUTER JOIN GXD_AllelePair_View ap on (g._Genotype_key = ap._Genotype_key), GXD_GelLane s \nwhere s._Genotype_key = g._Genotype_key and s._Assay_key =";
               {
                 Label = LookupLabel : mgiLookup;
               }

@@ -434,7 +434,6 @@ rules:
 	      top->Region->text.value         := mgi_getstr(dbproc, 4);
 	      top->Note->text.value           := mgi_getstr(dbproc, 5);
 	      top->SourceForm->SourceID->text.value := mgi_getstr(dbproc, 2);
-
 	      (void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 22));
 	      (void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 8));
 	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 23));

@@ -507,8 +507,13 @@ char *mgi_sql1(char *cmd)
   /* execute search */
   res = PQexec(conn, cmd);
  
-  /* returns data from row = 0, column = 0 */
-  strcpy(buf, PQgetvalue(res, row, column));
+  /* if number of rows > 0... */
+
+  if (PQntuples(res) > 0)
+  {
+    /* returns data from row = 0, column = 0 */
+    strcpy(buf, PQgetvalue(res, row, column));
+  }
 
   /* close the portal....to avoid memory leaks */
   PQclear(res);
