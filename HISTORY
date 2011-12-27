@@ -1,5 +1,6 @@
 ## Remember to update Configuration:CVS_TAG with most recen tag
 
+TAG: ei-4-4-2-23
 TAG: ei-4-4-2-22
 TAG: ei-4-4-2-21
 TAG: ei-4-4-2-20
@@ -11,6 +12,7 @@ CHANGES:
 Allele.d
 Antibody.d
 Sequence.d
+3) pcds/GXD.pcd/AntibodyModule/mgiTypeKey = 6
 
 TAG: ei-4-4-2-19
 TAG: ei-4-4-2-18
