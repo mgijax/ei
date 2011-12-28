@@ -1,5 +1,11 @@
 ## Remember to update Configuration:CVS_TAG with most recen tag
 
+TAG: ei-4-4-2-24
+DATE: 12/28/2011
+STAFF: lec
+CHANGES:
+1) Genotype.d/fix "where := "where" + where->substr(6, where.length);"
+
 TAG: ei-4-4-2-23
 TAG: ei-4-4-2-22
 TAG: ei-4-4-2-21

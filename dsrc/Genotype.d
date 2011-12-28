@@ -908,7 +908,7 @@ rules:
 
 	  -- remove beginning "\nand"
           if (where.length > 0) then
-            where := "where" + where->substr(5, where.length);
+            where := "where" + where->substr(6, where.length);
           end if;
 
 	  select := "select distinct g._Genotype_key, " +
