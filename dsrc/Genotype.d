@@ -753,7 +753,6 @@ rules:
 	  select : string;
 	  value : string;
 	  orderBy : string := "\norder by g.strain, ap.allele1";
-	  allele_join : string;
 	  from_allele : boolean := false;
 	  manualSearch : boolean := false;
 
@@ -763,9 +762,41 @@ rules:
 	  -- See if the user has entered any search constraints;
 	  -- If so, then process the user-specified query
 	  --
-
-	  from := "from " + mgi_DBtable(GXD_GENOTYPE_VIEW) + " g";
+	  from := "from " + mgi_DBtable(GXD_GENOTYPE_VIEW) + " g" +
+	  	", " + mgi_DBtable(GXD_ALLELEPAIR_VIEW) + " ap";
 	  where := "";
+
+          SearchAcc.table := accTable;
+          SearchAcc.objectKey := "g." + mgi_DBkey(GXD_GENOTYPE);
+	  SearchAcc.tableID := GXD_GENOTYPE;
+          send(SearchAcc, 0);
+
+	  if (accTable.sqlFrom.length > 0) then
+	    from := from + accTable.sqlFrom;
+	    where := where + accTable.sqlWhere;
+	  end if;
+
+	  QueryModificationHistory.table := top->ModificationHistory->Table;
+	  QueryModificationHistory.tag := "g";
+	  send(QueryModificationHistory, 0);
+
+	  if (top->ModificationHistory->Table.sqlWhere.length > 0) then
+            where := where + top->ModificationHistory->Table.sqlWhere;
+            from:= from+ top->ModificationHistory->Table.sqlFrom;
+	  end if;
+
+	  -- this searches each note individually
+	  i : integer := 1;
+	  while (i <= top->mgiNoteForm.numChildren) do
+	    SearchNoteForm.notew := top->mgiNoteForm;
+	    SearchNoteForm.noteTypeKey := top->mgiNoteForm.child(i)->Note.noteTypeKey;
+	    SearchNoteForm.tableID := MGI_NOTE_GENOTYPE_VIEW;
+            SearchNoteForm.join := "g." + mgi_DBkey(GXD_GENOTYPE);
+	    send(SearchNoteForm, 0);
+	    from := from + top->mgiNoteForm.sqlFrom;
+	    where := where + top->mgiNoteForm.sqlWhere;
+	    i := i + 1;
+	  end while;
 
 	  if (top->EditForm->Strain->StrainID->text.value.length > 0) then
 	    where := where + "\nand g._Strain_key = " + top->EditForm->Strain->StrainID->text.value;
@@ -787,31 +818,31 @@ rules:
           value := mgi_tblGetCell(top->AllelePair->Table, 0, top->AllelePair->Table.markerKey);
 
           if (value.length > 0 and value != "NULL") then
-	    allele_join := allele_join + "\nand ap._Marker_key = " + value;
+	    where := where + "\nand ap._Marker_key = " + value;
 	    from_allele := true;
 	  else
             value := mgi_tblGetCell(top->AllelePair->Table, 0, top->AllelePair->Table.markerSymbol);
             if (value.length > 0) then
-	      allele_join := allele_join + "\nand ap.symbol like " + mgi_DBprstr(value);
+	      where := where + "\nand ap.symbol like " + mgi_DBprstr(value);
 	      from_allele := true;
 	    end if;
 	  end if;
 
           value := mgi_tblGetCell(top->AllelePair->Table, 0, top->AllelePair->Table.markerChr);
           if (value.length > 0) then
-	      allele_join := allele_join + "\nand ap.chromosome = " + mgi_DBprstr(value);
+	      where := where + "\nand ap.chromosome = " + mgi_DBprstr(value);
 	      from_allele := true;
 	  end if;
 
           value := mgi_tblGetCell(top->AllelePair->Table, 0, (integer) top->AllelePair->Table.alleleKey[1]);
 
           if (value.length > 0 and value != "NULL") then
-	    allele_join := allele_join + "\nand (ap._Allele_key_1 = " + value + " or ap._Allele_key_2 = " + value + ")";
+	    where := where + "\nand (ap._Allele_key_1 = " + value + " or ap._Allele_key_2 = " + value + ")";
 	    from_allele := true;
 	  else
             value := mgi_tblGetCell(top->AllelePair->Table, 0, (integer) top->AllelePair->Table.alleleSymbol[1]);
             if (value.length > 0) then
-	      allele_join := allele_join + "\nand (ap.allele1 like " + mgi_DBprstr(value) + " or ap.allele2 like " + mgi_DBprstr(value) + ")";
+	      where := where + "\nand (ap.allele1 like " + mgi_DBprstr(value) + " or ap.allele2 like " + mgi_DBprstr(value) + ")";
 	      from_allele := true;
 	    end if;
 	  end if;
@@ -819,25 +850,25 @@ rules:
           value := mgi_tblGetCell(top->AllelePair->Table, 0, (integer) top->AllelePair->Table.alleleKey[2]);
 
           if (value.length > 0 and value != "NULL") then
-	    allele_join := allele_join + "\nand (ap._Allele_key_2 = " + value + " or ap._Allele_key_1 = " + value + ")";
+	    where := where + "\nand (ap._Allele_key_2 = " + value + " or ap._Allele_key_1 = " + value + ")";
 	    from_allele := true;
 	  else
             value := mgi_tblGetCell(top->AllelePair->Table, 0, (integer) top->AllelePair->Table.alleleSymbol[2]);
             if (value.length > 0) then
-	      allele_join := allele_join + "\nand (ap.allele2 like " + mgi_DBprstr(value) + " or ap.allele1 like " + mgi_DBprstr(value) + ")";
+	      where := where + "\nand (ap.allele2 like " + mgi_DBprstr(value) + " or ap.allele1 like " + mgi_DBprstr(value) + ")";
 	      from_allele := true;
 	    end if;
 	  end if;
 
           value := mgi_tblGetCell(top->AllelePair->Table, 0, top->AllelePair->Table.stateKey);
 	  if (value.length > 0 and value != "%") then
-	      allele_join := allele_join + "\nand ap._PairState_key = " + value;
+	      where := where + "\nand ap._PairState_key = " + value;
 	      from_allele := true;
 	  end if;
 
           value := mgi_tblGetCell(top->AllelePair->Table, 0, top->AllelePair->Table.compoundKey);
 	  if (value.length > 0 and value != "%") then
-	      allele_join := allele_join + "\nand ap._Compound_key = " + value;
+	      where := where + "\nand ap._Compound_key = " + value;
 	      from_allele := true;
 	  end if;
 
@@ -847,44 +878,10 @@ rules:
 	  end if;
 
 	  if (from_allele) then
-	    from := from + " INNER JOIN " + mgi_DBtable(GXD_ALLELEPAIR_VIEW) 
-			+ " ap on (g._Genotype_key = ap._Genotype_key " + allele_join + ")";
+	    where := "where g._Genotype_key = ap._Genotype_key" + where;
 	  else
-	    from := from + " LEFT OUTER JOIN " + mgi_DBtable(GXD_ALLELEPAIR_VIEW) 
-			+ " ap on (g._Genotype_key = ap._Genotype_key " + allele_join + ")";
+	    where := "where g._Genotype_key *= ap._Genotype_key" + where;
 	  end if;
-
-          SearchAcc.table := accTable;
-          SearchAcc.objectKey := "g." + mgi_DBkey(GXD_GENOTYPE);
-	  SearchAcc.tableID := GXD_GENOTYPE;
-          send(SearchAcc, 0);
-
-	  if (accTable.sqlFrom.length > 0) then
-	    from := from + accTable.sqlFrom;
-	    where := where + accTable.sqlWhere;
-	  end if;
-
-	  QueryModificationHistory.table := top->ModificationHistory->Table;
-	  QueryModificationHistory.tag := "g";
-	  send(QueryModificationHistory, 0);
-
-	  if (top->ModificationHistory->Table.sqlWhere.length > 0) then
-            where := where + top->ModificationHistory->Table.sqlWhere;
-            from := from+ top->ModificationHistory->Table.sqlFrom;
-	  end if;
-
-	  -- this searches each note individually
-	  i : integer := 1;
-	  while (i <= top->mgiNoteForm.numChildren) do
-	    SearchNoteForm.notew := top->mgiNoteForm;
-	    SearchNoteForm.noteTypeKey := top->mgiNoteForm.child(i)->Note.noteTypeKey;
-	    SearchNoteForm.tableID := MGI_NOTE_GENOTYPE_VIEW;
-            SearchNoteForm.join := "g." + mgi_DBkey(GXD_GENOTYPE);
-	    send(SearchNoteForm, 0);
-	    from := from + top->mgiNoteForm.sqlFrom;
-	    where := where + top->mgiNoteForm.sqlWhere;
-	    i := i + 1;
-	  end while;
 
 	  if (not manualSearch and mgi->AssayModule != nil and assayKey.length = 0) then
 	    assayKey := mgi->AssayModule->ID->text.value;
@@ -894,10 +891,10 @@ rules:
 
 	  if (assayKey.length > 0) then
 	    from := "from " + mgi_DBtable(GXD_GENOTYPE_VIEW) + " g" +
-	  	  " LEFT OUTER JOIN " + mgi_DBtable(GXD_ALLELEPAIR_VIEW) 
-			+ " ap on (g._Genotype_key = ap._Genotype_key)";
+	  	  ", " + mgi_DBtable(GXD_ALLELEPAIR_VIEW) + " ap";
 	    where := "where g._Genotype_key = a._Genotype_key " +
-		  "and a._Assay_key = " + assayKey;
+		  "and a._Assay_key = " + assayKey + 
+		  " and g._Genotype_key *= ap._Genotype_key";
 
 	    if (mgi->AssayModule->InSituForm.managed) then
 	      from := from + "," + mgi_DBtable(GXD_SPECIMEN) + " a";
@@ -905,11 +902,6 @@ rules:
 	      from := from + "," + mgi_DBtable(GXD_GELLANE) + " a";
 	    end if;
 	  end if;
-
-	  -- remove beginning "\nand"
-          if (where.length > 0) then
-            where := "where" + where->substr(6, where.length);
-          end if;
 
 	  select := "select distinct g._Genotype_key, " +
 	     "g.strain || ',' || ap.allele1 || ',' || ap.allele2, g.strain, ap.allele1\n" + 
@@ -939,6 +931,7 @@ rules:
 
 	  (void) reset_cursor(top);
 	end does;
+
 
 --
 -- SelectGenotypeRecord
