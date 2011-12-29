@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Dec 14 09:59:11 2011";
+      lastWritten = "Thu Dec 29 07:57:05 2011";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -8708,7 +8708,7 @@ Shift<Key>Tab: prev-tab-group()
                                               ReferenceTypePulldown = OptionPulldown : mgiOption;
                                               Group: User
                                                 tableForm = Reference;
-                                                sql = "select _RefAssocType_key, assocType, allowOnlyOne from MGI_RefType_Allele_View\n where assocType not in\n('Original', 'Transmission', 'Molecular', 'Indexed')\norder by assocType\n";
+                                                sql = "select _RefAssocType_key, assocType, allowOnlyOne from MGI_RefType_Allele_View\norder by assocType\n";
                                             }
                                       }
                                       {
@@ -16125,6 +16125,7 @@ Shift<Key>Tab: prev-tab-group()
                                                       topOffset = 5;
                                                     Group: User
                                                       requiredColumns = 2;
+                                                      mgiTypeKey = 2;
                                                   }
                                                   {
                                                     AddRow = TablePush : mgiTable;
