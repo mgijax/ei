@@ -764,7 +764,7 @@ rules:
 	  --
 	  from := "from " + mgi_DBtable(GXD_GENOTYPE_VIEW) + " g" +
 	  	", " + mgi_DBtable(GXD_ALLELEPAIR_VIEW) + " ap";
-	  where := "";
+	  where := "where ";
 
           SearchAcc.table := accTable;
           SearchAcc.objectKey := "g." + mgi_DBkey(GXD_GENOTYPE);
@@ -878,9 +878,9 @@ rules:
 	  end if;
 
 	  if (from_allele) then
-	    where := "where g._Genotype_key = ap._Genotype_key" + where;
+	    where := where + "g._Genotype_key = ap._Genotype_key" + where;
 	  else
-	    where := "where g._Genotype_key *= ap._Genotype_key" + where;
+	    where := where + "g._Genotype_key *= ap._Genotype_key" + where;
 	  end if;
 
 	  if (not manualSearch and mgi->AssayModule != nil and assayKey.length = 0) then
