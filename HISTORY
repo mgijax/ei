@@ -1,12 +1,13 @@
 ## Remember to update Configuration:CVS_TAG with most recen tag
 
+TAG: ei-4-4-2-29
 TAG: ei-4-4-2-28
 DATE: 01/04/2012
 STAFF: lec
 CHANGES:
 1) TR10942/Allele.d/replace default for allele reference type menu
+2) fix RefTypeTableLib.d problem from  ei-4-4-2-26
 
-TAG: ei-4-4-2-26
 DATE: 12/29/2011
 TAG: ei-4-4-2-27
 DATE: 12/29/2011

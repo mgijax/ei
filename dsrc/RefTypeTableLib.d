@@ -13,6 +13,9 @@
 --
 -- History:
 --
+-- lec  01/05/2012
+--	- fix InitRefTypeTable/select/where/order
+--
 -- lec	12/14/2011
 --	- InitRefTypeTable; modify select query
 --
@@ -105,22 +108,21 @@ rules:
 	  tableID : integer := InitRefTypeTable.tableID;
 
 	  cmd : string;
+	  where : string := "";
 	  orderBy : string;
 	  row : integer := 0;
 
 	  ClearTable.table := table;
 	  send(ClearTable, 0);
 
-	  --if (tableID = MGI_REFTYPE_ALLELE_VIEW) then
-	  --   orderBy := "\norder by _RefAssocType_key";
-	  --else
+	  if (tableID = MGI_REFTYPE_ALLELE_VIEW) then
+	     where := " where assocType in ('Original', 'Transmission', 'Molecular', 'Indexed') ";
+	  end if;
+
 	  orderBy := "\norder by allowOnlyOne desc, _RefAssocType_key";
-	  --end if;
 
 	  cmd := "select _RefAssocType_key, assocType, allowOnlyOne, _MGIType_key from " + 
-		  mgi_DBtable(tableID) + 
-		  " where assocType in ('Original', 'Transmission', 'Molecular', 'Indexed') " +
-		  orderBy;
+		  mgi_DBtable(tableID) + where + orderBy;
 
 	  dbproc : opaque := mgi_dbexec(cmd);
 
