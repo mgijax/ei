@@ -28,6 +28,9 @@
 --
 -- History
 --
+-- lec  01/30/2012
+--	- TR10969/dsrc/Assay.d/add search by Gel Row Note
+--
 -- lec  02/08/2011
 --	- TR10583/LoadList.loadsmall
 --	- don't run PythonImageCache if > python_image_cache
@@ -2093,6 +2096,7 @@ rules:
 	  from_antibody : boolean := false;
 	  from_specimen : boolean := false;
 	  from_gel : boolean := false;
+	  from_gelbandrow : boolean := false;
 	  table : widget;
 	  value : string;
 	  value2 : string;
@@ -2328,6 +2332,15 @@ rules:
 	      from_gel := true;
 	    end if;
 
+	    table := top->GelForm->GelRow->Table;
+
+	    value := mgi_tblGetCell(table, 0, table.rowNotes);
+	    if (value.length > 0) then
+	      where := where + " and ggr.rowNote like " + mgi_DBprstr(value);
+	      from_gel := true;
+	      from_gelbandrow := true;
+	    end if;
+
 	  end if;
 
 	  if (from_note) then
@@ -2361,6 +2374,13 @@ rules:
 	  if (from_gel) then
 	    from := from + "," + mgi_DBtable(GXD_GELLANE) + " gg";
             where := where + " and gg._Assay_key = g._Assay_key";
+	  end if;
+
+	  if (from_gelbandrow) then
+	    from := from + "," + mgi_DBtable(GXD_GELBAND) + " ggb";
+	    from := from + "," + mgi_DBtable(GXD_GELROW) + " ggr";
+            where := where + " and gg._GelLane_key = ggb._GelLane_key";
+            where := where + " and ggb._GelRow_key = ggr._GelRow_key";
 	  end if;
 
           if (where.length > 0) then

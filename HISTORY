@@ -1,5 +1,11 @@
 ## Remember to update Configuration:CVS_TAG with most recen tag
 
+TAG: ei-4-4-2-30
+DATE: 01/30/2012
+STAFF: lec
+CHANGES:
+1) TR10969/dsrc/Assay.d/add search by Gel Row Note
+
 TAG: ei-4-4-2-29
 TAG: ei-4-4-2-28
 DATE: 01/04/2012
