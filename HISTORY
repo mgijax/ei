@@ -1,5 +1,11 @@
 ## Remember to update Configuration:CVS_TAG with most recen tag
 
+TAG: ei-4-4-2-31
+DATE: 01/31/2012
+STAFF: lec
+CHANGES:
+1) TR10977/StrainAlleleTypeTableLib.d/LoadStrainAlleleTypeTable/fix chromosome order
+
 TAG: ei-4-4-2-30
 DATE: 01/30/2012
 STAFF: lec
