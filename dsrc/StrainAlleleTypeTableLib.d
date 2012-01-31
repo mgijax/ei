@@ -13,6 +13,9 @@
 --
 -- History:
 --
+-- lec	01/31/2012
+--	- TR10977/LoadStrainAlleleTypeTable/chromosome order
+--
 -- lec  09/22/2009
 --	- TR 9851; gene trap less filling; allow null markers
 --
@@ -137,14 +140,14 @@ rules:
 
           cmd := "(select _StrainMarker_key, _Marker_key, _Allele_key, _Qualifier_key, " +
               "symbol, chromosome, alleleSymbol, qualifier, " +
-              "chromosome as chrorder " +
+              "convert(integer, chromosome) as chrorder " +
               "from " + mgi_DBtable(tableID) +
               " where " + mgi_DBkey(STRAIN) + " = " + objectKey +
               "\nand chromosome not in ('X', 'Y', 'MT', 'UN', 'XY') " +
               "union " +
               "select _StrainMarker_key, _Marker_key, _Allele_key, _Qualifier_key, " +
               "symbol, chromosome, alleleSymbol, qualifier, " +
-              "'99' as chrorder " +
+              "99 as chrorder " +
               "from " + mgi_DBtable(tableID) +
               " where " + mgi_DBkey(STRAIN) + " = " + objectKey +
               "\nand chromosome in ('X', 'Y', 'MT', 'UN', 'XY')) " +
