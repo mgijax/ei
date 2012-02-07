@@ -162,7 +162,7 @@ rules:
 
 	      (void) mgi_tblSetCell(table, row, table.primaryKey, mgi_getstr(dbproc, 1));
 
-	      (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 3));
+	      (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 2));
 	      (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 5));
 	      (void) mgi_tblSetCell(table, row, table.markerChr, mgi_getstr(dbproc, 6));
 
