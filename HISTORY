@@ -1,5 +1,19 @@
 ## Remember to update Configuration:CVS_TAG with most recen tag
 
+TAG: ei-4-4-2-35
+DATE: 02/15/2012
+STAFF: lec
+CHANGES:
+1) TR10955/postgres cleanup
+include/mgdsql.h
+include/mgisql.h
+dsrc/Genotype.d
+dsrc/Verify.d
+dsrc/Marker.d
+dsrc/Lib.d
+
+TAG: ei-4-4-2-33
+TAG: ei-4-4-2-32
 TAG: ei-4-4-2-34
 DATE: 02/09/2012
 STAFF: lec
