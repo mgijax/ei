@@ -14,6 +14,9 @@
  *
  * History:
  *
+ * lec 02/15/2012
+ *	- TR10955/postgres cleanup/mgi_DBrecordCount
+ *
  * lec 01/27/2011
  *	- TR10556;mgi_DBprnotestr;skip non-printable characters
  *
@@ -131,6 +134,7 @@
 */
 
 #include <mgilib.h>
+#include <mgisql.h>
 
 char *global_application;     /* Set in Application dModule; holds main application value */
 char *global_version;         /* Set in Application dModule; holds main application version value */
@@ -486,7 +490,7 @@ char *mgi_DBrecordCount(int table)
   switch (table)
   {
     default:
-  	    sprintf(cmd, "exec MGI_getRowCount %s", mgi_DBtable(table));
+  	    sprintf(cmd, "%s '%s'", mgilib_sql_1, mgi_DBtable(table));
 	    break;
   }
 
