@@ -7,7 +7,6 @@
  */
 
 /* DynamicLib.d : no sql */
-/* Lib.d : no sql */
 /* List.d : no sql */
 /* PythonLib.d : no sql */
 /* Report.d : no sql */
@@ -58,6 +57,10 @@
 #define evidenceproperty_sql_2b " where "
 #define evidenceproperty_sql_2c " = "
 #define evidenceproperty_sql_2d " order by stanza, sequenceNum"
+
+/* Lib.d */
+
+#define lib_sql_1 "select maxNumericPart from ACC_AccessionMax where prefixPart = "
 
 /* MGILib.d */
 

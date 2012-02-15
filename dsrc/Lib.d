@@ -7,6 +7,9 @@
 --
 -- History
 --
+-- lec 02/15/2012
+--	- TR10955/postgres cleanup/NextJnum
+--
 -- lec 03/04/2010
 --	- TR 10101/ClearOption/make "Deleted" Allele Status = red
 --
@@ -62,6 +65,7 @@
 dmodule Lib is
 
 #include <mgilib.h>
+#include <mgisql.h>
 #include <tables.h>
 #include <teleuse/teleuse.h>
 
@@ -594,7 +598,7 @@ rules:
         NextJnum does
 	  top : widget := NextJnum.source_widget.root;
 
-          top->NextJnum->text.value := mgi_sp("exec ACC_findMax 'J:'");
+          top->NextJnum->text.value := mgi_sql1(lib_sql_1 + "'J:'");
         end does;
  
 --
