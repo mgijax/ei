@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- 02/15/2012	lec
+--	- TR10955/postgres cleanup/genotype_sql_2
+--
 -- 12/19/2011	lec
 --	- changed "*=" to INNER/LEFT OUTER JOIN
 --
@@ -913,7 +916,7 @@ rules:
           value := mgi_tblGetCell(top->Reference->Table, 0, top->Reference->Table.refsKey);
           if (value.length > 0) then
 	    Query.source_widget := top;
-	    Query.select := genotype_sql_2 + value + "\n";
+	    Query.select := genotype_sql_2a + value + genotype_sql_2b + value + genotype_sql_2c;
 	    Query.table := (integer) NOTSPECIFIED;
 	    send(Query, 0);
 	  elsif (assayKey.length > 0) then

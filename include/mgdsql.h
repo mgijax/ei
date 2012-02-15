@@ -136,7 +136,21 @@ and a._LogicalDB_key = "
 
 /* Genotype.d */
 
-#define genotype_sql_2 "exec MGI_searchGenotypeByRef "
+#define genotype_sql_2a "(select distinct v._Genotype_key, g.strain + ',' + ap.allele1 + ',' + ap.allele2 as strain \
+from GXD_Expression v, GXD_Genotype_View g \
+LEFT OUTER JOIN GXD_AllelePair_View ap on (g._Genotype_key = ap._Genotype_key) \
+where v._Refs_key = "
+#define genotype_sql_2b "\nand v._Genotype_key = g._Genotype_key \
+union \
+select distinct t._Object_key, g.strain + ',' + ap.allele1 + ',' + ap.allele2 as strain \
+from VOC_Evidence v, VOC_Annot_View t, GXD_Genotype_View g \
+LEFT OUTER JOIN GXD_AllelePair_View ap on (g._Genotype_key = ap._Genotype_key) \
+where v._Refs_key = "
+#define genotype_sql_2c "\nand v._Annot_key = t._Annot_key \
+and t._MGIType_key = 12 \
+and t._Object_key = g._Genotype_key \
+) order by strain"
+
 #define genotype_sql_3 "select * from GXD_Genotype_View where _Genotype_key = "
 #define genotype_sql_4a "\nselect * from GXD_AllelePair_View where _Genotype_key = "
 #define genotype_sql_4b "\norder by sequenceNum\n"
