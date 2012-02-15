@@ -2901,8 +2901,7 @@ Boolean mgi_DBisAnchorMarker(char *key)
   char cmd[TEXTBUFSIZ];
 
   memset(cmd, '\0', sizeof(cmd));
-  sprintf(cmd, "exec MRK_isAnchor %s", key);
-
+  sprintf(cmd, "%s %s", mgilib_sql_2, key);
   return ((strcmp(mgi_sql1(cmd), "1") == 0) ? True : False);
 }
 

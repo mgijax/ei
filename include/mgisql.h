@@ -18,6 +18,8 @@ from sysobjects o, sysindexes i \
 where o.id = i.id \
 and o.name ="
 
+#define mgilib_sql_2 "select count(*) from MRK_Anchors where _Marker_key ="
+
 /* SQL.d */
 
 #define sql_sql_1 "select @@error"
@@ -251,5 +253,10 @@ from MGI_Organism_Marker_View where commonName like "
 #define verify_tissue_sql_2 "select _Tissue_key from PRB_Tissue where tissue like "
 
 #define verify_user_sql_1 "select _User_key, login from MGI_User where login like "
+
+#define verify_vocabqualifier_sql_1 "select 1 from DAG_Node d \
+where d._DAG_key = 4 \
+and d._Label_key = 3 \
+and d._Object_key ="
 
 #endif

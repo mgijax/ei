@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- 02/15/2012	lec
+--	- TR10955/postgres cleanup/verify_vocabqualifier_sql_1
+--
 -- 10/26/2011
 --	- VerifyChromosome; removed unnecessary validation
 --	- VerifyDate; removed unnecessary validation
@@ -3667,7 +3670,7 @@ rules:
 	  if (top->VocAnnotTypeMenu.menuHistory.defaultValue = "1002") then
 	    termKey := mgi_tblGetCell(table, row, table.termKey);
 	    if (termKey.length > 0 and termKey != "NULL") then
-	      isHeader := mgi_sp("exec VOC_isMPHeader " + mgi_tblGetCell(table, row, table.termKey));
+	      isHeader := mgi_sql1(verify_vocabqualifier_sql_1 + mgi_tblGetCell(table, row, table.termKey));
 	      if (isHeader = "1") then
 	        (void) mgi_tblSetCell(table, row, table.qualifierKey, MP_NORM_QUALIFIER_KEY);
 	        (void) mgi_tblSetCell(table, row, table.qualifier, MP_NORM_QUALIFIER);
@@ -3831,7 +3834,7 @@ rules:
 
 	      if (top->VocAnnotTypeMenu != nil) then
 	        if (top->VocAnnotTypeMenu.menuHistory.defaultValue = "1002") then
-	          isHeader := mgi_sp("exec VOC_isMPHeader " + mgi_tblGetCell(sourceWidget, row, sourceWidget.termKey));
+	          isHeader := mgi_sql1(verify_vocabqualifier_sql_1 + mgi_tblGetCell(sourceWidget, row, sourceWidget.termKey));
 	          if (isHeader = "1") then
 	            (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifierKey, "2181424");
 	            (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifier, "norm");
