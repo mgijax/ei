@@ -11,6 +11,13 @@
 /* PythonLib.d : no sql */
 /* Report.d : no sql */
 
+/* mgilib.h */
+
+#define mgilib_sql_1 "select convert(char(10),rowcnt(MAX(doampg))) \
+from sysobjects o, sysindexes i \
+where o.id = i.id \
+and o.name ="
+
 /* SQL.d */
 
 #define sql_sql_1 "select @@error"

@@ -116,11 +116,13 @@ rules:
             AddSQL.list->List.sqlSuccessful := true;
 	  end if;
 
+	  --
 	  -- Enclose insert statments within a transaction
 	  -- so that upon any errors the entire transaction is aborted.
 	  -- There may be some cases where enclosing statements within
 	  -- a transaction is not desired.  If this is the case, the
 	  -- calling event can set AddSQL.transaction = false
+	  --
 
 	  if (AddSQL.transaction) then
 	    cmd := "begin transaction\n" + AddSQL.cmd + "\ncommit transaction\n";
@@ -225,7 +227,14 @@ rules:
             return;
           end if;
  
+	  --
 	  -- Execute cmd
+	  --
+	  -- if (global_useAPI then then
+	  --   do API execution
+	  -- else (below)
+	  --   do non-API execution
+	  --
 
 	  newID := "";
 	  dbproc : opaque;
@@ -259,6 +268,10 @@ rules:
 	  end while;
 	  (void) mgi_dbclose(dbproc);
 	  (void) mgi_writeLog("@@transtate:  " + (string) transtate + "\n");
+
+	  --
+	  -- done with non-AP execution
+	  --
 
 	  -- Fatal Errors
 
