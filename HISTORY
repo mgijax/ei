@@ -1,5 +1,11 @@
 ## Remember to update Configuration:CVS_TAG with most recen tag
 
+TAG: ei-4-4-2-37
+DATE: 02/16/2012
+STAFF: lec
+CHANGES:
+1) TR10987/Molecular.d/added Raw Sequence note type
+
 TAG: ei-4-4-2-36
 TAG: ei-4-4-2-35
 DATE: 02/15/2012

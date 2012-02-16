@@ -237,6 +237,12 @@ rules:
 	  InitOptionMenu.option := top->MolDetailForm->SourceForm->ProbeOrganismMenu;
 	  send(InitOptionMenu, 0);
 
+          -- Initialize Notes form
+
+          InitNoteForm.notew := top->MolMarkerForm->mgiNoteForm;
+          InitNoteForm.tableID := MGI_NOTETYPE_PROBE_VIEW;
+          send(InitNoteForm, 0);
+
         end does;
  
 --
@@ -713,6 +719,14 @@ rules:
             send(ModifySQL, 0);
 	  end if;
 
+          -- Process Notes
+
+          ProcessNoteForm.notew := top->MolMarkerForm->mgiNoteForm;
+          ProcessNoteForm.tableID := MGI_NOTE;
+          ProcessNoteForm.objectKey := currentMasterKey;
+          send(ProcessNoteForm, 0);
+          cmd := cmd + top->MolMarkerForm->mgiNoteForm.sql;
+
           if (cmd.length > 0 or set.length > 0) then 
             cmd := cmd + mgi_DBupdate(PRB_PROBE, currentMasterKey, set);
 	    cmd := cmd + molecular_sql_4 + currentMasterKey;
@@ -1100,6 +1114,18 @@ rules:
 	    from_ref := true;
 	  end if;
  
+          i : integer := 1;
+          while (i <= top->MolMarkerForm->mgiNoteForm.numChildren) do
+            SearchNoteForm.notew := top->MolMarkerForm->mgiNoteForm;
+            SearchNoteForm.noteTypeKey := top->MolMarkerForm->mgiNoteForm.child(i)->Note.noteTypeKey;
+            SearchNoteForm.tableID := MGI_NOTE_PROBE_VIEW;
+            SearchNoteForm.join := "p." + mgi_DBkey(PRB_PROBE);
+            send(SearchNoteForm, 0);
+            from := from + top->MolMarkerForm->mgiNoteForm.sqlFrom;
+            where := where + top->MolMarkerForm->mgiNoteForm.sqlWhere;
+            i := i + 1;
+          end while;
+
           if (top->MolMasterForm->SegmentTypeMenu.menuHistory.searchValue != "%") then
             where := where + "\nand p._SegmentType_key = " + top->MolMasterForm->SegmentTypeMenu.menuHistory.searchValue;
           end if;
@@ -1567,6 +1593,11 @@ rules:
 	    (void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byDate, prb_creation_date);
 	    (void) mgi_tblSetCell(modTable, modTable.modifiedBy, modTable.byDate, prb_modification_date);
           end if;
+
+          LoadNoteForm.notew := top->MolMarkerForm->mgiNoteForm;
+          LoadNoteForm.tableID := MGI_NOTE_PROBE_VIEW;
+          LoadNoteForm.objectKey := currentMasterKey;
+          send(LoadNoteForm, 0);
 
           LoadAcc.table := accTable;
           LoadAcc.objectKey := currentMasterKey;

@@ -126,6 +126,7 @@ rules:
 	      tableID = MGI_NOTETYPE_MARKER_VIEW or 
 	      tableID = MGI_NOTETYPE_MRKGO_VIEW or 
 	      tableID = MGI_NOTETYPE_NOMEN_VIEW or 
+	      tableID = MGI_NOTETYPE_PROBE_VIEW or 
 	      tableID = MGI_NOTETYPE_SOURCE_VIEW or
 	      tableID = MGI_NOTETYPE_SEQUENCE_VIEW or 
 	      tableID = MGI_NOTETYPE_STRAIN_VIEW or 
@@ -164,6 +165,7 @@ rules:
 	            tableID = MGI_NOTETYPE_MARKER_VIEW or 
 	            tableID = MGI_NOTETYPE_MRKGO_VIEW or 
 		    tableID = MGI_NOTETYPE_NOMEN_VIEW or 
+		    tableID = MGI_NOTETYPE_PROBE_VIEW or 
 		    tableID = MGI_NOTETYPE_SOURCE_VIEW or 
 		    tableID = MGI_NOTETYPE_SEQUENCE_VIEW or 
 		    tableID = MGI_NOTETYPE_STRAIN_VIEW or 
@@ -208,6 +210,7 @@ rules:
 	      tableID = MGI_NOTE_MARKER_VIEW or 
 	      tableID = MGI_NOTE_MRKGO_VIEW or 
 	      tableID = MGI_NOTE_NOMEN_VIEW or 
+	      tableID = MGI_NOTE_PROBE_VIEW or 
 	      tableID = MGI_NOTE_SOURCE_VIEW or 
 	      tableID = MGI_NOTE_SEQUENCE_VIEW or 
 	      tableID = MGI_NOTE_STRAIN_VIEW or 
@@ -239,6 +242,7 @@ rules:
 	          tableID = MGI_NOTE_MARKER_VIEW or 
 	          tableID = MGI_NOTE_MRKGO_VIEW or 
 		  tableID = MGI_NOTE_NOMEN_VIEW or 
+		  tableID = MGI_NOTE_PROBE_VIEW or 
 		  tableID = MGI_NOTE_SOURCE_VIEW or 
 		  tableID = MGI_NOTE_SEQUENCE_VIEW or 
 		  tableID = MGI_NOTE_STRAIN_VIEW or 

@@ -281,6 +281,8 @@ extern char *global_version;
 #define MGI_NOTETYPE_ALLDRIVER_VIEW	659
 #define MGI_REFERENCE_ANTIBODY_VIEW	660
 #define MGI_REFTYPE_ANTIBODY_VIEW	661
+#define	MGI_NOTETYPE_PROBE_VIEW		662
+#define	MGI_NOTE_PROBE_VIEW		663
 
 /* Strains Tables */
 

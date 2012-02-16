@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Feb  1 10:08:28 2012";
+      lastWritten = "Thu Feb 16 10:44:46 2012";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -2595,6 +2595,21 @@ Module: MGD
                                 }
                           }
                     }
+                    {
+                      SearchDialog = SearchDialog : mgiDialog;
+                    }
+                    {
+                      WhichItem = WhichItem : mgiDialog;
+                    }
+                    {
+                      VerifyItemAdd = VerifyItemAdd : mgiDialog;
+                    }
+                    {
+                      WorkingDialog = WorkingDialog : mgiDialog;
+                    }
+                    {
+                      NoteDialog = NoteDialog : mgiDialog;
+                    }
               }
         }
         {
@@ -2886,21 +2901,21 @@ Module: MGD
                 MolNote = Notes : mgiDataTypes;
                 Group: Constraint
                   leftAttachment = attach_form;
-                  rightAttachment = attach_none;
+                  rightAttachment = attach_form;
                   topAttachment = attach_widget;
                   bottomAttachment = attach_form;
                   resizable = true;
-                  topWidget = MolSegNoteMenu;
-                  topOffset = 5;
+                  topWidget = mgiNoteForm;
                   leftOffset = 5;
                   bottomOffset = 2;
+                  rightOffset = 5;
                     {
                       label = XmLabel;
                     }
                     {
                       text = scrolledText;
                       Group: Widget
-                        columns = 90;
+                        columns = 91;
                     }
               }
               {
@@ -3031,6 +3046,17 @@ Module: MGD
                               note = "This clone is derived from a gene that produces alternate transcripts.";
                           }
                     }
+              }
+              {
+                mgiNoteForm = mgiNoteForm : mgiDataTypes;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = MolSegNoteMenu;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  leftOffset = 5;
               }
         }
         {
