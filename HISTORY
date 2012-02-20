@@ -1,5 +1,13 @@
 ## Remember to update Configuration:CVS_TAG with most recen tag
 
+TAG: ei-4-4-2-38
+DATE: 02/20/2012
+STAFF: lec
+CHANGES:
+1) TR10971/Allele/Disease Annotation module bug fix
+
+TAG: ei-4-4-2-36
+TAG: ei-4-4-2-35
 TAG: ei-4-4-2-37
 DATE: 02/16/2012
 STAFF: lec

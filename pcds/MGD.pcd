@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Feb 16 10:44:46 2012";
+      lastWritten = "Mon Feb 20 08:18:33 2012";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -17881,7 +17881,7 @@ Shift<Key>Tab: prev-tab-group()
                                           sql = "select _Term_key, abbreviation from VOC_Term \nwhere _Vocab_key = 84\norder by abbreviation";
                                           tableForm = Annotation;
                                           tableOption = 10;
-                                          tableOptionKey = 5;
+                                          tableOptionKey = 4;
                                       }
                                 }
                                 {
