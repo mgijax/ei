@@ -1,5 +1,11 @@
 ## Remember to update Configuration:CVS_TAG with most recen tag
 
+TAG: ei-4-4-2-39
+DATE: 03/12/2012
+STAFF: lec
+CHANGES:
+1) TR10978/New Image Submission Tool Prototype/Image.d/add x/y/width/height
+
 TAG: ei-4-4-2-38
 DATE: 02/20/2012
 STAFF: lec

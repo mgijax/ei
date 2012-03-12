@@ -72,7 +72,9 @@ where n.noteType = 'Caption' and n._Object_key = "
 #define image_sql_4a "\nselect n._Note_key, n.note from MGI_Note_Image_View n \
 where n.noteType = 'Copyright' and n._Object_key = "
 #define image_sql_4b "\norder by n.sequenceNum\n"
-#define image_sql_5 "\nselect * from IMG_ImagePane where _Image_key = "
+#define image_sql_5 "\nselect _ImagePane_key, paneLabel, \
+convert(varchar(10), x) || ',' || convert(varchar(10), y) || ',' || convert(varchar(10), width) || ',' || convert(varchar(10), height) \
+from IMG_ImagePane where _Image_key = "
 #define image_sql_6a "\nselect a._Object_key, a.accID from IMG_Image_Acc_View a, IMG_Image i \
 where i._Image_key = "
 #define image_sql_6b " and i._ThumbnailImage_key = a._Object_key \

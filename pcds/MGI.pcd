@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Dec 13 13:30:08 2011";
+      lastWritten = "Wed Mar  7 10:46:49 2012";
       copy = false;
       inCreateMenu = true;
         {
@@ -2789,15 +2789,16 @@ Module: MGI
                                         Table = mgiTable;
                                         Group: Widget
                                           xrtTblPixelWidthSeries = "(all 0-1 0)";
-                                          xrtTblCharWidthSeries = "(all 0 1) (all 2 25)";
+                                          xrtTblCharWidthSeries = "(all 0 1) (all 2 25) (all 3 20)";
                                           xrtTblMaxLengthSeries = "(all 3 255)";
-                                          xrtTblColumnLabels = "Mode,IP Key,Label";
-                                          userDefinedAttributes = "imagePaneKey:Int(Int)=\"1\"\npaneLabel:Int(Int)=\"2\"\n";
+                                          xrtTblColumnLabels = "Mode,IP Key,Label,X-Y-Width-Height";
+                                          userDefinedAttributes = "imagePaneKey:Int(Int)=\"1\"\npaneLabel:Int(Int)=\"2\"\nxywidthheight:Int(Int)=\"3\"\n";
                                           xrtTblAlignmentSeries = "(all all alignment_middlebegin)";
                                           xrtTblEditableSeries = "(all 0 False)";
-                                          xrtTblNumColumns = 3;
+                                          xrtTblNumColumns = 4;
                                           xrtTblNumRows = 16;
                                           xrtTblVisibleRows = 7;
+                                          xrtTblTraversableSeries = "(all 0 False) (all 3 False)";
                                             {
                                               label = XtXrtLabel;
                                               Group: Widget

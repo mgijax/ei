@@ -857,7 +857,8 @@ rules:
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      (void) mgi_tblSetCell(table, row, table.imagePaneKey, mgi_getstr(dbproc, 1));
-	      (void) mgi_tblSetCell(table, row, table.paneLabel, mgi_getstr(dbproc, 3));
+	      (void) mgi_tblSetCell(table, row, table.paneLabel, mgi_getstr(dbproc, 2));
+	      (void) mgi_tblSetCell(table, row, table.xywidthheight, mgi_getstr(dbproc, 3));
 	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	      row := row + 1;
 	    end while;
