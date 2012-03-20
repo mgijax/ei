@@ -2,7 +2,7 @@ Module: mgiAnatDictionary
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Dec  1 11:07:42 2011";
+      lastWritten = "Tue Mar 20 12:30:01 2012";
         {
           DictionaryModule = Module : MGI;
           Group: Widget
@@ -126,6 +126,29 @@ Module: mgiAnatDictionary
                                       }
                                 }
                                 {
+                                  structureTextKey = CharText : mgiDataTypes;
+                                  Group: Widget
+                                    sensitive = False;
+                                  Group: Constraint
+                                    leftAttachment = attach_none;
+                                    rightAttachment = attach_form;
+                                    topAttachment = attach_opposite_widget;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    topWidget = ID;
+                                    rightOffset = 5;
+                                      {
+                                        label = XmLabel;
+                                        Group: Widget
+                                          labelString = "Edinburgh Key";
+                                      }
+                                      {
+                                        text = text : mgiDataTypes;
+                                        Group: Widget
+                                          columns = 20;
+                                      }
+                                }
+                                {
                                   structureText = CharText : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
@@ -199,23 +222,11 @@ Module: mgiAnatDictionary
                                     rightOffset = 5;
                                       {
                                         Table = mgiTable;
-                                        Group: Widget
-                                          xrtTblEditableSeries = "(all all False)";
                                             {
                                               label = XtXrtLabel;
                                               Group: Widget
                                                 labelString = "Edinburgh Aliases";
                                             }
-                                      }
-                                      {
-                                        AddRow = TablePush;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                      {
-                                        DeleteRow = TablePush;
-                                        Group: Widget
-                                          managed = False;
                                       }
                                 }
                                 {

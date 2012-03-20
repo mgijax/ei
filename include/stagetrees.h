@@ -173,11 +173,6 @@ DBINT structure_getStructureKey(Structure *structure);
 DBINT structure_getStageKey(Structure *structure);
    /* returns _Stage_key attribute for structure */ 
 
-
-char *structure_getPrintName(Structure *structure);
-   /* returns printName attribute for structure */ 
-
-
 int structure_getStage(Structure *structure);
    /* returns the stage number to which this structure belongs */ 
 
@@ -260,10 +255,6 @@ char *structurename_getName(StructureName *stn);
 
 DBINT structurename_getStructureNameKey(StructureName *stn);
    /* returns StructureName's _StructureName_key attribute */ 
-
-Boolean structurename_getMgiAdded(StructureName *stn);
-   /* returns StructureName's mgiAdded attribute */ 
-   
 
 /* 
  *  #### StageTree Object ####

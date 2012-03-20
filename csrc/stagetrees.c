@@ -1184,12 +1184,6 @@ DBINT structure_getStageKey(Structure *structure)
     return structure->_Stage_key;
 }
 
-char *structure_getPrintName(Structure *structure)
-{
-    return structure->printName;
-}
-
-
 /* defined for TeleUSE's sake.  TeleUSE doesn't like to 
    accept non-opaque types... */
 
@@ -1260,14 +1254,6 @@ int structurename_cmp_proc(XtPointer snp1, XtPointer snp2)
 char *structurename_getName(StructureName *stn)
 {
     return stn->structure;
-}
-
-Boolean structurename_getMgiAdded(StructureName *stn)
-{
-    if (stn->mgiAdded == 1)
-       return True;
-
-    return False;
 }
 
 DBINT structurename_getStructureNameKey(StructureName *stn)

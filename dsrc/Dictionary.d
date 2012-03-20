@@ -20,7 +20,11 @@
 -- History
 --
 -- lec 03/20/2012
---	- TR11005/replace calls to XrtGear with standard Select 
+--	- TR11005
+--	- replace calls to XrtGear with standard Select 
+--	- allow edit of both MGI Aliases & Edinburgh Aliases
+--	- change SelectNode to use QueryList instead of node/hash table
+--	- cleaned up add/update of GXD_StructureName
 --
 -- lec 01/25/2010
 --	- display mgi ids for stage nodes
@@ -111,10 +115,10 @@ devents:
 			       clearStages : boolean := false;
 			       reset : boolean := false;];
 
-        ModifyStructureText :local [field : widget; 
-                                   skvariable : string := "";];
         ModifyAliases :local [table : widget;
-                             addStructureMode : boolean := false;];
+			      isMGIAdded : string := "1";
+			      keyName : string;
+                              addStructureMode : boolean := false;];
 
 	ADVersion1 :local [];
 	ADVersion2 :local [];
@@ -369,7 +373,6 @@ rules:
 
 	  top->ID->text.value := "";
           cmd := ""; 
-          set := "";
 
           -- need to add a new Structure record & its preferred StructureName:
           -- (in one batch).
@@ -390,26 +393,16 @@ rules:
 			    addDialog->inheritSystemMenu.menuHistory.defaultValue + "," +
 			    mgi_DBprstr(addDialog->structureNote->text.value) + ")\n";
 
-          -- StructureName will be created for the preferred name
-          -- if necessary by the ModifyStructureText event.
-          -- ignore MGI added, it can never be modified by the user
-          -- ignore Stage(s) query field.  The stage of a node is never modified once set.
-         
-          -- modify the new Structure and StructureName records, based on
-          -- the state of the dialog.
+          cmd := cmd + mgi_DBinsert(GXD_STRUCTURENAME, "@" + snkeyName) + 
+                            "@" + skeyName + "," +
+			    mgi_DBprstr(addDialog->structureText->text.value) + ",1)\n";
 
-          ModifyStructureText.field := addDialog->structureText->text;
-          -- must not use the current record's id, but the skeyName variable.
-          ModifyStructureText.skvariable := "@" + skeyName;
-          send(ModifyStructureText, 0);
+	  cmd := cmd + "exec GXD_ComputePrintNamesFrom @_Structure_key\n";
 
           ModifyAliases.table := addDialog->mgiAliasTable->Table; 
+          ModifyAliases.keyName := mgi_DBkey(GXD_STRUCTURENAME) + "_Aliases";
           ModifyAliases.addStructureMode := true;
           send(ModifyAliases, 0);
-
-          if (set.length > 0) then
-              cmd := cmd + mgi_DBupdate(GXD_STRUCTURE, skeyName, set);
-          end if;
 
 	  -- Execute the add
 	  -- The new item will be added to the selection list, but we don't
@@ -419,12 +412,11 @@ rules:
           AddSQL.cmd := cmd;
           AddSQL.list := top->QueryList;
 	  AddSQL.selectNewListItem := false;
-          AddSQL.item := "Stage " + (string) current_stagenum + ":" + 
-			 addDialog->structureText->text.value;
+          AddSQL.item := "Stage " + (string) current_stagenum + ":" + addDialog->structureText->text.value;
           AddSQL.key := top->ID->text;
           send(AddSQL, 0);
 
-	  -- okay, now refresh the tree and allow the record to be selected
+	  -- refresh the tree and allow the record to be selected
           if (top->QueryList->List.sqlSuccessful) then
              stagetrees_refresh();
 	     (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
@@ -481,41 +473,6 @@ rules:
         end does;
 
 --
--- ModifyStructureText
---
--- 
--- If structuretext query field has been modified, builds the portion of 
--- a add/modify query that involves the structuretext query field.  
---  
-       ModifyStructureText does
-
-          -- test preferred structure name
-
-          if (ModifyStructureText.field.modified) then
-             if (ModifyStructureText.skvariable = "") then
-               cmd := cmd + "exec GXD_SetPreferredName " + top->ID->text.value + 
-                    "," + mgi_DBprstr(ModifyStructureText.field.value) + 
-		    "," + top->MGIAddedMenu.menuHistory.searchValue + "\n";
-             else
-               cmd := cmd + "exec GXD_SetPreferredName " + 
-                          ModifyStructureText.skvariable + 
-                    "," + mgi_DBprstr(ModifyStructureText.field.value) + 
-		    "," + top->MGIAddedMenu.menuHistory.searchValue + "\n";
-             end if;
-
-             -- check to see if an error code came back, so we can prevent
-             -- executing the rest of the batch
-
-             cmd := cmd + "if @@error != 0 \n" +
-                          "begin \n" +
-                          "   rollback transaction \n" +
-                          "   raiserror 99999 \'Update of preferredName failed \' " +
-                          "    return \n" +
-                          "end \n";
-          end if;
-       end does;
-
---
 -- ModifyAliases
 -- 
 -- If the mgi alias table has been modified, builds the portion of 
@@ -529,25 +486,34 @@ rules:
 -- requires:
 --        ModifyAliases.table is the Alias table that is to be used for input.
 --
+--        ModifyAliases.keyName is the unique name of the SQL primary key
+--
+--        ModifyAliases.isMGIAdded represents the GXD_StructureName.mgiAdded value
+--
 --        ModifyAliases.addStructureMode is false for Modify operations.
 --            (set to true for Add Structure operations).
 --
 
       ModifyAliases does
           table : widget := ModifyAliases.table;
-          row : integer := 0;    
-          editMode : string;  -- edit mode for a row in the table
-          key : string;  -- key of record in alias table
-          structure : string;  -- value of record in alias table
-          keysDeclared : boolean := false;
+          isMGIAdded : string := ModifyAliases.isMGIAdded;
 
           -- key that needs incrementing when adding aliases 
           -- can't be the same as used elsewhere in the batch, so we
           -- append the name of the event.
-          keyName : string := mgi_DBkey(GXD_STRUCTURENAME) + "_Aliases";
+
+	  keyName : string := ModifyAliases.keyName;
+
+          row : integer := 0;    
+          editMode : string; -- edit mode for a row in the table
+          key : string;  -- key of record in alias table
+          structure : string;  -- value of record in alias table
+          keysDeclared : boolean := false;
 
           while (row < mgi_tblNumRows(table)) do
+
               editMode := mgi_tblGetCell(table, row, table.editMode);
+
               if(editMode = TBL_ROW_EMPTY) then
                  break;
               end if;
@@ -568,12 +534,14 @@ rules:
                      cmd := cmd + mgi_DBinsert(GXD_STRUCTURENAME, "@" + keyName) +
                          top->ID->text.value + "," +
                          mgi_DBprstr(structure) + "," +
-                         "1)\n";
+			 isMGIAdded +
+                         ")\n";
                   else -- modify is against the newly-added structure
                      cmd := cmd + mgi_DBinsert(GXD_STRUCTURENAME, "@" + keyName) +
                          "@" + mgi_DBkey(GXD_STRUCTURE) + "," +
                          mgi_DBprstr(structure) + "," +
-                         "1)\n";
+			 isMGIAdded +
+                         ")\n";
                   end if;
 
               elsif (editMode = TBL_ROW_MODIFY and key.length > 0) then
@@ -624,24 +592,26 @@ rules:
 
           (void) busy_cursor(top);
 
-          ModifyStructureText.field := top->structureText->text;
-          send(ModifyStructureText, 0);
-
-          if (top->structureNote->text.modified) then
-              set := set + "structureNote = " + mgi_DBprstr(top->structureNote->text.value) + ",";
-          end if;
-
-          -- ignore MGI added, it can never be modified by the user
+	  --
+	  -- cannot be modified by this method:
+	  --
+	  -- _Parent_key
+	  -- _StructureName_key
+          -- _Stage_key
+	  -- edingburghKey
+	  -- treeDepth
+	  -- topoSort
+	  --
           
-          if (top->printStopMenu.menuHistory.modified and
-	      top->printStopMenu.menuHistory.searchValue != "%") then
-            set := set + "printStop = "  + top->printStopMenu.menuHistory.defaultValue + ",";
-          end if;
-
 	  -- anatomical system
           if (top->ADSystemMenu.menuHistory.modified and
 	      top->ADSystemMenu.menuHistory.searchValue != "%") then
             set := set + "_System_key = "  + top->ADSystemMenu.menuHistory.defaultValue + ",";
+          end if;
+
+          if (top->printStopMenu.menuHistory.modified and
+	      top->printStopMenu.menuHistory.searchValue != "%") then
+            set := set + "printStop = "  + top->printStopMenu.menuHistory.defaultValue + ",";
           end if;
 
 	  -- inherit system (if yes, then this is NOT a rollup term)
@@ -651,11 +621,28 @@ rules:
             set := set + "inheritSystem = "  + top->inheritSystemMenu.menuHistory.defaultValue + ",";
           end if;
 
-          -- ignore Stage(s) query field.  The stage of a node is never modified once set.
+          if (top->structureNote->text.modified) then
+              set := set + "structureNote = " + mgi_DBprstr(top->structureNote->text.value) + ",";
+          end if;
+
+          -- Structure Name
+
+          if (top->structureText->text.modified) then
+	      cmd := cmd + mgi_DBupdate(GXD_STRUCTURENAME, top->structureTextKey->text.value, 
+		    "structure = " +  mgi_DBprstr(top->structureText->text.value) + "\n");
+	      cmd := cmd + "exec GXD_ComputePrintNamesFrom " + top->ID->text.value + "\n";
+          end if;
 
           -- now deal with the MGI aliases table
 
           ModifyAliases.table := top->mgiAliasTable->Table;
+          ModifyAliases.keyName := mgi_DBkey(GXD_STRUCTURENAME) + "_Aliases";
+          ModifyAliases.addStructureMode := false;
+          send(ModifyAliases, 0);
+
+          ModifyAliases.table := top->edinburghAliasTable->Table;
+          ModifyAliases.keyName := mgi_DBkey(GXD_STRUCTURENAME) + "_Edinburgh";
+          ModifyAliases.isMGIAdded := "0"; 
           ModifyAliases.addStructureMode := false;
           send(ModifyAliases, 0);
 
@@ -678,45 +665,11 @@ rules:
           end if;
 
           if (top->QueryList->List.sqlSuccessful) then
-             -- reload any changes in the event of an add/modify (delete
-             -- changes have to be explicitly managed in the presentation
-             -- layer).
-
-             if (top->structureText->text.modified) then
-                if (current_structure != nil) then
-                   structure_deleteNameByKey(current_structure, 
-			(integer) top->structureText->text.structureNameKey);
-                   -- even if this modification doesn't change the name,
-                   -- we delete the preferred name from the Structure's
-                   -- name list.  It will be replaced by the refresh because 
-                   -- the GXD_SetPreferredName stored proc will touch the 
-                   -- StructureName record to update its timestamp.
-                end if;
-             end if;
-
+             -- refresh the stage tree
              stagetrees_refresh();
-            
-             -- must handle removing mgi alias presentation elements explicitly
-             delaliaskey_list.rewind;
-             while delaliaskey_list.more do
-                aliaskey := delaliaskey_list.next;
-                if (current_structure != nil) then
-                   structure_deleteNameByKey(current_structure, (integer) aliaskey);
-                end if;
-             end while;
-
-             -- If a preferred name changes, we leave the old value in the 
-             -- selection list, even though it could be updated. If the 
-             -- user re-queries, the appropriate preferred name will 
-             -- show up in the selection list.
-
-             -- we need to update the list of names associated with the modified structure
-
-             -- reselect node to update structurenamekey, if it has changed, and
-             -- to clear the modified flags.
-
-            SelectNode.structure_key := (integer)current_structurekey;
-            send(SelectNode, 0);
+             -- reselect node
+             SelectNode.structure_key := (integer)current_structurekey;
+             send(SelectNode, 0);
           end if;
 
           (void) reset_cursor(top);
@@ -829,11 +782,11 @@ rules:
           -- read the form and construct a query
           send(PrepareSearch, 0);
 
+	  -- see syblib.c/mgi_citation for translation of stage/printName
           Query.source_widget := top;
-          Query.select := "select distinct s._Structure_key, t.stage, s.printName " 
-                          + from + where + "\norder by s.printName asc, t.stage";
+          Query.select := "select distinct s._Structure_key, t.stage, s.printName "  +
+                        from + where + "\norder by s.printName asc, t.stage";
           Query.table := GXD_STRUCTURE;
-	  Query.rowcount := NOROWLIMIT;
           send(Query, 0);
 
           -- it is ugly to do the query again just to obtain the distinct
@@ -929,6 +882,7 @@ rules:
 
             top->ID->text.value := mgi_getstr(dbproc, 1);
 	    top->edinburghKey->text.value := mgi_getstr(dbproc, 6);
+	    top->structureTextKey->text.value := mgi_getstr(dbproc, 3);
 	    top->structureText->text.value := mgi_getstr(dbproc, 16);
 
             current_stagenum := (integer) mgi_getstr(dbproc, 15);
@@ -962,12 +916,9 @@ rules:
         end while;
         (void) mgi_dbclose(dbproc);
 
-	-- TR10457/not done/want to display all information and MGI id
-	-- if Stage Node, we're done
-        --if (stagetrees_isStageNodeKey(structure_key)) then 
-        --   return;
-        --end if;
-
+	--
+	-- MGI Alias
+	--
 	row := 0;
 	table := top->mgiAliasTable->Table;
 	cmd := dictionary_sql_4 + current_structurekey;
@@ -982,6 +933,9 @@ rules:
         end while;
         (void) mgi_dbclose(dbproc);
 
+	--
+	-- Edinburgh Alias
+	--
 	row := 0;
 	table := top->edinburghAliasTable->Table;
 	cmd := dictionary_sql_5 + current_structurekey;
@@ -996,6 +950,9 @@ rules:
         end while;
         (void) mgi_dbclose(dbproc);
 
+	--
+	-- Accession ids
+	--
         LoadAcc.table := accTable;
         LoadAcc.objectKey := current_structurekey;
         LoadAcc.tableID := GXD_STRUCTURE;
@@ -1016,20 +973,13 @@ rules:
        item : string;
        key : string;
 
-       -- only add if there is a current structure
-       if (current_structure = nil) then
+       -- only add if there is a current genotype
+       if (top->QueryList->List.row = 0) then
          return;
        end if;
 
-       key := (string) structure_getStructureKey(current_structure);
-
-       -- cannot add Stage Nodes; must have a structure key
-       if (key = "-1") then
-         return;
-       end if;
-
-       item := format_stagenum(structure_getStage(current_structure)) +
-		(string) structure_getPrintName(current_structure);
+       key := top->ID->text.value;
+       item := top->QueryList->List.items[top->QueryList->List.row];
 
        ClipboardAdd.clipboard := clipboard;
        ClipboardAdd.item := item;
@@ -1046,32 +996,22 @@ rules:
    ADClipboardAddAll does
        item : string;
        key : string;
-       structureKey : string;
-       structure : opaque;
        i : integer := 1;
 
        -- for each Structure in QueryList
 
        while (i <= top->QueryList->List.keys.count) do;
 
-	 structureKey := top->QueryList->List.keys[i];
-         structure := stagetrees_select((integer) structureKey);
-         key := (string) structure_getStructureKey(structure);
+	 key := top->QueryList->List.keys[i];
+         item := top->QueryList->List.items[i];
 
-         -- cannot add Stage Nodes; must have a structure key
-
-         if (key != "-1") then
-           item := format_stagenum(structure_getStage(structure)) +
-		    (string) structure_getPrintName(structure);
-           ClipboardAdd.clipboard := clipboard;
-           ClipboardAdd.item := item;
-           ClipboardAdd.key := key;
-           send(ClipboardAdd, 0);
-         end if;
+         ClipboardAdd.clipboard := clipboard;
+         ClipboardAdd.item := item;
+         ClipboardAdd.key := key;
+         send(ClipboardAdd, 0);
 
 	 i := i + 1;
        end while;
-
    end does;
 
 --
