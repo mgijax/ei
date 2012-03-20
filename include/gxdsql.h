@@ -119,6 +119,27 @@ where _Specimen_key = "
 #define dictionary_sql_1 "select _Stage_key from GXD_TheilerStage where stage = "
 #define dictionary_sql_2 "select _defaultSystem_key from GXD_TheilerStage where _Stage_key = "
 
+#define dictionary_sql_3 "select s.*, t.stage, sn.structure, sn.mgiAdded \
+from GXD_Structure s, GXD_TheilerStage t, GXD_StructureName sn \
+where s._StructureName_key = sn._StructureName_key \
+and s._Structure_key = sn._Structure_key \
+and s._Stage_key = t._Stage_key \
+and sn._Structure_key = "
+
+#define dictionary_sql_4 "select sn._StructureName_key, sn.structure \
+from GXD_StructureName sn, GXD_Structure s \
+where s._StructureName_key != sn._StructureName_key \
+and s._Structure_key = sn._Structure_key \
+and sn.mgiAdded = 1 \
+and sn._Structure_key = "
+
+#define dictionary_sql_5 "select sn._StructureName_key, sn.structure \
+from GXD_StructureName sn, GXD_Structure s \
+where s._StructureName_key != sn._StructureName_key \
+and s._Structure_key = sn._Structure_key \
+and sn.mgiAdded = 0 \
+and sn._Structure_key = "
+
 /* DictionaryLib.d : no sql */
 
 #endif

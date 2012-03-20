@@ -19,6 +19,9 @@
 --
 -- History
 --
+-- lec 03/20/2012
+--	- TR11005/replace calls to XrtGear with standard Select 
+--
 -- lec 01/25/2010
 --	- display mgi ids for stage nodes
 --
@@ -491,11 +494,13 @@ rules:
           if (ModifyStructureText.field.modified) then
              if (ModifyStructureText.skvariable = "") then
                cmd := cmd + "exec GXD_SetPreferredName " + top->ID->text.value + 
-                    "," + mgi_DBprstr(ModifyStructureText.field.value) + "\n";
+                    "," + mgi_DBprstr(ModifyStructureText.field.value) + 
+		    "," + top->MGIAddedMenu.menuHistory.searchValue + "\n";
              else
                cmd := cmd + "exec GXD_SetPreferredName " + 
                           ModifyStructureText.skvariable + 
-                    "," + mgi_DBprstr(ModifyStructureText.field.value) + "\n";
+                    "," + mgi_DBprstr(ModifyStructureText.field.value) + 
+		    "," + top->MGIAddedMenu.menuHistory.searchValue + "\n";
              end if;
 
              -- check to see if an error code came back, so we can prevent
@@ -885,11 +890,8 @@ rules:
     SelectNode does
         structure_key : integer := SelectNode.structure_key;
         structure : opaque;
+	table : widget;
         row : integer;
-        mgiAliases : opaque;
-        edinburghAliases : opaque;
-        alias : opaque;
-        preferredStructureName : opaque;
 
         InitAcc.table := accTable;
         send(InitAcc, 0);
@@ -906,9 +908,6 @@ rules:
         current_structurekey := (string) structure_key; 
         structure := stagetrees_select(structure_key);
         current_structure := structure;
-        current_stagenum := structure_getStage(structure);
-        top->ID->text.value := current_structurekey; 
-        top->stagesText->text.value := (string) current_stagenum;
 
 	-- if the user selects the record from the tree, then
 	-- set the current record in the selection list (if it exists)
@@ -921,15 +920,47 @@ rules:
 	  end if;
         end if;
 
-        -- set the Anatomical System
-        SetOption.source_widget := top->ADSystemMenu;
-        SetOption.value := (string) (integer) structure_getSystemKey(structure);
-        send(SetOption, 0);
+        dbproc : opaque;
 
-	-- set the inherit system
-        SetOption.source_widget := top->inheritSystemMenu;
-        SetOption.value := (string) (integer) structure_getInheritSystem(structure);
-        send(SetOption, 0);
+	cmd := dictionary_sql_3 + current_structurekey;
+        dbproc := mgi_dbexec(cmd);
+        while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+          while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+
+            top->ID->text.value := mgi_getstr(dbproc, 1);
+	    top->edinburghKey->text.value := mgi_getstr(dbproc, 6);
+	    top->structureText->text.value := mgi_getstr(dbproc, 16);
+
+            current_stagenum := (integer) mgi_getstr(dbproc, 15);
+	    top->stagesText->text.value := mgi_getstr(dbproc, 15);
+
+            top->structureNote->text.value := mgi_getstr(dbproc, 12);
+
+	    -- set the print stop
+            SetOption.source_widget := top->printStopMenu;
+            SetOption.value := mgi_getstr(dbproc, 9);
+            send(SetOption, 0);
+
+            -- set the Anatomical System
+            SetOption.source_widget := top->ADSystemMenu;
+            SetOption.value := mgi_getstr(dbproc, 5);
+            send(SetOption, 0);
+
+	    -- set the inherit system
+            SetOption.source_widget := top->inheritSystemMenu;
+            SetOption.value := mgi_getstr(dbproc, 11);
+            send(SetOption, 0);
+
+            -- set the MGI-Added state for Structure
+            SetOption.source_widget := top->MGIAddedMenu;
+            SetOption.value := mgi_getstr(dbproc, 17);
+            send(SetOption, 0);
+
+            top->CreationDate->text.value := mgi_getstr(dbproc, 13);
+            top->ModifiedDate->text.value := mgi_getstr(dbproc, 14);
+          end while;
+        end while;
+        (void) mgi_dbclose(dbproc);
 
 	-- TR10457/not done/want to display all information and MGI id
 	-- if Stage Node, we're done
@@ -937,74 +968,33 @@ rules:
         --   return;
         --end if;
 
-        -- Set the preferredName and the key associated with the preferred name
-
-        preferredStructureName := structure_getPreferredStructureName(structure);
-
-        if (preferredStructureName = nil) then
-	   StatusReport.source_widget := top;
-           StatusReport.message := "Node is missing preferred name - contact SEs"; 
-           send(StatusReport, 0);
-           return;
-        end if;
-
-        top->structureText->text.value := structurename_getName(preferredStructureName);
-        top->structureText->text.structureNameKey := 
-		(string) structurename_getStructureNameKey(preferredStructureName);
-
-	-- set the edinburgh key
-	top->edinburghKey->text.value := (string) structure_getEdinburghKey(structure);
-
-        -- set the notes
-        top->structureNote->text.value := structure_getNotes(structure);
-
-	-- set the print stop
-        SetOption.source_widget := top->printStopMenu;
-        SetOption.value := (string) (integer) structure_getPrintStop(structure);
-        send(SetOption, 0);
-
-        -- set the MGI-Added state for Structure
-        SetOption.source_widget := top->MGIAddedMenu;
-        SetOption.value := (string) (integer) structurename_getMgiAdded(preferredStructureName);
-        send(SetOption, 0);
-
-        -- get the aliases assoc. w/ the structure 
-        mgiAliases := structure_getAliases(structure, true, createStructureNameList());
-        edinburghAliases := structure_getAliases(structure, false, createStructureNameList()); 
-
-        row := 0;
-        while (row < XrtGearListGetItemCount(mgiAliases)) do
-            alias := StructureNameList_getitem(mgiAliases, row);
-            mgi_tblSetCell(top->mgiAliasTable->Table, row, 
-			   top->mgiAliasTable->Table.editMode, TBL_ROW_NOCHG);
-            mgi_tblSetCell(top->mgiAliasTable->Table, row, 
-			   top->mgiAliasTable->Table.structureNameKeyIndex,
-                           (string) structurename_getStructureNameKey(alias));
-            mgi_tblSetCell(top->mgiAliasTable->Table, row, 
-			   top->mgiAliasTable->Table.structureIndex,
-                           structurename_getName(alias));
+	row := 0;
+	table := top->mgiAliasTable->Table;
+	cmd := dictionary_sql_4 + current_structurekey;
+        dbproc := mgi_dbexec(cmd);
+        while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+          while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+            (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+            (void) mgi_tblSetCell(table, row, table.structureNameKeyIndex, mgi_getstr(dbproc, 1));
+            (void) mgi_tblSetCell(table, row, table.structureIndex, mgi_getstr(dbproc, 2));
             row := row + 1;    
+          end while;
         end while;
+        (void) mgi_dbclose(dbproc);
 
-        row := 0;
-        while (row < XrtGearListGetItemCount(edinburghAliases)) do
-            alias := StructureNameList_getitem(edinburghAliases, row);
-            mgi_tblSetCell(top->edinburghAliasTable->Table, row, 
-			   top->edinburghAliasTable->Table.editMode, TBL_ROW_NOCHG);
-            mgi_tblSetCell(top->edinburghAliasTable->Table, row, 
-                           top->edinburghAliasTable->Table.structureNameKeyIndex,
-                           (string) structurename_getStructureNameKey(alias));
-            mgi_tblSetCell(top->edinburghAliasTable->Table, row, 
-                           top->edinburghAliasTable->Table.structureIndex,
-                           structurename_getName(alias));
+	row := 0;
+	table := top->edinburghAliasTable->Table;
+	cmd := dictionary_sql_5 + current_structurekey;
+        dbproc := mgi_dbexec(cmd);
+        while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+          while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+            (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+            (void) mgi_tblSetCell(table, row, table.structureNameKeyIndex, mgi_getstr(dbproc, 1));
+            (void) mgi_tblSetCell(table, row, table.structureIndex, mgi_getstr(dbproc, 2));
             row := row + 1;    
+          end while;
         end while;
-
-        -- set the creation and modification dates
-        top->CreationDate->text.value := 
-		stagetrees_convertDateToString(structure_getCreationDatePtr(structure)); 
-        top->ModifiedDate->text.value := 
-		stagetrees_convertDateToString(structure_getModificationDatePtr(structure)); 
+        (void) mgi_dbclose(dbproc);
 
         LoadAcc.table := accTable;
         LoadAcc.objectKey := current_structurekey;

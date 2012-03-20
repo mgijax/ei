@@ -29,18 +29,9 @@ CALLS
      stagetrees_deleteStructureByKey("int");
      stagetrees_isStageNodeKey("int") : "Boolean";
      
-     structure_getPreferredStructureName("Structure *") : "StructureName *";
-     structure_getNotes("Structure *") : "char *";
-     structure_getPrintStop("Structure *") : "Boolean";
      structure_getStage("Structure *") : "int";
-     structure_getSystemKey("Structure *") : "int";
-     structure_getInheritSystem("Structure *") : "int";
-     structure_getAliases("Structure *", "Boolean", "xrtlist") : "xrtlist";
      structure_getStructureKey("Structure *") : "int";
-     structure_getEdinburghKey("Structure *") : "int";
      structure_getPrintName("Structure *") : "char *";
-     structure_getModificationDatePtr("Structure *") : "void *";
-     structure_getCreationDatePtr("Structure *") : "void *";
      structure_deleteNameByKey("Structure *", "int");
     
      structurename_getName("StructureName *") : "char *"; 

@@ -1168,41 +1168,6 @@ void structurename_xrt_destroyproc(XrtGearObject object,
 }
 
 
-StructureName *structure_getPreferredStructureName(Structure *structure)
-{
-    /* search the list of names for the one referenced by structure */
-    int i, itemcnt;
-    StructureName *preferred=NULL;
-    XrtGearObject list = structure_getnames(structure);
-
-    itemcnt = XrtGearListGetItemCount(list);
-
-    for (i=0; i<itemcnt; i++)
-    {
-       StructureName *stn = *(StructureName **)XrtGearListGetItem(list, i);
-       if (structure_getStructureNameKey(structure) == structurename_getStructureNameKey(stn))
-       {   /* then we've found the preferred name */
-           preferred=stn;
-       }
-    }
-
-    return preferred;
-}
-
-char *structure_getNotes(Structure *structure)
-{
-    return structure->structureNote; 
-}
-
-Boolean structure_getPrintStop(Structure *structure)
-{
-   if (structure->printStop)
-      return True;
-
-   return False;
-}
-
-
 int structure_getStage(Structure *structure)
 {
     return structure->stage;
@@ -1219,21 +1184,6 @@ DBINT structure_getStageKey(Structure *structure)
     return structure->_Stage_key;
 }
 
-DBINT structure_getSystemKey(Structure *structure)
-{
-    return structure->_System_key;
-}
-
-DBINT structure_getInheritSystem(Structure *structure)
-{
-    return structure->inheritSystem;
-}
-
-DBINT structure_getEdinburghKey(Structure *structure)
-{
-    return structure->edinburghKey; 
-}
-
 char *structure_getPrintName(Structure *structure)
 {
     return structure->printName;
@@ -1242,17 +1192,6 @@ char *structure_getPrintName(Structure *structure)
 
 /* defined for TeleUSE's sake.  TeleUSE doesn't like to 
    accept non-opaque types... */
-
-DBDATETIME *structure_getModificationDatePtr(Structure *structure)
-{
-   return &(structure_getModificationDate(structure));
-}
-
-DBDATETIME *structure_getCreationDatePtr(Structure *structure)
-{
-   return &(structure_getCreationDate(structure));
-}
-
 
 void structure_deleteNameByKey(Structure *structure, DBINT namekey)
 {
@@ -1353,36 +1292,3 @@ StructureName *StructureNameList_getitem(xrtlist list, int i)
     return sn;
 }
 
-xrtlist structure_getAliases(Structure *structure, Boolean mgi, xrtlist alist)
-{
-    int i, itemcnt;
-    XrtGearObject list = structure_getnames(structure);
-    DBINT pnkey;
-    StructureName *stn;
-
-    /* find the preferred name key, so we don't include it in the aliases */
-    stn = structure_getPreferredStructureName(structure);
-
-    pnkey = structure_getStructureNameKey(stn);
-
-    itemcnt = XrtGearListGetItemCount(list);
-
-    for (i=0; i<itemcnt; i++)
-    {
-        StructureName *stn = *(StructureName **)XrtGearListGetItem(list, i);
-        if (structurename_getStructureNameKey(stn) != pnkey)
-        {
-           if( mgi && structurename_getMgiAdded(stn) )
-           {
-               StructureNameList_append(alist, stn);
-           }
-           else if( !mgi && !structurename_getMgiAdded(stn) )
-           {
-               StructureNameList_append(alist, stn);
-           }
-        }
-    }
-
-    return alist;
-}
- 
