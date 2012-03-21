@@ -2,7 +2,7 @@ Module: mgiAnatDictionary
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Mar 20 12:30:01 2012";
+      lastWritten = "Tue Mar 20 14:13:18 2012";
         {
           DictionaryModule = Module : MGI;
           Group: Widget
@@ -621,6 +621,9 @@ Module: mgiAnatDictionary
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    QTLArchive = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     InterPro = AccToggle : mgiOption;

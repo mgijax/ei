@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Jan 25 14:02:05 2012";
+      lastWritten = "Tue Mar 20 14:13:23 2012";
       copy = false;
       inCreateMenu = true;
         {
@@ -489,6 +489,9 @@ Module: GXD
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    QTLArchive = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     InterPro = AccToggle : mgiOption;
@@ -1495,6 +1498,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    QTLArchive = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     InterPro = AccToggle : mgiOption;
@@ -3552,6 +3558,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    QTLArchive = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     InterPro = AccToggle : mgiOption;

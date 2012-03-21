@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Dec  5 14:21:06 2011";
+      lastWritten = "Tue Mar 20 14:13:15 2012";
       copy = false;
       inCreateMenu = true;
         {
@@ -344,6 +344,15 @@ Module: mgiOption
                         labelString = UniGene;
                       Group: User
                         defaultValue = 23;
+                    }
+                    {
+                      QTLArchive = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "QTL Archive";
+                      Group: User
+                        defaultValue = 164;
+                        allowAdd = False;
+                        allowModify = False;
                     }
                     {
                       InterPro = AccToggle : mgiOption;

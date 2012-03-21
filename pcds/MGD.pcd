@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Feb 20 08:18:33 2012";
+      lastWritten = "Tue Mar 20 14:14:39 2012";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -406,6 +406,9 @@ Module: MGD
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    QTLArchive = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     InterPro = AccToggle : mgiOption;
@@ -2137,6 +2140,9 @@ Module: MGD
                                                     UniGene = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    QTLArchive = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     InterPro = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -3255,6 +3261,9 @@ Module: MGD
                                   UniGene = AccToggle : mgiOption;
                                 }
                                 {
+                                  QTLArchive = AccToggle : mgiOption;
+                                }
+                                {
                                   InterPro = AccToggle : mgiOption;
                                 }
                                 {
@@ -3921,6 +3930,9 @@ Module: MGD
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    QTLArchive = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     InterPro = AccToggle : mgiOption;
@@ -7269,6 +7281,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     UniGene = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    QTLArchive = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     InterPro = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -9321,6 +9336,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     UniGene = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    QTLArchive = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     InterPro = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -9797,6 +9815,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    QTLArchive = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     InterPro = AccToggle : mgiOption;
@@ -10906,6 +10927,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    QTLArchive = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     InterPro = AccToggle : mgiOption;
@@ -12616,6 +12640,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    QTLArchive = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     InterPro = AccToggle : mgiOption;
@@ -14346,9 +14373,33 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   ExptInSituForm = ExptInSituForm;
+                                      {
+                                        Strain = Strain : mgiDataTypes;
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                            {
+                                              Verify = CharText;
+                                            }
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                      }
                                 }
                                 {
                                   ExptFISHForm = ExptFISHForm;
+                                      {
+                                        Strain = Strain : mgiDataTypes;
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                            {
+                                              Verify = CharText;
+                                            }
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                      }
                                 }
                                 {
                                   ExptCrossForm = ExptCrossForm;
@@ -14600,6 +14651,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    QTLArchive = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     InterPro = AccToggle : mgiOption;
@@ -16576,6 +16630,11 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    QTLArchive = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
