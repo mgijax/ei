@@ -26,6 +26,11 @@ CALLS
      stagetrees_isStageNodeKey("int") : "Boolean";
      
      structure_deleteNameByKey("Structure *", "int");
+     structure_getStructureKey("Structure *") : "int";
+     structure_getStage("Structure *") : "int";
+     structure_getPrintName("Structure *") : "char *";
+     format_stagenum("int") : "char *";
+
     
   ENDL
 ENDC

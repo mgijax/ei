@@ -166,6 +166,25 @@ void structurename_xrt_destroyproc(XrtGearObject object,
 #define structure_getCreationDate(st) st->creation_date
    /* macro to return creation_date attribute */ 
 
+
+DBDATETIME *structure_getModificationDatePtr(Structure *structure); 
+   /* requires:
+         structure: A Structure object. 
+      effects: returns a static pointer to modification date variable.
+      modifies: local static DBDATETIME variable. 
+      returns: pointer to static DBDATETIME variable.
+    */
+
+
+DBDATETIME *structure_getCreationDatePtr(Structure *structure); 
+   /* requires:
+         structure: A Structure object. 
+      effects: returns a static pointer to creation date variable.
+      modifies: local static DBDATETIME variable. 
+      returns: pointer to static DBDATETIME variable.
+    */
+
+
 DBINT structure_getStructureKey(Structure *structure);
    /* returns _Structure_key attribute for structure */ 
 
@@ -173,8 +192,37 @@ DBINT structure_getStructureKey(Structure *structure);
 DBINT structure_getStageKey(Structure *structure);
    /* returns _Stage_key attribute for structure */ 
 
+
+DBINT structure_getSystemKey(Structure *structure);
+   /* returns _System_key attribute for structure */ 
+
+
+DBINT structure_getInheritSystem(Structure *structure);
+   /* returns inheritSystem attribute for structure */ 
+
+
+DBINT structure_getEdinburghKey(Structure *structure);
+   /* returns edinburghKey attribute for structure */ 
+
+
+char *structure_getPrintName(Structure *structure);
+   /* returns printName attribute for structure */ 
+
+
+char *structure_getNotes(Structure *structure);
+   /* returns the notes associated with this structure */
+
+
+Boolean structure_getPrintStop(Structure *structure);
+   /* returns the printStop attribute */ 
+
+
 int structure_getStage(Structure *structure);
    /* returns the stage number to which this structure belongs */ 
+
+
+xrtlist structure_getAliases(Structure *structure, Boolean mgi, xrtlist alist);
+   /* returns aliases (StructureNames) associated with this structure */ 
 
 
 void structure_deleteNameByKey(Structure *structure, DBINT namekey);
@@ -185,6 +233,19 @@ void structure_deleteNameByKey(Structure *structure, DBINT namekey);
 /* forward reference to structureName */
 struct structurename;
 typedef struct structurename StructureName; 
+
+StructureName *structure_getPreferredStructureName(Structure *structure);
+   /*
+     requires: 
+         structure: A pointer to a valid, initialized Structure object.
+     effects: Looks up the StructureName in the names list associated with
+              this structure, and finds the one with the _StructureName_Key
+              matching that stored in this structure. 
+     modifies: nothing.
+     returns: a pointer to the preferred StructureName, or NULL if an 
+              error occurs. 
+    */
+
 
 /* 
  *  #### StructureName Object ####
@@ -255,6 +316,10 @@ char *structurename_getName(StructureName *stn);
 
 DBINT structurename_getStructureNameKey(StructureName *stn);
    /* returns StructureName's _StructureName_key attribute */ 
+
+Boolean structurename_getMgiAdded(StructureName *stn);
+   /* returns StructureName's mgiAdded attribute */ 
+   
 
 /* 
  *  #### StageTree Object ####

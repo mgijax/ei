@@ -574,7 +574,6 @@ rules:
 --
 
         Modify does
-          aliaskey : string;
 
           if (not top.allowEdit) then 
             return; 
@@ -973,13 +972,20 @@ rules:
        item : string;
        key : string;
 
-       -- only add if there is a current genotype
-       if (top->QueryList->List.row = 0) then
+       -- only add if there is a current structure
+       if (current_structure = nil) then
          return;
        end if;
 
-       key := top->ID->text.value;
-       item := top->QueryList->List.items[top->QueryList->List.row];
+       key := (string) structure_getStructureKey(current_structure);
+
+       -- cannot add Stage Nodes; must have a structure key
+       if (key = "-1") then
+         return;
+       end if;
+
+       item := format_stagenum(structure_getStage(current_structure)) +
+                (string) structure_getPrintName(current_structure);
 
        ClipboardAdd.clipboard := clipboard;
        ClipboardAdd.item := item;
@@ -996,22 +1002,32 @@ rules:
    ADClipboardAddAll does
        item : string;
        key : string;
+       structureKey : string;
+       structure : opaque;
        i : integer := 1;
 
        -- for each Structure in QueryList
 
        while (i <= top->QueryList->List.keys.count) do;
 
-	 key := top->QueryList->List.keys[i];
-         item := top->QueryList->List.items[i];
+         structureKey := top->QueryList->List.keys[i];
+         structure := stagetrees_select((integer) structureKey);
+         key := (string) structure_getStructureKey(structure);
 
-         ClipboardAdd.clipboard := clipboard;
-         ClipboardAdd.item := item;
-         ClipboardAdd.key := key;
-         send(ClipboardAdd, 0);
+         -- cannot add Stage Nodes; must have a structure key
 
-	 i := i + 1;
+         if (key != "-1") then
+           item := format_stagenum(structure_getStage(structure)) +
+                    (string) structure_getPrintName(structure);
+           ClipboardAdd.clipboard := clipboard;
+           ClipboardAdd.item := item;
+           ClipboardAdd.key := key;
+           send(ClipboardAdd, 0);
+         end if;
+
+         i := i + 1;
        end while;
+
    end does;
 
 --
