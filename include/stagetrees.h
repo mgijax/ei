@@ -343,6 +343,7 @@ typedef struct stagetree
 #define STAGENODEPREFIX "Stage"  /* prefix of stage nodes */
 #define MAXNAMEPREFIX sizeof(STAGENODEPREFIX)+4
 /* for now, we use "Stagenn;" as a prefix  (+1) */
+#define TEXTBUFSIZ      200000
 
 #define MAXDATELEN 40 /* the maximum length for a character rep of a date */
 #define IGNORELEN 4   /* arbitrary.  Used where data length is ignored by 

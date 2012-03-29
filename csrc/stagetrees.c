@@ -9,6 +9,9 @@
  *
  * History:
  *
+ * lec	03/29/2012
+ *	- TR11005; stagetree_AddStructureNames; see isparentkey
+ *
  * gld  04/15/98
  *      - created
  */
@@ -748,13 +751,19 @@ void stagetree_AddStructureName(StageTree *stagetree, StructureName *stn)
    HashTable *ht = stagetree->Structures;
    Structure *hst,  /* a hashed structure */
              *newst;  /* a new structure */
+
    hashtbl_key key;
+   hashtbl_key isparentkey;
+
    XrtGearObject names;  /* list of names associated with the structure */ 
    int namepos;   /* position of the name in the structure's namelist */
+
+   char slabel[TEXTBUFSIZ];
    
    key = structurename_getStructureKey(stn);
-
    hst = (Structure *)hashtbl_retrieve_obj(ht,key);
+
+   isparentkey = structure_getParentKey(hst);
 
    if (hst)  /* then this name is for an existing structure */
    {
@@ -774,11 +783,29 @@ void stagetree_AddStructureName(StageTree *stagetree, StructureName *stn)
                          XmNxrtGearLabel, 
                          &xrtstr, NULL);
 
+	   /* 
+	    *
+	    * set the value of the "name" 
+	    * if is parent, then add 'StageXX;' (where XX = stage)
+	    *
+	    */
+
+	   memset(slabel, '\0', sizeof(slabel));
+	   if (isparentkey == 0)
+	   {
+               strcpy(slabel,format_stagenum(stagetree_getStage(stagetree)));
+               strcat(slabel,structurename_getName(stn));
+	   }
+	   else
+	   {
+               strcat(slabel,structurename_getName(stn));
+           }
+
            /* set the new label widget */
            XtVaSetValues(node, 
                          XmNxrtGearLabel, 
                          XrtGearNodeCvtStringToLabel(
-                         structurename_getName(stn), "@@@"), NULL);
+                         slabel, "@@@"), NULL);
 
            /* Destroy the old label widget */
            XrtGearStringDestroy(xrtstr);
@@ -908,7 +935,7 @@ void stagetree_AddStructure(StageTree *stagetree, Structure *st)
 
 
       /* Find this structure's parent node */
-      hashtbl_key pkey = structure_getParentKey(st);
+      hashtbl_key isparentkey = structure_getParentKey(st);
 
       /* create a XrtFolder node for this structure with that parent. 
          Add this structure to the hash table */
@@ -916,7 +943,7 @@ void stagetree_AddStructure(StageTree *stagetree, Structure *st)
       newst = structure_create();
       structure_dbattr_copy(newst,st);
 
-      if (pkey == 0)  /* then the parent key was NULL. 
+      if (isparentkey == 0)  /* then the parent key was NULL. 
                          st is a stage node */
       {
           /* build a root presentation element for the stage tree */
@@ -942,14 +969,14 @@ void stagetree_AddStructure(StageTree *stagetree, Structure *st)
              in order of increasing depth, all parents should be present
              prior to encountering children */
 
-          pst = (Structure *)hashtbl_retrieve_obj(ht, pkey);
+          pst = (Structure *)hashtbl_retrieve_obj(ht, isparentkey);
 
           if (!pst)
           { 
              char buf[256];
              sprintf(buf,"New structure (_Structure_key: %d) has parent\n"
                          "that hasn't been loaded (_Parent_key: %d).\n",
-                         key, pkey);
+                         key, isparentkey);
              stagetrees_error(buf);
           }
 
