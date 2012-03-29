@@ -19,6 +19,10 @@
 --
 -- History
 --
+-- lec 03/29/2012
+--	- TR11005
+--	- remove Stage restriction in Modify()
+--
 -- lec 03/20/2012
 --	- TR11005
 --	- replace calls to XrtGear with standard Select 
@@ -582,20 +586,12 @@ rules:
           cmd := "";
           set := "";
 
-          if (stagetrees_isStageNodeKey((integer)current_structurekey)) then
-                StatusReport.source_widget := top;
-                StatusReport.message := "Cannot modify a Stage node";
-                send(StatusReport, 0);
-                return;
-          end if;
-
           (void) busy_cursor(top);
 
 	  --
 	  -- cannot be modified by this method:
 	  --
 	  -- _Parent_key
-	  -- _StructureName_key
           -- _Stage_key
 	  -- edingburghKey
 	  -- treeDepth

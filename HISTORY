@@ -1,5 +1,13 @@
 ## Remember to update Configuration:CVS_TAG with most recen tag
 
+TAG: ei-5-0-0-2
+DATE: 03/29/2012
+STAFF: lec
+CHANGES:
+1) TR11005/Dictionary.d/Modify()/allow edit of Stage node(s)
+
+TAG: ei-4-4-2-39
+DATE: 03/12/2012
 TAG: ei-5-0-0-1
 DATE: 03/28/2012
 STAFF: lec
