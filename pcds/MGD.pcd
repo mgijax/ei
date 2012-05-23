@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Mar 20 14:14:39 2012";
+      lastWritten = "Wed May 23 12:34:47 2012";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -10238,7 +10238,7 @@ Shift<Key>Tab: prev-tab-group()
                                   ID = ID;
                                 }
                                 {
-                                  Name = CharText : mgiDataTypes;
+                                  NameOrig = CharText : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_form;
                                     leftOffset = 5;
@@ -10255,6 +10255,33 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         text = text;
+                                        Group: Widget
+                                          columns = 95;
+                                          translations = "#override
+Shift<Key>Tab: prev-tab-group()
+<Key>Tab: VerifyStrainNomenclature() VerifyDuplicateStrain()";
+                                        Group: User
+                                          required = True;
+                                      }
+                                }
+                                {
+                                  Name = CharSText : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_form;
+                                    leftOffset = 5;
+                                    rightAttachment = attach_form;
+                                    rightOffset = 2;
+                                    topAttachment = attach_form;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                      {
+                                        label = XmLabel;
+                                        Group: Widget
+                                          labelString = Strain;
+                                      }
+                                      {
+                                        text = scrolledText : mgiDataTypes;
                                         Group: Widget
                                           columns = 95;
                                           translations = "#override

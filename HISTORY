@@ -1,7 +1,15 @@
 ## Remember to update Configuration:CVS_TAG with most recen tag
 
+TAG: ei-5-0-0-5
+DATE: 05/23/2012
+STAFF: lec
+CHANGES:
+1) TR11084/Strains.d/change Name from Char to Scrolling-Char
+
+TAG: ei-5-0-0-4
 TAG: ei-5-0-0-3
 TAG: ei-5-0-0-2
+DATE: 04/05/2012
 DATE: 03/29/2012
 STAFF: lec
 CHANGES:
