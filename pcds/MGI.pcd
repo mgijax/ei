@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Mar 20 14:13:23 2012";
+      lastWritten = "Thu May 24 06:53:05 2012";
       copy = false;
       inCreateMenu = true;
         {
@@ -3297,6 +3297,9 @@ Module: MGI
                                                     JPGA = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    KOMP = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     NCIMR = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -3325,6 +3328,9 @@ Module: MGI
                                                   }
                                                   {
                                                     RMRC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    WTSI = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     IMAGELibrary = AccToggle : mgiOption;

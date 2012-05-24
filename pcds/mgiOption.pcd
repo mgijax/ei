@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Mar 20 14:13:15 2012";
+      lastWritten = "Thu May 24 07:57:41 2012";
       copy = false;
       inCreateMenu = true;
         {
@@ -607,6 +607,11 @@ Module: mgiOption
                         defaultValue = 84;
                     }
                     {
+                      KOMP = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 106;
+                    }
+                    {
                       NCIMR = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 54;
@@ -634,7 +639,7 @@ Module: mgiOption
                     {
                       OBS = AccToggle : mgiOption;
                       Group: User
-                        defaultValue = 157;
+                        defaultValue = 154;
                     }
                     {
                       ORNL = AccToggle : mgiOption;
@@ -659,6 +664,11 @@ Module: mgiOption
                         labelString = "RMRC-NLAC";
                       Group: User
                         defaultValue = 161;
+                    }
+                    {
+                      WTSI = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 155;
                     }
                     {
                       IMAGELibrary = AccToggle : mgiOption;

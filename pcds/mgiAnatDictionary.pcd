@@ -2,7 +2,7 @@ Module: mgiAnatDictionary
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Mar 20 14:13:18 2012";
+      lastWritten = "Thu May 24 06:54:30 2012";
         {
           DictionaryModule = Module : MGI;
           Group: Widget
@@ -740,6 +740,9 @@ Module: mgiAnatDictionary
                                                     JPGA = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    KOMP = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     NCIMR = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -768,6 +771,9 @@ Module: mgiAnatDictionary
                                                   }
                                                   {
                                                     RMRC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    WTSI = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     IMAGELibrary = AccToggle : mgiOption;

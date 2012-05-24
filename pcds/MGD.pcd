@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed May 23 12:34:47 2012";
+      lastWritten = "Thu May 24 06:56:17 2012";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -2257,6 +2257,9 @@ Module: MGD
                                                     JPGA = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    KOMP = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     NCIMR = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -2285,6 +2288,9 @@ Module: MGD
                                                   }
                                                   {
                                                     RMRC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    WTSI = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     IMAGELibrary = AccToggle : mgiOption;
@@ -4051,6 +4057,9 @@ Module: MGD
                                                     JPGA = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    KOMP = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     NCIMR = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -4079,6 +4088,9 @@ Module: MGD
                                                   }
                                                   {
                                                     RMRC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    WTSI = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     IMAGELibrary = AccToggle : mgiOption;
@@ -9453,6 +9465,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     JPGA = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    KOMP = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     NCIMR = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -9481,6 +9496,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     RMRC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    WTSI = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     IMAGELibrary = AccToggle : mgiOption;
@@ -9934,6 +9952,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     JPGA = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    KOMP = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     NCIMR = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -9962,6 +9983,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     RMRC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    WTSI = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     IMAGELibrary = AccToggle : mgiOption;
@@ -10236,33 +10260,6 @@ Shift<Key>Tab: prev-tab-group()
                               homeWidget = Name;
                                 {
                                   ID = ID;
-                                }
-                                {
-                                  NameOrig = CharText : mgiDataTypes;
-                                  Group: Constraint
-                                    leftAttachment = attach_form;
-                                    leftOffset = 5;
-                                    rightAttachment = attach_form;
-                                    topAttachment = attach_form;
-                                    topOffset = 5;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    rightOffset = 2;
-                                      {
-                                        label = XmLabel;
-                                        Group: Widget
-                                          labelString = Strain;
-                                      }
-                                      {
-                                        text = text;
-                                        Group: Widget
-                                          columns = 95;
-                                          translations = "#override
-Shift<Key>Tab: prev-tab-group()
-<Key>Tab: VerifyStrainNomenclature() VerifyDuplicateStrain()";
-                                        Group: User
-                                          required = True;
-                                      }
                                 }
                                 {
                                   Name = CharSText : mgiDataTypes;
@@ -11090,6 +11087,11 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
+                                                    KOMP = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
                                                     NCIMR = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
@@ -11136,6 +11138,11 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     RMRC = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    WTSI = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -12786,6 +12793,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     JPGA = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    KOMP = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     NCIMR = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -12814,6 +12824,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     RMRC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    WTSI = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     IMAGELibrary = AccToggle : mgiOption;
