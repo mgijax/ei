@@ -567,7 +567,7 @@ from SEQ_Allele_View where _Sequence_key = "
 
 #define strain_sql_3 "select * from PRB_Strain_View where _Strain_key = "
 #define strain_sql_4 "\nselect * from PRB_Strain_Attribute_View where _Strain_key = "
-#define strain_sql_5 "\nselect * from PRB_Strain_NeedsReview_View where _Strain_key = "
+#define strain_sql_5 "\nselect * from PRB_Strain_NeedsReview_View where _Object_key = "
 #define strain_sql_6 "\nselect distinct _StrainGenotype_key, _Genotype_key, _Qualifier_key, qualifier, \
 mgiID, description, modifiedBy, modification_date \
 from PRB_Strain_Genotype_View where _Strain_key = "

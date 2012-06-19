@@ -13,6 +13,9 @@
 --
 -- History
 --
+-- lec	06/19/2012
+--	- TR11110/Needs Review: added Date
+--
 -- lec	04/15/2008
 --	TR 8511; remove IMSRMenu
 --
@@ -839,7 +842,7 @@ rules:
 
             if (value.length > 0 and value != "NULL") then
 	      from := from + ",PRB_Strain_NeedsReview_View v";
-	      where := where + "\nand s._Strain_key = v._Strain_key";
+	      where := where + "\nand s._Strain_key = v._Object_key";
 	      where := where + "\nand v._Term_key = " + value;
 	    end if;
 
@@ -1019,8 +1022,9 @@ rules:
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
                 (void) mgi_tblSetCell(table, row, table.annotCurrentKey, mgi_getstr(dbproc, 1));
-                (void) mgi_tblSetCell(table, row, table.termKey, mgi_getstr(dbproc, 3));
-                (void) mgi_tblSetCell(table, row, table.term, mgi_getstr(dbproc, 4));
+                (void) mgi_tblSetCell(table, row, table.termKey, mgi_getstr(dbproc, 4));
+                (void) mgi_tblSetCell(table, row, table.term, mgi_getstr(dbproc, 8));
+                (void) mgi_tblSetCell(table, row, table.modifiedDate, mgi_getstr(dbproc, 7));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	        row := row + 1;
             end while;

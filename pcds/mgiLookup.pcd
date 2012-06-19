@@ -3,7 +3,7 @@ Module: mgiLookup
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Oct 17 12:11:00 2011";
+      lastWritten = "Tue Jun 19 07:59:47 2012";
         {
           LookupLabel = XmPushButton;
           Group: Widget
@@ -253,7 +253,7 @@ Module: mgiLookup
             vip_x = 90;
             vip_y = 1570;
           Group: User
-            cmd = "select _Term_key, term from VOC_Term where _Vocab_key = 27 order by term";
+            cmd = "(\nselect _Term_key, term, i = 1 from VOC_Term where _Vocab_key = 27 and term like '[a-z]%'\nunion\nselect _Term_key, term, i = 2 from VOC_Term where _Vocab_key = 27 and term like '*%'\n)\norder by i, term\n";
               {
                 Label = LookupLabel;
                 Group: Widget
@@ -265,6 +265,7 @@ Module: mgiLookup
                 List = list : mgiDataTypes;
                 Group: Widget
                   singleSelectionCallback = "D:SelectLookupListItem";
+                  visibleItemCount = 4;
               }
         }
         {
@@ -652,6 +653,7 @@ Module: mgiLookup
                 List = list : mgiDataTypes;
                 Group: Widget
                   singleSelectionCallback = "D:SelectLookupListItem";
+                  visibleItemCount = 4;
               }
         }
         {

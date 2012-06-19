@@ -1,5 +1,15 @@
 ## Remember to update Configuration:CVS_TAG with most recen tag
 
+TAG: ei-5-0-0-7
+DATE: 06/19/2012
+STAFF: lec
+CHANGES:
+1) TR11110/Needs Review
+dsrc/Strains.d
+include/mgdsql.h/PRB_Strain_NeedsReview_View
+
+TAG: ei-5-0-0-4
+TAG: ei-5-0-0-3
 TAG: ei-5-0-0-6
 TAG: ei-5-0-0-5
 DATE: 05/23/2012

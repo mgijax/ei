@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu May 24 06:56:17 2012";
+      lastWritten = "Tue Jun 19 09:39:08 2012";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -10384,12 +10384,12 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         Table = mgiTable : mgiTable;
                                         Group: Widget
-                                          xrtTblColumnLabels = "Mode,Current Key,Key,Needs Review";
-                                          xrtTblNumColumns = 4;
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 50)";
+                                          xrtTblColumnLabels = "Mode,Current Key,Key,Needs Review,Date";
+                                          xrtTblNumColumns = 5;
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 40)(all 4 10)";
                                           xrtTblEditableSeries = "(all 0-2 False)";
                                           xrtTblPixelWidthSeries = "(all 0-2 0)";
-                                          userDefinedAttributes = "annotCurrentKey:Int(Int)=\"1\"\ntermKey:Int(Int)=\"2\"\nterm:Int(Int)=\"3\"\n";
+                                          userDefinedAttributes = "annotCurrentKey:Int(Int)=\"1\"\ntermKey:Int(Int)=\"2\"\nterm:Int(Int)=\"3\"\nmodifiedDate:Int(Int)=\"4\"\n";
                                           xrtTblVisibleRows = 2;
                                       }
                                 }
@@ -11173,6 +11173,8 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         List = list;
+                                        Group: Widget
+                                          visibleItemCount = 4;
                                         Group: User
                                           targetKey = ObjectID;
                                           targetText = Species;
@@ -11215,7 +11217,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         List = list : mgiDataTypes;
                                         Group: Widget
-                                          visibleItemCount = 2;
+                                          visibleItemCount = 3;
                                         Group: User
                                           targetKey = 2;
                                           targetText = 3;
