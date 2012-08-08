@@ -1,5 +1,11 @@
 ## Remember to update Configuration:CVS_TAG with most recen tag
 
+TAG: ei-5-0-0-8
+DATE: 08/08/2012
+STAFF: lec
+CHANGES:
+1) TR11103/GO:0005515/IPI
+
 TAG: ei-5-0-0-7
 DATE: 06/19/2012
 STAFF: lec

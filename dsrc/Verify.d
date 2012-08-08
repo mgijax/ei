@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- 08/07/2012	lec
+-- 	- TR 11103/GO:0005515/IPI
+--
 -- 02/15/2012	lec
 --	- TR10955/postgres cleanup/verify_vocabqualifier_sql_1
 --
@@ -2405,7 +2408,7 @@ rules:
 --	Verify that if the "Inferred From" value is not blank, 
 --	then the Evidence Code is not IDA, TAS or NAS
 --
---      Verify that if the Evidence Code is ISO or ISA,
+--      Verify that if the Evidence Code is ISO, ISA, IC, IPI,
 --      then the "Inferred From" value must be entered
 --
 
@@ -2450,11 +2453,12 @@ rules:
 	  evidence : string := mgi_tblGetCell(sourceWidget, row, sourceWidget.evidence);
 	  evidence := evidence.raise_case;
 
-	  -- If the evidence is ISO, ISA, IC, then the Inferred From must be entered
+	  -- If the evidence is ISO, ISA, IC, IPI then the Inferred From must be entered
 
-	  if ((evidence = "ISO" or evidence = "ISA" or evidence = "IC") and (value.length = 0 or value = "%")) then
+	  if ((evidence = "ISO" or evidence = "ISA" or evidence = "IC" or evidence = "IPI") 
+		and (value.length = 0 or value = "%")) then
             StatusReport.source_widget := top.root;
-            StatusReport.message := "ERROR:  When using Evidence Code ISO, ISA or IC, the Inferred From value must be used.";
+            StatusReport.message := "ERROR:  When using Evidence Code ISO, ISA, IC or IPI, the Inferred From value must be used.";
             send(StatusReport);
 	    VerifyGOInferredFrom.doit := (integer) false;
 	    (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.inferredFrom, "");
@@ -3525,6 +3529,21 @@ rules:
             StatusReport.source_widget := top.root;
             StatusReport.message := "Evidence Code 'ND' can only be used with\n\n" +
 				    "GO:0008150, GO:0005575 or GO:0003674, MP:0003012";
+            send(StatusReport);
+	  end if;
+
+	  -- TR 11103/GO:0005515/IPI
+	  termAcc := mgi_tblGetCell(table, row, table.termAccID);
+	  termAcc := termAcc.raise_case;
+	  if (termAcc = "GO:0005515" and evidence != "IPI") then
+	    if (isTable) then
+	      VerifyVocabEvidenceCode.doit := (integer) false;
+	    end if;
+	    (void) mgi_tblSetCell(table, row, table.evidenceKey, "NULL");
+	    (void) mgi_tblSetCell(table, row, table.evidence, "");
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "Evidence Code 'IPI' can only be used with\n\n" +
+				    "GO:0005515";
             send(StatusReport);
 	  end if;
 
