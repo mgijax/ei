@@ -49,6 +49,10 @@ CALLS
 	 marker_checkseqaccid("char *", "char *")	: "char *";
 	 marker_eventreason()				: "char *";
 
+	 nonmouse_term()				: "char *";
+	 nonmouse_select("char *")			: "char *";
+	 nonmouse_notes("char *")			: "char *";
+
 	 strain_speciesNS()				: "char *";
 	 strain_strainNS()				: "char *";
 	 strain_select("char *")			: "char *";

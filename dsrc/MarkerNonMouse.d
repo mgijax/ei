@@ -175,7 +175,7 @@ rules:
 --
 
 	Add does
-	  curationState : string := mgi_sql1(nonmouse_sql_1);
+	  curationState : string := mgi_sql1(nonmouse_term());
 
 	  if (not top.allowEdit) then
 	    return;
@@ -474,7 +474,7 @@ rules:
 
 	  dbproc : opaque;
 	  
-	  cmd := nonmouse_sql_2 + currentRecordKey;
+	  cmd := nonmouse_select(currentRecordKey);
 	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -491,7 +491,7 @@ rules:
 	  end while;
 	  (void) mgi_dbclose(dbproc);
 
-	  cmd := nonmouse_sql_3a + currentRecordKey + nonmouse_sql_3b;
+	  cmd := nonmouse_notes(currentRecordKey);
 	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do

@@ -59,6 +59,25 @@ extern char *marker_checkaccid(char *, char *, char *);
 extern char *marker_checkseqaccid(char *, char *);
 extern char *marker_eventreason();
 
+/* MarkerNonMouse.d */
+
+extern char *nonmouse_term();
+extern char *nonmouse_select(char *);
+extern char *nonmouse_notes(char *);
+
+/* MLC.d */
+
+#define mlc_sql_1 "select _Marker_key, symbol, name, chromosome from MRK_Marker where _Marker_key = "
+#define mlc_sql_2a "\nselect _Class_key, name from MRK_Classes_View where _Marker_key = "
+#define mlc_sql_2b "\norder by name\n"
+#define mlc_sql_3a "\nselect b._Refs_key, r.tag, b.jnum, b.short_citation \
+from MLC_Reference r, BIB_View b \
+where r._Refs_key = b._Refs_key and r._Marker_key = "
+#define mlc_sql_3b "\norder by r.tag\n"
+#define mlc_sql_4 "\nselect mode, isDeleted, description, creation_date, modification_date, userID \
+from MLC_Text where _Marker_key = "
+#define mlc_sql_5 "select description from MLC_Text where _Marker_key = "
+
 /* Genotype.d */
 
 #define genotype_sql_2a "(select distinct v._Genotype_key, g.strain + ',' + ap.allele1 + ',' + ap.allele2 as strain \
@@ -148,28 +167,6 @@ where a._Annot_key = e._Annot_key \
 and e._Refs_key = r._Refs_key \
 and a._AnnotType_key = "
 #define govoc_sql_11c ")\norder by r.jnum desc\n"
-
-/* MarkerNonMouse.d */
-
-#define nonmouse_sql_1 "select _Term_key from VOC_Term where _Vocab_key = 15 and term = 'internal'"
-#define nonmouse_sql_2 "select _Marker_key, _Organism_key, symbol, name, chromosome, \
-cytogeneticOffset, organism, creation_date, modification_date \
-from MRK_Marker_View where _Marker_key = "
-#define nonmouse_sql_3a "\nselect rtrim(note) from MRK_Notes  where _Marker_key = "
-#define nonmouse_sql_3b "\norder by sequenceNum\n"
-
-/* MLC.d */
-
-#define mlc_sql_1 "select _Marker_key, symbol, name, chromosome from MRK_Marker where _Marker_key = "
-#define mlc_sql_2a "\nselect _Class_key, name from MRK_Classes_View where _Marker_key = "
-#define mlc_sql_2b "\norder by name\n"
-#define mlc_sql_3a "\nselect b._Refs_key, r.tag, b.jnum, b.short_citation \
-from MLC_Reference r, BIB_View b \
-where r._Refs_key = b._Refs_key and r._Marker_key = "
-#define mlc_sql_3b "\norder by r.tag\n"
-#define mlc_sql_4 "\nselect mode, isDeleted, description, creation_date, modification_date, userID \
-from MLC_Text where _Marker_key = "
-#define mlc_sql_5 "select description from MLC_Text where _Marker_key = "
 
 /* MLDP.d */
 

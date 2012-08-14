@@ -397,9 +397,39 @@ char *marker_eventreason()
 }
 
 /*
- * Strains.d
+ * MarkerNonMouse.d
 */
 
+char *nonmouse_term()
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Term_key from VOC_Term where _Vocab_key = 15 and term = 'internal'");
+  return(buf);
+}
+
+char *nonmouse_select(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Marker_key, _Organism_key, symbol, name, chromosome, \
+		cytogeneticOffset, organism, creation_date, modification_date \
+	from MRK_Marker_View where _Marker_key = %s", key);
+  return(buf);
+}
+
+char *nonmouse_notes(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select rtrim(note) from MRK_Notes  where _Marker_key = %s \
+	order by sequenceNum", key);
+  return(buf);
+}
+
+/*
+ * Strains.d
+*/
 
 char *strain_speciesNS()
 {
