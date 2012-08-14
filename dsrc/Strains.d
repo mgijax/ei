@@ -255,8 +255,8 @@ rules:
           LoadList.list := top->NeedsReviewList;
 	  send(LoadList, 0);
 
-	  speciesNotSpecified := mgi_sql1(strain_sql_1);
-	  strainTypeNotSpecified := mgi_sql1(strain_sql_2);
+	  speciesNotSpecified := mgi_sql1(strain_speciesNS());
+	  strainTypeNotSpecified := mgi_sql1(strain_strainNS());
 
           -- Set Row Count
           SetRowCount.source_widget := top;
@@ -310,7 +310,7 @@ rules:
 	   pcmd : string;
 	   permOK : integer;
 
-	   pcmd := strain_sql_12 + mgi_DBprstr(global_login);
+	   pcmd := strain_checkuser(mgi_DBprstr(global_login));
 		
 	   permOK := (integer) mgi_sql1(pcmd);
 
@@ -972,7 +972,7 @@ rules:
 
 	  row := 0;
 	  table := top->ModificationHistory->Table;
-	  cmd := strain_sql_3 + currentRecordKey;
+	  cmd := strain_select(currentRecordKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -1002,7 +1002,7 @@ rules:
 
 	  row := 0;
 	  table := top->StrainAttribute->Table;
-	  cmd := strain_sql_4 + currentRecordKey;
+	  cmd := strain_attribute(currentRecordKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -1017,7 +1017,7 @@ rules:
 
 	  row := 0;
 	  table := top->NeedsReview->Table;
-	  cmd := strain_sql_5 + currentRecordKey;
+	  cmd := strain_needsreview(currentRecordKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -1033,7 +1033,7 @@ rules:
 
 	  row := 0;
 	  table := top->Genotype->Table;
-	  cmd := strain_sql_6 + currentRecordKey;
+	  cmd := strain_genotype(currentRecordKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -1112,7 +1112,7 @@ rules:
           row : integer := 0;
           dbproc : opaque;
  
-	  cmd := strain_sql_7 + currentRecordKey;
+	  cmd := strain_execref(currentRecordKey);
           dbproc := mgi_dbexec(cmd);
  
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
@@ -1125,7 +1125,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  if (SelectReferenceMGI.doCount) then
-	    cmd := cmd + strain_sql_8;
+	    cmd := cmd + strain_addtoexecref();
             dbproc := mgi_dbexec(cmd);
  
             while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
@@ -1169,7 +1169,7 @@ rules:
           row : integer := 0;
           dbproc : opaque := mgi_dbexec(cmd);
 
-	  cmd := strain_sql_9 + currentRecordKey;
+	  cmd := strain_execdataset(currentRecordKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -1181,7 +1181,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  if (SelectDataSets.doCount) then
-	    cmd := strain_sql_9;
+	    cmd := strain_execdataset("");
             dbproc := mgi_dbexec(cmd);
             while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
               while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -1240,9 +1240,7 @@ rules:
  
           (void) busy_cursor(dialog);
 
-	  cmd := strain_sql_10 +
-		  dialog->Strain1->StrainID->text.value + "," +
-	          dialog->Strain2->StrainID->text.value + "\n";
+	  cmd := strain_execmerge(dialog->Strain1->StrainID->text.value, dialog->Strain2->StrainID->text.value);
 	  
 	  ExecSQL.cmd := cmd;
 	  send(ExecSQL, 0);
@@ -1326,7 +1324,7 @@ rules:
 	    return;
 	  end if;
 
-	  strainCount := mgi_sql1(strain_sql_11 + mgi_DBprstr(value));
+	  strainCount := mgi_sql1(strain_count(mgi_DBprstr(value)));
 
 	  if ((integer) strainCount > 0) then
             StatusReport.source_widget := top;

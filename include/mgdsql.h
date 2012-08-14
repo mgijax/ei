@@ -487,21 +487,17 @@ from SEQ_Allele_View where _Sequence_key = "
 
 /* Strain.d */
 
-#define strain_sql_1 "select _Term_key from VOC_Term where _Vocab_key = 26 and term = 'Not Specified'"
-#define strain_sql_2 "select _Term_key from VOC_Term where _Vocab_key = 55 and term = 'Not Specified'"
-
-#define strain_sql_3 "select * from PRB_Strain_View where _Strain_key = "
-#define strain_sql_4 "\nselect * from PRB_Strain_Attribute_View where _Strain_key = "
-#define strain_sql_5 "\nselect * from PRB_Strain_NeedsReview_View where _Object_key = "
-#define strain_sql_6 "\nselect distinct _StrainGenotype_key, _Genotype_key, _Qualifier_key, qualifier, \
-mgiID, description, modifiedBy, modification_date \
-from PRB_Strain_Genotype_View where _Strain_key = "
-
-#define strain_sql_7 "exec PRB_getStrainReferences "
-#define strain_sql_8 ",1"
-#define strain_sql_9 "exec PRB_getStrainDataSets "
-#define strain_sql_10 "exec PRB_mergeStrain "
-#define strain_sql_11 "select count(*) from PRB_Strain where strain = "
-#define strain_sql_12 "exec MGI_checkUserRole 'StrainJAXModule',"
+extern char *strain_speciesNS();
+extern char *strain_strainNS();
+extern char *strain_select(char *);
+extern char *strain_attribute(char *);
+extern char *strain_needsreview(char *);
+extern char *strain_genotype(char *);
+extern char *strain_execref(char *);
+extern char *strain_addtoexecref();
+extern char *strain_execdataset(char *);
+extern char *strain_execmerge(char *, char *);
+extern char *strain_checkuser(char *);
+extern char *strain_count();
 
 #endif

@@ -49,6 +49,19 @@ CALLS
 	 marker_checkseqaccid("char *", "char *")	: "char *";
 	 marker_eventreason()				: "char *";
 
+	 strain_speciesNS()				: "char *";
+	 strain_strainNS()				: "char *";
+	 strain_select("char *")			: "char *";
+	 strain_attribute("char *")			: "char *";
+	 strain_needsreview("char *")			: "char *";
+	 strain_genotype("char *")			: "char *";
+	 strain_execref("char *")			: "char *";
+	 strain_addtoexecref()				: "char *";
+	 strain_execdataset("char *")			: "char *";
+	 strain_execmerge("char *", "char *")		: "char *";
+	 strain_checkuser("char *")			: "char *";
+	 strain_count("char *")				: "char *";
+
   ENDL
 ENDC
 

@@ -396,3 +396,106 @@ char *marker_eventreason()
   return(buf);
 }
 
+/*
+ * Strains.d
+*/
+
+
+char *strain_speciesNS()
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Term_key from VOC_Term where _Vocab_key = 26 and term = 'Not Specified'");
+  return(buf);
+}
+
+char *strain_strainNS()
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Term_key from VOC_Term where _Vocab_key = 55 and term = 'Not Specified'");
+  return(buf);
+}
+
+char *strain_select(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select * from PRB_Strain_View where _Strain_key = %s", key);
+  return(buf);
+}
+
+char *strain_attribute(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select * from PRB_Strain_Attribute_View where _Strain_key = %s", key);
+  return(buf);
+}
+
+char *strain_needsreview(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select * from PRB_Strain_NeedsReview_View where _Object_key = %s", key);
+  return(buf);
+}
+
+char *strain_genotype(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select distinct _StrainGenotype_key, _Genotype_key, _Qualifier_key, qualifier, \
+		mgiID, description, modifiedBy, modification_date \
+	from PRB_Strain_Genotype_View where _Strain_key = %s", key);
+  return(buf);
+}
+
+char *strain_execref(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec PRB_getStrainReferences %s", key);
+  return(buf);
+}
+
+char *strain_addtoexecref()
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,",1");
+  return(buf);
+}
+
+char *strain_execdataset(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec PRB_getStrainDataSets %s", key);
+  return(buf);
+}
+
+char *strain_execmerge(char *key1, char *key2)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec PRB_mergeStrain %s, %s", key1, key2);
+  return(buf);
+}
+
+char *strain_checkuser(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec MGI_checkUserRole 'StrainJAXModule', %s", key);
+  return(buf);
+}
+
+char *strain_count(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select count(*) from PRB_Strain where strain = %s", key);
+  return(buf);
+}
+
