@@ -268,8 +268,8 @@ rules:
           -- Initialize global variables
 	   
           sourceKeyName := "maxSource";
-	  primerVector := mgi_sql1(molecular_sql_1);
-	  primerType := mgi_sql1(molecular_sql_2);
+	  primerVector := mgi_sql1(molecular_termNA());
+	  primerType := mgi_sql1(molecular_termPrimer());
 
 	  sourceOptions.append(top->MolDetailForm->ProbeOrganismMenu);
 	  sourceOptions.append(top->MolDetailForm->AgeMenu);
@@ -442,7 +442,7 @@ rules:
 	  --   View the Reference form
 
 	  if (top->QueryList->List.sqlSuccessful) then
-	    top->ReportDialog.select := molecular_sql_3 + top->MolMasterForm->ID->text.value;
+	    top->ReportDialog.select := molecular_probekey(top->MolMasterForm->ID->text.value);
 	    top->Control->References.set := true;
 	    ViewMolSegForm.source_widget := top->Control->References;
 	    send(ViewMolSegForm, 0);
@@ -713,7 +713,7 @@ rules:
 	  -- process Notes solo too
 
           if (top->MolMarkerForm->MolNote.sql.length > 0) then
-            ModifySQL.cmd := top->MolMarkerForm->MolNote.sql + molecular_sql_4 + currentMasterKey;
+            ModifySQL.cmd := top->MolMarkerForm->MolNote.sql + molecular_exec_reloadsequence(currentMasterKey);
 	    ModifySQL.list := top->QueryList;
 	    ModifySQL.reselect := false;
             send(ModifySQL, 0);
@@ -729,7 +729,7 @@ rules:
 
           if (cmd.length > 0 or set.length > 0) then 
             cmd := cmd + mgi_DBupdate(PRB_PROBE, currentMasterKey, set);
-	    cmd := cmd + molecular_sql_4 + currentMasterKey;
+	    cmd := cmd + molecular_exec_reloadsequence(currentMasterKey);
             ModifySQL.cmd := cmd;
 	    ModifySQL.list := top->QueryList;
 	    ModifySQL.reselect := false;
@@ -1435,7 +1435,7 @@ rules:
           top->MolReferenceForm->ReferenceID->text.value := "";
 	  QueryNoInterrupt.source_widget := top;
 	  QueryNoInterrupt.list_w := top->ReferenceList;
-	  QueryNoInterrupt.select := molecular_sql_5 + top->QueryList->List.keys[top->QueryList->List.row];
+	  QueryNoInterrupt.select := molecular_reference(top->QueryList->List.keys[top->QueryList->List.row]);
 	  QueryNoInterrupt.table := PRB_REFERENCE;
 	  send(QueryNoInterrupt, 0);
 	  (void) reset_cursor(top);
@@ -1501,7 +1501,7 @@ rules:
 	  row : integer := 0;
           dbproc : opaque;
 
-	  cmd := molecular_sql_6 + currentMasterKey;
+	  cmd := molecular_select(currentMasterKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -1546,7 +1546,7 @@ rules:
 	  DisplayMolecularSource.source_widget := detailForm;
 	  send(DisplayMolecularSource, 0);
 
-	  cmd := molecular_sql_7 + currentMasterKey;
+	  cmd := molecular_parent(currentMasterKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -1557,7 +1557,7 @@ rules:
           end while;
 	  (void) mgi_dbclose(dbproc);
 
-	  cmd := molecular_sql_8a + currentMasterKey + molecular_sql_8b;
+	  cmd := molecular_notes(currentMasterKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -1566,7 +1566,7 @@ rules:
           end while;
 	  (void) mgi_dbclose(dbproc);
 
-	  cmd := molecular_sql_9a + currentMasterKey + molecular_sql_9b;
+	  cmd := molecular_marker(currentMasterKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do

@@ -382,7 +382,7 @@ rules:
 
 	  -- Select Clone Library Sets
 
-	  scmd :string := molsource_sql_1a + currentRecordKey + molsource_sql_1b;
+	  scmd :string := molsource_select(currentRecordKey);
 
 	  table : widget := top->CloneLibrarySet->Table;
 	  row : integer := 0;

@@ -428,6 +428,150 @@ char *nonmouse_notes(char *key)
 }
 
 /*
+ * MLC.d
+*/
+
+char *mlc_select(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Marker_key, symbol, name, chromosome from MRK_Marker where _Marker_key = %s", key);
+  return(buf);
+}
+
+char *mlc_class(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Class_key, name from MRK_Classes_View where _Marker_key = %s \
+	order by name", key);
+  return(buf);
+}
+
+char *mlc_ref(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select b._Refs_key, r.tag, b.jnum, b.short_citation \
+	from MLC_Reference r, BIB_View b \
+	where r._Refs_key = b._Refs_key and r._Marker_key = %s \
+	order by r.tag", key);
+  return(buf);
+}
+
+char *mlc_text(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select mode, isDeleted, description, creation_date, modification_date, userID \
+	from MLC_Text where _Marker_key = %s", key);
+  return(buf);
+}
+
+char *mlc_description(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select description from MLC_Text where _Marker_key = %s", key);
+  return(buf);
+}
+
+/*
+ * Molecular.d
+*/
+
+char *molecular_termNA()
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Term_key from VOC_Term where _Vocab_key = 24 and term = 'Not Applicable'");
+  return(buf);
+}
+
+char *molecular_termPrimer()
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Term_key from VOC_Term where _Vocab_key = 10 and term = 'primer'");
+  return(buf);
+}
+
+char *molecular_probekey(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Probe_key from PRB_Probe where _Probe_key = %s", key);
+  return(buf);
+}
+
+char *molecular_exec_reloadsequence(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec PRB_reloadSequence %s", key);
+  return(buf);
+}
+
+char *molecular_reference(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Reference_key, short_citation from PRB_Reference_View where _Probe_key = %s", key);
+  return(buf);
+}
+
+char *molecular_select(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select * from PRB_Probe_View where _Probe_key = %s", key);
+  return(buf);
+}
+
+char *molecular_parent(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select parentKey, parentClone, parentNumeric from PRB_Parent_View where _Probe_key = %s", key);
+  return(buf);
+}
+
+char *molecular_notes(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select rtrim(note) from PRB_Notes where _Probe_key = %s \
+	order by sequenceNum", key);
+  return(buf);
+}
+
+char *molecular_marker(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select * from PRB_Marker_View where _Probe_key = %s \
+	order by relationship, symbol", key);
+  return(buf);
+}
+
+/*
+ * MolecularSource.d
+*/
+
+char *molsource_select(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select m._Set_key, m._SetMember_key, v.name  \
+	from MGI_Set v, MGI_SetMember m \
+	where v._MGIType_key = 5 \
+	and v._Set_key = m._Set_key \
+	and m._Object_key = %s \
+	order by m.sequenceNum", key);
+  return(buf);
+}
+
+/*
  * Strains.d
 */
 

@@ -67,16 +67,58 @@ extern char *nonmouse_notes(char *);
 
 /* MLC.d */
 
-#define mlc_sql_1 "select _Marker_key, symbol, name, chromosome from MRK_Marker where _Marker_key = "
-#define mlc_sql_2a "\nselect _Class_key, name from MRK_Classes_View where _Marker_key = "
-#define mlc_sql_2b "\norder by name\n"
-#define mlc_sql_3a "\nselect b._Refs_key, r.tag, b.jnum, b.short_citation \
-from MLC_Reference r, BIB_View b \
-where r._Refs_key = b._Refs_key and r._Marker_key = "
-#define mlc_sql_3b "\norder by r.tag\n"
-#define mlc_sql_4 "\nselect mode, isDeleted, description, creation_date, modification_date, userID \
-from MLC_Text where _Marker_key = "
-#define mlc_sql_5 "select description from MLC_Text where _Marker_key = "
+extern char *mlc_select(char *);
+extern char *mlc_class(char *);
+extern char *mlc_ref(char *);
+extern char *mlc_text(char *);
+extern char *mlc_description(char *);
+
+/* Molecular.d */
+
+extern char *molecular_termNA();
+#define molecular_sql_1 "select _Term_key from VOC_Term where _Vocab_key = 24 and term = 'Not Applicable'"
+
+extern char *molecular_termPrimer();
+#define molecular_sql_2 "select _Term_key from VOC_Term where _Vocab_key = 10 and term = 'primer'"
+
+extern char *molecular_probekey(char *);
+#define molecular_sql_3 "select _Probe_key from PRB_Probe where _Probe_key = "
+
+extern char *molecular_exec_reloadsequence(char *);
+#define molecular_sql_4 "\nexec PRB_reloadSequence "
+
+extern char *molecular_reference(char *);
+#define molecular_sql_5 "select _Reference_key, short_citation from PRB_Reference_View where _Probe_key = "
+
+extern char *molecular_select(char *);
+#define molecular_sql_6 "select * from PRB_Probe_View where _Probe_key = "
+
+extern char *molecular_parent(char *);
+#define molecular_sql_7 "\nselect parentKey, parentClone, parentNumeric from PRB_Parent_View where _Probe_key = "
+
+extern char *molecular_notes(char *);
+#define molecular_sql_8a "\nselect rtrim(note) from PRB_Notes where _Probe_key = "
+#define molecular_sql_8b "\norder by sequenceNum\n"
+
+extern char *molecular_marker(char *);
+#define molecular_sql_9a "\nselect * from PRB_Marker_View where _Probe_key = "
+#define molecular_sql_9b "\norder by relationship, symbol\n"
+
+#define molecular_sql_10 "select * from PRB_Reference_View where _Reference_key = "
+
+#define molecular_sql_11a "select rtrim(note) from PRB_Ref_Notes where _Reference_key = "
+#define molecular_sql_11b "\norder by sequenceNum\n"
+
+#define molecular_sql_12 "select _Alias_key, alias from PRB_Alias where _Reference_key = "
+
+#define molecular_sql_13a "select * from PRB_RFLV_View where _Reference_key = "
+#define molecular_sql_13b "\norder by _RFLV_key, allele\n"
+
+#define molecular_sql_14 "select _Source_key from PRB_Probe where _Probe_key = "
+
+/* MolecularSource.d */
+
+extern char *molsource_select(char *);
 
 /* Genotype.d */
 
@@ -219,36 +261,6 @@ from MLD_Statistics_View where _Expt_key = "
 #define mldp_sql_24b "\norder by sequenceNum\n"
 #define mldp_sql_25 "select count(*) from MRK_Chromosome where _Organism_key = 1 and chromosome = "
 #define mldp_sql_26 "select _Assay_Type_key from MLD_Assay_Types where description = "
-
-/* Molecular.d */
-
-#define molecular_sql_1 "select _Term_key from VOC_Term where _Vocab_key = 24 and term = 'Not Applicable'"
-#define molecular_sql_2 "select _Term_key from VOC_Term where _Vocab_key = 10 and term = 'primer'"
-#define molecular_sql_3 "select _Probe_key from PRB_Probe where _Probe_key = "
-#define molecular_sql_4 "\nexec PRB_reloadSequence "
-#define molecular_sql_5 "select _Reference_key, short_citation from PRB_Reference_View where _Probe_key = "
-#define molecular_sql_6 "select * from PRB_Probe_View where _Probe_key = "
-#define molecular_sql_7 "\nselect parentKey, parentClone, parentNumeric from PRB_Parent_View where _Probe_key = "
-#define molecular_sql_8a "\nselect rtrim(note) from PRB_Notes where _Probe_key = "
-#define molecular_sql_8b "\norder by sequenceNum\n"
-#define molecular_sql_9a "\nselect * from PRB_Marker_View where _Probe_key = "
-#define molecular_sql_9b "\norder by relationship, symbol\n"
-#define molecular_sql_10 "select * from PRB_Reference_View where _Reference_key = "
-#define molecular_sql_11a "select rtrim(note) from PRB_Ref_Notes where _Reference_key = "
-#define molecular_sql_11b "\norder by sequenceNum\n"
-#define molecular_sql_12 "select _Alias_key, alias from PRB_Alias where _Reference_key = "
-#define molecular_sql_13a "select * from PRB_RFLV_View where _Reference_key = "
-#define molecular_sql_13b "\norder by _RFLV_key, allele\n"
-#define molecular_sql_14 "select _Source_key from PRB_Probe where _Probe_key = "
-
-/* MolecularSource.d */
-
-#define molsource_sql_1a "select m._Set_key, m._SetMember_key, v.name  \
-from MGI_Set v, MGI_SetMember m \
-where v._MGIType_key = 5 \
-and v._Set_key = m._Set_key \
-and m._Object_key = "
-#define molsource_sql_1b "\norder by m.sequenceNum"
 
 /* MPVocAnnot.d */
 

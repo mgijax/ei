@@ -709,7 +709,7 @@ rules:
 	  row : integer := 0;
 	  dbproc : opaque;
 	  
-	  cmd := mlc_sql_1 + currentMarkerKey;
+	  cmd := mlc_select(currentMarkerKey);
 	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -726,7 +726,7 @@ rules:
  	  (void) mgi_dbclose(dbproc);
 
 	  row := 0;
-	  cmd := mlc_sql_2a + currentMarkerKey + mlc_sql_2b;
+	  cmd := mlc_class(currentMarkerKey);
 	  table := top->Class->Table;
 	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
@@ -741,7 +741,7 @@ rules:
  	  (void) mgi_dbclose(dbproc);
 
 	  row := 0;
-	  cmd := mlc_sql_3a + currentMarkerKey + mlc_sql_3b;
+	  cmd := mlc_ref(currentMarkerKey);
 	  table := top->Reference->Table;
 	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
@@ -758,7 +758,7 @@ rules:
 	  end while;
  	  (void) mgi_dbclose(dbproc);
 
-	  cmd := mlc_sql_4 + currentMarkerKey;
+	  cmd := mlc_text(currentMarkerKey);
 	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -1283,7 +1283,7 @@ rules:
 	    return;
 	  end if;
 
-	  newtext := mgi_sql1(mlc_sql_5 + top->ImportMLCTextDialog->mgiMarker->ObjectID->text.value);
+	  newtext := mgi_sql1(mlc_description(top->ImportMLCTextDialog->mgiMarker->ObjectID->text.value));
 
 	  -- Append the text
 	  top->Description->text.value := top->Description->text.value + "\n\n" + newtext; 

@@ -53,6 +53,24 @@ CALLS
 	 nonmouse_select("char *")			: "char *";
 	 nonmouse_notes("char *")			: "char *";
 
+	 mlc_select("char *")				: "char *";
+	 mlc_class("char *")				: "char *";
+	 mlc_ref("char *")				: "char *";
+	 mlc_text("char *")				: "char *";
+	 mlc_description("char *")			: "char *";
+
+	 molsource_select("char *")			: "char *";
+
+	 molecular_termNA()				: "char *";
+	 molecular_termPrimer()				: "char *";
+	 molecular_probekey("char *")			: "char *";
+	 molecular_exec_reloadsequence("char *")	: "char *";
+	 molecular_reference("char *")			: "char *";
+	 molecular_select("char *")			: "char *";
+	 molecular_parent("char *")			: "char *";
+	 molecular_notes("char *")			: "char *";
+	 molecular_marker("char *")			: "char *";
+
 	 strain_speciesNS()				: "char *";
 	 strain_strainNS()				: "char *";
 	 strain_select("char *")			: "char *";
