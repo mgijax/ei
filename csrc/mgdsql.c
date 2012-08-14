@@ -189,10 +189,10 @@ char *derivation_checkdup(
   sprintf(buf,"select _Derivation_key \
 	from ALL_CellLine_Derivation \
 	where _Vector_key = %s \
-	and _VectorType_key = %s \ 
+	and _VectorType_key = %s \
 	and _ParentCellLine_key =  %s \
 	and _DerivationType_key =  %s \
-	and _Creator_key = %s", \
+	and _Creator_key = %s", 
 	vectorKey, vectorTypeKey, parentCellLineKey, derivationTypeKey, creatorKey);
   return(buf);
 }
@@ -235,6 +235,10 @@ char *derivation_parentcellline(char *key)
   return(buf);
 }
 
+/*
+* Cross.d
+*/
+
 char *cross_select(char *key)
 {
   static char buf[TEXTBUFSIZ];
@@ -243,6 +247,152 @@ char *cross_select(char *key)
 	from CRS_Cross_View \
 	where _Cross_key == %s \
 	order by whoseCross", key);
+  return(buf);
+}
+
+/*
+* Marker.d
+*/
+
+char *marker_select(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Marker_key, _Marker_Type_key, _Marker_Status_key, \
+  		symbol, name, chromosome, cytogeneticOffset, \
+  		createdBy, creation_date, modifiedBy, modification_date \
+  	from MRK_Marker_View \
+	where _Marker_key = %s", key);
+  return(buf);
+}
+
+char *marker_offset(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select source, str(offset,10,2) \
+	from MRK_Offset \
+	where _Marker_key = %s \
+	order by source", key);
+  return(buf);
+}
+
+char *marker_history1(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Marker_Event_key, _Marker_EventReason_key, \
+		_History_key, sequenceNum, name, event_display, event, eventReason, history, modifiedBy \
+	from MRK_History_View  \
+	where _Marker_key = %s \
+	order by sequenceNum, _History_key", key);
+  return(buf);
+}
+
+char *marker_history2(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select h.sequenceNum, h._Refs_key, b.jnum, b.short_citation \
+	from MRK_History h, BIB_View b \
+	where h._Marker_key = %s \
+	and h._Refs_key = b._Refs_key \
+	order by h.sequenceNum, h._History_key", key);
+  return(buf);
+}
+
+char *marker_current(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Current_key, current_symbol \
+	from MRK_Current_View where _Marker_key = %s", key);
+  return(buf);
+}
+
+char *marker_tdc(char *annotTypeKey, char *logicalDBKey, char *objectKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select tdc._Annot_key, tdc._Term_key, tdc.accID, tdc.term \
+	from VOC_Annot_View tdc \
+	where tdc._AnnotType_key = %s \
+	and tdc._LogicalDB_key = %s \
+	and tdc._Object_key = %s", annotTypeKey, logicalDBKey, objectKey);
+  return(buf);
+}
+
+char *marker_alias(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Alias_key, alias from MRK_Alias_View where _Marker_key = %s", key);
+  return(buf);
+}
+
+char *marker_mouse(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select symbol from MRK_Mouse_View where mgiID = %s", key);
+  return(buf);
+}
+
+char *marker_count(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select count(*) from ALL_Allele where _Marker_key = ", key);
+  return(buf);
+}
+
+char *marker_checkinvalid(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"declare @isInvalid integer \
+	select @isInvalid = 0 \
+	if (select %s) not like '[A-Z][0-9][0-9][0-9][0-9][0-9]' and \
+	(select %s) not like '[A-Z][A-Z][0-9][0-9][0-9][0-9][0-9][0-9]' \
+	begin select @isInvalid = 1 end select @isInvalid", key,  key);
+  return(buf);
+}
+
+char *marker_checkaccid(char *key, char *logicalDBKey, char *accID)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select accID \
+	from ACC_Accession \
+	where _MGIType_key = 2 \
+	and _LogicalDB_key = %s \
+	and _Object_key != %s \
+	and accID = %s", logicalDBKey, key, accID);
+
+  return(buf);
+}
+
+char *marker_checkseqaccid(char *logicalDBKey, char *accID)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select a.accID from PRB_Notes p, ACC_Accession a \
+	where lower(p.note) like \
+		lower('%staff have found evidence of artifact in the sequence of this molecular%') \
+	and p._Probe_key = a._Object_key \
+	and a._MGIType_key = 3 \
+	and a._LogicalDB_key = %s \
+	and a.accID = ", logicalDBKey, accID);
+
+  return(buf);
+}
+
+char *marker_eventreason()
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select * from MRK_EventReason where _Marker_EventReason_key >= -1 \
+	order by eventReason");
   return(buf);
 }
 

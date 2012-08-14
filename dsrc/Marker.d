@@ -310,7 +310,7 @@ rules:
           LoadList.list := top->TDCList;
           send(LoadList, 0);
 
-          top->WithdrawalDialog->MarkerEventReasonMenu.subMenuId.sql := marker_sql_13;
+          top->WithdrawalDialog->MarkerEventReasonMenu.subMenuId.sql := marker_eventreason();
 	  InitOptionMenu.option := top->WithdrawalDialog->MarkerEventReasonMenu;
 	  send(InitOptionMenu, 0);
 
@@ -442,7 +442,7 @@ rules:
           if (top->markerAccession->ObjectID->text.value.length > 0) then
             top->mgiMarker->ObjectID->text.value := top->markerAccession->ObjectID->text.value;
             top->mgiMarker->Marker->text.value := 
-		mgi_sql1(marker_sql_8 + mgi_DBprstr(top->markerAccession->AccessionID->text.value));
+		mgi_sql1(marker_mouse(mgi_DBprstr(top->markerAccession->AccessionID->text.value)));
 	    VerifyMarkerChromosome.source_widget := top->mgiMarker->Marker->text;
 	    send(VerifyMarkerChromosome, 0);
 	  else
@@ -579,7 +579,7 @@ rules:
 
 	  dialog->currentMarker->Marker->text.value := top->Symbol->text.value;
 	  alleleCount : string;
-	  alleleCount := mgi_sql1(marker_sql_9 + currentRecordKey);
+	  alleleCount := mgi_sql1(marker_count(currentRecordKey));
 	  if ((integer) alleleCount > 0) then
 	    dialog->hasAlleles.set := true;
           else
@@ -1699,7 +1699,7 @@ rules:
 	  seqNum1, seqNum2 : string;
 
 	  table := top->Control->ModificationHistory->Table;
-	  cmd := marker_sql_1 + currentRecordKey + "\n";
+	  cmd := marker_select(currentRecordKey);
 	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -1725,7 +1725,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  table := top->Offset->Table;
-	  cmd := marker_sql_2a + currentRecordKey + marker_sql_2b + "\n";
+	  cmd := marker_offset(currentRecordKey);
 	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -1744,7 +1744,7 @@ rules:
 
 	  row := 0;
 	  table := top->History->Table;
-	  cmd :=  marker_sql_3a + currentRecordKey + marker_sql_3b + "\n";
+	  cmd :=  marker_history1(currentRecordKey);
 	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    row := 0;
@@ -1783,7 +1783,7 @@ rules:
 
 	  row := 0;
 	  table := top->History->Table;
-	  cmd := marker_sql_4a + currentRecordKey + marker_sql_4b + "\n";
+	  cmd := marker_history2(currentRecordKey);
 	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    row := 0;
@@ -1815,7 +1815,7 @@ rules:
 
 	  row := 0;
 	  table := top->Current->Table;
-	  cmd := marker_sql_5a + currentRecordKey + "\n";
+	  cmd := marker_current(currentRecordKey);
 	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    row := 0;
@@ -1831,9 +1831,7 @@ rules:
 
 	  row := 0;
 	  table := top->TDCVocab->Table;
-	  cmd := marker_sql_6a + annotTypeKey +
-		 marker_sql_6b + defaultLogicalDBKey +
-		 marker_sql_6c + currentRecordKey + "\n";
+	  cmd := marker_tdc(annotTypeKey, defaultLogicalDBKey, currentRecordKey);
 	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    row := 0;
@@ -1849,7 +1847,7 @@ rules:
 
 	  row := 0;
 	  table := top->Alias->Table;
-	  cmd := marker_sql_7a + currentRecordKey + "\n";
+	  cmd := marker_alias(currentRecordKey);
 	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    row := 0;
@@ -2021,9 +2019,7 @@ rules:
 	  -- see ACC_Accession_Insert trigger
 	  -- This error must be fixed
 
-	  isInvalid := mgi_sql1(marker_sql_10a + mgi_DBprstr(value) +
-		       marker_sql_10b + mgi_DBprstr(value) + 
-		       marker_sql_10c);
+	  isInvalid := mgi_sql1(marker_checkinvalid(mgi_DBprstr(value)));
 
 	  if (isInvalid = "1") then
 	    VerifyMarkerAcc.doit := (integer) false;
@@ -2041,9 +2037,7 @@ rules:
 
 	  if (currentRecordKey.length > 0) then
 
-	    accID := mgi_sql1(marker_sql_11a + logicalKey + 
-			marker_sql_11b + currentRecordKey +
-			marker_sql_11c + mgi_DBprstr(value));
+	    accID := mgi_sql1(marker_checkaccid(currentRecordKey, logicalKey, mgi_DBprstr(value)));
 
 	    if (accID.length > 0) then
 	      message := message + "This Accession ID is already associated with another marker.\n\n" + value + "\n\n";
@@ -2053,11 +2047,10 @@ rules:
 
 	  -- check if the sequence accession ID is associated with a problem clone (via its note)
 
-	  accID := mgi_sql1(marker_sql_12a + logicalKey +
-		            marker_sql_12b + mgi_DBprstr(value));
+	  accID := mgi_sql1(marker_checkseqaccid(logicalKey, mgi_DBprstr(value)));
 
 	  if (accID.length > 0) then
-	    message := message + "This Accession ID is curated as a problem sequence.\n" +
+		message := message + "This Accession ID is curated as a problem sequence.\n" +
 		"Please review carefully whether this is a good sequence for the marker.\n\n" + value + "\n\n";
 	  end if;
 

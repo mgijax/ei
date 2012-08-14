@@ -45,60 +45,19 @@ extern char *cross_select(char *);
 
 /* Marker.d */
 
-#define marker_sql_1	"\nselect _Marker_key, _Marker_Type_key, _Marker_Status_key, \
-symbol, name, chromosome, cytogeneticOffset, \
-createdBy, creation_date, modifiedBy, modification_date \
-from MRK_Marker_View where _Marker_key = "
-
-#define marker_sql_2a "\nselect source, str(offset,10,2) \
-from MRK_Offset where _Marker_key = "
-#define marker_sql_2b " order by source" 
-
-#define marker_sql_3a "\nselect _Marker_Event_key, _Marker_EventReason_key, \
-_History_key, sequenceNum, name, event_display, event, eventReason, history, modifiedBy \
-from MRK_History_View where _Marker_key = "
-#define marker_sql_3b " order by sequenceNum, _History_key"
-
-#define marker_sql_4a "\nselect h.sequenceNum, h._Refs_key, b.jnum, b.short_citation \
-from MRK_History h, BIB_View b where h._Marker_key = "
-#define marker_sql_4b " and h._Refs_key = b._Refs_key \
-order by h.sequenceNum, h._History_key"
-
-#define marker_sql_5a "\nselect _Current_key, current_symbol \
-from MRK_Current_View where _Marker_key = "
-
-#define marker_sql_6a "\nselect tdc._Annot_key, tdc._Term_key, tdc.accID, tdc.term \
-from VOC_Annot_View tdc where tdc._AnnotType_key = "
-#define marker_sql_6b " and tdc._LogicalDB_key = "
-#define marker_sql_6c " and tdc._Object_key = "
-
-#define marker_sql_7a "\nselect _Alias_key, alias from MRK_Alias_View where _Marker_key = "
-
-#define marker_sql_8 "\nselect symbol from MRK_Mouse_View where mgiID = "
-
-#define marker_sql_9 "\nselect count(*) from ALL_Allele where _Marker_key = "
-
-#define marker_sql_10a "declare @isInvalid integer \
-select @isInvalid = 0 \
-if (select "
-#define marker_sql_10b ") not like '[A-Z][0-9][0-9][0-9][0-9][0-9]' and \
-(select "
-#define marker_sql_10c ") not like '[A-Z][A-Z][0-9][0-9][0-9][0-9][0-9][0-9]' \
-begin select @isInvalid = 1 end select @isInvalid"
-
-#define marker_sql_11a "select accID from ACC_Accession \
-where _MGIType_key = 2 and _LogicalDB_key = "
-#define marker_sql_11b " and _Object_key != "
-#define marker_sql_11c " and accID = "
-
-#define marker_sql_12a "select a.accID from PRB_Notes p, ACC_Accession a \
-where lower(p.note) like lower('%staff have found evidence of artifact in the sequence of this molecular%') \
-and p._Probe_key = a._Object_key \
-and a._MGIType_key = 3 \
-and a._LogicalDB_key = "
-#define marker_sql_12b " and a.accID = "
-
-#define marker_sql_13 "select * from MRK_EventReason where _Marker_EventReason_key >= -1 order by eventReason"
+extern char *marker_select(char *);
+extern char *marker_offset(char *);
+extern char *marker_history1(char *);
+extern char *marker_history2(char *);
+extern char *marker_current(char *);
+extern char *marker_tdc(char *, char *, char *);
+extern char *marker_alias(char *);
+extern char *marker_mouse(char *);
+extern char *marker_count(char *);
+extern char *marker_checkinvalid(char *);
+extern char *marker_checkaccid(char *, char *, char *);
+extern char *marker_checkseqaccid(char *, char *);
+extern char *marker_eventreason();
 
 /* Genotype.d */
 

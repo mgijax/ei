@@ -35,6 +35,20 @@ CALLS
 
 	 cross_select("char *")				: "char *";
 
+	 marker_select("char *")			: "char *";
+	 marker_offset("char *")			: "char *";
+	 marker_history1("char *")			: "char *";
+	 marker_history2("char *")			: "char *";
+	 marker_current("char *")			: "char *";
+	 marker_tdc("char *", "char *", "char *")	: "char *";
+	 marker_alias("char *")				: "char *";
+	 marker_mouse("char *")				: "char *";
+	 marker_count("char *")				: "char *";
+	 marker_checkinvalid("char *")			: "char *";
+	 marker_checkaccid("char *", "char *", "char *"): "char *";
+	 marker_checkseqaccid("char *", "char *")	: "char *";
+	 marker_eventreason()				: "char *";
+
   ENDL
 ENDC
 
