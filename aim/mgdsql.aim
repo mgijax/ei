@@ -65,11 +65,16 @@ CALLS
 	 molecular_termPrimer()				: "char *";
 	 molecular_probekey("char *")			: "char *";
 	 molecular_exec_reloadsequence("char *")	: "char *";
-	 molecular_reference("char *")			: "char *";
+	 molecular_shortref("char *")			: "char *";
 	 molecular_select("char *")			: "char *";
 	 molecular_parent("char *")			: "char *";
 	 molecular_notes("char *")			: "char *";
 	 molecular_marker("char *")			: "char *";
+	 molecular_reference("char *")			: "char *";
+	 molecular_refnotes("char *")			: "char *";
+	 molecular_alias("char *")			: "char *";
+	 molecular_rflv("char *")			: "char *";
+	 molecular_sourcekey("char *")			: "char *";
 
 	 strain_speciesNS()				: "char *";
 	 strain_strainNS()				: "char *";

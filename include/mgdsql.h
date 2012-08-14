@@ -76,45 +76,19 @@ extern char *mlc_description(char *);
 /* Molecular.d */
 
 extern char *molecular_termNA();
-#define molecular_sql_1 "select _Term_key from VOC_Term where _Vocab_key = 24 and term = 'Not Applicable'"
-
 extern char *molecular_termPrimer();
-#define molecular_sql_2 "select _Term_key from VOC_Term where _Vocab_key = 10 and term = 'primer'"
-
 extern char *molecular_probekey(char *);
-#define molecular_sql_3 "select _Probe_key from PRB_Probe where _Probe_key = "
-
 extern char *molecular_exec_reloadsequence(char *);
-#define molecular_sql_4 "\nexec PRB_reloadSequence "
-
-extern char *molecular_reference(char *);
-#define molecular_sql_5 "select _Reference_key, short_citation from PRB_Reference_View where _Probe_key = "
-
+extern char *molecular_shortref(char *);
 extern char *molecular_select(char *);
-#define molecular_sql_6 "select * from PRB_Probe_View where _Probe_key = "
-
 extern char *molecular_parent(char *);
-#define molecular_sql_7 "\nselect parentKey, parentClone, parentNumeric from PRB_Parent_View where _Probe_key = "
-
 extern char *molecular_notes(char *);
-#define molecular_sql_8a "\nselect rtrim(note) from PRB_Notes where _Probe_key = "
-#define molecular_sql_8b "\norder by sequenceNum\n"
-
 extern char *molecular_marker(char *);
-#define molecular_sql_9a "\nselect * from PRB_Marker_View where _Probe_key = "
-#define molecular_sql_9b "\norder by relationship, symbol\n"
-
-#define molecular_sql_10 "select * from PRB_Reference_View where _Reference_key = "
-
-#define molecular_sql_11a "select rtrim(note) from PRB_Ref_Notes where _Reference_key = "
-#define molecular_sql_11b "\norder by sequenceNum\n"
-
-#define molecular_sql_12 "select _Alias_key, alias from PRB_Alias where _Reference_key = "
-
-#define molecular_sql_13a "select * from PRB_RFLV_View where _Reference_key = "
-#define molecular_sql_13b "\norder by _RFLV_key, allele\n"
-
-#define molecular_sql_14 "select _Source_key from PRB_Probe where _Probe_key = "
+extern char *molecular_reference(char *);
+extern char *molecular_refnotes(char *);
+extern char *molecular_alias(char *);
+extern char *molecular_rflv(char *);
+extern char *molecular_sourcekey(char *);
 
 /* MolecularSource.d */
 

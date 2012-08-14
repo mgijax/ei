@@ -1435,7 +1435,7 @@ rules:
           top->MolReferenceForm->ReferenceID->text.value := "";
 	  QueryNoInterrupt.source_widget := top;
 	  QueryNoInterrupt.list_w := top->ReferenceList;
-	  QueryNoInterrupt.select := molecular_reference(top->QueryList->List.keys[top->QueryList->List.row]);
+	  QueryNoInterrupt.select := molecular_shortref(top->QueryList->List.keys[top->QueryList->List.row]);
 	  QueryNoInterrupt.table := PRB_REFERENCE;
 	  send(QueryNoInterrupt, 0);
 	  (void) reset_cursor(top);
@@ -1656,7 +1656,7 @@ rules:
 	  strainKeys : string := "";
           dbproc : opaque;
 
-          cmd := molecular_sql_10 + currentReferenceKey;
+          cmd := molecular_reference(currentReferenceKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -1677,7 +1677,7 @@ rules:
           end while;
 	  (void) mgi_dbclose(dbproc);
 
-          cmd := molecular_sql_11a + currentReferenceKey + molecular_sql_11b;
+          cmd := molecular_refnotes(currentReferenceKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -1689,7 +1689,7 @@ rules:
 
 	  row := 0;
           table := top->MolReferenceForm->Alias->Table;
-	  cmd := molecular_sql_12 + currentReferenceKey;
+	  cmd := molecular_alias(currentReferenceKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -1705,7 +1705,7 @@ rules:
 
 	  row := -1;
 	  table := top->MolReferenceForm->RFLV->Table;
-	  cmd := molecular_sql_13a + currentReferenceKey + molecular_sql_13b;
+	  cmd := molecular_rflv(currentReferenceKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -1919,7 +1919,7 @@ rules:
           if (top->ParentClone->ObjectID->text.value.length = 0) then
             top->SourceForm->SourceID->text.value := "";
           else
-            cmd := molecular_sql_14 + top->ParentClone->ObjectID->text.value;
+            cmd := molecular_sourcekey(top->ParentClone->ObjectID->text.value);
             top->SourceForm->SourceID->text.value := mgi_sql1(cmd);
           end if;
  

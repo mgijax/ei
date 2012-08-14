@@ -512,7 +512,7 @@ char *molecular_exec_reloadsequence(char *key)
   return(buf);
 }
 
-char *molecular_reference(char *key)
+char *molecular_shortref(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
@@ -551,6 +551,48 @@ char *molecular_marker(char *key)
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select * from PRB_Marker_View where _Probe_key = %s \
 	order by relationship, symbol", key);
+  return(buf);
+}
+
+char *molecular_reference(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select * from PRB_Reference_View where _Reference_key = ", key);
+  return(buf);
+}
+
+char *molecular_refnotes(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select rtrim(note) from PRB_Ref_Notes where _Reference_key = %s \
+	order by sequenceNum", key);
+  return(buf);
+}
+
+char *molecular_alias(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Alias_key, alias from PRB_Alias where _Reference_key = %s", key);
+  return(buf);
+}
+
+char *molecular_rflv(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select * from PRB_RFLV_View where _Reference_key = %s \
+	order by _RFLV_key, allele", key);
+  return(buf);
+}
+
+char *molecular_sourcekey(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Source_key from PRB_Probe where _Probe_key = %s", key);
   return(buf);
 }
 
