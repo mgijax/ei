@@ -1,0 +1,40 @@
+CALLS
+  LANGUAGE C 
+        INCLUDE
+             <mgdsql.h>;
+	TYPE 
+	     "int"           <--> integer;
+	     "char *"        <--> string;
+	     "Widget"        <--> widget;
+             "char **"       <--> string_list;
+	     "Boolean"	     <--> boolean;
+
+	ENTRY 
+
+	 allele_pendingstatus()				: "char *";
+	 allele_defqualifier()				: "char *";
+	 allele_defstatus()				: "char *";
+	 allele_definheritanceNA()			: "char *";
+	 allele_definheritanceNS()			: "char *";
+	 allele_select("char *")			: "char *";
+	 allele_derivation("char *", "char *", "char *", "char *", "char *", "char *") : "char *";
+	 allele_markerassoc("char *")			: "char *";
+	 allele_mutation("char *")			: "char *";
+	 allele_notes("char *")				: "char *";
+	 allele_images("char *", "char *")		: "char *";
+	 allele_cellline("char *")			: "char *";
+	 allele_stemcellline("char *")			: "char *";
+	 allele_mutantcellline("char *")		: "char *";
+	 allele_parentcellline("char *")		: "char *";
+
+	 derivation_checkdup("char *", "char *", "char *", "char *", "char *") : "char *";
+	 derivation_select("char *")			: "char *";
+	 derivation_count("char *")			: "char *";
+	 derivation_stemcellline("char *")		: "char *";
+	 derivation_parentcellline("char *")		: "char *";
+
+	 cross_select("char *")				: "char *";
+
+  ENDL
+ENDC
+

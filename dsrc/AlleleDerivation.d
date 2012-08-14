@@ -241,11 +241,8 @@ rules:
 	  --
 	  -- check duplicate
 	  --
-	  derivationKey := mgi_sql1(derivation_sql_1a + vectorKey +
-		derivation_sql_1b + vectorTypeKey +
-		derivation_sql_1c + parentCellLineKey +
-		derivation_sql_1d + derivationTypeKey +
-		derivation_sql_1e + creatorKey);
+	  cmd := derivation_checkdup(vectorKey, vectorTypeKey, parentCellLineKey, derivationTypeKey, creatorKey);
+	  derivationKey := mgi_sql1(cmd);
 
           if (derivationKey.length > 0) then
             StatusReport.source_widget := top.root;
@@ -371,11 +368,8 @@ rules:
 	  --
 	  -- check duplicate
 	  --
-	  derivationKey := mgi_sql1(derivation_sql_1a + vectorKey +
-		derivation_sql_1b + vectorTypeKey +
-		derivation_sql_1c + parentCellLineKey +
-		derivation_sql_1d + derivationTypeKey +
-		derivation_sql_1e + creatorKey);
+	  cmd := derivation_checkdup(vectorKey, vectorTypeKey, parentCellLineKey, derivationTypeKey, creatorKey);
+	  derivationKey := mgi_sql1(cmd);
 
           if (derivationKey.length > 0) then
             StatusReport.source_widget := top.root;
@@ -556,7 +550,7 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := derivation_sql_2 + currentRecordKey;
+	  cmd := derivation_select(currentRecordKey);
 
 	  dbproc : opaque;
 	  
@@ -604,7 +598,7 @@ rules:
 	  end while;
 	  (void) mgi_dbclose(dbproc);
 
-	  cmd := derivation_sql_3 + top->ID->text.value;
+	  cmd := derivation_count(top->ID->text.value);
 	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -640,7 +634,7 @@ rules:
 	      return;
 	  end if;
 
-	  cmd := derivation_sql_4 + top->mgiParentCellLine->ObjectID->text.value;
+	  cmd := derivation_stemcellline(top->mgiParentCellLine->ObjectID->text.value);
 
 	  dbproc : opaque := mgi_dbexec(cmd);
 
@@ -690,7 +684,7 @@ rules:
 
 	  -- Search for value in the database
 
-	  select : string := derivation_sql_5 + mgi_DBprstr(value);
+	  select : string := derivation_parentcellline(mgi_DBprstr(value));
 
 	  dbproc : opaque := mgi_dbexec(select);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do

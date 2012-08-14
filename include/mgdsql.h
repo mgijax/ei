@@ -1,81 +1,47 @@
 #ifndef MGDSQL_H
 #define MGDSQL_H
 
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <syblib.h>
+
 /*
  * select statements
  * organized by module
  */
 
-/* MGD.d : no sql */
+/*
+ * Allele.d
+*/
 
-/* Allele.d */
-
-#define allele_sql_1 "select _Term_key from VOC_Term where _Vocab_key = 37 and term = "
-#define allele_sql_2 "select _Term_key from VOC_Term where _Vocab_key = 70 and term = 'Not Specified'"
-#define allele_sql_3 "select _Term_key from VOC_Term where _Vocab_key = 73 and term = 'Curated'"
-#define allele_sql_4 "select _Term_key from VOC_Term where _Vocab_key = 35 and term = 'Not Applicable'"
-#define allele_sql_5 "select _Term_key from VOC_Term where _Vocab_key = 35 and term = 'Not Specified'"
-
-#define allele_sql_6a "select d._Derivation_key from ALL_CellLine_Derivation d, ALL_CellLine c \
-where d._DerivationType_key = "
-#define allele_sql_6b " and d._Creator_key = "
-#define allele_sql_6c " and d._Vector_key = "
-#define allele_sql_6d " and d._ParentCellLine_key = "
-#define allele_sql_6e " and d._ParentCellLine_key = c._CellLine_key "
-#define allele_sql_6f " and c._Strain_key = "
-#define allele_sql_6g " and c._CellLine_Type_key = "
-#define allele_sql_6h " and c.isMutant = 0 "
-
-#define allele_sql_7 "select * from  ALL_Allele_View where _Allele_key = "
-#define allele_sql_8 "\nselect _Assoc_key, _Marker_key, symbol, _Refs_key, \
-jnum, short_citation, _Status_key, status, modifiedBy, modification_date \
-from ALL_Marker_Assoc_View where _Allele_key = "
-#define allele_sql_9 "\nselect _Mutation_key, mutation from ALL_Allele_Mutation_View where _Allele_key = "
-
-#define allele_sql_10a "\nselect rtrim(m.note) from ALL_Allele a, MRK_Notes m \
-where a._Marker_key = m._Marker_key and a._Allele_key = "
-#define allele_sql_10b "\norder by m.sequenceNum"
-
-#define allele_sql_11a "\nselect _Assoc_key, _ImagePane_key, _ImageClass_key, figureLabel, \
-term, mgiID, pixID, isPrimary from IMG_ImagePane_Assoc_View where _Object_key = "
-
-#define allele_sql_11b " and _MGIType_key = "
-
-#define allele_sql_11c " order by isPrimary desc, mgiID"
-
-#define allele_sql_12 "\nselect * from ALL_Allele_CellLine_View where _Allele_key = "
-
-#define allele_sql_13 "select distinct _CellLine_key, cellLine, _Strain_key, cellLineStrain, _CellLine_Type_key \
-from ALL_CellLine_View where _CellLine_key = "
-
-#define allele_sql_14 "select * from ALL_CellLine_View where isMutant = 1 and cellLine = "
-
-#define allele_sql_15 "select _CellLine_key, cellLine, _Strain_key, cellLineStrain, _CellLine_Type_key \
-from ALL_CellLine_View where isMutant = 0 and cellLine = "
+extern char *allele_pendingstatus();
+extern char *allele_defqualifier();
+extern char *allele_defstatus();
+extern char *allele_definheritanceNA();
+extern char *allele_definheritanceNS();
+extern char *allele_select(char *);
+extern char *allele_derivation(char *, char *, char *, char *, char *, char *);
+extern char *allele_markerassoc(char *);
+extern char *allele_mutation(char *);
+extern char *allele_notes(char *);
+extern char *allele_images(char *, char *);
+extern char *allele_cellline(char *);
+extern char *allele_stemcellline(char *);
+extern char *allele_mutantcellline(char *);
+extern char *allele_parentcellline(char *);
 
 /* AlleleDerivation.d */
 
-#define derivation_sql_1a "select _Derivation_key from ALL_CellLine_Derivation where _Vector_key = "
-#define derivation_sql_1b " and _VectorType_key = "
-#define derivation_sql_1c " and _ParentCellLine_key = "
-#define derivation_sql_1d " and _DerivationType_key = "
-#define derivation_sql_1e " and _Creator_key = "
-
-#define derivation_sql_2 "select * from ALL_CellLine_Derivation_View where _Derivation_key = "
-#define derivation_sql_3 "select count(_CellLine_key) from ALL_CellLine_View where _Derivation_key = "
-#define derivation_sql_4 "select distinct _CellLine_key, cellLine, _Strain_key, \
-cellLineStrain, _CellLine_Type_key \
-from ALL_CellLine_View \
-where _CellLine_key = "
-#define derivation_sql_5 "select distinct _CellLine_key, cellLine, _Strain_key, \
-cellLineStrain, _CellLine_Type_key \
-from ALL_CellLine_View \
-where cellline = "
+extern char *derivation_checkdup(char *, char *, char *, char *, char *);
+extern char *derivation_select(char *);
+extern char *derivation_count(char *);
+extern char *derivation_stemcellline(char *);
+extern char *derivation_parentcellline(char *);
 
 /* Cross.d */
 
-#define cross_sql_1a "select * from CRS_Cross_View where _Cross_key = "
-#define cross_sql_1b "\norder by whoseCross\n"
+extern char *cross_select(char *);
 
 /* Marker.d */
 

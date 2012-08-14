@@ -321,15 +321,15 @@ rules:
 
 	  -- Set defaults
 
-	  pendingStatusKey := mgi_sql1(allele_sql_1 + mgi_DBprstr(ALL_STATUS_PENDING));
+	  pendingStatusKey := mgi_sql1(allele_pendingstatus());
 
-	  defaultQualifierKey := mgi_sql1(allele_sql_2);
+	  defaultQualifierKey := mgi_sql1(allele_defqualifier());
 
-	  defaultStatusKey := mgi_sql1(allele_sql_3);
+	  defaultStatusKey := mgi_sql1(allele_defstatus());
 
-	  defaultInheritanceKeyNA := mgi_sql1(allele_sql_4);
+	  defaultInheritanceKeyNA := mgi_sql1(allele_definheritanceNA());
 
-	  defaultInheritanceKeyNS := mgi_sql1(allele_sql_5);
+	  defaultInheritanceKeyNS := mgi_sql1(allele_definheritanceNS());
 
 	  defaultStrainKeyNS := NOTSPECIFIED;
 	  defaultStrainKeyNA := NOTAPPLICABLE;
@@ -1337,14 +1337,12 @@ rules:
 		--   cell line type
 		--
 
-	        derivationcmd := allele_sql_6a + alleleTypeKey +
-			allele_sql_6b + defaultCreatorKeyNS +
-			allele_sql_6c + defaultVectorKeyNS +
-			allele_sql_6d + defaultParentCellLineKeyNS +
-			allele_sql_6e +
-			allele_sql_6f + defaultStrainKeyNS +
-			allele_sql_6g + cellLineTypeKey +
-			allele_sql_6h;
+	        derivationcmd := allele_derivation(alleleTypeKey, \
+				defaultCreatorKeyNS, \
+				defaultVectorKeyNS, \
+				defaultParentCellLineKeyNS, \
+				defaultStrainKeyNS, \
+				cellLineTypeKey);
 
 	        derivationKey := mgi_sql1(derivationcmd);
 
@@ -1382,14 +1380,12 @@ rules:
 	      --   cell line type
 	      --
 
-	        derivationcmd := allele_sql_6a + alleleTypeKey +
-			allele_sql_6b + defaultCreatorKeyNS +
-			allele_sql_6c + defaultVectorKeyNS +
-			allele_sql_6d + parentKey +
-			allele_sql_6e +
-			allele_sql_6f + strainKey +
-			allele_sql_6g + cellLineTypeKey +
-			allele_sql_6h;
+	        derivationcmd := allele_derivation(alleleTypeKey, \
+				defaultCreatorKeyNS, \
+				defaultVectorKeyNS, \
+				parentKey, \
+				strainKey, \
+				cellLineTypeKey);
 
 	        derivationKey := mgi_sql1(derivationcmd);
 
@@ -1427,14 +1423,12 @@ rules:
 
 		if (getDerivation) then
 
-	          derivationcmd := allele_sql_6a + alleleTypeKey +
-			  allele_sql_6b + creatorKey +
-			  allele_sql_6c + vectorKey +
-			  allele_sql_6d + parentKey +
-			  allele_sql_6e +
-			  allele_sql_6f + strainKey +
-			  allele_sql_6g + cellLineTypeKey +
-			  allele_sql_6h;
+	        derivationcmd := allele_derivation(alleleTypeKey, \
+				creatorKey, \
+				vectorKey, \
+				parentKey, \
+				strainKey, \
+				cellLineTypeKey);
 
 	          derivationKey := mgi_sql1(derivationcmd);
 
@@ -1945,7 +1939,7 @@ rules:
 	  dbproc : opaque;
 	  
 	  row := 0;
-	  cmd := allele_sql_7 + currentRecordKey;
+	  cmd := allele_select(currentRecordKey);
 	  table := top->Control->ModificationHistory->Table;
 	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
@@ -2011,7 +2005,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  row := 0;
-	  cmd := allele_sql_8 + currentRecordKey;
+	  cmd := allele_markerassoc(currentRecordKey);
 	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -2032,7 +2026,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  row := 0;
-	  cmd := allele_sql_9 + currentRecordKey;
+	  cmd := allele_mutation(currentRecordKey);
 	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -2046,7 +2040,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  row := 0;
-	  cmd := allele_sql_10a + currentRecordKey + allele_sql_10b;
+	  cmd := allele_notes(currentRecordKey);
 	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -2058,7 +2052,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  row := 0;
-	  cmd := allele_sql_11a + currentRecordKey + allele_sql_11b + mgiTypeKey + allele_sql_11c;
+	  cmd := allele_images(currentRecordKey, mgiTypeKey);
 	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -2084,7 +2078,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  row := 0;
-	  cmd := allele_sql_12 + currentRecordKey;
+	  cmd := allele_cellline(currentRecordKey);
 	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -2193,7 +2187,7 @@ rules:
 	      return;
 	  end if;
 
-	  cmd := allele_sql_13 + top->mgiParentCellLine->ObjectID->text.value;
+	  cmd := allele_stemcellline(top->mgiParentCellLine->ObjectID->text.value);
 
 	  dbproc : opaque := mgi_dbexec(cmd);
 
@@ -2305,7 +2299,7 @@ rules:
 
 	  -- Search for value in the database
 
-	  select := allele_sql_14 + mgi_DBprstr(value) + "\n";
+	  select := allele_mutantcellline(mgi_DBprstr(value));
 
 	  dbproc : opaque := mgi_dbexec(select);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
@@ -2415,7 +2409,7 @@ rules:
 
 	  -- Search for value in the database
 
-	  select : string := allele_sql_15 + mgi_DBprstr(value);
+	  select : string := allele_parentcellline(mgi_DBprstr(value));
 
 	  dbproc : opaque := mgi_dbexec(select);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do

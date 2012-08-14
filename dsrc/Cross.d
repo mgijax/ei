@@ -423,7 +423,7 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := cross_sql_1a + currentRecordKey + cross_sql_1b;
+	  cmd := cross_select(currentRecordKey);
 
           dbproc : opaque := mgi_dbexec(cmd);
  
