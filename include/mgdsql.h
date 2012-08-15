@@ -43,6 +43,14 @@ extern char *derivation_parentcellline(char *);
 
 extern char *cross_select(char *);
 
+/* Genotype.d */
+
+extern char *genotype_search(char *);
+extern char *genotype_select(char *);
+extern char *genotype_allelepair(char *);
+extern char *genotype_notes(char *);
+extern char *genotype_images(char *, char *);
+
 /* Marker.d */
 
 extern char *marker_select(char *);
@@ -118,36 +126,6 @@ extern char *ref_dataset3(char *);
 extern char *ref_select(char *);
 extern char *ref_books(char *);
 extern char *ref_notes(char *);
-
-/* Genotype.d */
-
-#define genotype_sql_2a "(select distinct v._Genotype_key, g.strain + ',' + ap.allele1 + ',' + ap.allele2 as strain \
-from GXD_Expression v, GXD_Genotype_View g \
-LEFT OUTER JOIN GXD_AllelePair_View ap on (g._Genotype_key = ap._Genotype_key) \
-where v._Refs_key = "
-#define genotype_sql_2b "\nand v._Genotype_key = g._Genotype_key \
-union \
-select distinct t._Object_key, g.strain + ',' + ap.allele1 + ',' + ap.allele2 as strain \
-from VOC_Evidence v, VOC_Annot_View t, GXD_Genotype_View g \
-LEFT OUTER JOIN GXD_AllelePair_View ap on (g._Genotype_key = ap._Genotype_key) \
-where v._Refs_key = "
-#define genotype_sql_2c "\nand v._Annot_key = t._Annot_key \
-and t._MGIType_key = 12 \
-and t._Object_key = g._Genotype_key \
-) order by strain"
-
-#define genotype_sql_3 "select * from GXD_Genotype_View where _Genotype_key = "
-#define genotype_sql_4a "\nselect * from GXD_AllelePair_View where _Genotype_key = "
-#define genotype_sql_4b "\norder by sequenceNum\n"
-#define genotype_sql_5a "\nselect note, sequenceNum from MGI_Note_Genotype_View \
-where noteType = 'Combination Type 1' \
-and _Object_key = "
-#define genotype_sql_5b "\norder by sequenceNum\n"
-#define genotype_sql_6a "\nselect _Assoc_key, _ImagePane_key, _ImageClass_key, figureLabel, term, mgiID, pixID, isPrimary \
-from IMG_ImagePane_Assoc_View \
-where _Object_key = "
-#define genotype_sql_6b " and _MGIType_key = "
-#define genotype_sql_6c " order by isPrimary desc, mgiID\n"
 
 /* GOVocAnnot.d */
 

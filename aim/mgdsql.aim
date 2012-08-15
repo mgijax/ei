@@ -49,6 +49,12 @@ CALLS
 	 marker_checkseqaccid("char *", "char *")	: "char *";
 	 marker_eventreason()				: "char *";
 
+	 genotype_search("char *")			: "char *";
+	 genotype_select("char *")			: "char *";
+	 genotype_allelepair("char *")			: "char *";
+	 genotype_notes("char *")			: "char *";
+	 genotype_images("char *", "char *")		: "char *";
+
 	 nonmouse_term()				: "char *";
 	 nonmouse_select("char *")			: "char *";
 	 nonmouse_notes("char *")			: "char *";

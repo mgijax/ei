@@ -251,6 +251,74 @@ char *cross_select(char *key)
 }
 
 /*
+* Genotype.d
+*/
+
+char *genotype_search(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"(select distinct v._Genotype_key, \
+		g.strain + ',' + ap.allele1 + ',' + ap.allele2 as strain \
+  	from GXD_Expression v, GXD_Genotype_View g \
+  	LEFT OUTER JOIN GXD_AllelePair_View ap on (g._Genotype_key = ap._Genotype_key) \
+  	where v._Refs_key = %s \
+  	and v._Genotype_key = g._Genotype_key \
+  	union \
+  	select distinct t._Object_key, \
+		g.strain + ',' + ap.allele1 + ',' + ap.allele2 as strain \
+  	from VOC_Evidence v, VOC_Annot_View t, GXD_Genotype_View g \
+  	LEFT OUTER JOIN GXD_AllelePair_View ap on (g._Genotype_key = ap._Genotype_key) \
+  	where v._Refs_key = %s \
+  	and v._Annot_key = t._Annot_key \
+  	and t._MGIType_key = 12 \
+  	and t._Object_key = g._Genotype_key \
+  	) order by strain", key, key);
+  return(buf);
+}
+
+char *genotype_select(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select * from GXD_Genotype_View where _Genotype_key = %s", key);
+  return(buf);
+}
+
+char *genotype_allelepair(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select * from GXD_AllelePair_View where _Genotype_key = %s \
+	order by sequenceNum", key);
+  return(buf);
+}
+
+char *genotype_notes(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select note, sequenceNum from MGI_Note_Genotype_View \
+  	where noteType = 'Combination Type 1' \
+  	and _Object_key = %s \
+  	order by sequenceNum", key);
+  return(buf);
+}
+
+char *genotype_images(char *key, char *mgiTypeKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Assoc_key, _ImagePane_key, _ImageClass_key, figureLabel, \
+		term, mgiID, pixID, isPrimary \
+  	from IMG_ImagePane_Assoc_View \
+  	where _Object_key = %s \
+  	and _MGIType_key = %s \
+  	order by isPrimary desc, mgiID", key, mgiTypeKey);
+  return(buf);
+}
+
+/*
 * Marker.d
 */
 

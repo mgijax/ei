@@ -916,7 +916,7 @@ rules:
           value := mgi_tblGetCell(top->Reference->Table, 0, top->Reference->Table.refsKey);
           if (value.length > 0) then
 	    Query.source_widget := top;
-	    Query.select := genotype_sql_2a + value + genotype_sql_2b + value + genotype_sql_2c;
+	    Query.select := genotype_search(value);
 	    Query.table := (integer) NOTSPECIFIED;
 	    send(Query, 0);
 	  elsif (assayKey.length > 0) then
@@ -1031,7 +1031,7 @@ rules:
 	  table : widget;
           dbproc : opaque;
 
-	  cmd := genotype_sql_3 + currentRecordKey;
+	  cmd := genotype_select(currentRecordKey);
 	  table := top->Control->ModificationHistory->Table;
 	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
@@ -1056,7 +1056,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  row := 0;
-	  cmd := genotype_sql_4a + currentRecordKey + genotype_sql_4b;
+	  cmd := genotype_allelepair(currentRecordKey);
 	  table := top->AllelePair->Table;
 	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
@@ -1081,7 +1081,7 @@ rules:
 	  end while;
 	  (void) mgi_dbclose(dbproc);
 
-	  cmd := genotype_sql_5a + currentRecordKey + genotype_sql_5b;
+	  cmd := genotype_notes(currentRecordKey);
 	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -1092,7 +1092,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  row := 0;
-	  cmd := genotype_sql_6a + currentRecordKey + genotype_sql_6b + mgiTypeKey + genotype_sql_6c;
+	  cmd := genotype_images(currentRecordKey, mgiTypeKey);
 	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
