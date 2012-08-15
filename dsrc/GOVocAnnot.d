@@ -382,7 +382,7 @@ rules:
 
 	  -- cannot save annotations where marker is withdrawn
 
-	  markerStatus := mgi_sql1(govoc_sql_1 + currentRecordKey);
+	  markerStatus := mgi_sql1(govoc_status(currentRecordKey));
 
 	  if (markerStatus = "2") then
             StatusReport.source_widget := top.root;
@@ -569,7 +569,7 @@ rules:
 
 	  -- warning for non-gene markers
 
-	  markerType := mgi_sql1(govoc_sql_2 + currentRecordKey);
+	  markerType := mgi_sql1(govoc_type(currentRecordKey));
 
 	  if (markerType != "1") then
             StatusReport.source_widget := top.root;
@@ -948,7 +948,7 @@ rules:
 
 	  -- Set the ReportDialog.select to query the currently selected record only
 
-	  top->ReportDialog.select := govoc_sql_5a + dbView + govoc_sql_5b + currentRecordKey;
+	  top->ReportDialog.select := govoc_report1(currentRecordKey, dbView);
 
 	  -- start the query
 
@@ -958,7 +958,7 @@ rules:
 	  objectLoaded : boolean := false;
           dbproc : opaque;
 	  
-	  cmd := govoc_sql_6a + dbView + govoc_sql_6b + currentRecordKey + govoc_sql_6c;
+	  cmd := govoc_report2(currentRecordKey, dbView);
 	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -975,28 +975,28 @@ rules:
           end while;
 	  (void) mgi_dbclose(dbproc);
 
-	  cmd := govoc_sql_7a + currentRecordKey + govoc_sql_7b + currentRecordKey + govoc_sql_7c; 
+	  cmd := govoc_select(currentRecordKey);
 
 	  -- select the sort order
 
 	  sortOrder := top->GOAnnotSortMenu.menuHistory.name;
 	  if (sortOrder = "sortA") then
-	    cmd := cmd + govoc_sql_orderA;
+	    cmd := cmd + govoc_orderA();
 	    resetBackground := true;
 	  elsif (sortOrder = "sortB") then
-	    cmd := cmd + govoc_sql_orderB;
+	    cmd := cmd + govoc_orderB();
 	    resetBackground := false;
 	  elsif (sortOrder = "sortC") then
-	    cmd := cmd + govoc_sql_orderC;
+	    cmd := cmd + govoc_orderC();
 	    resetBackground := false;
 	  elsif (sortOrder = "sortD") then
-	    cmd := cmd + govoc_sql_orderD;
+	    cmd := cmd + govoc_orderD();
 	    resetBackground := false;
 	  elsif (sortOrder = "sortE") then
-	    cmd := cmd + govoc_sql_orderE;
+	    cmd := cmd + govoc_orderE();
 	    resetBackground := false;
 	  elsif (sortOrder = "sortF") then
-	    cmd := cmd + govoc_sql_orderF;
+	    cmd := cmd + govoc_orderF();
 	    resetBackground := false;
 	  end if;
 	  -- end select the sort order
@@ -1037,7 +1037,7 @@ rules:
           end while;
 	  (void) mgi_dbclose(dbproc);
 
-	  cmd := govoc_sql_9 + currentRecordKey;
+	  cmd := govoc_tracking(currentRecordKey);
 	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -1059,7 +1059,7 @@ rules:
           end while;
 	  (void) mgi_dbclose(dbproc);
 
-	  -- Sort by DAG; not needed; sorting is handled in govoc_sql_7
+	  -- Sort by DAG; not needed; sorting is handled in govoc_select()
 	  --(void) mgi_tblSort(annotTable, annotTable.dag);
 
 	  -- Reset Background
@@ -1152,9 +1152,7 @@ rules:
 --			" where a._Object_key = r._Marker_key " +
 
 	  cmd : string;
-	  cmd := govoc_sql_11a + currentRecordKey + 
-		 govoc_sql_11b + annotTypeKey +
-		 govoc_sql_11c;
+	  cmd := govoc_xref(currentRecordKey, annotTypeKey);
 
 	  row : integer := 0;
           dbproc : opaque := mgi_dbexec(cmd);
@@ -1192,14 +1190,14 @@ rules:
 	  annotTypeKey := (string) top->VocAnnotTypeMenu.menuHistory.defaultValue;
 	  annotType := top->VocAnnotTypeMenu.menuHistory.labelString;
 	  mgiTypeKey := (string) top->VocAnnotTypeMenu.menuHistory.mgiTypeKey;
-	  dbView := mgi_sql1(govoc_sql_3 + mgiTypeKey);
+	  dbView := mgi_sql1(govoc_dbview(mgiTypeKey));
 	  top->mgiAccession.mgiTypeKey := mgiTypeKey;
 	  annotTable.vocabKey := top->VocAnnotTypeMenu.menuHistory.vocabKey;
 	  annotTable.vocabEvidenceKey := top->VocAnnotTypeMenu.menuHistory.evidenceKey;
 	  annotTable.annotVocab := top->VocAnnotTypeMenu.menuHistory.annotVocab;
 	  annotTable.vocabQualifierKey := top->VocAnnotTypeMenu.menuHistory.qualifierKey;
 
-	  defaultQualifierKey := mgi_sql1(govoc_sql_4 + (string) annotTable.vocabQualifierKey);
+	  defaultQualifierKey := mgi_sql1(govoc_term((string) annotTable.vocabQualifierKey));
 
 	  (void) reset_cursor(mgi);
 	end does;

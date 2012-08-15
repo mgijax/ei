@@ -319,6 +319,166 @@ char *genotype_images(char *key, char *mgiTypeKey)
 }
 
 /*
+* GOVocAnnot.d
+*/
+
+char *govoc_status(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Marker_Status_key from MRK_Marker where _Marker_key = %s", key);
+  return(buf);
+}
+
+char *govoc_type(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Marker_Type_key from MRK_Marker where _Marker_key = %s", key);
+  return(buf);
+}
+
+char *govoc_dbview(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select dbView from ACC_MGIType where _MGIType_key = %s", key);
+  return(buf);
+}
+
+char *govoc_term(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Term_key from VOC_Term where term is null and _Vocab_key = %s", key);
+  return(buf);
+}
+
+char *govoc_report1(char *key, char *dbView)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select distinct _Object_key, description from %s \
+	where _Object_key = %s", dbView, key);
+  return(buf);
+}
+
+char *govoc_report2(char *key, char *dbView)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Object_key, accID, description, short_description from %s \
+	where prefixPart = 'MGI:' and preferred = 1 and _Object_key = %s \
+	order by description", dbView, key);
+  return(buf);
+}
+
+char *govoc_select(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"(select a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier, \
+  	e._AnnotEvidence_key, e._Annot_key, e._EvidenceTerm_key, e._Refs_key, e.inferredFrom, \
+  	e.creation_date, e.modification_date,  \
+  	e.evidenceCode, e.jnum, e.short_citation, e.createdBy, e.modifiedBy, \
+  	substring(v.dagAbbrev,1,3) as dagAbbrev, 'y' as hasProperty \
+  	from VOC_Annot_View a, VOC_Evidence_View e, DAG_Node_View v \
+  	where a._AnnotType_key = 1000 \
+  	and a._Annot_key = e._Annot_key \
+  	and a._Vocab_key = v._Vocab_key \
+  	and a._Term_key = v._Object_key \
+  	and a._Object_key = %s \
+  	and exists (select 1 from VOC_Evidence_Property p \
+			where e._AnnotEvidence_key = p._AnnotEvidence_key) \
+   	union \
+   	select a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier, \
+   	e._AnnotEvidence_key, e._Annot_key, e._EvidenceTerm_key, e._Refs_key, e.inferredFrom, \
+   	e.creation_date, e.modification_date,  \
+   	e.evidenceCode, e.jnum, e.short_citation, e.createdBy, e.modifiedBy, \
+   	substring(v.dagAbbrev,1,3) as dagAbbrev, 'n' as hasProperty \
+   	from VOC_Annot_View a, VOC_Evidence_View e, DAG_Node_View v \
+   	where a._AnnotType_key = 1000 \
+   	and a._Annot_key = e._Annot_key \
+   	and a._Vocab_key = v._Vocab_key \
+   	and a._Term_key = v._Object_key \
+   	and a._Object_key = %s \
+   	and not exists (select 1 from VOC_Evidence_Property p  \
+		where e._AnnotEvidence_key = p._AnnotEvidence_key))", key, key);
+  return(buf);
+}
+
+char *govoc_orderA()
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"\norder by dagAbbrev, modification_date desc, term");
+  return(buf);
+}
+
+char *govoc_orderB()
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"\norder by creation_date desc, term");
+  return(buf);
+}
+
+char *govoc_orderC()
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"\norder by accID, term");
+  return(buf);
+}
+
+char *govoc_orderD()
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"\norder by jnum, term");
+  return(buf);
+}
+
+char *govoc_orderE()
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"\norder by evidenceCode, term");
+  return(buf);
+}
+
+char *govoc_orderF()
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"\norder by modification_date desc, term");
+  return(buf);
+}
+
+char *govoc_tracking(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select isReferenceGene, completion_date \
+	from GO_Tracking_View where _Marker_key = %s", key);
+  return(buf);
+}
+
+char *govoc_xref(char *key, char *annotTypeKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select r._Refs_key, jnum, short_citation from BIB_GOXRef_View r where r._Marker_key = %s \
+	and not exists (select 1 from VOC_Annot a, VOC_Evidence e \
+	where a._Annot_key = e._Annot_key \
+	and e._Refs_key = r._Refs_key \
+	and a._AnnotType_key = %s \
+	)\norder by r.jnum desc", key, annotTypeKey);
+  return(buf);
+}
+
+/*
+/*
 * Marker.d
 */
 

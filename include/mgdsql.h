@@ -51,6 +51,24 @@ extern char *genotype_allelepair(char *);
 extern char *genotype_notes(char *);
 extern char *genotype_images(char *, char *);
 
+/* GOVocAnnot.d */
+
+extern char *govoc_status(char *);
+extern char *govoc_type(char *);
+extern char *govoc_dbview(char *);
+extern char *govoc_term(char *);
+extern char *govoc_report1(char *, char *);
+extern char *govoc_report2(char *, char *);
+extern char *govoc_select(char *);
+extern char *govoc_orderA();
+extern char *govoc_orderB();
+extern char *govoc_orderC();
+extern char *govoc_orderD();
+extern char *govoc_orderE();
+extern char *govoc_orderF();
+extern char *govoc_tracking(char *);
+extern char *govoc_xref(char *, char *);
+
 /* Marker.d */
 
 extern char *marker_select(char *);
@@ -126,66 +144,6 @@ extern char *ref_dataset3(char *);
 extern char *ref_select(char *);
 extern char *ref_books(char *);
 extern char *ref_notes(char *);
-
-/* GOVocAnnot.d */
-
-#define govoc_sql_1 "select _Marker_Status_key from MRK_Marker where _Marker_key = "
-#define govoc_sql_2 "select _Marker_Type_key from MRK_Marker where _Marker_key = "
-#define govoc_sql_3 "select dbView from ACC_MGIType where _MGIType_key = "
-#define govoc_sql_4 "select _Term_key from VOC_Term where term is null and _Vocab_key = "
-
-#define govoc_sql_5a "select distinct _Object_key, description from "
-#define govoc_sql_5b " where _Object_key = "
-
-#define govoc_sql_6a "select _Object_key, accID, description, short_description from "
-#define govoc_sql_6b " where prefixPart = 'MGI:' and preferred = 1 and _Object_key = "
-#define govoc_sql_6c " order by description\n"
-
-#define govoc_sql_7a "(select a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier, \
-e._AnnotEvidence_key, e._Annot_key, e._EvidenceTerm_key, e._Refs_key, e.inferredFrom, \
-e.creation_date, e.modification_date,  \
-e.evidenceCode, e.jnum, e.short_citation, e.createdBy, e.modifiedBy, \
-substring(v.dagAbbrev,1,3) as dagAbbrev, 'y' as hasProperty \
-from VOC_Annot_View a, VOC_Evidence_View e, DAG_Node_View v \
-where a._AnnotType_key = 1000 \
-and a._Annot_key = e._Annot_key \
-and a._Vocab_key = v._Vocab_key \
-and a._Term_key = v._Object_key \
-and a._Object_key = "
-#define govoc_sql_7b "\nand exists (select 1 from VOC_Evidence_Property p where e._AnnotEvidence_key = p._AnnotEvidence_key) \
-union \
-select a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier, \
-e._AnnotEvidence_key, e._Annot_key, e._EvidenceTerm_key, e._Refs_key, e.inferredFrom, \
-e.creation_date, e.modification_date,  \
-e.evidenceCode, e.jnum, e.short_citation, e.createdBy, e.modifiedBy, \
-substring(v.dagAbbrev,1,3) as dagAbbrev, 'n' as hasProperty \
-from VOC_Annot_View a, VOC_Evidence_View e, DAG_Node_View v \
-where a._AnnotType_key = 1000 \
-and a._Annot_key = e._Annot_key \
-and a._Vocab_key = v._Vocab_key \
-and a._Term_key = v._Object_key \
-and a._Object_key = "
-#define govoc_sql_7c "\nand not exists (select 1 from VOC_Evidence_Property p where e._AnnotEvidence_key = p._AnnotEvidence_key))"
-#define govoc_sql_orderA "\norder by dagAbbrev, modification_date desc, term\n"
-#define govoc_sql_orderB "\norder by creation_date desc, term\n"
-#define govoc_sql_orderC "\norder by accID, term\n"
-#define govoc_sql_orderD "\norder by jnum, term\n"
-#define govoc_sql_orderE "\norder by evidenceCode, term\n"
-#define govoc_sql_orderF "\norder by modification_date desc, term\n"
-
-#define govoc_sql_9 "select isReferenceGene, completion_date \
-from GO_Tracking_View where _Marker_key = "
-
-#define govoc_sql_10a "select r._Refs_key, jnum, short_citation from BIB_GOXRef_View r  where r._Marker_key = "
-#define govoc_sql_10b "\nand not exists (select 1 from VOC_Annot a, VOC_Evidence e where _AnnotType_key = "
-#define govoc_sql_10c "\nand a._Annot_key = e._Annot_key  and e._Refs_key = r._Refs_key) order by r.jnum desc\n"
-
-#define govoc_sql_11a "select r._Refs_key, jnum, short_citation from BIB_GOXRef_View r where r._Marker_key = "
-#define govoc_sql_11b "\nand not exists (select 1 from VOC_Annot a, VOC_Evidence e \
-where a._Annot_key = e._Annot_key \
-and e._Refs_key = r._Refs_key \
-and a._AnnotType_key = "
-#define govoc_sql_11c ")\norder by r.jnum desc\n"
 
 /* MLDP.d */
 

@@ -55,6 +55,22 @@ CALLS
 	 genotype_notes("char *")			: "char *";
 	 genotype_images("char *", "char *")		: "char *";
 
+	 govoc_status("char *")				: "char *";
+	 govoc_type("char *")				: "char *";
+	 govoc_dbview("char *")				: "char *";
+	 govoc_term("char *")				: "char *";
+	 govoc_report1("char *", "char *")		: "char *";
+	 govoc_report2("char *", "char *")		: "char *";
+	 govoc_select("char *")				: "char *";
+	 govoc_orderA()					: "char *";
+	 govoc_orderB()					: "char *";
+	 govoc_orderC()					: "char *";
+	 govoc_orderD()					: "char *";
+	 govoc_orderE()					: "char *";
+	 govoc_orderF()					: "char *";
+	 govoc_tracking("char *")			: "char *";
+	 govoc_xref("char *", "char *")			: "char *";
+
 	 nonmouse_term()				: "char *";
 	 nonmouse_select("char *")			: "char *";
 	 nonmouse_notes("char *")			: "char *";
