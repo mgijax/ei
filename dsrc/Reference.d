@@ -238,7 +238,7 @@ rules:
 
 	  dbproc : opaque;
 	  
-	  cmd := ref_sql_1;
+	  cmd := ref_dataset1();
 	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -259,7 +259,7 @@ rules:
 	  labels := "";
 	  row := 0;
 
-	  cmd := ref_sql_2;
+	  cmd := ref_dataset2();
 	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -874,7 +874,7 @@ rules:
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 	  top->Notes->text.value := "";
 
-	  cmd := ref_sql_3 + currentRecordKey;
+	  cmd := ref_select(currentRecordKey);
 	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -918,7 +918,7 @@ rules:
 	  end while;
 	  (void) mgi_dbclose(dbproc);
 
-	  cmd := ref_sql_4 + currentRecordKey + "\n";
+	  cmd := ref_books(currentRecordKey);
 	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -931,7 +931,7 @@ rules:
 	  end while;
 	  (void) mgi_dbclose(dbproc);
 
-	  cmd := ref_sql_5a + currentRecordKey + ref_sql_5b;
+	  cmd := ref_notes(currentRecordKey);
 	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -1050,7 +1050,7 @@ rules:
 	  send(ClearTable, 0);
 	  send(InitDataSets, 0);
 
-	  cmd := ref_sql_6 + currentRecordKey;
+	  cmd := ref_dataset3(currentRecordKey);
 
 	  dbproc : opaque := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do

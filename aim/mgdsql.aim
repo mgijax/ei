@@ -86,6 +86,13 @@ CALLS
 
 	 ri_select("char *")				: "char *";
 
+	 ref_dataset1()					: "char *";
+	 ref_dataset2()					: "char *";
+	 ref_dataset3("char *")				: "char *";
+	 ref_select("char *")				: "char *";
+	 ref_books("char *")				: "char *";
+	 ref_notes("char *")				: "char *";
+
 	 strain_speciesNS()				: "char *";
 	 strain_strainNS()				: "char *";
 	 strain_select("char *")			: "char *";

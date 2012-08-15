@@ -110,6 +110,15 @@ extern char *nonmutant_count(char *);
 
 extern char *ri_select(char *);
 
+/* Reference.d */
+
+extern char *ref_dataset1();
+extern char *ref_dataset2();
+extern char *ref_dataset3(char *);
+extern char *ref_select(char *);
+extern char *ref_books(char *);
+extern char *ref_notes(char *);
+
 /* Genotype.d */
 
 #define genotype_sql_2a "(select distinct v._Genotype_key, g.strain + ',' + ap.allele1 + ',' + ap.allele2 as strain \
@@ -396,20 +405,6 @@ and m._Organism_key != 1 \
 and hm._Marker_key = a._Object_key \
 and a._LogicalDB_key = 55 \
 order by a._Organism_key\n"
-
-/* Reference.d */
-
-#define ref_sql_1 "select _DataSet_key, abbreviation, inMGIprocedure from BIB_DataSet \
-where inMGIprocedure is not null and isObsolete = 0 \
-order by sequenceNum"
-#define ref_sql_2 "select _DataSet_key, abbreviation from BIB_DataSet \
-where inMGIprocedure is null and isObsolete = 0 \
-order by sequenceNum"
-#define ref_sql_3 "select * from BIB_All2_View where _Refs_key = "
-#define ref_sql_4 "\nselect * from BIB_Books where _Refs_key = "
-#define ref_sql_5a "\nselect rtrim(note) from BIB_Notes where _Refs_key = "
-#define ref_sql_5b "\norder by sequenceNum"
-#define ref_sql_6 "select _Assoc_key, _DataSet_key, isNeverUsed from BIB_DataSet_Assoc where _Refs_key = "
 
 /* Sequence.d */
 

@@ -683,6 +683,64 @@ char *ri_select(char *key)
 }
 
 /*
+* Reference.d
+*/
+
+char *ref_dataset1()
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _DataSet_key, abbreviation, inMGIprocedure from BIB_DataSet \
+  	where inMGIprocedure is not null and isObsolete = 0 \
+  	order by sequenceNum");
+  return(buf);
+}
+
+char *ref_dataset2(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _DataSet_key, abbreviation from BIB_DataSet \
+  	where inMGIprocedure is null and isObsolete = 0 \
+  	order by sequenceNum");
+  return(buf);
+}
+
+char *ref_dataset3(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Assoc_key, _DataSet_key, isNeverUsed \
+	from BIB_DataSet_Assoc where _Refs_key = %s", key);
+  return(buf);
+}
+
+char *ref_select(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select * from BIB_All2_View where _Refs_key = %s", key);
+  return(buf);
+}
+
+char *ref_books(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select * from BIB_Books where _Refs_key = %s", key);
+  return(buf);
+}
+
+char *ref_notes(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select rtrim(note) from BIB_Notes where _Refs_key = %s \
+	order by sequenceNum", key);
+  return(buf);
+}
+
+/*
  * Strains.d
 */
 
