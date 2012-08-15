@@ -94,6 +94,22 @@ extern char *molecular_sourcekey(char *);
 
 extern char *molsource_select(char *);
 
+/* Nomen.d */
+
+extern char *nomen_event();
+extern char *nomen_status();
+extern char *nomen_internal();
+extern char *nomen_select(char *);
+
+/* NonMutantCellLine.d */
+
+extern char *nonmutant_select(char *);
+extern char *nonmutant_count(char *);
+
+/* RI.d */
+
+extern char *ri_select(char *);
+
 /* Genotype.d */
 
 #define genotype_sql_2a "(select distinct v._Genotype_key, g.strain + ',' + ap.allele1 + ',' + ap.allele2 as strain \
@@ -319,18 +335,6 @@ and d._DerivationType_key = "
 #define mutant_sql_7f " and c._Strain_key = "
 #define mutant_sql_7g " and c._CellLine_Type_key = "
 
-/* Nomen.d */
-
-#define nomen_sql_1 "select * from MRK_Event where _Marker_Event_key in (1,2) order by event"
-#define nomen_sql_2 "select _Term_key, term from VOC_Term where _Vocab_key = 16 order by _Term_key"
-#define nomen_sql_3 "select _Term_key from VOC_Term where _Vocab_key = 15 and term = 'Internal'"
-#define nomen_sql_4 "select * from NOM_Marker_View where _Nomen_key = "
-
-/* NonMutantCellLine.d */
-
-#define nonmutant_sql_1 "select * from ALL_CellLine_View where _CellLine_key = "
-#define nonmutant_sql_2 "select count(_CellLine_key) from ALL_CellLine_View where parentCellLine_key = "
-
 /* OMIMVocAnnot.d */
 
 #define omimvoc_sql_1a "select _Object_key, accID, description, short_description from "
@@ -406,11 +410,6 @@ order by sequenceNum"
 #define ref_sql_5a "\nselect rtrim(note) from BIB_Notes where _Refs_key = "
 #define ref_sql_5b "\norder by sequenceNum"
 #define ref_sql_6 "select _Assoc_key, _DataSet_key, isNeverUsed from BIB_DataSet_Assoc where _Refs_key = "
-
-/* RI.d */
-
-#define ri_sql_1a "select * from RI_RISet_View where _RISet_key = "
-#define ri_sql_1b "\norder by designation\n"
 
 /* Sequence.d */
 

@@ -298,7 +298,7 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := ri_sql_1a + currentRecordKey + ri_sql_1b;
+	  cmd := ri_select(currentRecordKey);
 
           dbproc : opaque := mgi_dbexec(cmd);
  

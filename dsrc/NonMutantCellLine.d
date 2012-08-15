@@ -336,7 +336,7 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := nonmutant_sql_1 + currentRecordKey;
+	  cmd := nonmutant_select(currentRecordKey);
 	  dbproc : opaque;
 	  
 	  dbproc := mgi_dbexec(cmd);
@@ -360,7 +360,7 @@ rules:
 	  end while;
 	  (void) mgi_dbclose(dbproc);
 
-	  cmd := nonmutant_sql_2 + currentRecordKey;
+	  cmd := nonmutant_count(currentRecordKey);
 	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do

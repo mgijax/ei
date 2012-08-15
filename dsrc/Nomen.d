@@ -256,11 +256,11 @@ rules:
 	  -- Dynamically create Marker Event, Event Reason, Status, 
 	  -- Type and Chromosome Menus
 
-	  top->MarkerEventMenu.subMenuId.sql := nomen_sql_1;
+	  top->MarkerEventMenu.subMenuId.sql := nomen_event();
 	  InitOptionMenu.option := top->MarkerEventMenu;
 	  send(InitOptionMenu, 0);
 
-	  top->MarkerStatusMenu.subMenuId.sql := nomen_sql_2; 
+	  top->MarkerStatusMenu.subMenuId.sql := nomen_status(); 
 	  InitOptionMenu.option := top->MarkerStatusMenu;
 	  send(InitOptionMenu, 0);
 
@@ -320,7 +320,7 @@ rules:
 
 	  resettables.append(top->AccessionReference->Table);
 
-	  curationState := mgi_sql1(nomen_sql_3);
+	  curationState := mgi_sql1(nomen_internal());
 
           -- Set Row Count
           SetRowCount.source_widget := top;
@@ -904,7 +904,7 @@ rules:
 	  table : widget;
 	  currentNomenKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := nomen_sql_4 + currentNomenKey;
+	  cmd := nomen_select(currentNomenKey);
 	  row : integer := 0;
 	  dbproc : opaque := mgi_dbexec(cmd);
 
