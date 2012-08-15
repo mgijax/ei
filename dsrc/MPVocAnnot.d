@@ -344,6 +344,7 @@ rules:
 	  dupAnnot : boolean;
 	  editTerm : boolean := false;
 	  clipAnnotEvidenceKey : string;
+	  isUsingCopyAnnotEvidenceNotes : boolean := false;
  
 	  (void) busy_cursor(top);
 
@@ -466,7 +467,8 @@ rules:
 
 	      if (clipAnnotEvidenceKey.length > 0) then
 		-- add notes
-		cmd := cmd + mpvoc_sql_0 + clipAnnotEvidenceKey + ",@" + keyName + "\n";
+		cmd := cmd + mpvoc_exec_copyAnnotEvidenceNotes(clipAnnotEvidenceKey, keyName);
+		isUsingCopyAnnotEvidenceNotes := true;
 	      end if;
 
             elsif (editMode = TBL_ROW_MODIFY) then
@@ -498,7 +500,7 @@ rules:
 
 	  ModifySQL.transaction := true;
 	  if (cmd != nil) then
-	    if (strstr(cmd, mpvoc_sql_0) != nil) then
+	    if (isUsingCopyAnnotEvidenceNotes) then
 	      ModifySQL.transaction := false;
 	    end if;
           end if;
@@ -508,7 +510,7 @@ rules:
 	  ModifySQL.reselect := false;
           send(ModifySQL, 0);
 
-	  cmd := mpvoc_sql_1 + annotTypeKey + "," + currentRecordKey + "\n";
+	  cmd := mpvoc_exec_processAnnotHeader(currentRecordKey, annotTypeKey);
           ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
 	  ModifySQL.reselect := true;
@@ -620,7 +622,7 @@ rules:
 	  -- lose their 'isNormal' bit.  We use a stored procedure to
 	  -- recompute these.
 
-	  cmd := mpvoc_sql_1 + annotTypeKey + "," + currentRecordKey + "\n";
+	  cmd := mpvoc_exec_processAnnotHeader(currentRecordKey, annotTypeKey);
 	  ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
 	  ModifySQL.reselect := true;
@@ -682,7 +684,7 @@ rules:
 --
 
 	LoadHeader does
-	  cmd : string := mpvoc_sql_2a + annotTypeKey + mpvoc_sql_2b + currentRecordKey + mpvoc_sql_2c;
+	  cmd : string := mpvoc_loadheader(currentRecordKey, annotTypeKey);
 	  row : integer := 0;
           dbproc : opaque;
 	  

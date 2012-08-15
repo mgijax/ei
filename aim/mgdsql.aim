@@ -98,6 +98,10 @@ CALLS
 	 molecular_rflv("char *")			: "char *";
 	 molecular_sourcekey("char *")			: "char *";
 
+	 mpvoc_exec_copyAnnotEvidenceNotes("char *", "char *")	: "char *";
+	 mpvoc_exec_processAnnotHeader("char *", "char *")	: "char *";
+	 mpvoc_loadheader("char *", "char *")		: "char *";
+
 	 nomen_event()					: "char *";
 	 nomen_status()					: "char *";
 	 nomen_internal()				: "char *";

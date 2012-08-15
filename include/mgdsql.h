@@ -199,14 +199,9 @@ from MLD_Statistics_View where _Expt_key = "
 
 /* MPVocAnnot.d */
 
-#define mpvoc_sql_0 "\nexec VOC_copyAnnotEvidenceNotes "
-#define mpvoc_sql_1 "\nexec VOC_processAnnotHeader "
-
-#define mpvoc_sql_2a "select _AnnotHeader_key, _Term_key, term, approvedBy, approval_date, sequenceNum \
-from VOC_AnnotHeader_View \
-where _AnnotType_key =  "
-#define mpvoc_sql_2b " and _Object_key = "
-#define mpvoc_sql_2c "\norder by sequenceNum\n"
+extern char *mpvoc_exec_copyAnnotEvidenceNotes(char *, char *);
+extern char *mpvoc_exec_processAnnotHeader(char *, char *);
+extern char *mpvoc_loadheader(char *, char *);
 
 #define mpvoc_sql_3 "select dbView from ACC_MGIType where _MGIType_key = "
 

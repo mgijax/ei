@@ -842,6 +842,38 @@ char *molsource_select(char *key)
 }
 
 /*
+ * MPVocAnnot.d
+*/
+
+char *mpvoc_exec_copyAnnotEvidenceNotes(char *key, char *keyName)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec VOC_copyAnnotEvidenceNotes %s, @%s", key, keyName);
+  return(buf);
+}
+
+char *mpvoc_exec_processAnnotHeader(char *key, char *annotTypeKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec VOC_processAnnotHeader %s,%s", annotTypeKey, key);
+  return(buf);
+}
+
+char *mpvoc_loadheader(char *key, char *annotTypeKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _AnnotHeader_key, _Term_key, term, approvedBy, approval_date, sequenceNum \
+  	from VOC_AnnotHeader_View \
+	where _AnnotType_key = %s \
+	and _Object_key = %s \
+	order by sequenceNum", annotTypeKey, key);
+  return(buf);
+}
+
+/*
  * Nomen.d
 */
 
