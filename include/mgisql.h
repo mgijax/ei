@@ -49,13 +49,8 @@ extern char *controlledvocab_selectall();
 
 /* EvidencePropertyTableLib.d */
 
-#define evidenceproperty_sql_1a "select _EvidenceProperty_key, propertyTerm from "
-#define evidenceproperty_sql_1b "\norder by propertyTerm"
-
-#define evidenceproperty_sql_2a "select * from "
-#define evidenceproperty_sql_2b " where "
-#define evidenceproperty_sql_2c " = "
-#define evidenceproperty_sql_2d " order by stanza, sequenceNum"
+extern char *evidenceproperty_property(char *);
+extern char *evidenceproperty_select(char *, char *, char *);
 
 /* Lib.d */
 

@@ -88,7 +88,7 @@ rules:
 	  cmd : string;
 	  row : integer := 0;
 
-	  cmd := evidenceproperty_sql_1a + mgi_DBtable(tableID) + evidenceproperty_sql_1b;
+	  cmd := evidenceproperty_property(mgi_DBtable(tableID));
 
 	  dbproc : opaque := mgi_dbexec(cmd);
 
@@ -141,10 +141,12 @@ rules:
 	    editMode := TBL_ROW_NOCHG;
 	  end if;
 
-          cmd := evidenceproperty_sql_2a + mgi_DBtable(tableID) +
-		 evidenceproperty_sql_2b + mgi_DBkey(tableID) + 
-		 evidenceproperty_sql_2c + objectKey +
-		 evidenceproperty_sql_2d;
+          cmd := evidenceproperty_select(mgi_DBtable(tableID), mgi_DBkey(tableID), objectKey);
+
+--          cmd := evidenceproperty_sql_2a + mgi_DBtable(tableID) +
+--		 evidenceproperty_sql_2b + mgi_DBkey(tableID) + 
+--		 evidenceproperty_sql_2c + objectKey +
+--		 evidenceproperty_sql_2d;
 
 	  row : integer := 0;
           dbproc : opaque := mgi_dbexec(cmd);

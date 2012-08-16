@@ -222,3 +222,13 @@ char *evidenceproperty_property(char *key)
   return(buf);
 }
 
+char *evidenceproperty_select(char *key, char *table, char *objectKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select * from %s \
+  	where %s = %s \
+  	order by stanza, sequenceNum", table, key, objectKey);
+  return(buf);
+}
+

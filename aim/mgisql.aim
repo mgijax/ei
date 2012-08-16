@@ -37,6 +37,9 @@ CALLS
 	 controlledvocab_selectdistinct()	: "char *";
 	 controlledvocab_selectall()		: "char *";
 
+	 evidenceproperty_property("char *")	: "char *";
+	 evidenceproperty_select("char *", "char *", "char *")	: "char *";
+
   ENDL
 ENDC
 
