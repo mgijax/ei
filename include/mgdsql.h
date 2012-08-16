@@ -203,8 +203,8 @@ extern char *mpvoc_exec_copyAnnotEvidenceNotes(char *, char *);
 extern char *mpvoc_exec_processAnnotHeader(char *, char *);
 extern char *mpvoc_loadheader(char *, char *);
 extern char *mpvoc_dbview(char *);
-extern char *mpvoc_term(char *);
-extern char *mpvoc_defqualifier(char *);
+extern char *mpvoc_evidencecode(char *);
+extern char *mpvoc_qualifier(char *);
 extern char *mpvoc_select1(char *, char *);
 extern char *mpvoc_select2(char *, char *);
 extern char *mpvoc_select3(char *, char *);
@@ -223,65 +223,23 @@ extern char *mutant_derivationVerify(char *, char *, char *, char *, char *, cha
 
 /* OMIMVocAnnot.d */
 
-#define omimvoc_sql_1a "select _Object_key, accID, description, short_description from "
-#define omimvoc_sql_1b " where _Object_key = "
-#define omimvoc_sql_1c " and prefixPart = 'MGI:' and preferred = 1 order by description\n"
-
-#define omimvoc_sql_2a "select a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier, e.* \
-from VOC_Annot_View a, VOC_Evidence_View e \
-where a._Annot_key = e._Annot_key \
-and a._AnnotType_key =  "
-#define omimvoc_sql_2c "\nand a._Object_key = "
-#define omimvoc_sql_2d "\norder by a.term\n"
-
-#define omimvoc_sql_3a "select distinct n._Note_key, n._Object_key, n.note, n.sequenceNum \
-from VOC_Annot a, VOC_Evidence e, MGI_Note_VocEvidence_View n \
-where a._Annot_key = e._Annot_key \
-and e._AnnotEvidence_key = n._Object_key \
-and a._Object_key = "
-#define omimvoc_sql_3b "\norder by n._Object_key, n.sequenceNum\n"
-
-#define omimvoc_sql_4 "select dbView from ACC_MGIType where _MGIType_key = "
-#define omimvoc_sql_5a "select _Term_key, abbreviation from VOC_Term where _Vocab_key = "
-#define omimvoc_sql_5b "\norder by abbreviation"
-#define omimvoc_sql_6 "select _Term_key from VOC_Term where term is null and _Vocab_key = "
+extern char *omimvoc_select1(char *, char *);
+extern char *omimvoc_select2(char *, char *);
+extern char *omimvoc_notes(char *);
+extern char *omimvoc_dbview(char *);
+extern char *omimvoc_evidencecode(char *);
+extern char *omimvoc_qualifier(char *);
 
 /* Orthology.d */
 
-#define orthology_sql_2a "select distinct h.classRef, h.short_citation, h.jnum \
-from HMD_Homology_View h \
-where h._Class_key = "
-#define orthology_sql_2b "\norder by h.short_citation\n"
-
-#define orthology_sql_3 "where _Class_key = "
-#define orthology_sql_4 "\nand _Refs_key = "
-
-#define orthology_sql_5 "select distinct _Class_key, jnum, short_citation, _Refs_key, \
-creation_date, modification_date \
-from HMD_Homology_View\n"
-
-#define orthology_sql_6a "\nselect distinct _Marker_key, _Organism_key, organism, symbol, \
-chromosome, cytogeneticOffset, name \
-from HMD_Homology_View "
-#define orthology_sql_6b "\norder by _Organism_key\n"
-
-#define orthology_sql_7a "\nselect distinct hm._Marker_key, a.accID, a._Accession_key, a._Organism_key \
-from HMD_Homology h, HMD_Homology_Marker hm, MRK_Acc_View a "
-#define orthology_sql_7b "and h._Homology_key = hm._Homology_key \
-and hm._Marker_key = a._Object_key \
-and a._LogicalDB_key = 1 \
-and a.prefixPart = 'MGI:' \
-and a.preferred = 1 \
-order by a._Organism_key\n"
-
-#define orthology_sql_8a "select distinct hm._Marker_key, a.accID, a._Accession_key, a._Organism_key \
-from HMD_Homology h, HMD_Homology_Marker hm, MRK_Marker m, MRK_Acc_View a "
-#define orthology_sql_8b "\nand h._Homology_key = hm._Homology_key \
-and hm._Marker_key = m._Marker_key \
-and m._Organism_key != 1 \
-and hm._Marker_key = a._Object_key \
-and a._LogicalDB_key = 55 \
-order by a._Organism_key\n"
+extern char *orthology_searchByClass(char *);
+extern char *orthology_citation(char *, char *);
+extern char *orthology_marker(char *, char *);
+extern char *orthology_homology1(char *, char *);
+extern char *orthology_homology2(char *, char *);
+extern char *orthology_homology3(char *);
+extern char *orthology_homology4(char *);
+extern char *orthology_organism(char *);
 
 /* Sequence.d */
 

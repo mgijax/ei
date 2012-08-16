@@ -732,7 +732,7 @@ rules:
 	  if (top->Inferred.set) then
 	    cmd := "select distinct h._Class_key\n" + from + "\n" + where + "\n";
 	    classKey := mgi_sql1(cmd);
-	    Query.select := orthology_sql_2a + classKey + orthology_sql_2b;
+	    Query.select := orthology_searchByClass(classKey);
 	  else
 	    Query.select := "select distinct h.classRef, h.short_citation, h.jnum\n" + 
 			    from + "\n" + where + "\norder by h.short_citation\n";
@@ -788,7 +788,7 @@ rules:
 	  -- Get Mouse Accession info
 	  -- Get non-Mouse Accession info
 
-	  cmd := orthology_sql_5 + orthology_sql_3 + classKey + orthology_sql_4 + refKey;
+	  cmd := orthology_citation(classKey, refKey);
 	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -803,7 +803,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  row := 0;
-	  cmd := orthology_sql_6a + orthology_sql_3 + classKey + orthology_sql_4 + refKey + orthology_sql_6b;
+	  cmd := orthology_marker(classKey, refKey);
 	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -825,7 +825,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  row := 0;
-	  cmd := orthology_sql_7a + orthology_sql_3 + classKey + orthology_sql_4 + refKey + orthology_sql_7b;
+	  cmd := orthology_homology1(classKey, refKey);
 	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -854,7 +854,7 @@ rules:
 
 	  -- continuation of above; do *not* reset row = 0
 	  -- row := 0;
-	  cmd := orthology_sql_8a + orthology_sql_3 + classKey + orthology_sql_4 + refKey + orthology_sql_8b;
+	  cmd := orthology_homology2(classKey, refKey);
 	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -896,13 +896,7 @@ rules:
 	  homKey := "";
 	  row := -1;
 
-	  cmd := "select distinct a._Homology_key, a._Assay_key, a.assay, s._Organism_key " +
-	         "from HMD_Homology h, HMD_Homology_Assay_View a, HMD_Homology_Marker m, MRK_Marker s " +
-		 classRefWhere +
-	         "and h._Homology_key = m._Homology_key " +
-	         "and m._Marker_key = s._Marker_key " +
-	         "and m._Homology_key = a._Homology_key " + 
-	         "order by a._Homology_key, a._Assay_key, s._Organism_key\n";
+	  cmd := orthology_homology3(classRefWhere);
 
 	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
@@ -945,11 +939,7 @@ rules:
 	  homKey := "";
 	  row := -1;
 
-	  cmd := "select distinct n._Homology_key, n.sequenceNum, n.notes " +
-	         "from HMD_Homology h, HMD_Notes n " +
-		 classRefWhere +
-	         "and h._Homology_key = n._Homology_key " +
-	         "order by n._Homology_key, n.sequenceNum\n";
+	  cmd := orthology_homology4(classRefWhere);
 
 	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
@@ -1027,8 +1017,7 @@ rules:
 	    return;
 	  end if;
 
-	  cmd := "select _Organism_key, organism from MGI_Organism_Homology_View " +
-		 "where _Organism_key in " + defaultOrganismKeys + " order by _Organism_key";
+	  cmd := orthology_organism(defaultOrganismKeys);
 
 	  dbproc : opaque := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do

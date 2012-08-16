@@ -1050,6 +1050,62 @@ char *mutant_derivationVerify(
 }
 
 /*
+ * Nomen.d
+*/
+
+char *nomen_event()
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select * from MRK_Event where _Marker_Event_key in (1,2) order by event");
+  return(buf);
+}
+
+char *nomen_status()
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Term_key, term from VOC_Term where _Vocab_key = 16 order by _Term_key");
+  return(buf);
+}
+
+char *nomen_internal()
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Term_key from VOC_Term where _Vocab_key = 15 and term = 'Internal'");
+  return(buf);
+}
+
+char *nomen_select(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select * from NOM_Marker_View where _Nomen_key = %s", key);
+  return(buf);
+}
+
+/*
+* NonMutantCellLine.d
+*/
+
+char *nonmutant_select(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select * from ALL_CellLine_View where _CellLine_key = %s", key);
+  return(buf);
+}
+
+char *nonmutant_count(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select count(_CellLine_key) from ALL_CellLine_View where parentCellLine_key = %s", key);
+  return(buf);
+}
+
+/*
  * OMIMVocAnnot.d
 */
 
@@ -1222,62 +1278,6 @@ char *orthology_organism(char *key)
   sprintf(buf,"select _Organism_key, organism from MGI_Organism_Homology_View \
 	where _Organism_key in %s \
 	order by _Organism_key", key);
-  return(buf);
-}
-
-/*
- * Nomen.d
-*/
-
-char *nomen_event()
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select * from MRK_Event where _Marker_Event_key in (1,2) order by event");
-  return(buf);
-}
-
-char *nomen_status()
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _Term_key, term from VOC_Term where _Vocab_key = 16 order by _Term_key");
-  return(buf);
-}
-
-char *nomen_internal()
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _Term_key from VOC_Term where _Vocab_key = 15 and term = 'Internal'");
-  return(buf);
-}
-
-char *nomen_select(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select * from NOM_Marker_View where _Nomen_key = %s", key);
-  return(buf);
-}
-
-/*
-* NonMutantCellLine.d
-*/
-
-char *nonmutant_select(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select * from ALL_CellLine_View where _CellLine_key = %s", key);
-  return(buf);
-}
-
-char *nonmutant_count(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select count(_CellLine_key) from ALL_CellLine_View where parentCellLine_key = %s", key);
   return(buf);
 }
 

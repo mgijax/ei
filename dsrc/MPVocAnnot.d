@@ -1112,12 +1112,12 @@ rules:
 	  annotTable.vocabQualifierKey := top->VocAnnotTypeMenu.menuHistory.qualifierKey;
 	  annotTable.annotVocab := top->VocAnnotTypeMenu.menuHistory.annotVocab;
 
-	  top->EvidenceCodeList.cmd := mpvoc_term((string) evidenceKey);
+	  top->EvidenceCodeList.cmd := mpvoc_evidencecode((string) evidenceKey);
           LoadList.list := top->EvidenceCodeList;
 	  send(LoadList, 0);
 
 	  defaultQualifierKey := 
-	      mgi_sql1(mpvoc_defqualifier((string) annotTable.vocabQualifierKey));
+	      mgi_sql1(mpvoc_qualifier((string) annotTable.vocabQualifierKey));
 
 	  (void) reset_cursor(mgi);
 	end does;

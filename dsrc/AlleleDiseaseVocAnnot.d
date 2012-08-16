@@ -605,7 +605,7 @@ rules:
           dbproc : opaque;
 	  objectLoaded : boolean := false;
 
-	  cmd := omimvoc_sql_1a + dbView + omimvoc_sql_1b + currentRecordKey + omimvoc_sql_1c;
+	  cmd := omimvoc_select1(currentRecordKey, dbView);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -623,7 +623,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  row := 0;
-	  cmd := omimvoc_sql_2a + annotTypeKey +  omimvoc_sql_2c + currentRecordKey + omimvoc_sql_2d;
+	  cmd := omimvoc_select2(currentRecordKey, annotTypeKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -695,21 +695,21 @@ rules:
 	  annotTypeKey := (string) top->VocAnnotTypeMenu.menuHistory.defaultValue;
 	  annotType := top->VocAnnotTypeMenu.menuHistory.labelString;
 	  mgiTypeKey := (string) top->VocAnnotTypeMenu.menuHistory.mgiTypeKey;
-	  dbView := mgi_sql1(omimvoc_sql_4 + mgiTypeKey);
+	  dbView := mgi_sql1(omimvoc_dbview(mgiTypeKey));
 	  top->mgiAccession.mgiTypeKey := mgiTypeKey;
 	  annotTable.vocabKey := top->VocAnnotTypeMenu.menuHistory.vocabKey;
 	  annotTable.vocabEvidenceKey := top->VocAnnotTypeMenu.menuHistory.evidenceKey;
 	  annotTable.vocabQualifierKey := top->VocAnnotTypeMenu.menuHistory.qualifierKey;
 	  annotTable.annotVocab := top->VocAnnotTypeMenu.menuHistory.annotVocab;
 
-	  top->EvidenceCodeList.cmd := omimvoc_sql_5a + (string) evidenceKey + omimvoc_sql_5b;
+	  top->EvidenceCodeList.cmd := omimvoc_evidencecode((string) evidenceKey);
           LoadList.list := top->EvidenceCodeList;
 	  send(LoadList, 0);
 
           pos := XmListItemPos(top->EvidenceCodeList->List, xm_xmstring("TAS"));
 	  defaultEvidenceCodeKey := top->EvidenceCodeList->List.keys[pos];
 
-	  defaultQualifierKey := mgi_sql1(omimvoc_sql_6 + (string) annotTable.vocabQualifierKey);
+	  defaultQualifierKey := mgi_sql1(omimvoc_qualifier((string) annotTable.vocabQualifierKey));
 
 	  (void) reset_cursor(mgi);
 	end does;
