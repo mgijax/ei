@@ -248,3 +248,11 @@ char *lib_max(char *key)
  * MGILib.d
 */
 
+char *mgilib_user(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _User_key from MGI_User_Active_View where login like '%s'", key);
+  return(buf);
+}
+

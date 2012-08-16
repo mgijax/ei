@@ -58,8 +58,7 @@ extern char *lib_max(char *);
 
 /* MGILib.d */
 
-#define mgilib_sql_1a "select _User_key from MGI_User_Active_View where login like '"
-#define mgilib_sql_1b "'"
+extern char *mgilib_user(char *);
 
 /* MolSourceLib.d */
 

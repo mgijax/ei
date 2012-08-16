@@ -42,6 +42,8 @@ CALLS
 
 	 lib_max("char *")			: "char *";
 
+	 mgilib_user("char *")			: "char *";
+
   ENDL
 ENDC
 
