@@ -1353,6 +1353,140 @@ char *ref_notes(char *key)
 }
 
 /*
+* Sequence.d
+*/
+
+char *sequence_selectPrefix()
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select ac._Object_key, \
+	ac.accID || ',' || v1.term || ',' || v2.term, v1.term, ac.accID, \
+  	ac.preferred");
+  return(buf);
+}
+
+char *sequence_select(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select * from SEQ_Sequence_View where _Sequence_key = %s", key);
+  return(buf);
+}
+
+char *sequence_raw(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select * from SEQ_Sequence_Raw where _Sequence_key = %s", key);
+  return(buf);
+}
+
+char *sequence_probesource(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select s._Assoc_key, p._Source_key, p.name, p.age  \
+  	from SEQ_Source_Assoc s, PRB_Source p \
+  	where s._Source_key = p._Source_key \
+  	and s._Sequence_key = %s \
+  	order by p._Organism_key", key);
+  return(buf);
+}
+
+char *sequence_organism(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select s._Assoc_key, p._Organism_key, t.commonName \
+  	from SEQ_Source_Assoc s, PRB_Source p, MGI_Organism t \
+  	where s._Source_key = p._Source_key \
+  	and p._Organism_key = t._Organism_key \
+  	and s._Sequence_key = %s \
+  	order by p._Organism_key", key);
+  return(buf);
+}
+
+char *sequence_strain(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select s._Assoc_key, p._Strain_key, t.strain \
+  	from SEQ_Source_Assoc s, PRB_Source p, PRB_Strain t \
+  	where s._Source_key = p._Source_key \
+  	and p._Strain_key = t._Strain_key \
+  	and s._Sequence_key = %s \
+  	order by p._Organism_key", key);
+  return(buf);
+}
+
+char *sequence_tissue(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select s._Assoc_key, p._Tissue_key, t.tissue \
+	  from SEQ_Source_Assoc s, PRB_Source p, PRB_Tissue t \
+  	where s._Source_key = p._Source_key \
+  	and p._Tissue_key = t._Tissue_key \
+  	and s._Sequence_key = %s \
+  	order by p._Organism_key", key);
+  return(buf);
+}
+
+char *sequence_gender(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select s._Assoc_key, p._Gender_key, t.term \
+  	from SEQ_Source_Assoc s, PRB_Source p, VOC_Term t \
+  	where s._Source_key = p._Source_key \
+  	and p._Gender_key = t._Term_key \
+  	and s._Sequence_key = %s \
+  	order by p._Organism_key", key);
+  return(buf);
+}
+
+char *sequence_cellline(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select s._Assoc_key, p._CellLine_key, t.term \
+  	from SEQ_Source_Assoc s, PRB_Source p, VOC_Term t \
+  	where s._Source_key = p._Source_key \
+  	and p._CellLine_key = t._Term_key \
+  	and s._Sequence_key = %s \
+  	order by p._Organism_key", key);
+  return(buf);
+}
+
+char *sequence_marker(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select distinct mgiType, jnum, markerID, symbol \
+  	from SEQ_Marker_Cache_View where _Sequence_key = %s", key);
+  return(buf);
+}
+
+char *sequence_probe(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select distinct mgiType, jnum, probeID, name \
+  	from SEQ_Probe_Cache_View where _Sequence_key = %s", key);
+  return(buf);
+}
+
+char *sequence_allele(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select distinct mgiType, jnum, alleleID, symbol \
+  	from SEQ_Allele_View where _Sequence_key = %s", key);
+  return(buf);
+}
+
+/*
  * Strains.d
 */
 

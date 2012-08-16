@@ -67,7 +67,7 @@ locals:
 	tables : list;
 
 	cmd : string;
-	select : string := sequence_sql_1;
+	select : string;
 	from : string;
 	where : string;
 	union : string;
@@ -190,6 +190,8 @@ rules:
 	  mgi->TissueDialog->ItemList->List.targetWidget := sourceTable;
 	  mgi->TissueDialog->ItemList->List.targetKey := "5";
 	  mgi->TissueDialog->ItemList->List.targetText := "14";
+
+          select := sequence_selectPrefix();
 
 	  -- List of all Table widgets used in form
 
@@ -685,7 +687,7 @@ rules:
           dbproc : opaque;
  
 	  table := top->Control->ModificationHistory->Table;
-	  cmd := sequence_sql_2 + currentKey;
+	  cmd := sequence_select(currentKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -726,7 +728,7 @@ rules:
           end while;
 	  (void) mgi_dbclose(dbproc);
 
-	  cmd := sequence_sql_3 + currentKey;
+	  cmd := sequence_raw(currentKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -744,7 +746,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  nonRawRow := 1;
-	  cmd := sequence_sql_4a + currentKey + sequence_sql_4b;
+	  cmd := sequence_probesource(currentKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -761,7 +763,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  nonRawRow := 1;
-	  cmd := sequence_sql_5a + currentKey + sequence_sql_5b;
+	  cmd := sequence_organism(currentKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -773,7 +775,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  nonRawRow := 1;
-	  cmd := sequence_sql_6a + currentKey + sequence_sql_6b;
+	  cmd := sequence_strain(currentKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -785,7 +787,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  nonRawRow := 1;
-	  cmd := sequence_sql_7a + currentKey + sequence_sql_7b;
+	  cmd := sequence_tissue(currentKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -797,7 +799,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  nonRawRow := 1;
-	  cmd := sequence_sql_8a + currentKey + sequence_sql_8b;
+	  cmd := sequence_gender(currentKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -809,7 +811,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  nonRawRow := 1;
-	  cmd := sequence_sql_9a + currentKey + sequence_sql_9b;
+	  cmd := sequence_cellline(currentKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -827,7 +829,7 @@ rules:
 
 	  row := 0;
 	  table := top->ObjectAssociation->Table;
-	  cmd := sequence_sql_10 + currentKey;
+	  cmd := sequence_marker(currentKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -841,7 +843,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
  
 	  table := top->ObjectAssociation->Table;
-	  cmd := sequence_sql_11 + currentKey;
+	  cmd := sequence_probe(currentKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -855,7 +857,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  table := top->ObjectAssociation->Table;
-	  cmd := sequence_sql_12 + currentKey;
+	  cmd := sequence_allele(currentKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
