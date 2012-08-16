@@ -354,7 +354,7 @@ char *govoc_term(char *key)
   return(buf);
 }
 
-char *govoc_report1(char *key, char *dbView)
+char *govoc_select1(char *key, char *dbView)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
@@ -363,17 +363,17 @@ char *govoc_report1(char *key, char *dbView)
   return(buf);
 }
 
-char *govoc_report2(char *key, char *dbView)
+char *govoc_select2(char *key, char *dbView)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select _Object_key, accID, description, short_description from %s \
-	where prefixPart = 'MGI:' and preferred = 1 and _Object_key = %s \
+	where prefixPart = 'mgi:' and preferred = 1 and _Object_key = %s \
 	order by description", dbView, key);
   return(buf);
 }
 
-char *govoc_select(char *key)
+char *govoc_select3(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
@@ -870,6 +870,182 @@ char *mpvoc_loadheader(char *key, char *annotTypeKey)
 	where _AnnotType_key = %s \
 	and _Object_key = %s \
 	order by sequenceNum", annotTypeKey, key);
+  return(buf);
+}
+
+char *mpvoc_dbview(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select dbView from ACC_MGIType where _MGIType_key = %s", key);
+  return(buf);
+}
+
+char *mpvoc_term(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Term_key, abbreviation from VOC_Term where _Vocab_key = %s \
+	order by abbreviation", key);
+  return(buf);
+}
+
+char *mpvoc_defqualifier(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Term_key from VOC_Term where term is null and _Vocab_key = %s", key);
+  return(buf);
+}
+
+char *mpvoc_select1(char *key, char *dbView)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select distinct _Object_key, description from %s \
+	where _Object_key = %s", dbView, key);
+  return(buf);
+}
+
+char *mpvoc_select2(char *key, char *dbView)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Object_key, accID, description, short_description from %s \
+  	where prefixPart = 'mgi:' and preferred = 1 and _Object_key = %s \
+  	order by description\n", dbView, key);
+  return(buf);
+}
+
+char *mpvoc_select3(char *key, char *annotTypeKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier, e.* \
+  	from VOC_Annot_View a, VOC_Evidence_View e \
+  	where a._AnnotType_key = %s \
+  	and a._Annot_key = e._Annot_key and a._Object_key = %s \
+  	order by e.jnum, a.term", annotTypeKey, key);
+  return(buf);
+}
+
+char *mpvoc_clipboard(char *key, char *annotTypeKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select a._Term_key, t.term, t.sequenceNum, ac.accID, \
+	a._Qualifier_key, q.term as qualifier, \
+  	e._EvidenceTerm_key, et.abbreviation, et.sequenceNum \
+  	from VOC_Annot a, ACC_Accession ac, VOC_Term t, VOC_Evidence e, VOC_Term et, VOC_Term q \
+  	where a._Term_key = ac._Object_key \
+  	and ac._MGIType_key = 13 \
+  	and ac.preferred = 1 \
+  	and a._Term_key = t._Term_key \
+  	and a._Annot_key = e._Annot_key \
+  	and e._EvidenceTerm_key = et._Term_key \
+  	and a._Qualifier_key = q._Term_key \
+  	and a._AnnotType_key = %s \
+  	and e._AnnotEvidence_key = %s", annotTypeKey, key);
+  return(buf);
+}
+
+char *mpvoc_alleles(char *key, char *refsKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select g._Allele_key from GXD_AlleleGenotype g, ALL_Allele a \
+  	where g._Allele_key = a._Allele_key \
+  	and a.isWildType = 0 \
+  	and g._Genotype_key = %s \
+  	and not exists (select 1 from MGI_Reference_Assoc a where a._MGIType_key = 11 \
+  	and a._Object_key = g._Allele_key and a._Refs_key = %s)", key, refsKey);
+  return(buf);
+}
+
+/*
+ * MutantCellLine.d
+*/
+
+char *mutant_cellline(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select cellLine from ALL_CellLine where cellline = %s", key);
+  return(buf);
+}
+
+char *mutant_select(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select * from ALL_CellLine_View where _CellLine_key = %s", key);
+  return(buf);
+}
+
+char *mutant_alleles(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select symbol from ALL_Allele_CellLine_View where _MutantCellLine_key = %s", key);
+  return(buf);
+}
+
+char *mutant_stemcellline(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select distinct _CellLine_key, cellLine, _Strain_key, cellLineStrain, _CellLine_Type_key \
+	from ALL_CellLine_View where _CellLine_key = %s", key);
+  return(buf);
+}
+
+char *mutant_parentcellline(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select distinct _CellLine_key, cellLine, \
+  		_Strain_key, cellLineStrain, _CellLine_Type_key, \
+  		_Vector_key, vector, _Creator_key, _VectorType_key \
+  	from ALL_CellLine_View \
+  	where isMutant = 0 and cellLine = %s", key);
+  return(buf);
+}
+
+char *mutant_derivationDisplay(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Derivation_key, name, \
+  		parentCellLine_key, parentCellLine, parentCellLineStrain_key, parentCellLineStrain, \
+  		_Vector_key, vector, _Creator_key, _DerivationType_key, _VectorType_key, \
+		parentCellLineType_key \
+  	from ALL_CellLine_Derivation_View \
+  	where _Derivation_key = %s", key);
+  return(buf);
+}
+
+char *mutant_derivationVerify(
+	char *derivationTypeKey, 
+	char *parentKey, 
+	char *creatorKey, 
+	char *vectorTypeKey, 
+	char *vectorKey, 
+	char *strainKey, 
+	char *cellLineTypeKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select d._Derivation_key from ALL_CellLine_Derivation d, ALL_CellLine c \
+  	where c.isMutant = 0 \
+  	and d._ParentCellLine_key = c._CellLine_key \
+  	and d._DerivationType_key = %s \
+  	and d._ParentCellLine_key = %s \
+  	and d._Creator_key = %s \
+  	and d._VectorType_key = %s \
+  	and d._Vector_key = %s \
+  	and c._Strain_key = %s \
+  	and c._CellLine_Type_key = %s",
+	derivationTypeKey, parentKey, creatorKey, vectorTypeKey, vectorKey, strainKey, cellLineTypeKey);
   return(buf);
 }
 

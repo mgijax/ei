@@ -59,9 +59,9 @@ CALLS
 	 govoc_type("char *")				: "char *";
 	 govoc_dbview("char *")				: "char *";
 	 govoc_term("char *")				: "char *";
-	 govoc_report1("char *", "char *")		: "char *";
-	 govoc_report2("char *", "char *")		: "char *";
-	 govoc_select("char *")				: "char *";
+	 govoc_select1("char *", "char *")		: "char *";
+	 govoc_select2("char *", "char *")		: "char *";
+	 govoc_select3("char *")				: "char *";
 	 govoc_orderA()					: "char *";
 	 govoc_orderB()					: "char *";
 	 govoc_orderC()					: "char *";
@@ -101,6 +101,22 @@ CALLS
 	 mpvoc_exec_copyAnnotEvidenceNotes("char *", "char *")	: "char *";
 	 mpvoc_exec_processAnnotHeader("char *", "char *")	: "char *";
 	 mpvoc_loadheader("char *", "char *")		: "char *";
+	 mpvoc_dbview("char *")				: "char *";
+	 mpvoc_term("char *")				: "char *";
+	 mpvoc_defqualifier("char *")			: "char *";
+	 mpvoc_select1("char *", "char *")		: "char *";
+	 mpvoc_select2("char *", "char *")		: "char *";
+	 mpvoc_select3("char *", "char *")		: "char *";
+	 mpvoc_clipboard("char *", "char *")		: "char *";
+	 mpvoc_alleles("char *", "char *")		: "char *";
+
+	 mutant_cellline("char *")			: "char *";
+	 mutant_select("char *") 			: "char *";
+	 mutant_alleles("char *") 			: "char *";
+	 mutant_stemcellline("char *") 			: "char *";
+	 mutant_parentcellline("char *") 		: "char *";
+	 mutant_derivationDisplay("char *") 		: "char *";
+	 mutant_derivationVerify("char *", "char *", "char *", "char *", "char *", "char *", "char *") : "char *";
 
 	 nomen_event()					: "char *";
 	 nomen_status()					: "char *";

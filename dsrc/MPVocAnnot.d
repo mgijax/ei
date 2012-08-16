@@ -964,7 +964,7 @@ rules:
 
 	  -- Set the ReportDialog.select to query the currently selected record only
 
-	  top->ReportDialog.select := mpvoc_sql_6a + dbView + mpvoc_sql_6b + currentRecordKey;
+	  top->ReportDialog.select := mpvoc_select1(currentRecordKey, dbView);
 
 	  row : integer := 0;
 	  i : integer;
@@ -972,7 +972,7 @@ rules:
 	  cmd : string;
           dbproc : opaque;
 	  
-	  cmd := mpvoc_sql_7a + dbView + mpvoc_sql_7b + currentRecordKey + mpvoc_sql_7c;
+	  cmd := mpvoc_select2(currentRecordKey, dbView);
 	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -989,7 +989,7 @@ rules:
           end while;
 	  (void) mgi_dbclose(dbproc);
 
-	  cmd := mpvoc_sql_8a + annotTypeKey + mpvoc_sql_8b + currentRecordKey + mpvoc_sql_8c;
+	  cmd := mpvoc_select3(currentRecordKey, annotTypeKey);
 	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -1105,19 +1105,19 @@ rules:
 	  annotTypeKey := (string) top->VocAnnotTypeMenu.menuHistory.defaultValue;
 	  annotType := top->VocAnnotTypeMenu.menuHistory.labelString;
 	  mgiTypeKey := (string) top->VocAnnotTypeMenu.menuHistory.mgiTypeKey;
-	  dbView := mgi_sql1(mpvoc_sql_3 + mgiTypeKey);
+	  dbView := mgi_sql1(mpvoc_dbview(mgiTypeKey));
 	  top->mgiAccession.mgiTypeKey := mgiTypeKey;
 	  annotTable.vocabKey := top->VocAnnotTypeMenu.menuHistory.vocabKey;
 	  annotTable.vocabEvidenceKey := top->VocAnnotTypeMenu.menuHistory.evidenceKey;
 	  annotTable.vocabQualifierKey := top->VocAnnotTypeMenu.menuHistory.qualifierKey;
 	  annotTable.annotVocab := top->VocAnnotTypeMenu.menuHistory.annotVocab;
 
-	  top->EvidenceCodeList.cmd := mpvoc_sql_4a + (string) evidenceKey + mpvoc_sql_4b;
+	  top->EvidenceCodeList.cmd := mpvoc_term((string) evidenceKey);
           LoadList.list := top->EvidenceCodeList;
 	  send(LoadList, 0);
 
 	  defaultQualifierKey := 
-	      mgi_sql1(mpvoc_sql_5 + (string) annotTable.vocabQualifierKey);
+	      mgi_sql1(mpvoc_defqualifier((string) annotTable.vocabQualifierKey));
 
 	  (void) reset_cursor(mgi);
 	end does;
@@ -1336,7 +1336,7 @@ rules:
           while (i < annotclipboard->List.items.count) do
 	    key := annotclipboard->List.keys[i];
 
-	    cmd := mpvoc_sql_9a + annotTypeKey + mpvoc_sql_9b + key;
+	    cmd := mpvoc_clipboard(key, annotTypeKey);
 	    dbproc := mgi_dbexec(cmd);
             while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
               while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -1403,8 +1403,7 @@ rules:
 	  -- Generate list of Alleles from this Genotype that don't have this J:
 	  -- Ignore wild type alleles
 
-	  select : string := 
-	      mpvoc_sql_10a + currentRecordKey + mpvoc_sql_10b + refsKey + mpvoc_sql_10c;
+	  select : string := mpvoc_alleles(currentRecordKey, refsKey);
 
 	  dbproc := mgi_dbexec(select);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do

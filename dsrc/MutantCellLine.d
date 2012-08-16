@@ -179,7 +179,7 @@ rules:
 
 	  -- Confirm changes to MCL Name
 
-          mclName : string := mgi_sql1(mutant_sql_1 + mgi_DBprstr(top->EditForm->CellLine->text.value));
+          mclName : string := mgi_sql1(mutant_cellline(mgi_DBprstr(top->EditForm->CellLine->text.value)));
 
 	  if (mclName.length > 0) then
 
@@ -318,7 +318,7 @@ rules:
 
 	  -- Confirm changes to MCL Name
 
-          mclName : string := mgi_sql1(mutant_sql_1 + mgi_DBprstr(top->EditForm->CellLine->text.value));
+          mclName : string := mgi_sql1(mutant_cellline(mgi_DBprstr(top->EditForm->CellLine->text.value)));
 
 	  if (top->EditForm->CellLine->text.modified and mclName.length > 0) then
 
@@ -518,7 +518,7 @@ rules:
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 	  dbproc : opaque;
 
-	  cmd := mutant_sql_2 + currentRecordKey;
+	  cmd := mutant_select(currentRecordKey);
 	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -562,7 +562,7 @@ rules:
 	  end while;
 	  (void) mgi_dbclose(dbproc);
 
-	  cmd := mutant_sql_3 + currentRecordKey;
+	  cmd := mutant_alleles(currentRecordKey);
 	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -601,7 +601,7 @@ rules:
 	      return;
 	  end if;
 
-	  cmd := mutant_sql_4 + top->mgiParentCellLine->ObjectID->text.value;
+	  cmd := mutant_stemcellline(top->mgiParentCellLine->ObjectID->text.value);
 	  dbproc : opaque := mgi_dbexec(cmd);
 
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
@@ -644,7 +644,7 @@ rules:
 	      return;
 	  end if;
 
-	  cmd := mutant_sql_5 + top->mgiParentCellLine->Derivation->ObjectID->text.value;
+	  cmd := mutant_derivationDisplay(top->mgiParentCellLine->Derivation->ObjectID->text.value);
 	  dbproc : opaque := mgi_dbexec(cmd);
 
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
@@ -720,7 +720,7 @@ rules:
 
 	  -- Search for value in the database
 
-	  select : string := mutant_sql_6 + mgi_DBprstr(value);
+	  select : string := mutant_parentcellline(mgi_DBprstr(value));
 	  dbproc : opaque := mgi_dbexec(select);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -853,13 +853,10 @@ rules:
 	    return;
 	  end if;
 	      
-          derivationKey := mgi_sql1(mutant_sql_7a + derivationTypeKey +
-                         mutant_sql_7b + parentKey +
-                         mutant_sql_7c + creatorKey +
-                         mutant_sql_7d + vectorTypeKey +
-                         mutant_sql_7e + vectorKey +
-                         mutant_sql_7f + strainKey +
-                         mutant_sql_7g + cellLineTypeKey);
+          derivationKey := mgi_sql1(mutant_derivationVerify(derivationTypeKey,
+                         parentKey, creatorKey,
+                         vectorTypeKey, vectorKey,
+                         strainKey, cellLineTypeKey));
 
 	  -- if derivation has been determined, then display the rest of the derivation attributes
 	  if (derivationKey.length > 0) then

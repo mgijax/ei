@@ -948,7 +948,7 @@ rules:
 
 	  -- Set the ReportDialog.select to query the currently selected record only
 
-	  top->ReportDialog.select := govoc_report1(currentRecordKey, dbView);
+	  top->ReportDialog.select := govoc_select1(currentRecordKey, dbView);
 
 	  -- start the query
 
@@ -958,7 +958,7 @@ rules:
 	  objectLoaded : boolean := false;
           dbproc : opaque;
 	  
-	  cmd := govoc_report2(currentRecordKey, dbView);
+	  cmd := govoc_select2(currentRecordKey, dbView);
 	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -975,7 +975,7 @@ rules:
           end while;
 	  (void) mgi_dbclose(dbproc);
 
-	  cmd := govoc_select(currentRecordKey);
+	  cmd := govoc_select3(currentRecordKey);
 
 	  -- select the sort order
 

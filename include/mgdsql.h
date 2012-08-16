@@ -57,9 +57,9 @@ extern char *govoc_status(char *);
 extern char *govoc_type(char *);
 extern char *govoc_dbview(char *);
 extern char *govoc_term(char *);
-extern char *govoc_report1(char *, char *);
-extern char *govoc_report2(char *, char *);
-extern char *govoc_select(char *);
+extern char *govoc_select1(char *, char *);
+extern char *govoc_select2(char *, char *);
+extern char *govoc_select3(char *);
 extern char *govoc_orderA();
 extern char *govoc_orderB();
 extern char *govoc_orderC();
@@ -202,78 +202,24 @@ from MLD_Statistics_View where _Expt_key = "
 extern char *mpvoc_exec_copyAnnotEvidenceNotes(char *, char *);
 extern char *mpvoc_exec_processAnnotHeader(char *, char *);
 extern char *mpvoc_loadheader(char *, char *);
-
-#define mpvoc_sql_3 "select dbView from ACC_MGIType where _MGIType_key = "
-
-#define mpvoc_sql_4a "select _Term_key, abbreviation from VOC_Term where _Vocab_key = "
-#define mpvoc_sql_4b "\norder by abbreviation\n"
-
-#define mpvoc_sql_5 "select _Term_key from VOC_Term where term is null and _Vocab_key = "
-
-#define mpvoc_sql_6a "select distinct _Object_key, description from "
-#define mpvoc_sql_6b " where _Object_key = "
-
-#define mpvoc_sql_7a "select _Object_key, accID, description, short_description from "
-#define mpvoc_sql_7b " where prefixPart = 'MGI:' and preferred = 1 and _Object_key = "
-#define mpvoc_sql_7c "\norder by description\n"
-
-#define mpvoc_sql_8a "select a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier, e.* \
-from VOC_Annot_View a, VOC_Evidence_View e \
-where a._AnnotType_key = "
-#define mpvoc_sql_8b "\nand a._Annot_key = e._Annot_key and a._Object_key = "
-#define mpvoc_sql_8c "\norder by e.jnum, a.term\n"
-
-#define mpvoc_sql_9a "select a._Term_key, t.term, t.sequenceNum, ac.accID, a._Qualifier_key, qualifier = q.term, \
-e._EvidenceTerm_key, et.abbreviation, et.sequenceNum \
-from VOC_Annot a, ACC_Accession ac, VOC_Term t, VOC_Evidence e, VOC_Term et, VOC_Term q \
-where a._Term_key = ac._Object_key \
-and ac._MGIType_key = 13 \
-and ac.preferred = 1 \
-and a._Term_key = t._Term_key \
-and a._Annot_key = e._Annot_key \
-and e._EvidenceTerm_key = et._Term_key \
-and a._Qualifier_key = q._Term_key \
-and a._AnnotType_key = "
-#define mpvoc_sql_9b " and e._AnnotEvidence_key = "
-
-#define mpvoc_sql_10a "select g._Allele_key from GXD_AlleleGenotype g, ALL_Allele a \
-where g._Allele_key = a._Allele_key \
-and a.isWildType = 0 \
-and g._Genotype_key = "
-#define mpvoc_sql_10b "\nand not exists (select 1 from MGI_Reference_Assoc a where a._MGIType_key = 11 \
-and a._Object_key = g._Allele_key and a._Refs_key = "
-#define mpvoc_sql_10c ")"
+extern char *mpvoc_dbview(char *);
+extern char *mpvoc_term(char *);
+extern char *mpvoc_defqualifier(char *);
+extern char *mpvoc_select1(char *, char *);
+extern char *mpvoc_select2(char *, char *);
+extern char *mpvoc_select3(char *, char *);
+extern char *mpvoc_clipboard(char *, char *);
+extern char *mpvoc_alleles(char *, char *);
 
 /* MutantCellLine.d */
 
-#define mutant_sql_1 "select cellLine from ALL_CellLine where cellline = "
-#define mutant_sql_2 "select * from ALL_CellLine_View where _CellLine_key = "
-#define mutant_sql_3 "\nselect symbol from ALL_Allele_CellLine_View where _MutantCellLine_key = "
-#define mutant_sql_4 "select distinct _CellLine_key, cellLine, _Strain_key, cellLineStrain, _CellLine_Type_key \
-from ALL_CellLine_View where _CellLine_key = "
-
-#define mutant_sql_5 "select _Derivation_key, name, \
-parentCellLine_key, parentCellLine, parentCellLineStrain_key, parentCellLineStrain, \
-_Vector_key, vector, _Creator_key, _DerivationType_key, _VectorType_key, parentCellLineType_key \
-from ALL_CellLine_Derivation_View \
-where _Derivation_key = "
-
-#define mutant_sql_6 "select distinct _CellLine_key, cellLine, \
-_Strain_key, cellLineStrain, _CellLine_Type_key, \
-_Vector_key, vector, _Creator_key, _VectorType_key \
-from ALL_CellLine_View \
-where isMutant = 0 and cellLine = "
-
-#define mutant_sql_7a "select d._Derivation_key from ALL_CellLine_Derivation d, ALL_CellLine c \
-where c.isMutant = 0 \
-and d._ParentCellLine_key = c._CellLine_key \
-and d._DerivationType_key = "
-#define mutant_sql_7b " and d._ParentCellLine_key = "
-#define mutant_sql_7c " and d._Creator_key = "
-#define mutant_sql_7d " and d._VectorType_key = "
-#define mutant_sql_7e " and d._Vector_key = "
-#define mutant_sql_7f " and c._Strain_key = "
-#define mutant_sql_7g " and c._CellLine_Type_key = "
+extern char *mutant_cellline(char *);
+extern char *mutant_select(char *);
+extern char *mutant_alleles(char *);
+extern char *mutant_stemcellline(char *);
+extern char *mutant_parentcellline(char *);
+extern char *mutant_derivationDisplay(char *);
+extern char *mutant_derivationVerify(char *, char *, char *, char *, char *, char *, char *);
 
 /* OMIMVocAnnot.d */
 
