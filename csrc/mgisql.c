@@ -21,7 +21,31 @@ char *mgilib_count(char *key)
   sprintf(buf,"select convert(char(10),rowcnt(MAX(doampg))) \
   	from sysobjects o, sysindexes i \
   	where o.id = i.id \
-  	and o.name = %s", key);
+  	and o.name = '%s'", key);
+  return(buf);
+}
+
+char *mgilib_anchorcount(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select count(*) from MRK_Anchors where _Marker_key = %s", key);
+  return(buf);
+}
+
+char *sql_error()
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select @@error");
+  return(buf);
+}
+
+char *sql_translate()
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select @@transtate");
   return(buf);
 }
 

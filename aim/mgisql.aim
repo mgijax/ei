@@ -12,6 +12,10 @@ CALLS
 	ENTRY 
 
 	 mgilib_count("char *")			: "char *";
+	 mgilib_anchorcount("char *")		: "char *";
+
+	 sql_error()				: "char *";
+	 sql_translate()			: "char *";
 
   ENDL
 ENDC

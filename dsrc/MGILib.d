@@ -180,9 +180,7 @@ rules:
 	    title := global_server + ":" + global_database;
 	    mgi := top;
 
-	    global_loginKey := 
-		mgi_sql1(mgilib_count(global_login);
-		--mgi_sql1(mgilib_sql_1a + global_login + mgilib_sql_1b);
+	    global_loginKey := mgi_sql1(mgilib_sql_1a + global_login + mgilib_sql_1b);
 
             if (global_loginKey.length = 0) then
 	      StatusReport.source_widget := top;

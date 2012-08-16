@@ -490,7 +490,7 @@ char *mgi_DBrecordCount(int table)
   switch (table)
   {
     default:
-  	    sprintf(cmd, "%s '%s'", mgilib_sql_1, mgi_DBtable(table));
+  	    sprintf(cmd, "%s", mgilib_count(mgi_DBtable(table)));
 	    break;
   }
 
@@ -2908,7 +2908,7 @@ Boolean mgi_DBisAnchorMarker(char *key)
   char cmd[TEXTBUFSIZ];
 
   memset(cmd, '\0', sizeof(cmd));
-  sprintf(cmd, "%s %s", mgilib_sql_2, key);
+  sprintf(cmd, "%s", mgilib_anchorcount(key));
   return ((strcmp(mgi_sql1(cmd), "1") == 0) ? True : False);
 }
 

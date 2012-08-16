@@ -14,18 +14,12 @@
 /* mgilib.h */
 
 extern char *mgilib_count(char *);
-
-#define mgilib_sql_1 "select convert(char(10),rowcnt(MAX(doampg))) \
-from sysobjects o, sysindexes i \
-where o.id = i.id \
-and o.name ="
-
-#define mgilib_sql_2 "select count(*) from MRK_Anchors where _Marker_key ="
+extern char *mgilib_anchorcount(char *);
 
 /* SQL.d */
 
-#define sql_sql_1 "select @@error"
-#define sql_sql_2 "select @@transtate"
+extern char *sql_error();
+extern char *sql_translate();
 
 /* AccLib.d */
 

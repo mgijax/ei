@@ -249,7 +249,7 @@ rules:
 
 	  -- Process @@error w/in same DBPROCESS
 
-	  dbproc := mgi_dbexec(sql_sql_1);
+	  dbproc := mgi_dbexec(sql_error());
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      error := (integer) mgi_getstr(dbproc, 1);
@@ -260,7 +260,7 @@ rules:
 
 	  -- Process @@transtate w/in same DBPROCESS
 
-	  dbproc := mgi_dbexec(sql_sql_2);
+	  dbproc := mgi_dbexec(sql_translate());
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	        transtate := (integer) mgi_getstr(dbproc, 1);
