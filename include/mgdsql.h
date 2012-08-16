@@ -99,6 +99,49 @@ extern char *mlc_ref(char *);
 extern char *mlc_text(char *);
 extern char *mlc_description(char *);
 
+/* MLDP.d */
+
+extern char *mldp_assaynull();
+extern char *mldp_tag(char *, char *);
+extern char *mldp_select(char *);
+extern char *mldp_marker(char *);
+extern char *mldp_notes1(char *);
+extern char *mldp_notes2(char *);
+extern char *mldp_matrix(char *);
+extern char *mldp_cross2point(char *);
+extern char *mldp_crosshaplotype(char *);
+extern char *mldp_cross(char *);
+extern char *mldp_risetVerify(char *);
+extern char *mldp_riset(char *);
+extern char *mldp_fish(char *);
+extern char *mldp_fishregion(char *);
+extern char *mldp_hybrid(char *);
+extern char *mldp_hybridconcordance(char *);
+extern char *mldp_insitu(char *);
+extern char *mldp_insituregion(char *);
+extern char *mldp_physmap(char *);
+extern char *mldp_phymapdistance(char *);
+extern char *mldp_ri(char *);
+extern char *mldp_ridata(char *);
+extern char *mldp_ri2point(char *);
+extern char *mldp_statistics(char *);
+extern char *mldp_countchr(char *);
+extern char *mldp_assay(char *);
+
+/* MPVocAnnot.d */
+
+extern char *mpvoc_exec_copyAnnotEvidenceNotes(char *, char *);
+extern char *mpvoc_exec_processAnnotHeader(char *, char *);
+extern char *mpvoc_loadheader(char *, char *);
+extern char *mpvoc_dbview(char *);
+extern char *mpvoc_evidencecode(char *);
+extern char *mpvoc_qualifier(char *);
+extern char *mpvoc_select1(char *, char *);
+extern char *mpvoc_select2(char *, char *);
+extern char *mpvoc_select3(char *, char *);
+extern char *mpvoc_clipboard(char *, char *);
+extern char *mpvoc_alleles(char *, char *);
+
 /* Molecular.d */
 
 extern char *molecular_termNA();
@@ -120,6 +163,16 @@ extern char *molecular_sourcekey(char *);
 
 extern char *molsource_select(char *);
 
+/* MutantCellLine.d */
+
+extern char *mutant_cellline(char *);
+extern char *mutant_select(char *);
+extern char *mutant_alleles(char *);
+extern char *mutant_stemcellline(char *);
+extern char *mutant_parentcellline(char *);
+extern char *mutant_derivationDisplay(char *);
+extern char *mutant_derivationVerify(char *, char *, char *, char *, char *, char *, char *);
+
 /* Nomen.d */
 
 extern char *nomen_event();
@@ -131,95 +184,6 @@ extern char *nomen_select(char *);
 
 extern char *nonmutant_select(char *);
 extern char *nonmutant_count(char *);
-
-/* RI.d */
-
-extern char *ri_select(char *);
-
-/* Reference.d */
-
-extern char *ref_dataset1();
-extern char *ref_dataset2();
-extern char *ref_dataset3(char *);
-extern char *ref_select(char *);
-extern char *ref_books(char *);
-extern char *ref_notes(char *);
-
-/* MLDP.d */
-
-#define mldp_sql_1 "select _Assay_Type_key from MLD_Assay_Types where description = ' '"
-#define mldp_sql_2a "select max(tag) from MLD_Expts where _Refs_key = "
-#define mldp_sql_2b "\nand exptType = "
-#define mldb_sql_3 "select _Expt_key, exptType, chromosome, creation_date, modification_date, _Refs_key, jnum, short_citation \
-from MLD_Expt_View where _Expt_key = "
-#define mldb_sql_4a "\nselect rtrim(note) from MLD_Expt_Notes where _Expt_key = "
-#define mldb_sql_4b "\norder by sequenceNum\n"
-#define mldp_sql_5a "select sequenceNum, _Marker_key, symbol, _Allele_key, _Assay_Type_key, allele, assay, description, matrixData \
-from MLD_Expt_Marker_View where _Expt_key = "
-#define mldp_sql_5b "\norder by sequenceNum\n"
-#define mldb_sql_6a "select rtrim(note) from MLD_Notes where _Refs_key = "
-#define mldb_sql_6b "\norder by sequenceNum\n"
-#define mldp_sql_7 "select * from MLD_Matrix_View where _Expt_key = "
-#define mldp_sql_8a "\nselect sequenceNum, _Marker_key_1, _Marker_key_2, symbol1, symbol2, numRecombinants, numParentals \
-from MLD_MC2point_View where _Expt_key = "
-#define mldp_sql_8b "\norder by sequenceNum\n"
-#define mldp_sql_9a "\nselect * from MLD_MCDataList where _Expt_key = "
-#define mldp_sql_9b "\norder by sequenceNum\n"
-#define mldp_sql_10 "select * from CRS_Cross_View where _Cross_key = "
-#define mldp_sql_11 "select _RISet_key from RI_RISet where designation = "
-#define mldp_sql_12 "select designation, origin, abbrev1, abbrev2, RI_IdList \
-from RI_RISet_View where _RISet_key = "
-#define mldp_sql_13 "select * from MLD_FISH_View where _Expt_key = "
-#define mldp_sql_14a "\nselect * from MLD_FISH_Region where _Expt_key = "
-#define mldp_sql_14b "\norder by sequenceNum\n"
-#define mldp_sql_15 "select chrsOrGenes, band from MLD_Hybrid_View where _Expt_key = "
-#define mldb_sql_16a "\nselect sequenceNum, _Marker_key, symbol, cpp, cpn, cnp, cnn, chromosome \
-from MLD_Concordance_View where _Expt_key = "
-#define mldp_sql_16b "\norder by sequenceNum\n"
-#define mldp_sql_17 "select * from MLD_InSitu_View where _Expt_key = "
-#define mldp_sql_18a "\nselect * from MLD_ISRegion where _Expt_key = "
-#define mldp_sql_18b "\norder by sequenceNum\n"
-#define mldp_sql19 "select * from MLD_PhysMap where _Expt_key = "
-#define mldp_sql_20a "\nselect * from MLD_Distance_View where _Expt_key = "
-#define mldp_sql_20b "\norder by sequenceNum\n"
-#define mldp_sql21 "select RI_IdList, _RISet_key, origin, designation, abbrev1, abbrev2 \
-from MLD_RI_VIew where _Expt_key = "
-#define mldp_sql22a "\nselect sequenceNum, _Marker_key, symbol, alleleLine \
-from MLD_RIData_View where _Expt_key = "
-#define mldp_sql_22b "\norder by sequenceNum\n"
-#define mldp_sql_23a "\nselect sequenceNum, _Marker_key_1, _Marker_key_2, symbol1, symbol2, numRecombinants, numTotal, RI_Lines \
-from MLD_RI2Point_View where _Expt_key = "
-#define mldp_sql_23b "\norder by sequenceNum\n"
-#define mldp_sql_24a "select sequenceNum, _Marker_key_1, _Marker_key_2, symbol1, symbol2, recomb, total, \
-str(pcntrecomb,6,2), str(stderr,6,2) \
-from MLD_Statistics_View where _Expt_key = "
-#define mldp_sql_24b "\norder by sequenceNum\n"
-#define mldp_sql_25 "select count(*) from MRK_Chromosome where _Organism_key = 1 and chromosome = "
-#define mldp_sql_26 "select _Assay_Type_key from MLD_Assay_Types where description = "
-
-/* MPVocAnnot.d */
-
-extern char *mpvoc_exec_copyAnnotEvidenceNotes(char *, char *);
-extern char *mpvoc_exec_processAnnotHeader(char *, char *);
-extern char *mpvoc_loadheader(char *, char *);
-extern char *mpvoc_dbview(char *);
-extern char *mpvoc_evidencecode(char *);
-extern char *mpvoc_qualifier(char *);
-extern char *mpvoc_select1(char *, char *);
-extern char *mpvoc_select2(char *, char *);
-extern char *mpvoc_select3(char *, char *);
-extern char *mpvoc_clipboard(char *, char *);
-extern char *mpvoc_alleles(char *, char *);
-
-/* MutantCellLine.d */
-
-extern char *mutant_cellline(char *);
-extern char *mutant_select(char *);
-extern char *mutant_alleles(char *);
-extern char *mutant_stemcellline(char *);
-extern char *mutant_parentcellline(char *);
-extern char *mutant_derivationDisplay(char *);
-extern char *mutant_derivationVerify(char *, char *, char *, char *, char *, char *, char *);
 
 /* OMIMVocAnnot.d */
 
@@ -240,6 +204,19 @@ extern char *orthology_homology2(char *, char *);
 extern char *orthology_homology3(char *);
 extern char *orthology_homology4(char *);
 extern char *orthology_organism(char *);
+
+/* RI.d */
+
+extern char *ri_select(char *);
+
+/* Reference.d */
+
+extern char *ref_dataset1();
+extern char *ref_dataset2();
+extern char *ref_dataset3(char *);
+extern char *ref_select(char *);
+extern char *ref_books(char *);
+extern char *ref_notes(char *);
 
 /* Sequence.d */
 

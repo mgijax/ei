@@ -705,6 +705,245 @@ char *mlc_description(char *key)
 }
 
 /*
+ * MLDP.d
+*/
+
+char *mldp_assaynull()
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Assay_Type_key from MLD_Assay_Types where description = ' '");
+  return(buf);
+}
+
+char *mldp_tag(char *key, char *exptType)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select max(tag) from MLD_Expts where _Refs_key = %s \
+	and exptType = %s", key, exptType);
+  return(buf);
+}
+
+char *mldp_select(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Expt_key, exptType, chromosome, creation_date, modification_date, \
+	_Refs_key, jnum, short_citation \
+  	from MLD_Expt_View where _Expt_key = %s", key);
+  return(buf);
+}
+
+char *mldp_notes1(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select rtrim(note) from MLD_Expt_Notes where _Expt_key = %s \
+  	order by sequenceNum", key);
+  return(buf);
+}
+
+char *mldp_notes2(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select rtrim(note) from MLD_Notes where _Refs_key = %s \
+	order by sequenceNum", key);
+  return(buf);
+}
+
+char *mldp_marker(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select sequenceNum, _Marker_key, symbol, _Allele_key, \
+	_Assay_Type_key, allele, assay, description, matrixData \
+  	from MLD_Expt_Marker_View where _Expt_key = %s \
+	order by sequenceNum", key);
+  return(buf);
+}
+
+char *mldp_matrix(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select * from MLD_Matrix_View where _Expt_key = %s", key);
+  return(buf);
+}
+
+char *mldp_cross2point(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select sequenceNum, _Marker_key_1, _Marker_key_2, symbol1, symbol2, \
+		numRecombinants, numParentals \
+   	from MLD_MC2point_View where _Expt_key = %s \
+   	order by sequenceNum", key);
+  return(buf);
+}
+
+char *mldp_crosshaplotype(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select * from MLD_MCDataList where _Expt_key = %s \
+  	order by sequenceNum", key);
+  return(buf);
+}
+
+char *mldp_cross(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select * from CRS_Cross_View where _Cross_key = %s", key);
+  return(buf);
+}
+
+char *mldp_risetVerify(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _RISet_key from RI_RISet where designation = %s", key);
+  return(buf);
+}
+
+char *mldp_riset(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select designation, origin, abbrev1, abbrev2, RI_IdList \
+	from RI_RISet_View where _RISet_key = %s", key);
+  return(buf);
+}
+
+char *mldp_fish(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select * from MLD_FISH_View where _Expt_key = %s", key);
+  return(buf);
+}
+
+char *mldp_fishregion(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select * from MLD_FISH_Region where _Expt_key = %s \
+  	order by sequenceNum", key);
+  return(buf);
+}
+
+char *mldp_hybrid(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select chrsOrGenes, band from MLD_Hybrid_View where _Expt_key = %s", key);
+  return(buf);
+}
+
+char *mldp_hybridconcordance(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select sequenceNum, _Marker_key, symbol, cpp, cpn, cnp, cnn, chromosome \
+  	from MLD_Concordance_View where _Expt_key = %s \
+  	order by sequenceNum", key);
+  return(buf);
+}
+
+char *mldp_insitu(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select * from MLD_InSitu_View where _Expt_key = %s", key);
+  return(buf);
+}
+
+char *mldp_insituregion(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select * from MLD_ISRegion where _Expt_key = %s \
+  	order by sequenceNum", key);
+  return(buf);
+}
+
+char *mldp_physmap(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select * from MLD_PhysMap where _Expt_key = %s", key);
+  return(buf);
+}
+
+char *mldp_phymapdistance(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select * from MLD_Distance_View where _Expt_key = %s \
+  	order by sequenceNum", key);
+  return(buf);
+}
+
+char *mldp_ri(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select RI_IdList, _RISet_key, origin, designation, abbrev1, abbrev2 \
+  	from MLD_RI_VIew where _Expt_key = %s", key);
+  return(buf);
+}
+
+char *mldp_ridata(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select sequenceNum, _Marker_key, symbol, alleleLine \
+  	from MLD_RIData_View where _Expt_key = %s \
+  	order by sequenceNum", key);
+  return(buf);
+}
+
+char *mldp_ri2point(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select sequenceNum, _Marker_key_1, _Marker_key_2, symbol1, symbol2, \
+		numRecombinants, numTotal, RI_Lines \
+  	from MLD_RI2Point_View where _Expt_key = %s \
+  	order by sequenceNum", key);
+  return(buf);
+}
+
+char *mldp_statistics(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select sequenceNum, _Marker_key_1, _Marker_key_2, symbol1, symbol2, recomb, total, \
+  		str(pcntrecomb,6,2), str(stderr,6,2) \
+  	from MLD_Statistics_View where _Expt_key = %s \
+  	order by sequenceNum", key);
+  return(buf);
+}
+
+char *mldp_countchr(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select count(*) from MRK_Chromosome where _Organism_key = 1 and chromosome = %s", key);
+  return(buf);
+}
+
+char *mldp_assay(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Assay_Type_key from MLD_Assay_Types where description = %s", key);
+  return(buf);
+}
+
+/*
  * Molecular.d
 */
 

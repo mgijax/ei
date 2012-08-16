@@ -279,7 +279,7 @@ rules:
 	  riTables.append(top->ExptDetailForm->ExptRIForm->RITwoPt->Table);
 	  riTables.append(top->ExptDetailForm->ExptRIForm->Statistics->Table);
 
-	  assayNull := mgi_sql1(mldp_sql_1);
+	  assayNull := mgi_sql1(mldp_assaynull());
 
           -- Set Row Count
           SetRowCount.source_widget := top;
@@ -343,8 +343,8 @@ rules:
           currentExptKey := "@" + KEYNAME;
  
 	  tag : string;
-	  tag := mgi_sql1(mldp_sql_2a + top->ExptDetailForm->mgiCitation->ObjectID->text.value +
-		 mldp_sql_2b + mgi_DBprstr(top->ExptDetailForm->ExptTypeMenu.menuHistory.defaultValue));
+	  tag := mgi_sql1(mldp_tag(top->ExptDetailForm->mgiCitation->ObjectID->text.value,
+		 	mgi_DBprstr(top->ExptDetailForm->ExptTypeMenu.menuHistory.defaultValue)));
 	  tag := (string)((integer) tag + 1);
 
 	  -- Insert Master Experiment record
@@ -2824,7 +2824,7 @@ rules:
           row : integer := 0;
           dbproc : opaque;
 	  
-          cmd := mldb_sql_3 + currentExptKey;
+          cmd := mldp_select(currentExptKey);
 	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -2846,7 +2846,7 @@ rules:
           end while;
 	  (void) mgi_dbclose(dbproc);
 
-	  cmd := mldb_sql_4a + currentExptKey + mldb_sql_4b;
+	  cmd := mldp_notes1(currentExptKey);
 	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -2856,7 +2856,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  row := 0;
-          cmd := mldp_sql_5a + currentExptKey + mldp_sql_5b;
+          cmd := mldp_marker(currentExptKey);
 	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -2883,7 +2883,7 @@ rules:
           end while;
 	  (void) mgi_dbclose(dbproc);
 
-	  cmd := mldb_sql_6a + top->mgiCitation->ObjectID->text.value + mldb_sql_6b;
+	  cmd := mldp_notes2(top->mgiCitation->ObjectID->text.value);
 	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -2937,7 +2937,7 @@ rules:
           end while;
           crossTables.close;
 
-          cmd := mldp_sql_7 + currentExptKey;
+          cmd := mldp_matrix(currentExptKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -2967,7 +2967,7 @@ rules:
 
 	  row := 0;
 	  table := ExptForm->CrossTwoPt->Table;
-          cmd := mldp_sql_8a + currentExptKey + mldp_sql_8b;
+          cmd := mldp_cross2point(currentExptKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -2987,7 +2987,7 @@ rules:
 
 	  row := 0;
 	  table := ExptForm->CrossHaplotype->Table;
-          cmd := mldp_sql_9a + currentExptKey + mldp_sql_9b;
+          cmd := mldp_crosshaplotype(currentExptKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -3031,7 +3031,7 @@ rules:
 	  fallele1, fallele2 : string;
 	  mallele1, mallele2 : string;
 
-          cmd := mldp_sql_10 + currentCrossKey;
+          cmd := mldp_cross(currentCrossKey);
           dbproc : opaque := mgi_dbexec(cmd);
  
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
@@ -3172,7 +3172,7 @@ rules:
 
 	    else
 	      ExptForm->mgiRISet->RIID->text.value :=  
-		mgi_sql1(mldp_sql_11 + mgi_DBprstr(ExptForm->mgiRISet->Verify->text.value));
+		mgi_sql1(mldp_risetVerify(mgi_DBprstr(ExptForm->mgiRISet->Verify->text.value)));
 	    end if;
 
 	    -- If lookup fails, invalid
@@ -3201,7 +3201,7 @@ rules:
               return;
 	  end if;
 
-          cmd := mldp_sql_12 + currentRIKey;
+          cmd := mldp_riset(currentRIKey);
           dbproc : opaque := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -3243,7 +3243,7 @@ rules:
           end while;
           fishTables.close;
 
-          cmd := mldp_sql_13 + currentExptKey;
+          cmd := mldp_fish(currentExptKey);
 	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -3262,7 +3262,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  row := 0;
-	  cmd := mldp_sql_14a + currentExptKey + mldp_sql_14b;
+	  cmd := mldp_fishregion(currentExptKey);
 	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -3299,7 +3299,7 @@ rules:
           hybridTables.close;
 
 	  row := 0;
-          cmd := mldp_sql_15 + currentExptKey;
+          cmd := mldp_hybrid(currentExptKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -3310,7 +3310,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  row := 0;
-          cmd := mldb_sql_16a + currentExptKey + mldp_sql_16b;
+          cmd := mldp_hybridconcordance(currentExptKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -3360,7 +3360,7 @@ rules:
           insituTables.close;
 
 	  row := 0;
-          cmd := mldp_sql_17 + currentExptKey;
+          cmd := mldp_insitu(currentExptKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -3379,7 +3379,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  row := 0;
-	  cmd := mldp_sql_18a + currentExptKey + mldp_sql_18b;
+	  cmd := mldp_insituregion(currentExptKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -3413,7 +3413,7 @@ rules:
           end while;
           pmTables.close;
 
-          cmd := mldp_sql19 + currentExptKey;
+          cmd := mldp_physmap(currentExptKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -3423,7 +3423,7 @@ rules:
 	  end while;
 	  (void) mgi_dbclose(dbproc);
 
-	  cmd :=  mldp_sql_20a + currentExptKey + mldp_sql_20b;
+	  cmd :=  mldp_phymapdistance(currentExptKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -3480,7 +3480,7 @@ rules:
           riTables.close;
 
 	  row := 0;
-          cmd := mldp_sql21 + currentExptKey;
+          cmd := mldp_ri(currentExptKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -3496,7 +3496,7 @@ rules:
 
 	  row := 0;
 	  table := ExptForm->RIHaplotype->Table;
-	  cmd := mldp_sql22a + currentExptKey + mldp_sql_22b;
+	  cmd := mldp_ridata(currentExptKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -3513,7 +3513,7 @@ rules:
 
 	  row := 0;
 	  table := ExptForm->RITwoPt->Table;
-	  cmd := mldp_sql_23a + currentExptKey + mldp_sql_23b;
+	  cmd := mldp_ri2point(currentExptKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -3550,7 +3550,7 @@ rules:
           send(ClearTable, 0);
  
 	  row := 0;
-          cmd := mldp_sql_24a + currentExptKey + mldp_sql_24b;
+          cmd := mldp_statistics(currentExptKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -3635,7 +3635,7 @@ rules:
 
 	  (void) busy_cursor(top);
 
-	  cmd := mldp_sql_25 + mgi_DBprstr(value);
+	  cmd := mldp_countchr(mgi_DBprstr(value));
 	  found := (integer) mgi_sql1(cmd);
 
 	  -- Value determined to be a Chromosome, so do not validate as a Marker
@@ -3695,7 +3695,7 @@ rules:
  
 	  -- Try to find Assay in database
 
-          assayKey := mgi_sql1(mldp_sql_26 + mgi_DBprstr(value));
+          assayKey := mgi_sql1(mldp_assay(mgi_DBprstr(value)));
  
           -- If the Assay exists, then copy the key into the Assay key column
           -- Else, add the new Assay Type to the database and copy the new key into the Assay key column
