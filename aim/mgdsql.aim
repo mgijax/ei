@@ -102,8 +102,8 @@ CALLS
 	 mpvoc_exec_processAnnotHeader("char *", "char *")	: "char *";
 	 mpvoc_loadheader("char *", "char *")		: "char *";
 	 mpvoc_dbview("char *")				: "char *";
-	 mpvoc_term("char *")				: "char *";
-	 mpvoc_defqualifier("char *")			: "char *";
+	 mpvoc_evidencecode("char *")			: "char *";
+	 mpvoc_qualifier("char *")			: "char *";
 	 mpvoc_select1("char *", "char *")		: "char *";
 	 mpvoc_select2("char *", "char *")		: "char *";
 	 mpvoc_select3("char *", "char *")		: "char *";
@@ -117,6 +117,22 @@ CALLS
 	 mutant_parentcellline("char *") 		: "char *";
 	 mutant_derivationDisplay("char *") 		: "char *";
 	 mutant_derivationVerify("char *", "char *", "char *", "char *", "char *", "char *", "char *") : "char *";
+
+	 omimvoc_select1("char *", "char *")		: "char *";
+	 omimvoc_select2("char *", "char *")		: "char *";
+	 omimvoc_notes("char *")			: "char *";
+	 omimvoc_dbview("char *")			: "char *";
+	 omimvoc_evidencecode("char *")			: "char *";
+	 omimvoc_qualifier("char *")			: "char *";
+
+	 orthology_searchByClass("char *")		: "char *";
+	 orthology_citation("char *", "char *")		: "char *";
+	 orthology_marker("char *", "char *")		: "char *";
+	 orthology_homology1("char *", "char *")	: "char *";
+	 orthology_homology2("char *", "char *")	: "char *";
+	 orthology_homology3("char *")			: "char *";
+	 orthology_homology4("char *")			: "char *";
+	 orthology_organism("char *")			: "char *";
 
 	 nomen_event()					: "char *";
 	 nomen_status()					: "char *";

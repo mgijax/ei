@@ -881,7 +881,7 @@ char *mpvoc_dbview(char *key)
   return(buf);
 }
 
-char *mpvoc_term(char *key)
+char *mpvoc_evidencecode(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
@@ -890,7 +890,7 @@ char *mpvoc_term(char *key)
   return(buf);
 }
 
-char *mpvoc_defqualifier(char *key)
+char *mpvoc_qualifier(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
@@ -1046,6 +1046,182 @@ char *mutant_derivationVerify(
   	and c._Strain_key = %s \
   	and c._CellLine_Type_key = %s",
 	derivationTypeKey, parentKey, creatorKey, vectorTypeKey, vectorKey, strainKey, cellLineTypeKey);
+  return(buf);
+}
+
+/*
+ * OMIMVocAnnot.d
+*/
+
+char *omimvoc_select1(char *key, char *dbView)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Object_key, accID, description, short_description from %s \
+  	where _Object_key = %s \
+  	and prefixPart = 'mgi:' and preferred = 1 \
+	order by description", dbView, key);
+  return(buf);
+}
+
+char *omimvoc_select2(char *key, char *annotTypeKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier, e.* \
+  	from VOC_Annot_View a, VOC_Evidence_View e \
+  	where a._Annot_key = e._Annot_key \
+  	and a._AnnotType_key =  %s \
+  	and a._Object_key = %s \
+  	order by a.term", annotTypeKey, key);
+  return(buf);
+}
+
+char *omimvoc_notes(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select distinct n._Note_key, n._Object_key, n.note, n.sequenceNum \
+  	from VOC_Annot a, VOC_Evidence e, MGI_Note_VocEvidence_View n \
+  	where a._Annot_key = e._Annot_key \
+  	and e._AnnotEvidence_key = n._Object_key \
+  	and a._Object_key = %s \
+  	order by n._Object_key, n.sequenceNum", key);
+  return(buf);
+}
+
+char *omimvoc_dbview(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select dbView from ACC_MGIType where _MGIType_key = %s", key);
+  return(buf);
+}
+
+char *omimvoc_evidencecode(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Term_key, abbreviation from VOC_Term where _Vocab_key = %s \
+	order by abbreviation", key);
+  return(buf);
+}
+
+char *omimvoc_qualifier(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Term_key from VOC_Term where term is null and _Vocab_key = %s", key);
+  return(buf);
+}
+
+/*
+ * Orthology.d
+*/
+
+char *orthology_searchByClass(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select distinct h.classRef, h.short_citation, h.jnum \
+  	from HMD_Homology_View h \
+  	where h._Class_key = %s \
+  	order by h.short_citation", key);
+  return(buf);
+}
+
+char *orthology_citation(char *classKey, char *refKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select distinct _Class_key, jnum, short_citation, _Refs_key, \
+  		creation_date, modification_date \
+  	from HMD_Homology_View \
+	where _Class_key = %s \
+	and _Refs_key = %s", classKey, refKey);
+  return(buf);
+}
+
+char *orthology_marker(char *classKey, char *refKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select distinct _Marker_key, _Organism_key, organism, symbol, \
+  		chromosome, cytogeneticOffset, name \
+  	from HMD_Homology_View \
+	where _Class_key = %s \
+	and _Refs_key = %s \
+	order by _Organism_key", classKey, refKey);
+  return(buf);
+}
+
+char *orthology_homology1(char *classKey, char *refKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select distinct hm._Marker_key, a.accID, a._Accession_key, a._Organism_key \
+  	from HMD_Homology h, HMD_Homology_Marker hm, MRK_Acc_View a \
+	where _Class_key = %s \
+	and _Refs_key = %s \
+  	and h._Homology_key = hm._Homology_key \
+  	and hm._Marker_key = a._Object_key \
+  	and a._LogicalDB_key = 1 \
+  	and a.prefixPart = 'mgi:' \
+  	and a.preferred = 1 \
+  	order by a._Organism_key", classKey, refKey);
+  return(buf);
+}
+
+char *orthology_homology2(char *classKey, char *refKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select distinct hm._Marker_key, a.accID, a._Accession_key, a._Organism_key \
+  	from HMD_Homology h, HMD_Homology_Marker hm, MRK_Marker m, MRK_Acc_View a \
+	where _Class_key = %s \
+	and _Refs_key = %s \
+  	and h._Homology_key = hm._Homology_key \
+  	and hm._Marker_key = m._Marker_key \
+  	and m._Organism_key != 1 \
+  	and hm._Marker_key = a._Object_key \
+  	and a._LogicalDB_key = 55 \
+  	order by a._Organism_key", classKey, refKey);
+  return(buf);
+}
+
+char *orthology_homology3(char *classRefWhere)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select distinct a._Homology_key, a._Assay_key, a.assay, s._Organism_key \
+	from HMD_Homology h, HMD_Homology_Assay_View a, HMD_Homology_Marker m, MRK_Marker s \
+	%s \
+	and h._Homology_key = m._Homology_key \
+	and m._Marker_key = s._Marker_key \
+	and m._Homology_key = a._Homology_key \
+	order by a._Homology_key, a._Assay_key, s._Organism_key", classRefWhere);
+  return(buf);
+}
+
+char *orthology_homology4(char *classRefWhere)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select distinct n._Homology_key, n.sequenceNum, n.notes \
+	from HMD_Homology h, HMD_Notes n \
+	%s \
+	and h._Homology_key = n._Homology_key \
+	order by n._Homology_key, n.sequenceNum", classRefWhere);
+  return(buf);
+}
+
+char *orthology_organism(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Organism_key, organism from MGI_Organism_Homology_View \
+	where _Organism_key in %s \
+	order by _Organism_key", key);
   return(buf);
 }
 
