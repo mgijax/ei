@@ -1,0 +1,18 @@
+CALLS
+  LANGUAGE C 
+        INCLUDE
+             <mgisql.h>;
+	TYPE 
+	     "int"           <--> integer;
+	     "char *"        <--> string;
+	     "Widget"        <--> widget;
+             "char **"       <--> string_list;
+	     "Boolean"	     <--> boolean;
+
+	ENTRY 
+
+	 mgilib_count("char *")			: "char *";
+
+  ENDL
+ENDC
+

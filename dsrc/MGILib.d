@@ -181,7 +181,8 @@ rules:
 	    mgi := top;
 
 	    global_loginKey := 
-		mgi_sql1(mgilib_sql_1a + global_login + mgilib_sql_1b);
+		mgi_sql1(mgilib_count(global_login);
+		--mgi_sql1(mgilib_sql_1a + global_login + mgilib_sql_1b);
 
             if (global_loginKey.length = 0) then
 	      StatusReport.source_widget := top;

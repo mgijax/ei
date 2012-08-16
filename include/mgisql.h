@@ -13,6 +13,8 @@
 
 /* mgilib.h */
 
+extern char *mgilib_count(char *);
+
 #define mgilib_sql_1 "select convert(char(10),rowcnt(MAX(doampg))) \
 from sysobjects o, sysindexes i \
 where o.id = i.id \
