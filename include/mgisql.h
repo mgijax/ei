@@ -23,35 +23,29 @@ extern char *sql_translate();
 
 /* AccLib.d */
 
-#define acclib_sql_1 "select _LogicalDB_Key, _Assoc_key, accID, prefixPart, numericPart, preferred"
-#define acclib_sql_2 "select _LogicalDB_Key, _Accession_key, accID, prefixPart, numericPart, preferred"
-#define acclib_sql_3 ", _Refs_key, jnum, short_citation"
-#define acclib_sql_4 ", modifiedBy, modification_date"
-#define acclib_sql_5 ", _Sequence_key";
-#define acclib_sql_6 " order by _LogicalDB_key, preferred desc, prefixPart desc, numericPart"
-#define acclib_sql_7 " order by LogicalDB, preferred desc, prefixPart, numericPart";
-#define acclib_sql_8 " order by _Assoc_key, _LogicalDB_key";
-#define acclib_sql_9 " order by _LogicalDB_key, preferred desc, prefixPart, numericPart"
-#define acclib_sql_10a "select _Object_key from SEQ_Sequence_Acc_View where _LogicalDB_key = "
-#define acclib_sql_10b " and accID like "
+extern char *acclib_assoc();
+extern char *acclib_acc();
+extern char *acclib_ref();
+extern char *acclib_modification();
+extern char *acclib_sequence();
+extern char *acclib_orderA();
+extern char *acclib_orderB();
+extern char *acclib_orderC();
+extern char *acclib_orderD();
+extern char *acclib_seqacc(char *, char *);
 
 /* ActualLogical.d */
 
-#define actuallogical_sql_1a "\nselect * from ACC_LogicalDB_View where _LogicalDB_key = "
-#define actuallogical_sql_1b " order by name"
-#define actuallogical_sql_2a "\nselect * from ACC_ActualDB where _LogicalDB_key = "
-#define actuallogical_sql_2b " order by name"
+extern char *actuallogical_logical(char *);
+extern char *actuallogical_actual(char *);
 
 /* ControlledVocab.d */
 
-#define controlledvocab_sql_1 "select _NoteType_key, noteType, _MGIType_key, private, creation_date, modification_date"
-
-#define controlledvocab_sql_2 "select _RefAssocType_key, assoctype, _MGIType_key, allowOnlyOne, creation_date, modification_date"
-
-#define controlledvocab_sql_3 "select _SynonymType_key, synonymType, _MGIType_key, creation_date, modification_date"
-
-#define controlledvocab_sql_4 "select distinct *"
-#define controlledvocab_sql_5 "select *"
+extern char *controlledvocab_note();
+extern char *controlledvocab_ref();
+extern char *controlledvocab_synonym();
+extern char *controlledvocab_selectdistinct();
+extern char *controlledvocab_selectall();
 
 /* EvidencePropertyTableLib.d */
 

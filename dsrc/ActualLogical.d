@@ -383,7 +383,7 @@ rules:
           dbproc : opaque;
 
 	  row := 0;
-	  cmd := actuallogical_sql_1a + currentRecordKey + actuallogical_sql_1b;
+	  cmd := actuallogical_logical(currentRecordKey);
 	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -400,7 +400,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  row := 0;
-	  cmd := actuallogical_sql_2a + currentRecordKey + actuallogical_sql_2b;
+	  cmd := actuallogical_actual(currentRecordKey);
           table := top->ActualDB->Table;
 	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do

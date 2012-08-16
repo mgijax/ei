@@ -17,6 +17,26 @@ CALLS
 	 sql_error()				: "char *";
 	 sql_translate()			: "char *";
 
+	 acclib_assoc()				: "char *";
+	 acclib_acc()				: "char *";
+	 acclib_ref()				: "char *";
+	 acclib_modification()			: "char *";
+	 acclib_sequence()			: "char *";
+	 acclib_orderA()			: "char *";
+	 acclib_orderB()			: "char *";
+	 acclib_orderC()			: "char *";
+	 acclib_orderD()			: "char *";
+	 acclib_seqacc("char *", "char *")	: "char *";
+
+	 actuallogical_logical("char *")	: "char *";
+	 actuallogical_actual("char *")		: "char *";
+
+	 controlledvocab_note()			: "char *";
+	 controlledvocab_ref()			: "char *";
+	 controlledvocab_synonym()		: "char *";
+	 controlledvocab_selectdistinct()	: "char *";
+	 controlledvocab_selectall()		: "char *";
+
   ENDL
 ENDC
 
