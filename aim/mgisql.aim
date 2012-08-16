@@ -40,6 +40,8 @@ CALLS
 	 evidenceproperty_property("char *")	: "char *";
 	 evidenceproperty_select("char *", "char *", "char *")	: "char *";
 
+	 lib_max("char *")			: "char *";
+
   ENDL
 ENDC
 

@@ -232,3 +232,19 @@ char *evidenceproperty_select(char *key, char *table, char *objectKey)
   return(buf);
 }
 
+/*
+ * Lib.d
+*/
+
+char *lib_max(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select maxNumericPart from ACC_AccessionMax where prefixPart = %s", key);
+  return(buf);
+}
+
+/*
+ * MGILib.d
+*/
+

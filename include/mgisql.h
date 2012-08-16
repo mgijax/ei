@@ -54,7 +54,7 @@ extern char *evidenceproperty_select(char *, char *, char *);
 
 /* Lib.d */
 
-#define lib_sql_1 "select maxNumericPart from ACC_AccessionMax where prefixPart = "
+extern char *lib_max(char *);
 
 /* MGILib.d */
 

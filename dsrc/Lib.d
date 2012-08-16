@@ -598,7 +598,7 @@ rules:
         NextJnum does
 	  top : widget := NextJnum.source_widget.root;
 
-          top->NextJnum->text.value := mgi_sql1(lib_sql_1 + "'J:'");
+          top->NextJnum->text.value := mgi_sql1(lib_max("'J:'"));
         end does;
  
 --
