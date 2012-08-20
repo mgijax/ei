@@ -75,44 +75,25 @@ extern char *molsource_history(char *);
 
 /* NoteLib.d */
 
-#define notelib_sql_1a "select _NoteType_key, noteType, private = -1, _MGIType_key from "
-#define notelib_sql_1b "\norder by _NoteType_key"
-
-#define notelib_sql_2a "\nselect _NoteType_key, noteType, private from "
-#define notelib_sql_2b "\nwhere _NoteType_key > 0 order by _NoteType_key"
-
-#define notelib_sql_3a "select _NoteType_key, note, sequenceNum, _Note_key from "
-#define notelib_sql_3b " where _Object_key = "
-#define notelib_sql_3c "\nand _NoteType_key = "
-#define notelib_sql_3d "\norder by _NoteType_key, _Note_key, sequenceNum"
-
-#define notelib_sql_4a "select _NoteType_key, note, sequenceNum from "
-#define notelib_sql_4b " where _Object_key = "
-#define notelib_sql_4c "\norder by _NoteType_key, sequenceNum\n"
+extern char *notelib_1(char *);
+extern char *notelib_2(char *);
+extern char *notelib_3a(char *, char *);
+extern char *notelib_3b(char *);
+extern char *notelib_3c();
+extern char *notelib_4(char *, char *);
 
 /* NoteTypeTableLib.d */
 
-#define notetype_sql_1a "select _NoteType_key, _MGIType_key, noteType from "
-#define notetype_sql_1b "\norder by noteType"
-
-#define notetype_sql_2a "select _Note_key, _NoteType_key, noteType, note, sequenceNum from "
-#define notetype_sql_2b " where "
-#define notetype_sql_2c " = "
-#define notetype_sql_2d " order by _Note_key, sequenceNum\n"
-
-#define notetype_sql_3a "select _NoteType_key from "
-#define notetype_sql_3b " where noteType = "
+extern char *notetype_1(char *);
+extern char *notetype_2(char *, char *);
+extern char *notetype_3(char *, char *);
 
 /* Organism.d */
 
-#define organism_sql_1a "select * from MGI_Organism_View where _Organism_key = "
-#define organism_sql_1b " order by commonName\n"
-#define organism_sql_2a "select _MGIType_key, typeName from MGI_Organism_MGIType_View \
-where _Organism_key = "
-#define organism_sql_2b "  order by typeName\n"
-#define organism_sql_3a "select * from MRK_Chromosome where _Organism_key = "
-#define organism_sql_3b " order by sequenceNum\n"
-#define organism_sql_4 "select chromosome, _Marker_key, symbol from MRK_Anchors_View order by chromosome\n"
+extern char *organism_select(char *);
+extern char *organism_mgitype(char *);
+extern char *organism_chr(char *);
+extern char *organism_anchor();
 
 /* SimpleVocab.d */
 

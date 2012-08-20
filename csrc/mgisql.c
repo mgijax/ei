@@ -349,6 +349,154 @@ char *molsource_history(char *key)
 }
 
 /*
+ * NoteLib.d
+*/
+
+char *notelib_1(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _NoteType_key, noteType, private = -1, _MGIType_key \
+	from %s \
+  	order by _NoteType_key", key);
+  return(buf);
+}
+
+char *notelib_2(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _NoteType_key, noteType, private \
+	from %s \
+	where _NoteType_key > 0 order by _NoteType_key", key);
+  return(buf);
+}
+
+char *notelib_3a(char *key, char *objectKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _NoteType_key, note, sequenceNum, _Note_key \
+	from %s \
+	where _Object_key = %s", key, objectKey);
+  return(buf);
+}
+
+char *notelib_3b(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf," and _NoteType_key = %s", key);
+  return(buf);
+}
+
+char *notelib_3c()
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf," order by _NoteType_key, _Note_key, sequenceNum");
+  return(buf);
+}
+
+char *notelib_4(char *key, char *objectKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _NoteType_key, note, sequenceNum \
+	from %s \
+	where _Object_key = %s \
+	order by _NoteType_key, sequenceNum", key, objectKey);
+  return(buf);
+}
+
+/*
+ * NoteTypeTableLib.d
+*/
+
+char *notetype_1(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _NoteType_key, _MGIType_key, noteType \
+	from %s \
+	order by noteType", key);
+  return(buf);
+}
+
+char *notetype_2(char *key, char *objectKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Note_key, _NoteType_key, noteType, note, sequenceNum \
+	from %s \
+	where %s = %s \
+	order by _Note_key, sequenceNum", key, objectKey);
+  return(buf);
+}
+
+char *notetype_3(char *key, char *noteType)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _NoteType_key from %s where noteType = %s", key, noteType);
+  return(buf);
+}
+
+/*
+ * Organism.d
+*/
+
+char *organism_select(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select * from MGI_Organism_View where _Organism_key = %s \
+	order by commonName", key);
+  return(buf);
+}
+
+char *organism_mgitype(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _MGIType_key, typeName from MGI_Organism_MGIType_View \
+	where _Organism_key = %s \
+	order by typeName", key);
+  return(buf);
+}
+
+char *organism_chr(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select * from MRK_Chromosome where _Organism_key = %s \
+	order by sequenceNum", key);
+  return(buf);
+}
+
+char *organism_anchor()
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select chromosome, _Marker_key, symbol from MRK_Anchors_View order by chromosome");
+  return(buf);
+}
+
+/*
+/*
+ * SimpleVocab.d
+*/
+
+char *organism_anchor()
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select chromosome, _Marker_key, symbol from MRK_Anchors_View order by chromosome");
+  return(buf);
+}
+
+/*
+/*
  * Verify.d
 */
 

@@ -535,13 +535,13 @@ rules:
 	  -- For Mouse, retrieve Anchor information
 
 	  if (currentRecordKey = "1") then
-		cmd := cmd + organism_sql_4;
+		cmd := cmd + organism_anchor();
 	  end if;
 
 	  row : integer := 0;
           dbproc : opaque;
 
-	  cmd := organism_sql_1a + currentRecordKey + organism_sql_1b;
+	  cmd := organism_select(currentRecordKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -559,7 +559,7 @@ rules:
 
 	  row := 0;
           table := top->OrganismType->Table;
-	  cmd := organism_sql_2a + currentRecordKey + organism_sql_2b;
+	  cmd := organism_mgitype(currentRecordKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -574,7 +574,7 @@ rules:
 
 	  row := 0;
           table := top->Chromosome->Table;
-	  cmd := organism_sql_3a + currentRecordKey + organism_sql_3b;
+	  cmd := organism_chr(currentRecordKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -590,7 +590,7 @@ rules:
 
 	  row := 0;
           table := top->Anchor->Table;
-	  cmd := organism_sql_4;
+	  cmd := organism_anchor();
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do

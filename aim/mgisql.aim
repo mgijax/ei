@@ -55,6 +55,22 @@ CALLS
 	 molsource_reference("char *")		: "char *";
 	 molsource_history("char *")		: "char *";
 
+	 notelib_1("char *")			: "char *";
+	 notelib_2("char *")			: "char *";
+	 notelib_3a("char *", "char *")		: "char *";
+	 notelib_3b("char *")			: "char *";
+	 notelib_3c()				: "char *";
+	 notelib_4("char *", "char *")		: "char *";
+
+	 notetype_1("char *")			: "char *";
+	 notetype_2("char *", "char *")		: "char *";
+	 notetype_3("char *", "char *")		: "char *";
+
+	 organism_select("char *")		: "char *";
+	 organism_mgitype("char *")		: "char *";
+	 organism_chr("char *")			: "char *";
+	 organism_anchor()			: "char *";
+
 	 verify_allele("char *")		: "char *";
 	 verify_allele_marker("char *")		: "char *";
 

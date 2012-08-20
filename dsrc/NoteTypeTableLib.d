@@ -97,7 +97,7 @@ rules:
 	  cmd : string;
 	  row : integer := 0;
 
-	  cmd := notetype_sql_1a + mgi_DBtable(tableID) + notetype_sql_1b;
+	  cmd := notetype_1(mgi_DBtable(tableID));
 
 	  dbproc : opaque := mgi_dbexec(cmd);
 
@@ -152,10 +152,7 @@ rules:
 	    editMode := TBL_ROW_NOCHG;
 	  end if;
 
-          cmd := notetype_sql_2a + mgi_DBtable(tableID) +
-		 notetype_sql_2b + mgi_DBkey(tableID) + 
-		 notetype_sql_2c + objectKey +
-		 notetype_sql_2d;
+          cmd := notetype_2(mgi_DBtable(tableID), objectKey);
 
 	  row : integer := -1;
           dbproc : opaque := mgi_dbexec(cmd);
@@ -221,8 +218,7 @@ rules:
           -- set default note type
  
 	  if (table.useDefaultNoteType) then
-	    defaultNoteTypeKey := mgi_sql1(notetype_sql_3a + mgi_DBtable(tableID) +
-					   notetype_sql_3b + mgi_DBprstr(table.defaultNoteType));
+	    defaultNoteTypeKey := mgi_sql1(notetype_3(mgi_DBtable(tableID), mgi_DBprstr(table.defaultNoteType)));
 	  end if;
 
 	  -- If MP module and qualifier is "norm", then default note type to "Normal"
@@ -232,8 +228,7 @@ rules:
 	    row := mgi_tblGetCurrentRow(annotTable);
             qualifierKey := mgi_tblGetCell(annotTable, row, annotTable.qualifierKey);
 	    if (qualifierKey = MP_NORM_QUALIFIER_KEY) then
-	      defaultNoteTypeKey := mgi_sql1(notetype_sql_3a + mgi_DBtable(tableID) +
-		                             notetype_sql_3b + mgi_DBprstr(table.defaultNoteNormal));
+	      defaultNoteTypeKey := mgi_sql1(notetype_3(mgi_DBtable(tableID), mgi_DBprstr(table.defaultNoteNormal)));
 	    end if;
 	  end if;
 

@@ -131,9 +131,9 @@ rules:
 	      tableID = MGI_NOTETYPE_SEQUENCE_VIEW or 
 	      tableID = MGI_NOTETYPE_STRAIN_VIEW or 
 	      tableID = MGI_NOTETYPE_VOCEVIDENCE_VIEW) then
-	    cmd := notelib_sql_1a + mgi_DBtable(tableID) + notelib_sql_1b;
+	    cmd := notelib_1(mgi_DBtable(tableID));
 	  else
-	    cmd := notelib_sql_2a + mgi_DBtable(tableID) + notelib_sql_2b;
+	    cmd := notelib_2(mgi_DBtable(tableID));
 	  end if;
 
           dbproc : opaque := mgi_dbexec(cmd);
@@ -215,17 +215,15 @@ rules:
 	      tableID = MGI_NOTE_SEQUENCE_VIEW or 
 	      tableID = MGI_NOTE_STRAIN_VIEW or 
 	      tableID = MGI_NOTE_VOCEVIDENCE_VIEW) then
-            cmd := notelib_sql_3a + mgi_DBtable(tableID) +
-		   notelib_sql_3b + objectKey;
+            cmd := notelib_3a(mgi_DBtable(tableID), objectKey);
 
             if (noteTypeKey > 0) then
-	      cmd := cmd + notelib_sql_3c + (string) noteTypeKey;
+	      cmd := cmd + notelib_3b((string) noteTypeKey);
 	    end if;
 
-	    cmd := cmd + notelib_sql_3d;
+	    cmd := cmd + notelib_3c();
 	  else
-            cmd := notelib_sql_4a + mgi_DBtable(tableID) +
-		   notelib_sql_4b + objectKey + notelib_sql_4c;
+            cmd := notelib_4(mgi_DBtable(tableID), objectKey);
 	  end if;
 
           dbproc : opaque := mgi_dbexec(cmd);
