@@ -141,12 +141,7 @@ rules:
 	    editMode := TBL_ROW_NOCHG;
 	  end if;
 
-          cmd := evidenceproperty_select(mgi_DBtable(tableID), mgi_DBkey(tableID), objectKey);
-
---          cmd := evidenceproperty_sql_2a + mgi_DBtable(tableID) +
---		 evidenceproperty_sql_2b + mgi_DBkey(tableID) + 
---		 evidenceproperty_sql_2c + objectKey +
---		 evidenceproperty_sql_2d;
+          cmd := evidenceproperty_select(mgi_DBkey(tableID), mgi_DBtable(tableID), objectKey);
 
 	  row : integer := 0;
           dbproc : opaque := mgi_dbexec(cmd);
