@@ -97,16 +97,11 @@ extern char *organism_anchor();
 
 /* SimpleVocab.d */
 
-#define simple_sql_1 "select _SynonymType_key from MGI_SynonymType \
-where _MGIType_key = 13 and synonymType = 'exact'"
-#define simple_sql_2 "select * from VOC_Vocab_View where _Vocab_key = "
-#define simple_sql_3a "\nselect * from VOC_Term_View where _Vocab_key = "
-#define simple_sql_3b "\norder by sequenceNum\n"
-#define simple_sql_4a "\nselect * from VOC_Text_View where _Vocab_key = "
-#define simple_sql_4b "\norder by termsequenceNum, sequenceNum\n"
-#define simple_sql_5a "select _Synonym_key, synonym from MGI_Synonym where _SynonymType_key = "
-#define simple_sql_5b " and _Object_key = "
-#define simple_sql_5c "\norder by synonym\n"
+extern char *simple_synonymtype();
+extern char *simple_select1(char *);
+extern char *simple_select2(char *);
+extern char *simple_select3(char *);
+extern char *simple_synonym(char *, char *);
 
 /* Verify.d */
 

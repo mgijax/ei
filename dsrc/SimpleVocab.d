@@ -155,7 +155,7 @@ rules:
           send(Clear, 0);
 
 	  -- set synonym type
-	  synTypeKey := mgi_sql1(simple_sql_1);
+	  synTypeKey := mgi_sql1(simple_synonymtype());
 
 	  -- Perform initial search
 	  send(Search, 0);
@@ -551,7 +551,7 @@ rules:
 	  definition : string;
           dbproc : opaque;
 
-	  cmd := simple_sql_2 + currentRecordKey;
+	  cmd := simple_select1(currentRecordKey);
 	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -573,7 +573,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  row := 0;
-	  cmd := simple_sql_3a + currentRecordKey + simple_sql_3b;
+	  cmd := simple_select2(currentRecordKey);
 	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -592,7 +592,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  row := 0;
-          cmd := simple_sql_4a + currentRecordKey + simple_sql_4b;
+          cmd := simple_select3(currentRecordKey);
 	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -650,7 +650,7 @@ rules:
 	    return;
 	  end if;
 
-	  cmd := simple_sql_5a + synTypeKey + simple_sql_5b + termKey + simple_sql_5c;
+	  cmd := simple_synonym(synTypeKey, termKey);
 
           dbproc : opaque := mgi_dbexec(cmd);
  
