@@ -119,7 +119,7 @@ rules:
 	  end if;
 
 	  if (top->SourceVectorTypeMenu.menuHistory.defaultValue = "%") then
-	    vectorType := mgi_sql1(molsource_sql_2a + top->SourceVectorTypeMenu.defaultValue + molsource_sql_2b);
+	    vectorType := mgi_sql1(molsource_vectorType(top->SourceVectorTypeMenu.defaultValue));
 	  else
 	    vectorType := top->SourceVectorTypeMenu.menuHistory.defaultValue;
 	  end if;
@@ -134,8 +134,8 @@ rules:
 
 	  -- Determine Cell Line value
 
-	  cellLineNotSpecified := mgi_sql1(molsource_sql_3);
-	  cellLineNotApplicable := mgi_sql1(molsource_sql_4);
+	  cellLineNotSpecified := mgi_sql1(molsource_celllineNS());
+	  cellLineNotApplicable := mgi_sql1(molsource_celllineNA());
 
 	  if (top->CellLine->CellLineID->text.value.length = 0) then
 	    if (top->Tissue->TissueID->text.value = NOTSPECIFIED) then
@@ -318,7 +318,7 @@ rules:
 	  cmd : string;
           dbproc : opaque;
 
-          cmd := molsource_sql_5 + key;
+          cmd := molsource_source(key);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -364,7 +364,7 @@ rules:
           end while;
           (void) mgi_dbclose(dbproc);
 
-	  cmd := molsource_sql_6 + key;
+	  cmd := molsource_strain(key);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -374,7 +374,7 @@ rules:
           end while;
           (void) mgi_dbclose(dbproc);
 
-	  cmd := molsource_sql_7 + key;
+	  cmd := molsource_tissue(key);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -384,7 +384,7 @@ rules:
           end while;
           (void) mgi_dbclose(dbproc);
 
-	  cmd := molsource_sql_8 + key;
+	  cmd := molsource_cellline(key);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -394,7 +394,7 @@ rules:
           end while;
           (void) mgi_dbclose(dbproc);
 
-	  cmd := molsource_sql_9 + key;
+	  cmd := molsource_date(key);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -408,7 +408,7 @@ rules:
           end while;
           (void) mgi_dbclose(dbproc);
 
-	  cmd := molsource_sql_10 + key;
+	  cmd := molsource_reference(key);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -892,7 +892,7 @@ rules:
 	    return;
           end if;
 
-	  cmd := molsource_sql_11 + sourceKey;
+	  cmd := molsource_history(sourceKey);
           dbproc : opaque := mgi_dbexec(cmd);
  
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do

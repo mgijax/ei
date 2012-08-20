@@ -665,10 +665,10 @@ rules:
 
 	        whichMarker := 1;
  
-		select := verify_allele_sql_1 + mgi_DBprstr(value);
+		select := verify_allele(mgi_DBprstr(value));
 
 	        if (markerKey.length > 0 and markerKey != "NULL") then
-                  select := select + verify_allele_sql_2 + markerKey;
+                  select := select + verify_allele_marker(markerKey);
 	        end if;
 
                 dbproc := mgi_dbexec(select);

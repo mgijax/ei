@@ -256,3 +256,118 @@ char *mgilib_user(char *key)
   return(buf);
 }
 
+/*
+ * MolSourceLib.d
+*/
+
+char *molsource_vectorType(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Term_key from VOC_Term where _Vocab_key = 24 and term = '%s'", key);
+  return(buf);
+}
+
+char *molsource_celllineNS()
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Term_key from VOC_Term where _Vocab_key = 18 and term = 'Not Specified'");
+  return(buf);
+}
+
+char *molsource_celllineNA()
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Term_key from VOC_Term where _Vocab_key = 18 and term = 'Not Applicable'");
+  return(buf);
+}
+
+char *molsource_source(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select * from PRB_Source where _Source_key = %s", key);
+  return(buf);
+}
+
+char *molsource_strain(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select p._Strain_key, s.strain from PRB_Source p, PRB_Strain s \
+  	where p._Strain_key = s._Strain_key and p._Source_key = %s", key);
+  return(buf);
+}
+
+char *molsource_tissue(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select p._Tissue_key, s.tissue from PRB_Source p, PRB_Tissue s \
+  	where p._Tissue_key = s._Tissue_key and _Source_key = %s", key);
+  return(buf);
+}
+
+char *molsource_cellline(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select p._CellLine_key, t.term from PRB_Source p, VOC_Term t \
+  	where p._CellLine_key = t._Term_key and p._Source_key = %s", key);
+  return(buf);
+}
+
+char *molsource_date(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select p.creation_date, p.modification_date, u1.login, u2.login \
+  	from PRB_Source p, MGI_User u1, MGI_User u2 \
+  	where p._CreatedBy_key = u1._User_key  \
+  	and p._ModifiedBy_key = u2._User_key \
+  	and p._Source_key = %s", key);
+  return(buf);
+}
+
+char *molsource_reference(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select jnum, short_citation from PRB_SourceRef_View where _Source_key = %s", key);
+  return(buf);
+}
+
+char *molsource_history(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select columnName, modifiedBy, modification_date  \
+  	from MGI_AttrHistory_Source_View where _Object_key = %s", key);
+  return(buf);
+}
+
+/*
+ * Verify.d
+*/
+
+char *verify_allele(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Allele_key, _Marker_key, symbol, markerSymbol \
+  	from ALL_Allele_View \
+  	where term in ('Approved', 'Autoload') \
+	and symbol like %s", key);
+  return(buf);
+}
+
+char *verify_allele_marker(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"and _Marker_key = %s", key);
+  return(buf);
+}
+

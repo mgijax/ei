@@ -62,33 +62,16 @@ extern char *mgilib_user(char *);
 
 /* MolSourceLib.d */
 
-#define molsource_sql_1a "select _Term_key from VOC_Term where _Vocab_key = 10 and term = '"
-#define molsource_sql_1b "'"
-#define molsource_sql_2a "select _Term_key from VOC_Term where _Vocab_key = 24 and term = '"
-#define molsource_sql_2b "'"
-#define molsource_sql_3 "select _Term_key from VOC_Term where _Vocab_key = 18 and term = 'Not Specified'"
-#define molsource_sql_4 "select _Term_key from VOC_Term where _Vocab_key = 18 and term = 'Not Applicable'"
-#define molsource_sql_5 "select * from PRB_Source where _Source_key = "
-
-#define molsource_sql_6 "\nselect p._Strain_key, s.strain from PRB_Source p, PRB_Strain s \
-where p._Strain_key = s._Strain_key and p._Source_key = "
-
-#define molsource_sql_7 "\nselect p._Tissue_key, s.tissue from PRB_Source p, PRB_Tissue s \
-where p._Tissue_key = s._Tissue_key and _Source_key = "
-
-#define molsource_sql_8 "\nselect p._CellLine_key, t.term from PRB_Source p, VOC_Term t \
-where p._CellLine_key = t._Term_key and p._Source_key = "
-
-#define molsource_sql_9 "select p.creation_date, p.modification_date, u1.login, u2.login \
-from PRB_Source p, MGI_User u1, MGI_User u2 \
-where p._CreatedBy_key = u1._User_key  \
-and p._ModifiedBy_key = u2._User_key \
-and p._Source_key = "
-
-#define molsource_sql_10 "select jnum, short_citation from PRB_SourceRef_View where _Source_key = "
-
-#define molsource_sql_11 "select columnName, modifiedBy, modification_date  \
-from MGI_AttrHistory_Source_View where _Object_key = "
+extern char *molsource_vectorType(char *);
+extern char *molsource_celllineNS();
+extern char *molsource_celllineNA();
+extern char *molsource_source(char *);
+extern char *molsource_strain(char *);
+extern char *molsource_tissue(char *);
+extern char *molsource_cellline(char *);
+extern char *molsource_date(char *);
+extern char *molsource_reference(char *);
+extern char *molsource_history(char *);
 
 /* NoteLib.d */
 
@@ -146,10 +129,8 @@ where _MGIType_key = 13 and synonymType = 'exact'"
 
 /* Verify.d */
 
-#define verify_allele_sql_1 "select _Allele_key, _Marker_key, symbol, markerSymbol \
-from ALL_Allele_View \
-where term in ('Approved', 'Autoload') and symbol like " 
-#define verify_allele_sql_2 " and _Marker_key = "
+extern char *verify_allele(char *key);
+extern char *verify_allele_marker(char *key);
 
 #define verify_cellline_sql_1 "select _Term_key, term from VOC_Term where _Vocab_key = 18 and term like "
 
