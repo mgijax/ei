@@ -152,7 +152,7 @@ rules:
 	    editMode := TBL_ROW_NOCHG;
 	  end if;
 
-          cmd := notetype_2(mgi_DBtable(tableID), objectKey);
+          cmd := notetype_2(mgi_DBtable(tableID), mgi_DBkey(tableID), objectKey);
 
 	  row : integer := -1;
           dbproc : opaque := mgi_dbexec(cmd);

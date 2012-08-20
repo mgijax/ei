@@ -81,7 +81,7 @@ char *acclib_ref()
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"_Refs_key, jnum, short_citation");
+  sprintf(buf,", _Refs_key, jnum, short_citation");
   return(buf);
 }
 
@@ -423,14 +423,14 @@ char *notetype_1(char *key)
   return(buf);
 }
 
-char *notetype_2(char *key, char *objectKey)
+char *notetype_2(char *key, char *tableKey, char *objectKey)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select _Note_key, _NoteType_key, noteType, note, sequenceNum \
 	from %s \
 	where %s = %s \
-	order by _Note_key, sequenceNum", key, objectKey);
+	order by _Note_key, sequenceNum", key, tableKey, objectKey);
   return(buf);
 }
 
@@ -554,6 +554,256 @@ char *verify_allele_marker(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"and _Marker_key = %s", key);
+  return(buf);
+}
+
+char *verify_cellline(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Term_key, term from VOC_Term where _Vocab_key = 18 and term like %s", key);
+  return(buf);
+}
+
+char *verify_genotype(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Object_key, description from GXD_Genotype_Summary_View where mgiID like %s", key);
+  return(buf);
+}
+
+char *verify_imagepane(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select p._ImagePane_key, substring(i.figureLabel,1,20), a1.accID , a2.accID \
+	from IMG_ImagePane p, IMG_Image i, ACC_Accession a1, ACC_Accession a2, VOC_Term t \
+	where p._Image_key = i._Image_key \
+	and p._Image_key = a1._Object_key \
+	and a1._MGIType_key = 9 \
+	and p._Image_key = a2._Object_key \
+	and a2._MGIType_key = 9 \
+	and a2._LogicalDB_key = 19 \
+	and i._ImageType_key = t._Term_key \
+	and t.term = 'Full Size' \
+	and a1.accID like %s", key);
+  return(buf);
+}
+
+char *verify_marker(char *key, char *symbol)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Marker_key, _Marker_Status_key, symbol, chromosome, \
+	cytogeneticOffset, substring(name,1,25) \
+	from MRK_Marker where _Organism_key = %s \
+	and symbol like %s", key, symbol);
+  return(buf);
+}
+
+char *verify_marker_union(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"union\n \
+	select -1, 1, symbol, chromosome, null, substring(name, 1, 25) \
+	from NOM_Marker_Valid_View \
+	where symbol like %s", key);
+  return(buf);
+}
+
+char *verify_marker_current(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select current_symbol from MRK_Current_View where _Marker_key = %s", key);
+  return(buf);
+}
+
+char *verify_marker_which(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select cytogeneticOffset, name, mgiID, _Accession_key from MRK_Mouse_View \
+	where _Marker_key = %s", key);
+  return(buf);
+}
+
+char *verify_marker_homolog(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select cytogeneticOffset, name from MRK_Marker \
+	where _Organism_key != 1 and _Marker_key = %s", key);
+  return(buf);
+}
+
+char *verify_marker_homologcount(char *key, char *organismKey, char *whichMarkerKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select count(*) from HMD_Homology_View \
+	where _Class_key = %s \
+	and _Organism_key = %s \
+	and _Marker_key != %s", key, organismKey, whichMarkerKey);
+  return(buf);
+}
+
+char *verify_marker_nonmouse(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Marker_key, accID, _Accession_key from MRK_NonMouse_View \
+	where LogicalDB = 'Entrez Gene' \
+	and _Marker_key = %s", key);
+  return(buf);
+}
+
+char *verify_marker_mgiid(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select mgiID from MRK_Mouse_View where _Marker_key = %s", key);
+  return(buf);
+}
+
+char *verify_marker_chromosome(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select chromosome from MRK_Mouse_View where _Marker_key = %s", key);
+  return(buf);
+}
+
+char *verify_marker_intable1(char *probeKey, char *markerKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select count(pm._Probe_key) from PRB_Marker pm, PRB_Probe p, VOC_Term t \
+	where pm._Probe_key = p._Probe_key \
+	and p._SegmentType_key = t._Term_key \
+	and t.term != 'primer' \
+	and pm.relationship in ('E', 'H') \
+	and pm._Probe_key = %s \
+	and pm._Marker_key = %s \
+	union \
+	select count(pm._Probe_key) from PRB_Marker pm, PRB_Probe p, VOC_Term t  \
+	where pm._Probe_key = p._Probe_key \
+	and p._SegmentType_key = t._Term_key \
+	and t.term = 'primer' \
+	and pm.relationship = 'A' \
+	and pm._Probe_key = %s \
+	and pm._Marker_key = %s", probeKey, markerKey, probeKey, markerKey);
+  return(buf);
+}
+
+char *verify_marker_intable2(char *key, char *tableKey, char *probeKey, char *markerKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select count(*) from %s \
+	where %s = %s and _Marker_key = %s", key, tableKey, probeKey, markerKey);
+  return(buf);
+}
+
+char *verify_reference(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Refs_key, short_citation, isReviewArticle from BIB_View where jnum = %s", key);
+  return(buf);
+}
+
+char *verify_exec_goreference(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec BIB_isNOGO %s", key);
+  return(buf);
+}
+
+char *verify_organism(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Organism_key, commonName, organism \
+  	from MGI_Organism_Marker_View where commonName like %s", key);
+  return(buf);
+}
+
+char *verify_strainspecies(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Term_key, term from VOC_Term where _Vocab_key = 26 and term like %s", key);
+  return(buf);
+}
+
+char *verify_strains1()
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Term_key from VOC_Term where _Vocab_key = 26 and term = 'laboratory mouse'");
+  return(buf);
+}
+
+char *verify_strains2()
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Term_key from VOC_Term where _Vocab_key = 55 and term = 'Not Specified'");
+  return(buf);
+}
+
+char *verify_strains3(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Strain_key, strain, private from PRB_Strain where strain like %s", key);
+  return(buf);
+}
+
+char *verify_strains4(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Strain_key from PRB_Strain where strain like %s", key);
+  return(buf);
+}
+
+char *verify_tissue1(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Tissue_key, tissue from PRB_Tissue where tissue like %s", key);
+  return(buf);
+}
+
+char *verify_tissue2(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Tissue_key from PRB_Tissue where tissue like %s", key);
+  return(buf);
+}
+
+char *verify_user(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _User_key, login from MGI_User where login like %s", key);
+  return(buf);
+}
+
+char *verify_vocabqualifier(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select 1 from DAG_Node d \
+  	where d._DAG_key = 4 \
+  	and d._Label_key = 3 \
+  	and d._Object_key = %s", key);
   return(buf);
 }
 

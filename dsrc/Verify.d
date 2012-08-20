@@ -888,7 +888,7 @@ rules:
 
 	  -- Search for CellLine in the database
 
-	  select : string := verify_cellline_sql_1 + mgi_DBprstr(value);
+	  select : string := verify_cellline(mgi_DBprstr(value));
 
 	  -- Insert results into string list for loading into CellLine selection list
 
@@ -1285,7 +1285,7 @@ rules:
 
 	  (void) busy_cursor(top);
 
-	  cmd : string := verify_genotype_sql_1 + mgi_DBprstr(genotypeID);
+	  cmd : string := verify_genotype(mgi_DBprstr(genotypeID));
 
 	  dbproc : opaque := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
@@ -1354,7 +1354,7 @@ rules:
 
 	  (void) busy_cursor(top);
 
-	  cmd := verify_imagepane_sql_1 + mgi_DBprstr(mgiID);
+	  cmd := verify_imagepane(mgi_DBprstr(mgiID));
 
 	  dbproc : opaque := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
@@ -1834,12 +1834,12 @@ rules:
 
 	  -- Search for Marker in the database
 
-	  select : string := verify_marker_sql_1a + organismKey + verify_marker_sql_1b + mgi_DBprstr(value);
+	  select : string := verify_marker(organismKey, mgi_DBprstr(value));
 
 	  -- If searching Nomen as well....
 
 	  if (VerifyMarker.allowNomen) then
-	    select := select + verify_marker_sql_2 + mgi_DBprstr(value);
+	    select := select + verify_marker_union(mgi_DBprstr(value));
 	  end if;
 
 	  -- Insert results into string list for loading into Marker selection list
@@ -1923,7 +1923,7 @@ rules:
             message := "Symbol '" + value + "' has been Withdrawn\n\n" +
                        "The current symbol(s) are:\n\n";
 
-            select := verify_marker_sql_3 + whichMarker;
+            select := verify_marker_current(whichMarker);
             dbproc := mgi_dbexec(select);
             while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
               while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -1956,7 +1956,7 @@ rules:
 
           if (isTable and VerifyMarker.verifyOtherOrganism) then
 
-	    select := verify_marker_sql_4 + whichMarker;
+	    select := verify_marker_which(whichMarker);
             dbproc := mgi_dbexec(select);
             while (mgi_dbresults(dbproc) != NO_MORE_RESULTS and not found) do
               while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -1971,7 +1971,7 @@ rules:
             (void) mgi_dbcancel(dbproc);
             (void) mgi_dbclose(dbproc);
 
-	    select := verify_marker_sql_5 + whichMarker;
+	    select := verify_marker_homolog(whichMarker);
             dbproc := mgi_dbexec(select);
             while (mgi_dbresults(dbproc) != NO_MORE_RESULTS and not found) do
               while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -1983,7 +1983,7 @@ rules:
             (void) mgi_dbcancel(dbproc);
             (void) mgi_dbcancel(dbproc);
 
-	    select := verify_marker_sql_6 + whichMarker;
+	    select := verify_marker_nonmouse(whichMarker);
             dbproc := mgi_dbexec(select);
             while (mgi_dbresults(dbproc) != NO_MORE_RESULTS and not found) do
               while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -2000,9 +2000,7 @@ rules:
               -- Check if record already exists for same Class/Organism/different Marker
  
               message := "";
-              select := verify_marker_sql_7a + top->ID->text.value +
-                        verify_marker_sql_7b + organismKey +
-                        verify_marker_sql_7c + whichMarker;
+              select := verify_marker_homologcount(top->ID->text.value, organismKey, whichMarker);
  
               if ((integer) mgi_sql1(select) > 0) then
                 message := "This Homology Class already contains a Symbol for this Organism\n";
@@ -2036,7 +2034,7 @@ rules:
 
 	    -- Get MGI Acc ID if Mouse and Accession Widget defined
 	    if (organismKey = "1" and accessionWidget != nil) then
-	      markerMGIAccID := mgi_sql1(verify_marker_sql_8 + whichMarker);
+	      markerMGIAccID := mgi_sql1(verify_marker_mgiid(whichMarker));
 	      accessionWidget->AccessionID->text.value := markerMGIAccID;
 	    end if;
 
@@ -2120,7 +2118,7 @@ rules:
 
 	  (void) busy_cursor(top);
 
-	  select : string := verify_markerchromosome_sql_1 + valueKey;
+	  select : string := verify_marker_chromosome(valueKey);
           dbproc :opaque := mgi_dbexec(select);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -2226,16 +2224,9 @@ rules:
 	  end if;
 
 	  if (mgi_DBtable(tableID) = "PRB_Marker") then
-	    numRecs := mgi_sql1(verify_markerintable_sql_1a + 
-				verify_markerintable_sql_1b + accID + 
-				verify_markerintable_sql_1c + markerID +
-				verify_markerintable_sql_2a +
-				verify_markerintable_sql_2b + accID + 
-				verify_markerintable_sql_2c + markerID);
+	    numRecs := mgi_sql1(verify_marker_intable1(accID, markerID));
 	  else
-	    numRecs := mgi_sql1(verify_markerintable_sql_3a + mgi_DBtable(tableID) +
-		  		verify_markerintable_sql_3b + mgi_DBkey(tableID) + verify_markerintable_sql_3c + accID +
-		  		verify_markerintable_sql_3d + markerID);
+	    numRecs := mgi_sql1(verify_marker_intable2(mgi_DBtable(tableID), mgi_DBkey(tableID), accID, markerID));
 	  end if;
 
 	  if ((integer) numRecs > 0) then
@@ -2324,7 +2315,7 @@ rules:
 	  citation : string;
 	  isReview : string;
 
-	  select : string := verify_reference_sql_1 + value;
+	  select : string := verify_reference(value);
 
 	  dbproc := mgi_dbexec(select);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
@@ -2543,7 +2534,7 @@ rules:
 	  (void) busy_cursor(top);
 
 	  isNOGO : string;
-	  select : string := verify_goreference_sql_1 + value;
+	  select : string := verify_exec_goreference(value);
 
 	  dbproc : opaque := mgi_dbexec(select);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
@@ -2685,7 +2676,7 @@ rules:
 
 	  -- Search for Organism in the database
 
-	  select : string := verify_organism_sql_1 + mgi_DBprstr(value);
+	  select : string := verify_organism(mgi_DBprstr(value));
 
 	  -- Insert results into string list for loading into Organism selection list
 	  -- Insert chromosomes into string list for future reference
@@ -2938,7 +2929,7 @@ rules:
 
 	  -- Search for Species in the database
 
-	  select : string := verify_strainspecies_sql_1 + mgi_DBprstr(value);
+	  select : string := verify_strainspecies(mgi_DBprstr(value));
 
 	  -- Insert results into string list for loading into Species selection list
 
@@ -3073,8 +3064,8 @@ rules:
 	  defaultStrainType : string;
           i : integer;
 
-	  defaultSpecies := mgi_sql1(verify_strains_sql_1);
-	  defaultStrainType := mgi_sql1(verify_strains_sql_2);
+	  defaultSpecies := mgi_sql1(verify_strains1());
+	  defaultStrainType := mgi_sql1(verify_strains2());
  
           -- Parse Strains
  
@@ -3089,7 +3080,7 @@ rules:
           while (strains.more) do
             s := strains.next;
 	    sUpper := s.raise_case;
-            cmd := verify_strains_sql_3 + mgi_DBprstr(sUpper);
+            cmd := verify_strains3(mgi_DBprstr(sUpper));
 	    dbproc := mgi_dbexec(cmd);
             while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
               while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -3144,7 +3135,7 @@ rules:
 			       global_loginKey + "," + global_loginKey + ")\n";
                 send(ExecSQL, 0);
                 added := added + s + "\n";
-                strainKeys := strainKeys + mgi_sql1(verify_strains_sql_4 + mgi_DBprstr(s));
+                strainKeys := strainKeys + mgi_sql1(verify_strains4(mgi_DBprstr(s)));
               end if;
             end if;
  
@@ -3259,7 +3250,7 @@ rules:
           -- Try to get key from the database
           -- If the Tissue does not exist, then add it
  
-          cmd := verify_tissue_sql_1 + mgi_DBprstr(value);
+          cmd := verify_tissue1(mgi_DBprstr(value));
           dbproc : opaque := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -3299,7 +3290,7 @@ rules:
                              mgi_DBprstr(value) + ",0)\n";
               send(ExecSQL, 0);
               added := true;
-              tissueKey := mgi_sql1(verify_tissue_sql_2 + mgi_DBprstr(value));
+              tissueKey := mgi_sql1(verify_tissue2(mgi_DBprstr(value)));
             end if;
           end if;
  
@@ -3373,7 +3364,7 @@ rules:
           -- Try to get key from the database
           -- If the User does not exist, then add it
  
-          cmd := verify_user_sql_1 + mgi_DBprstr(value);
+          cmd := verify_user(mgi_DBprstr(value));
           dbproc : opaque := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -3689,7 +3680,7 @@ rules:
 	  if (top->VocAnnotTypeMenu.menuHistory.defaultValue = "1002") then
 	    termKey := mgi_tblGetCell(table, row, table.termKey);
 	    if (termKey.length > 0 and termKey != "NULL") then
-	      isHeader := mgi_sql1(verify_vocabqualifier_sql_1 + mgi_tblGetCell(table, row, table.termKey));
+	      isHeader := mgi_sql1(verify_vocabqualifier(mgi_tblGetCell(table, row, table.termKey)));
 	      if (isHeader = "1") then
 	        (void) mgi_tblSetCell(table, row, table.qualifierKey, MP_NORM_QUALIFIER_KEY);
 	        (void) mgi_tblSetCell(table, row, table.qualifier, MP_NORM_QUALIFIER);
@@ -3853,7 +3844,7 @@ rules:
 
 	      if (top->VocAnnotTypeMenu != nil) then
 	        if (top->VocAnnotTypeMenu.menuHistory.defaultValue = "1002") then
-	          isHeader := mgi_sql1(verify_vocabqualifier_sql_1 + mgi_tblGetCell(sourceWidget, row, sourceWidget.termKey));
+	          isHeader := mgi_sql1(verify_vocabqualifier(mgi_tblGetCell(sourceWidget, row, sourceWidget.termKey)));
 	          if (isHeader = "1") then
 	            (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifierKey, "2181424");
 	            (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifier, "norm");

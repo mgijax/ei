@@ -63,7 +63,7 @@ CALLS
 	 notelib_4("char *", "char *")		: "char *";
 
 	 notetype_1("char *")			: "char *";
-	 notetype_2("char *", "char *")		: "char *";
+	 notetype_2("char *", "char *", "char *")	: "char *";
 	 notetype_3("char *", "char *")		: "char *";
 
 	 organism_select("char *")		: "char *";
@@ -79,6 +79,33 @@ CALLS
 
 	 verify_allele("char *")		: "char *";
 	 verify_allele_marker("char *")		: "char *";
+	 verify_cellline("char *")		: "char *";
+	 verify_genotype("char *")		: "char *";
+	 verify_imagepane("char *")		: "char *";
+	 verify_marker("char *", "char *")	: "char *";
+	 verify_marker_union("char *")		: "char *";
+	 verify_marker_current("char *")	: "char *";
+	 verify_marker_which("char *")		: "char *";
+	 verify_marker_homolog("char *")	: "char *";
+	 verify_marker_homologcount("char *", "char *", "char *") : "char *";
+	 verify_marker_nonmouse("char *")	: "char *";
+	 verify_marker_mgiid("char *")		: "char *";
+	 verify_marker_chromosome("char *")	: "char *";
+	 verify_marker_intable1("char *", "char *")	: "char *";
+	 verify_marker_intable2("char *", "char *", "char *", "char *")	: "char *";
+
+	 verify_reference("char *")		: "char *";
+	 verify_exec_goreference("char *")	: "char *";
+	 verify_organism("char *")		: "char *";
+	 verify_strainspecies("char *")		: "char *";
+	 verify_strains1()			: "char *";
+	 verify_strains2()			: "char *";
+	 verify_strains3("char *")		: "char *";
+	 verify_strains4("char *")		: "char *";
+	 verify_tissue1("char *")		: "char *";
+	 verify_tissue2("char *")		: "char *";
+	 verify_user("char *")			: "char *";
+	 verify_vocabqualifier("char *")	: "char *";
 
   ENDL
 ENDC
