@@ -23,9 +23,9 @@ char *mgilib_count(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select convert(char(10),rowcnt(MAX(doampg))) \
-   \nfrom sysobjects o, sysindexes i \
-   \nwhere o.id = i.id \
-   \nand o.name = '%s'", key);
+   from sysobjects o, sysindexes i \
+   where o.id = i.id \
+   and o.name = '%s'", key);
   return(buf);
 }
 
@@ -138,8 +138,8 @@ char *acclib_seqacc(char *logicalKey, char *accID)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select _Object_key from SEQ_Sequence_Acc_View \
-   \nwhere _LogicalDB_key = %s \
-   \nand accID like %s", logicalKey, accID);
+   where _LogicalDB_key = %s \
+   and accID like %s", logicalKey, accID);
   return(buf);
 }
 
@@ -152,7 +152,7 @@ char *actuallogical_logical(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select * from ACC_LogicalDB_View where _LogicalDB_key = %s \
-   \norder by name", key);
+   order by name", key);
   return(buf);
 }
 
@@ -218,7 +218,7 @@ char *evidenceproperty_property(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select _EvidenceProperty_key, propertyTerm from %s \
-   \norder by propertyTerm", key);
+   order by propertyTerm", key);
   return(buf);
 }
 
@@ -227,8 +227,8 @@ char *evidenceproperty_select(char *key, char *table, char *objectKey)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select * from %s \
-   \nwhere %s = %s \
-   \norder by stanza, sequenceNum", table, key, objectKey);
+   where %s = %s \
+   order by stanza, sequenceNum", table, key, objectKey);
   return(buf);
 }
 
@@ -297,7 +297,7 @@ char *molsource_strain(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select p._Strain_key, s.strain from PRB_Source p, PRB_Strain s \
-   \nwhere p._Strain_key = s._Strain_key and p._Source_key = %s", key);
+   where p._Strain_key = s._Strain_key and p._Source_key = %s", key);
   return(buf);
 }
 
@@ -306,7 +306,7 @@ char *molsource_tissue(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select p._Tissue_key, s.tissue from PRB_Source p, PRB_Tissue s \
-   \nwhere p._Tissue_key = s._Tissue_key and _Source_key = %s", key);
+   where p._Tissue_key = s._Tissue_key and _Source_key = %s", key);
   return(buf);
 }
 
@@ -315,7 +315,7 @@ char *molsource_cellline(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select p._CellLine_key, t.term from PRB_Source p, VOC_Term t \
-   \nwhere p._CellLine_key = t._Term_key and p._Source_key = %s", key);
+   where p._CellLine_key = t._Term_key and p._Source_key = %s", key);
   return(buf);
 }
 
@@ -324,10 +324,10 @@ char *molsource_date(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select p.creation_date, p.modification_date, u1.login, u2.login \
-   \nfrom PRB_Source p, MGI_User u1, MGI_User u2 \
-   \nwhere p._CreatedBy_key = u1._User_key  \
-   \nand p._ModifiedBy_key = u2._User_key \
-   \nand p._Source_key = %s", key);
+   from PRB_Source p, MGI_User u1, MGI_User u2 \
+   where p._CreatedBy_key = u1._User_key  \
+   and p._ModifiedBy_key = u2._User_key \
+   and p._Source_key = %s", key);
   return(buf);
 }
 
@@ -344,7 +344,7 @@ char *molsource_history(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select columnName, modifiedBy, modification_date  \
-   \nfrom MGI_AttrHistory_Source_View where _Object_key = %s", key);
+   from MGI_AttrHistory_Source_View where _Object_key = %s", key);
   return(buf);
 }
 
@@ -357,8 +357,8 @@ char *notelib_1(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select _NoteType_key, noteType, private = -1, _MGIType_key \
-   \nfrom %s \
-   \norder by _NoteType_key", key);
+   from %s \
+   order by _NoteType_key", key);
   return(buf);
 }
 
@@ -367,8 +367,8 @@ char *notelib_2(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select _NoteType_key, noteType, private \
-   \nfrom %s \
-   \nwhere _NoteType_key > 0 order by _NoteType_key", key);
+   from %s \
+   where _NoteType_key > 0 order by _NoteType_key", key);
   return(buf);
 }
 
@@ -377,8 +377,8 @@ char *notelib_3a(char *key, char *objectKey)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select _NoteType_key, note, sequenceNum, _Note_key \
-   \nfrom %s \
-   \nwhere _Object_key = %s", key, objectKey);
+   from %s \
+   where _Object_key = %s", key, objectKey);
   return(buf);
 }
 
@@ -403,9 +403,9 @@ char *notelib_4(char *key, char *objectKey)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select _NoteType_key, note, sequenceNum \
-   \nfrom %s \
-   \nwhere _Object_key = %s \
-   \norder by _NoteType_key, sequenceNum", key, objectKey);
+   from %s \
+   where _Object_key = %s \
+   order by _NoteType_key, sequenceNum", key, objectKey);
   return(buf);
 }
 
@@ -418,8 +418,8 @@ char *notetype_1(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select _NoteType_key, _MGIType_key, noteType \
-   \nfrom %s \
-   \norder by noteType", key);
+   from %s \
+   order by noteType", key);
   return(buf);
 }
 
@@ -428,9 +428,9 @@ char *notetype_2(char *key, char *tableKey, char *objectKey)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select _Note_key, _NoteType_key, noteType, note, sequenceNum \
-   \nfrom %s \
-   \nwhere %s = %s \
-   \norder by _Note_key, sequenceNum", key, tableKey, objectKey);
+   from %s \
+   where %s = %s \
+   order by _Note_key, sequenceNum", key, tableKey, objectKey);
   return(buf);
 }
 
@@ -451,7 +451,7 @@ char *organism_select(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select * from MGI_Organism_View where _Organism_key = %s \
-   \norder by commonName", key);
+   order by commonName", key);
   return(buf);
 }
 
@@ -460,8 +460,8 @@ char *organism_mgitype(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select _MGIType_key, typeName from MGI_Organism_MGIType_View \
-   \nwhere _Organism_key = %s \
-   \norder by typeName", key);
+   where _Organism_key = %s \
+   order by typeName", key);
   return(buf);
 }
 
@@ -470,7 +470,7 @@ char *organism_chr(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select * from MRK_Chromosome where _Organism_key = %s \
-   \norder by sequenceNum", key);
+   order by sequenceNum", key);
   return(buf);
 }
 
@@ -492,7 +492,7 @@ char *simple_synonymtype()
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select _SynonymType_key from MGI_SynonymType \
-   \nwhere _MGIType_key = 13 and synonymType = 'exact'");
+   where _MGIType_key = 13 and synonymType = 'exact'");
   return(buf);
 }
 
@@ -509,7 +509,7 @@ char *simple_select2(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select * from VOC_Term_View where _Vocab_key = %s \
-   \norder by sequenceNum", key);
+   order by sequenceNum", key);
   return(buf);
 }
 
@@ -518,7 +518,7 @@ char *simple_select3(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select * from VOC_Text_View where _Vocab_key = %s \
-   \norder by termsequenceNum, sequenceNun", key);
+   order by termsequenceNum, sequenceNun", key);
   return(buf);
 }
 
@@ -527,9 +527,9 @@ char *simple_synonym(char *key, char *objectKey)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select _Synonym_key, synonym from MGI_Synonym \
-   \nwhere _SynonymType_key = %s \
-   \nand _Object_key = %s \
-   \norder by synonym", key, objectKey);
+   where _SynonymType_key = %s \
+   and _Object_key = %s \
+   order by synonym", key, objectKey);
   return(buf);
 }
 
@@ -543,9 +543,9 @@ char *verify_allele(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select _Allele_key, _Marker_key, symbol, markerSymbol \
-   \nfrom ALL_Allele_View \
-   \nwhere term in ('Approved', 'Autoload') \
-   \nand symbol like %s", key);
+   from ALL_Allele_View \
+   where term in ('Approved', 'Autoload') \
+   and symbol like %s", key);
   return(buf);
 }
 
@@ -578,16 +578,16 @@ char *verify_imagepane(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select p._ImagePane_key, substring(i.figureLabel,1,20), a1.accID , a2.accID \
-   \nfrom IMG_ImagePane p, IMG_Image i, ACC_Accession a1, ACC_Accession a2, VOC_Term t \
-   \nwhere p._Image_key = i._Image_key \
-   \nand p._Image_key = a1._Object_key \
-   \nand a1._MGIType_key = 9 \
-   \nand p._Image_key = a2._Object_key \
-   \nand a2._MGIType_key = 9 \
-   \nand a2._LogicalDB_key = 19 \
-   \nand i._ImageType_key = t._Term_key \
-   \nand t.term = 'Full Size' \
-   \nand a1.accID like %s", key);
+   from IMG_ImagePane p, IMG_Image i, ACC_Accession a1, ACC_Accession a2, VOC_Term t \
+   where p._Image_key = i._Image_key \
+   and p._Image_key = a1._Object_key \
+   and a1._MGIType_key = 9 \
+   and p._Image_key = a2._Object_key \
+   and a2._MGIType_key = 9 \
+   and a2._LogicalDB_key = 19 \
+   and i._ImageType_key = t._Term_key \
+   and t.term = 'Full Size' \
+   and a1.accID like %s", key);
   return(buf);
 }
 
@@ -596,9 +596,9 @@ char *verify_marker(char *key, char *symbol)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select _Marker_key, _Marker_Status_key, symbol, chromosome, \
-   \ncytogeneticOffset, substring(name,1,25) \
-   \nfrom MRK_Marker where _Organism_key = %s \
-   \nand symbol like %s", key, symbol);
+   cytogeneticOffset, substring(name,1,25) \
+   from MRK_Marker where _Organism_key = %s \
+   and symbol like %s", key, symbol);
   return(buf);
 }
 
@@ -606,10 +606,10 @@ char *verify_marker_union(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"\nunion\n \
-   \nselect -1, 1, symbol, chromosome, null, substring(name, 1, 25) \
-   \nfrom NOM_Marker_Valid_View \
-   \nwhere symbol like %s", key);
+  sprintf(buf,"union \
+   select -1, 1, symbol, chromosome, null, substring(name, 1, 25) \
+   from NOM_Marker_Valid_View \
+   where symbol like %s", key);
   return(buf);
 }
 
@@ -626,7 +626,7 @@ char *verify_marker_which(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select cytogeneticOffset, name, mgiID, _Accession_key from MRK_Mouse_View \
-   \nwhere _Marker_key = %s", key);
+   where _Marker_key = %s", key);
   return(buf);
 }
 
@@ -635,7 +635,7 @@ char *verify_marker_homolog(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select cytogeneticOffset, name from MRK_Marker \
-   \nwhere _Organism_key != 1 and _Marker_key = %s", key);
+   where _Organism_key != 1 and _Marker_key = %s", key);
   return(buf);
 }
 
@@ -644,9 +644,9 @@ char *verify_marker_homologcount(char *key, char *organismKey, char *whichMarker
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select count(*) from HMD_Homology_View \
-   \nwhere _Class_key = %s \
-   \nand _Organism_key = %s \
-   \nand _Marker_key != %s", key, organismKey, whichMarkerKey);
+   where _Class_key = %s \
+   and _Organism_key = %s \
+   and _Marker_key != %s", key, organismKey, whichMarkerKey);
   return(buf);
 }
 
@@ -655,8 +655,8 @@ char *verify_marker_nonmouse(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select _Marker_key, accID, _Accession_key from MRK_NonMouse_View \
-   \nwhere LogicalDB = 'Entrez Gene' \
-   \nand _Marker_key = %s", key);
+   where LogicalDB = 'Entrez Gene' \
+   and _Marker_key = %s", key);
   return(buf);
 }
 
@@ -681,20 +681,20 @@ char *verify_marker_intable1(char *probeKey, char *markerKey)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select count(pm._Probe_key) from PRB_Marker pm, PRB_Probe p, VOC_Term t \
-   \nwhere pm._Probe_key = p._Probe_key \
-   \nand p._SegmentType_key = t._Term_key \
-   \nand t.term != 'primer' \
-   \nand pm.relationship in ('E', 'H') \
-   \nand pm._Probe_key = %s \
-   \nand pm._Marker_key = %s \
-   \nunion \
-   \nselect count(pm._Probe_key) from PRB_Marker pm, PRB_Probe p, VOC_Term t  \
-   \nwhere pm._Probe_key = p._Probe_key \
-   \nand p._SegmentType_key = t._Term_key \
-   \nand t.term = 'primer' \
-   \nand pm.relationship = 'A' \
-   \nand pm._Probe_key = %s \
-   \nand pm._Marker_key = %s", probeKey, markerKey, probeKey, markerKey);
+   where pm._Probe_key = p._Probe_key \
+   and p._SegmentType_key = t._Term_key \
+   and t.term != 'primer' \
+   and pm.relationship in ('E', 'H') \
+   and pm._Probe_key = %s \
+   and pm._Marker_key = %s \
+   union \
+   select count(pm._Probe_key) from PRB_Marker pm, PRB_Probe p, VOC_Term t  \
+   where pm._Probe_key = p._Probe_key \
+   and p._SegmentType_key = t._Term_key \
+   and t.term = 'primer' \
+   and pm.relationship = 'A' \
+   and pm._Probe_key = %s \
+   and pm._Marker_key = %s", probeKey, markerKey, probeKey, markerKey);
   return(buf);
 }
 
@@ -703,7 +703,7 @@ char *verify_marker_intable2(char *key, char *tableKey, char *probeKey, char *ma
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select count(*) from %s \
-   \nwhere %s = %s and _Marker_key = %s", key, tableKey, probeKey, markerKey);
+   where %s = %s and _Marker_key = %s", key, tableKey, probeKey, markerKey);
   return(buf);
 }
 
@@ -801,9 +801,9 @@ char *verify_vocabqualifier(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select 1 from DAG_Node d \
-   \nwhere d._DAG_key = 4 \
-   \nand d._Label_key = 3 \
-   \nand d._Object_key = %s", key);
+   where d._DAG_key = 4 \
+   and d._Label_key = 3 \
+   and d._Object_key = %s", key);
   return(buf);
 }
 
