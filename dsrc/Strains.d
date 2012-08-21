@@ -143,7 +143,7 @@ locals:
 
 	attributeAnnotTypeKey : string := "1009";
 	reviewAnnotTypeKey : string := "1008";
-	genericQualifierKey : string := "53"; -- generic annotation qualifier key
+	genericQualifierKey : string := "1614158"; -- generic annotation qualifier key
 
 	tables : list;
 
