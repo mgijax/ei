@@ -242,7 +242,7 @@ char *cross_select(char *key)
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select * \
    from CRS_Cross_View \
-   where _Cross_key == %s \
+   where _Cross_key = %s \
    order by whoseCross", key);
   return(buf);
 }
@@ -408,7 +408,7 @@ char *govoc_orderA()
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"order by dagAbbrev, modification_date desc, term");
+  sprintf(buf," order by dagAbbrev, modification_date desc, term");
   return(buf);
 }
 
@@ -416,7 +416,7 @@ char *govoc_orderB()
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"order by creation_date desc, term");
+  sprintf(buf," order by creation_date desc, term");
   return(buf);
 }
 
@@ -424,7 +424,7 @@ char *govoc_orderC()
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"order by accID, term");
+  sprintf(buf," order by accID, term");
   return(buf);
 }
 
@@ -432,7 +432,7 @@ char *govoc_orderD()
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"order by jnum, term");
+  sprintf(buf," order by jnum, term");
   return(buf);
 }
 
@@ -440,7 +440,7 @@ char *govoc_orderE()
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"order by evidenceCode, term");
+  sprintf(buf," order by evidenceCode, term");
   return(buf);
 }
 
@@ -448,7 +448,7 @@ char *govoc_orderF()
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"order by modification_date desc, term");
+  sprintf(buf," order by modification_date desc, term");
   return(buf);
 }
 
@@ -566,7 +566,7 @@ char *marker_count(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select count(*) from ALL_Allele where _Marker_key = ", key);
+  sprintf(buf,"select count(*) from ALL_Allele where _Marker_key = %s", key);
   return(buf);
 }
 
@@ -644,7 +644,7 @@ char *nonmouse_notes(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select rtrim(note) from MRK_Notes  where _Marker_key = %s \
+  sprintf(buf,"select rtrim(note) from MRK_Notes where _Marker_key = %s \
    order by sequenceNum", key);
   return(buf);
 }
@@ -969,7 +969,7 @@ char *molecular_exec_reloadsequence(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec PRB_reloadSequence %s/n", key);
+  sprintf(buf,"exec PRB_reloadSequence %s", key);
   return(buf);
 }
 
@@ -1019,7 +1019,7 @@ char *molecular_reference(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select * from PRB_Reference_View where _Reference_key = ", key);
+  sprintf(buf,"select * from PRB_Reference_View where _Reference_key = %s", key);
   return(buf);
 }
 
@@ -1541,7 +1541,7 @@ char *ref_dataset1()
   return(buf);
 }
 
-char *ref_dataset2(char *key)
+char *ref_dataset2()
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
@@ -1777,7 +1777,7 @@ char *strain_execref(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec PRB_getStrainReferences %s/n", key);
+  sprintf(buf,"exec PRB_getStrainReferences %s", key);
   return(buf);
 }
 
@@ -1793,7 +1793,7 @@ char *strain_execdataset(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec PRB_getStrainDataSets %s/n", key);
+  sprintf(buf,"exec PRB_getStrainDataSets %s", key);
   return(buf);
 }
 
@@ -1801,7 +1801,7 @@ char *strain_execmerge(char *key1, char *key2)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec PRB_mergeStrain %s, %s/n", key1, key2);
+  sprintf(buf,"exec PRB_mergeStrain %s, %s", key1, key2);
   return(buf);
 }
 
@@ -1809,7 +1809,7 @@ char *strain_checkuser(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec MGI_checkUserRole 'StrainJAXModule', %s/n", key);
+  sprintf(buf,"exec MGI_checkUserRole 'StrainJAXModule', %s", key);
   return(buf);
 }
 

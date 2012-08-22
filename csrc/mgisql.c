@@ -719,7 +719,7 @@ char *verify_exec_goreference(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec BIB_isNOGO %s", key);
+  sprintf(buf,"exec BIB_isNOGO %s/n", key);
   return(buf);
 }
 
