@@ -84,7 +84,7 @@ char *allele_derivation(
    and d._Creator_key = %s \
    and d._Vector_key = %s \
    and d._ParentCellLine_key = %s \
-   and d._ParentCellLine_key = c._CellLine_key %s \
+   and d._ParentCellLine_key = c._CellLine_key \
    and c._Strain_key = %s \
    and c._CellLine_Type_key = %s \
    and c.isMutant = 0", alleleTypeKey, creatorKey, vectorKey, parentKey, strainKey, cellLineTypeKey);
@@ -969,7 +969,7 @@ char *molecular_exec_reloadsequence(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec PRB_reloadSequence %s", key);
+  sprintf(buf,"exec PRB_reloadSequence %s/n", key);
   return(buf);
 }
 
@@ -1082,7 +1082,7 @@ char *mpvoc_exec_copyAnnotEvidenceNotes(char *key, char *keyName)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec VOC_copyAnnotEvidenceNotes %s, @%s", key, keyName);
+  sprintf(buf,"exec VOC_copyAnnotEvidenceNotes %s, @%s\n", key, keyName);
   return(buf);
 }
 
@@ -1090,7 +1090,7 @@ char *mpvoc_exec_processAnnotHeader(char *key, char *annotTypeKey)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec VOC_processAnnotHeader %s,%s", annotTypeKey, key);
+  sprintf(buf,"exec VOC_processAnnotHeader %s,%s\n", annotTypeKey, key);
   return(buf);
 }
 
@@ -1777,7 +1777,7 @@ char *strain_execref(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec PRB_getStrainReferences %s", key);
+  sprintf(buf,"exec PRB_getStrainReferences %s/n", key);
   return(buf);
 }
 
@@ -1793,7 +1793,7 @@ char *strain_execdataset(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec PRB_getStrainDataSets %s", key);
+  sprintf(buf,"exec PRB_getStrainDataSets %s/n", key);
   return(buf);
 }
 
@@ -1801,7 +1801,7 @@ char *strain_execmerge(char *key1, char *key2)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec PRB_mergeStrain %s, %s", key1, key2);
+  sprintf(buf,"exec PRB_mergeStrain %s, %s/n", key1, key2);
   return(buf);
 }
 
@@ -1809,7 +1809,7 @@ char *strain_checkuser(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec MGI_checkUserRole 'StrainJAXModule', %s", key);
+  sprintf(buf,"exec MGI_checkUserRole 'StrainJAXModule', %s/n", key);
   return(buf);
 }
 

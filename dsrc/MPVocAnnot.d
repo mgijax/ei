@@ -1393,6 +1393,10 @@ rules:
 	    return;
 	  end if;
 
+	  if (currentRecordKey.length = 0 or currentRecordKey = "NULL") then
+	    return;
+	  end if;
+
 	  refsKey := mgi_tblGetCell(sourceWidget, row, sourceWidget.refsKey);
 	  if (refsKey.length = 0 or refsKey = "NULL") then
 	    return;
@@ -1403,7 +1407,8 @@ rules:
 	  -- Generate list of Alleles from this Genotype that don't have this J:
 	  -- Ignore wild type alleles
 
-	  select : string := mpvoc_alleles(currentRecordKey, refsKey);
+	  select : string;
+	  select := mpvoc_alleles(currentRecordKey, refsKey);
 
 	  dbproc := mgi_dbexec(select);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
