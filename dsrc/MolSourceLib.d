@@ -113,7 +113,7 @@ rules:
 	  end if;
 
 	  if (top->SourceSegmentTypeMenu.menuHistory.defaultValue = "%") then
-	    segmentType := mgi_sql1(molsource_select(top->SourceSegmentTypeMenu.defaultValue));
+	    segmentType := mgi_sql1(molsource_segment(top->SourceSegmentTypeMenu.defaultValue));
 	  else
 	    segmentType := top->SourceSegmentTypeMenu.menuHistory.defaultValue;
 	  end if;
