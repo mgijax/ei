@@ -260,6 +260,14 @@ char *mgilib_user(char *key)
  * MolSourceLib.d
 */
 
+char *molsource_segment(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Term_key from VOC_Term where _Vocab_key = 10 and term = '%s'", key);
+  return(buf);
+}
+
 char *molsource_vectorType(char *key)
 {
   static char buf[TEXTBUFSIZ];

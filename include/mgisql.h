@@ -62,6 +62,7 @@ extern char *mgilib_user(char *);
 
 /* MolSourceLib.d */
 
+extern char *molsource_segment(char *);
 extern char *molsource_vectorType(char *);
 extern char *molsource_celllineNS();
 extern char *molsource_celllineNA();

@@ -44,6 +44,7 @@ CALLS
 
 	 mgilib_user("char *")			: "char *";
 
+	 molsource_segment("char *")		: "char *";
 	 molsource_vectorType("char *")		: "char *";
 	 molsource_celllineNS()			: "char *";
 	 molsource_celllineNA()			: "char *";

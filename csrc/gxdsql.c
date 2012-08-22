@@ -15,9 +15,10 @@
 #include <gxdsql.h>
 
 /*
-* Allele.d
+* 
 */
 
+/*
 char *allele_pendingstatus()
 {
   static char buf[TEXTBUFSIZ];
@@ -25,4 +26,5 @@ char *allele_pendingstatus()
   sprintf(buf,"select _Term_key from VOC_Term where _Vocab_key = 37 and term = 'In Progress'");
   return(buf);
 }
+*/
 
