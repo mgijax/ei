@@ -815,9 +815,9 @@ rules:
 	    from_annot := true;
 	  end if;
 
-          value := mgi_tblGetCell(annotTable, 0, annotTable.evidencePropertyKey);
+          value := mgi_tblGetCell(annotTable, 0, annotTable.evidenceProperty);
           if (value.length > 0 and value != "NULL") then
-            where := where + "\nand p._PropertyTerm_key = " + value;
+            where := where + "\nand p.value like " + mgi_DBprstr(value);
             from_evidence := true;
             from_property := true;
           end if;
