@@ -1,0 +1,113 @@
+CALLS
+  LANGUAGE C 
+        INCLUDE
+             <mgisql.h>;
+	TYPE 
+	     "int"           <--> integer;
+	     "char *"        <--> string;
+	     "Widget"        <--> widget;
+             "char **"       <--> string_list;
+	     "Boolean"	     <--> boolean;
+
+	ENTRY 
+
+	 mgilib_count("char *")			: "char *";
+	 mgilib_anchorcount("char *")		: "char *";
+
+	 sql_error()				: "char *";
+	 sql_translate()			: "char *";
+
+	 acclib_assoc()				: "char *";
+	 acclib_acc()				: "char *";
+	 acclib_ref()				: "char *";
+	 acclib_modification()			: "char *";
+	 acclib_sequence()			: "char *";
+	 acclib_orderA()			: "char *";
+	 acclib_orderB()			: "char *";
+	 acclib_orderC()			: "char *";
+	 acclib_orderD()			: "char *";
+	 acclib_seqacc("char *", "char *")	: "char *";
+
+	 actuallogical_logical("char *")	: "char *";
+	 actuallogical_actual("char *")		: "char *";
+
+	 controlledvocab_note()			: "char *";
+	 controlledvocab_ref()			: "char *";
+	 controlledvocab_synonym()		: "char *";
+	 controlledvocab_selectdistinct()	: "char *";
+	 controlledvocab_selectall()		: "char *";
+
+	 evidenceproperty_property("char *")	: "char *";
+	 evidenceproperty_select("char *", "char *", "char *")	: "char *";
+
+	 lib_max("char *")			: "char *";
+
+	 mgilib_user("char *")			: "char *";
+
+	 molsource_segment("char *")		: "char *";
+	 molsource_vectorType("char *")		: "char *";
+	 molsource_celllineNS()			: "char *";
+	 molsource_celllineNA()			: "char *";
+	 molsource_source("char *")		: "char *";
+	 molsource_strain("char *")		: "char *";
+	 molsource_tissue("char *")		: "char *";
+	 molsource_cellline("char *")		: "char *";
+	 molsource_date("char *")		: "char *";
+	 molsource_reference("char *")		: "char *";
+	 molsource_history("char *")		: "char *";
+
+	 notelib_1("char *")			: "char *";
+	 notelib_2("char *")			: "char *";
+	 notelib_3a("char *", "char *")		: "char *";
+	 notelib_3b("char *")			: "char *";
+	 notelib_3c()				: "char *";
+	 notelib_4("char *", "char *")		: "char *";
+
+	 notetype_1("char *")			: "char *";
+	 notetype_2("char *", "char *", "char *")	: "char *";
+	 notetype_3("char *", "char *")		: "char *";
+
+	 organism_select("char *")		: "char *";
+	 organism_mgitype("char *")		: "char *";
+	 organism_chr("char *")			: "char *";
+	 organism_anchor()			: "char *";
+
+	 simple_synonymtype()			: "char *";
+	 simple_select1("char *")		: "char *";
+	 simple_select2("char *")		: "char *";
+	 simple_select3("char *")		: "char *";
+	 simple_synonym("char *", "char *")	: "char *";
+
+	 verify_allele("char *")		: "char *";
+	 verify_allele_marker("char *")		: "char *";
+	 verify_cellline("char *")		: "char *";
+	 verify_genotype("char *")		: "char *";
+	 verify_imagepane("char *")		: "char *";
+	 verify_marker("char *", "char *")	: "char *";
+	 verify_marker_union("char *")		: "char *";
+	 verify_marker_current("char *")	: "char *";
+	 verify_marker_which("char *")		: "char *";
+	 verify_marker_homolog("char *")	: "char *";
+	 verify_marker_homologcount("char *", "char *", "char *") : "char *";
+	 verify_marker_nonmouse("char *")	: "char *";
+	 verify_marker_mgiid("char *")		: "char *";
+	 verify_marker_chromosome("char *")	: "char *";
+	 verify_marker_intable1("char *", "char *")	: "char *";
+	 verify_marker_intable2("char *", "char *", "char *", "char *")	: "char *";
+
+	 verify_reference("char *")		: "char *";
+	 verify_exec_goreference("char *")	: "char *";
+	 verify_organism("char *")		: "char *";
+	 verify_strainspecies("char *")		: "char *";
+	 verify_strains1()			: "char *";
+	 verify_strains2()			: "char *";
+	 verify_strains3("char *")		: "char *";
+	 verify_strains4("char *")		: "char *";
+	 verify_tissue1("char *")		: "char *";
+	 verify_tissue2("char *")		: "char *";
+	 verify_user("char *")			: "char *";
+	 verify_vocabqualifier("char *")	: "char *";
+
+  ENDL
+ENDC
+

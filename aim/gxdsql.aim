@@ -1,0 +1,43 @@
+CALLS
+  LANGUAGE C 
+        INCLUDE
+             <gxdsql.h>;
+	TYPE 
+	     "int"           <--> integer;
+	     "char *"        <--> string;
+	     "Widget"        <--> widget;
+             "char **"       <--> string_list;
+	     "Boolean"	     <--> boolean;
+
+	ENTRY 
+
+	antibody_distinct()		: "char *";
+	antibody_select("char *")	: "char *";
+	antibody_antigen("char *")	: "char *";
+	antibody_marker("char *")	: "char *";
+	antibody_alias("char *")	: "char *";
+	antibody_aliasref("char *")	: "char *";
+
+	antigen_select("char *")	: "char *";
+	antigen_antibody("char *")	: "char *";
+
+	assay_imagecount("char *")	: "char *";
+	assay_imagepane("char *")	: "char *";
+	assay_select("char *")		: "char *";
+	assay_notes("char *")		: "char *";
+	assay_antibodyprep("char *")	: "char *";
+	assay_probeprep("char *")	: "char *";
+	assay_specimencount("char *")	: "char *";
+	assay_specimen("char *")	: "char *";
+	assay_insituresult("char *")	: "char *";
+	assay_gellanecount("char *")	: "char *";
+	assay_gellane("char *")		: "char *";
+	assay_gellanestructure("char *")	: "char *";
+	assay_gellanekey("char *")		: "char *";
+	assay_gelrow("char *")		: "char *";
+	assay_gelband("char *")		: "char *";
+	assay_segmenttype("char *")	: "char *";
+
+  ENDL
+ENDC
+

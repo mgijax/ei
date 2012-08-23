@@ -1,0 +1,209 @@
+CALLS
+  LANGUAGE C 
+        INCLUDE
+             <mgdsql.h>;
+	TYPE 
+	     "int"           <--> integer;
+	     "char *"        <--> string;
+	     "Widget"        <--> widget;
+             "char **"       <--> string_list;
+	     "Boolean"	     <--> boolean;
+
+	ENTRY 
+
+	 allele_pendingstatus()				: "char *";
+	 allele_defqualifier()				: "char *";
+	 allele_defstatus()				: "char *";
+	 allele_definheritanceNA()			: "char *";
+	 allele_definheritanceNS()			: "char *";
+	 allele_select("char *")			: "char *";
+	 allele_derivation("char *", "char *", "char *", "char *", "char *", "char *") : "char *";
+	 allele_markerassoc("char *")			: "char *";
+	 allele_mutation("char *")			: "char *";
+	 allele_notes("char *")				: "char *";
+	 allele_images("char *", "char *")		: "char *";
+	 allele_cellline("char *")			: "char *";
+	 allele_stemcellline("char *")			: "char *";
+	 allele_mutantcellline("char *")		: "char *";
+	 allele_parentcellline("char *")		: "char *";
+
+	 derivation_checkdup("char *", "char *", "char *", "char *", "char *") : "char *";
+	 derivation_select("char *")			: "char *";
+	 derivation_count("char *")			: "char *";
+	 derivation_stemcellline("char *")		: "char *";
+	 derivation_parentcellline("char *")		: "char *";
+
+	 cross_select("char *")				: "char *";
+
+	 marker_select("char *")			: "char *";
+	 marker_offset("char *")			: "char *";
+	 marker_history1("char *")			: "char *";
+	 marker_history2("char *")			: "char *";
+	 marker_current("char *")			: "char *";
+	 marker_tdc("char *", "char *", "char *")	: "char *";
+	 marker_alias("char *")				: "char *";
+	 marker_mouse("char *")				: "char *";
+	 marker_count("char *")				: "char *";
+	 marker_checkinvalid("char *")			: "char *";
+	 marker_checkaccid("char *", "char *", "char *"): "char *";
+	 marker_checkseqaccid("char *", "char *")	: "char *";
+	 marker_eventreason()				: "char *";
+
+	 genotype_search("char *")			: "char *";
+	 genotype_select("char *")			: "char *";
+	 genotype_allelepair("char *")			: "char *";
+	 genotype_notes("char *")			: "char *";
+	 genotype_images("char *", "char *")		: "char *";
+
+	 govoc_status("char *")				: "char *";
+	 govoc_type("char *")				: "char *";
+	 govoc_dbview("char *")				: "char *";
+	 govoc_term("char *")				: "char *";
+	 govoc_select1("char *", "char *")		: "char *";
+	 govoc_select2("char *", "char *")		: "char *";
+	 govoc_select3("char *")				: "char *";
+	 govoc_orderA()					: "char *";
+	 govoc_orderB()					: "char *";
+	 govoc_orderC()					: "char *";
+	 govoc_orderD()					: "char *";
+	 govoc_orderE()					: "char *";
+	 govoc_orderF()					: "char *";
+	 govoc_tracking("char *")			: "char *";
+	 govoc_xref("char *", "char *")			: "char *";
+
+	 nonmouse_term()				: "char *";
+	 nonmouse_select("char *")			: "char *";
+	 nonmouse_notes("char *")			: "char *";
+
+	 mlc_select("char *")				: "char *";
+	 mlc_class("char *")				: "char *";
+	 mlc_ref("char *")				: "char *";
+	 mlc_text("char *")				: "char *";
+	 mlc_description("char *")			: "char *";
+
+	 mldp_assaynull()				: "char *";
+	 mldp_tag("char *", "char *")			: "char *";
+	 mldp_select("char *")				: "char *";
+	 mldp_marker("char *")				: "char *";
+	 mldp_notes1("char *")				: "char *";
+	 mldp_notes2("char *")				: "char *";
+	 mldp_matrix("char *")				: "char *";
+	 mldp_cross2point("char *")			: "char *";
+	 mldp_crosshaplotype("char *")			: "char *";
+	 mldp_cross("char *")				: "char *";
+	 mldp_risetVerify("char *")			: "char *";
+	 mldp_riset("char *")				: "char *";
+	 mldp_fish("char *")				: "char *";
+	 mldp_fishregion("char *")			: "char *";
+	 mldp_hybrid("char *")				: "char *";
+	 mldp_hybridconcordance("char *")		: "char *";
+	 mldp_insitu("char *")				: "char *";
+	 mldp_insituregion("char *")			: "char *";
+	 mldp_physmap("char *")				: "char *";
+	 mldp_phymapdistance("char *")			: "char *";
+	 mldp_ri("char *")				: "char *";
+	 mldp_ridata("char *")				: "char *";
+	 mldp_ri2point("char *")			: "char *";
+	 mldp_statistics("char *")			: "char *";
+	 mldp_countchr("char *")			: "char *";
+	 mldp_assay("char *")				: "char *";
+
+	 molsource_select("char *")			: "char *";
+
+	 molecular_termNA()				: "char *";
+	 molecular_termPrimer()				: "char *";
+	 molecular_probekey("char *")			: "char *";
+	 molecular_exec_reloadsequence("char *")	: "char *";
+	 molecular_shortref("char *")			: "char *";
+	 molecular_select("char *")			: "char *";
+	 molecular_parent("char *")			: "char *";
+	 molecular_notes("char *")			: "char *";
+	 molecular_marker("char *")			: "char *";
+	 molecular_reference("char *")			: "char *";
+	 molecular_refnotes("char *")			: "char *";
+	 molecular_alias("char *")			: "char *";
+	 molecular_rflv("char *")			: "char *";
+	 molecular_sourcekey("char *")			: "char *";
+
+	 mpvoc_exec_copyAnnotEvidenceNotes("char *", "char *")	: "char *";
+	 mpvoc_exec_processAnnotHeader("char *", "char *")	: "char *";
+	 mpvoc_loadheader("char *", "char *")		: "char *";
+	 mpvoc_dbview("char *")				: "char *";
+	 mpvoc_evidencecode("char *")			: "char *";
+	 mpvoc_qualifier("char *")			: "char *";
+	 mpvoc_select1("char *", "char *")		: "char *";
+	 mpvoc_select2("char *", "char *")		: "char *";
+	 mpvoc_select3("char *", "char *")		: "char *";
+	 mpvoc_clipboard("char *", "char *")		: "char *";
+	 mpvoc_alleles("char *", "char *")		: "char *";
+
+	 mutant_cellline("char *")			: "char *";
+	 mutant_select("char *") 			: "char *";
+	 mutant_alleles("char *") 			: "char *";
+	 mutant_stemcellline("char *") 			: "char *";
+	 mutant_parentcellline("char *") 		: "char *";
+	 mutant_derivationDisplay("char *") 		: "char *";
+	 mutant_derivationVerify("char *", "char *", "char *", "char *", "char *", "char *", "char *") : "char *";
+
+	 omimvoc_select1("char *", "char *")		: "char *";
+	 omimvoc_select2("char *", "char *")		: "char *";
+	 omimvoc_notes("char *")			: "char *";
+	 omimvoc_dbview("char *")			: "char *";
+	 omimvoc_evidencecode("char *")			: "char *";
+	 omimvoc_qualifier("char *")			: "char *";
+
+	 orthology_searchByClass("char *")		: "char *";
+	 orthology_citation("char *", "char *")		: "char *";
+	 orthology_marker("char *", "char *")		: "char *";
+	 orthology_homology1("char *", "char *")	: "char *";
+	 orthology_homology2("char *", "char *")	: "char *";
+	 orthology_homology3("char *")			: "char *";
+	 orthology_homology4("char *")			: "char *";
+	 orthology_organism("char *")			: "char *";
+
+	 nomen_event()					: "char *";
+	 nomen_status()					: "char *";
+	 nomen_internal()				: "char *";
+	 nomen_select("char *")				: "char *";
+
+	 nonmutant_select("char *")			: "char *";
+	 nonmutant_count("char *")			: "char *";
+
+	 ri_select("char *")				: "char *";
+
+	 ref_dataset1()					: "char *";
+	 ref_dataset2()					: "char *";
+	 ref_dataset3("char *")				: "char *";
+	 ref_select("char *")				: "char *";
+	 ref_books("char *")				: "char *";
+	 ref_notes("char *")				: "char *";
+
+	 sequence_selectPrefix()			: "char *";
+	 sequence_select("char *")			: "char *";
+	 sequence_raw("char *")				: "char *";
+	 sequence_probesource("char *")			: "char *";
+	 sequence_organism("char *")			: "char *";
+	 sequence_strain("char *")			: "char *";
+	 sequence_tissue("char *")			: "char *";
+	 sequence_gender("char *")			: "char *";
+	 sequence_cellline("char *")			: "char *";
+	 sequence_marker("char *")			: "char *";
+	 sequence_probe("char *")			: "char *";
+	 sequence_allele("char *")			: "char *";
+
+	 strain_speciesNS()				: "char *";
+	 strain_strainNS()				: "char *";
+	 strain_select("char *")			: "char *";
+	 strain_attribute("char *")			: "char *";
+	 strain_needsreview("char *")			: "char *";
+	 strain_genotype("char *")			: "char *";
+	 strain_execref("char *")			: "char *";
+	 strain_addtoexecref()				: "char *";
+	 strain_execdataset("char *")			: "char *";
+	 strain_execmerge("char *", "char *")		: "char *";
+	 strain_checkuser("char *")			: "char *";
+	 strain_count("char *")				: "char *";
+
+  ENDL
+ENDC
+
