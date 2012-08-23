@@ -13,6 +13,7 @@ CALLS
 
 	 mgilib_count("char *")			: "char *";
 	 mgilib_anchorcount("char *")		: "char *";
+	 mgilib_user("char *")			: "char *";
 
 	 sql_error()				: "char *";
 	 sql_translate()			: "char *";
@@ -41,8 +42,6 @@ CALLS
 	 evidenceproperty_select("char *", "char *", "char *")	: "char *";
 
 	 lib_max("char *")			: "char *";
-
-	 mgilib_user("char *")			: "char *";
 
 	 molsource_segment("char *")		: "char *";
 	 molsource_vectorType("char *")		: "char *";

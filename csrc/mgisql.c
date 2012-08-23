@@ -38,6 +38,18 @@ char *mgilib_anchorcount(char *key)
 }
 
 /*
+ * MGILib.d
+*/
+
+char *mgilib_user(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _User_key from MGI_User_Active_View where login like '%s'", key);
+  return(buf);
+}
+
+/*
  * SQL.d
 */
 
@@ -241,18 +253,6 @@ char *lib_max(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select maxNumericPart from ACC_AccessionMax where prefixPart = %s", key);
-  return(buf);
-}
-
-/*
- * MGILib.d
-*/
-
-char *mgilib_user(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _User_key from MGI_User_Active_View where login like '%s'", key);
   return(buf);
 }
 
