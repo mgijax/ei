@@ -18,6 +18,7 @@ dmodule NonMutantCellLine is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
+#include <mgdsql.h>
 
 devents:
 
@@ -335,18 +336,12 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from " + mgi_DBtable(ALL_CELLLINE_VIEW) + " where _CellLine_key = " + currentRecordKey + "\n";
+	  cmd := nonmutant_select(currentRecordKey);
+	  dbproc : opaque;
 	  
-          results : integer := 1;
-
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
-
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-
-	      if (results = 1) then
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	        top->ID->text.value := mgi_getstr(dbproc, 1);
                 top->EditForm->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 1);
                 top->EditForm->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 2);
@@ -361,23 +356,18 @@ rules:
                 SetOption.source_widget := top->EditForm->mgiParentCellLine->AlleleCellLineTypeMenu;
                 SetOption.value := mgi_getstr(dbproc, 3);
                 send(SetOption, 0);
-
-	      end if;
-
 	    end while;
 	  end while;
+	  (void) mgi_dbclose(dbproc);
 
-	  cmd := "select count(_CellLine_key) from " + mgi_DBtable(ALL_CELLLINE_VIEW) + 
-			" where parentCellLine_key = " + currentRecordKey;
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  cmd := nonmutant_count(currentRecordKey);
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      top->NumberOfMutants->text.value := mgi_getstr(dbproc, 1);
 	    end while;
 	  end while;
-
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  top->QueryList->List.row := Select.item_position;
 	  Clear.source_widget := top;

@@ -50,6 +50,8 @@
 #	IP  - issue
 #	VI  - volume
 #	AB  - abstract
+#	AID - doi 
+#	  for example: 10.1016/j.brainres.2010.09.026 [doi]
 #	plus others...
 #
 # File Processing
@@ -84,6 +86,21 @@
 #        	_primary PAU	primary author
 #
 # History
+#
+#	lec	11/15/2011
+#	- use quote ' instead of " for compatibility with postgres
+#
+#	lec	11/09/2011
+#	- ported inner/outer join to ansi standard
+#
+#	lec	09/26/2011
+#	- TR 10859/fix AID
+#
+#	lec	08/01/2011
+#	- TR 10725/add AID for [doi]
+#
+#	lec	05/04/2011
+#	- TR 10699 (remove TR1937); remove numeric stripping in AU
 #
 #	lec	05/13/2010
 #	- TR10215; add _ModifiedBy_key = userKey for updates to BIB_Refs
@@ -404,8 +421,11 @@ def processAU(value, currentValue = None):
 	#
 	'''
 
+	#TR 10699 (remove TR1937)
+	# remove this stripping...no longer valid
 	# strip out numerics from author names
-	newvalue = re.sub('[0-9]', '', value)
+	#newvalue = re.sub('[0-9]', '', value)
+	newvalue = value
 
 	# If List of authors...convert to 'NAME II; ' format
 	# Primary Author is first in list
@@ -445,10 +465,13 @@ def isDuplicate(rec, rectags):
 
 	# If pubmed id already exists in database, skip add
 
-	cmd = 'select ac.accID from ACC_Accession ac ' + \
-	      'where ac._MGIType_key = 1 ' + \
-	      'and ac._LogicalDB_key = 29 ' + \
-	      'and ac.accID = "' + rec['PMID'] + '"'
+	cmd = '''
+	      select ac.accID 
+	      from ACC_Accession ac
+	      where ac._MGIType_key = 1
+	      and ac._LogicalDB_key = 29
+	      and ac.accID = '%s'
+	      ''' % (rec['PMID'])
 
         results = db.sql(cmd, 'auto')
 
@@ -473,22 +496,19 @@ def isSubmission(rec, rectags):
 	#
 	'''
 
-	cmd = 'select _Refs_key from BIB_Refs ' + \
-               'where journal = "Submission" '
+	cmd = 'select _Refs_key from BIB_Refs where journal = \'Submission\''
 
 	if rec['PAU'] != 'NULL':
-	      cmd = cmd + ' and _primary = "' + rec['PAU'] + '"'
+	      cmd = cmd + ' and _primary = \'' + rec['PAU'] + '\''
 	else:
 	      cmd = cmd + ' and _primary = ' + rec['PAU']
 
 	if rec['AU'] != 'NULL':
-	      cmd = cmd + ' and (authors like "' + rec['AU'] + '"' + \
-	                  ' or authors2 like "%s" ' % rec['AU2']
+	      cmd = cmd + ' and (authors like \'' + rec['AU'] + '\'' + ' or authors2 like \'%s\' ' % rec['AU2']
 	else:
-	      cmd = cmd + ' and (authors = ' + rec['AU'] + \
-	                  ' or authors2 = ' + rec['AU2']
+	      cmd = cmd + ' and (authors = ' + rec['AU'] + ' or authors2 = ' + rec['AU2']
 
-        cmd = cmd + ' or substring(title,1,25) = "%s") ' % rec['TISHORT']
+        cmd = cmd + ' or substring(title,1,25) = \'%s\') ' % rec['TISHORT']
 
 	submission = db.sql(cmd, 'auto')
 
@@ -506,7 +526,7 @@ def attachQuotes(rec):
 	# requires: rec, a dictionary of NLM records (dictionary)
 	#
 	# effects:
-	# Attaches quotes (") to non-NULL strings in 'rec'
+	# Attaches quotes (') to non-NULL strings in 'rec'
 	#
 	# returns:
 	#
@@ -515,7 +535,7 @@ def attachQuotes(rec):
 	for r in rec.keys():
 		try:
 			if rec[r] != 'NULL' and r != 'YR':
-				rec[r] = '"' + rec[r] + '"'
+				rec[r] = '\'' + rec[r] + '\''
 		except:
 			pass
 
@@ -540,12 +560,17 @@ def doUpdate(rec, rectags):
 
 	# If pubmed id already exists in database, allow update
 
-	cmd = 'select v._Refs_key, v.title, v.abstract, v.jnum, ac.accID ' + \
-	      'from BIB_All_View v, ACC_Accession ac ' + \
-	      'where ac._MGIType_key = 1 ' + \
-	      'and ac._LogicalDB_key = 29 ' + \
-	      'and ac.accID = "' + rec['PMID'] + '" ' + \
-	      'and ac._Object_key = v._Refs_key'
+	cmd = '''
+	      select v._Refs_key, v.title, v.abstract, v.jnum, pmid = ac.accID, doiid = ac2.accID
+	      from BIB_All_View v
+	      		INNER JOIN ACC_Accession ac on (v._Refs_key = ac._Object_key 
+	        			and ac._MGIType_key = 1 
+	        			and ac._LogicalDB_key = 29 
+	        			and ac.accID = '%s')
+	      		LEFT OUTER JOIN ACC_Accession ac2 on (v._Refs_key = ac2._Object_key
+	      				and ac2._MGIType_key = 1
+	      				and ac2._LogicalDB_key = 65)
+	      ''' % (rec['PMID'])
 
         results = db.sql(cmd, 'auto')
 
@@ -563,12 +588,20 @@ def doUpdate(rec, rectags):
 
 	# Else, we've got one record in 'results'
 
+	refKey = None
+	title = None
+	abstract = None
+	jnum = None
+	pmidKey = None
+	doiKey = None
+
 	for result in results:
 		refKey = result['_Refs_key']
 		title = result['title']
 		abstract = result['abstract']
 		jnum = result['jnum']
-	        pmidKey = result['accID']
+	        pmidKey = result['pmid']
+	        doiKey = result['doiid']
 
 	# Update existing entry if pubmed id or title or abstract is NULL
 	# or if the pubmed id is not NULL (exists)
@@ -584,27 +617,30 @@ def doUpdate(rec, rectags):
 		cmd.append('begin transaction')
 		update = []
 
-		update.append('update BIB_Refs set ' + \
-			'refType = "ART",' + \
-        		'authors = %s,' % rec['AU'] + \
-        		'authors2 = %s,' % rec['AU2'] + \
-        		'_primary = %s,' % rec['PAU'] + \
-        		'title = %s,' % rec['TI'] + \
-        		'title2 = %s,' % rec['TI2'] + \
-        		'issue = %s,' % rec['IP'] + \
-        		'date = %s,' % rec['DP'] + \
-        		'year = %s,' % rec['YR'] + \
-        		'pgs = %s,' % rec['PG'] + \
-        		'journal = %s,' % rec['TA'] + \
-        		'vol = %s' % rec['VI'])
+		update.append('''
+			update BIB_Refs set 
+			refType = 'ART',
+        		authors = %s,
+        		authors2 = %s,
+        		_primary = %s,
+        		title = %s,
+        		title2 = %s,
+        		issue = %s,
+        		date = %s,
+        		year = %s,
+        		pgs = %s,
+        		journal = %s,
+        		vol = %s
+			''' % (rec['AU'], rec['AU2'], rec['PAU'], rec['TI'], rec['TI2'], \
+			       rec['IP'], rec['DP'], rec['YR'], rec['PG'], rec['TA'], rec['VI']))
  
 		# If record has abstract and abstract is not null, update it
 		if rec.has_key('AB') and rec['AB'] != 'NULL':
 			update.append('abstract = %s' % rec['AB'])
 
-        	update.append('_ModifiedBy_key = %s, ' % userKey + \
-			'modification_date = getdate() ' + \
-			'where _Refs_key = %d' % refKey)
+        	update.append('''
+			_ModifiedBy_key = %s, modification_date = getdate() where _Refs_key = %d
+			''' % (userKey, refKey))
 		cmd.append(string.join(update, ','))
 
 		# Add PubMed ID
@@ -612,6 +648,11 @@ def doUpdate(rec, rectags):
 		if rec.has_key('PMID') and pmidKey is None:
           		cmd.append('exec ACC_insert %d,%s,%d,%s' % (refKey, rec['PMID'], PUBMEDKEY, MGITYPE))
 			
+		# Add DOI ID (from AID)
+
+		if rec.has_key('AID') and doiKey is None:
+		    	cmd.append('exec ACC_insert %d,%s,%d,%s' % (refKey, rec['AID'], DOIKEY, MGITYPE))
+
 		cmd.append('commit transaction')
 		db.sql(cmd, None)
 
@@ -657,18 +698,22 @@ def doAdd(rec, rectags):
 	cmd.append('begin transaction')
 
 	# Make sure 'declare' is prepended to Transact SQL command
-	cmd.append('declare @nextRef int\n' + \
-		'select @nextRef = max(_Refs_key) + 1 from BIB_Refs\n' + \
-		'%s values(@nextRef,%d,"ART",%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,"Y",0,%s,%s,%s)' \
+	cmd.append('''
+		declare @nextRef int\n
+		select @nextRef = max(_Refs_key) + 1 from BIB_Refs\n
+		%s values(@nextRef,%d,'ART',%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,'Y',0,%s,%s,%s)
+		''' 
 		% (INSERTBIB, REVIEWSTATUS, rec['AU'], rec['AU2'], rec['PAU'], \
 		rec['TI'], rec['TI2'], rec['TA'], rec['VI'], rec['IP'], \
 		rec['DP'], rec['YR'], rec['PG'], rec['AB'], userKey, userKey))
  
-	cmd.append('execute ACC_assignJ @nextRef, %s' % nextJnum)
+	cmd.append('execute ACC_assignJ @nextRef,%s' % nextJnum)
 
 	if rec.has_key('PMID'):
-		cmd.append('exec ACC_insert @nextRef, %s, %d, %s' \
-			% (rec['PMID'], PUBMEDKEY, MGITYPE))
+		cmd.append('exec ACC_insert @nextRef,%s,%d,%s' % (rec['PMID'], PUBMEDKEY, MGITYPE))
+
+	if rec.has_key('AID'):
+	        cmd.append('exec ACC_insert @nextRef,%s,%d,%s' % (rec['AID'], DOIKEY, MGITYPE))
 
 	cmd.append('commit transaction')
 	db.sql(cmd, [None] * len(cmd))
@@ -760,7 +805,7 @@ def processRec(rec, rectags):
 	# Remove [In Process Citation] from title
 	for i in ('TI', 'AB'):
 		if rec.has_key(i):
-			newValue = re.sub('"', '\'', rec[i])
+			newValue = re.sub('\'', '\'', rec[i])
 			rec[i] = newValue
 			newValue = re.sub(' \[In Process Citation\]', '', rec[i])
 			rec[i] = newValue
@@ -809,9 +854,12 @@ def processFile():
 		m = re.match('^[A-Z]*[ ]*- ', line)
 		if m != None:
 
+			addToRec = 1
+
 			[field, value] = string.split(line, '- ', 1)
 			field = string.strip(field)
 			value = string.strip(value)
+			value = value.replace("'", "''")
 
 			# Process AU field as read, because it can scan many rows
 
@@ -823,16 +871,32 @@ def processFile():
 
 				rec['LAU'] = value	# Last Author
 
+			if field == 'AID':
+
+				# do not add to rec if AID is not a DOI id
+				# will only add the last DOI encountered
+
+				if value.find('[doi]') > 0:
+		    			value = value.replace(' [doi]', '')
+					if len(value) > MAXDOIID:
+						addToRec = 0
+				else:
+					addToRec = 0
+
 			if len(value) == 0:
 				value = 'NULL'
 
-			rec[field] = value
+			# if ok to add to rec, do so
+			if addToRec:
+				rec[field] = value
 
-			if field not in rectags:
-				rectags.append(field)
+				if field not in rectags:
+					rectags.append(field)
 
 		elif len(line) > 0:		# line continuation
+
 			value = string.strip(line)
+			value = value.replace("'", "''")
 
 			try:
 				rec[field] = rec[field] + ' ' + value
@@ -877,8 +941,10 @@ def citationCache():
 
 PUBMEDSTR = 'PubMed'
 PUBMEDKEY = 29
-MGITYPE = '"Reference"'	# Need quotes because it's being sent to a stored procedure
+DOIKEY = 65
+MGITYPE = '\'Reference\''	# Need quotes because it's being sent to a stored procedure
 REVIEWSTATUS = 3	# Peer Reviewed Status
+MAXDOIID = 30
 
 INSERTBIB = 'insert BIB_Refs (_Refs_key, _ReviewStatus_key, refType, authors, authors2, _primary, title, title2, journal, vol, issue, date, year, pgs, NLMstatus, isReviewArticle, abstract, _CreatedBy_key, _ModifiedBy_key)\n'
 

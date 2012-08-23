@@ -13,6 +13,15 @@
 --
 -- History:
 --
+-- lec  01/05/2012
+--	- fix InitRefTypeTable/select/where/order
+--
+-- lec	12/14/2011
+--	- InitRefTypeTable; modify select query
+--
+-- lec	02/28/2011
+--	- TR 10584/add modification date/by to MGI_REFERENCE_STRAIN_VIEW
+--
 -- lec  01/26/2010
 --	- TR 8156; added ModifyRefTypeRow
 --
@@ -99,27 +108,26 @@ rules:
 	  tableID : integer := InitRefTypeTable.tableID;
 
 	  cmd : string;
+	  where : string := "";
 	  orderBy : string;
 	  row : integer := 0;
 
 	  ClearTable.table := table;
 	  send(ClearTable, 0);
 
-	  --if (tableID = MGI_REFTYPE_ALLELE_VIEW) then
-	  --   orderBy := "\norder by _RefAssocType_key";
-	  --else
+	  if (tableID = MGI_REFTYPE_ALLELE_VIEW) then
+	     where := " where assocType in ('Original', 'Transmission', 'Molecular', 'Indexed') ";
+	  end if;
+
 	  orderBy := "\norder by allowOnlyOne desc, _RefAssocType_key";
-	  --end if;
 
 	  cmd := "select _RefAssocType_key, assocType, allowOnlyOne, _MGIType_key from " + 
-		  mgi_DBtable(tableID) + orderBy;
+		  mgi_DBtable(tableID) + where + orderBy;
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+	  dbproc : opaque := mgi_dbexec(cmd);
 
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	       (void) mgi_tblSetCell(table, row, table.refsTypeKey, mgi_getstr(dbproc, 1));
 	       (void) mgi_tblSetCell(table, row, table.refsType, mgi_getstr(dbproc, 2));
 	       (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_EMPTY);
@@ -133,8 +141,11 @@ rules:
 	    end while;
 	  end while;
 
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
+	  --
+	  -- load the drop-down list
+	  --
 	  if (top->ReferenceTypeMenu.subMenuId.numChildren = 0) then
 	    InitOptionMenu.option := top->ReferenceTypeMenu;
 	    send(InitOptionMenu, 0);
@@ -172,18 +183,24 @@ rules:
 	     orderBy := "\norder by allowOnlyOne desc, _RefAssocType_key";
 	  end if;
 
-          cmd := "select _Refs_key, _RefAssocType_key, assocType, allowOnlyOne, " +
+	  if (tableID = MGI_REFERENCE_STRAIN_VIEW) then
+            cmd := "select _Refs_key, _RefAssocType_key, assocType, allowOnlyOne, " +
+		  "jnum, short_citation, _Assoc_key, isReviewArticle, isReviewArticleString, " +
+		  "modifiedBy, modification_date" +
+	  	  " from " + mgi_DBtable(tableID) +
+		  " where " + mgi_DBkey(tableID) + " = " + objectKey + orderBy;
+	  else
+            cmd := "select _Refs_key, _RefAssocType_key, assocType, allowOnlyOne, " +
 		  "jnum, short_citation, _Assoc_key, isReviewArticle, isReviewArticleString" +
 	  	  " from " + mgi_DBtable(tableID) +
 		  " where " + mgi_DBkey(tableID) + " = " + objectKey + orderBy;
+	  end  if;
 
 	  row : integer := 0;
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      (void) mgi_tblSetCell(table, row, table.assocKey, mgi_getstr(dbproc, 7));
 	      (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 1));
 	      (void) mgi_tblSetCell(table, row, table.refsTypeKey, mgi_getstr(dbproc, 2));
@@ -196,11 +213,16 @@ rules:
 	        (void) mgi_tblSetCell(table, row, table.review, mgi_getstr(dbproc, 9));
 	      end if;
 
+	      if (table.is_defined("modifiedBy") != nil) then
+	        (void) mgi_tblSetCell(table, row, table.modifiedBy, mgi_getstr(dbproc, 10));
+	        (void) mgi_tblSetCell(table, row, table.modifiedDate, mgi_getstr(dbproc, 11));
+	      end if;
+
 	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
               row := row + 1;
             end while;
           end while;
-          (void) dbclose(dbproc);
+          (void) mgi_dbclose(dbproc);
 
 	  -- Re-set the form
 
@@ -332,6 +354,7 @@ rules:
 	  editMode : string;
 	  refsKey : string;
 	  citation : string;
+	  modifiedBy : string;
 	  cmd : string := "";
  
 	  table.sqlFrom := "";
@@ -346,7 +369,7 @@ rules:
               refsKey := mgi_tblGetCell(table, r, table.refsKey);
               citation := mgi_tblGetCell(table, r, table.citation);
  
-	      if (refsKey.length > 0) then
+	      if (refsKey != "NULL" and refsKey.length > 0) then
 	        table.sqlWhere := table.sqlWhere + "\nand " + 
 			tableTag + "._Refs_key = " + refsKey;
 	      elsif (citation.length > 0) then
@@ -354,16 +377,40 @@ rules:
 			tableTag + ".citation like " + mgi_DBprstr(citation);
 	      end if;
 
+	      if (table.is_defined("modifiedBy") != nil) then
+		modifiedBy := mgi_tblGetCell(table, r, table.modifiedBy);
+	        if (modifiedBy.length > 0) then
+	          table.sqlWhere := table.sqlWhere + "\nand " + 
+			  tableTag + ".modifiedBy like " + mgi_DBprstr(modifiedBy);
+		end if;
+	      end if;
+
 	      break;
 	    end if;
             r := r + 1;
 	  end while;
+
+	  -- Modification date
+
+	  if (table.is_defined("modifiedBy") != nil) then
+	    table.sqlCmd := "";
+            QueryDate.source_widget := table;
+	    QueryDate.row := 0;
+	    QueryDate.column := table.modifiedDate;
+	    QueryDate.fieldName := "modification_date";
+	    QueryDate.tag := tableTag;
+            send(QueryDate, 0);
+	    if (table.sqlCmd.length > 0) then
+	      table.sqlWhere := table.sqlWhere + table.sqlCmd;
+	    end if;
+	  end if;
 
 	  if (table.sqlWhere.length > 0) then
 	    table.sqlFrom := "," + mgi_DBtable(tableID) + " " + tableTag;
 	    table.sqlWhere := table.sqlWhere + "\nand " + tableTag + "." + 
 		mgi_DBkey(tableID) + " = " + join;
 	  end if;
+
 	end does;
 
  end dmodule;

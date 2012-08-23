@@ -3,7 +3,7 @@ Module: mgiLookup
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Sep 16 07:55:37 2010";
+      lastWritten = "Tue Jun 19 07:59:47 2012";
         {
           LookupLabel = XmPushButton;
           Group: Widget
@@ -36,7 +36,7 @@ Module: mgiLookup
               {
                 List = list : mgiDataTypes;
                 Group: Widget
-                  userDefinedAttributes = "keys:StringTable(StringTable)\nmodified:Boolean(Boolean)=\"False\"\nsqlSuccessful:Boolean(Boolean)=\"True\"\ntargetWidget:Widget(Widget)\ntargetText:String(String)=\"-1\"\ntargetKey:String(String)=\"-1\"\naccIDs:StringTable(StringTable)\ntargetAccID:String(String)=\"-1\"\n";
+                  userDefinedAttributes = "keys:StringTable(StringTable)\nmodified:Boolean(Boolean)=\"False\"\nsqlSuccessful:Boolean(Boolean)=\"True\"\ntargetWidget:Widget(Widget)\ntargetText:String(String)=\"-1\"\ntargetKey:String(String)=\"-1\"\naccIDs:StringTable(StringTable)\ntargetAccID:String(String)=\"-1\"\nmaxList:Int=\"100\"\n";
                 Group: Constraint
                   leftAttachment = attach_form;
                   rightAttachment = attach_form;
@@ -253,7 +253,7 @@ Module: mgiLookup
             vip_x = 90;
             vip_y = 1570;
           Group: User
-            cmd = "select _Term_key, term from VOC_Term_StrainAttribute_View order by term";
+            cmd = "(\nselect _Term_key, term, i = 1 from VOC_Term where _Vocab_key = 27 and term like '[a-z]%'\nunion\nselect _Term_key, term, i = 2 from VOC_Term where _Vocab_key = 27 and term like '*%'\n)\norder by i, term\n";
               {
                 Label = LookupLabel;
                 Group: Widget
@@ -265,6 +265,7 @@ Module: mgiLookup
                 List = list : mgiDataTypes;
                 Group: Widget
                   singleSelectionCallback = "D:SelectLookupListItem";
+                  visibleItemCount = 4;
               }
         }
         {
@@ -273,7 +274,7 @@ Module: mgiLookup
             vip_x = 90;
             vip_y = 1515;
           Group: User
-            cmd = "select _CellLine_key, c = cellLine + \";\" + cellLineStrain\nfrom ALL_CellLine_View \nwhere isMutant = 0 and _CellLine_Type_key = 3982968\nunion\nselect _CellLine_key, c = cellLine + \";\" + cellLineStrain + \";\" + cellLineType\nfrom ALL_CellLine_View \nwhere isMutant = 0 and _CellLine_Type_key != 3982968\norder by c\n";
+            cmd = "select c._CellLine_key, c.cellLine || ';' || s.strain as cellLine\nfrom ALL_CellLine c, PRB_Strain s\nwhere c.isMutant = 0 and c._CellLine_Type_key = 3982968\nand c._Strain_key = s._Strain_key\nunion\nselect c._CellLine_key, c.cellLine || ';' || s.strain || ';' || vt.term as cellLine\nfrom ALL_CellLine c, PRB_Strain s, VOC_Term vt\nwhere c.isMutant = 0 and c._CellLine_Type_key != 3982968\nand c._Strain_key = s._Strain_key\nand c._CellLine_Type_key = vt._Term_key\norder by cellLine\n";
               {
                 Label = LookupLabel : mgiLookup;
                 Group: Widget
@@ -410,7 +411,7 @@ Module: mgiLookup
             vip_x = 90;
             vip_y = 965;
           Group: User
-            cmd = "select distinct g._Genotype_key, g.dbName  + ',' + ap.allele1 + ',' + ap.allele2, g.mgiID \nfrom GXD_Genotype_View g, GXD_Specimen s, GXD_AllelePair_View ap \nwhere s._Genotype_key = g._Genotype_key and g._Genotype_key *= ap._Genotype_key and s._Assay_key =";
+            cmd = "select distinct g._Genotype_key, g.dbName || ',' || ap.allele1 || ',' || ap.allele2, g.mgiID \nfrom GXD_Genotype_View g LEFT OUTER JOIN GXD_AllelePair_View ap on (g._Genotype_key = ap._Genotype_key), GXD_Specimen s \nwhere s._Genotype_key = g._Genotype_key and s._Assay_key =";
               {
                 Label = LookupLabel : mgiLookup;
               }
@@ -428,7 +429,7 @@ Module: mgiLookup
             vip_x = 90;
             vip_y = 910;
           Group: User
-            cmd = "select distinct g._Genotype_key, g.dbName  + ',' + ap.allele1 + ',' + ap.allele2, g.mgiID \nfrom GXD_Genotype_View g, GXD_GelLane s, GXD_AllelePair_View ap \nwhere s._Genotype_key = g._Genotype_key and g._Genotype_key *= ap._Genotype_key and s._Assay_key =";
+            cmd = "select distinct g._Genotype_key, g.dbName || ',' || ap.allele1 || ',' || ap.allele2, g.mgiID \nfrom GXD_Genotype_View g LEFT OUTER JOIN GXD_AllelePair_View ap on (g._Genotype_key = ap._Genotype_key), GXD_GelLane s \nwhere s._Genotype_key = g._Genotype_key and s._Assay_key =";
               {
                 Label = LookupLabel : mgiLookup;
               }
@@ -502,7 +503,7 @@ Module: mgiLookup
             vip_x = 90;
             vip_y = 690;
           Group: User
-            cmd = "select _Set_key, name from MGI_Set_CloneLibrary_View order by name";
+            cmd = "select _Set_key, name from MGI_Set where _MGIType_key = 5 order by name";
               {
                 Label = LookupLabel : mgiLookup;
                 Group: Widget
@@ -517,7 +518,7 @@ Module: mgiLookup
             vip_x = 90;
             vip_y = 470;
           Group: User
-            cmd = "select _Term_key, term from VOC_Term_CellLine_View order by term";
+            cmd = "select _Term_key, term from VOC_Term where _Vocab_key = 18 order by term";
               {
                 Label = LookupLabel : mgiLookup;
                 Group: Widget
@@ -640,7 +641,7 @@ Module: mgiLookup
             vip_x = 90;
             vip_y = 1625;
           Group: User
-            cmd = "select _Term_key, term from VOC_Term_StrainType_View order by term";
+            cmd = "select _Term_key, term from VOC_Term where _Vocab_key = 55 order by term";
               {
                 Label = LookupLabel;
                 Group: Widget
@@ -652,6 +653,7 @@ Module: mgiLookup
                 List = list : mgiDataTypes;
                 Group: Widget
                   singleSelectionCallback = "D:SelectLookupListItem";
+                  visibleItemCount = 4;
               }
         }
         {
@@ -660,7 +662,7 @@ Module: mgiLookup
             vip_x = 90;
             vip_y = 1240;
           Group: User
-            cmd = "select _Term_key, term from VOC_Term_NeedsReview_View order by term";
+            cmd = "select _Term_key, term from VOC_Term where _Vocab_key = 56 order by term";
               {
                 Label = LookupLabel;
                 Group: Widget
@@ -700,7 +702,7 @@ Module: mgiLookup
             vip_x = 90;
             vip_y = 360;
           Group: User
-            cmd = "select _Derivation_key, name from ALL_CellLine_Derivation \nwhere name not like \"Not Specified%\"\nand name not like \"Not Applicable%\"\norder by name";
+            cmd = "select _Derivation_key, name from ALL_CellLine_Derivation \nwhere name not like 'Not Specified%'\nand name not like 'Not Applicable%'\norder by name";
               {
                 Label = LookupLabel : mgiLookup;
                 Group: Widget

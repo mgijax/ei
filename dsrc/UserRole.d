@@ -265,6 +265,7 @@ rules:
         LoadRoleTasks does
           table : widget;
 	  row : integer;
+	  dbproc : opaque;
  
           (void) busy_cursor(top);
 
@@ -275,33 +276,32 @@ rules:
 	  end while;
 	  tables.close;
 
-	  dbproc : opaque := mgi_dbopen();
-
 	  table := top->Tasks->Table;
 	  row := 0;
 
 	  cmd := "select usertask from MGI_RoleTask_View where _Role_key = " +
-		top->UserRoleMenu.menuHistory.searchValue;
+		top->UserRoleMenu.menuHistory.searchValue +
+		" order by usertask";
 
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      (void) mgi_tblSetCell(table, row, table.task, mgi_getstr(dbproc, 1));
 	      row := row + 1;
 	    end while;
 	  end while;
+	  (void) mgi_dbclose(dbproc);
 
 	  table := top->Users->Table;
 	  row := 0;
 
 	  cmd := "select * from MGI_UserRole_View where _Role_key = " + 
-		top->UserRoleMenu.menuHistory.searchValue;
+		top->UserRoleMenu.menuHistory.searchValue +
+		" order by login";
 
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      (void) mgi_tblSetCell(table, row, table.userRoleKey, mgi_getstr(dbproc, 1));
 	      (void) mgi_tblSetCell(table, row, table.userKey, mgi_getstr(dbproc, 3));
 	      (void) mgi_tblSetCell(table, row, table.userLogin, mgi_getstr(dbproc, 9));
@@ -309,8 +309,7 @@ rules:
 	      row := row + 1;
 	    end while;
 	  end while;
-
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  Clear.source_widget := top;
 	  Clear.reset := true;

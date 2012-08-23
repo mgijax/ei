@@ -153,6 +153,7 @@ dmodule Marker is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
+#include <mgdsql.h>
 
 devents:
 
@@ -241,6 +242,10 @@ rules:
           ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
 
+	  -- Set Permissions
+	  SetPermissions.source_widget := top;
+	  send(SetPermissions, 0);
+
 	  -- Build Dynamic GUI Components
 	  send(BuildDynamicComponents, 0);
 
@@ -305,9 +310,7 @@ rules:
           LoadList.list := top->TDCList;
           send(LoadList, 0);
 
-          top->WithdrawalDialog->MarkerEventReasonMenu.subMenuId.sql := 
-            "select * from " + mgi_DBtable(MRK_EVENTREASON) + 
-            " where " + mgi_DBkey(MRK_EVENTREASON) + " >= -1 order by " + mgi_DBcvname(MRK_EVENTREASON);
+          top->WithdrawalDialog->MarkerEventReasonMenu.subMenuId.sql := marker_eventreason();
 	  InitOptionMenu.option := top->WithdrawalDialog->MarkerEventReasonMenu;
 	  send(InitOptionMenu, 0);
 
@@ -439,8 +442,7 @@ rules:
           if (top->markerAccession->ObjectID->text.value.length > 0) then
             top->mgiMarker->ObjectID->text.value := top->markerAccession->ObjectID->text.value;
             top->mgiMarker->Marker->text.value := 
-		mgi_sql1("select symbol from MRK_Mouse_View " +
-		"where mgiID = " + mgi_DBprstr(top->markerAccession->AccessionID->text.value));
+		mgi_sql1(marker_mouse(mgi_DBprstr(top->markerAccession->AccessionID->text.value)));
 	    VerifyMarkerChromosome.source_widget := top->mgiMarker->Marker->text;
 	    send(VerifyMarkerChromosome, 0);
 	  else
@@ -577,7 +579,7 @@ rules:
 
 	  dialog->currentMarker->Marker->text.value := top->Symbol->text.value;
 	  alleleCount : string;
-	  alleleCount := mgi_sql1("select count(*) from ALL_Allele where _Marker_key = " + currentRecordKey);
+	  alleleCount := mgi_sql1(marker_count(currentRecordKey));
 	  if ((integer) alleleCount > 0) then
 	    dialog->hasAlleles.set := true;
           else
@@ -807,7 +809,7 @@ rules:
 
 	  from := " from " + mgi_DBtable(MRK_MARKER) + " m";
 	  from := from + ",MRK_Current_View mu";
-	  where := "where m._Organism_key = " + MOUSE;
+	  where := "where m._Organism_key = 1";
 	  where := where + "\nand mu.current_symbol in (";
 
 	  if (dialog.eventKey = EVENT_RENAME) then
@@ -833,7 +835,7 @@ rules:
 	  where := where + ")\nand m._Marker_key = mu._Marker_key";
 
 	  QueryNoInterrupt.source_widget := top;
-	  QueryNoInterrupt.select := "select distinct m._Marker_key, m.symbol\n" + from + "\n" + 
+	  QueryNoInterrupt.select := "select distinct m._Marker_key, m.symbol, m._Marker_Type_key\n" + from + "\n" + 
 			             where + "\norder by m._Marker_Type_key, m.symbol\n";
 	  QueryNoInterrupt.table := MRK_MARKER;
 	  send(QueryNoInterrupt, 0);
@@ -1386,7 +1388,7 @@ rules:
 	  value : string;
 
 	  from := " from " + mgi_DBtable(MRK_MARKER) + " m";
-	  where := "where m._Organism_key = " + MOUSE;
+	  where := "where m._Organism_key = 1";
 
 	  -- Cannot search both Accession tables at once
 
@@ -1640,7 +1642,7 @@ rules:
 	  (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
-	  Query.select := "select distinct m._Marker_key, m.symbol\n" + from + "\n" + 
+	  Query.select := "select distinct m._Marker_key, m.symbol, m._Marker_Type_key\n" + from + "\n" + 
 			  where + "\norder by m._Marker_Type_key, m.symbol\n";
 	  Query.table := MRK_MARKER;
 	  send(Query, 0);
@@ -1688,85 +1690,65 @@ rules:
           (void) busy_cursor(top);
 
 	  table : widget;
+	  dbproc : opaque;
+
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
-
-	  cmd := "select _Marker_key, _Marker_Type_key, _Marker_Status_key, symbol, name, chromosome, " +
-		 "cytogeneticOffset, createdBy, creation_date, modifiedBy, modification_date " +
-		 "from MRK_Marker_View where _Marker_key = " + currentRecordKey + "\n" +
-
-	         "select source, str(offset,10,2) from MRK_Offset " +
-		 "where _Marker_key = " + currentRecordKey +
-		 " order by source\n" +
-
-	         "select _Marker_Event_key, _Marker_EventReason_key, _History_key, sequenceNum, " +
-		 "name, event_display, event, eventReason, history, modifiedBy " +
-		 "from MRK_History_View " +
-		 "where _Marker_key = " + currentRecordKey +
-		 " order by sequenceNum, _History_key\n" +
-
-	         "select h.sequenceNum, h._Refs_key, b.jnum, b.short_citation " +
-		 "from MRK_History h, BIB_View b " +
-		 "where h._Marker_key = " + currentRecordKey +
-		 "and h._Refs_key = b._Refs_key " + 
-		 " order by h.sequenceNum, h._History_key\n" +
-
-	         "select _Current_key, current_symbol from MRK_Current_View " +
-		 "where _Marker_key = " + currentRecordKey + "\n" +
-
-	         "select tdc._Annot_key, tdc._Term_key, tdc.accID, tdc.term " +
-		 " from " + mgi_DBtable(VOC_ANNOT_VIEW) + " tdc " +
-		 "where tdc._AnnotType_key = " + annotTypeKey +
-		 " and tdc._LogicalDB_key = " + defaultLogicalDBKey +
-		 " and tdc._Object_key = " + currentRecordKey + "\n" +
-
-	         "select _Alias_key, alias from MRK_Alias_View " +
-		 "where _Marker_key = " + currentRecordKey + "\n";
-
-	  results : integer := 1;
-	  row : integer := 0;
+	  row : integer;
 	  source : string;
 	  seqRow : integer := 0;
 	  seqNum1, seqNum2 : string;
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+	  table := top->Control->ModificationHistory->Table;
+	  cmd := marker_select(currentRecordKey);
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      top->ID->text.value           := mgi_getstr(dbproc, 1);
+	      top->Symbol->text.value       := mgi_getstr(dbproc, 4);
+	      top->Name->text.value         := mgi_getstr(dbproc, 5);
+	      top->Cyto->text.value         := mgi_getstr(dbproc, 7);
+	      (void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 8));
+	      (void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 9));
+	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 10));
+	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 11));
+              SetOption.source_widget := top->MarkerTypeMenu;
+              SetOption.value := mgi_getstr(dbproc, 2);
+              send(SetOption, 0);
+              SetOption.source_widget := top->MarkerStatusMenu;
+              SetOption.value := mgi_getstr(dbproc, 3);
+              send(SetOption, 0);
+              SetOption.source_widget := top->ChromosomeMenu;
+              SetOption.value := mgi_getstr(dbproc, 6);
+              send(SetOption, 0);
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
 
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
+	  table := top->Offset->Table;
+	  cmd := marker_offset(currentRecordKey);
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      source := mgi_getstr(dbproc, 1);
+              (void) mgi_tblSetCell(table, (integer) source, table.sourceKey, source);
+              (void) mgi_tblSetCell(table, (integer) source, table.offset, mgi_getstr(dbproc, 2));
+	      (void) mgi_tblSetCell(table, (integer) source, table.editMode, TBL_ROW_NOCHG);
+
+	      if (integer) source = 0 then
+	          top->cMposition->text.value := mgi_getstr(dbproc, 2);
+              end if;
+
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  row := 0;
+	  table := top->History->Table;
+	  cmd :=  marker_history1(currentRecordKey);
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    row := 0;
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
-		table := top->Control->ModificationHistory->Table;
-	        top->ID->text.value           := mgi_getstr(dbproc, 1);
-	        top->Symbol->text.value       := mgi_getstr(dbproc, 4);
-	        top->Name->text.value         := mgi_getstr(dbproc, 5);
-	        top->Cyto->text.value         := mgi_getstr(dbproc, 7);
-		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 8));
-		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 9));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 10));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 11));
-                SetOption.source_widget := top->MarkerTypeMenu;
-                SetOption.value := mgi_getstr(dbproc, 2);
-                send(SetOption, 0);
-                SetOption.source_widget := top->MarkerStatusMenu;
-                SetOption.value := mgi_getstr(dbproc, 3);
-                send(SetOption, 0);
-                SetOption.source_widget := top->ChromosomeMenu;
-                SetOption.value := mgi_getstr(dbproc, 6);
-                send(SetOption, 0);
-	      elsif (results = 2) then
-		table := top->Offset->Table;
-		source := mgi_getstr(dbproc, 1);
-                (void) mgi_tblSetCell(table, (integer) source, table.sourceKey, source);
-                (void) mgi_tblSetCell(table, (integer) source, table.offset, mgi_getstr(dbproc, 2));
-		(void) mgi_tblSetCell(table, (integer) source, table.editMode, TBL_ROW_NOCHG);
-
-		if (integer) source = 0 then
-	            top->cMposition->text.value := mgi_getstr(dbproc, 2);
-                end if;
-
-	      elsif (results = 3) then
-		table := top->History->Table;
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
                 (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 4));
                 (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 4));
                 (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 3));
@@ -1794,9 +1776,18 @@ rules:
           	  send(SetOptions, 0);
 		end if;
 
-	      elsif (results = 4) then
-	        table := top->History->Table;
+	      row := row + 1;
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
 
+	  row := 0;
+	  table := top->History->Table;
+	  cmd := marker_history2(currentRecordKey);
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    row := 0;
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 		-- Some _Refs_keys are still NULL, so they won't return a J:
 
 		seqRow := 0;
@@ -1816,31 +1807,59 @@ rules:
 	          (void) mgi_tblSetCell(table, seqRow, table.jnum, mgi_getstr(dbproc, 3));
 	          (void) mgi_tblSetCell(table, seqRow, table.jnum + 1, mgi_getstr(dbproc, 4));
 		end if;
-	      elsif (results = 5) then
-		table := top->Current->Table;
-                (void) mgi_tblSetCell(table, row, table.markerCurrentKey, mgi_getstr(dbproc, 1));
-                (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 1));
-                (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 2));
-		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-	      elsif (results = 6) then
-		table := top->TDCVocab->Table;
-                (void) mgi_tblSetCell(table, row, table.annotKey, mgi_getstr(dbproc, 1));
-                (void) mgi_tblSetCell(table, row, table.termKey, mgi_getstr(dbproc, 2));
-                (void) mgi_tblSetCell(table, row, table.termAccID, mgi_getstr(dbproc, 3));
-                (void) mgi_tblSetCell(table, row, table.term, mgi_getstr(dbproc, 4));
-	      elsif (results = 7) then
-		table := top->Alias->Table;
-                (void) mgi_tblSetCell(table, row, table.markerCurrentKey, mgi_getstr(dbproc, 1));
-                (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 1));
-                (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 2));
-		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-	      end if;
+
 	      row := row + 1;
 	    end while;
-	    results := results + 1;
 	  end while;
+	  (void) mgi_dbclose(dbproc);
 
-	  (void) dbclose(dbproc);
+	  row := 0;
+	  table := top->Current->Table;
+	  cmd := marker_current(currentRecordKey);
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    row := 0;
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+              (void) mgi_tblSetCell(table, row, table.markerCurrentKey, mgi_getstr(dbproc, 1));
+              (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 1));
+              (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 2));
+	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+	      row := row + 1;
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  row := 0;
+	  table := top->TDCVocab->Table;
+	  cmd := marker_tdc(annotTypeKey, defaultLogicalDBKey, currentRecordKey);
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    row := 0;
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+              (void) mgi_tblSetCell(table, row, table.annotKey, mgi_getstr(dbproc, 1));
+              (void) mgi_tblSetCell(table, row, table.termKey, mgi_getstr(dbproc, 2));
+              (void) mgi_tblSetCell(table, row, table.termAccID, mgi_getstr(dbproc, 3));
+              (void) mgi_tblSetCell(table, row, table.term, mgi_getstr(dbproc, 4));
+	      row := row + 1;
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  row := 0;
+	  table := top->Alias->Table;
+	  cmd := marker_alias(currentRecordKey);
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    row := 0;
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+              (void) mgi_tblSetCell(table, row, table.markerCurrentKey, mgi_getstr(dbproc, 1));
+              (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 1));
+              (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 2));
+	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+	      row := row + 1;
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
 
 	  -- Initialize Offset rows which do not exist
 	  row := 0;
@@ -2000,10 +2019,7 @@ rules:
 	  -- see ACC_Accession_Insert trigger
 	  -- This error must be fixed
 
-	  isInvalid := mgi_sql1("declare @isInvalid integer select @isInvalid = 0 " +
-		   "if (select " + mgi_DBprstr(value) + ") not like '[A-Z][0-9][0-9][0-9][0-9][0-9]' and " +
-		   "(select " + mgi_DBprstr(value) + ") not like '[A-Z][A-Z][0-9][0-9][0-9][0-9][0-9][0-9]' " +
-		   "begin select @isInvalid = 1 end select @isInvalid");
+	  isInvalid := mgi_sql1(marker_checkinvalid(mgi_DBprstr(value)));
 
 	  if (isInvalid = "1") then
 	    VerifyMarkerAcc.doit := (integer) false;
@@ -2021,11 +2037,7 @@ rules:
 
 	  if (currentRecordKey.length > 0) then
 
-	    accID := mgi_sql1("select accID from ACC_Accession " +
-			"where _MGIType_key = 2 " +
-			" and _LogicalDB_key = " + logicalKey + 
-			" and _Object_key != " + currentRecordKey +
-			" and accID = " + mgi_DBprstr(value));
+	    accID := mgi_sql1(marker_checkaccid(currentRecordKey, logicalKey, mgi_DBprstr(value)));
 
 	    if (accID.length > 0) then
 	      message := message + "This Accession ID is already associated with another marker.\n\n" + value + "\n\n";
@@ -2035,15 +2047,10 @@ rules:
 
 	  -- check if the sequence accession ID is associated with a problem clone (via its note)
 
-	  accID := mgi_sql1("select a.accID from PRB_Notes p, ACC_Accession a " +
-		" where p.note like '%staff have found evidence of artifact in the sequence of this molecular%' " +
-		" and p._Probe_key = a._Object_key " +
-		" and a._MGIType_key = 3 " +
-		" and a._LogicalDB_key = " + logicalKey +
-		" and a.accID = " + mgi_DBprstr(value));
+	  accID := mgi_sql1(marker_checkseqaccid(logicalKey, mgi_DBprstr(value)));
 
 	  if (accID.length > 0) then
-	    message := message + "This Accession ID is curated as a problem sequence.\n" +
+		message := message + "This Accession ID is curated as a problem sequence.\n" +
 		"Please review carefully whether this is a good sequence for the marker.\n\n" + value + "\n\n";
 	  end if;
 

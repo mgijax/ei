@@ -25,6 +25,7 @@ dmodule SimpleVocab is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
+#include <mgisql.h>
 
 devents:
 
@@ -80,6 +81,10 @@ rules:
 
 	  -- Create the widget hierarchy in memory
 	  top := create widget("SimpleVocabModule", nil, mgi);
+
+	  -- Set Permissions
+	  SetPermissions.source_widget := top;
+	  send(SetPermissions, 0);
 
 	  -- Build Dynamic GUI Components
 	  send(BuildDynamicComponents, 0);
@@ -149,11 +154,11 @@ rules:
           Clear.source_widget := top;
           send(Clear, 0);
 
-	  -- Perform initial search
-	  send(PrepareSearch, 0);
-	  send(Search, 0);
+	  -- set synonym type
+	  synTypeKey := mgi_sql1(simple_synonymtype());
 
-	  synTypeKey := mgi_sql1("select _SynonymType_key from MGI_SynonymType where _MGIType_key = 13 and synonymType = 'exact'");
+	  -- Perform initial search
+	  send(Search, 0);
 
 	end does;
 
@@ -542,26 +547,14 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from " + mgi_DBtable(VOC_VOCAB_VIEW) + 
-		 " where " + mgi_DBkey(VOC_VOCAB) + " = " + currentRecordKey + "\n" +
-		 "select * from " + mgi_DBtable(VOC_TERM_VIEW) +
-		 " where " + mgi_DBkey(VOC_VOCAB) + " = " + currentRecordKey + 
-		 " order by sequenceNum\n" +
-		 "select * from " + mgi_DBtable(VOC_TEXT_VIEW) +
-		 " where " + mgi_DBkey(VOC_VOCAB) + " = " + currentRecordKey + 
-		 " order by termsequenceNum, sequenceNum\n";
-
-	  results : integer := 1;
 	  row : integer := 0;
 	  definition : string;
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
- 
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    row := 0;
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
+          dbproc : opaque;
+
+	  cmd := simple_select1(currentRecordKey);
+	  dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	        top->ID->text.value           := mgi_getstr(dbproc, 1);
 	        top->Name->text.value         := mgi_getstr(dbproc, 6);
 	        top->mgiCitation->ObjectID->text.value := mgi_getstr(dbproc, 2);
@@ -575,7 +568,15 @@ rules:
                 SetOption.source_widget := top->ACCPrivateMenu;
                 SetOption.value := mgi_getstr(dbproc, 5);
                 send(SetOption, 0);
-	      elsif (results = 2) then
+            end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  row := 0;
+	  cmd := simple_select2(currentRecordKey);
+	  dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 		(void) mgi_tblSetCell(termTable, row, termTable.currentSeqNum, mgi_getstr(dbproc, 5));
 		(void) mgi_tblSetCell(termTable, row, termTable.seqNum, mgi_getstr(dbproc, 5));
 		(void) mgi_tblSetCell(termTable, row, termTable.termKey, mgi_getstr(dbproc, 1));
@@ -586,7 +587,15 @@ rules:
 		(void) mgi_tblSetCell(termTable, row, termTable.isObsolete, mgi_getstr(dbproc, 14));
 		(void) mgi_tblSetCell(termTable, row, termTable.editMode, TBL_ROW_NOCHG);
 		row := row + 1;
-	      elsif (results = 3) then
+            end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  row := 0;
+          cmd := simple_select3(currentRecordKey);
+	  dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 		row := 0;
 		while (mgi_tblGetCell(termTable, row, termTable.termKey) != "" and
 		       mgi_tblGetCell(termTable, row, termTable.termKey) != mgi_getstr(dbproc, 1)) do
@@ -601,12 +610,9 @@ rules:
 
 		(void) mgi_tblSetCell(termTable, row, termTable.definition, definition);
 		(void) mgi_tblSetCell(termTable, row, termTable.editMode, TBL_ROW_NOCHG);
-	      end if;
             end while;
-	    results := results + 1;
           end while;
- 
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  -- Set Option Menu for row 0
 
@@ -644,26 +650,20 @@ rules:
 	    return;
 	  end if;
 
-	  cmd := "select _Synonym_key, synonym from " + mgi_DBtable(MGI_SYNONYM) + 
-		 " where _SynonymType_key = " + synTypeKey +
-		 " and _Object_key = " + termKey + "\n" +
-		 " order by synonym\n";
+	  cmd := simple_synonym(synTypeKey, termKey);
 
-
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
 	  row := 0;
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	     (void) mgi_tblSetCell(synTable, row, synTable.synKey, mgi_getstr(dbproc, 1));
 	     (void) mgi_tblSetCell(synTable, row, synTable.synonym, mgi_getstr(dbproc, 2));
 	     (void) mgi_tblSetCell(synTable, row, synTable.editMode, TBL_ROW_NOCHG);
 	     row := row + 1;
 	    end while;
 	  end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	end does;
 

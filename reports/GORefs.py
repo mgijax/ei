@@ -15,6 +15,9 @@
 #
 # History
 #
+# 03/28/2012 lec
+#	- TR 11027/create_accession_anchor; add 'reference' to signature
+#
 # 10/25/2007 lec
 #	- TR 8557; added anchor "2" to create_accession_anchor
 #
@@ -25,13 +28,15 @@
 
 import sys
 import os
-import string
-import re
 import db
 import reportlib
 import mgi_utils
 
 # HTML constants
+
+PROD_URL = '''
+<A HREF="http://prodwww.informatics.jax.org/usrlocalmgi/live/wi/www/searches/accession_report.cgi?id=%s">%s</A>
+	'''
 
 TITLE ='<HEAD><TITLE>'
 EOTITLE = '</TITLE></HEAD>'
@@ -69,9 +74,9 @@ def scanText(text):
 	if text1 != None:
 		for i in range(len(terms)):
 			term = terms[i]
-			if string.find(text1, term) >= 0:
+			if text1.find(term) >= 0:
 				highlighted = '<B>%s</B>' % term
-				text2 = re.sub(term, highlighted, text1)
+				text2 = text1.replace(term, highlighted)
 				text1 = text2
 				numTerms = numTerms + 1
 
@@ -88,7 +93,7 @@ results = db.sql(cmd, 'auto')
 markerKey = results[0]['_Object_key']
 # description is expected in the format "symbol, name...."
 description = results[0]['description']
-tokens = string.split(description, ', ')
+tokens = description.split(', ')
 symbol = tokens[0]
 
 # initialize report output file
@@ -101,32 +106,38 @@ fp.write('Start Date/Time:  %s' % (mgi_utils.date()) + CRT + LB + HR)
 
 # read terms & synonyms into dictionary
 terms = []
-cmd = 'select distinct term ' + \
-	'from VOC_Term ' + \
-	'where _Vocab_key = 4 ' + \
-	'and term not like "%(sensu %" and term != "cell" '
+cmd = '''
+	select distinct term 
+	from VOC_Term 
+	where _Vocab_key = 4 
+	and term not like '%(sensu %' and term != 'cell' 
+	'''
 results = db.sql(cmd, 'auto')
 for r in results:
 	terms.append(r['term'])
 
-cmd = 'select distinct s.synonym ' + \
-	'from VOC_Term v, MGI_Synonym s ' + \
-	'where v._Vocab_key = 4 ' + \
-	'and v._Term_key = s._Object_key ' + \
-	'and s._MGIType_key = 13 '
+cmd = '''
+      select distinct s.synonym 
+      from VOC_Term v, MGI_Synonym s 
+      where v._Vocab_key = 4 
+      and v._Term_key = s._Object_key 
+      and s._MGIType_key = 13
+      '''
 results = db.sql(cmd, 'auto')
 for r in results:
 	terms.append(r['synonym'])
 
 # select no-go references for given marker key
-cmd = 'select r.jnumID, r.title, r.short_citation, r.abstract ' + \
-	'from BIB_GOXRef_View r ' +  \
-	'where r._Marker_key = %d ' % (markerKey) + \
-	' and not exists (select 1 from VOC_Annot a, VOC_Evidence e ' + \
-	' where a._AnnotType_key = 1000 ' + \
-	' and a._Annot_key = e._Annot_key ' + \
-	' and e._Refs_key = r._Refs_key) ' + \
-	' order by r.jnum desc'
+cmd = '''
+      select r.jnumID, r.title, r.short_citation, r.abstract 
+      from BIB_GOXRef_View r 
+      where r._Marker_key = %d
+      and not exists (select 1 from VOC_Annot a, VOC_Evidence e 
+      where a._AnnotType_key = 1000 
+      and a._Annot_key = e._Annot_key 
+      and e._Refs_key = r._Refs_key) 
+      order by r.jnum desc
+      ''' % (markerKey)
 results = db.sql(cmd, 'auto')
 
 ref = {}		# {'J:, Citation + Abstract' : number of GO Terms matched}
@@ -146,7 +157,7 @@ for r in results:
 
 	key = i + j		# number of non-redundant terms matched
 
-	value = '%s%s%s, ' % (reportlib.create_accession_anchor(r['jnumID'],2), r['jnumID'], reportlib.close_accession_anchor()) + \
+	value = PROD_URL % (r['jnumID'], r['jnumID']) + ', ' + \
 		r['short_citation'] + CRT + PB + \
 		mgi_utils.prvalue(title) + PB + CRT + \
 		mgi_utils.prvalue(abstract) + HR + CRT

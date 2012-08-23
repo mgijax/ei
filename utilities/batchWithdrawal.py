@@ -189,7 +189,7 @@ for line in inputFile.readlines():
 
 	[oldID, newID, newSymbol, newName] = string.split(line[:-1], '\t')
 
-	results = db.sql('select _Object_key from MRK_Acc_View where accID = "%s" and preferred = 1' % (oldID), 'auto')
+	results = db.sql('select _Object_key from MRK_Acc_View where accID = \'%s\' and preferred = 1' % (oldID), 'auto')
 
 	if len(results) > 0:
 		oldKey = results[0]['_Object_key']
@@ -197,7 +197,7 @@ for line in inputFile.readlines():
 		error('Invalid Old Marker Acc ID %s' % (oldID), 0)
 		errorFound = 1
 
-	results = db.sql('select _Object_key from MRK_Acc_View where accID = "%s"' % (newID), 'auto')
+	results = db.sql('select _Object_key from MRK_Acc_View where accID = \'%s\'' % (newID), 'auto')
 
 	if len(results) > 0:
 		newKey = results[0]['_Object_key']

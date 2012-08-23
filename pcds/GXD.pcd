@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Dec 15 12:23:38 2010";
+      lastWritten = "Thu May 24 06:53:04 2012";
       copy = false;
       inCreateMenu = true;
         {
@@ -57,6 +57,20 @@ Module: GXD
                             View = View : mgiMenu;
                             Group: Widget
                               managed = True;
+                                Popups:
+                                {
+                                  ViewPulldown = MenuPulldown : mgiMenu;
+                                      {
+                                        Strain = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          managed = True;
+                                      }
+                                      {
+                                        Tissue = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          managed = True;
+                                      }
+                                }
                           }
                     }
                     {
@@ -179,7 +193,7 @@ Module: GXD
                                             {
                                               ProbeOrganismPulldown = OptionPulldown;
                                               Group: User
-                                                sql = "select * from MGI_Organism_Antigen_View order by commonName";
+                                                sql = "select s.*\nfrom MGI_Organism s, MGI_Organism_MGIType t\nwhere s._Organism_key = t._Organism_key\nand t._MGIType_key = 7\norder by s.commonName";
                                             }
                                       }
                                       {
@@ -387,6 +401,9 @@ Module: GXD
                                                     PubMed = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    DXDOI = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     NSequence = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -471,13 +488,10 @@ Module: GXD
                                                     RIKENFANTOM = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    TreeFam = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TreeFamGene = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    QTLArchive = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     InterPro = AccToggle : mgiOption;
@@ -496,6 +510,12 @@ Module: GXD
                                                   }
                                                   {
                                                     MGIImage = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    BGEM = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    GUDMAP = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     CREX = AccToggle : mgiOption;
@@ -564,7 +584,7 @@ Module: GXD
                                                     MMRRC = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    APF = AccToggle : mgiOption;
+                                                    APB = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     BCBC = AccToggle : mgiOption;
@@ -588,7 +608,10 @@ Module: GXD
                                                     JPGA = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    MMHCC = AccToggle : mgiOption;
+                                                    KOMP = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NCIMR = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     MTG = AccToggle : mgiOption;
@@ -613,6 +636,12 @@ Module: GXD
                                                   }
                                                   {
                                                     TAC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RMRC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    WTSI = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     IMAGELibrary = AccToggle : mgiOption;
@@ -673,6 +702,9 @@ Module: GXD
                                                   }
                                                   {
                                                     EUCOMMProject = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Genentech = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EUCOMMCellLine = AccToggle : mgiOption;
@@ -1046,7 +1078,7 @@ Shift<Key>Tab: prev-tab-group()
                                             {
                                               ProbeOrganismPulldown = OptionPulldown;
                                               Group: User
-                                                sql = "select * from MGI_Organism_Antigen_View order by commonName";
+                                                sql = "select s.*\nfrom MGI_Organism s, MGI_Organism_MGIType t\nwhere s._Organism_key = t._Organism_key\nand t._MGIType_key = 7\norder by s.commonName";
                                             }
                                       }
                                       {
@@ -1147,6 +1179,8 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblCharWidthSeries = "(all 0 1)(all 1-6 10)(all 7 30)";
                                           xrtTblNumRows = 10;
                                           xrtTblImportDelimiter = 10;
+                                        Group: User
+                                          mgiTypeKey = 6;
                                             {
                                               label = XtXrtLabel;
                                               Group: Widget
@@ -1382,6 +1416,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     PubMed = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    DXDOI = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     NSequence = AccToggle;
                                                   }
                                                   {
@@ -1466,13 +1503,10 @@ Shift<Key>Tab: prev-tab-group()
                                                     RIKENFANTOM = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    TreeFam = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TreeFamGene = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    QTLArchive = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     InterPro = AccToggle : mgiOption;
@@ -1493,6 +1527,12 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     MGIImage = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    BGEM = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    GUDMAP = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     CREX = AccToggle : mgiOption;
@@ -1561,7 +1601,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     MMRRC = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    APF = AccToggle : mgiOption;
+                                                    APB = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     BCBC = AccToggle : mgiOption;
@@ -1585,7 +1625,10 @@ Shift<Key>Tab: prev-tab-group()
                                                     JPGA = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    MMHCC = AccToggle : mgiOption;
+                                                    KOMP = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NCIMR = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     MTG = AccToggle : mgiOption;
@@ -1610,6 +1653,12 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     TAC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RMRC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    WTSI = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     IMAGELibrary = AccToggle : mgiOption;
@@ -1670,6 +1719,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     EUCOMMProject = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Genentech = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EUCOMMCellLine = AccToggle : mgiOption;
@@ -2001,7 +2053,7 @@ Shift<Key>Tab: prev-tab-group()
                       Table = mgiTable;
                       Group: Widget
                         xrtTblNumColumns = 7;
-                        xrtTblEditableSeries = "(all 0-3 False) (all 5-6 False)";
+                        xrtTblEditableSeries = "(all 0-3 False)";
                         xrtTblPixelWidthSeries = "(all 0-2 0)";
                         xrtTblTraversableSeries = "(all 0-3 False)";
                         xrtTblColumnLabels = "Mode,Row Key,Unit Key,Row,Size,Units,Notes";
@@ -2307,36 +2359,60 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         IndexNotePulldown : NotePulldown = OptionPulldown : mgiOption;
                                             {
-                                              AntibodySpec = AppendNotePush : mgiDataTypes;
+                                              Activated = AppendNotePush : mgiDataTypes;
                                               Group: Widget
-                                                labelString = "Antibody spec.";
+                                                labelString = Activated;
                                               Group: User
                                                 noteWidget = Note;
-                                                note = "The specificity of the antibody used was not detailed; several/all family members have been annotated.";
+                                                note = "The antibody used recognizes the activated form of the protein.";
                                             }
                                             {
-                                              ProbeSpec = AppendNotePush : mgiDataTypes;
+                                              Cleaved = AppendNotePush : mgiDataTypes;
                                               Group: Widget
-                                                labelString = "Probe spec.";
+                                                labelString = Cleaved;
                                               Group: User
                                                 noteWidget = Note;
-                                                note = "Probe specificity was not detailed and may recognize a related gene; several/all family members have been annotated.";
+                                                note = "The antibody used recognizes the cleaved form of the protein.";
                                             }
                                             {
-                                              AntibodySpecMGI = AppendNotePush : mgiDataTypes;
+                                              Phosphorylated = AppendNotePush : mgiDataTypes;
                                               Group: Widget
-                                                labelString = "Antibody spec. MGI ID";
+                                                labelString = Phosphorylated;
                                               Group: User
                                                 noteWidget = Note;
-                                                note = "The specificity of the antibody used was not detailed; (MGI:) has also been annotated.";
+                                                note = "The antibody used recognizes the phosphorylated form of the protein.";
                                             }
                                             {
-                                              ProbeSpecMGI = AppendNotePush : mgiDataTypes;
+                                              AbProbeSpec = AppendNotePush : mgiDataTypes;
                                               Group: Widget
-                                                labelString = "Probe spec. MGI ID";
+                                                labelString = "Ab/probe spec.";
                                               Group: User
                                                 noteWidget = Note;
-                                                note = "Probe specificity was not detailed and may recognize a related gene; (MGI:) has also been annotated.";
+                                                note = "The specificity of the antibody/probe used was not detailed; both/all family members have been annotated.";
+                                            }
+                                            {
+                                              AbProdeSpecMGI = AppendNotePush : mgiDataTypes;
+                                              Group: Widget
+                                                labelString = "Ab/probe spec. MGI ID";
+                                              Group: User
+                                                noteWidget = Note;
+                                                note = "The antibody/probe specificity was not detailed and may recognize a related gene; (MGI:) has also been annotated.";
+                                            }
+                                            {
+                                              gRTPCR = AppendNotePush : mgiDataTypes;
+                                              Group: Widget
+                                                labelString = "qRT-PCR";
+                                              Group: User
+                                                noteWidget = Note;
+                                                note = "The RT-PCR data was obtained using quantitative RT-PCR.";
+                                            }
+                                            {
+                                              microRNA = AppendNotePush : mgiDataTypes;
+                                              Group: Widget
+                                                labelString = microRNA;
+                                              Group: User
+                                                noteWidget = Note;
+                                                note = "The mature microRNA is encoded at multiple sites in the genome.";
                                             }
                                             {
                                               Supplmentary = AppendNotePush : mgiDataTypes;
@@ -2345,14 +2421,6 @@ Shift<Key>Tab: prev-tab-group()
                                               Group: User
                                                 noteWidget = Note;
                                                 note = "Results are in the supplementary material.";
-                                            }
-                                            {
-                                              AbRecog = AppendNotePush : mgiDataTypes;
-                                              Group: Widget
-                                                labelString = "Ab recog. Act/cleave/P";
-                                              Group: User
-                                                noteWidget = Note;
-                                                note = "The antibody recognized the activated/phosphorylated/cleaved form of the protein.";
                                             }
                                             {
                                               SectionWM = AppendNotePush : mgiDataTypes;
@@ -2898,37 +2966,6 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                           }
-                          {
-                            View = View;
-                                Popups:
-                                {
-                                  ViewPulldown = MenuPulldown : mgiMenu;
-                                      {
-                                        Strain = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Tissue = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Cross = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                      {
-                                        RI = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                }
-                          }
-                          {
-                            Reports = MenuCascade;
-                          }
-                          {
-                            Utilities = Utilities : mgiMenu;
-                            Group: Widget
-                              managed = True;
-                          }
                     }
                     {
                       Edit = XmFrame;
@@ -3445,6 +3482,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     PubMed = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    DXDOI = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     NSequence = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -3529,13 +3569,10 @@ Shift<Key>Tab: prev-tab-group()
                                                     RIKENFANTOM = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    TreeFam = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TreeFamGene = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    QTLArchive = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     InterPro = AccToggle : mgiOption;
@@ -3554,6 +3591,12 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     MGIImage = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    BGEM = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    GUDMAP = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     CREX = AccToggle : mgiOption;
@@ -3619,7 +3662,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     MMRRC = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    APF = AccToggle : mgiOption;
+                                                    APB = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     BCBC = AccToggle : mgiOption;
@@ -3643,7 +3686,10 @@ Shift<Key>Tab: prev-tab-group()
                                                     JPGA = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    MMHCC = AccToggle : mgiOption;
+                                                    KOMP = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NCIMR = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     MTG = AccToggle : mgiOption;
@@ -3668,6 +3714,12 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     TAC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RMRC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    WTSI = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     IMAGELibrary = AccToggle : mgiOption;
@@ -3731,6 +3783,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     EUCOMMProject = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Genentech = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EUCOMMCellLine = AccToggle : mgiOption;

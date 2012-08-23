@@ -10,7 +10,6 @@ CALLS
              
 	ENTRY 
 	 mlced_dbDescToEI("char *", "int") : "char *";
-	 mlced_eiDescToDB("char *", "xrtlist") : "char *";
 
   ENDL
 ENDC

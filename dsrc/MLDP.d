@@ -80,6 +80,7 @@ dmodule MLDP is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
+#include <mgdsql.h>
 
 devents:
 
@@ -193,6 +194,10 @@ rules:
 
 	  top := create widget("MappingModule", nil, mgi);
 
+	  -- Set Permissions
+	  SetPermissions.source_widget := top;
+	  send(SetPermissions, 0);
+
           -- Build Dynamic GUI Components
 	  send(BuildDynamicComponents, 0);
 
@@ -274,7 +279,7 @@ rules:
 	  riTables.append(top->ExptDetailForm->ExptRIForm->RITwoPt->Table);
 	  riTables.append(top->ExptDetailForm->ExptRIForm->Statistics->Table);
 
-	  assayNull := mgi_sql1("select _Assay_Type_key from MLD_Assay_Types where description = ' '");
+	  assayNull := mgi_sql1(mldp_assaynull());
 
           -- Set Row Count
           SetRowCount.source_widget := top;
@@ -338,10 +343,8 @@ rules:
           currentExptKey := "@" + KEYNAME;
  
 	  tag : string;
-          cmd := "select max(tag) from " + mgi_DBtable(MLD_EXPTS) +
-		" where _Refs_key = " + top->ExptDetailForm->mgiCitation->ObjectID->text.value +
-		 " and exptType = " + mgi_DBprstr(top->ExptDetailForm->ExptTypeMenu.menuHistory.defaultValue);
-	  tag := mgi_sql1(cmd);
+	  tag := mgi_sql1(mldp_tag(top->ExptDetailForm->mgiCitation->ObjectID->text.value,
+		 	mgi_DBprstr(top->ExptDetailForm->ExptTypeMenu.menuHistory.defaultValue)));
 	  tag := (string)((integer) tag + 1);
 
 	  -- Insert Master Experiment record
@@ -834,7 +837,7 @@ rules:
           -- Delete records first, then process inserts/updates/deletes, then re-order sequence numbers
  
 	  if (deleteCmd.length > 0 or tmpCmd.length > 0) then
-            cmd := cmd + deleteCmd + tmpCmd + ROLLBACK;
+            cmd := cmd + deleteCmd + tmpCmd;
 
 	    if (resetSequenceNum) then
               cmd := cmd + "exec MGI_resetSequenceNum '" + mgi_DBtable(MLD_EXPT_MARKER) + "'," + currentExptKey + "\n";
@@ -1050,7 +1053,7 @@ rules:
           -- Delete records first, then process inserts/updates/deletes, then re-order sequence numbers
  
 	  if (deleteCmd.length > 0 or tmpCmd.length > 0) then
-            cmd := cmd + deleteCmd + tmpCmd + ROLLBACK;
+            cmd := cmd + deleteCmd + tmpCmd;
             cmd := cmd + "exec MGI_resetSequenceNum '" + mgi_DBtable(MLD_MCHAPLOTYPE) + "'," + currentExptKey + "\n";
 	  end if;
         end does;
@@ -1153,7 +1156,7 @@ rules:
           -- Delete records first, then process inserts/updates/deletes, then re-order sequence numbers
  
 	  if (deleteCmd.length > 0 or tmpCmd.length > 0) then
-            cmd := cmd + deleteCmd + tmpCmd + ROLLBACK;
+            cmd := cmd + deleteCmd + tmpCmd;
             cmd := cmd + "exec MGI_resetSequenceNum '" + mgi_DBtable(MLD_MC2POINT) + "'," + currentExptKey + "\n";
 	  end if;
         end does;
@@ -1368,7 +1371,7 @@ rules:
           -- Delete records first, then process inserts/updates/deletes, then re-order sequence numbers
  
 	  if (deleteCmd.length > 0 or tmpCmd.length > 0) then
-            cmd := cmd + deleteCmd + tmpCmd + ROLLBACK;
+            cmd := cmd + deleteCmd + tmpCmd;
             cmd := cmd + "exec MGI_resetSequenceNum '" + mgi_DBtable(MLD_FISH_REGION) + "'," + currentExptKey + "\n";
 	  end if;
         end does;
@@ -1515,7 +1518,7 @@ rules:
           -- Delete records first, then process inserts/updates/deletes, then re-order sequence numbers
  
 	  if (deleteCmd.length > 0 or tmpCmd.length > 0) then
-            cmd := cmd + deleteCmd + tmpCmd + ROLLBACK;
+            cmd := cmd + deleteCmd + tmpCmd;
             cmd := cmd + "exec MGI_resetSequenceNum '" + mgi_DBtable(MLD_CONCORDANCE) + "'," + currentExptKey + "\n";
 	  end if;
         end does;
@@ -1663,7 +1666,7 @@ rules:
           -- Delete records first, then process inserts/updates/deletes, then re-order sequence numbers
  
 	  if (deleteCmd.length > 0 or tmpCmd.length > 0) then
-            cmd := cmd + deleteCmd + tmpCmd + ROLLBACK;
+            cmd := cmd + deleteCmd + tmpCmd;
             cmd := cmd + "exec MGI_resetSequenceNum '" + mgi_DBtable(MLD_INSITU_REGION) + "'," + currentExptKey + "\n";
 	  end if;
         end does;
@@ -1888,7 +1891,7 @@ rules:
           -- Delete records first, then process inserts/updates/deletes, then re-order sequence numbers
  
 	  if (deleteCmd.length > 0 or tmpCmd.length > 0) then
-            cmd := cmd + deleteCmd + tmpCmd + ROLLBACK;
+            cmd := cmd + deleteCmd + tmpCmd;
             cmd := cmd + "exec MGI_resetSequenceNum '" + mgi_DBtable(MLD_RIHAPLOTYPE) + "'," + currentExptKey + "\n";
 	  end if;
         end does;
@@ -1995,7 +1998,7 @@ rules:
           -- Delete records first, then process inserts/updates/deletes, then re-order sequence numbers
  
 	  if (deleteCmd.length > 0 or tmpCmd.length > 0) then
-            cmd := cmd + deleteCmd + tmpCmd + ROLLBACK;
+            cmd := cmd + deleteCmd + tmpCmd;
             cmd := cmd + "exec MGI_resetSequenceNum '" + mgi_DBtable(MLD_RI2POINT) + "'," + currentExptKey + "\n";
 	  end if;
         end does;
@@ -2109,7 +2112,7 @@ rules:
           -- Delete records first, then process inserts/updates/deletes, then re-order sequence numbers
  
 	  if (deleteCmd.length > 0 or tmpCmd.length > 0) then
-            cmd := cmd + deleteCmd + tmpCmd + ROLLBACK;
+            cmd := cmd + deleteCmd + tmpCmd;
             cmd := cmd + "exec MGI_resetSequenceNum '" + mgi_DBtable(MLD_STATISTICS) + "'," + currentExptKey + "\n";
 	  end if;
 
@@ -2774,7 +2777,9 @@ rules:
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
           Query.source_widget := top;
-          Query.select := "select distinct e._Expt_key, e.jnumID + ', ' + e.exptType + '-' + convert(varchar(5), e.tag) + ', Chr ' + e.chromosome " +
+          Query.select := "select distinct e._Expt_key, \
+			e.jnumID || ', ' || e.exptType || '-' || convert(varchar(5), e.tag) || ', Chr ' || e.chromosome, \
+			e.jnum, e.exptType, e.tag\n" +
 		from + "\n" + where + "\norder by e.jnum, e.exptType, e.tag";
           Query.table := MLD_EXPT_VIEW;
           send(Query, 0);
@@ -2816,81 +2821,76 @@ rules:
 	  ExptForm->Notes->text.value := "";
           currentExptKey := top->QueryList->List.keys[Select.item_position];
 	  origExptType := "";
- 
-          cmd := "select _Expt_key, exptType, chromosome, creation_date, modification_date, " +
-		 "_Refs_key, jnum, short_citation " +
-                 "from MLD_Expt_View where _Expt_key = " + currentExptKey + "\n" +
-                 "select rtrim(note) from MLD_Expt_Notes where _Expt_key = " + currentExptKey + 
-		 " order by sequenceNum\n" +
-                 "select sequenceNum, _Marker_key, symbol, _Allele_key, _Assay_Type_key, " +
-                 "allele, assay, description, matrixData " +
-                 "from MLD_Expt_Marker_View where _Expt_key = " + currentExptKey;
-
-	  cmd := cmd + " order by sequenceNum\n";
- 
-          results : integer := 1;
           row : integer := 0;
- 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
- 
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-              if (results = 1) then
-                top->ExptDetailForm->ID->text.value := mgi_getstr(dbproc, 1);
-		top->CreationDate->text.value := mgi_getstr(dbproc, 4);
-		top->ModifiedDate->text.value := mgi_getstr(dbproc, 5);
-	        top->ExptDetailForm->mgiCitation->ObjectID->text.value := mgi_getstr(dbproc, 6);
-	        top->ExptDetailForm->mgiCitation->Jnum->text.value := mgi_getstr(dbproc, 7);
-	        top->ExptDetailForm->mgiCitation->Citation->text.value := mgi_getstr(dbproc, 8);
-		SetOption.source_widget := top->ExptDetailForm->ExptTypeMenu;
-		SetOption.value := mgi_getstr(dbproc, 2);
-		send(SetOption, 0);
-		SetOption.source_widget := top->ExptDetailForm->ChromosomeMenu;
-		SetOption.value := mgi_getstr(dbproc, 3);
-		send(SetOption, 0);
-	        ViewExpt.source_widget := top->ExptDetailForm->ExptTypeMenu.menuHistory;
-	        send(ViewExpt, 0);
-              elsif (results = 2) then
-                ExptForm->Notes->text.value := ExptForm->Notes->text.value + mgi_getstr(dbproc, 1);
-              elsif (results = 3) then
-                (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 1));
-                (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 1));
-                (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 2));
-                (void) mgi_tblSetCell(table, row, table.currentMarkerKey, mgi_getstr(dbproc, 2));
-                (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 3));
-                (void) mgi_tblSetCell(table, row, (integer) table.alleleKey[1], mgi_getstr(dbproc, 4));
-                (void) mgi_tblSetCell(table, row, (integer) table.alleleSymbol[1], mgi_getstr(dbproc, 6)); 
-                (void) mgi_tblSetCell(table, row, table.assayKey, mgi_getstr(dbproc, 5));
-                (void) mgi_tblSetCell(table, row, table.assay, mgi_getstr(dbproc, 7)); 
-                (void) mgi_tblSetCell(table, row, table.description, mgi_getstr(dbproc, 8)); 
-		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-
-                if (mgi_getstr(dbproc, 9) = "0") then
-                  (void) mgi_tblSetCell(table, row, table.yesno, "no");
-		else
-                  (void) mgi_tblSetCell(table, row, table.yesno, "yes");
-		end if;
-
-                row := row + 1;
-              end if;
+          dbproc : opaque;
+	  
+          cmd := mldp_select(currentExptKey);
+	  dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+              top->ExptDetailForm->ID->text.value := mgi_getstr(dbproc, 1);
+	      top->CreationDate->text.value := mgi_getstr(dbproc, 4);
+	      top->ModifiedDate->text.value := mgi_getstr(dbproc, 5);
+	      top->ExptDetailForm->mgiCitation->ObjectID->text.value := mgi_getstr(dbproc, 6);
+	      top->ExptDetailForm->mgiCitation->Jnum->text.value := mgi_getstr(dbproc, 7);
+	      top->ExptDetailForm->mgiCitation->Citation->text.value := mgi_getstr(dbproc, 8);
+	      SetOption.source_widget := top->ExptDetailForm->ExptTypeMenu;
+	      SetOption.value := mgi_getstr(dbproc, 2);
+	      send(SetOption, 0);
+	      SetOption.source_widget := top->ExptDetailForm->ChromosomeMenu;
+	      SetOption.value := mgi_getstr(dbproc, 3);
+	      send(SetOption, 0);
+              ViewExpt.source_widget := top->ExptDetailForm->ExptTypeMenu.menuHistory;
+              send(ViewExpt, 0);
             end while;
-            results := results + 1;
-            row := 0;
           end while;
+	  (void) mgi_dbclose(dbproc);
 
-	  cmd := "select rtrim(note) from MLD_Notes where _Refs_key = " + 
-		top->mgiCitation->ObjectID->text.value + " order by sequenceNum\n";
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  cmd := mldp_notes1(currentExptKey);
+	  dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+              ExptForm->Notes->text.value := ExptForm->Notes->text.value + mgi_getstr(dbproc, 1);
+            end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  row := 0;
+          cmd := mldp_marker(currentExptKey);
+	  dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+              (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 1));
+              (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 1));
+              (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 2));
+              (void) mgi_tblSetCell(table, row, table.currentMarkerKey, mgi_getstr(dbproc, 2));
+              (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 3));
+              (void) mgi_tblSetCell(table, row, (integer) table.alleleKey[1], mgi_getstr(dbproc, 4));
+              (void) mgi_tblSetCell(table, row, (integer) table.alleleSymbol[1], mgi_getstr(dbproc, 6)); 
+              (void) mgi_tblSetCell(table, row, table.assayKey, mgi_getstr(dbproc, 5));
+              (void) mgi_tblSetCell(table, row, table.assay, mgi_getstr(dbproc, 7)); 
+              (void) mgi_tblSetCell(table, row, table.description, mgi_getstr(dbproc, 8)); 
+	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+
+              if (mgi_getstr(dbproc, 9) = "0") then
+                (void) mgi_tblSetCell(table, row, table.yesno, "no");
+	      else
+                (void) mgi_tblSetCell(table, row, table.yesno, "yes");
+	      end if;
+
+              row := row + 1;
+            end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  cmd := mldp_notes2(top->mgiCitation->ObjectID->text.value);
+	  dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
               top->referenceNote->Note->text.value := top->referenceNote->Note->text.value + mgi_getstr(dbproc, 1);
             end while;
           end while;
- 
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
           LoadAcc.table := accTable;
           LoadAcc.objectKey := currentExptKey;
@@ -2926,9 +2926,9 @@ rules:
 --
 
 	SelectCross does
-	  results : integer := 1;
 	  row : integer := 0;
 	  table : widget;
+          dbproc : opaque;
 
           crossTables.open;
           while (crossTables.more) do
@@ -2937,22 +2937,10 @@ rules:
           end while;
           crossTables.close;
 
-          cmd := "select * from MLD_Matrix_View where _Expt_key = " + currentExptKey + "\n" +
-		 "select sequenceNum, _Marker_key_1, _Marker_key_2, symbol1, symbol2, " +
-			"numRecombinants, numParentals\n" +
-		 "from MLD_MC2point_View where _Expt_key = " + currentExptKey + 
-		 " order by sequenceNum\n" +
-		 "select * from MLD_MCDataList where _Expt_key = " + currentExptKey + 
-		 " order by sequenceNum\n";
- 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
- 
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    row := 0;
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
+          cmd := mldp_matrix(currentExptKey);
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 		ExptForm->Female->text.value            := mgi_getstr(dbproc, 6) + mgi_getstr(dbproc, 7);
 		ExptForm->Male->text.value              := mgi_getstr(dbproc, 8) + mgi_getstr(dbproc, 9);
 		ExptForm->mgiCross->CrossID->text.value := mgi_getstr(dbproc, 10);
@@ -2973,8 +2961,16 @@ rules:
 		SetOption.source_widget := ExptForm->CrossTypeMenu;
 		SetOption.value := mgi_getstr(dbproc, 11);
 		send(SetOption, 0);
-	      elsif (results = 2) then
-	        table := ExptForm->CrossTwoPt->Table;
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  row := 0;
+	  table := ExptForm->CrossTwoPt->Table;
+          cmd := mldp_cross2point(currentExptKey);
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
                 (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 1));
                 (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 1));
                 (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 2));
@@ -2985,20 +2981,25 @@ rules:
                 (void) mgi_tblSetCell(table, row, table.parental, mgi_getstr(dbproc, 7));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	        row := row + 1;
-	      elsif (results = 3) then
-	        table := ExptForm->CrossHaplotype->Table;
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  row := 0;
+	  table := ExptForm->CrossHaplotype->Table;
+          cmd := mldp_crosshaplotype(currentExptKey);
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
                 (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 2));
                 (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 2));
                 (void) mgi_tblSetCell(table, row, table.mice, mgi_getstr(dbproc, 4));
                 (void) mgi_tblSetCell(table, row, table.haplotype, mgi_getstr(dbproc, 3));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	        row := row + 1;
-	      end if;
 	    end while;
-	    results := results + 1;
 	  end while;
-
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  send(SelectStatistics, 0);
 	end does;
@@ -3026,17 +3027,15 @@ rules:
           (void) busy_cursor(top);
 
 	  currentCrossKey := ExptForm->mgiCross->CrossID->text.value;
-          cmd := "select * from CRS_Cross_View where _Cross_key = " + currentCrossKey;
  
 	  fallele1, fallele2 : string;
 	  mallele1, mallele2 : string;
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          cmd := mldp_cross(currentCrossKey);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      ExptForm->FStrain->StrainID->text.value := mgi_getstr(dbproc, 3);
 	      fallele1                                := mgi_getstr(dbproc, 4);
 	      fallele2                                := mgi_getstr(dbproc, 5);
@@ -3062,7 +3061,7 @@ rules:
 	    end while;
 	  end while;
 
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  -- Set Cross values to not-modified
 
@@ -3173,8 +3172,7 @@ rules:
 
 	    else
 	      ExptForm->mgiRISet->RIID->text.value :=  
-		mgi_sql1("select _RISet_key from RI_RISet where designation = " + 
-			mgi_DBprstr(ExptForm->mgiRISet->Verify->text.value));
+		mgi_sql1(mldp_risetVerify(mgi_DBprstr(ExptForm->mgiRISet->Verify->text.value)));
 	    end if;
 
 	    -- If lookup fails, invalid
@@ -3203,15 +3201,10 @@ rules:
               return;
 	  end if;
 
-          cmd := "select designation, origin, abbrev1, abbrev2, RI_IdList " +
-		"from RI_RISet_View where _RISet_key = " + currentRIKey;
- 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
- 
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          cmd := mldp_riset(currentRIKey);
+          dbproc : opaque := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      ExptForm->mgiRISet->Verify->text.value  := mgi_getstr(dbproc, 1);
 	      ExptForm->mgiRISet->Origin->text.value  := mgi_getstr(dbproc, 2);
 	      ExptForm->mgiRISet->Abbrev1->text.value := mgi_getstr(dbproc, 3);
@@ -3220,7 +3213,7 @@ rules:
 	    end while;
 	  end while;
 
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  -- Set RI values to not-modified
 
@@ -3239,9 +3232,9 @@ rules:
 --
 
 	SelectFISH does
-	  results : integer := 1;
 	  row : integer := 0;
 	  table : widget := ExptForm->Region->Table;
+          dbproc : opaque;
 
           fishTables.open;
           while (fishTables.more) do
@@ -3250,18 +3243,10 @@ rules:
           end while;
           fishTables.close;
 
-          cmd := "select * from MLD_FISH_View where _Expt_key = " + currentExptKey + "\n" +
-		 "select * from MLD_FISH_Region where _Expt_key = " + currentExptKey + 
-		 " order by sequenceNum\n";
- 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
- 
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    row := 0;
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
+          cmd := mldp_fish(currentExptKey);
+	  dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	        ExptForm->Band->text.value             := mgi_getstr(dbproc, 5);
 	        ExptForm->Strain->Verify->text.value   := mgi_getstr(dbproc, 16);
 	        ExptForm->Strain->StrainID->text.value := mgi_getstr(dbproc, 6);
@@ -3272,7 +3257,15 @@ rules:
 	        ExptForm->Meta->text.value             := mgi_getstr(dbproc, 11);
 	        ExptForm->Single->text.value           := mgi_getstr(dbproc, 12);
 	        ExptForm->Double->text.value           := mgi_getstr(dbproc, 13);
-	      elsif (results = 2) then
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  row := 0;
+	  cmd := mldp_fishregion(currentExptKey);
+	  dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
                 (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 2));
                 (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 2));
                 (void) mgi_tblSetCell(table, row, table.region, mgi_getstr(dbproc, 3));
@@ -3280,12 +3273,10 @@ rules:
                 (void) mgi_tblSetCell(table, row, table.doubleSignal, mgi_getstr(dbproc, 5));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	        row := row + 1;
-	      end if;
 	    end while;
-	    results := results + 1;
 	  end while;
+	  (void) mgi_dbclose(dbproc);
 
-	  (void) dbclose(dbproc);
 	end does;
 
 --
@@ -3295,10 +3286,10 @@ rules:
 --
 
 	SelectHybrid does
-	  results : integer := 1;
 	  row : integer := 0;
 	  table : widget := ExptForm->Concordance->Table;
 	  table.markerSymbol := table.markerSymbolSave;
+          dbproc : opaque;
 
           hybridTables.open;
           while (hybridTables.more) do
@@ -3307,23 +3298,22 @@ rules:
           end while;
           hybridTables.close;
 
-          cmd := "select chrsOrGenes, band from MLD_Hybrid_View where _Expt_key = " + currentExptKey + "\n" +
-                 "select sequenceNum, _Marker_key, symbol, cpp, cpn, cnp, cnn, chromosome " +
-		 "from MLD_Concordance_View where _Expt_key = " + currentExptKey + 
-		 " order by sequenceNum\n";
-
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
- 
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    row := 0;
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
+	  row := 0;
+          cmd := mldp_hybrid(currentExptKey);
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 		 ExptForm->ChrOrMarker.set  := (boolean)((integer) mgi_getstr(dbproc, 1));
                  ExptForm->Band->text.value := mgi_getstr(dbproc, 2);
-	      elsif (results = 2) then
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
 
+	  row := 0;
+          cmd := mldp_hybridconcordance(currentExptKey);
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 		-- If Chromosome Hybrid
                 if (mgi_getstr(dbproc, 2).length = 0) then
 		  ExptForm->ChrOrMarker.set := false;
@@ -3345,12 +3335,10 @@ rules:
                 (void) mgi_tblSetCell(table, row, table.cnn, mgi_getstr(dbproc, 7));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	        row := row + 1;
-	      end if;
 	    end while;
-	    results := results + 1;
 	  end while;
+	  (void) mgi_dbclose(dbproc);
 
-	  (void) dbclose(dbproc);
 	end does;
 
 --
@@ -3360,9 +3348,9 @@ rules:
 --
 
 	SelectInSitu does
-	  results : integer := 1;
 	  row : integer := 0;
 	  table : widget := ExptForm->Region->Table;
+          dbproc : opaque;
 
           insituTables.open;
           while (insituTables.more) do
@@ -3371,17 +3359,11 @@ rules:
           end while;
           insituTables.close;
 
-          cmd := "select * from MLD_InSitu_View where _Expt_key = " + currentExptKey + "\n" +
-		 "select * from MLD_ISRegion where _Expt_key = " + currentExptKey + " order by sequenceNum\n";
- 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
- 
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    row := 0;
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
+	  row := 0;
+          cmd := mldp_insitu(currentExptKey);
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	        ExptForm->Band->text.value             := mgi_getstr(dbproc, 5);
 	        ExptForm->Strain->Verify->text.value   := mgi_getstr(dbproc, 16);
 	        ExptForm->Strain->StrainID->text.value := mgi_getstr(dbproc, 6);
@@ -3392,19 +3374,25 @@ rules:
 	        ExptForm->Total->text.value            := mgi_getstr(dbproc, 11);
 	        ExptForm->Grains->text.value           := mgi_getstr(dbproc, 12);
 	        ExptForm->Other->text.value            := mgi_getstr(dbproc, 13);
-	      elsif (results = 2) then
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  row := 0;
+	  cmd := mldp_insituregion(currentExptKey);
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
                 (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 2));
                 (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 2));
                 (void) mgi_tblSetCell(table, row, table.region, mgi_getstr(dbproc, 3));
                 (void) mgi_tblSetCell(table, row, table.grains, mgi_getstr(dbproc, 4));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	        row := row + 1;
-	      end if;
 	    end while;
-	    results := results + 1;
 	  end while;
+	  (void) mgi_dbclose(dbproc);
 
-	  (void) dbclose(dbproc);
 	end does;
 
 --
@@ -3414,9 +3402,9 @@ rules:
 --
 
 	SelectPhysical does
-	  results : integer := 1;
 	  row : integer := 0;
 	  table : widget := ExptForm->Distance->Table;
+          dbproc : opaque;
 
           pmTables.open;
           while (pmTables.more) do
@@ -3425,21 +3413,20 @@ rules:
           end while;
           pmTables.close;
 
-          cmd := "select * from MLD_PhysMap where _Expt_key = " + currentExptKey + "\n" +
-		 "select * from MLD_Distance_View where _Expt_key = " + currentExptKey + 
-		 " order by sequenceNum\n";
- 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
- 
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    row := 0;
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
+          cmd := mldp_physmap(currentExptKey);
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	        ExptForm->GeneOrder->text.value := mgi_getstr(dbproc, 3);
 		ExptForm->Definitive.set        := (boolean)((integer) mgi_getstr(dbproc, 2));
-	      elsif (results = 2) then
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  cmd :=  mldp_phymapdistance(currentExptKey);
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
                 (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 7));
                 (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 5));
                 (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 17));
@@ -3469,12 +3456,9 @@ rules:
 		send(SetOption, 0);
 
 	        row := row + 1;
-	      end if;
 	    end while;
-	    results := results + 1;
 	  end while;
-
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 	end does;
 
 --
@@ -3484,9 +3468,9 @@ rules:
 --
 
 	SelectRI does
-	  results : integer := 1;
 	  row : integer := 0;
 	  table : widget;
+          dbproc : opaque;
 
           riTables.open;
           while (riTables.more) do
@@ -3495,31 +3479,27 @@ rules:
           end while;
           riTables.close;
 
-          cmd := "select RI_IdList, _RISet_key, origin, designation, abbrev1, abbrev2 from MLD_RI_VIew" +
-		 " where _Expt_key = " + currentExptKey + "\n" +
-		 "select sequenceNum, _Marker_key, symbol, alleleLine from MLD_RIData_View " +
-		 "where _Expt_key = " + currentExptKey + 
-		 " order by sequenceNum\n" +
-		 "select sequenceNum, _Marker_key_1, _Marker_key_2, symbol1, symbol2, numRecombinants, numTotal, RI_Lines " +
-		 "from MLD_RI2Point_View where _Expt_key = " + currentExptKey +
-		 " order by sequenceNum\n";
- 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
- 
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    row := 0;
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
+	  row := 0;
+          cmd := mldp_ri(currentExptKey);
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	        ExptForm->Animal->text.value            := mgi_getstr(dbproc, 1);
 	        ExptForm->mgiRISet->RIID->text.value    := mgi_getstr(dbproc, 2);
 	        ExptForm->mgiRISet->Origin->text.value  := mgi_getstr(dbproc, 3);
 	        ExptForm->mgiRISet->Verify->text.value  := mgi_getstr(dbproc, 4);
 	        ExptForm->mgiRISet->Abbrev1->text.value := mgi_getstr(dbproc, 5);
 	        ExptForm->mgiRISet->Abbrev2->text.value := mgi_getstr(dbproc, 6);
-	      elsif (results = 2) then
-		table := ExptForm->RIHaplotype->Table;
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  row := 0;
+	  table := ExptForm->RIHaplotype->Table;
+	  cmd := mldp_ridata(currentExptKey);
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
                 (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 1));
                 (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 1));
                 (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 2));
@@ -3527,8 +3507,16 @@ rules:
                 (void) mgi_tblSetCell(table, row, table.haplotype, mgi_getstr(dbproc, 4));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	        row := row + 1;
-	      elsif (results = 3) then
-		table := ExptForm->RITwoPt->Table;
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  row := 0;
+	  table := ExptForm->RITwoPt->Table;
+	  cmd := mldp_ri2point(currentExptKey);
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
                 (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 1));
                 (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 1));
                 (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 2));
@@ -3540,12 +3528,9 @@ rules:
                 (void) mgi_tblSetCell(table, row, table.sets, mgi_getstr(dbproc, 8));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	        row := row + 1;
-	      end if;
 	    end while;
-	    results := results + 1;
 	  end while;
-
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  send(SelectStatistics, 0);
 	end does;
@@ -3559,22 +3544,16 @@ rules:
         SelectStatistics does
           table : widget := ExptForm->Statistics->Table;
           row : integer := 0;
+          dbproc : opaque;
  
           ClearTable.table := table;
           send(ClearTable, 0);
  
-          cmd := "select sequenceNum, _Marker_key_1, _Marker_key_2, symbol1, symbol2, recomb, total, " +
-                 "str(pcntrecomb,6,2), str(stderr,6,2)\n" +
-                 "from MLD_Statistics_View where _Expt_key = " + currentExptKey + 
-		 " order by sequenceNum\n";
- 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
- 
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            row := 0;
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  row := 0;
+          cmd := mldp_statistics(currentExptKey);
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
               (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 1));
               (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 1));
               (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 2));
@@ -3589,7 +3568,7 @@ rules:
               row := row + 1;
             end while;
           end while;
-          (void) dbclose(dbproc);
+          (void) mgi_dbclose(dbproc);
         end does;
  
 --
@@ -3656,9 +3635,7 @@ rules:
 
 	  (void) busy_cursor(top);
 
-	  cmd := "select count(*) from " + mgi_DBtable(MRK_CHROMOSOME) +
-		 " where " + mgi_DBkey(MRK_CHROMOSOME) + " = " + mgi_DBprkey(MOUSE) +
-		 "and chromosome = " + mgi_DBprstr(value);
+	  cmd := mldp_countchr(mgi_DBprstr(value));
 	  found := (integer) mgi_sql1(cmd);
 
 	  -- Value determined to be a Chromosome, so do not validate as a Marker
@@ -3718,8 +3695,7 @@ rules:
  
 	  -- Try to find Assay in database
 
-          assayKey := mgi_sql1("select " + mgi_DBkey(MLD_ASSAY) + " from " + mgi_DBtable(MLD_ASSAY) + 
-		      " where " + mgi_DBcvname(MLD_ASSAY) + " = " + mgi_DBprstr(value));
+          assayKey := mgi_sql1(mldp_assay(mgi_DBprstr(value)));
  
           -- If the Assay exists, then copy the key into the Assay key column
           -- Else, add the new Assay Type to the database and copy the new key into the Assay key column

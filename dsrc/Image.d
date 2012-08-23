@@ -72,6 +72,7 @@ dmodule Image is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
+#include <gxdsql.h>
 
 devents:
 
@@ -230,11 +231,11 @@ rules:
 	  if (global_application = "MGD") then
 	      defaultMGITypeKey := top->MGITypePulldown->Alleles.defaultValue;
 	      defaultImageClassKey := "6481782";
-	      orderBy := "\norder by i.jnum\n";
+	      orderBy := image_sql_8;
 	  else
 	      defaultMGITypeKey := top->MGITypePulldown->Expression.defaultValue;
 	      defaultImageClassKey := "6481781";
-	      orderBy := "\norder by i.imageType, i.jnum\n";
+	      orderBy := image_sql_9;
 	  end if;
 	end does;
 
@@ -265,8 +266,8 @@ rules:
 	  -- get the copyright if it has not already been retrieved
 
 	  if (top->Copyright->text.value.length = 0) then
-	    top->Copyright->text.value := mgi_sql1("declare @copyright varchar(255)\nexec BIB_getCopyright " + top->mgiCitation->ObjectID->text.value + ", @copyright output\nselect @copyright");
---	    top->Copyright->text.value := mgi_sql1("exec BIB_getCopyright " + top->mgiCitation->ObjectID->text.value);
+	    top->Copyright->text.value := 
+		mgi_sql1(image_sql_1a + top->mgiCitation->ObjectID->text.value + image_sql_1b);
           end if;
 
 	  currentRecordKey := "@" + KEYNAME;
@@ -381,12 +382,11 @@ rules:
 	  -- If a Thumbnail was also created, then select 
 
 	  if (createThumbnail) then
-	    from := "from IMG_Image_View i";
-	    where := "where _Refs_key = " + refsKey;
+	    -- for big loads (like J:153498), this will take a while
+	    -- we may want to attach the reference check (see Assay.d/python_image_cache)
+	    -- in order to skip this step, if it's taking too long
             QueryNoInterrupt.source_widget := top;
-	    QueryNoInterrupt.select := "select distinct i._Image_key, " + 
-		  "i.jnumID + \";\" + i.figureLabel + \";\" + i.imageType\n" + 
-		  from + "\n" + where + orderBy;
+	    QueryNoInterrupt.select := image_sql_7 + refsKey + orderBy;
 	    QueryNoInterrupt.table := IMG_IMAGE;
 	    QueryNoInterrupt.selectItem := false;
             send(QueryNoInterrupt, 0);
@@ -456,8 +456,8 @@ rules:
 	  -- get the copyright if it has not already been retrieved
 
 	  if (top->Copyright->text.value.length = 0) then
-	    top->Copyright->text.value := mgi_sql1("declare @copyright varchar(255)\nexec BIB_getCopyright " + top->mgiCitation->ObjectID->text.value + ", @copyright output\nselect @copyright");
---	    top->Copyright->text.value := mgi_sql1("exec BIB_getCopyright " + top->mgiCitation->ObjectID->text.value);
+	    top->Copyright->text.value := 
+		mgi_sql1(image_sql_1a + top->mgiCitation->ObjectID->text.value + image_sql_1b);
           end if;
 
 	  cmd := "";
@@ -743,7 +743,7 @@ rules:
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
 	  Query.select := "select distinct i._Image_key, " + 
-			"i.jnumID + \"; \" + i.imageType + \"; \" + i.figureLabel\n" +
+			"i.jnumID || '; ' || i.imageType || '; ' || i.figureLabel, i.jnum, i.imageType\n" +
 			from + "\n" + where + orderBy;
 	  Query.table := IMG_IMAGE;
 	  send(Query, 0);
@@ -790,89 +790,91 @@ rules:
 	  -- Initialize global current record key
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from IMG_Image_View where _Image_key = " + currentRecordKey + "\n" +
-
-		 "select n._Note_key, n.note from MGI_Note_Image_View n \n" + 
-		 "where n.noteType = 'Caption' and n._Object_key = " + currentRecordKey + "\n" +
-		 "order by n.sequenceNum\n" +
-
-		 "select n._Note_key, n.note from MGI_Note_Image_View n \n" + 
-		 "where n.noteType = 'Copyright' and n._Object_key = " + currentRecordKey + "\n" +
-		 "order by n.sequenceNum\n" +
-
-	         "select * from IMG_ImagePane where _Image_key = " + currentRecordKey + "\n" +
-
-		 "select a._Object_key, a.accID from IMG_Image_Acc_View a, IMG_Image i " +
-		 "where i._Image_key = " + currentRecordKey + "\n" +
-		 "and i._ThumbnailImage_key = a._Object_key\n" +
-		 "and a._LogicalDB_key = 1 and a.prefixPart = 'MGI:' and a.preferred = 1";
-
 	  results : integer := 1;
 	  row : integer;
 	  table : widget;
+          dbproc : opaque;
+	  
+	  cmd := image_sql_2 + currentRecordKey;
+	  table := top->Control->ModificationHistory->Table;
+	  dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      top->ID->text.value             := mgi_getstr(dbproc, 1);
+	      top->xDim->text.value           := mgi_getstr(dbproc, 7);
+	      top->yDim->text.value           := mgi_getstr(dbproc, 8);
+	      top->FigureLabel->text.value    := mgi_getstr(dbproc, 9);
+              top->mgiCitation->ObjectID->text.value := mgi_getstr(dbproc, 5);
+              top->mgiCitation->Jnum->text.value := mgi_getstr(dbproc, 20);
+              top->mgiCitation->Citation->text.value := mgi_getstr(dbproc, 21);
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
- 
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    row := 0;
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
-		table := top->Control->ModificationHistory->Table;
+	      (void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 12));
+	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 13));
+	      (void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 22));
+	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 23));
 
-	        top->ID->text.value             := mgi_getstr(dbproc, 1);
-	        top->xDim->text.value           := mgi_getstr(dbproc, 7);
-	        top->yDim->text.value           := mgi_getstr(dbproc, 8);
-	        top->FigureLabel->text.value    := mgi_getstr(dbproc, 9);
-                top->mgiCitation->ObjectID->text.value := mgi_getstr(dbproc, 5);
-                top->mgiCitation->Jnum->text.value := mgi_getstr(dbproc, 20);
-                top->mgiCitation->Citation->text.value := mgi_getstr(dbproc, 21);
+              SetOption.source_widget := top->MGITypeMenu;
+              SetOption.value := mgi_getstr(dbproc, 2);
+              send(SetOption, 0);
 
-		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 12));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 13));
-		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 22));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 23));
+              SetOption.source_widget := top->ImageClassMenu;
+              SetOption.value := mgi_getstr(dbproc, 3);
+              send(SetOption, 0);
 
-                SetOption.source_widget := top->MGITypeMenu;
-                SetOption.value := mgi_getstr(dbproc, 2);
-                send(SetOption, 0);
+              SetOption.source_widget := top->ImageTypeMenu;
+              SetOption.value := mgi_getstr(dbproc, 4);
+              send(SetOption, 0);
 
-                SetOption.source_widget := top->ImageClassMenu;
-                SetOption.value := mgi_getstr(dbproc, 3);
-                send(SetOption, 0);
+	      defaultImageTypeKey := top->ImageTypeMenu.menuHistory.defaultValue;
+	    end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
 
-                SetOption.source_widget := top->ImageTypeMenu;
-                SetOption.value := mgi_getstr(dbproc, 4);
-                send(SetOption, 0);
+	  cmd := image_sql_3a + currentRecordKey + image_sql_3b;
+	  dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      top->Caption->text.value := top->Caption->text.value + mgi_getstr(dbproc, 2);
+	      top->Caption.noteKey := (integer) mgi_getstr(dbproc, 1);
+	    end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
 
-	        defaultImageTypeKey := top->ImageTypeMenu.menuHistory.defaultValue;
+	  cmd := image_sql_4a + currentRecordKey + image_sql_4b;
+	  dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      top->Copyright->text.value := top->Copyright->text.value + mgi_getstr(dbproc, 2);
+	      top->Copyright.noteKey := (integer) mgi_getstr(dbproc, 1);
+	    end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
 
-	      elsif (results = 2) then
-		top->Caption->text.value := top->Caption->text.value + mgi_getstr(dbproc, 2);
-		top->Caption.noteKey := (integer) mgi_getstr(dbproc, 1);
-
-	      elsif (results = 3) then
-		top->Copyright->text.value := top->Copyright->text.value + mgi_getstr(dbproc, 2);
-		top->Copyright.noteKey := (integer) mgi_getstr(dbproc, 1);
-
-	      elsif (results = 4) then
-	        table := top->ImagePane->Table;
-		(void) mgi_tblSetCell(table, row, table.imagePaneKey, mgi_getstr(dbproc, 1));
-		(void) mgi_tblSetCell(table, row, table.paneLabel, mgi_getstr(dbproc, 3));
-		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-
-	      elsif (results = 5) then
-		 top->ThumbnailImage->ObjectID->text.value := mgi_getstr(dbproc, 1);
-		 top->ThumbnailImage->AccessionID->text.value := mgi_getstr(dbproc, 2);
-	      end if;
-
+	  row := 0;
+	  cmd := image_sql_5 + currentRecordKey;
+	  table := top->ImagePane->Table;
+	  dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      (void) mgi_tblSetCell(table, row, table.imagePaneKey, mgi_getstr(dbproc, 1));
+	      (void) mgi_tblSetCell(table, row, table.paneLabel, mgi_getstr(dbproc, 2));
+	      (void) mgi_tblSetCell(table, row, table.xywidthheight, mgi_getstr(dbproc, 3));
+	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	      row := row + 1;
 	    end while;
-	    results := results + 1;
           end while;
+	  (void) mgi_dbclose(dbproc);
 
-	  (void) dbclose(dbproc);
+	  cmd := image_sql_6a + currentRecordKey + image_sql_6b;
+	  table := top->Control->ModificationHistory->Table;
+	  dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      top->ThumbnailImage->ObjectID->text.value := mgi_getstr(dbproc, 1);
+	      top->ThumbnailImage->AccessionID->text.value := mgi_getstr(dbproc, 2);
+	    end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
  
 	  -- Load Notes
 

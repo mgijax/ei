@@ -7,6 +7,12 @@
 --
 -- History
 --
+-- 03/07/2011 lec
+--	- SetPermissions; add Utilities
+--
+-- 02/01/2011 lec
+--	- CVS_TAG added
+--
 -- 05/19/2010 lec
 --	- revised LoginServer/LoginDB to use Configuration file
 --
@@ -44,6 +50,7 @@ dmodule MGILib is
 
 #include <mgilib.h>
 #include <syblib.h>
+#include <mgisql.h>
 
 locals:
 	top : widget;
@@ -89,8 +96,7 @@ rules:
 
 	  top := create widget("Login", nil, nil);
 
---	  global_version := "CVS ei-TAG_NUMBER";
-	  global_version := "CVS ei-tr10273-4";
+	  global_version := getenv("CVS_TAG");
 
 	  SetTitle.source_widget := top;
 	  send(SetTitle, 0);
@@ -174,8 +180,7 @@ rules:
 	    title := global_server + ":" + global_database;
 	    mgi := top;
 
-	    global_loginKey := 
-		mgi_sql1("select _User_key from MGI_User_Active_View where login = '" + global_login + "'");
+	    global_loginKey := mgi_sql1(mgilib_user(global_login));
 
             if (global_loginKey.length = 0) then
 	      StatusReport.source_widget := top;
@@ -188,7 +193,7 @@ rules:
 	    -- If a Job Stream has not finished, then disallow Login
 	    -- If debugging is on, then allow the Login
 
-	    jobStream := mgi_sql1("exec " + global_radar + "..APP_EIcheck");
+	    jobStream := mgi_sp("exec " + global_radar + "..APP_EIcheck");
 	    if ((getenv("EIDEBUG") = "0") and ((integer) jobStream > 0)) then
 	      StatusReport.source_widget := top;
 	      StatusReport.message := "\nERROR:  EI is unavailable.  A data load job is running.";
@@ -267,7 +272,7 @@ rules:
 
 	   cmd := "exec MGI_checkUserRole " + mgi_DBprstr(top.name) + "," + mgi_DBprstr(global_login);
 		
-	   permOK := (integer) mgi_sql1(cmd);
+	   permOK := (integer) mgi_sp(cmd);
 
 	   if (permOK = 0) then
 
@@ -280,6 +285,14 @@ rules:
 	      top->CommandsPulldown->Add.sensitive := false;
 	      top->CommandsPulldown->Modify.sensitive := false;
 	      top->CommandsPulldown->Delete.sensitive := false;
+
+	      top->MainMenu->Utilities.managed := false;
+
+	      --don't need this right now...but may in the future...
+	      --if (top->MainMenu->NLM != nil) then
+	      --  top->MainMenu->NLM.managed := false;
+	      --end if;
+
 	   end if;
 
         end does;
@@ -291,7 +304,7 @@ rules:
 --
  
         SetServer does
-          SetServer.source_widget.dbInfo := "  (" + global_login +
+          SetServer.source_widget.dbInfo := "   (" + global_login +
                                             ", " + global_server + 
                                             ", " + global_database + ")";
         end does;
@@ -305,8 +318,9 @@ rules:
         SetTitle does
           root : widget := SetTitle.source_widget.find_ancestor(global_application);
  
-          SetTitle.source_widget.title := global_application + " " + global_version +
-                                          "  Form:  " + SetTitle.source_widget.title;
+          SetTitle.source_widget.title := global_application + " " + 
+                                          SetTitle.source_widget.title + "   " +
+					  global_version;
  
           if (root != nil) then
             SetTitle.source_widget.title := SetTitle.source_widget.title + root.dbInfo;

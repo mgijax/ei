@@ -13,6 +13,9 @@
 --
 -- History
 --
+-- lec	10/31/2011
+--	- removed age min/max default so manually add the "default" -1,-1
+--
 -- lec	07/25/2003
 --	- JSAM
 --
@@ -35,6 +38,7 @@ dmodule MolecularSource is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
+#include <mgdsql.h>
 
 devents:
 
@@ -82,6 +86,10 @@ rules:
           ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
 	  top.show;
+
+	  -- Set Permissions
+	  SetPermissions.source_widget := top;
+	  send(SetPermissions, 0);
 
 	  -- Global Accession number Table
 
@@ -306,7 +314,7 @@ rules:
           from := top->SourceForm.sqlFrom;
 
 	  -- only allow this form to search for Named (non-Anonymous) libraries
-          where := top->SourceForm.sqlWhere + "\nand s.name != null";
+          where := top->SourceForm.sqlWhere + "\nand s.name is not null";
 
           SearchAcc.table := accTable;
           SearchAcc.objectKey := "s." + mgi_DBkey(PRB_SOURCE_MASTER);
@@ -322,8 +330,9 @@ rules:
 	  end if;
 
 	  if (from_cloneset) then
-	    from := from + ", MGI_Set_CloneLibrary_View csv, MGI_SetMember csm ";
-	    where := where + "\nand csv._Set_key = csm._Set_key" +
+	    from := from + ", MGI_Set csv, MGI_SetMember csm ";
+	    where := where + "\nand csv._MGIType_key = 5" +
+		"\nand csv._Set_key = csm._Set_key" +
 		"\nand s._Source_key = csm._Object_key";
 	  end if;
 
@@ -373,20 +382,14 @@ rules:
 
 	  -- Select Clone Library Sets
 
-	  scmd :string := "select m._Set_key, m._SetMember_key, v.name " + 
-	      "from MGI_Set_CloneLibrary_View v, MGI_SetMember m " +
-	      "where v._Set_key = m._Set_key " +
-	      "and m._Object_key = " + currentRecordKey +
-	      " order by m.sequenceNum";
+	  scmd :string := molsource_select(currentRecordKey);
 
 	  table : widget := top->CloneLibrarySet->Table;
 	  row : integer := 0;
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, scmd);
-          (void) dbsqlexec(dbproc);
+	  dbproc : opaque := mgi_dbexec(scmd);
 
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
               (void) mgi_tblSetCell(table, row, table.setKey, mgi_getstr(dbproc, 1));
               (void) mgi_tblSetCell(table, row, table.memberKey, mgi_getstr(dbproc, 2));
               (void) mgi_tblSetCell(table, row, table.cloneLibrary, mgi_getstr(dbproc, 3));
@@ -394,7 +397,7 @@ rules:
 	      row := row + 1;
 	    end while;
           end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
           top->QueryList->List.row := Select.item_position;
 

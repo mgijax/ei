@@ -1,4 +1,4 @@
-#!/bin/csh
+#!/bin/csh -f
 
 #
 # Configuration.default
@@ -14,7 +14,11 @@ endif
 
 source ${MGICONFIG}/master.config.csh
 
+# installation directory
 setenv EIINSTALLDIR ${EI_USRLOCALMGI}/ei/prod
+
+# CVS tag; keep updated with current tag
+setenv CVS_TAG	ei-5-0-0-19
 
 # build directory
 setenv EIBUILDDIR ${EI_USRLOCALMGI}/ei
@@ -38,7 +42,7 @@ setenv EIAPPS	"mgd gxd mgiadmin mgi"
 setenv EIREPORTDIR	${HOME}/mgireport
 setenv EIARCHIVEDIR	${EIDATADIR}
 setenv EIWITHDRAWALDIR	${EIDATADIR}/withdrawals
-setenv EIBREAKSPLITDIR	${EIDATADIR}/breakpointsplits
+setenv EINLMDIR ${EIDATADIR}/nlm
 
 # X Resource file
 setenv XRES	${EIBUILDDIR}/XRes.in
@@ -46,6 +50,14 @@ setenv XRES	${EIBUILDDIR}/XRes.in
 # Make file for XRT Authorization
 setenv XRTMAKE	${EIBUILDDIR}/Makefile.xrt
 
+# for specific modules
+setenv ASSAY_IMAGE_LOOKUP   10000
+setenv PYTHON_IMAGE_CACHE       10000
+
 # Set umask for permissions on files created
 umask 002
+
+# archive area for "old" log files
+setenv USERHOME /userhome
+setenv LOGEI	/logs/ei
 

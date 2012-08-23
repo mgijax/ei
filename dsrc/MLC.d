@@ -93,6 +93,7 @@ dmodule MLC is
 #include <tables.h>
 #include <mlced_scan.h>
 #include <mlced_nomen.h>
+#include <mgdsql.h>
 
 devents:
 
@@ -109,7 +110,6 @@ devents:
 	Modify :local [];
 	ModifyClass :local [];
 	ModifyReference :local [];    
-	ModifyText :local [];
 
 	PrepareSearch :local [];
 	Search :local [];
@@ -161,6 +161,10 @@ rules:
 	  (void) busy_cursor(mgi);
 
 	  top := create widget("MLCModule", nil, mgi);
+
+	  -- Set Permissions
+	  SetPermissions.source_widget := top;
+	  send(SetPermissions, 0);
 
 	  (void) cleanup_handler(top); -- protection against unwanted sigs
 
@@ -441,7 +445,8 @@ rules:
 	  cmd := "";
 
 	  -- Build the cmd string
-	  send(ModifyText,0);
+	  -- removed/obsolete
+	  --send(ModifyText,0);
 	  send(ModifyReference, 0);
 	  send(ModifyClass, 0);
 
@@ -547,96 +552,6 @@ rules:
 	end does;
  
 --
--- ModifyText
---
--- Deletes then reinserts locus text associated with current symbol.
--- Also, scans text to determine tags to insert. This function *used* 
--- to determine exactly which tags to 
--- insert, update, or delete, but this was changed for simplicity. 
--- 
--- Checks to see if "Mode" has been modified, and if so, updates it
---
--- Affects: MLC_TEXT, MLC_MARKER
--- 
-	ModifyText does
-	  ltag : Tag;
-	  mk2 : string;
-	  locustaglist : opaque;
-	  locustxt : widget := top->Description->text;
-	  set : string;
-	  i, itemcnt : integer;
-	
-	  /* get a list of tags - with no duplicates! */
-	  locustaglist := getlocustaglist(locustxt.value, locustxt.value.length);
-
-	  -- Always re-insert the text so that the modification date and userID
-	  -- gets updated.  Use the original creation date, if one exists.
-
-	  -- delete Text entry in MLC_Text for this marker key
-	  cmd := cmd + mgi_DBdelete(MLC_TEXT, currentMarkerKey);
-
-	  -- note: mgi_DBprstr escape all of the "s in the text using "mgi_escape_quotes"
-	  -- insert the new text
-
-	  cmd := cmd + mgi_DBinsert(MLC_TEXT, NOKEY) + 
-			currentMarkerKey + ", " + 
-			mgi_DBprstr(top->MLCModeMenu.menuHistory.defaultValue) + "," +
-			mgi_DBprstr2(mlced_eiDescToDB(locustxt.value, locustaglist)) + "," +
-			top->IsDeletedMenu.menuHistory.defaultValue + ",";
-
-	  -- If a Creation date exists, then save it for the new Text record
-	  -- Else, use the current date
-
-	  if (top->CreationDate->text.value.length > 0) then
-		  cmd := cmd + mgi_DBprstr(top->CreationDate->text.value) + ")\n";
-	  else
-		  cmd := cmd + "getdate())\n";
-	  end if;
-
-	  cmd := cmd + mgi_DBdelete(MLC_MARKER, currentMarkerKey);
-
-	  i := 0;
-	  itemcnt := XrtGearListGetItemCount(locustaglist);
-	  while (i < itemcnt) do
-	    -- Note: triggers cannot be used to look up the 
-	    -- current key on the server side. Server is 
-	    -- case-insensitive and thus cannot distinguish between 
-	    -- 't' and 'T' for example. 
-	    --
-	    -- NOTE: Use of getIdbySymbol at this point assumes that 
-	    -- _Marker_key exists for the tag, and that a split has not 
-	    -- occurred.  We can make that assumption here, since 
-	    -- tags have all been checked by this point.
-	    -- Use of getIdbySymbol should be reconsidered, and a 
-	    -- caching mechanism might be used in the future, if
-	    -- the same symbols usually exist multiple times in a
-	    -- document.  For now, the simple (and slower) solution.
-				
-	    ltag := TagList_getitem(locustaglist, i);
-	    mk2 := getIdbySymbol(ltag.tagstr,true); 
-	    cmd := cmd + mgi_DBinsert(MLC_MARKER, NOKEY) +
-		   currentMarkerKey + "," + (string) (i + 1) + ", " + mk2 + ")\n";     
-	    i := i + 1;
-	  end while;
-	  TagList_destroy(locustaglist);
-
-	  if (top->MLCModeMenu.menuHistory.modified and
-	      top->MLCModeMenu.menuHistory.searchValue != "%") then
-	    set := set + "mode = " + mgi_DBprstr(top->MLCModeMenu.menuHistory.defaultValue) + ",";
-	  end if;
-
-	  if (top->IsDeletedMenu.menuHistory.modified and
-	      top->IsDeletedMenu.menuHistory.searchValue != "%") then
-	    set := set + "isDeleted = " + top->IsDeletedMenu.menuHistory.defaultValue + ",";
-	  end if;
-
-	  if (set.length > 0) then
-	    cmd := cmd + mgi_DBupdate(MLC_TEXT, currentMarkerKey, set);
-	  end if;
-
-	end does;
-
---
 -- PrepareSearch
 --
 -- Constructs "from" and "where" clauses based on user input
@@ -650,7 +565,7 @@ rules:
 	  value : string;
 
 	  from  := " from " + mgi_DBtable(MRK_MARKER) + " m";
-	  where := " where m._Organism_key = " + MOUSE;
+	  where := " where m._Organism_key = 1";
 
 	  if (top->mgiMarker->Marker->text.value.length > 0) then
 	    where := where + "\nand m.symbol like " + mgi_DBprstr(top->mgiMarker->Marker->text.value);
@@ -790,80 +705,83 @@ rules:
  
 	  top->Description->text.value := "";
 
-	  cmd := "select _Marker_key, symbol, name, chromosome " +
-		 "from MRK_Marker where _Marker_key = " + currentMarkerKey + "\n" +
-		 "select _Class_key, name " +
-		 " from MRK_Classes_View where _Marker_key = " + currentMarkerKey + 
-		 " order by name\n" +
-		 "select b._Refs_key, r.tag, b.jnum, b.short_citation " +
-		 "from MLC_Reference r, BIB_View b " +
-		 "where r._Marker_key = " + currentMarkerKey + " and r._Refs_key = b._Refs_key " + 
-		 "order by r.tag\n" +
-		 "select mode, isDeleted, description, creation_date, modification_date, userID " +
-	         "from MLC_Text where _Marker_key = " + currentMarkerKey + "\n";
-
 	  table : widget;
-	  results : integer := 1;
 	  row : integer := 0;
+	  dbproc : opaque;
+	  
+	  cmd := mlc_select(currentMarkerKey);
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      -- Note: mgiMarker->ObjectID->text will contain _Marker_key 
+	      -- for displayed record until a new record is selected for display
+	      top->mgiMarker->ObjectID->text.value := mgi_getstr(dbproc, 1);
+	      top->mgiMarker->Marker->text.value   := mgi_getstr(dbproc, 2);
+	      top->Name->text.value                := mgi_getstr(dbproc, 3);
+	      SetOption.source_widget := top->ChromosomeMenu;
+	      SetOption.value := mgi_getstr(dbproc, 4);
+	      send(SetOption, 0);
+	    end while;
+	  end while;
+ 	  (void) mgi_dbclose(dbproc);
 
-	  dbproc : opaque := mgi_dbopen();
-	  (void) dbcmd(dbproc, cmd);
-	  (void) dbsqlexec(dbproc);
-
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    row := 0;
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
-		-- Note: mgiMarker->ObjectID->text will contain _Marker_key 
-		-- for displayed record until a new record is selected for display
-		top->mgiMarker->ObjectID->text.value := mgi_getstr(dbproc, 1);
-		top->mgiMarker->Marker->text.value   := mgi_getstr(dbproc, 2);
-		top->Name->text.value                := mgi_getstr(dbproc, 3);
-		SetOption.source_widget := top->ChromosomeMenu;
-		SetOption.value := mgi_getstr(dbproc, 4);
-		send(SetOption, 0);
-	      elsif (results = 2) then
-		table := top->Class->Table;
-		(void) mgi_tblSetCell(table, row, table.classCurrentKey, mgi_getstr(dbproc, 1));
-		(void) mgi_tblSetCell(table, row, table.classKey, mgi_getstr(dbproc, 1));
-		(void) mgi_tblSetCell(table, row, table.className, mgi_getstr(dbproc, 2));
-		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-	      elsif (results = 3) then
-		table := top->Reference->Table;
-		(void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 2));
-		(void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 2));
-		(void) mgi_tblSetCell(table, row, table.refsCurrentKey, mgi_getstr(dbproc, 1));
-		(void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 1));
-		(void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 3));
-		(void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 4));
-		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-	      elsif (results = 4) then
-
-		SetOption.source_widget := top->MLCModeMenu;
-		SetOption.value := mgi_getstr(dbproc, 1);
-		SetOption.setDefault := true;
-		send(SetOption, 0);
-
-		SetOption.source_widget := top->IsDeletedMenu;
-		SetOption.value := mgi_getstr(dbproc, 2);
-		send(SetOption, 0);
-
-		top->Description->text.value  
-			:= mlced_dbDescToEI(mgi_getstr(dbproc, 3), (integer) currentMarkerKey);
-
-		top->CreationDate->text.value := mgi_getstr(dbproc, 4);
-		top->ModifiedDate->text.value := mgi_getstr(dbproc, 5);
-		top->ModifiedBy->text.value   := mgi_getstr(dbproc, 6);
-
-		MLCexists := true;
-	      end if;
-			
+	  row := 0;
+	  cmd := mlc_class(currentMarkerKey);
+	  table := top->Class->Table;
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      (void) mgi_tblSetCell(table, row, table.classCurrentKey, mgi_getstr(dbproc, 1));
+	      (void) mgi_tblSetCell(table, row, table.classKey, mgi_getstr(dbproc, 1));
+	      (void) mgi_tblSetCell(table, row, table.className, mgi_getstr(dbproc, 2));
+	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	      row := row + 1;
 	    end while;
-	    results := results + 1;
 	  end while;
+ 	  (void) mgi_dbclose(dbproc);
 
- 	  (void) dbclose(dbproc);
+	  row := 0;
+	  cmd := mlc_ref(currentMarkerKey);
+	  table := top->Reference->Table;
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+ 	      (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 2));
+	      (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 2));
+	      (void) mgi_tblSetCell(table, row, table.refsCurrentKey, mgi_getstr(dbproc, 1));
+	      (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 1));
+	      (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 3));
+	      (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 4));
+	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+	      row := row + 1;
+	    end while;
+	  end while;
+ 	  (void) mgi_dbclose(dbproc);
+
+	  cmd := mlc_text(currentMarkerKey);
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      SetOption.source_widget := top->MLCModeMenu;
+	      SetOption.value := mgi_getstr(dbproc, 1);
+	      SetOption.setDefault := true;
+	      send(SetOption, 0);
+
+	      SetOption.source_widget := top->IsDeletedMenu;
+	      SetOption.value := mgi_getstr(dbproc, 2);
+	      send(SetOption, 0);
+
+	      top->Description->text.value  
+		      := mlced_dbDescToEI(mgi_getstr(dbproc, 3), (integer) currentMarkerKey);
+
+	      top->CreationDate->text.value := mgi_getstr(dbproc, 4);
+	      top->ModifiedDate->text.value := mgi_getstr(dbproc, 5);
+	      top->ModifiedBy->text.value   := mgi_getstr(dbproc, 6);
+
+	      MLCexists := true;
+	    end while;
+	  end while;
+ 	  (void) mgi_dbclose(dbproc);
 
 	  top->QueryList->List.row := Select.item_position;
 	  Clear.source_widget := top;
@@ -1365,10 +1283,7 @@ rules:
 	    return;
 	  end if;
 
-	  cmd := "select description from " + mgi_DBtable(MLC_TEXT) +
-		 " where " + mgi_DBkey(MLC_TEXT) + " = " +
-		 top->ImportMLCTextDialog->mgiMarker->ObjectID->text.value;
-	  newtext := mgi_sql1(cmd);
+	  newtext := mgi_sql1(mlc_description(top->ImportMLCTextDialog->mgiMarker->ObjectID->text.value));
 
 	  -- Append the text
 	  top->Description->text.value := top->Description->text.value + "\n\n" + newtext; 

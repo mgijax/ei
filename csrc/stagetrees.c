@@ -9,6 +9,9 @@
  *
  * History:
  *
+ * lec	03/29/2012
+ *	- TR11005; stagetree_AddStructureNames; see isparentkey
+ *
  * gld  04/15/98
  *      - created
  */
@@ -244,7 +247,7 @@ void stagetrees_init(Widget outliner, Widget progressMeter)
 void stagetrees_destroy()
 {
    stagetrees_unloadStages(False);   /* get rid of all non-stages nodes and structures */
-   dbclose(stagetrees.dbproc);  /* close our connection to the DB */
+   (void) mgi_dbclose(stagetrees.dbproc);  /* close our connection to the DB */
 
    /* finally, get rid of the stagesroot widget */
    /* XtDestroyWidget(stagetrees.stagesroot); */
@@ -594,12 +597,10 @@ static void stagetrees_internalLoadStages(int countdstages, int *distinctstages)
 void stagetrees_loadStages(char *from, char *where)
 {
     char buf[BUFSIZ];
-    DBPROCESS *dbproc = stagetrees_getdbproc(stagetrees);
 
     int distinctstages[MAXSTAGE];
-    int countdstages; /* a count of the number of distinct stages we are 
-                         processing */
-    DBINT iresult;
+    /* a count of the number of distinct stages we are processing */
+    int countdstages = 0;
 
     /* determine what stages are affected by the current query.  It would
        be nice to read them from the results already obtained, but the
@@ -609,22 +610,19 @@ void stagetrees_loadStages(char *from, char *where)
     sprintf(buf,"select distinct(t.stage) %s %s", from, where); 
 
     /* do query to obtain affected stages */
+    /* assume we have no affected stages */
 
-    dbcmd(dbproc, buf);
-    dbsqlexec(dbproc);
-
-    countdstages = 0;  /* assume we have no affected stages */
-
-    while (dbresults(dbproc) != NO_MORE_RESULTS)
+    DBPROCESS *dbproc;
+    dbproc = mgi_dbexec(buf);
+    while (mgi_dbresults(dbproc) != NO_MORE_RESULTS)
     {
-       dbbind(dbproc, 1, INTBIND, (DBINT) 0, 
-             (BYTE *) &iresult); 
-       while (dbnextrow(dbproc) != NO_MORE_ROWS)
+       while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS)
        {
            if (countdstages < MAXSTAGE)
-              distinctstages[countdstages++] = iresult; 
+              distinctstages[countdstages++] = atoi(mgi_getstr(dbproc, 1));
        }
     }
+    (void) mgi_dbclose(dbproc);
 
  /* cut here, provide countdstages and distinctstages as load args */
 
@@ -753,13 +751,19 @@ void stagetree_AddStructureName(StageTree *stagetree, StructureName *stn)
    HashTable *ht = stagetree->Structures;
    Structure *hst,  /* a hashed structure */
              *newst;  /* a new structure */
+
    hashtbl_key key;
+   hashtbl_key isparentkey;
+
    XrtGearObject names;  /* list of names associated with the structure */ 
    int namepos;   /* position of the name in the structure's namelist */
+
+   char slabel[TEXTBUFSIZ];
    
    key = structurename_getStructureKey(stn);
-
    hst = (Structure *)hashtbl_retrieve_obj(ht,key);
+
+   isparentkey = structure_getParentKey(hst);
 
    if (hst)  /* then this name is for an existing structure */
    {
@@ -779,11 +783,29 @@ void stagetree_AddStructureName(StageTree *stagetree, StructureName *stn)
                          XmNxrtGearLabel, 
                          &xrtstr, NULL);
 
+	   /* 
+	    *
+	    * set the value of the "name" 
+	    * if is parent, then add 'StageXX;' (where XX = stage)
+	    *
+	    */
+
+	   memset(slabel, '\0', sizeof(slabel));
+	   if (isparentkey == 0)
+	   {
+               strcpy(slabel,format_stagenum(stagetree_getStage(stagetree)));
+               strcat(slabel,structurename_getName(stn));
+	   }
+	   else
+	   {
+               strcat(slabel,structurename_getName(stn));
+           }
+
            /* set the new label widget */
            XtVaSetValues(node, 
                          XmNxrtGearLabel, 
                          XrtGearNodeCvtStringToLabel(
-                         structurename_getName(stn), "@@@"), NULL);
+                         slabel, "@@@"), NULL);
 
            /* Destroy the old label widget */
            XrtGearStringDestroy(xrtstr);
@@ -838,7 +860,6 @@ void stagetree_AddStructureNames(StageTree *stagetree, char *snmaxmod)
        or replacing names/aliases according to their _StructureName_key. */
     char buf[BUFSIZ];
     int stage = stagetree_getStage(stagetree);
-    DBPROCESS *dbproc = stagetrees_getdbproc(stagetrees);
     StructureName tmpstn;
 
     sprintf(buf,"select sn.* "
@@ -850,27 +871,33 @@ void stagetree_AddStructureNames(StageTree *stagetree, char *snmaxmod)
                 "and sn.modification_date > '%s' ",
                 stage, snmaxmod);
 
-    dbcmd(dbproc, buf);
-    dbsqlexec(dbproc);
-
-    while (dbresults(dbproc) != NO_MORE_RESULTS)
+    DBPROCESS *dbproc;
+    dbproc = mgi_dbexec(buf);
+    while (mgi_dbresults(dbproc) != NO_MORE_RESULTS)
     {
        dbbind(dbproc, 1, INTBIND, (DBINT) 0, 
              (BYTE *) &(tmpstn._StructureName_key)); 
+
        dbbind(dbproc, 2, INTBIND, (DBINT) 0, 
              (BYTE *) &(tmpstn._Structure_key)); 
+
        dbbind(dbproc, 3, STRINGBIND, (DBINT) 0, tmpstn.structure);
+
        dbbind(dbproc, 4, BITBIND, (DBINT) 0, (BYTE *) &(tmpstn.mgiAdded)); 
+
        dbbind(dbproc, 5, DATETIMEBIND, (DBINT) 0, 
              (BYTE *) &(tmpstn.creation_date));
+
        dbbind(dbproc, 6, DATETIMEBIND, (DBINT) 0, 
              (BYTE *) &(tmpstn.modification_date));
-       while (dbnextrow(dbproc) != NO_MORE_ROWS)
+
+       while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS)
        {
           /* tu_printf("DEBUG: Adding a structure name\n"); */
           stagetree_AddStructureName(stagetree, &tmpstn);
        }
     }
+    (void) mgi_dbclose(dbproc);
 }
 
 void stagetree_AddStructure(StageTree *stagetree, Structure *st)
@@ -908,7 +935,7 @@ void stagetree_AddStructure(StageTree *stagetree, Structure *st)
 
 
       /* Find this structure's parent node */
-      hashtbl_key pkey = structure_getParentKey(st);
+      hashtbl_key isparentkey = structure_getParentKey(st);
 
       /* create a XrtFolder node for this structure with that parent. 
          Add this structure to the hash table */
@@ -916,7 +943,7 @@ void stagetree_AddStructure(StageTree *stagetree, Structure *st)
       newst = structure_create();
       structure_dbattr_copy(newst,st);
 
-      if (pkey == 0)  /* then the parent key was NULL. 
+      if (isparentkey == 0)  /* then the parent key was NULL. 
                          st is a stage node */
       {
           /* build a root presentation element for the stage tree */
@@ -942,14 +969,14 @@ void stagetree_AddStructure(StageTree *stagetree, Structure *st)
              in order of increasing depth, all parents should be present
              prior to encountering children */
 
-          pst = (Structure *)hashtbl_retrieve_obj(ht, pkey);
+          pst = (Structure *)hashtbl_retrieve_obj(ht, isparentkey);
 
           if (!pst)
           { 
              char buf[256];
              sprintf(buf,"New structure (_Structure_key: %d) has parent\n"
                          "that hasn't been loaded (_Parent_key: %d).\n",
-                         key, pkey);
+                         key, isparentkey);
              stagetrees_error(buf);
           }
 
@@ -991,7 +1018,6 @@ void stagetree_AddStructures(StageTree *stagetree, char *smaxmod)
 
     char buf[BUFSIZ];
     int stage = stagetree_getStage(stagetree);
-    DBPROCESS *dbproc = stagetrees_getdbproc(stagetrees);
     Structure tmpst; /* a temporary structure used for reading DB results */
 
     sprintf(buf,"select s.*, t.stage "
@@ -1002,11 +1028,9 @@ void stagetree_AddStructures(StageTree *stagetree, char *smaxmod)
                 "order by s.treeDepth asc ",
                  stage, smaxmod);
 
-
-    dbcmd(dbproc, buf);
-    dbsqlexec(dbproc);
-
-    while (dbresults(dbproc) != NO_MORE_RESULTS)
+    DBPROCESS *dbproc;
+    dbproc = mgi_dbexec(buf);
+    while (mgi_dbresults(dbproc) != NO_MORE_RESULTS)
     {
        dbbind(dbproc, 1, INTBIND, (DBINT) 0, (BYTE *) &(tmpst._Structure_key));
        dbbind(dbproc, 2, INTBIND, (DBINT) 0, (BYTE *) &(tmpst._Parent_key));
@@ -1028,12 +1052,13 @@ void stagetree_AddStructures(StageTree *stagetree, char *smaxmod)
        dbbind(dbproc, 15, INTBIND, (DBINT) 0, (BYTE *) &(tmpst.stage)); 
 
        /* iterate through the Structure results. */
-       while (dbnextrow(dbproc) != NO_MORE_ROWS)
+       while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS)
        {
           /* tu_printf("DEBUG: Adding a structure\n"); */
           stagetree_AddStructure(stagetree, &tmpst);
        }
     }
+    (void) mgi_dbclose(dbproc);
 }
 
 Structure *stagetree_getStructureByKey(StageTree *stagetree, DBINT sk)

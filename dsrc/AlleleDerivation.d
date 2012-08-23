@@ -21,6 +21,7 @@ dmodule AlleleDerivation is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
+#include <mgdsql.h>
 
 devents:
 
@@ -70,6 +71,10 @@ rules:
 	  (void) busy_cursor(mgi);
 
 	  top := create widget("AlleleDerivationModule", nil, mgi);
+
+	  -- Set Permissions
+	  SetPermissions.source_widget := top;
+	  send(SetPermissions, 0);
 
 	  -- Build Dynamic GUI Components
 	  send(BuildDynamicComponents, 0);
@@ -236,12 +241,8 @@ rules:
 	  --
 	  -- check duplicate
 	  --
-	  derivationKey := mgi_sql1("select _Derivation_key from " + mgi_DBtable(ALL_CELLLINE_DERIVATION) +
-		" where _Vector_key = " + vectorKey +
-		" and _VectorType_key = " + vectorTypeKey +
-		" and _ParentCellLine_key = " + parentCellLineKey +
-		" and _DerivationType_key = " + derivationTypeKey +
-		" and _Creator_key = " + creatorKey);
+	  cmd := derivation_checkdup(vectorKey, vectorTypeKey, parentCellLineKey, derivationTypeKey, creatorKey);
+	  derivationKey := mgi_sql1(cmd);
 
           if (derivationKey.length > 0) then
             StatusReport.source_widget := top.root;
@@ -367,12 +368,8 @@ rules:
 	  --
 	  -- check duplicate
 	  --
-	  derivationKey := mgi_sql1("select _Derivation_key from " + mgi_DBtable(ALL_CELLLINE_DERIVATION) +
-		" where _Vector_key = " + vectorKey +
-		" and _VectorType_key = " + vectorTypeKey +
-		" and _ParentCellLine_key = " + parentCellLineKey +
-		" and _DerivationType_key = " + derivationTypeKey +
-		" and _Creator_key = " + creatorKey);
+	  cmd := derivation_checkdup(vectorKey, vectorTypeKey, parentCellLineKey, derivationTypeKey, creatorKey);
+	  derivationKey := mgi_sql1(cmd);
 
           if (derivationKey.length > 0) then
             StatusReport.source_widget := top.root;
@@ -553,14 +550,13 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from " + mgi_DBtable(ALL_CELLLINE_DERIVATION_VIEW) + " where _Derivation_key = " + currentRecordKey;
+	  cmd := derivation_select(currentRecordKey);
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
-
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  dbproc : opaque;
+	  
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 
 	      top->ID->text.value := mgi_getstr(dbproc, 1);
 	      top->EditForm->DerivationName->text.value := mgi_getstr(dbproc, 2);
@@ -600,18 +596,16 @@ rules:
 
 	    end while;
 	  end while;
+	  (void) mgi_dbclose(dbproc);
 
-	  cmd := "select count(_CellLine_key) from " + mgi_DBtable(ALL_CELLLINE_VIEW) + 
-		     " where _Derivation_key = " + top->ID->text.value;
-
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  cmd := derivation_count(top->ID->text.value);
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      top->NumberOfMutants->text.value := mgi_getstr(dbproc, 1);
 	    end while;
 	  end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
           LoadNoteForm.notew := top->mgiNoteForm;
           LoadNoteForm.tableID := MGI_NOTE_DERIVATION_VIEW;
@@ -640,17 +634,12 @@ rules:
 	      return;
 	  end if;
 
-	  cmd := "select distinct _CellLine_key, cellLine, " +
-		"_Strain_key, cellLineStrain, _CellLine_Type_key " +
-		"from " + mgi_DBtable(ALL_CELLLINE_VIEW) +
-		" where " + mgi_DBkey(ALL_CELLLINE_VIEW) + " = " + top->mgiParentCellLine->ObjectID->text.value;
+	  cmd := derivation_stemcellline(top->mgiParentCellLine->ObjectID->text.value);
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+	  dbproc : opaque := mgi_dbexec(cmd);
 
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      top->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 1);
 	      top->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 2);
 	      top->mgiParentCellLine->ParentStrain->StrainID->text.value := mgi_getstr(dbproc, 3);
@@ -660,7 +649,7 @@ rules:
               send(SetOption, 0);
 	    end while;
 	  end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	end does;
 
@@ -695,16 +684,11 @@ rules:
 
 	  -- Search for value in the database
 
-	  select : string := "select distinct _CellLine_key, cellLine, " +
-		"_Strain_key, cellLineStrain, _CellLine_Type_key " +
-		"from " + mgi_DBtable(ALL_CELLLINE_VIEW) +
-		" where cellLine = " + mgi_DBprstr(value);
+	  select : string := derivation_parentcellline(mgi_DBprstr(value));
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, select);
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  dbproc : opaque := mgi_dbexec(select);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      top->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 1);
 	      top->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 2);
 	      top->mgiParentCellLine->ParentStrain->StrainID->text.value := mgi_getstr(dbproc, 3);
@@ -714,7 +698,7 @@ rules:
               send(SetOption, 0);
             end while;
           end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  -- If ID is null, then value is invalid
 

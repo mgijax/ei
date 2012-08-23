@@ -91,12 +91,10 @@ rules:
 	    return;
 	  end if;
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, pulldown.sql);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(pulldown.sql);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 		label := mgi_getstr(dbproc, 2);
 
 		-- Create a unique name for the child instance
@@ -197,7 +195,7 @@ rules:
 		i := i + 1;
 	    end while;
 	  end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  -- Set default option for option menu based on child number
 

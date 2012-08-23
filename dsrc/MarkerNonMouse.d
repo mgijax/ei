@@ -38,6 +38,7 @@ dmodule MarkerNonMouse is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
+#include <mgdsql.h>
 
 devents:
 
@@ -93,6 +94,10 @@ rules:
 	  (void) busy_cursor(mgi);
 
 	  top := create widget("MarkerNonMouseModule", nil, mgi);
+
+	  -- Set Permissions
+	  SetPermissions.source_widget := top;
+	  send(SetPermissions, 0);
 
 	  -- Build Dynamic GUI Components
 	  send(BuildDynamicComponents, 0);
@@ -170,7 +175,7 @@ rules:
 --
 
 	Add does
-	  curationState : string := mgi_sql1("select _Term_key from VOC_Term_CurationState_View where term = 'internal'");
+	  curationState : string := mgi_sql1(nonmouse_term());
 
 	  if (not top.allowEdit) then
 	    return;
@@ -347,7 +352,7 @@ rules:
 	  from_notes    : boolean := false;
 
 	  from := " from " + mgi_DBtable(MRK_MARKER) + " m";
-	  where := "where m._Organism_key != " + MOUSE;	-- exclude mouse markers
+	  where := "where m._Organism_key != 1";
 
 	  -- Cannot search both Accession tables at once
 
@@ -467,39 +472,33 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select _Marker_key, _Organism_key, symbol, name, chromosome, " +
-		 "cytogeneticOffset, organism, creation_date, modification_date " +
-		 "from MRK_Marker_View where _Marker_key = " + currentRecordKey + "\n" +
-	         "select rtrim(note) from MRK_Notes " +
-		 "where _Marker_key = " + currentRecordKey +
-		 " order by sequenceNum\n";
-
-	  results : integer := 1;
-
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
-
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
-	        top->ID->text.value           := mgi_getstr(dbproc, 1);
-	        top->Symbol->text.value       := mgi_getstr(dbproc, 3);
-	        top->Name->text.value         := mgi_getstr(dbproc, 4);
-	        top->Chromosome->text.value   := mgi_getstr(dbproc, 5);
-	        top->Cyto->text.value         := mgi_getstr(dbproc, 6);
-	        top->CreationDate->text.value := mgi_getstr(dbproc, 8);
-	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 9);
-		top->mgiOrganism->ObjectID->text.value := mgi_getstr(dbproc, 2);
-		top->mgiOrganism->Organism->text.value := mgi_getstr(dbproc, 7);
-	      elsif (results = 2) then
-		top->Notes->text.value := top->Notes->text.value + mgi_getstr(dbproc, 1);
-	      end if;
+	  dbproc : opaque;
+	  
+	  cmd := nonmouse_select(currentRecordKey);
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      top->ID->text.value           := mgi_getstr(dbproc, 1);
+	      top->Symbol->text.value       := mgi_getstr(dbproc, 3);
+	      top->Name->text.value         := mgi_getstr(dbproc, 4);
+	      top->Chromosome->text.value   := mgi_getstr(dbproc, 5);
+	      top->Cyto->text.value         := mgi_getstr(dbproc, 6);
+	      top->CreationDate->text.value := mgi_getstr(dbproc, 8);
+	      top->ModifiedDate->text.value := mgi_getstr(dbproc, 9);
+	      top->mgiOrganism->ObjectID->text.value := mgi_getstr(dbproc, 2);
+	      top->mgiOrganism->Organism->text.value := mgi_getstr(dbproc, 7);
 	    end while;
-	    results := results + 1;
 	  end while;
+	  (void) mgi_dbclose(dbproc);
 
-	  (void) dbclose(dbproc);
+	  cmd := nonmouse_notes(currentRecordKey);
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      top->Notes->text.value := top->Notes->text.value + mgi_getstr(dbproc, 1);
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
 
           LoadAcc.table := accTable;
           LoadAcc.objectKey := currentRecordKey;
@@ -529,7 +528,7 @@ rules:
 --
 
         SetEntrezGene does
-	  if (top->mgiOrganism->ObjectID->text.value = HUMAN) then
+	  if (top->mgiOrganism->ObjectID->text.value = "2") then
 	    top->Lookup->mgiAccessionTable->AccSourcePulldown->EntrezGene.required := true;
 	  else
 	    top->Lookup->mgiAccessionTable->AccSourcePulldown->EntrezGene.required := false;

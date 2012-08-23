@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- lec  01/26/2011
+--	- TR 10432
+--      - change 'is coded (or not) by checking the count from Index->Expression by Reference
 --
 -- lec  09/15/2010
 --	- TR 9695/skip J:153498
@@ -71,6 +74,7 @@ dmodule IndexStage is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
+#include <gxdsql.h>
 
 devents:
 
@@ -122,6 +126,10 @@ rules:
 
 	  top := create widget("IndexStageModule", nil, mgi);
 
+	  -- Set Permissions
+	  SetPermissions.source_widget := top;
+	  send(SetPermissions, 0);
+
 	  -- Build Dynamic GUI Components
 	  send(BuildDynamicComponents, 0);
 
@@ -169,15 +177,14 @@ rules:
 	  newColor : string := BACKGROUNDALT1;
 	  row : integer := 0;
 
-	  dbproc : opaque := mgi_dbopen();
-
 	  -- create a string list of row/assay key pairs
 	  assayKeys := create string_list();
 	  
-          (void) dbcmd(dbproc, "select _Term_key, term from VOC_Term_GXDIndexAssay_View order by sequenceNum");
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  dbproc : opaque;
+
+	  dbproc := mgi_dbexec(index_sql_1);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      assayKeys.insert(mgi_getstr(dbproc, 1), assayKeys.count + 1);
 	      rowLabels := rowLabels + mgi_getstr(dbproc, 2) + ",";
 
@@ -193,6 +200,7 @@ rules:
 	      row := row + 1;
 	    end while;
 	  end while;
+	  (void) mgi_dbclose(dbproc);
 
 	  -- Set Column Labels/Stage Keys
 
@@ -201,17 +209,15 @@ rules:
 	  -- create a string list of column/term pairs
 	  stageTerms := create string_list();
 
-          (void) dbcmd(dbproc, "select _Term_key, term from VOC_Term_GXDIndexStage_View order by sequenceNum");
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  dbproc := mgi_dbexec(index_sql_2);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      columnLabels := columnLabels + mgi_getstr(dbproc, 2) + ",";
 	      stageKeys.insert(mgi_getstr(dbproc, 1), stageKeys.count + 1);
 	      stageTerms.insert(mgi_getstr(dbproc, 2), stageTerms.count + 1);
 	    end while;
 	  end while;
-
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  table.batch;
 	  table.xrtTblNumRows := assayKeys.count;
@@ -524,13 +530,13 @@ rules:
 
           if (top->CodedMenu.menuHistory.searchValue != "%") then
             if (top->CodedMenu.menuHistory.searchValue = YES) then
-	      where := where + "\nand exists (select 1 from GXD_Assay a, GXD_Expression e " +
-		" where i._Refs_key = a._Refs_key and i._Marker_key = a._Marker_key\n" +
-		" and a._Assay_key = e._Assay_key)\n";
+	      where := where + "\nand exists (select 1 from GXD_Expression e " +
+		" where i._Marker_key = e._Marker_key " +
+		" and i._Refs_key = e._Refs_key)\n";
 	    else
-	      where := where + "\nand not exists (select 1 from GXD_Assay a, GXD_Expression e " +
-		" where i._Refs_key = a._Refs_key and i._Marker_key = a._Marker_key\n" +
-		" and a._Assay_key = e._Assay_key)\n";
+	      where := where + "\nand not exists (select 1 from GXD_Expression e " +
+		" where i._Marker_key = e._Marker_key " +
+		" and i._Refs_key = e._Refs_key)\n";
 	    end if;
 	  end if;
 
@@ -599,7 +605,7 @@ rules:
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
 	  Query.select := "select distinct i._Index_key, " +
-		"i.symbol + \", \" + i.jnumID + \", \" + short_citation\n" +
+		"i.symbol || ', ' || i.jnumID || ', ' || short_citation, i.symbol, i.short_citation\n" +
 		from + "\n" + where + "\norder by i.symbol, i.short_citation\n";
 	  Query.table := GXD_INDEX;
 	  send(Query, 0);
@@ -631,21 +637,15 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from GXD_Index_View where _Index_key = " + currentRecordKey + "\n" +
-		 "select * from GXD_Index_Stages where _Index_key = " + currentRecordKey +
-			" order by _IndexAssay_key, _StageID_key\n";
-
 	  table : widget;
-	  results : integer := 1;
 	  row : integer;
+          dbproc : opaque;
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
- 
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
+	  table := top->ModificationHistory->Table;
+	  cmd := index_sql_3 + currentRecordKey;
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	        top->ID->text.value           := mgi_getstr(dbproc, 1);
 	        top->mgiCitation->ObjectID->text.value := mgi_getstr(dbproc, 2);
 	        top->mgiMarker->ObjectID->text.value := mgi_getstr(dbproc, 3);
@@ -662,15 +662,19 @@ rules:
                 SetOption.value := mgi_getstr(dbproc, 5);
                 send(SetOption, 0);
 
-		table := top->ModificationHistory->Table;
 		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 15));
 		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 9));
 		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 16));
 		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 10));
+	    end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
 
-	      elsif (results = 2) then
-		table := top->Stage->Table;
-
+	  table := top->Stage->Table;
+	  cmd := index_sql_4a + currentRecordKey + index_sql_4b;
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 		-- find the row for the assay key
 		row := 0;
 		while (row < mgi_tblNumRows(table)) do
@@ -683,38 +687,35 @@ rules:
 		-- place an "X" in the correct column (stage)
 		(void) mgi_tblSetCell(table, row, stageKeys.find(mgi_getstr(dbproc, 3)), "X");
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-	      end if;
 	    end while;
-	    results := results + 1;
           end while;
+	  (void) mgi_dbclose(dbproc);
 
+	  -- start set coded bit
+	  -- TR 10432
 	  -- skip J:153498 (key = 154591)
+	  -- check if index has been coded (or not) 
+	  -- by checking the count from Index->Expression by Reference
+
+	  hasAssay : string;
+
           if top->mgiCitation->ObjectID->text.value != "154591" then
-	    cmd := cmd + 
-		 "select assays = count(distinct e._Assay_key) from GXD_Index i, GXD_Expression e " +
-		 "where i._Index_key = " + currentRecordKey + 
-		 " and i._Refs_key = e._Refs_key";
+	    hasAssay := mgi_sql1(index_sql_5a + currentRecordKey + index_sql_5b);
 
-            (void) dbcmd(dbproc, cmd);
-            (void) dbsqlexec(dbproc);
- 
-            while (dbresults(dbproc) != NO_MORE_RESULTS) do
-              while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-		if (mgi_getstr(dbproc, 1) = "0") then
-                  SetOption.source_widget := top->CodedMenu;
-                  SetOption.value := NO;
-                  send(SetOption, 0);
-		else
-                  SetOption.source_widget := top->CodedMenu;
-                  SetOption.value := YES;
-                  send(SetOption, 0);
-		end if;
-	      end while;
-            end while;
-          end if;
+	    if (hasAssay.length = 0) then
+              SetOption.source_widget := top->CodedMenu;
+              SetOption.value := NO;
+              send(SetOption, 0);
+	    else
+              SetOption.source_widget := top->CodedMenu;
+              SetOption.value := YES;
+              send(SetOption, 0);
+            end if;
 
-	  (void) dbclose(dbproc);
- 
+	  end if;
+
+	  -- end set coded bit
+
           top->QueryList->List.row := Select.item_position;
           ClearIndex.reset := true;
           send(ClearIndex, 0);
@@ -722,8 +723,7 @@ rules:
 	  SetXCellsToFlash.source_widget := top->Stage->Table;
 	  send(SetXCellsToFlash, 0);
 
-	  (void) reset_cursor(top);
-	end does;
+	  (void) reset_cursor(top); end does;
 
 --
 -- SetPriority
@@ -739,8 +739,7 @@ rules:
 	    return;
 	  end if;
 
-	  priority := mgi_sql1("select _Priority_key from GXD_Index where _Refs_key = " 
-	     + top->mgiCitation->ObjectID->text.value);
+	  priority := mgi_sql1(index_sql_6 + top->mgiCitation->ObjectID->text.value);
 		
 	  if (priority.length > 0) then
             SetOption.source_widget := top->GXDIndexPriorityMenu;
@@ -764,8 +763,7 @@ rules:
 	    return;
 	  end if;
 
-	  mutants := mgi_sql1("select _ConditionalMutants_key from GXD_Index where _Refs_key = " 
-	     + top->mgiCitation->ObjectID->text.value);
+	  mutants := mgi_sql1(index_sql_7 + top->mgiCitation->ObjectID->text.value);
 		
 	  -- default to 'not applicable'
 	  if (mutants.length = 0) then

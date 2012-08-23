@@ -34,6 +34,7 @@ dmodule Organism is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
+#include <mgisql.h>
 
 devents:
 
@@ -79,6 +80,10 @@ rules:
 	  (void) busy_cursor(mgi);
 
 	  top := create widget("OrganismModule", nil, mgi);
+
+	  -- Set Permissions
+	  SetPermissions.source_widget := top;
+	  send(SetPermissions, 0);
 
 	  -- Build Dynamic GUI Components
 	  send(BuildDynamicComponents, 0);
@@ -343,7 +348,7 @@ rules:
           end while;
 
 	  if (deleteCmd.length > 0 or tmpCmd.length > 0) then
-	    cmd := cmd + deleteCmd + tmpCmd + ROLLBACK;
+	    cmd := cmd + deleteCmd + tmpCmd;
 	    cmd := cmd + "exec MGI_resetSequenceNum '" + mgi_DBtable(MRK_CHROMOSOME) + "'," + currentRecordKey + "\n";
 	  end if;
         end does;
@@ -527,31 +532,19 @@ rules:
           table : widget;
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from MGI_Organism_View where _Organism_key = " + currentRecordKey +
-		 " order by commonName\n" +
-	         "select _MGIType_key, typeName from MGI_Organism_MGIType_View " +
-		 "where _Organism_key = " + currentRecordKey + "order by typeName\n" +
-	         "select * from MRK_Chromosome where _Organism_key = " + currentRecordKey + 
-		 " order by sequenceNum\n";
-
 	  -- For Mouse, retrieve Anchor information
 
 	  if (currentRecordKey = "1") then
-		cmd := cmd + "select chromosome, _Marker_key, symbol from MRK_Anchors_View " +
-                             "order by chromosome\n";
+		cmd := cmd + organism_anchor();
 	  end if;
 
-	  results : integer := 1;
 	  row : integer := 0;
+          dbproc : opaque;
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
- 
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    row := 0;
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
+	  cmd := organism_select(currentRecordKey);
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	        top->ID->text.value      := mgi_getstr(dbproc, 1);
                 top->Latin->text.value   := mgi_getstr(dbproc, 3);
                 top->Common->text.value  := mgi_getstr(dbproc, 2);
@@ -560,33 +553,56 @@ rules:
 		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 6));
 		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 9));
 		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 7));
-	      elsif (results = 2) then
-                table := top->OrganismType->Table;
+            end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  row := 0;
+          table := top->OrganismType->Table;
+	  cmd := organism_mgitype(currentRecordKey);
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 		(void) mgi_tblSetCell(table, row, table.currentTypeKey, mgi_getstr(dbproc, 1));
 		(void) mgi_tblSetCell(table, row, table.typeKey, mgi_getstr(dbproc, 2));
 		(void) mgi_tblSetCell(table, row, table.typeName, mgi_getstr(dbproc, 2));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-	      elsif (results = 3) then
-                table := top->Chromosome->Table;
+		row := row + 1;
+            end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  row := 0;
+          table := top->Chromosome->Table;
+	  cmd := organism_chr(currentRecordKey);
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 		(void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 4));
 		(void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 4));
 		(void) mgi_tblSetCell(table, row, table.chrKey, mgi_getstr(dbproc, 1));
 		(void) mgi_tblSetCell(table, row, table.chr, mgi_getstr(dbproc, 3));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-	      elsif (results = 4) then
-                table := top->Anchor->Table;
-		(void) mgi_tblSetCell(table, row, table.markerCurrentKey, mgi_getstr(dbproc, 2));
-		(void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 2));
-		(void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 3));
-		(void) mgi_tblSetCell(table, row, table.markerChr, mgi_getstr(dbproc, 1));
-		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-	      end if;
+		row := row + 1;
+            end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  row := 0;
+          table := top->Anchor->Table;
+	  cmd := organism_anchor();
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      (void) mgi_tblSetCell(table, row, table.markerCurrentKey, mgi_getstr(dbproc, 2));
+	      (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 2));
+	      (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 3));
+	      (void) mgi_tblSetCell(table, row, table.markerChr, mgi_getstr(dbproc, 1));
+	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	      row := row + 1;
             end while;
-	    results := results + 1;
           end while;
- 
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
           LoadAcc.table := accTable;
           LoadAcc.objectKey := currentRecordKey;

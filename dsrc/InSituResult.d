@@ -17,6 +17,9 @@
 --
 -- History
 --
+-- lec  02/08/2011
+--	- TR10583/LoadList.loadsmall
+--
 -- lec  09/15/2010
 --	- TR 9695/skip J:153498
 --	  added LoadList.skipit
@@ -77,6 +80,7 @@ dmodule InSituResult is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
+#include <gxdsql.h>
 
 devents:
 
@@ -95,6 +99,8 @@ locals:
 	structureID : integer;		-- Table ID of Structures table
 	imageID : integer;		-- Table ID of Images table
 	assayID : integer;		-- Table ID of Assay table
+	assay_image_lookup : string;
+	python_image_cache : string;
 
 rules:
 
@@ -272,8 +278,7 @@ rules:
 	  -- Copy the appropriate values to the target table
 
 	  count : string;
-          count := mgi_sql1("select count(*) from GXD_InSituResult " +
-			    "where _Specimen_key = " + specimenKey);
+          count := mgi_sql1(insitu_sql_1 + specimenKey);
 	  (void) mgi_tblSetCell(target, mgi_tblGetCurrentRow(target), top.targetColumn, count);
 
 	  if (InSituResultCommit.quit) then
@@ -319,6 +324,8 @@ rules:
 	  imageID := GXD_ISRESULTIMAGE;
 	  assayID := GXD_ASSAY;
 	  assayKey := root->ID->text.value;
+	  assay_image_lookup := getenv("ASSAY_IMAGE_LOOKUP");
+	  python_image_cache := getenv("PYTHON_IMAGE_CACHE");
 
 	  -- Get the Specimen key value from the target table
 
@@ -488,9 +495,14 @@ rules:
           ModifySQL.list := nil;
           send(ModifySQL, 0);
  
-	  key := top.root->mgiCitation->ObjectID->text.value;
-	  PythonImageCache.objectKey := key;
-          send(PythonImageCache, 0);
+	  -- check image list
+	  -- if image cache count <= our configured value, then ok
+	  refKey : string := top.root->mgiCitation->ObjectID->text.value;
+	  refCount : string := mgi_sql1(insitu_sql_2 + refKey);
+	  if (integer) refCount <= (integer) python_image_cache then
+	    PythonImageCache.objectKey := refKey;
+	    send(PythonImageCache, 0);
+          end if;
 
 	  send(Select, 0);
 
@@ -522,12 +534,13 @@ rules:
 	  newCmd := saveCmd + " " + key;
 	  top->ImagePaneList.cmd := newCmd + "\norder by paneLabel";
 
-	  refCount := mgi_sql1("select count(*) from IMG_Image where _Refs_key = " + key);
-	  if (integer) refCount > 25000 then
-	    LoadList.skipit := true;
+	  refCount := mgi_sql1(insitu_sql_2 + key);
+	  if (integer) refCount > (integer) assay_image_lookup then
+	    LoadList.loadsmall := true;
 	  end if;
 
 	  -- Load the Pane list for the current Reference
+	  LoadList.source_widget := top->ImagePaneList;
 	  LoadList.list := top->ImagePaneList;
 	  send(LoadList, 0);
 
@@ -550,6 +563,7 @@ rules:
 	  paneKeys : string := "";
 	  structureResult : string := "";
 	  structureKeys : string := "";
+          dbproc : opaque;
 
           (void) busy_cursor(top.root);
 
@@ -565,87 +579,94 @@ rules:
 	  ClipboardLoad.source_widget := top->ADClipboard->Label;
 	  send(ClipboardLoad, 0);
 
-	  cmd := "select * from GXD_InSituResult_View where _Specimen_key = " + specimenKey +
-		"\norder by sequenceNum\n" +
-		"select _Result_key, _ImagePane_key, figurepaneLabel from GXD_ISResultImage_View " +
-		"where _Specimen_key = " + specimenKey + "\norder by sequenceNum\n" +
-		"select _Result_key, _Structure_key from GXD_ISResultStructure_View " +
-		"where _Specimen_key = " + specimenKey + "\norder by sequenceNum\n";
+	  row := 0;
+	  cmd := insitu_sql_3a + specimenKey + insitu_sql_3b;
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      (void) mgi_tblSetCell(table, row, table.resultKey, mgi_getstr(dbproc, 1));
+	      (void) mgi_tblSetCell(table, row, table.strengthKey, mgi_getstr(dbproc, 3));
+	      (void) mgi_tblSetCell(table, row, table.patternKey, mgi_getstr(dbproc, 4));
+	      (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 5));
+	      (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 5));
+	      (void) mgi_tblSetCell(table, row, table.notes, mgi_getstr(dbproc, 6));
+	      (void) mgi_tblSetCell(table, row, table.strength, mgi_getstr(dbproc, 9));
+	      (void) mgi_tblSetCell(table, row, table.pattern, mgi_getstr(dbproc, 10));
+	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+	      row := row + 1;
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
 
-          dbproc :opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
-		(void) mgi_tblSetCell(table, row, table.resultKey, mgi_getstr(dbproc, 1));
-		(void) mgi_tblSetCell(table, row, table.strengthKey, mgi_getstr(dbproc, 3));
-		(void) mgi_tblSetCell(table, row, table.patternKey, mgi_getstr(dbproc, 4));
-		(void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 5));
-		(void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 5));
-		(void) mgi_tblSetCell(table, row, table.notes, mgi_getstr(dbproc, 6));
-		(void) mgi_tblSetCell(table, row, table.strength, mgi_getstr(dbproc, 9));
-		(void) mgi_tblSetCell(table, row, table.pattern, mgi_getstr(dbproc, 10));
-		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-		row := row + 1;
-		resultsRow := row;	-- save for later
-	      elsif (results = 2) then
-		paneResult := mgi_getstr(dbproc, 1);
+	  row := 0;
+	  cmd := insitu_sql_4a + specimenKey + insitu_sql_4b;
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      paneResult := mgi_getstr(dbproc, 1);
 
-		-- Find row of Result key
-		row := 0;
-                while (row < mgi_tblNumRows(table)) do
+	      -- Find row of Result key
+	      row := 0;
+              while (row < mgi_tblNumRows(table)) do
+                currentResult := mgi_tblGetCell(table, row, table.resultKey);
+                if (currentResult = paneResult) then
+                  break;
+                end if;
+                row := row + 1;
+              end while;
+
+	      -- Retrieve any current Labels/Keys
+ 	      panes := mgi_tblGetCell(table, row, table.imagePanes);
+              paneKeys := mgi_tblGetCell(table, row, table.imagePaneKeys);
+
+	      -- Construct new Labels/Keys
+	      if (panes.length > 0) then
+	        panes := panes + "," + mgi_getstr(dbproc, 3);
+	        paneKeys := paneKeys + "," + mgi_getstr(dbproc, 2);
+	      else
+	        panes := mgi_getstr(dbproc, 3);
+	        paneKeys := mgi_getstr(dbproc, 2);
+	      end if;
+
+ 	      mgi_tblSetCell(table, row, table.imagePanes, panes);
+              mgi_tblSetCell(table, row, table.imagePaneKeys, paneKeys);
+
+	      row := row + 1;
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  row := 0;
+	  cmd := insitu_sql_5a + specimenKey + insitu_sql_5b;
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      structureResult := mgi_getstr(dbproc, 1);
+
+	      -- Find row of Result key
+	      row := 0;
+              while (row < mgi_tblNumRows(table)) do
                   currentResult := mgi_tblGetCell(table, row, table.resultKey);
-                  if (currentResult = paneResult) then
+                  if (currentResult = structureResult) then
                     break;
                   end if;
                   row := row + 1;
-                end while;
+              end while;
 
-		-- Retrieve any current Labels/Keys
- 		panes := mgi_tblGetCell(table, row, table.imagePanes);
-                paneKeys := mgi_tblGetCell(table, row, table.imagePaneKeys);
+	      -- Retrieve any current Keys
+              structureKeys := mgi_tblGetCell(table, row, table.structureKeys);
 
-		-- Construct new Labels/Keys
-		if (panes.length > 0) then
-		    panes := panes + "," + mgi_getstr(dbproc, 3);
-		    paneKeys := paneKeys + "," + mgi_getstr(dbproc, 2);
-		else
-		    panes := mgi_getstr(dbproc, 3);
-		    paneKeys := mgi_getstr(dbproc, 2);
-		end if;
-
- 		mgi_tblSetCell(table, row, table.imagePanes, panes);
-                mgi_tblSetCell(table, row, table.imagePaneKeys, paneKeys);
-	      elsif (results = 3) then
-		structureResult := mgi_getstr(dbproc, 1);
-
-		-- Find row of Result key
-		row := 0;
-                while (row < mgi_tblNumRows(table)) do
-                    currentResult := mgi_tblGetCell(table, row, table.resultKey);
-                    if (currentResult = structureResult) then
-                      break;
-                    end if;
-                    row := row + 1;
-                end while;
-
-		-- Retrieve any current Keys
-                structureKeys := mgi_tblGetCell(table, row, table.structureKeys);
-
-		-- Construct new Keys
-		if (structureKeys.length > 0) then
-		    structureKeys := structureKeys + "," + mgi_getstr(dbproc, 2);
-		else
-		    structureKeys := mgi_getstr(dbproc, 2);
-		end if;
-
-                mgi_tblSetCell(table, row, table.structureKeys, structureKeys);
+	      -- Construct new Keys
+	      if (structureKeys.length > 0) then
+	          structureKeys := structureKeys + "," + mgi_getstr(dbproc, 2);
+	      else
+	          structureKeys := mgi_getstr(dbproc, 2);
 	      end if;
+
+              mgi_tblSetCell(table, row, table.structureKeys, structureKeys);
 	    end while;
-	    results := results + 1;
 	  end while;
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
           -- Initialize Option Menus for row 0
  

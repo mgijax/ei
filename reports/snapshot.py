@@ -222,7 +222,7 @@ def probes():
 	    where m._Marker_key = %s
             and m._Probe_key = a._Object_key
             and a._LogicalDB_key = 1
-            and a.prefixPart = "MGI:"
+            and a.prefixPart = 'MGI:'
             and a.preferred = 1
 	    ''' % (markerKey), 'auto')
 

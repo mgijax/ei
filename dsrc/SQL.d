@@ -77,6 +77,7 @@ dmodule SQL is
 
 #include <mgilib.h>
 #include <syblib.h>
+#include <mgisql.h>
 
 locals:
 	queryList : widget;
@@ -101,7 +102,7 @@ rules:
 
 	  -- If a Job Stream has not finished, then disallow Add
 
-	  jobStream := mgi_sql1("exec " + global_radar + "..APP_EIcheck");
+	  jobStream := mgi_sp("exec " + global_radar + "..APP_EIcheck");
 	  if ((getenv("EIDEBUG") = "0") and (integer) jobStream > 0) then
 	    StatusReport.source_widget := top;
 	    StatusReport.message := "\nERROR:  Add functionality is unavailable.  A data load job is running.";
@@ -115,11 +116,13 @@ rules:
             AddSQL.list->List.sqlSuccessful := true;
 	  end if;
 
+	  --
 	  -- Enclose insert statments within a transaction
 	  -- so that upon any errors the entire transaction is aborted.
 	  -- There may be some cases where enclosing statements within
 	  -- a transaction is not desired.  If this is the case, the
 	  -- calling event can set AddSQL.transaction = false
+	  --
 
 	  if (AddSQL.transaction) then
 	    cmd := "begin transaction\n" + AddSQL.cmd + "\ncommit transaction\n";
@@ -180,7 +183,7 @@ rules:
 	  top : widget := DeleteSQL.list.top;
 	  jobStream : string;
 
-	  jobStream := mgi_sql1("exec " + global_radar + "..APP_EIcheck");
+	  jobStream := mgi_sp("exec " + global_radar + "..APP_EIcheck");
 	  if ((getenv("EIDEBUG") = "0") and (integer) jobStream > 0) then
 	    StatusReport.source_widget := top;
 	    StatusReport.message := "\nERROR:  Delete functionality is unavailable.  A data load job is running.";
@@ -224,44 +227,51 @@ rules:
             return;
           end if;
  
-	  -- Log command
-
-	  (void) mgi_writeLog(get_time() + "CMD:" + ExecSQL.cmd + "\n");
-
+	  --
 	  -- Execute cmd
+	  --
+	  -- if (global_useAPI then then
+	  --   do API execution
+	  -- else (below)
+	  --   do non-API execution
+	  --
 
 	  newID := "";
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, ExecSQL.cmd);
-          (void) dbsqlexec(dbproc);
-	  (void) mgi_writeLog("CMD END:  " + get_time() + "\n");
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	  dbproc : opaque;
+	  
+	  dbproc := mgi_dbexec(ExecSQL.cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      newID := mgi_getstr(dbproc, 1);
 	    end while;
 	  end while;
+	  mgi_dbclose(dbproc);
 
 	  -- Process @@error w/in same DBPROCESS
-	  -- Process @@transtate w/in same DBPROCESS
 
-	  result : integer := 1;
-          (void) dbcmd(dbproc, "select @@error\nselect @@transtate");
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (result = 1) then
-	        error := (integer) mgi_getstr(dbproc, 1);
-	      else
-	        transtate := (integer) mgi_getstr(dbproc, 1);
-	      end if;
-	      result := result + 1;
+	  dbproc := mgi_dbexec(sql_error());
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      error := (integer) mgi_getstr(dbproc, 1);
 	    end while;
 	  end while;
-
-	  dbclose(dbproc);
-
+	  (void) mgi_dbclose(dbproc);
 	  (void) mgi_writeLog("\n@@error:  " + (string) error + "\n");
+
+	  -- Process @@transtate w/in same DBPROCESS
+
+	  dbproc := mgi_dbexec(sql_translate());
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	        transtate := (integer) mgi_getstr(dbproc, 1);
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
 	  (void) mgi_writeLog("@@transtate:  " + (string) transtate + "\n");
+
+	  --
+	  -- done with non-AP execution
+	  --
 
 	  -- Fatal Errors
 
@@ -286,7 +296,7 @@ rules:
 	  cmd : string;
 	  jobStream : string;
 
-	  jobStream := mgi_sql1("exec " + global_radar + "..APP_EIcheck");
+	  jobStream := mgi_sp("exec " + global_radar + "..APP_EIcheck");
 	  if ((getenv("EIDEBUG") = "0") and (integer) jobStream > 0) then
 	    StatusReport.source_widget := top;
 	    StatusReport.message := "\nERROR:  Modify functionality is unavailable.  A data load job is running.";

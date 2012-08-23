@@ -113,6 +113,7 @@ dmodule AccLib is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
+#include <mgisql.h>
 
 -- See AccLib.de for D event declarations
 
@@ -221,34 +222,34 @@ rules:
 	  orderBy : string;
 
 	  if (tableID = MRK_MARKER or tableID = MLD_EXPTS) then
-	    orderBy := " order by _LogicalDB_key, preferred desc, prefixPart desc, numericPart";
+	    orderBy := acclib_orderA();
 	  elsif (tableID = MRK_ACC_REFERENCE or 
 		 tableID = MRK_ACC_REFERENCE1 or
 		 tableID = MRK_ACC_REFERENCE2 or
 		 tableID = MRK_ACC_REFERENCE3) then
-	    orderBy := " order by LogicalDB, preferred desc, prefixPart, numericPart";
+	    orderBy := acclib_orderB();
 	  elsif (tableID = SEQ_ALLELE_ASSOC_VIEW) then
-	    orderBy := " order by _Assoc_key, _LogicalDB_key";
+	    orderBy := acclib_orderC();
 	  else
-	    orderBy := " order by _LogicalDB_key, preferred desc, prefixPart, numericPart";
+	    orderBy := acclib_orderD();
 	  end if;
 
 	  if (tableID = SEQ_ALLELE_ASSOC_VIEW) then
-            cmd := "select _LogicalDB_Key, _Assoc_key, accID, prefixPart, numericPart, preferred";
+            cmd := acclib_assoc();
 	  else
-            cmd := "select _LogicalDB_Key, _Accession_key, accID, prefixPart, numericPart, preferred";
+            cmd := acclib_acc();
 	  end if;
 
 	  if (table.is_defined("refsKey") != nil) then
-	    cmd := cmd + ", _Refs_key, jnum, short_citation";
+	    cmd := cmd + acclib_ref();
 	  end if;
 
 	  if (table.is_defined("modifiedBy") != nil) then
-	    cmd := cmd + ", modifiedBy, modification_date";
+	    cmd := cmd + acclib_modification();
 	  end if;
 
 	  if (table.is_defined("sequenceKey") != nil) then
-	    cmd := cmd + ", _Sequence_key";
+	    cmd := cmd + acclib_sequence();
 	  end if;
 
 	  cmd := cmd + " from " + mgi_DBaccTable(tableID) +
@@ -257,12 +258,10 @@ rules:
 	  i : integer := 1;
 	  row : integer := 0;
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
  
               logicalDBkey := mgi_getstr(dbproc, 1);
               prefix := mgi_getstr(dbproc, 4);
@@ -360,7 +359,7 @@ rules:
               row := row + 1;
             end while;
           end while;
-          (void) dbclose(dbproc);
+          (void) mgi_dbclose(dbproc);
 
 	  -- If sort column is specified, sort it
 
@@ -526,9 +525,9 @@ rules:
                     accName = "MGD-INEX-" or accName = "MGD-TEXT-" or
 		    accName = "MGD-TXEX-" or accName = "MGD-PMEX-" or
 		    accName = "E" or accName = "J:") then
-		  accID := "\"" + accName + accID + "\"";
+		  accID := "\'" + accName + accID + "\'";
 		else
-	          accID := "\"" + accID + "\"";
+	          accID := "\'" + accID + "\'";
 		end if;
 	      else
 	        accID := "NULL";
@@ -560,11 +559,11 @@ rules:
 
                 elsif (accName != "J:" and refsKey = "-1") then
                   cmd := cmd + exec + " ACC_insert " + objectKey + "," + 
-		         accID + "," + logicalKey + ",\"" + mgi_DBtype(tableID) + "\"," +
+		         accID + "," + logicalKey + ",\'" + mgi_DBtype(tableID) + "\'," +
 			 refsKey + "," + preferred + "," + private + "\n";
 	        elsif (accName != "J:") then
                   cmd := cmd + exec + " ACCRef_process " + objectKey + "," + refsKey + "," +
-		         accID + "," + logicalKey + ",\"" + mgi_DBtype(tableID) + "\"" +
+		         accID + "," + logicalKey + ",\'" + mgi_DBtype(tableID) + "\'" +
 			 "," + preferred + "," + private + "\n";
 		end if;
 
@@ -706,7 +705,7 @@ rules:
 		end if;
 
 		if (accID.length > 0) then
-	          table.sqlWhere := table.sqlWhere + "\nand ac.accID like \"" + accID + "\"";
+	          table.sqlWhere := table.sqlWhere + "\nand ac.accID like \'" + accID + "\'";
 		end if;
 
 		if (refsKey.length > 0) then
@@ -925,11 +924,9 @@ rules:
 	  cmd : string := mgi_DBaccSelect(tableID, mgiTypeKey, accNumeric);
 	  objectLoaded : boolean := false;
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          dbproc : opaque := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (not objectLoaded) then
                 top->ObjectID->text.value      := mgi_getstr(dbproc, 1);
                 top->AccessionID->text.value   := mgi_getstr(dbproc, 2);
@@ -941,7 +938,7 @@ rules:
 	      end if;
             end while;
           end while;
-          (void) dbclose(dbproc);
+          (void) mgi_dbclose(dbproc);
  
           if (top->AccessionName->text.value.length = 0) then
             StatusReport.source_widget := top.root;
@@ -991,8 +988,7 @@ rules:
 	    return;
 	  end if;
 
-	  objectKey : string := mgi_sql1("select _Object_key from " + mgi_DBaccTable(SEQ_SEQUENCE) +
-		" where _LogicalDB_key = " + logicalKey + " and accID = " + mgi_DBprstr(value));
+	  objectKey : string := mgi_sql1(acclib_seqacc(logicalKey, mgi_DBprstr(value)));
 
 	  if (objectKey.length = 0) then
 	    VerifyAccSequence.doit := (integer) false;

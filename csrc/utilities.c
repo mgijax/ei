@@ -17,7 +17,7 @@
  */
 
 #include <utilities.h>
-#include <syblib.h>
+#include <mgilib.h>
 
 /* keep_busy
  *

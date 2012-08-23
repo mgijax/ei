@@ -1,7 +1,7 @@
 CALLS
   LANGUAGE C 
         INCLUDE
-             <mgilib.h>
+             <mgilib.h>;
 	TYPE 
 	     "int"           <--> integer;
 	     "char *"        <--> string;

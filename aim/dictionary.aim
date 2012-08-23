@@ -3,16 +3,13 @@ CALLS
         INCLUDE
              <dictionary.h>;
 	TYPE 
-	     "int"           <--> integer;
-	     "Widget"        <--> widget;
-	     "char *"        <--> string;
+	 "int"           <--> integer;
+	 "Widget"        <--> widget;
+	 "char *"        <--> string;
          "char **"       <--> string_list;
-	     "Boolean"	     <--> boolean;
-	     "void **"	     <--> opaque;
-	     "void *"	     <--> opaque;
+	 "Boolean"	 <--> boolean;
+	 "void *"	 <--> opaque;
          "Structure *"   <--> opaque;
-         "StructureName *"   <--> opaque;
-		 "xrtlist" <--> opaque;
 
 	ENTRY
 
@@ -24,35 +21,17 @@ CALLS
      stagetrees_unloadStages("Boolean");
      stagetrees_destroy();
      stagetrees_select("int") : "Structure *";
-     stagetrees_convertDateToString("void *") : "char *";
      stagetrees_refresh();
      stagetrees_deleteStructureByKey("int");
      stagetrees_isStageNodeKey("int") : "Boolean";
      
-     structure_getPreferredStructureName("Structure *") : "StructureName *";
-     structure_getNotes("Structure *") : "char *";
-     structure_getPrintStop("Structure *") : "Boolean";
-     structure_getStage("Structure *") : "int";
-     structure_getSystemKey("Structure *") : "int";
-     structure_getInheritSystem("Structure *") : "int";
-     structure_getAliases("Structure *", "Boolean", "xrtlist") : "xrtlist";
-     structure_getStructureKey("Structure *") : "int";
-     structure_getEdinburghKey("Structure *") : "int";
-     structure_getPrintName("Structure *") : "char *";
-     structure_getModificationDatePtr("Structure *") : "void *";
-     structure_getCreationDatePtr("Structure *") : "void *";
      structure_deleteNameByKey("Structure *", "int");
-    
-     structurename_getName("StructureName *") : "char *"; 
-     structurename_getStructureNameKey("StructureName *") : "int"; 
-     structurename_getMgiAdded("StructureName *") : "Boolean";
-
+     structure_getStructureKey("Structure *") : "int";
+     structure_getStage("Structure *") : "int";
+     structure_getPrintName("Structure *") : "char *";
      format_stagenum("int") : "char *";
 
-     createStructureNameList() : "xrtlist";
-     StructureNameList_append("xrtlist", "StructureName *");
-     StructureNameList_getitem("xrtlist", "int") : "StructureName *";
-     XrtGearListGetItemCount("xrtlist") : "int";
+    
   ENDL
 ENDC
 

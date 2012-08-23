@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Oct  7 08:36:09 2010";
+      lastWritten = "Wed Feb 15 11:11:51 2012";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -366,7 +366,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 120;
-            vip_y = 1845;
+            vip_y = 1790;
           Group: User
             useReportDir = False;
               {
@@ -486,7 +486,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 120;
-            vip_y = 2010;
+            vip_y = 1900;
               {
                 ItemList = LookupList : mgiLookup;
                 Group: Constraint
@@ -574,7 +574,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 120;
-            vip_y = 2065;
+            vip_y = 1955;
               {
                 ItemList = LookupList : mgiLookup;
                 Group: User
@@ -613,7 +613,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 120;
-            vip_y = 2175;
+            vip_y = 2065;
               {
                 ItemList = LookupList : mgiLookup;
                 Group: User
@@ -654,7 +654,7 @@ Module: mgiDialog
             dialogTitle = "Notes Dialog";
           Group: Control
             vip_x = 120;
-            vip_y = 1900;
+            vip_y = 1845;
               {
                 label = XmLabel;
                 Group: Widget
@@ -811,7 +811,7 @@ Module: mgiDialog
             height = 500;
           Group: Control
             vip_x = 120;
-            vip_y = 1735;
+            vip_y = 1680;
               {
                 EditForm = EditForm : MGI;
                 Group: Widget
@@ -989,7 +989,7 @@ Module: mgiDialog
                           {
                             ADClipboard = ADClipboard : mgiLookup;
                             Group: User
-                              cmd = "select distinct _Structure_key, dbName from GXD_ISResultStructure_View where _Specimen_key = ";
+                              cmd = "select distinct _Structure_key, dbName, sequenceNum from GXD_ISResultStructure_View where _Specimen_key = ";
                               orderBy = sequenceNum;
                                 {
                                   Label = LookupLabel;
@@ -998,6 +998,8 @@ Module: mgiDialog
                                   List = list;
                                   Group: Widget
                                     visibleItemCount = 30;
+                                    multipleSelectionCallback = "D:SelectLookupListItem(scrollToRow = false)";
+                                    singleSelectionCallback = "D:SelectLookupListItem(scrollToRow = false)";
                                   Group: User
                                     targetWidget = Results;
                                     targetKey = 4;
@@ -1014,92 +1016,6 @@ Module: mgiDialog
               }
         }
         {
-          RIDialog = SelectDialog;
-          Group: Widget
-            rubberPositioning = False;
-            resizePolicy = resize_any;
-          Group: Control
-            vip_x = 120;
-            vip_y = 1955;
-              {
-                ItemList = LookupList : mgiLookup;
-                Group: User
-                  cmd = "select _RISet_key, designation from RI_RISet_View order by designation";
-                    {
-                      Label = LookupLabel;
-                      Group: Widget
-                        labelString = "0 RI Sets";
-                      Group: User
-                        defaultLabel = "RI Sets";
-                    }
-                    {
-                      List = list;
-                      Group: Widget
-                        singleSelectionCallback = "D:SelectListItem,\nD:CopySelectionItem,\nD:SelectRILookup";
-                    }
-              }
-              {
-                Selection = CharText : mgiDataTypes;
-              }
-              {
-                SelectionKey = ID : mgiDataTypes;
-              }
-              {
-                separator = XmSeparator;
-                Group: Constraint
-                  leftAttachment = attach_form;
-                  rightAttachment = attach_form;
-                  topAttachment = attach_widget;
-                  topWidget = Selection;
-                  topOffset = 5;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-              }
-        }
-        {
-          CrossDialog = SelectDialog;
-          Group: Widget
-            rubberPositioning = False;
-            resizePolicy = resize_any;
-          Group: Control
-            vip_x = 120;
-            vip_y = 1625;
-              {
-                ItemList = LookupList : mgiLookup;
-                Group: User
-                  cmd = "select _Cross_key = -1, display = \"Anonymous\", whoseCross = \"Anonymous\"\nunion\nselect _Cross_key, display, whoseCross from CRS_Cross_View where displayed = 1\norder by whoseCross";
-                    {
-                      Label = LookupLabel;
-                      Group: Widget
-                        labelString = "0 Crosses";
-                      Group: User
-                        defaultLabel = Crosses;
-                    }
-                    {
-                      List = list;
-                      Group: Widget
-                        singleSelectionCallback = "D:SelectListItem,\nD:CopySelectionItem,\nD:SelectCrossLookup";
-                    }
-              }
-              {
-                Selection = CharText : mgiDataTypes;
-              }
-              {
-                SelectionKey = ID : mgiDataTypes;
-              }
-              {
-                separator = XmSeparator;
-                Group: Constraint
-                  leftAttachment = attach_form;
-                  rightAttachment = attach_form;
-                  topAttachment = attach_widget;
-                  topWidget = Selection;
-                  topOffset = 5;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-              }
-        }
-        {
           StrainMergeDialog = XmFormDialog;
           Group: Widget
             dialogStyle = dialog_primary_application_modal;
@@ -1109,7 +1025,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 120;
-            vip_y = 2120;
+            vip_y = 2010;
               {
                 Strain1 = Strain : mgiDataTypes;
                 Group: Constraint
@@ -1131,7 +1047,7 @@ Module: mgiDialog
                           {
                             label = XmLabel;
                             Group: Widget
-                              labelString = "Old Strain";
+                              labelString = "Incorrect Strain";
                           }
                     }
               }
@@ -1157,7 +1073,7 @@ Module: mgiDialog
                           {
                             label = XmLabel;
                             Group: Widget
-                              labelString = "New Strain";
+                              labelString = "Correct Strain";
                           }
                     }
               }
@@ -1417,7 +1333,7 @@ Shift<Key>Tab: prev-tab-group()
           MolecularSourceAttributeHistoryDialog = AttributeHistoryDialog;
           Group: Control
             vip_x = 120;
-            vip_y = 1790;
+            vip_y = 1735;
               {
                 AttributeHistoryTable = Table : mgiTable;
                     {
@@ -1443,7 +1359,7 @@ Shift<Key>Tab: prev-tab-group()
           Group: Control
             vipComment = "XmFormDialog is a convenience widget combining an unmanaged XmForm within an XmDialogShell parent. It is used for interactions not supported by the standard dialog set. No labels, buttons or other dialog components are automatically available.";
             vip_x = 120;
-            vip_y = 2230;
+            vip_y = 2120;
               {
                 currentMarker = mgiMarker : mgiDataTypes;
                 Group: Constraint
@@ -1782,7 +1698,7 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_any;
           Group: Control
             vip_x = 120;
-            vip_y = 1680;
+            vip_y = 1625;
             vipComment = "";
               {
                 mgiCitation = mgiCitation : mgiDataTypes;

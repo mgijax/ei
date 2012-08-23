@@ -13,6 +13,9 @@
 --
 -- History
 --
+-- lec	06/19/2012
+--	- TR11110/Needs Review: added Date
+--
 -- lec	04/15/2008
 --	TR 8511; remove IMSRMenu
 --
@@ -84,6 +87,7 @@ dmodule Strains is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
+#include <mgdsql.h>
 
 devents:
 
@@ -100,8 +104,8 @@ devents:
 	Modify :local [];
 	ModifyAttribute :local [];
 	ModifyNeedsReview :local [];
+	ModifyJAX :local [];
 	ModifyGenotype :local [];
-	ModifySuperStandard :local [];
 
         -- Process Strain Merge Events
         StrainMergeInit :local [];
@@ -113,6 +117,7 @@ devents:
 	Select :local [item_position : integer;];
 	SelectReferenceMGI :local [doCount : boolean := false;];
 	SelectDataSets :local [doCount : boolean := false;];
+	SetPermissionsJAX :local [];
 
 	ResetModificationFlags :local [];
 	VerifyStrainMarker :local [];
@@ -136,12 +141,9 @@ locals:
 	speciesNotSpecified : string;
 	strainTypeNotSpecified : string;
 
-	superTermKey : string;
-	superAnnotKey : string;
-	superAnnotTypeKey : string := "1004";
 	attributeAnnotTypeKey : string := "1009";
 	reviewAnnotTypeKey : string := "1008";
-	genericQualifierKey : string := "53"; -- generic annotation qualifier key
+	genericQualifierKey : string := "1614158"; -- generic annotation qualifier key
 
 	tables : list;
 
@@ -159,6 +161,13 @@ rules:
 	  (void) busy_cursor(mgi);
 
 	  top := create widget("StrainModule", nil, mgi);
+
+	  -- Set Permissions
+	  SetPermissions.source_widget := top;
+	  send(SetPermissions, 0);
+
+	  -- Set Permissions JAX
+	  send(SetPermissionsJAX, 0);
 
 	  -- Build Dynamic GUI Components
 	  send(BuildDynamicComponents, 0);
@@ -246,9 +255,8 @@ rules:
           LoadList.list := top->NeedsReviewList;
 	  send(LoadList, 0);
 
-	  superTermKey := mgi_sql1("select _Term_key from VOC_Term where term = 'super standard'");
-	  speciesNotSpecified := mgi_sql1("select _Term_key from VOC_Term_StrainSpecies_View where term = 'Not Specified'");
-	  strainTypeNotSpecified := mgi_sql1("select _Term_key from VOC_Term_StrainType_View where term = 'Not Specified'");
+	  speciesNotSpecified := mgi_sql1(strain_speciesNS());
+	  strainTypeNotSpecified := mgi_sql1(strain_strainNS());
 
           -- Set Row Count
           SetRowCount.source_widget := top;
@@ -293,6 +301,25 @@ rules:
 	end does;
 
 --
+-- SetPermissionsJAX
+--
+--      Set Save buttons permissions based on EI module
+--
+ 
+        SetPermissionsJAX does
+	   pcmd : string;
+	   permOK : integer;
+
+	   pcmd := strain_checkuser(mgi_DBprstr(global_login));
+		
+	   permOK := (integer) mgi_sql1(pcmd);
+
+	   if (permOK = 0) then
+	     top->Genotype->Save.sensitive := false;
+	   end if;
+
+        end does;
+--
 -- Add
 --
 -- Construct and execute commands for record insertion
@@ -330,8 +357,6 @@ rules:
 	  send(ModifyAttribute, 0);
 	  send(ModifyNeedsReview, 0);
 	  send(ModifyGenotype, 0);
-	  superAnnotKey := NO;
-	  send(ModifySuperStandard, 0);
 
 	  --  Process Markers/Alleles
 
@@ -462,7 +487,6 @@ rules:
 	  send(ModifyAttribute, 0);
 	  send(ModifyNeedsReview, 0);
 	  send(ModifyGenotype, 0);
-	  send(ModifySuperStandard, 0);
 
 	  --  Process Markers/Alleles
 
@@ -479,12 +503,14 @@ rules:
 	  send(ProcessSynTypeTable, 0);
           cmd := cmd + top->Synonym->Table.sqlCmd;
 
-	  --  Process ReferenceMGI
+	  --  Process Reference
 
 	  ProcessRefTypeTable.table := top->Reference->Table;
 	  ProcessRefTypeTable.objectKey := currentRecordKey;
 	  send(ProcessRefTypeTable, 0);
           cmd := cmd + top->Reference->Table.sqlCmd;
+
+	  -- Process Notes
 
 	  ProcessNoteForm.notew := top->mgiNoteForm;
 	  ProcessNoteForm.tableID := MGI_NOTE;
@@ -620,6 +646,42 @@ rules:
 	end does;
  
 --
+-- ModifyJAX
+--
+-- Activated from:	Save References moddule & Genotype module
+--
+-- Construct and execute command for record modifcations to References and Genotypes only --
+
+	ModifyJAX does
+          (void) busy_cursor(top);
+
+	  if (currentRecordKey.length = 0) then
+	    (void) reset_cursor(top);
+	    StatusReport.source_widget := top;
+	    StatusReport.message := "Cannot save this Genotype information if a record is not selected.";
+	    send(StatusReport, 0);
+	    return;
+	  end if;
+
+	  cmd := "";
+
+	  send(ModifyGenotype, 0);
+
+	  --  Process Reference
+
+	  ProcessRefTypeTable.table := top->Reference->Table;
+	  ProcessRefTypeTable.objectKey := currentRecordKey;
+	  send(ProcessRefTypeTable, 0);
+          cmd := cmd + top->Reference->Table.sqlCmd;
+
+          ModifySQL.cmd := cmd;
+	  ModifySQL.list := top->QueryList;
+          send(ModifySQL, 0);
+
+          (void) reset_cursor(top);
+	end does;
+
+--
 -- ModifyGenotype
 --
 -- Activated from: devent Modify
@@ -676,34 +738,6 @@ rules:
 	  end while;
 	end does;
  
---
--- ModifySuperStandard
---
--- Activated from: devent Modify
---
--- Construct insert/delete for Super Standard Info (Annotation)
--- Appends to global "cmd" string
---
-
-	ModifySuperStandard does
-
-	  -- add a new Annotation record if set and one does not already exist
-
-	  if (superAnnotKey = NO and top->SuperStandardMenu.menuHistory.defaultValue = YES) then
-		cmd := cmd + mgi_setDBkey(VOC_ANNOT, NEWKEY, "superAnnotKey") +
-		      mgi_DBinsert(VOC_ANNOT, "superAnnotKey") +
-		      superAnnotTypeKey + "," +
-		      currentRecordKey + "," +
-		      superTermKey + ",0)\n";
-
-	  -- remove Annotation record if not set and one does already exist
-
-	  elsif (superAnnotKey != NO and top->SuperStandardMenu.menuHistory.defaultValue = NO) then
-		cmd := cmd + mgi_DBdelete(VOC_ANNOT, superAnnotKey);
-	  end if;
-
-	end does;
-
 --
 -- PrepareSearch
 --
@@ -785,16 +819,6 @@ rules:
             where := where + "\nand s.private = " + top->PrivateMenu.menuHistory.searchValue;
           end if;
 
-	  if (top->SuperStandardMenu.menuHistory.searchValue = YES) then
-            where := where + "\nand exists (select 1 from PRB_Strain_Super_View v " +
-		"where s._Strain_key = v._Strain_key" + 
-		" and v._Term_key = " + superTermKey + ") ";
-	  elsif (top->SuperStandardMenu.menuHistory.searchValue = NO) then
-            where := where + "\nand not exists (select 1 from PRB_Strain_Super_View v " +
-		"where s._Strain_key = v._Strain_key" + 
-		" and v._Term_key = " + superTermKey + ") ";
-          end if;
-
 	  -- Strain Attributes
 
 	  row := 0;
@@ -802,7 +826,7 @@ rules:
             value := mgi_tblGetCell(top->StrainAttribute->Table, row, top->StrainAttribute->Table.termKey);
 
             if (value.length > 0 and value != "NULL") then
-	      from := from + ",PRB_Strain_Attribute_View v";
+	      from := from + ",PRB_Strain_AttributeVOC_Term_StrainSpecies_View_View v";
 	      where := where + "\nand s._Strain_key = v._Strain_key";
 	      where := where + "\nand v._Term_key = " + value;
 	    end if;
@@ -818,7 +842,7 @@ rules:
 
             if (value.length > 0 and value != "NULL") then
 	      from := from + ",PRB_Strain_NeedsReview_View v";
-	      where := where + "\nand s._Strain_key = v._Strain_key";
+	      where := where + "\nand s._Strain_key = v._Object_key";
 	      where := where + "\nand v._Term_key = " + value;
 	    end if;
 
@@ -837,9 +861,29 @@ rules:
 	    from_straingenotype := true;
           end if;
 
+          value := mgi_tblGetCell(top->Genotype->Table, 0, top->Genotype->Table.modifiedBy);
+          if (value.length > 0) then
+            where := where + "\nand sg.modifiedBy like " + mgi_DBprstr(value);
+	    from_straingenotype := true;
+          end if;
+
+	  -- Modification date
+
+	  top->Genotype->Table.sqlCmd := "";
+          QueryDate.source_widget := top->Genotype->Table;
+	  QueryDate.row := 0;
+	  QueryDate.column := top->Genotype->Table.modifiedDate;
+	  QueryDate.fieldName := "modification_date";
+	  QueryDate.tag := "sg";
+          send(QueryDate, 0);
+	  if (top->Genotype->Table.sqlCmd.length > 0) then
+	    where := where + top->Genotype->Table.sqlCmd;
+	    from_straingenotype := true;
+	  end if;
+
 	  if (from_straingenotype) then
 	    where := where + "\nand s._Strain_key = sg._Strain_key";
-	    from := from + "," + mgi_DBtable(PRB_STRAIN_GENOTYPE) + " sg";
+	    from := from + "," + mgi_DBtable(PRB_STRAIN_GENOTYPE_VIEW) + " sg";
 	  end if;
 
 	  if (not from_reference) then
@@ -922,35 +966,16 @@ rules:
           end if;
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
-	  superAnnotKey := NO;
-	  results : integer := 1;
 	  row : integer;
 	  table : widget;
+          dbproc : opaque;
 
-	  cmd := "select * from " + mgi_DBtable(STRAIN_VIEW) +
-		 " where " + mgi_DBkey(STRAIN) + " = " + currentRecordKey + "\n" +
-
-		 "select * from PRB_Strain_Attribute_View " +
-		 "where _Strain_key = " + currentRecordKey + "\n" +
-
-		 "select * from PRB_Strain_NeedsReview_View " +
-		 "where _Strain_key = " + currentRecordKey + "\n" +
-
-		 "select _Annot_key from PRB_Strain_Super_View " +
-		 "where _Strain_key = " + currentRecordKey + "\n" +
-
-		 "select distinct _StrainGenotype_key, _Genotype_key, _Qualifier_key, qualifier, mgiID, description " +
-		 "from PRB_Strain_Genotype_View " +
-		 "where _Strain_key = " + currentRecordKey + "\n";
-
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
- 
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    row := 0;
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
+	  row := 0;
+	  table := top->ModificationHistory->Table;
+	  cmd := strain_select(currentRecordKey);
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	        top->ID->text.value := mgi_getstr(dbproc, 1);
 		top->strainSpecies->ObjectID->text.value := mgi_getstr(dbproc, 2);
 		top->strainSpecies->Species->text.value := mgi_getstr(dbproc, 11);
@@ -959,7 +984,6 @@ rules:
                 top->Name->text.value := mgi_getstr(dbproc, 4);
 		origStrainName := top->Name->text.value;
 
-	        table := top->ModificationHistory->Table;
 		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 13));
 		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 9));
 		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 14));
@@ -971,48 +995,61 @@ rules:
                 SetOption.source_widget := top->PrivateMenu;
                 SetOption.value := mgi_getstr(dbproc, 6);
                 send(SetOption, 0);
+	        row := row + 1;
+            end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
 
-	      elsif (results = 2) then
-		table := top->StrainAttribute->Table;
+	  row := 0;
+	  table := top->StrainAttribute->Table;
+	  cmd := strain_attribute(currentRecordKey);
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
                 (void) mgi_tblSetCell(table, row, table.annotCurrentKey, mgi_getstr(dbproc, 1));
                 (void) mgi_tblSetCell(table, row, table.termKey, mgi_getstr(dbproc, 3));
                 (void) mgi_tblSetCell(table, row, table.term, mgi_getstr(dbproc, 4));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+	        row := row + 1;
+            end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
 
-	      elsif (results = 3) then
-		table := top->NeedsReview->Table;
+	  row := 0;
+	  table := top->NeedsReview->Table;
+	  cmd := strain_needsreview(currentRecordKey);
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
                 (void) mgi_tblSetCell(table, row, table.annotCurrentKey, mgi_getstr(dbproc, 1));
-                (void) mgi_tblSetCell(table, row, table.termKey, mgi_getstr(dbproc, 3));
-                (void) mgi_tblSetCell(table, row, table.term, mgi_getstr(dbproc, 4));
+                (void) mgi_tblSetCell(table, row, table.termKey, mgi_getstr(dbproc, 4));
+                (void) mgi_tblSetCell(table, row, table.term, mgi_getstr(dbproc, 8));
+                (void) mgi_tblSetCell(table, row, table.modifiedDate, mgi_getstr(dbproc, 7));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+	        row := row + 1;
+            end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
 
-	      elsif (results = 4) then
-		superAnnotKey := mgi_getstr(dbproc, 1);
-
-	      elsif (results = 5) then
-		table := top->Genotype->Table;
+	  row := 0;
+	  table := top->Genotype->Table;
+	  cmd := strain_genotype(currentRecordKey);
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
                 (void) mgi_tblSetCell(table, row, table.strainGenotypeKey, mgi_getstr(dbproc, 1));
                 (void) mgi_tblSetCell(table, row, table.genotypeKey, mgi_getstr(dbproc, 2));
                 (void) mgi_tblSetCell(table, row, table.qualifierKey, mgi_getstr(dbproc, 3));
                 (void) mgi_tblSetCell(table, row, table.qualifier, mgi_getstr(dbproc, 4));
                 (void) mgi_tblSetCell(table, row, table.genotype, mgi_getstr(dbproc, 5));
                 (void) mgi_tblSetCell(table, row, table.genotypeName, mgi_getstr(dbproc, 6));
+                (void) mgi_tblSetCell(table, row, table.modifiedBy, mgi_getstr(dbproc, 7));
+                (void) mgi_tblSetCell(table, row, table.modifiedDate, mgi_getstr(dbproc, 8));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-	      end if;
-	      row := row + 1;
+	        row := row + 1;
             end while;
-	    results := results + 1;
           end while;
- 
-	  (void) dbclose(dbproc);
-
-	  if (superAnnotKey = NO) then
-            SetOption.value := NO;
-	  else
-            SetOption.value := YES;
-	  end if;
-          SetOption.source_widget := top->SuperStandardMenu;
-          send(SetOption, 0);
+	  (void) mgi_dbclose(dbproc);
 
           LoadStrainAlleleTypeTable.table := top->Marker->Table;
 	  LoadStrainAlleleTypeTable.tableID := PRB_STRAIN_MARKER_VIEW;
@@ -1073,30 +1110,31 @@ rules:
           end if;
 
           row : integer := 0;
+          dbproc : opaque;
  
-	  if (SelectReferenceMGI.doCount) then
-	    cmd := "execute PRB_getStrainReferences " + currentRecordKey + ",1\n";
-	  else
-	    cmd := "execute PRB_getStrainReferences " + currentRecordKey + "\n";
-	  end if;
-
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+	  cmd := strain_execref(currentRecordKey);
+          dbproc := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (SelectReferenceMGI.doCount) then
-		row := (integer) mgi_getstr(dbproc, 1);
-              else
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
                 (void) mgi_tblSetCell(table, row, table.accID, mgi_getstr(dbproc, 1));
                 (void) mgi_tblSetCell(table, row, table.dataSet, mgi_getstr(dbproc, 2));
                 row := row + 1;
-	      end if;
             end while;
           end while;
+	  (void) mgi_dbclose(dbproc);
 
-	  (void) dbclose(dbproc);
+	  if (SelectReferenceMGI.doCount) then
+	    cmd := cmd + strain_addtoexecref();
+            dbproc := mgi_dbexec(cmd);
+ 
+            while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+              while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+		row := (integer) mgi_getstr(dbproc, 1);
+              end while;
+            end while;
+	    (void) mgi_dbclose(dbproc);
+	  end if;
 
 	  top->ReferenceMGI->Records.labelString := (string) row + " Records";
 	  (void) reset_cursor(top);
@@ -1129,30 +1167,29 @@ rules:
           end if;
 
           row : integer := 0;
- 
-	  if (SelectDataSets.doCount) then
-	    cmd := "execute PRB_getStrainDataSets " + currentRecordKey + ",1\n";
-	  else
-	    cmd := "execute PRB_getStrainDataSets " + currentRecordKey + "\n";
-	  end if;
+          dbproc : opaque := mgi_dbexec(cmd);
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
- 
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (SelectDataSets.doCount) then
-		row := (integer) mgi_getstr(dbproc, 1);
-              else
+	  cmd := strain_execdataset(currentRecordKey);
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
                 (void) mgi_tblSetCell(table, row, table.accID, mgi_getstr(dbproc, 1));
                 (void) mgi_tblSetCell(table, row, table.dataSet, mgi_getstr(dbproc, 2));
                 row := row + 1;
-	      end if;
             end while;
           end while;
+	  (void) mgi_dbclose(dbproc);
 
-	  (void) dbclose(dbproc);
+	  if (SelectDataSets.doCount) then
+	    cmd := strain_execdataset("");
+            dbproc := mgi_dbexec(cmd);
+            while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+              while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+		row := (integer) mgi_getstr(dbproc, 1);
+              end while;
+            end while;
+	    (void) mgi_dbclose(dbproc);
+	  end if;
 
 	  top->DataSets->Records.labelString := (string) row + " Records";
 	  (void) reset_cursor(top);
@@ -1203,9 +1240,7 @@ rules:
  
           (void) busy_cursor(dialog);
 
-	  cmd := "exec " + mgi_DBtable(STRAIN_MERGE) +  " " +
-		  dialog->Strain1->StrainID->text.value + "," +
-	          dialog->Strain2->StrainID->text.value + "\n";
+	  cmd := strain_execmerge(dialog->Strain1->StrainID->text.value, dialog->Strain2->StrainID->text.value);
 	  
 	  ExecSQL.cmd := cmd;
 	  send(ExecSQL, 0);
@@ -1289,7 +1324,7 @@ rules:
 	    return;
 	  end if;
 
-	  strainCount := mgi_sql1("select count(*) from " + mgi_DBtable(STRAIN) + " where strain = " + mgi_DBprstr(value));
+	  strainCount := mgi_sql1(strain_count(mgi_DBprstr(value)));
 
 	  if ((integer) strainCount > 0) then
             StatusReport.source_widget := top;

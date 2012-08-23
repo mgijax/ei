@@ -23,6 +23,7 @@ dmodule OMIMVocAnnot is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
+#include <mgdsql.h>
 
 devents:
 
@@ -90,8 +91,8 @@ rules:
 	  top := create widget("OMIMVocAnnotModule", ab.name, mgi);
 
 	  -- Set Permissions
---	  SetPermissions.source_widget := top;
---	  send(SetPermissions, 0);
+	  SetPermissions.source_widget := top;
+	  send(SetPermissions, 0);
 
 	  -- Build Dynamic GUI Components
 	  send(BuildDynamicComponents, 0);
@@ -633,39 +634,16 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd : string := "select _Object_key, accID, description, short_description" +
-			  " from " + dbView + 
-			  " where _Object_key = " + currentRecordKey + 
-			  " and prefixPart = 'MGI:' and preferred = 1 " + 
-			  " order by description\n" +
-	                  "select a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier, e.*" +
-			  " from " + mgi_DBtable(VOC_ANNOT_VIEW) + " a," +
-			    mgi_DBtable(VOC_EVIDENCE_VIEW) + " e" +
-		          " where a._AnnotType_key = " + annotTypeKey +
-			  " and a._Object_key = " + currentRecordKey + 
-			  " and a._Annot_key = e._Annot_key " +
-			  " order by a.term\n" +
-			  "select distinct n._Note_key, n._Object_key, n.note, n.sequenceNum" + 
-			  " from " + 
-			    mgi_DBtable(VOC_ANNOT) + " a, " +
-			    mgi_DBtable(VOC_EVIDENCE) + " e, " +
-			    mgi_DBtable(MGI_NOTE_VOCEVIDENCE_VIEW) + " n" +
-			  " where a._Object_key = " + currentRecordKey +
-			  " and a._Annot_key = e._Annot_key" +
-			  " and e._AnnotEvidence_key = n._Object_key" +
-			  " order by n._Object_key, n.sequenceNum\n";
-
 	  row : integer := 0;
 	  i : integer;
-	  results : integer := 1;
+	  cmd : string;
+          dbproc : opaque;
 	  objectLoaded : boolean := false;
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
- 
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
+
+	  cmd := omimvoc_select1(currentRecordKey, dbView);
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	        if (not objectLoaded) then
 	          top->mgiAccession->ObjectID->text.value := mgi_getstr(dbproc, 1);
 	          top->mgiAccession->AccessionID->text.value := mgi_getstr(dbproc, 2);
@@ -675,31 +653,48 @@ rules:
 	          top->mgiAccession->AccessionName->text.value := 
 		    top->mgiAccession->AccessionName->text.value + ";" + mgi_getstr(dbproc, 4);
 		end if;
-	      elsif (results = 2) then
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.annotEvidenceKey, mgi_getstr(dbproc, 7));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.annotKey, mgi_getstr(dbproc, 8));
+            end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
 
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.termKey, mgi_getstr(dbproc, 1));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.term, mgi_getstr(dbproc, 2));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.termAccID, mgi_getstr(dbproc, 4));
+	  row := 0;
+	  cmd := omimvoc_select2(currentRecordKey, annotTypeKey);
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.annotEvidenceKey, mgi_getstr(dbproc, 7));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.annotKey, mgi_getstr(dbproc, 8));
 
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.qualifierKey, mgi_getstr(dbproc, 5));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.qualifier, mgi_getstr(dbproc, 6));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.termKey, mgi_getstr(dbproc, 1));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.term, mgi_getstr(dbproc, 2));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.termAccID, mgi_getstr(dbproc, 4));
 
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidenceKey, mgi_getstr(dbproc, 9));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidence, mgi_getstr(dbproc, 16));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.qualifierKey, mgi_getstr(dbproc, 5));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.qualifier, mgi_getstr(dbproc, 6));
 
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.refsKey, mgi_getstr(dbproc, 10));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.jnum, mgi_getstr(dbproc, 19));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.citation, mgi_getstr(dbproc, 20));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.evidenceKey, mgi_getstr(dbproc, 9));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.evidence, mgi_getstr(dbproc, 16));
 
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.editor, mgi_getstr(dbproc, 22));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.modifiedDate, mgi_getstr(dbproc, 15));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.createdBy, mgi_getstr(dbproc, 21));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.createdDate, mgi_getstr(dbproc, 14));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.refsKey, mgi_getstr(dbproc, 10));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.jnum, mgi_getstr(dbproc, 19));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.citation, mgi_getstr(dbproc, 20));
 
-		(void) mgi_tblSetCell(annotTable, row, annotTable.editMode, TBL_ROW_NOCHG);
-	      elsif (results = 3) then
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.editor, mgi_getstr(dbproc, 22));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.modifiedDate, mgi_getstr(dbproc, 15));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.createdBy, mgi_getstr(dbproc, 21));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.createdDate, mgi_getstr(dbproc, 14));
+
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.editMode, TBL_ROW_NOCHG);
+
+	      row := row + 1;
+            end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  cmd := omimvoc_notes(currentRecordKey);
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
                 objectKey := mgi_getstr(dbproc, 2);
 		i := 0;
 		while (i < mgi_tblNumRows(annotTable)) do
@@ -710,14 +705,9 @@ rules:
 		  end if;
 		  i := i + 1;
 		end while;
-	      end if;
-	      row := row + 1;
             end while;
-	    row := 0;
-	    results := results + 1;
           end while;
- 
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
           top->QueryList->List.row := Select.item_position;
 
@@ -758,23 +748,21 @@ rules:
 	  annotTypeKey := (string) top->VocAnnotTypeMenu.menuHistory.defaultValue;
 	  annotType := top->VocAnnotTypeMenu.menuHistory.labelString;
 	  mgiTypeKey := (string) top->VocAnnotTypeMenu.menuHistory.mgiTypeKey;
-	  dbView := mgi_sql1("select dbView from ACC_MGIType where _MGIType_key = " + mgiTypeKey);
+	  dbView := mgi_sql1(omimvoc_dbview(mgiTypeKey));
 	  top->mgiAccession.mgiTypeKey := mgiTypeKey;
 	  annotTable.vocabKey := top->VocAnnotTypeMenu.menuHistory.vocabKey;
 	  annotTable.vocabEvidenceKey := top->VocAnnotTypeMenu.menuHistory.evidenceKey;
 	  annotTable.vocabQualifierKey := top->VocAnnotTypeMenu.menuHistory.qualifierKey;
 	  annotTable.annotVocab := top->VocAnnotTypeMenu.menuHistory.annotVocab;
 
-	  top->EvidenceCodeList.cmd := "select _Term_key, abbreviation " +
-		"from VOC_Term where _Vocab_key = " + (string) evidenceKey + " order by abbreviation";
+	  top->EvidenceCodeList.cmd := omimvoc_evidencecode((string) evidenceKey);
           LoadList.list := top->EvidenceCodeList;
 	  send(LoadList, 0);
 
           pos := XmListItemPos(top->EvidenceCodeList->List, xm_xmstring("TAS"));
 	  defaultEvidenceCodeKey := top->EvidenceCodeList->List.keys[pos];
 
-	  defaultQualifierKey := 
-	      mgi_sql1("select _Term_key from VOC_Term where _Vocab_key = " + (string) annotTable.vocabQualifierKey + " and term is null");
+	  defaultQualifierKey := mgi_sql1(omimvoc_qualifier((string) annotTable.vocabQualifierKey));
 
 	  (void) reset_cursor(mgi);
 	end does;

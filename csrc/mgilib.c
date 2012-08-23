@@ -14,6 +14,12 @@
  *
  * History:
  *
+ * lec 02/15/2012
+ *	- TR10955/postgres cleanup/mgi_DBrecordCount
+ *
+ * lec 01/27/2011
+ *	- TR10556;mgi_DBprnotestr;skip non-printable characters
+ *
  * lec 12/15/2010
  *	- TR 10456/TR10457; add gxd_structure
  *
@@ -128,7 +134,7 @@
 */
 
 #include <mgilib.h>
-#include <syblib.h>
+#include <mgisql.h>
 
 char *global_application;     /* Set in Application dModule; holds main application value */
 char *global_version;         /* Set in Application dModule; holds main application version value */
@@ -157,7 +163,7 @@ char *global_loginKey;        /* Set in Application dModule; holds login key val
 	the value of buf is: NULL
 
 	buf = mgi_DBprstr("Cook")
-	the value of buf is: \"Cook\"
+	the value of buf is: \'Cook\'
 
 	buf = mgi_DBprstr("NULL")
 	the value of buf is: NULL
@@ -212,7 +218,7 @@ char *mgi_DBprstr(char *value)
     while (newValue[--i] == ' ')
       newValue[i] = '\0';
 
-    sprintf(buf, "\"%s\"", mgi_escape_quotes(newValue));
+    sprintf(buf, "\'%s\'", mgi_escape_quotes(newValue));
   }
 
   return(buf);
@@ -238,7 +244,7 @@ char *mgi_DBprstr(char *value)
 	the value of buf is: NULL
 
 	buf = mgi_DBprstr("Cook")
-	the value of buf is: \"Cook\"
+	the value of buf is: \'Cook\'
 
 	buf = mgi_DBprstr("NULL")
 	the value of buf is: NULL
@@ -251,7 +257,6 @@ char *mgi_DBprstr2(char *value)
 {
   static char buf[TEXTBUFSIZ];
   int allSpaces = 1;
-  int i;
   char *s;
 
   memset(buf, '\0', sizeof(buf));
@@ -269,7 +274,7 @@ char *mgi_DBprstr2(char *value)
   }
   else
   {
-    sprintf(buf, "\"%s\"", mgi_escape_quotes(value));
+    sprintf(buf, "\'%s\'", mgi_escape_quotes(value));
   }
 
   return(buf);
@@ -282,6 +287,10 @@ char *mgi_DBprstr2(char *value)
    If the value is null, return NULL.
    If the value = "NULL", return NULL.
    If the value is a string of blanks, return NULL.
+   If the value contains a non-printable character,
+      or a non-control character, then replace the
+      character with '[?]', as a cue to the user that
+      there are non-printable characters in their text
 
    requires:	
 	value (char *), the value
@@ -295,7 +304,7 @@ char *mgi_DBprstr2(char *value)
 	the value of buf is: NULL
 
 	buf = mgi_DBprnotestr("Cook")
-	the value of buf is: \"Cook\"
+	the value of buf is: \'Cook\'
 
 	buf = mgi_DBprnotestr("NULL")
 	the value of buf is: NULL
@@ -307,11 +316,13 @@ char *mgi_DBprstr2(char *value)
 char *mgi_DBprnotestr(char *value)
 {
   static char buf[TEXTBUFSIZ];
+  char newValue[TEXTBUFSIZ];
   int allSpaces = 1;
-  int i;
+  int i = 0;
   char *s;
 
   memset(buf, '\0', sizeof(buf));
+  memset(newValue, '\0', sizeof(buf));
 
   for (s = value; *s != '\0'; s++)
   {
@@ -326,7 +337,21 @@ char *mgi_DBprnotestr(char *value)
   }
   else
   {
-    sprintf(buf, "\"%s\"", mgi_escape_quotes(value));
+    /* get rid of non-printable characters */
+
+    for (s = value; *s != '\0'; s++)
+    {
+      while (!isprint(*s) && !iscntrl(*s))
+      {
+        s++;
+	newValue[i++] = '[';
+	newValue[i++] = '?';
+	newValue[i++] = ']';
+      }
+      newValue[i++] = *s;
+    }
+
+    sprintf(buf, "\'%s\'", mgi_escape_quotes(newValue));
   }
 
   return(buf);
@@ -465,7 +490,7 @@ char *mgi_DBrecordCount(int table)
   switch (table)
   {
     default:
-  	    sprintf(cmd, "exec MGI_getRowCount %s", mgi_DBtable(table));
+  	    sprintf(cmd, "%s", mgilib_count(mgi_DBtable(table)));
 	    break;
   }
 
@@ -723,6 +748,7 @@ char *mgi_DBkey(int table)
     case MGI_NOTE_MARKER_VIEW:
     case MGI_NOTE_MRKGO_VIEW:
     case MGI_NOTE_NOMEN_VIEW:
+    case MGI_NOTE_PROBE_VIEW:
     case MGI_NOTE_SEQUENCE_VIEW:
     case MGI_NOTE_SOURCE_VIEW:
     case MGI_NOTE_STRAIN_VIEW:
@@ -866,6 +892,7 @@ char *mgi_DBkey(int table)
             strcpy(buf, "_Source_key");
 	    break;
     case PRB_STRAIN_GENOTYPE:
+    case PRB_STRAIN_GENOTYPE_VIEW:
             strcpy(buf, "_StrainGenotype_key");
 	    break;
     case PRB_STRAIN_MARKER:
@@ -1395,6 +1422,12 @@ char *mgi_DBtable(int table)
     case MGI_NOTE_MRKGO_VIEW:
 	    strcpy(buf, "MGI_Note_MRKGO_View");
 	    break;
+    case MGI_NOTE_PROBE_VIEW:
+	    strcpy(buf, "MGI_Note_Probe_View");
+	    break;
+    case MGI_NOTETYPE_PROBE_VIEW:
+	    strcpy(buf, "MGI_NoteType_Probe_View");
+	    break;
     case MGI_NOTETYPE_ALLELE_VIEW:
 	    strcpy(buf, "MGI_NoteType_Allele_View");
 	    break;
@@ -1680,9 +1713,6 @@ char *mgi_DBtable(int table)
     case NOM_MARKER_VALID_VIEW:
 	    strcpy(buf, "NOM_Marker_Valid_View");
 	    break;
-    case NOM_STATUS:
-	    strcpy(buf, "VOC_Term_NomenStatus_View");
-	    break;
     case NOM_TRANSFERSYMBOL:
 	    strcpy(buf, "NOM_transferToMGD");
 	    break;
@@ -1719,6 +1749,9 @@ char *mgi_DBtable(int table)
 	    break;
     case PRB_STRAIN_GENOTYPE:
             strcpy(buf, "PRB_Strain_Genotype");
+	    break;
+    case PRB_STRAIN_GENOTYPE_VIEW:
+            strcpy(buf, "PRB_Strain_Genotype_View");
 	    break;
     case PRB_STRAIN_MARKER:
             strcpy(buf, "PRB_Strain_Marker");
@@ -2327,7 +2360,7 @@ char *mgi_DBinsert(int table, char *keyName)
 	    break;
     case PRB_SOURCE:
     case PRB_SOURCE_MASTER:
-            sprintf(buf, "insert %s (%s, _SegmentType_key, _Vector_key, _Organism_key, _Strain_key, _Tissue_key, _Gender_key, _CellLine_key, _Refs_key, name, description, age, isCuratorEdited, _CreatedBy_key, _ModifiedBy_key)",
+            sprintf(buf, "insert %s (%s, _SegmentType_key, _Vector_key, _Organism_key, _Strain_key, _Tissue_key, _Gender_key, _CellLine_key, _Refs_key, name, description, age, ageMin, ageMax, isCuratorEdited, _CreatedBy_key, _ModifiedBy_key)",
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case PRB_STRAIN_GENOTYPE:
@@ -2636,16 +2669,6 @@ char *mgi_DBdelete(int table, char *key)
               sprintf(buf, "delete from %s where _Class_key = %s and _Refs_key = %s\n", 
 		mgi_DBtable(table), tokens[0], tokens[1]);
 	      break;
-      case MLC_TEXT_ALL:
-	      sprintf(buf, "delete from %s where %s = %s\n  \
-			    delete from MRK_Classes where %s = %s\n  \
-			    delete from MLC_Marker where %s = %s  \
-			    delete from MLC_Reference where %s = %s\n", \
-			mgi_DBtable(table), mgi_DBkey(table), key, \
-			mgi_DBkey(table), key, \
-			mgi_DBkey(table), key, \
-			mgi_DBkey(table), key);
-	      break;
       case MGI_COLUMNS:
 	      tokens = (char **) mgi_splitfields(key, ":");
               sprintf(buf, "delete from %s where table_name = '%s' and column_name = '%s'\n", 
@@ -2885,8 +2908,7 @@ Boolean mgi_DBisAnchorMarker(char *key)
   char cmd[TEXTBUFSIZ];
 
   memset(cmd, '\0', sizeof(cmd));
-  sprintf(cmd, "exec MRK_isAnchor %s", key);
-
+  sprintf(cmd, "%s", mgilib_anchorcount(key));
   return ((strcmp(mgi_sql1(cmd), "1") == 0) ? True : False);
 }
 
@@ -2903,33 +2925,35 @@ Boolean mgi_DBisAnchorMarker(char *key)
 	  a string that has all "-characters replaced with "". 
 
    example:
-    char *str = "ab"cd";
+    char *str = 'ab'cd';
 	buf = mgi_escape_quotes(str)
 
 	buf contains:
-	   ab""cd 
-    - which will be interpreted by Sybase as ab"cd.
+	   ab''cd 
+    - which will be interpreted by Sybase as ab'cd.
 */
 
 char *mgi_escape_quotes(char *txt)
 {
     int c;
     static char outbuf[TEXTBUFSIZ];
-    char *ob=outbuf;
-    char *tp=txt;
+    char *ob = outbuf;
+    char *tp = txt;
  
-    while((c = *tp++) != '\0') {
-        switch(c) {
-            case '"':  /* double the quotes */
-                *ob++ = '"';
-                *ob++ = '"';
+    while ((c = *tp++) != '\0') 
+    {
+        switch(c) 
+	{
+            case '\'':  /* double the quotes */
+                *ob++ = '\'';
+                *ob++ = '\'';
                 break;
             default:
                 *ob++ = c;
                 break;
         }
     }
+
     *ob = '\0';
- 
     return outbuf;
 }

@@ -2,7 +2,7 @@ Module: mgiAnatDictionary
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Jan  5 12:36:26 2011";
+      lastWritten = "Thu May 24 06:54:30 2012";
         {
           DictionaryModule = Module : MGI;
           Group: Widget
@@ -126,6 +126,29 @@ Module: mgiAnatDictionary
                                       }
                                 }
                                 {
+                                  structureTextKey = CharText : mgiDataTypes;
+                                  Group: Widget
+                                    sensitive = False;
+                                  Group: Constraint
+                                    leftAttachment = attach_none;
+                                    rightAttachment = attach_form;
+                                    topAttachment = attach_opposite_widget;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    topWidget = ID;
+                                    rightOffset = 5;
+                                      {
+                                        label = XmLabel;
+                                        Group: Widget
+                                          labelString = "Edinburgh Key";
+                                      }
+                                      {
+                                        text = text : mgiDataTypes;
+                                        Group: Widget
+                                          columns = 20;
+                                      }
+                                }
+                                {
                                   structureText = CharText : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
@@ -199,23 +222,11 @@ Module: mgiAnatDictionary
                                     rightOffset = 5;
                                       {
                                         Table = mgiTable;
-                                        Group: Widget
-                                          xrtTblEditableSeries = "(all all False)";
                                             {
                                               label = XtXrtLabel;
                                               Group: Widget
                                                 labelString = "Edinburgh Aliases";
                                             }
-                                      }
-                                      {
-                                        AddRow = TablePush;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                      {
-                                        DeleteRow = TablePush;
-                                        Group: Widget
-                                          managed = False;
                                       }
                                 }
                                 {
@@ -513,6 +524,9 @@ Module: mgiAnatDictionary
                                                     PubMed = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    DXDOI = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     NSequence = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -606,13 +620,10 @@ Module: mgiAnatDictionary
                                                     RIKENFANTOM = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    TreeFam = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TreeFamGene = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    QTLArchive = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     InterPro = AccToggle : mgiOption;
@@ -631,6 +642,12 @@ Module: mgiAnatDictionary
                                                   }
                                                   {
                                                     MGIImage = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    BGEM = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    GUDMAP = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     CREX = AccToggle : mgiOption;
@@ -699,7 +716,7 @@ Module: mgiAnatDictionary
                                                     MMRRC = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    APF = AccToggle : mgiOption;
+                                                    APB = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     BCBC = AccToggle : mgiOption;
@@ -723,7 +740,10 @@ Module: mgiAnatDictionary
                                                     JPGA = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    MMHCC = AccToggle : mgiOption;
+                                                    KOMP = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NCIMR = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     MTG = AccToggle : mgiOption;
@@ -748,6 +768,12 @@ Module: mgiAnatDictionary
                                                   }
                                                   {
                                                     TAC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RMRC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    WTSI = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     IMAGELibrary = AccToggle : mgiOption;
@@ -808,6 +834,9 @@ Module: mgiAnatDictionary
                                                   }
                                                   {
                                                     EUCOMMProject = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Genentech = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EUCOMMCellLine = AccToggle : mgiOption;

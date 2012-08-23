@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include <syblib.h>
 
 extern char *mgi_setDBkey(int, int, char *);
@@ -29,22 +30,21 @@ extern char *mgi_escape_quotes(char *);
 extern char *global_application;
 extern char *global_version;
 
+#define TEXTBUFSIZ      200000
+#define ROWLIMIT        "2000"
+#define NOROWLIMIT      "0"
+
 #define NEWKEY		-1
 #define	KEYNAME		"key"
 #define	NOKEY  		"\0"
-#define	SEQKEYNAME	"seqKey"
-#define ROLLBACK 	"if @@error != 0\nbegin\nrollback transaction\nend\n"
 
 #define	NOTSPECIFIED	"-1"
 #define NOTAPPLICABLE	"-2"
 #define NOTSPECIFIED_TEXT  "Not Specified"
 #define NOTAPPLICABLE_TEXT "Not Applicable"
-#define NOTREPORTED	"Not Reported"
 
 #define YES		"1"
 #define NO 		"0"
-
-#define INTERNALCURATIONSTATE	"Internal"
 
 #define BROADCASTOFFICIAL       "official"
 #define BROADCASTINTERIM        "interim"
@@ -52,8 +52,6 @@ extern char *global_version;
 /* Table Definitions must be unique */
 
 /* MGD Tables */
-
-#define NO_TABLE		0
 
 #define BIB_REFS		100
 #define BIB_BOOKS		101
@@ -197,7 +195,6 @@ extern char *global_version;
 #define TISSUE     		323
 #define BIB_REVIEW_STATUS	324
 #define MRK_EVENT		327
-#define NOM_STATUS		328
 #define GXD_GELCONTROL		329
 #define MRK_EVENTREASON		330
 #define MRK_STATUS		331
@@ -284,6 +281,8 @@ extern char *global_version;
 #define MGI_NOTETYPE_ALLDRIVER_VIEW	659
 #define MGI_REFERENCE_ANTIBODY_VIEW	660
 #define MGI_REFTYPE_ANTIBODY_VIEW	661
+#define	MGI_NOTETYPE_PROBE_VIEW		662
+#define	MGI_NOTE_PROBE_VIEW		663
 
 /* Strains Tables */
 
@@ -295,6 +294,7 @@ extern char *global_version;
 #define STRAIN_VIEW		705
 #define VOC_TERM_STRAINALLELE_VIEW		706
 #define PRB_STRAIN_GENOTYPE	707
+#define PRB_STRAIN_GENOTYPE_VIEW	708
 
 /* VOC & DAG Tables */
 
@@ -331,9 +331,6 @@ extern char *global_version;
 /* Stored procedures */
 
 #define NOM_TRANSFERSYMBOL	2000
-
-#define	MOUSE		"1"
-#define HUMAN		"2"
 
 #define	BACKGROUNDNORMAL	"Wheat"
 #define	BACKGROUNDALT1		"Thistle"

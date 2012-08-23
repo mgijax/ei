@@ -82,6 +82,10 @@ rules:
           ab.sensitive := false;
 	  top.show;
 
+	  -- Set Permissions
+	  SetPermissions.source_widget := top;
+	  send(SetPermissions, 0);
+
 	  send(Init, 0);
 
 	  (void) reset_cursor(mgi);
@@ -298,12 +302,10 @@ rules:
 	  cmd : string := "select * from " + mgi_DBtable(TISSUE) + 
 		          " where " + mgi_DBkey(TISSUE) + " = " + currentRecordKey + "\n";
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      top->ID->text.value           := mgi_getstr(dbproc, 1);
               top->Name->text.value         := mgi_getstr(dbproc, 2);
               top->CreationDate->text.value := mgi_getstr(dbproc, 4);
@@ -314,7 +316,7 @@ rules:
             end while;
           end while;
  
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
           top->QueryList->List.row := Select.item_position;
 
@@ -358,12 +360,10 @@ rules:
 	    cmd := "execute PRB_getTissueDataSets " + currentRecordKey + "\n";
 	  end if;
 
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (SelectDataSets.doCount) then
 		row := (integer) mgi_getstr(dbproc, 1);
               else
@@ -374,7 +374,7 @@ rules:
             end while;
           end while;
 
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  top->DataSets->Records.labelString := (string) row + " Records";
 	  (void) reset_cursor(top);

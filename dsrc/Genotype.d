@@ -12,8 +12,11 @@
 --
 -- History
 --
--- 01/11/2011	lec
---	- TR10273/Europhenome/add mutant cell line (mcl)
+-- 02/15/2012	lec
+--	- TR10955/postgres cleanup/genotype_sql_2
+--
+-- 12/19/2011	lec
+--	- changed "*=" to INNER/LEFT OUTER JOIN
 --
 -- 11/23/2010	lec
 --	- TR10033/added image class
@@ -81,6 +84,7 @@ dmodule Genotype is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
+#include <mgdsql.h>
 
 devents:
 
@@ -100,7 +104,6 @@ devents:
 	PostProcess :local [];
 
 	ResetEditMode :local [];
-	ResetPerms :local [];
 
 	Select :local [item_position : integer;];
 	SelectReferences :local [];
@@ -112,7 +115,6 @@ devents:
 
 	VerifyAlleleState :local [];
 	VerifyAlleleCombination :local [];
-	VerifyAlleleMCL :local [];
 
 locals:
 	mgi : widget;
@@ -130,7 +132,6 @@ locals:
 	mgiTypeKey : string;
 
 	tables : list;
-	perms : list;
 
         currentRecordKey : string;      -- Primary Key value of currently selected record
  
@@ -183,7 +184,6 @@ rules:
 
 	Init does
 	  tables := create list("widget");
-	  perms := create list("string");
 
 	  -- List of all Table widgets used in form
 
@@ -191,8 +191,6 @@ rules:
 	  tables.append(top->Reference->Table);
 	  tables.append(top->Control->ModificationHistory->Table);
 	  tables.append(top->ImagePane->Table);
-
-	  perms.append("eurogenoannot_load");
 
 	  if (mgi->AssayModule != nil) then
 	    if (mgi->AssayModule->InSituForm.managed) then
@@ -375,12 +373,7 @@ rules:
 
         Delete does
 
-	  -- Lib.d/GoHome re-sets the allowEdit to its default
-	  -- so the override must happen here
-	  send(ResetPerms, 0);
-
-	  if (not top.allowEdit or
-	      top->ID->text.value = NOTAPPLICABLE or
+	  if (top->ID->text.value = NOTAPPLICABLE or
 	      top->ID->text.value = NOTSPECIFIED) then
             StatusReport.source_widget := top;
             StatusReport.message := "Cannot delete this record.";
@@ -420,14 +413,7 @@ rules:
 	  panePrimaryKey : string;
 	  primaryPane : integer := 0;
 
-	  -- Lib.d/GoHome re-sets the allowEdit to its default
-	  -- so the override must happen here
-	  send(ResetPerms, 0);
-
           if (not top.allowEdit) then
-            StatusReport.source_widget := top;
-            StatusReport.message := "Permission denied for this user.";
-            send(StatusReport);
             return;
           end if;
 
@@ -597,7 +583,8 @@ rules:
 	    end if;
 
             if (compoundKey.length = 0) then
-              compoundKey := mgi_sql1("select _Term_key from VOC_Term_ALLCompound_View where term = 'Not Applicable'");
+	      -- not specified key
+              compoundKey := "847167";
             end if;
 
             if (editMode = TBL_ROW_ADD) then
@@ -831,8 +818,6 @@ rules:
             where := where + "\nand g._ExistsAs_key = " + top->GenotypeExistsAsMenu.menuHistory.searchValue;
           end if;
 
-	  -- begin AllelePair
-
           value := mgi_tblGetCell(top->AllelePair->Table, 0, top->AllelePair->Table.markerKey);
 
           if (value.length > 0 and value != "NULL") then
@@ -890,32 +875,6 @@ rules:
 	      from_allele := true;
 	  end if;
 
-          value := mgi_tblGetCell(top->AllelePair->Table, 0, top->AllelePair->Table.mcl1Key);
-	  if (value.length > 0 and value != "%") then
-	      where := where + "\nand ap._MutantCellLine_key_1 = " + value;
-	      from_allele := true;
-	  else
-              value := mgi_tblGetCell(top->AllelePair->Table, 0, top->AllelePair->Table.mcl1);
-              if (value.length > 0) then
-	        where := where + "\nand ap.mutantCellLine1 like " + mgi_DBprstr(value);
-	        from_allele := true;
-	      end if;
-	  end if;
-
-          value := mgi_tblGetCell(top->AllelePair->Table, 0, top->AllelePair->Table.mcl2Key);
-	  if (value.length > 0 and value != "%") then
-	      where := where + "\nand ap._MutantCellLine_key_2 = " + value;
-	      from_allele := true;
-	  else
-              value := mgi_tblGetCell(top->AllelePair->Table, 0, top->AllelePair->Table.mcl2);
-              if (value.length > 0) then
-	        where := where + "\nand ap.mutantCellLine2 like " + mgi_DBprstr(value);
-	        from_allele := true;
-	      end if;
-	  end if;
-
-	  -- end AllelePair
-
 	  -- If no manual search constraints entered...
 	  if (where.length > 0) then
 	    manualSearch := true;
@@ -948,7 +907,7 @@ rules:
 	  end if;
 
 	  select := "select distinct g._Genotype_key, " +
-	     "g.strain + ',' + ap.allele1 + ',' + ap.allele2\n" + 
+	     "g.strain || ',' || ap.allele1 || ',' || ap.allele2, g.strain, ap.allele1\n" + 
 	     from + "\n" + where;
 
 	  -- Reference search
@@ -957,7 +916,7 @@ rules:
           value := mgi_tblGetCell(top->Reference->Table, 0, top->Reference->Table.refsKey);
           if (value.length > 0) then
 	    Query.source_widget := top;
-	    Query.select := "exec MGI_searchGenotypeByRef " + value + "\n";
+	    Query.select := genotype_search(value);
 	    Query.table := (integer) NOTSPECIFIED;
 	    send(Query, 0);
 	  elsif (assayKey.length > 0) then
@@ -975,6 +934,7 @@ rules:
 
 	  (void) reset_cursor(top);
 	end does;
+
 
 --
 -- SelectGenotypeRecord
@@ -1033,36 +993,6 @@ rules:
         end does;
 
 --
--- ResetPerms
---
--- Sets top.allowEdit = false for each control users found in the permissions list (perms)
---
-
-        ResetPerms does
-	  controlTable : widget := top->Control->ModificationHistory->Table;
-	  controlUser : string := mgi_tblGetCell(controlTable, controlTable.createdBy, controlTable.byUser);
-          deniedUser : string;
-
-	  -- note that Lib.d/GoHome re-sets the allowEdit to its default
-	  -- if controlUser exists in the perms list, then set top.allowEdit = false
-
-	  perms.open;
-	  while (perms.more) do
-
-	    deniedUser := perms.next;
-
-	    if (controlUser = deniedUser) then
-	      top.allowEdit := false;
-	    else
-	      top.allowEdit := true;
-	    end if;
-
-	  end while;
-	  perms.close;
-
-        end does;
-
---
 -- Select
 --
 -- Retrieve and display detail information for specific record
@@ -1099,114 +1029,94 @@ rules:
 	  results : integer := 1;
 	  row : integer := 0;
 	  table : widget;
+          dbproc : opaque;
 
-	  cmd := "select * from " + mgi_DBtable(GXD_GENOTYPE_VIEW) +
-		" where _Genotype_key = " + currentRecordKey + "\n" +
+	  cmd := genotype_select(currentRecordKey);
+	  table := top->Control->ModificationHistory->Table;
+	  dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+              top->ID->text.value := mgi_getstr(dbproc, 1);
+              top->EditForm->Strain->StrainID->text.value := mgi_getstr(dbproc, 2);
+              top->EditForm->Strain->Verify->text.value := mgi_getstr(dbproc, 10);
+	      (void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 13));
+	      (void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 8));
+	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 14));
+	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 9));
 
-	         "select * from " + mgi_DBtable(GXD_ALLELEPAIR_VIEW) + 
-		 " where _Genotype_key = " + currentRecordKey + "\norder by sequenceNum\n" +
+              SetOption.source_widget := top->ConditionalMenu;
+              SetOption.value := mgi_getstr(dbproc, 3);
+              send(SetOption, 0);
 
-		 "select note, sequenceNum from " + mgi_DBtable(MGI_NOTE_GENOTYPE_VIEW) +
-		 " where _Object_key = " + currentRecordKey + 
-		 " and noteType = 'Combination Type 1'" + "\norder by sequenceNum\n" +
-
-		 "select _Assoc_key, _ImagePane_key, _ImageClass_key, figureLabel, term, " +
-		 "mgiID, pixID, isPrimary " +
-		 "from " + mgi_DBtable(IMG_IMAGEPANE_ASSOC_VIEW) +
-		 " where _Object_key = " + currentRecordKey +
-		 " and _MGIType_key = " + mgiTypeKey +
-		 " order by isPrimary desc, mgiID\n";
-
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
-
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    row := 0;
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-
-	      if (results = 1) then
-                top->ID->text.value := mgi_getstr(dbproc, 1);
-                top->EditForm->Strain->StrainID->text.value := mgi_getstr(dbproc, 2);
-                top->EditForm->Strain->Verify->text.value := mgi_getstr(dbproc, 10);
-		table := top->Control->ModificationHistory->Table;
-		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 13));
-		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 8));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 14));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 9));
-
-                SetOption.source_widget := top->ConditionalMenu;
-                SetOption.value := mgi_getstr(dbproc, 3);
-                send(SetOption, 0);
-
-                SetOption.source_widget := top->GenotypeExistsAsMenu;
-                SetOption.value := mgi_getstr(dbproc, 5);
-                send(SetOption, 0);
-
-	      elsif (results = 2) then
-	  	table := top->AllelePair->Table;
-	        (void) mgi_tblSetCell(table, row, table.pairKey, mgi_getstr(dbproc, 1));
-	        (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 12));
-	        (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 12));
-	        (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 7));
-	        (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 17));
-	        (void) mgi_tblSetCell(table, row, table.markerChr, mgi_getstr(dbproc, 18));
-	        (void) mgi_tblSetCell(table, row, (integer) table.alleleKey[1], mgi_getstr(dbproc, 3));
-	        (void) mgi_tblSetCell(table, row, (integer) table.alleleKey[2], mgi_getstr(dbproc, 4));
-	        (void) mgi_tblSetCell(table, row, (integer) table.alleleSymbol[1], mgi_getstr(dbproc, 19));
-	        (void) mgi_tblSetCell(table, row, (integer) table.alleleSymbol[2], mgi_getstr(dbproc, 20));
-		(void) mgi_tblSetCell(table, row, table.stateKey, mgi_getstr(dbproc, 8));
-		(void) mgi_tblSetCell(table, row, table.state, mgi_getstr(dbproc, 21));
-		(void) mgi_tblSetCell(table, row, table.compoundKey, mgi_getstr(dbproc, 9));
-		(void) mgi_tblSetCell(table, row, table.compound, mgi_getstr(dbproc, 22));
-		(void) mgi_tblSetCell(table, row, table.mcl1Key, mgi_getstr(dbproc, 5));
-		(void) mgi_tblSetCell(table, row, table.isNotReported1, mgi_getstr(dbproc, 10));
-		(void) mgi_tblSetCell(table, row, table.mcl1, mgi_getstr(dbproc, 23));
-		(void) mgi_tblSetCell(table, row, table.mcl2Key, mgi_getstr(dbproc, 6));
-		(void) mgi_tblSetCell(table, row, table.isNotReported2, mgi_getstr(dbproc, 11));
-		(void) mgi_tblSetCell(table, row, table.mcl2, mgi_getstr(dbproc, 24));
-		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-
-		-- if "not reported" is yes/true...
-		if (mgi_getstr(dbproc, 10) = YES) then
-		  (void) mgi_tblSetCell(table, row, table.mcl1, NOTREPORTED);
-		end if;
-
-		if (mgi_getstr(dbproc, 11) = YES) then
-		  (void) mgi_tblSetCell(table, row, table.mcl2, NOTREPORTED);
-		end if;
-
-		row := row + 1;
-
-	      elsif (results = 3) then
-	          top->EditForm->CombinationNote1->text.value := top->EditForm->CombinationNote1->text.value +
-			mgi_getstr(dbproc, 1);
-
-	      elsif (results = 4) then
-		(void) mgi_tblSetCell(imgTable, row, imgTable.assocKey, mgi_getstr(dbproc, 1));
-		(void) mgi_tblSetCell(imgTable, row, imgTable.paneKey, mgi_getstr(dbproc, 2));
-		(void) mgi_tblSetCell(imgTable, row, imgTable.imageClassKey, mgi_getstr(dbproc, 3));
-		(void) mgi_tblSetCell(imgTable, row, imgTable.figureLabel, mgi_getstr(dbproc, 4));
-		(void) mgi_tblSetCell(imgTable, row, imgTable.imageClass, mgi_getstr(dbproc, 5));
-		(void) mgi_tblSetCell(imgTable, row, imgTable.mgiID, mgi_getstr(dbproc, 6));
-		(void) mgi_tblSetCell(imgTable, row, imgTable.pixID, mgi_getstr(dbproc, 7));
-		(void) mgi_tblSetCell(imgTable, row, imgTable.isPrimaryKey, mgi_getstr(dbproc, 8));
-		(void) mgi_tblSetCell(imgTable, row, imgTable.editMode, TBL_ROW_NOCHG);
-
-		if (mgi_getstr(dbproc, 6) = YES) then
-		    (void) mgi_tblSetCell(imgTable, row, imgTable.isPrimary, "Yes");
-	        else
-		    (void) mgi_tblSetCell(imgTable, row, imgTable.isPrimary, "No");
-		end if;
-
-		row := row + 1;
-
-	      end if;
+              SetOption.source_widget := top->GenotypeExistsAsMenu;
+              SetOption.value := mgi_getstr(dbproc, 5);
+              send(SetOption, 0);
 	    end while;
-	    results := results + 1;
 	  end while;
+	  (void) mgi_dbclose(dbproc);
 
-	  (void) dbclose(dbproc);
+	  row := 0;
+	  cmd := genotype_allelepair(currentRecordKey);
+	  table := top->AllelePair->Table;
+	  dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      (void) mgi_tblSetCell(table, row, table.pairKey, mgi_getstr(dbproc, 1));
+	      (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 8));
+	      (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 8));
+	      (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 5));
+	      (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 13));
+	      (void) mgi_tblSetCell(table, row, table.markerChr, mgi_getstr(dbproc, 14));
+	      (void) mgi_tblSetCell(table, row, (integer) table.alleleKey[1], mgi_getstr(dbproc, 3));
+	      (void) mgi_tblSetCell(table, row, (integer) table.alleleKey[2], mgi_getstr(dbproc, 4));
+	      (void) mgi_tblSetCell(table, row, (integer) table.alleleSymbol[1], mgi_getstr(dbproc, 15));
+	      (void) mgi_tblSetCell(table, row, (integer) table.alleleSymbol[2], mgi_getstr(dbproc, 16));
+	      (void) mgi_tblSetCell(table, row, table.stateKey, mgi_getstr(dbproc, 6));
+	      (void) mgi_tblSetCell(table, row, table.state, mgi_getstr(dbproc, 17));
+	      (void) mgi_tblSetCell(table, row, table.compoundKey, mgi_getstr(dbproc, 7));
+	      (void) mgi_tblSetCell(table, row, table.compound, mgi_getstr(dbproc, 18));
+	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+	      row := row + 1;
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  cmd := genotype_notes(currentRecordKey);
+	  dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      top->EditForm->CombinationNote1->text.value := top->EditForm->CombinationNote1->text.value +
+			mgi_getstr(dbproc, 1);
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  row := 0;
+	  cmd := genotype_images(currentRecordKey, mgiTypeKey);
+	  dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      (void) mgi_tblSetCell(imgTable, row, imgTable.assocKey, mgi_getstr(dbproc, 1));
+	      (void) mgi_tblSetCell(imgTable, row, imgTable.paneKey, mgi_getstr(dbproc, 2));
+	      (void) mgi_tblSetCell(imgTable, row, imgTable.imageClassKey, mgi_getstr(dbproc, 3));
+	      (void) mgi_tblSetCell(imgTable, row, imgTable.figureLabel, mgi_getstr(dbproc, 4));
+	      (void) mgi_tblSetCell(imgTable, row, imgTable.imageClass, mgi_getstr(dbproc, 5));
+	      (void) mgi_tblSetCell(imgTable, row, imgTable.mgiID, mgi_getstr(dbproc, 6));
+	      (void) mgi_tblSetCell(imgTable, row, imgTable.pixID, mgi_getstr(dbproc, 7));
+	      (void) mgi_tblSetCell(imgTable, row, imgTable.isPrimaryKey, mgi_getstr(dbproc, 8));
+	      (void) mgi_tblSetCell(imgTable, row, imgTable.editMode, TBL_ROW_NOCHG);
+      
+	      if (mgi_getstr(dbproc, 8) = YES) then
+	          (void) mgi_tblSetCell(imgTable, row, imgTable.isPrimary, "Yes");
+	      else
+	          (void) mgi_tblSetCell(imgTable, row, imgTable.isPrimary, "No");
+	      end if;
+
+	      row := row + 1;
+
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
 
 	  LoadAcc.table := accTable;
 	  LoadAcc.objectKey := currentRecordKey;
@@ -1249,13 +1159,11 @@ rules:
 	  (void) busy_cursor(top);
 
 	  cmd := "exec GXD_getGenotypesDataSets " + currentRecordKey;
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
+          dbproc : opaque := mgi_dbexec(cmd);
 
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    row := 0;
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 1));
 	      (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 2));
 	      (void) mgi_tblSetCell(table, row, table.dataSet, mgi_getstr(dbproc, 3));
@@ -1263,7 +1171,7 @@ rules:
 	    end while;
 	  end while;
 
-	  (void) dbclose(dbproc);
+	  (void) mgi_dbclose(dbproc);
 
 	  top->Reference->Records.labelString := (string) row + " Records";
 
@@ -1487,165 +1395,6 @@ rules:
 
 	end does;
 
---
--- VerifyAlleleMCL
---
--- Activated from:  Table ValidateCellCallback
---
---	VerifyAllele has already been executed, so:
---	  if an Allele key already exists and has been verified, continue
---	  else return
---
---	verify the MCL info for the given Allele
---	if there is one MCL, then attach the MCL key/id and return
--- 	if there is > one MCL for the Allele:
---	   retrieve/display the list of MCLs available for the Allele
---	   include the "Not Reported" option (1)
---	   have the user chose one of the options from the list
---	   and attach the MCL key/id using the option selected by the user
---
---	Assumes use of mgiAllele templates if text translation processing
---
- 
-        VerifyAlleleMCL does
-	  table : widget := top->AllelePair->Table;
-          root : widget := table.root;
-
-	  -- currently this function is only used for Tables
-
-	  row : integer := VerifyAlleleMCL.row;
-	  column : integer := VerifyAlleleMCL.column;
-	  reason : integer := VerifyAlleleMCL.reason;
-
-	  if (reason = TBL_REASON_VALIDATE_CELL_END) then
-	    return;
-	  end if;
-
-	  key : integer;
-          alleleKey : integer;
-          mclKey : integer;
-	  mclName : integer;
-	  isNotReported : integer;
-
-	  mclKeys : string_list := create string_list();
-	  mclNames : string_list := create string_list();
-
-	  results : xm_string_list := create xm_string_list();
-	  select : string;
-
-          dbproc :opaque;
-	  whichMCL : integer;
-
-	  if (column = (integer) table.alleleSymbol[1]) then
-	    key := (integer) table.alleleKey[1];
-	    alleleKey := (integer) mgi_tblGetCell(table, row, key);
-	    mclKey := table.mcl1Key;
-	    mclName := table.mcl1;
-	    isNotReported := table.isNotReported1;
-	  elsif (column = (integer) table.alleleSymbol[2]) then
-	    key := (integer) table.alleleKey[2];
-	    alleleKey := (integer) mgi_tblGetCell(table, row, key);
-	    mclKey := table.mcl2Key;
-	    mclName := table.mcl2;
-	    isNotReported := table.isNotReported2;
-	  else
-	    return;
-	  end if;
-
-          -- If the Allele key is null, then do nothing
-
-          if (alleleKey = 0) then
-            (void) mgi_tblSetCell(table, row, mclKey, "NULL");
-            (void) mgi_tblSetCell(table, row, mclName, "");
-	    return;
-          end if;
-
-          (void) busy_cursor(top);
- 
-	  -- If Allele contains one MCL, then use it
-	  -- Else, retrieve all MCL's + Not Reported and display choices to user
-
-	  (void) mgi_tblSetCell(table, row, mclKey, "");
-	  whichMCL := 1;
- 
-          select := "select _MutantCellLine_key, cellLine " +
-		  "from " + mgi_DBtable(ALL_ALLELE_CELLLINE_VIEW) +
-                  " where _Allele_key = " + (string) alleleKey;
-
-          dbproc := mgi_dbopen();
-          (void) dbcmd(dbproc, select);
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      mclKeys.insert(mgi_getstr(dbproc, 1), mclKeys.count + 1);
-	      mclNames.insert(mgi_getstr(dbproc, 2), mclNames.count + 1);
-	      results.insert(mgi_getstr(dbproc, 2), results.count + 1);
-            end while;
-          end while;
-          (void) dbclose(dbproc);
- 
-	  -- If No MCL Exist, then set MCL to null
-
-	  if (mclKeys.count = 0) then
-            (void) mgi_tblSetCell(table, row, mclKey, "NULL");
-            (void) mgi_tblSetCell(table, row, isNotReported, "0");
-            (void) reset_cursor(top);
-            return;
-	  end if;
-
-	  -- If MCL count = 1, then set MCL key/id and return
-
-          if (mclKeys.count = 1) then
-            (void) mgi_tblSetCell(table, row, mclKey, mclKeys[0]);
-            (void) mgi_tblSetCell(table, row, mclName, mclNames[0]);
-            (void) mgi_tblSetCell(table, row, isNotReported, "0");
-            (void) reset_cursor(top);
-            return;
-          end if;
-
-	  -- 
-	  -- If MCL count > 1, then manage WhichItem dialog and wait for user to select MCL
-	  --
-
-          -- Add "not reported" to MCL list
-	  mclKeys.insert(YES, mclKeys.count + 1);
-	  mclNames.insert(NOTREPORTED, mclNames.count + 1);
-	  results.insert(NOTREPORTED, results.count + 1);
-
-	  -- Add items to MCL List
-          -- If keys doesn't exist already, create it
- 
-          if (root->WhichItem->ItemList->List.keys = nil) then
-            root->WhichItem->ItemList->List.keys := create string_list();
-          end if;
- 
-          root->WhichItem->ItemList->List.keys := mclKeys;
-	  (void) XmListDeleteAllItems(root->WhichItem->ItemList->List);
-	  (void) XmListAddItems(root->WhichItem->ItemList->List, results, results.count, 0);
-
-          root->WhichItem.managed := true;
-
-	  while (root->WhichItem.managed = true) do
-	    (void) keep_busy();
-	  end while;
-
-	  whichMCL := root->WhichItem->ItemList->List.row;
- 
-	  -- not reported selected
-	  if (mclKeys[whichMCL] = YES) then
-            (void) mgi_tblSetCell(table, row, mclKey, "NULL");
-            (void) mgi_tblSetCell(table, row, mclName, NOTREPORTED);
-            (void) mgi_tblSetCell(table, row, isNotReported, YES);
-	  else
-            (void) mgi_tblSetCell(table, row, mclKey, mclKeys[whichMCL]);
-            (void) mgi_tblSetCell(table, row, mclName, mclNames[whichMCL]);
-            (void) mgi_tblSetCell(table, row, isNotReported, NO);
-	  end if;
-
-          (void) reset_cursor(top);
-
-        end does;
- 
 --
 -- Exit
 --

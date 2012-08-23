@@ -9,6 +9,9 @@
 --
 -- History
 --
+-- lec	10/25/2011
+--	TR 10873/ClipboardSetItems/add visablePosition
+--
 -- lec	06/10/2003
 --	TR 4669
 --
@@ -220,7 +223,6 @@ rules:
 	  sKeys : string_list := create string_list();
 	  sResults : xm_string_list := create xm_string_list();
 	  sAccIDs : string_list := create string_list();
-	  notify : boolean := false;
 
 	  -- Append new keys to current keys
 
@@ -326,9 +328,9 @@ rules:
 	  reason : integer := ClipboardSetItems.reason;
           itemList : string_list;
           item : string;
-          notify : boolean := false;
-	  key : integer;
-	  setFirst : boolean := false;
+	  notify : boolean := false;
+	  key : integer := 1;
+	  visablePosition : integer := -1;
  
           if (reason != TBL_REASON_ENTER_CELL_END) then
             return;
@@ -342,18 +344,26 @@ rules:
 
           itemList := mgi_splitfields(mgi_tblGetCell(table, row, column), ",");
           itemList.rewind;
+
           while (itemList.more) do
+
             item := itemList.next;
 	    key := clipboard->List.keys.find(item);
+
+	    -- selects an item at this position (key) in the list
+	    -- i.e. highlight the item at this position
             (void) XmListSelectPos(clipboard->List, key, notify);
 
-	    -- Set the first item as the first visible position in the list
-
-	    if (not setFirst) then
-	      (void) XmListSetPos(clipboard->List, key);
-	      setFirst := true;
+	    -- track first visable position
+	    if (visablePosition < 0 or key < visablePosition) then
+	      visablePosition := key;
 	    end if;
+
           end while;
+
+	  -- makes the item 'visablePosition' the first visable position in the list
+	  (void) XmListSetPos(clipboard->List, visablePosition);
+
         end does;
  
 --

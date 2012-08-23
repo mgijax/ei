@@ -44,6 +44,7 @@ dmodule Antigen is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
+#include <gxdsql.h>
 
 devents:
 
@@ -94,6 +95,10 @@ rules:
 	  ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
 	  top.show;
+
+	  -- Set Permissions
+	  SetPermissions.source_widget := top;
+	  send(SetPermissions, 0);
 
 	  SetRowCount.source_widget := top;
 	  SetRowCount.tableID := GXD_ANTIGEN;
@@ -413,47 +418,47 @@ rules:
 	  -- Initialize global current record key
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from GXD_Antigen_View where _Antigen_key = " + currentRecordKey + "\n" +
-		"select mgiID, antibodyName from GXD_Antibody_View where _Antigen_key = " + currentRecordKey + " order by antibodyName\n";
 
 	  results : integer := 1;
 	  row : integer := 0;
 	  table : widget;
-
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
- 
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
-	        top->ID->text.value             := mgi_getstr(dbproc, 1);
-	        top->Name->text.value           := mgi_getstr(dbproc, 3);
-	        top->Region->text.value         := mgi_getstr(dbproc, 4);
-	        top->Note->text.value           := mgi_getstr(dbproc, 5);
-	        top->SourceForm->SourceID->text.value := mgi_getstr(dbproc, 2);
-	        DisplayMolecularSource.source_widget := top;
-	        send(DisplayMolecularSource, 0);
-
-		table := top->ModificationHistory->Table;
-		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 22));
-		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 8));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 23));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 9));
-
-	      elsif (results = 2) then
-	        table := top->Antibody->Table;
-		(void) mgi_tblSetCell(table, row, table.accID, mgi_getstr(dbproc, 1));
-		(void) mgi_tblSetCell(table, row, table.antibody, mgi_getstr(dbproc, 2));
-		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-		row := row + 1;
-	      end if;
+          dbproc : opaque;
+	  
+	  cmd := antigen_select(currentRecordKey);
+	  table := top->ModificationHistory->Table;
+	  dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      top->ID->text.value             := mgi_getstr(dbproc, 1);
+	      top->Name->text.value           := mgi_getstr(dbproc, 3);
+	      top->Region->text.value         := mgi_getstr(dbproc, 4);
+	      top->Note->text.value           := mgi_getstr(dbproc, 5);
+	      top->SourceForm->SourceID->text.value := mgi_getstr(dbproc, 2);
+	      (void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 22));
+	      (void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 8));
+	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 23));
+	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 9));
 	    end while;
-	    results := results + 1;
           end while;
+	  (void) mgi_dbclose(dbproc);
 
-	  (void) dbclose(dbproc);
+	  row := 0;
+	  cmd := antigen_antibody(currentRecordKey);
+	  table := top->Antibody->Table;
+	  dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      (void) mgi_tblSetCell(table, row, table.accID, mgi_getstr(dbproc, 1));
+	      (void) mgi_tblSetCell(table, row, table.antibody, mgi_getstr(dbproc, 2));
+	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+	      row := row + 1;
+	    end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
  
+	  DisplayMolecularSource.source_widget := top;
+	  send(DisplayMolecularSource, 0);
+
 	  -- Load Accession numbers
 
           LoadAcc.table := accTable;

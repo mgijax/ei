@@ -5,6 +5,5 @@
 #include <mlced_scan.h>
 
 extern char *mlced_dbDescToEI(char *, int);
-extern char *mlced_eiDescToDB(char *, xrtlist);
 
 #endif
