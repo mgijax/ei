@@ -177,6 +177,9 @@ rules:
 	  InitOptionMenu.option := top->AnnotQualifierMenu;
 	  send(InitOptionMenu, 0);
 
+	  InitOptionMenu.option := top->EvidencePropertyMenu;
+	  send(InitOptionMenu, 0);
+
 	  -- Initialize Note Type table
 
 	  InitNoteTypeTable.table := top->Note->Table;
@@ -337,6 +340,7 @@ rules:
 	  qualifierKey : string;
 	  refsKey : string;
           evidenceKey : string;
+          evidencePropertyKey : string;
           set : string := "";
 	  keyDeclared : boolean := false;
 	  keyName : string := "annotEvidenceKey";
@@ -770,6 +774,7 @@ rules:
 	  value : string;
 	  from_annot : boolean := false;
 	  from_evidence : boolean := false;
+	  from_property : boolean := false;
 	  from_user1 : boolean := false;
 	  from_user2 : boolean := false;
 
@@ -809,6 +814,13 @@ rules:
 	    where := where + "\nand a._Qualifier_key = " + value;
 	    from_annot := true;
 	  end if;
+
+          value := mgi_tblGetCell(annotTable, 0, annotTable.evidencePropertyKey);
+          if (value.length > 0 and value != "NULL") then
+            where := where + "\nand p._PropertyTerm_key = " + value;
+            from_evidence := true;
+            from_property := true;
+          end if;
 
 	  -- Evidence
 
@@ -892,6 +904,11 @@ rules:
 	    from := from + "," + mgi_DBtable(VOC_EVIDENCE) + " e";
 	    where := where + "\nand a._Annot_key = e._Annot_key";
 	  end if;
+
+          if (from_property) then
+            from := from + "," + mgi_DBtable(VOC_EVIDENCE_PROPERTY) + " p";
+            where := where + "\nand e._AnnotEvidence_key = p._AnnotEvidence_key";
+          end if;
 
 	  if (from_user1) then
 	    from := from + "," + mgi_DBtable(MGI_USER) + " u1";
@@ -993,8 +1010,8 @@ rules:
 	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      (void) mgi_tblSetCell(annotTable, row, annotTable.annotEvidenceKey, mgi_getstr(dbproc, 7));
-	      (void) mgi_tblSetCell(annotTable, row, annotTable.annotKey, mgi_getstr(dbproc, 8));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.annotEvidenceKey, mgi_getstr(dbproc, 9));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.annotKey, mgi_getstr(dbproc, 10));
 
 	      (void) mgi_tblSetCell(annotTable, row, annotTable.termKey, mgi_getstr(dbproc, 1));
 	      (void) mgi_tblSetCell(annotTable, row, annotTable.term, mgi_getstr(dbproc, 2));
@@ -1003,17 +1020,20 @@ rules:
 	      (void) mgi_tblSetCell(annotTable, row, annotTable.qualifierKey, mgi_getstr(dbproc, 5));
 	      (void) mgi_tblSetCell(annotTable, row, annotTable.qualifier, mgi_getstr(dbproc, 6));
 
-	      (void) mgi_tblSetCell(annotTable, row, annotTable.evidenceKey, mgi_getstr(dbproc, 9));
-	      (void) mgi_tblSetCell(annotTable, row, annotTable.evidence, mgi_getstr(dbproc, 16));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.evidenceKey, mgi_getstr(dbproc, 12));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.evidence, mgi_getstr(dbproc, 18));
 
-	      (void) mgi_tblSetCell(annotTable, row, annotTable.refsKey, mgi_getstr(dbproc, 10));
-	      (void) mgi_tblSetCell(annotTable, row, annotTable.jnum, mgi_getstr(dbproc, 19));
-	      (void) mgi_tblSetCell(annotTable, row, annotTable.citation, mgi_getstr(dbproc, 20));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.evidencePropertyKey, mgi_getstr(dbproc, 7));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.evidenceProperty, mgi_getstr(dbproc, 8));
 
-	      (void) mgi_tblSetCell(annotTable, row, annotTable.editor, mgi_getstr(dbproc, 22));
-	      (void) mgi_tblSetCell(annotTable, row, annotTable.modifiedDate, mgi_getstr(dbproc, 15));
-	      (void) mgi_tblSetCell(annotTable, row, annotTable.createdBy, mgi_getstr(dbproc, 21));
-	      (void) mgi_tblSetCell(annotTable, row, annotTable.createdDate, mgi_getstr(dbproc, 14));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.refsKey, mgi_getstr(dbproc, 12));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.jnum, mgi_getstr(dbproc, 21));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.citation, mgi_getstr(dbproc, 22));
+
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.editor, mgi_getstr(dbproc, 24));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.modifiedDate, mgi_getstr(dbproc, 17));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.createdBy, mgi_getstr(dbproc, 23));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.createdDate, mgi_getstr(dbproc, 16));
 
 	      (void) mgi_tblSetCell(annotTable, row, annotTable.editMode, TBL_ROW_NOCHG);
 	      row := row + 1;
@@ -1141,6 +1161,10 @@ rules:
 
           SetOption.source_widget := top->AnnotQualifierMenu;
           SetOption.value := mgi_tblGetCell(table, row, table.qualifierKey);
+          send(SetOption, 0);
+
+          SetOption.source_widget := top->EvidencePropertyMenu;
+          SetOption.value := mgi_tblGetCell(table, row, table.evidencePropertyKey);
           send(SetOption, 0);
 
 	  annotTable.row := row;

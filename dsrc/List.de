@@ -30,9 +30,11 @@ InsertList [list : widget;			-- Insert item into LookupList
 	    accID : string := "";
 	    allowDups : boolean := false;];
 
-LoadList [list : widget;  			-- Load Lookup List; Allow Duplicate entries?
+LoadList [source_widget : widget;
+	  list : widget;  			-- Load Lookup List; Allow Duplicate entries?
 	  allowDups : boolean := false;
-	  skipit : boolean := false;];
+	  skipit : boolean := false;
+	  loadsmall : boolean := false;];
 
 ManageSelectionList [dialog : string;];		-- Manage Selection List Dialog
 	       
@@ -43,5 +45,7 @@ SelectListItem [deselect : boolean := true;];   -- Copy Selected List Item to Se
 
 SelectLookupListItem [source_widget : widget;   -- LookupList Callback for Single Selection
 		      item_position : integer;  -- Copies Selected Item/Key to appropriate widget
-		      row : integer := -1;];    -- If row = -1 (default), then copy item to current row
+		      row : integer := -1;      -- If row = -1 (default), then copy item to current row
 						-- If row = -2, then copy item to next available row
+                      scrollToRow : boolean := true;]; -- default is to scroll
+
