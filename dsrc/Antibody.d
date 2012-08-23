@@ -98,7 +98,7 @@ locals:
 
 	cmd : string;
 	set : string;
-	select : string := antibody_sql_1;
+	select : string;
 	from : string;
 	where : string;
 	unionalias : string;
@@ -190,6 +190,8 @@ rules:
 	  InitRefTypeTable.table := top->Reference->Table;
 	  InitRefTypeTable.tableID := MGI_REFTYPE_ANTIBODY_VIEW;
 	  send(InitRefTypeTable, 0);
+
+	  select := antibody_distinct();
 
 	end does;
 
@@ -864,7 +866,7 @@ rules:
           dbproc : opaque;
 	  
 	  row := 0;
-	  cmd := antibody_sql_2 + currentRecordKey + "\n";
+	  cmd := antibody_select(currentRecordKey);
 	  table := top->ModificationHistory->Table;
 	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
@@ -905,7 +907,7 @@ rules:
           end while;
 	  (void) mgi_dbclose(dbproc);
 
-	  cmd := antibody_sql_3 + currentRecordKey + "\n";
+	  cmd := antibody_antigen(currentRecordKey);
 	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -924,7 +926,7 @@ rules:
 	  send(DisplayMolecularSource, 0);
 
 	  row := 0;
-	  cmd := antibody_sql_4a + currentRecordKey + antibody_sql_4b;
+	  cmd := antibody_marker(currentRecordKey);
           table := top->Marker->Table;
 	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
@@ -941,7 +943,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  row := 0;
-	  cmd := antibody_sql_5a + currentRecordKey + antibody_sql_5b;
+	  cmd := antibody_alias(currentRecordKey);
           table := top->Alias->Table;
 	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
@@ -957,7 +959,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  row := 0;
-	  cmd := antibody_sql_6a + currentRecordKey + antibody_sql_6b;
+	  cmd := antibody_aliasref(currentRecordKey);
           table := top->Alias->Table;
 	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do

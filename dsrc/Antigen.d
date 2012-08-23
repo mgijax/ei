@@ -424,7 +424,7 @@ rules:
 	  table : widget;
           dbproc : opaque;
 	  
-	  cmd := antigen_sql_1 + currentRecordKey + "\n";
+	  cmd := antigen_select(currentRecordKey);
 	  table := top->ModificationHistory->Table;
 	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
@@ -443,7 +443,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  row := 0;
-	  cmd := antigen_sql_2a + currentRecordKey + antigen_sql_2b;
+	  cmd := antigen_antibody(currentRecordKey);
 	  table := top->Antibody->Table;
 	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do

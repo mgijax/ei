@@ -548,7 +548,7 @@ rules:
           imageList.cmd := newCmd + "\norder by paneLabel";
 
 	  -- Load the Image list
-	  refCount := mgi_sql1(assay_sql_1 + refKey);
+	  refCount := mgi_sql1(assay_imagecount(refKey));
 	  if (integer) refCount > (integer) assay_image_lookup then
 	    LoadList.loadsmall := true;
           end if;
@@ -573,7 +573,7 @@ rules:
 
 	  imageKey : string;
 	  if (currentAssay.length > 0) then
-	    imageKey := mgi_sql1(assay_sql_2 + currentAssay);
+	    imageKey := mgi_sql1(assay_imagepane(currentAssay));
 	    currentPane := imageList->List.keys.find(imageKey);
 	  end if;
 
@@ -707,7 +707,7 @@ rules:
 	  -- check image list
 	  -- if image cache count <= our configured value, then ok
           refKey : string := top->mgiCitation->ObjectID->text.value;
-	  refCount : string := mgi_sql1(assay_sql_1 + refKey);
+	  refCount : string := mgi_sql1(assay_imagecount(refKey));
 	  if (integer) refCount <= (integer) python_image_cache then
 	    PythonImageCache.objectKey := top->mgiCitation->ObjectID->text.value;
 	    send(PythonImageCache, 0);
@@ -1234,7 +1234,7 @@ rules:
 	    -- check image list
 	    -- if image cache count <= our configured value, then ok
             refKey := top->mgiCitation->ObjectID->text.value;
-	    refCount := mgi_sql1(assay_sql_1 + refKey);
+	    refCount := mgi_sql1(assay_imagecount(refKey));
 	    if (integer) refCount <= (integer) python_image_cache then
 	      PythonImageCache.objectKey := top->mgiCitation->ObjectID->text.value;
 	      send(PythonImageCache, 0);
@@ -1487,7 +1487,7 @@ rules:
 	    -- check image list
 	    -- if image cache count <= our configured value, then ok
             refKey := top->mgiCitation->ObjectID->text.value;
-	    refCount := mgi_sql1(assay_sql_1 + refKey);
+	    refCount := mgi_sql1(assay_imagecount(refKey));
 	    if (integer) refCount <= (integer) python_image_cache then
 	      PythonImageCache.objectKey := top->mgiCitation->ObjectID->text.value;
 	      send(PythonImageCache, 0);
@@ -2467,7 +2467,7 @@ rules:
 	  table : widget := top->Control->ModificationHistory->Table;
           dbproc : opaque;
 	  
-	  select := assay_sql_3 + currentAssay;
+	  select := assay_select(currentAssay);
 	  dbproc := mgi_dbexec(select);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -2534,7 +2534,7 @@ rules:
           end while;
 	  (void) mgi_dbclose(dbproc);
 
-	  select := assay_sql_4a + currentAssay + assay_sql_4b;
+	  select := assay_notes(currentAssay);
 	  dbproc := mgi_dbexec(select);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -2544,9 +2544,9 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  if (antibodyPrep) then
-	    select := assay_sql_5 + currentAssay + "\n";
+	    select := assay_antibodyprep(currentAssay);
 	  elsif (probePrep) then
-	    select := assay_sql_6 + currentAssay + "\n";
+	    select := assay_probeprep(currentAssay);
 	  end if;
 
 	  if (antibodyPrep or probePrep) then
@@ -2662,7 +2662,7 @@ rules:
 	  numRows : integer := 0;
           dbproc : opaque;
 	  
-	  select := assay_sql_7 + currentAssay;
+	  select := assay_specimencount(currentAssay);
 	  dbproc := mgi_dbexec(select);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -2678,7 +2678,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  row := 0;
-	  select := assay_sql_8a + currentAssay + assay_sql_8b;
+	  select := assay_specimen(currentAssay);
 	  dbproc := mgi_dbexec(select);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -2721,7 +2721,7 @@ rules:
 	      break;
 	    end if;
 
-	    select :=  assay_sql_9 + key;
+	    select :=  assay_insituresult(key);
 	    dbproc := mgi_dbexec(select);
  
             while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
@@ -2760,7 +2760,7 @@ rules:
           dbproc : opaque;
 	  
 	  row := 0;
-	  select := assay_sql_10 + currentAssay;
+	  select := assay_gellanecount(currentAssay);
 	  dbproc := mgi_dbexec(select);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -2776,7 +2776,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  row := 0;
-	  select := assay_sql_11a + currentAssay + assay_sql_11b;
+	  select := assay_gellane(currentAssay);
 	  dbproc := mgi_dbexec(select);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -2808,7 +2808,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  row := 0;
-	  select := assay_sql_12 + currentAssay;
+	  select := assay_gellanestructure(currentAssay);
 	  dbproc := mgi_dbexec(select);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -2871,7 +2871,7 @@ rules:
 	  table : widget := assayDetailForm->GelRow->Table;
 	  row : integer := 0;
 
-	  select := assay_sql_13a + currentAssay + assay_sql_13b;
+	  select := assay_gelrow(currentAssay);
 
           dbproc : opaque := mgi_dbexec(select);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
@@ -2917,7 +2917,7 @@ rules:
 	  -- Retrieve number of Gel Lanes for Assay
 
 	  if (currentAssay.length > 0) then
-	    numLanes := (integer) mgi_sql1(assay_sql_14 + currentAssay);
+	    numLanes := (integer) mgi_sql1(assay_gellanecount(currentAssay));
 	  end if;
 
 	  -- Add/Delete columns to support needed number of Bands
@@ -2993,7 +2993,7 @@ rules:
 
 	  lanes := create string_list();
 
-	  select := assay_sql_15a + currentAssay + assay_sql_15b;
+	  select := assay_gellanekey(currentAssay);
 
           dbproc : opaque := mgi_dbexec(select);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
@@ -3048,7 +3048,7 @@ rules:
 
 	  send(CreateGelBandColumns, 0);
 
-	  select := assay_sql_16a + currentAssay + assay_sql_16b;
+	  select := assay_gelband(currentAssay);
 
           dbproc : opaque := mgi_dbexec(select);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
@@ -3222,7 +3222,7 @@ rules:
 	     return;
 	   end if;
 
-	   segmentType := mgi_sql1(assay_sql_17 + objectKey);
+	   segmentType := mgi_sql1(assay_segmenttype(objectKey));
 
 	   -- if no Assay selected, don't do the verification
 

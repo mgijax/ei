@@ -1,5 +1,8 @@
 ## Remember to update Configuration:CVS_TAG with most recen tag
 
+TAG: ei-5-0-0-18
+2) gxdsql.h/gxdsql.c: replace 'declare' with c 'extern' calls
+
 TAG: ei-5-0-0-17
 TAG: ei-5-0-0-16
 TAG: ei-5-0-0-15
@@ -12,6 +15,7 @@ STAFF: lec
 CHANGES:
 1) TR11110/Strains.d
 genericQualifierKey : string := "1614158"; -- generic annotation qualifier key
+2) mgdsql.h/mgisql.h: replace 'declare' with c 'extern' calls
 
 TAG: ei-5-0-0-10
 TAG: ei-5-0-0-9

@@ -1,64 +1,42 @@
 #ifndef GXDSQL_H
 #define GXDSQL_H
 
-/*
- * select statements
- * organized by module
- */
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
 /* Antibody.d */
 
-#define antibody_sql_1 "select distinct g._Antibody_key, g.antibodyName\n"
-#define antibody_sql_2 "select * from GXD_Antibody_View where _Antibody_key = "
-#define antibody_sql_3 "\nselect _Antigen_key, _Source_key, antigenName, mgiID, regionCovered, antigenNote \
-from GXD_AntibodyAntigen_View where _Antibody_key = "
-#define antibody_sql_4a "\nselect _Marker_key, symbol, chromosome \
-from GXD_AntibodyMarker_View where _Antibody_key = "
-#define antibody_sql_4b "\norder by symbol"
-#define antibody_sql_5a "\nselect _AntibodyAlias_key, _Refs_key, alias \
-from GXD_AntibodyAlias_View where _Antibody_key = "
-#define antibody_sql_5b "\norder by alias, _AntibodyAlias_key\n"
-#define antibody_sql_6a "\nselect _AntibodyAlias_key, _Refs_key, alias, jnum, short_citation \
-from GXD_AntibodyAliasRef_View where _Antibody_key = "
-#define antibody_sql_6b "\norder by alias, _AntibodyAlias_key\n"
+extern char *antibody_distinct();
+extern char *antibody_select(char *);
+extern char *antibody_antigen(char *);
+extern char *antibody_marker(char *);
+extern char *antibody_alias(char *);
+extern char *antibody_aliasref(char *);
 
 /* Antigen.d */
 
-#define antigen_sql_1 "select * from GXD_Antigen_View where _Antigen_key = "
-#define antigen_sql_2a "\nselect mgiID, antibodyName from GXD_Antibody_View where _Antigen_key = "
-#define antigen_sql_2b "\norder by antibodyName\n"
+extern char *antigen_select(char *);
+extern char *antigen_antibody(char *);
 
 /* Assay.d */
 
-#define assay_sql_1 "select count(*) from IMG_Image where _Refs_key = "
-#define assay_sql_2 "select _ImagePane_key from GXD_Assay where _Assay_key = "
-#define assay_sql_3 "select * from GXD_Assay_View where _Assay_key = "
-#define assay_sql_4a "\nselect rtrim(assayNote) from GXD_AssayNote where _Assay_key = "
-#define assay_sql_4b "\norder by sequenceNum\n"
-#define assay_sql_5 "select * from GXD_AntibodyPrep_View where _Assay_key = "
-#define assay_sql_6 "select * from GXD_ProbePrep_View where _Assay_key = "
-#define assay_sql_7 "select count(*) from GXD_Specimen where _Assay_key = "
-#define assay_sql_8a "\nselect * from GXD_Specimen_View where _Assay_key = "
-#define assay_sql_8b "\norder by sequenceNum\n"
-#define assay_sql_9 "select count(*) from GXD_InSituResult where _Specimen_key = "
-#define assay_sql_10 "select count(*) from GXD_GelLane where _Assay_key = "
-#define assay_sql_11a "\nselect * from GXD_GelLane_View where _Assay_key = "
-#define assay_sql_11b "\norder by sequenceNum\n"
-#define assay_sql_12 "\nselect _GelLane_key, _Structure_key \
-from GXD_GelLaneStructure_View where _Assay_key = "
-
-#define assay_sql_13a "select * from GXD_GelRow_View where _Assay_key = "
-#define assay_sql_13b "\norder by sequenceNum\n"
-
-#define assay_sql_14 "select count(*) from GXD_GelLane where _Assay_key = "
-
-#define assay_sql_15a "select _GelLane_key from GXD_GelLane where _Assay_key = "
-#define assay_sql_15b "\norder by sequenceNum\n"
-
-#define assay_sql_16a "select * from GXD_GelBand_View where _Assay_key = "
-#define assay_sql_16b "\norder by rowNum, laneNum\n"
-
-#define assay_sql_17 "select _SegmentType_key from PRB_Probe where _Probe_key = "
+extern char *assay_imagecount(char *);
+extern char *assay_imagepane(char *);
+extern char *assay_select(char *);
+extern char *assay_notes(char *);
+extern char *assay_antibodyprep(char *);
+extern char *assay_probeprep(char *);
+extern char *assay_specimencount(char *);
+extern char *assay_specimen(char *);
+extern char *assay_insituresult(char *);
+extern char *assay_gellanecount(char *);
+extern char *assay_gellane(char *);
+extern char *assay_gellanestructure(char *);
+extern char *assay_gellanekey(char *);
+extern char *assay_gelrow(char *);
+extern char *assay_gelband(char *);
+extern char *assay_segmenttype(char *);
 
 /* Image.d */
 
@@ -93,7 +71,7 @@ where _Refs_key = "
 #define index_sql_3 "select * from GXD_Index_View where _Index_key = "
 #define index_sql_4a "\nselect * from GXD_Index_Stages where _Index_key = "
 #define index_sql_4b "\norder by _IndexAssay_key, _StageID_key\n"
-#define index_sql_5a"select i._Index_key from GXD_Index i \
+#define index_sql_5a "select i._Index_key from GXD_Index i \
 where exists (select 1 from GXD_Expression e \
 where i._Marker_key = e._Marker_key and i._Refs_key = e._Refs_key and i._Index_key = "
 #define index_sql_5b ")"
