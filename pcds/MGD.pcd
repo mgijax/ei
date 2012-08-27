@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Aug 23 15:16:55 2012";
+      lastWritten = "Mon Aug 27 10:55:15 2012";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -13195,8 +13195,8 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblPixelWidthSeries = "(all 0-8 0)";
                                           xrtTblCharWidthSeries = "(all 0 1)(all 1-8 10)(all 9 15)(all 10 40)(all 11 4)(all 13 10)(all 14 3)(all 15 3)(all 16 15)(all 17 10)(all 18 10)(all 19 10)";
                                           xrtTblDisplayHorizScrollBar = dispsb_never;
-                                          userDefinedAttributes = "annotKey:Int(Int)=\"3\"\ntermKey:Int(Int)=\"4\"\nqualifierKey:Int(Int)=\"5\"\nrefsKey:Int(Int)=\"6\"\nevidenceKey:Int(Int)=\"7\"\ntermAccID:Int(Int)=\"9\"\nterm:Int(Int)=\"10\"\nqualifier:Int(Int)=\"11\"\njnum:Int(Int)=\"12\"\ncitation:Int(Int)=\"13\"\nevidence:Int(Int)=\"14\"\neditor:Int(Int)=\"16\"\nmodifiedDate:Int(Int)=\"17\"\nvocabKey:Int(Int)=\"0\"\nvocabEvidenceKey:Int(Int)=\"0\"\nannotVocab:String(String)\ncreatedBy:Int(Int)=\"18\"\ncreatedDate:Int(Int)=\"19\"\nannotEvidenceKey:Int(Int)=\"2\"\nmgiTypeKey:Int(Int)=\"25\"\nclipAnnotEvidenceKey:Int(Int)=\"1\"\nvocabQualifierKey:Int(Int)=\"0\"\nevidencePropertyKey:Int(Int)=\"8\"\nevidenceProperty:Int=\"15\"\n";
-                                          xrtTblValidateCellCallback = "D:CopyAnnotation,\nD:VerifyVocabTermAccID,\nD:VerifyReference,\nD:VerifyMPReference,\nD:VerifyVocabEvidenceCode,\nD:CommitTableCellEdit";
+                                          userDefinedAttributes = "annotKey:Int(Int)=\"3\"\ntermKey:Int(Int)=\"4\"\nqualifierKey:Int(Int)=\"5\"\nrefsKey:Int(Int)=\"6\"\nevidenceKey:Int(Int)=\"7\"\ntermAccID:Int(Int)=\"9\"\nterm:Int(Int)=\"10\"\nqualifier:Int(Int)=\"11\"\njnum:Int(Int)=\"12\"\ncitation:Int(Int)=\"13\"\nevidence:Int(Int)=\"14\"\neditor:Int(Int)=\"16\"\nmodifiedDate:Int(Int)=\"17\"\nvocabKey:Int(Int)=\"0\"\nvocabEvidenceKey:Int(Int)=\"0\"\nannotVocab:String(String)\ncreatedBy:Int(Int)=\"18\"\ncreatedDate:Int(Int)=\"19\"\nannotEvidenceKey:Int(Int)=\"2\"\nmgiTypeKey:Int(Int)=\"25\"\nclipAnnotEvidenceKey:Int(Int)=\"1\"\nvocabQualifierKey:Int(Int)=\"0\"\nevidencePropertyKey:Int(Int)=\"8\"\nsex:Int(Int)=\"15\"\n";
+                                          xrtTblValidateCellCallback = "D:CopyAnnotation,\nD:VerifyVocabTermAccID,\nD:VerifyReference,\nD:VerifyMPReference,\nD:VerifyVocabEvidenceCode,\nD:VerifyMPSex,\nD:CommitTableCellEdit";
                                           xrtTblTraversableSeries = "(all 0-8 False)(all 10-11 False)(all 13 False)";
                                           xrtTblEnterCellCallback = "D:LoadMPNotes,\nD:SetOptions,\nD:SetTableRow";
                                           width = 960;
@@ -13534,9 +13534,14 @@ Shift<Key>Tab: prev-tab-group()
                                         EvidencePropertyPulldown = OptionPulldown;
                                         Group: User
                                           tableOption = 15;
-                                          tableOptionKey = 8;
                                           sql = "(select _Term_key, 'F' as value from VOC_Term where _Vocab_key = 86\nunion\nselect _Term_key, 'M' as value from VOC_Term where _Vocab_key = 86\nunion\nselect _Term_key, 'NA' as value from VOC_Term where _Vocab_key = 86\n)\norder by value\n";
                                           tableForm = Annotation;
+                                          tableOptionKey = "-1";
+                                            {
+                                              SearchAll = SearchAll : mgiOption;
+                                              Group: Widget
+                                                sensitive = False;
+                                            }
                                       }
                                 }
                                 {
