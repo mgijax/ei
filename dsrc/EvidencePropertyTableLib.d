@@ -262,6 +262,67 @@ rules:
 	end does;
 
 --
+-- ProcessEvidencePropertyTableOne
+--
+-- Construct insert/update/delete statement for Property template
+-- Appends to table.sqlCmd string
+--
+
+	ProcessEvidencePropertyTableOne does
+	  table : widget := ProcessEvidencePropertyTableOne.table;
+	  cmd : string;
+          row : integer := 0;
+          editMode : string := ProcessEvidencePropertyTableOne.editMode;
+	  key : string := ProcessEvidencePropertyTableOne.objectKey;
+	  evidenceKey : string := ProcessEvidencePropertyTableOne.evidenceKey;
+	  propertyTermKey : string := ProcessEvidencePropertyTableOne.propertyTermKey;
+	  propertyValue : string := ProcessEvidencePropertyTableOne.value;
+	  propertyStanza : string := "1";
+	  seqNum : string := "1";
+	  set : string := "";
+	  keyName : string := "propertyKey";
+	  keyDefined : boolean := false;
+ 
+	  table.sqlCmd := "";
+
+	  -- for one row of property only
+
+          if (editMode = TBL_ROW_ADD) then
+
+              -- Declare primary key name, or increment
+
+            if (not keyDefined) then
+              cmd := cmd + mgi_setDBkey(VOC_EVIDENCE_PROPERTY, NEWKEY, keyName);
+              keyDefined := true;
+            else
+              cmd := cmd + mgi_DBincKey(keyName);
+            end if;
+
+            cmd := cmd + mgi_DBinsert(VOC_EVIDENCE_PROPERTY, keyName) + 
+                      evidenceKey + "," +
+                      propertyTermKey + "," +
+                      propertyStanza + "," +
+                      seqNum + "," +
+                      mgi_DBprstr(propertyValue) + "," +
+                      global_loginKey + "," +
+                      global_loginKey + ")\n";
+    
+          elsif (editMode = TBL_ROW_MODIFY) then
+
+            set := "_PropertyTerm_key = " + propertyTermKey + "," +
+                   "stanza = " + propertyStanza + "," +
+                   "value = " + mgi_DBprstr(propertyValue);
+
+            cmd := cmd + mgi_DBupdate(VOC_EVIDENCE_PROPERTY, key, set);
+
+          elsif (editMode = TBL_ROW_DELETE) then
+             cmd := cmd + mgi_DBdelete(VOC_EVIDENCE_PROPERTY, key);
+          end if;
+
+	  table.sqlCmd := cmd;
+	end does;
+
+--
 -- SearchEvidencePropertyTable
 --
 --	Formulates 'from' and 'where' clause for searching

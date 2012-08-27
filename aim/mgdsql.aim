@@ -131,6 +131,7 @@ CALLS
 	 mpvoc_dbview("char *")				: "char *";
 	 mpvoc_evidencecode("char *")			: "char *";
 	 mpvoc_qualifier("char *")			: "char *";
+	 mpvoc_sexspecific()				: "char *";
 	 mpvoc_select1("char *", "char *")		: "char *";
 	 mpvoc_select2("char *", "char *")		: "char *";
 	 mpvoc_select3("char *", "char *")		: "char *";

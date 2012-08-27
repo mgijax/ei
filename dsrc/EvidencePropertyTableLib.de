@@ -29,6 +29,14 @@ ProcessEvidencePropertyTable [table : widget;    -- Evidence Property Table
             tableID : integer := 0;      -- ID of table
             objectKey : string;];        -- Unique identifier of Object
 
+-- Process Evidence Property Table One; Sets table.sqlcmd 
+ProcessEvidencePropertyTableOne [table : widget;    -- Evidence Property Table
+	    editMode : string;		 -- edit mode value
+            objectKey : string;          -- voc_evidence_property._evidenceproperty_key
+	    evidenceKey : string;    	 -- voc_evidence_property._annotevidence_key
+	    propertyTermKey : string;    -- voc_evidence_property._propertyterm_key
+	    value : string;];		 -- value of property
+
 -- Search Evidence Property Table
 SearchEvidencePropertyTable [table : widget;     -- Evidence Property Table
             tableID : integer;           -- ID of table

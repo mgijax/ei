@@ -73,6 +73,7 @@ devents:
 	MPTraverse :local [];
 
 	VerifyMPReference :local [];
+	VerifyMPSex :local [];
 
 locals:
 	mgi : widget;			-- Top-level shell of Application
@@ -93,6 +94,8 @@ locals:
 	dbView : string;		-- DB View Table (of ACC_MGIType._MGIType_key)
 
 	defaultQualifierKey : string;
+	defaultSexSpecificKey : string;
+	defaultSex : string := "NA";
 
 	annotTable : widget;		-- Annotation table
 	headerTable : widget;		-- Header table
@@ -338,6 +341,7 @@ rules:
           annotKey2: string;
           termKey : string;
 	  qualifierKey : string;
+	  sex : string;
 	  refsKey : string;
           evidenceKey : string;
           evidencePropertyKey : string;
@@ -396,8 +400,10 @@ rules:
             annotKey := mgi_tblGetCell(annotTable, row, annotTable.annotKey);
             termKey := mgi_tblGetCell(annotTable, row, annotTable.termKey);
             qualifierKey := mgi_tblGetCell(annotTable, row, annotTable.qualifierKey);
+            sex := mgi_tblGetCell(annotTable, row, annotTable.sex);
             refsKey := mgi_tblGetCell(annotTable, row, annotTable.refsKey);
             evidenceKey := mgi_tblGetCell(annotTable, row, annotTable.evidenceKey);
+            evidencePropertyKey := mgi_tblGetCell(annotTable, row, annotTable.evidencePropertyKey);
             clipAnnotEvidenceKey := mgi_tblGetCell(annotTable, row, annotTable.clipAnnotEvidenceKey);
  
 	    if (qualifierKey = "NULL" or qualifierKey.length = 0) then
@@ -405,6 +411,12 @@ rules:
 	      -- set it in the table because we need to check it later on...
 	      mgi_tblSetCell(annotTable, row, annotTable.qualifier, "");
 	      mgi_tblSetCell(annotTable, row, annotTable.qualifierKey, qualifierKey);
+	    end if;
+
+	    if (sex = "NULL" or sex.length = 0) then
+	      sex := defaultSex;
+	      -- set it in the table because we need to check it later on...
+	      mgi_tblSetCell(annotTable, row, annotTable.sex, sex);
 	    end if;
 
             if (editMode = TBL_ROW_ADD) then
@@ -469,11 +481,21 @@ rules:
 		       "NULL," +
 		       global_loginKey + "," + global_loginKey + ")\n";
 
+              ProcessEvidencePropertyTableOne.table := annotTable;
+              ProcessEvidencePropertyTableOne.editMode := editMode;
+              ProcessEvidencePropertyTableOne.objectKey := evidencePropertyKey;
+              ProcessEvidencePropertyTableOne.evidenceKey := "@annotEvidenceKey";
+              ProcessEvidencePropertyTableOne.propertyTermKey:= defaultSexSpecificKey;
+              ProcessEvidencePropertyTableOne.value:= sex;
+              send(ProcessEvidencePropertyTableOne, 0);
+	      cmd := cmd + annotTable.sqlCmd;
+
 	      if (clipAnnotEvidenceKey.length > 0) then
 		-- add notes
 		cmd := cmd + mpvoc_exec_copyAnnotEvidenceNotes(clipAnnotEvidenceKey, keyName);
 		isUsingCopyAnnotEvidenceNotes := true;
 	      end if;
+
 
             elsif (editMode = TBL_ROW_MODIFY) then
 
@@ -489,6 +511,15 @@ rules:
                      "_Refs_key = " + refsKey;
 
               cmd := cmd + mgi_DBupdate(VOC_EVIDENCE, key, set);
+
+              ProcessEvidencePropertyTableOne.table := annotTable;
+              ProcessEvidencePropertyTableOne.editMode := editMode;
+              ProcessEvidencePropertyTableOne.objectKey := evidencePropertyKey;
+              ProcessEvidencePropertyTableOne.evidenceKey := evidenceKey;
+              ProcessEvidencePropertyTableOne.propertyTermKey:= defaultSexSpecificKey;
+              ProcessEvidencePropertyTableOne.value:= sex;
+              send(ProcessEvidencePropertyTableOne, 0);
+	      cmd := cmd + annotTable.sqlCmd;
 
             elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
                cmd := cmd + mgi_DBdelete(VOC_EVIDENCE, key);
@@ -815,7 +846,7 @@ rules:
 	    from_annot := true;
 	  end if;
 
-          value := mgi_tblGetCell(annotTable, 0, annotTable.evidenceProperty);
+          value := mgi_tblGetCell(annotTable, 0, annotTable.sex);
           if (value.length > 0 and value != "NULL") then
             where := where + "\nand p.value like " + mgi_DBprstr(value);
             from_evidence := true;
@@ -1020,11 +1051,11 @@ rules:
 	      (void) mgi_tblSetCell(annotTable, row, annotTable.qualifierKey, mgi_getstr(dbproc, 5));
 	      (void) mgi_tblSetCell(annotTable, row, annotTable.qualifier, mgi_getstr(dbproc, 6));
 
-	      (void) mgi_tblSetCell(annotTable, row, annotTable.evidenceKey, mgi_getstr(dbproc, 12));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.evidenceKey, mgi_getstr(dbproc, 11));
 	      (void) mgi_tblSetCell(annotTable, row, annotTable.evidence, mgi_getstr(dbproc, 18));
 
 	      (void) mgi_tblSetCell(annotTable, row, annotTable.evidencePropertyKey, mgi_getstr(dbproc, 7));
-	      (void) mgi_tblSetCell(annotTable, row, annotTable.evidenceProperty, mgi_getstr(dbproc, 8));
+	      (void) mgi_tblSetCell(annotTable, row, annotTable.sex, mgi_getstr(dbproc, 8));
 
 	      (void) mgi_tblSetCell(annotTable, row, annotTable.refsKey, mgi_getstr(dbproc, 12));
 	      (void) mgi_tblSetCell(annotTable, row, annotTable.jnum, mgi_getstr(dbproc, 21));
@@ -1136,8 +1167,8 @@ rules:
           LoadList.list := top->EvidenceCodeList;
 	  send(LoadList, 0);
 
-	  defaultQualifierKey := 
-	      mgi_sql1(mpvoc_qualifier((string) annotTable.vocabQualifierKey));
+	  defaultQualifierKey := mgi_sql1(mpvoc_qualifier((string) annotTable.vocabQualifierKey));
+	  defaultSexSpecificKey := mgi_sql1(mpvoc_sexspecific());
 
 	  (void) reset_cursor(mgi);
 	end does;
@@ -1246,7 +1277,7 @@ rules:
 	    return;
 	  end if;
 
-	  if (column = annotTable.evidence) then
+	  if (column = annotTable.sex) then
 	    if ((row + 1) = mgi_tblNumRows(annotTable)) then
 	      row := -1;
 	    end if;
@@ -1473,6 +1504,42 @@ rules:
 
           (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
 	  (void) reset_cursor(top);
+	end does;
+
+--
+-- VerifyMPSex
+--
+--	Set the Sex value to defaultSex
+--
+
+	VerifyMPSex does
+	  sourceWidget : widget := VerifyMPSex.source_widget;
+
+	  row : integer;
+	  column : integer;
+	  reason : integer;
+	  value : string;
+
+	  row := VerifyMPSex.row;
+	  column := VerifyMPSex.column;
+	  reason := VerifyMPSex.reason;
+	  value := VerifyMPSex.value;
+
+	  if (column != sourceWidget.sex) then
+	    return;
+	  end if;
+
+	  if (reason = TBL_REASON_VALIDATE_CELL_END) then
+	    return;
+	  end if;
+
+	  if (value.length > 0) then
+	    return;
+	  end if;
+
+	  (void) mgi_tblSetCell(annotTable, row, annotTable.sex, defaultSex);
+
+          (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
 	end does;
 
 --

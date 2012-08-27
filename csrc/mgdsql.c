@@ -1131,6 +1131,14 @@ char *mpvoc_qualifier(char *key)
   return(buf);
 }
 
+char *mpvoc_sexspecific()
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Term_key from VOC_Term where _Vocab_key = 86");
+  return(buf);
+}
+
 char *mpvoc_select1(char *key, char *dbView)
 {
   static char buf[TEXTBUFSIZ];
