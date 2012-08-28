@@ -348,14 +348,17 @@ rules:
 	  refsKey : string;
           evidenceKey : string;
           evidencePropertyKey : string;
+
           set : string := "";
-	  keyDeclared : boolean := false;
-	  keyName : string := "annotEvidenceKey";
-	  annotKeyDeclared : boolean := false;
 	  dupAnnot : boolean;
 	  editTerm : boolean := false;
 	  clipAnnotEvidenceKey : string;
 	  isUsingCopyAnnotEvidenceNotes : boolean := false;
+
+	  annotKeyDeclared : boolean := false;
+	  keyDeclared : boolean := false;
+	  keyName : string := "annotEvidenceKey";
+	  keyNameProperty : string := "propertyKey";
  
 	  (void) busy_cursor(top);
 
@@ -451,9 +454,11 @@ rules:
 
 	      if (not keyDeclared) then
                   cmd := cmd + mgi_setDBkey(VOC_EVIDENCE, NEWKEY, keyName);
+                  cmd := cmd + mgi_setDBkey(VOC_EVIDENCE_PROPERTY, NEWKEY, keyNameProperty);
                   keyDeclared := true;
 	      else
                   cmd := cmd + mgi_DBincKey(keyName);
+                  cmd := cmd + mgi_DBincKey(keyNameProperty);
 	      end if;
 
 	      -- If not a duplicate Annotation, then create the Annotation record
@@ -484,21 +489,18 @@ rules:
 		       "NULL," +
 		       global_loginKey + "," + global_loginKey + ")\n";
 
-              ProcessEvidencePropertyTableOne.table := annotTable;
-              ProcessEvidencePropertyTableOne.editMode := editMode;
-              ProcessEvidencePropertyTableOne.objectKey := evidencePropertyKey;
-              ProcessEvidencePropertyTableOne.evidenceKey := "@annotEvidenceKey";
-              ProcessEvidencePropertyTableOne.propertyTermKey:= defaultSexSpecificKey;
-              ProcessEvidencePropertyTableOne.value:= sex;
-              send(ProcessEvidencePropertyTableOne, 0);
-	      cmd := cmd + annotTable.sqlCmd;
+              cmd := cmd + mgi_DBinsert(VOC_EVIDENCE_PROPERTY, keyNameProperty) + 
+                        evidenceKey + "," +
+                        defaultSexSpecificKey + ",1,1," +
+                        mgi_DBprstr(sex) + "," +
+                        global_loginKey + "," +
+                        global_loginKey + ")\n";
 
 	      if (clipAnnotEvidenceKey.length > 0) then
 		-- add notes
 		cmd := cmd + mpvoc_exec_copyAnnotEvidenceNotes(clipAnnotEvidenceKey, keyName);
 		isUsingCopyAnnotEvidenceNotes := true;
 	      end if;
-
 
             elsif (editMode = TBL_ROW_MODIFY) then
 
@@ -515,14 +517,8 @@ rules:
 
               cmd := cmd + mgi_DBupdate(VOC_EVIDENCE, key, set);
 
-              ProcessEvidencePropertyTableOne.table := annotTable;
-              ProcessEvidencePropertyTableOne.editMode := editMode;
-              ProcessEvidencePropertyTableOne.objectKey := evidencePropertyKey;
-              ProcessEvidencePropertyTableOne.evidenceKey := evidenceKey;
-              ProcessEvidencePropertyTableOne.propertyTermKey:= defaultSexSpecificKey;
-              ProcessEvidencePropertyTableOne.value:= sex;
-              send(ProcessEvidencePropertyTableOne, 0);
-	      cmd := cmd + annotTable.sqlCmd;
+              cmd := cmd + mgi_DBupdate(VOC_EVIDENCE_PROPERTY, evidencePropertyKey, set);
+	      set := set + "value = " + mgi_DBprstr(sex);
 
             elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
                cmd := cmd + mgi_DBdelete(VOC_EVIDENCE, key);
