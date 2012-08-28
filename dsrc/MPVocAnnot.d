@@ -490,7 +490,7 @@ rules:
 		       global_loginKey + "," + global_loginKey + ")\n";
 
               cmd := cmd + mgi_DBinsert(VOC_EVIDENCE_PROPERTY, keyNameProperty) + 
-                        evidenceKey + "," +
+                        "@" + keyName + "," +
                         defaultSexSpecificKey + ",1,1," +
                         mgi_DBprstr(sex) + "," +
                         global_loginKey + "," +
@@ -514,13 +514,13 @@ rules:
 
 	      set := "_EvidenceTerm_key = " + evidenceKey + "," +
                      "_Refs_key = " + refsKey;
-
               cmd := cmd + mgi_DBupdate(VOC_EVIDENCE, key, set);
 
+	      set := "value = " + mgi_DBprstr(sex);
               cmd := cmd + mgi_DBupdate(VOC_EVIDENCE_PROPERTY, evidencePropertyKey, set);
-	      set := set + "value = " + mgi_DBprstr(sex);
 
             elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
+               cmd := cmd + mgi_DBdelete(VOC_EVIDENCE_PROPERTY, evidencePropertyKey);
                cmd := cmd + mgi_DBdelete(VOC_EVIDENCE, key);
             end if;
  
