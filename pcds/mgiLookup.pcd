@@ -3,7 +3,7 @@ Module: mgiLookup
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Jun 19 07:59:47 2012";
+      lastWritten = "Thu Aug 23 13:24:21 2012";
         {
           LookupLabel = XmPushButton;
           Group: Widget
@@ -719,8 +719,8 @@ Module: mgiLookup
         {
           TDCList = LookupList;
           Group: Control
-            vip_x = 91;
-            vip_y = 1687;
+            vip_x = 90;
+            vip_y = 1680;
           Group: User
             cmd = "select _Term_key, term, accID\nfrom VOC_Term_MCV_View\norder by term\n";
               {
