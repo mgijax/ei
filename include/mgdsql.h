@@ -136,6 +136,7 @@ extern char *mpvoc_loadheader(char *, char *);
 extern char *mpvoc_dbview(char *);
 extern char *mpvoc_evidencecode(char *);
 extern char *mpvoc_qualifier(char *);
+extern char *mpvoc_sexspecific();
 extern char *mpvoc_select1(char *, char *);
 extern char *mpvoc_select2(char *, char *);
 extern char *mpvoc_select3(char *, char *);

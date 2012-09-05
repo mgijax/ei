@@ -12,9 +12,12 @@
 /* Report.d : no sql */
 
 /* mgilib.h */
+/* MGILib.d */
 
 extern char *mgilib_count(char *);
 extern char *mgilib_anchorcount(char *);
+extern char *mgilib_user(char *);
+
 
 /* SQL.d */
 
@@ -55,10 +58,6 @@ extern char *evidenceproperty_select(char *, char *, char *);
 /* Lib.d */
 
 extern char *lib_max(char *);
-
-/* MGILib.d */
-
-extern char *mgilib_user(char *);
 
 /* MolSourceLib.d */
 

@@ -1,8 +1,13 @@
 ## Remember to update Configuration:CVS_TAG with most recen tag
 
+TAG: ei-5-1-0-1
+DATE: 09/05/2012
+STAFF: lec
+1) TR10273/merge tr10273 branch
+
 TAG: ei-5-0-0-19
 TAG: ei-5-0-0-18
-2) gxdsql.h/gxdsql.c: replace 'declare' with c 'extern' calls
+1) gxdsql.h/gxdsql.c: replace 'declare' with c 'extern' calls
 
 TAG: ei-5-0-0-17
 TAG: ei-5-0-0-16
@@ -486,6 +491,23 @@ CHANGES:
 1) TR10456/display mgi ids for stage notes
 2) TR10555/set private = true for KOMP ldb in Allele module
 3) TR10432/IndexStage.d/Select/"is coded?" check
+
+TAG: ei-tr10273-6
+TAG: ei-tr10273-5
+DATE: 08/28/2010
+STAFF: lec
+CHANGES:
+1) TR10273/Europhenome
+
+TAG: ei-tr10273-4
+TAG: ei-tr10273-3
+TAG: ei-tr10273-2
+TAG: ei-tr10273-1
+DATE: 01/19/2010
+STAFF: lec
+CHANGES:
+1) TR10273/Europhenome
+2) TR10456/display mgi ids for stage nodes
 
 TAG: ei-tr10273-BP
 DATE: 01/06/2011
