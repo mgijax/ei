@@ -1,5 +1,10 @@
 ## Remember to update Configuration:CVS_TAG with most recen tag
 
+TAG: ei-5-1-0-2
+DATE: 09/10/2012
+STAFF: lec
+1) csrc/mgisql.c/bug witih "\n" vs "/n"
+
 TAG: ei-5-1-0-1
 DATE: 09/05/2012
 STAFF: lec

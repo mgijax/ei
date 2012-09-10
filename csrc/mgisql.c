@@ -491,7 +491,6 @@ char *organism_anchor()
 }
 
 /*
-/*
  * SimpleVocab.d
 */
 
@@ -541,7 +540,6 @@ char *simple_synonym(char *key, char *objectKey)
   return(buf);
 }
 
-/*
 /*
  * Verify.d
 */
@@ -727,7 +725,7 @@ char *verify_exec_goreference(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec BIB_isNOGO %s/n", key);
+  sprintf(buf,"exec BIB_isNOGO %s\n", key);
   return(buf);
 }
 

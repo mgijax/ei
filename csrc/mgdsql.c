@@ -475,7 +475,6 @@ char *govoc_xref(char *key, char *annotTypeKey)
 }
 
 /*
-/*
 * Marker.d
 */
 
