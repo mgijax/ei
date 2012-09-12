@@ -1,5 +1,12 @@
-## Remember to update Configuration:CVS_TAG with most recen tag
+## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-5-1-0-3
+DATE: 09/12/2012
+STAFF: lec
+1) Strain module/Allele length = 50
+
+TAG: ei-5-1-0-1
+DATE: 09/05/2012
 TAG: ei-5-1-0-2
 DATE: 09/10/2012
 STAFF: lec

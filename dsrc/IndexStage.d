@@ -182,7 +182,7 @@ rules:
 	  
 	  dbproc : opaque;
 
-	  dbproc := mgi_dbexec(index_sql_1);
+	  dbproc := mgi_dbexec(index_assayterms());
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      assayKeys.insert(mgi_getstr(dbproc, 1), assayKeys.count + 1);
@@ -209,7 +209,7 @@ rules:
 	  -- create a string list of column/term pairs
 	  stageTerms := create string_list();
 
-	  dbproc := mgi_dbexec(index_sql_2);
+	  dbproc := mgi_dbexec(index_stageterms());
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      columnLabels := columnLabels + mgi_getstr(dbproc, 2) + ",";
@@ -642,7 +642,7 @@ rules:
           dbproc : opaque;
 
 	  table := top->ModificationHistory->Table;
-	  cmd := index_sql_3 + currentRecordKey;
+	  cmd := index_select(currentRecordKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -671,7 +671,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  table := top->Stage->Table;
-	  cmd := index_sql_4a + currentRecordKey + index_sql_4b;
+	  cmd := index_stages(currentRecordKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -700,7 +700,7 @@ rules:
 	  hasAssay : string;
 
           if top->mgiCitation->ObjectID->text.value != "154591" then
-	    hasAssay := mgi_sql1(index_sql_5a + currentRecordKey + index_sql_5b);
+	    hasAssay := mgi_sql1(index_hasAssay(currentRecordKey));
 
 	    if (hasAssay.length = 0) then
               SetOption.source_widget := top->CodedMenu;
@@ -739,7 +739,7 @@ rules:
 	    return;
 	  end if;
 
-	  priority := mgi_sql1(index_sql_6 + top->mgiCitation->ObjectID->text.value);
+	  priority := mgi_sql1(index_priority(top->mgiCitation->ObjectID->text.value));
 		
 	  if (priority.length > 0) then
             SetOption.source_widget := top->GXDIndexPriorityMenu;
@@ -763,7 +763,7 @@ rules:
 	    return;
 	  end if;
 
-	  mutants := mgi_sql1(index_sql_7 + top->mgiCitation->ObjectID->text.value);
+	  mutants := mgi_sql1(index_conditional(top->mgiCitation->ObjectID->text.value));
 		
 	  -- default to 'not applicable'
 	  if (mutants.length = 0) then

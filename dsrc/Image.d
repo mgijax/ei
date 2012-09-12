@@ -231,11 +231,11 @@ rules:
 	  if (global_application = "MGD") then
 	      defaultMGITypeKey := top->MGITypePulldown->Alleles.defaultValue;
 	      defaultImageClassKey := "6481782";
-	      orderBy := image_sql_8;
+	      orderBy := image_orderByJnum();
 	  else
 	      defaultMGITypeKey := top->MGITypePulldown->Expression.defaultValue;
 	      defaultImageClassKey := "6481781";
-	      orderBy := image_sql_9;
+	      orderBy := image_orderByImageType();
 	  end if;
 	end does;
 
@@ -386,7 +386,7 @@ rules:
 	    -- we may want to attach the reference check (see Assay.d/python_image_cache)
 	    -- in order to skip this step, if it's taking too long
             QueryNoInterrupt.source_widget := top;
-	    QueryNoInterrupt.select := image_sql_7 + refsKey + orderBy;
+	    QueryNoInterrupt.select := image_thumbnailByRef(refsKey) + orderBy;
 	    QueryNoInterrupt.table := IMG_IMAGE;
 	    QueryNoInterrupt.selectItem := false;
             send(QueryNoInterrupt, 0);
@@ -795,7 +795,7 @@ rules:
 	  table : widget;
           dbproc : opaque;
 	  
-	  cmd := image_sql_2 + currentRecordKey;
+	  cmd := image_select(currentRecordKey);
 	  table := top->Control->ModificationHistory->Table;
 	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
@@ -830,7 +830,7 @@ rules:
           end while;
 	  (void) mgi_dbclose(dbproc);
 
-	  cmd := image_sql_3a + currentRecordKey + image_sql_3b;
+	  cmd := image_caption(currentRecordKey);
 	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -840,7 +840,7 @@ rules:
           end while;
 	  (void) mgi_dbclose(dbproc);
 
-	  cmd := image_sql_4a + currentRecordKey + image_sql_4b;
+	  cmd := image_copyright(currentRecordKey);
 	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -851,7 +851,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  row := 0;
-	  cmd := image_sql_5 + currentRecordKey;
+	  cmd := image_pane(currentRecordKey);
 	  table := top->ImagePane->Table;
 	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
@@ -865,7 +865,7 @@ rules:
           end while;
 	  (void) mgi_dbclose(dbproc);
 
-	  cmd := image_sql_6a + currentRecordKey + image_sql_6b;
+	  cmd := image_thumbnail(currentRecordKey);
 	  table := top->Control->ModificationHistory->Table;
 	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do

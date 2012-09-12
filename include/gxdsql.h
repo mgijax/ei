@@ -40,43 +40,27 @@ extern char *assay_segmenttype(char *);
 
 /* Image.d */
 
+extern char *image_select(char *);
+extern char *image_caption(char *);
+extern char *image_copyright(char *);
+extern char *image_pane(char *);
+extern char *image_orderByJnum();
+extern char *image_orderByImageType();
+extern char *image_thumbnail(char *);
+extern char *image_thumbnailByRef(char *);
+
 #define image_sql_1a "declare @copyright varchar(255)\nexec BIB_getCopyright "
 #define image_sql_1b ", @copyright output\nselect @copyright"
 
-#define image_sql_2 "select * from IMG_Image_View where _Image_key = "
-#define image_sql_3a "\nselect n._Note_key, n.note from MGI_Note_Image_View n \
-where n.noteType = 'Caption' and n._Object_key = "
-#define image_sql_3b "\norder by n.sequenceNum\n"
-#define image_sql_4a "\nselect n._Note_key, n.note from MGI_Note_Image_View n \
-where n.noteType = 'Copyright' and n._Object_key = "
-#define image_sql_4b "\norder by n.sequenceNum\n"
-#define image_sql_5 "\nselect _ImagePane_key, paneLabel, \
-convert(varchar(10), x) || ',' || convert(varchar(10), y) || ',' || convert(varchar(10), width) || ',' || convert(varchar(10), height) \
-from IMG_ImagePane where _Image_key = "
-#define image_sql_6a "\nselect a._Object_key, a.accID from IMG_Image_Acc_View a, IMG_Image i \
-where i._Image_key = "
-#define image_sql_6b " and i._ThumbnailImage_key = a._Object_key \
-and a._LogicalDB_key = 1 and a.prefixPart = 'MGI:' and a.preferred = 1"
-#define image_sql_7 "select distinct i._Image_key, \
-i.jnumID || ';' || i.figureLabel || ';' || i.imageType, i.jnum, i.imageType \
-from IMG_Image_View i \
-where _Refs_key = "
-#define image_sql_8 "\norder by i.jnum\n"
-#define image_sql_9 "\norder by i.imageType, i.jnum\n"
-
 /* IndexStage.d */
 
-#define index_sql_1 "select _Term_key, term from VOC_Term where _Vocab_key = 12 order by sequenceNum"
-#define index_sql_2 "select _Term_key, term from VOC_Term where _Vocab_key = 13 order by sequenceNum"
-#define index_sql_3 "select * from GXD_Index_View where _Index_key = "
-#define index_sql_4a "\nselect * from GXD_Index_Stages where _Index_key = "
-#define index_sql_4b "\norder by _IndexAssay_key, _StageID_key\n"
-#define index_sql_5a "select i._Index_key from GXD_Index i \
-where exists (select 1 from GXD_Expression e \
-where i._Marker_key = e._Marker_key and i._Refs_key = e._Refs_key and i._Index_key = "
-#define index_sql_5b ")"
-#define index_sql_6 "select _Priority_key from GXD_Index where _Refs_key = "
-#define index_sql_7 "select _ConditionalMutants_key from GXD_Index where _Refs_key = "
+extern char *index_assayterms();
+extern char *index_stageterms();
+extern char *index_select(char *);
+extern char *index_stages(char *);
+extern char *index_hasAssay(char *);
+extern char *index_priority(char *);
+extern char *index_conditional(char *);
 
 /* InSituResult.d */
 
