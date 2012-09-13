@@ -267,7 +267,8 @@ rules:
 
 	  if (top->Copyright->text.value.length = 0) then
 	    top->Copyright->text.value := 
-		mgi_sql1(image_sql_1a + top->mgiCitation->ObjectID->text.value + image_sql_1b);
+		--mgi_sql1(image_sql_1a + top->mgiCitation->ObjectID->text.value + image_sql_1b);
+		mgi_sql1(image_getCopyright(top->mgiCitation->ObjectID->text.value));
           end if;
 
 	  currentRecordKey := "@" + KEYNAME;
@@ -457,7 +458,8 @@ rules:
 
 	  if (top->Copyright->text.value.length = 0) then
 	    top->Copyright->text.value := 
-		mgi_sql1(image_sql_1a + top->mgiCitation->ObjectID->text.value + image_sql_1b);
+		--mgi_sql1(image_sql_1a + top->mgiCitation->ObjectID->text.value + image_sql_1b);
+		mgi_sql1(image_getCopyright(top->mgiCitation->ObjectID->text.value));
           end if;
 
 	  cmd := "";

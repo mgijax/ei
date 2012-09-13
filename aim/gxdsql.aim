@@ -38,15 +38,6 @@ CALLS
 	assay_gelband("char *")		: "char *";
 	assay_segmenttype("char *")	: "char *";
 
-	image_select("char *")		: "char *";
-	image_caption("char *")		: "char *";
-	image_copyright("char *")	: "char *";
-	image_pane("char *")		: "char *";
-	image_orderByJnum()		: "char *";
-	image_orderByImageType()	: "char *";
-	image_thumbnail("char *")	: "char *";
-	image_thumbnailByRef("char *")	: "char *";
-
 	index_assayterms()		: "char *";
 	index_stageterms()		: "char *";
 	index_select("char *")		: "char *";

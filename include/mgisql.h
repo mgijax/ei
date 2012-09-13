@@ -55,6 +55,18 @@ extern char *controlledvocab_selectall();
 extern char *evidenceproperty_property(char *);
 extern char *evidenceproperty_select(char *, char *, char *);
 
+/* Image.d */
+
+extern char *image_select(char *);
+extern char *image_caption(char *);
+extern char *image_getCopyright(char *);
+extern char *image_copyright(char *);
+extern char *image_pane(char *);
+extern char *image_orderByJnum();
+extern char *image_orderByImageType();
+extern char *image_thumbnail(char *);
+extern char *image_thumbnailByRef(char *);
+
 /* Lib.d */
 
 extern char *lib_max(char *);

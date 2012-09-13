@@ -38,20 +38,6 @@ extern char *assay_gelrow(char *);
 extern char *assay_gelband(char *);
 extern char *assay_segmenttype(char *);
 
-/* Image.d */
-
-extern char *image_select(char *);
-extern char *image_caption(char *);
-extern char *image_copyright(char *);
-extern char *image_pane(char *);
-extern char *image_orderByJnum();
-extern char *image_orderByImageType();
-extern char *image_thumbnail(char *);
-extern char *image_thumbnailByRef(char *);
-
-#define image_sql_1a "declare @copyright varchar(255)\nexec BIB_getCopyright "
-#define image_sql_1b ", @copyright output\nselect @copyright"
-
 /* IndexStage.d */
 
 extern char *index_assayterms();
