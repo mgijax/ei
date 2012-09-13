@@ -298,3 +298,112 @@ char *index_conditional(char *key)
   return(buf);
 }
 
+/* 
+ * InSituResult.d
+*/
+
+char *insitu_specimen_count(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select count(*) from GXD_InSituResult where _Specimen_key = %s", key);
+  return(buf);
+}
+
+char *insitu_imageref_count(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select count(*) from IMG_Image where _Refs_key = %s", key);
+  return(buf);
+}
+
+char *insitu_select(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select * from GXD_InSituResult_View where _Specimen_key = %s \
+	\norder by sequenceNum", key);
+  return(buf);
+}
+
+char *insitu_imagepane(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Result_key, _ImagePane_key, figurepaneLabel \
+	\nfrom GXD_ISResultImage_View \
+	\nwhere _Specimen_key = %s \
+	\norder by sequenceNum", key);
+  return(buf);
+}
+
+char *insitu_structure(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Result_key, _Structure_key from GXD_ISResultStructure_View \
+	\nwhere _Specimen_key = %s \
+	\norder by sequenceNum", key);
+  return(buf);
+}
+
+/* 
+ * Dictionary.d
+*/
+
+char *dictionary_stage(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Stage_key from GXD_TheilerStage where stage = %s", key);
+  return(buf);
+}
+
+char *dictionary_system(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _defaultSystem_key from GXD_TheilerStage where _Stage_key =  %s", key);
+  return(buf);
+}
+
+char *dictionary_select(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select s.*, t.stage, sn.structure, sn.mgiAdded \
+  	\nfrom GXD_Structure s, GXD_TheilerStage t, GXD_StructureName sn \
+  	\nwhere s._StructureName_key = sn._StructureName_key \
+  	\nand s._Structure_key = sn._Structure_key \
+  	\nand s._Stage_key = t._Stage_key \
+  	\nand sn._Structure_key = %s", key);
+  return(buf);
+}
+
+char *dictionary_mgiAlias(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select sn._StructureName_key, sn.structure \
+  	\nfrom GXD_StructureName sn, GXD_Structure s \
+  	\nwhere s._StructureName_key != sn._StructureName_key \
+  	\nand s._Structure_key = sn._Structure_key \
+  	\nand sn.mgiAdded = 1 \
+  	\nand sn._Structure_key = %s", key);
+  return(buf);
+}
+
+char *dictionary_edinburghAlias(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select sn._StructureName_key, sn.structure \
+  	\nfrom GXD_StructureName sn, GXD_Structure s \
+  	\nwhere s._StructureName_key != sn._StructureName_key \
+  	\nand s._Structure_key = sn._Structure_key \
+  	\nand sn.mgiAdded = 0 \
+  	\nand sn._Structure_key = %s", key);
+  return(buf);
+}
+

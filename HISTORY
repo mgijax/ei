@@ -1,5 +1,10 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ?
+DATE: 09/13/2012
+STAFF: lec
+1) csrc/include/aim: move from include/define to csrc/function
+
 TAG: ei-5-1-0-3
 DATE: 09/12/2012
 STAFF: lec

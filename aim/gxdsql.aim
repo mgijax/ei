@@ -46,6 +46,18 @@ CALLS
 	index_priority("char *")	: "char *";
 	index_conditional("char *")	: "char *";
 
+        insitu_specimen_count("char *")	: "char *";
+        insitu_imageref_count("char *")	: "char *";
+        insitu_select("char *")		: "char *";
+        insitu_imagepane("char *")	: "char *";
+        insitu_structure("char *")	: "char *";
+
+        dictionary_stage("char *")	: "char *";
+        dictionary_system("char *")	: "char *";
+        dictionary_select("char *")	: "char *";
+        dictionary_mgiAlias("char *")	: "char *";
+        dictionary_edinburghAlias("char *")	: "char *";
+
   ENDL
 ENDC
 

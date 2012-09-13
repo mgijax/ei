@@ -318,12 +318,12 @@ rules:
 
 	   -- set stage key
 	   defaultStageKey := 
-	     mgi_sql1(dictionary_sql_1 + (string) current_stagenum );
+	     mgi_sql1(dictionary_stage((string) current_stagenum));
 
 	   -- set system key = user selection or TS default
 
 	   defaultSystemKey := 
-	     mgi_sql1(dictionary_sql_2 + defaultStageKey);
+	     mgi_sql1(dictionary_system(defaultStageKey));
 
 	   if (not isADSystem) then
              InitOptionMenu.option := addDialog->ADSystemMenu;
@@ -870,7 +870,7 @@ rules:
 
         dbproc : opaque;
 
-	cmd := dictionary_sql_3 + current_structurekey;
+	cmd := dictionary_select(current_structurekey);
         dbproc := mgi_dbexec(cmd);
         while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
           while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -916,7 +916,7 @@ rules:
 	--
 	row := 0;
 	table := top->mgiAliasTable->Table;
-	cmd := dictionary_sql_4 + current_structurekey;
+	cmd := dictionary_mgiAlias(current_structurekey);
         dbproc := mgi_dbexec(cmd);
         while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
           while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -933,7 +933,7 @@ rules:
 	--
 	row := 0;
 	table := top->edinburghAliasTable->Table;
-	cmd := dictionary_sql_5 + current_structurekey;
+	cmd := dictionary_edinburghAlias(current_structurekey);
         dbproc := mgi_dbexec(cmd);
         while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
           while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do

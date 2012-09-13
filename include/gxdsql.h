@@ -50,43 +50,19 @@ extern char *index_conditional(char *);
 
 /* InSituResult.d */
 
-#define insitu_sql_1 "select count(*) from GXD_InSituResult where _Specimen_key = "
-#define insitu_sql_2 "select count(*) from IMG_Image where _Refs_key = "
-#define insitu_sql_3a "select * from GXD_InSituResult_View where _Specimen_key = "
-#define insitu_sql_3b "\norder by sequenceNum\n"
-#define insitu_sql_4a "\nselect _Result_key, _ImagePane_key, figurepaneLabel \
-from GXD_ISResultImage_View \
-where _Specimen_key = "
-#define insitu_sql_4b "\norder by sequenceNum\n"
-#define insitu_sql_5a "\nselect _Result_key, _Structure_key from GXD_ISResultStructure_View \
-where _Specimen_key = "
-#define insitu_sql_5b "\norder by sequenceNum\n"
+extern char *insitu_specimen_count(char *);
+extern char *insitu_imageref_count(char *);
+extern char *insitu_select(char *);
+extern char *insitu_imagepane(char *);
+extern char *insitu_structure(char *);
 
 /* Dictionary.d */
 
-#define dictionary_sql_1 "select _Stage_key from GXD_TheilerStage where stage = "
-#define dictionary_sql_2 "select _defaultSystem_key from GXD_TheilerStage where _Stage_key = "
-
-#define dictionary_sql_3 "select s.*, t.stage, sn.structure, sn.mgiAdded \
-from GXD_Structure s, GXD_TheilerStage t, GXD_StructureName sn \
-where s._StructureName_key = sn._StructureName_key \
-and s._Structure_key = sn._Structure_key \
-and s._Stage_key = t._Stage_key \
-and sn._Structure_key = "
-
-#define dictionary_sql_4 "select sn._StructureName_key, sn.structure \
-from GXD_StructureName sn, GXD_Structure s \
-where s._StructureName_key != sn._StructureName_key \
-and s._Structure_key = sn._Structure_key \
-and sn.mgiAdded = 1 \
-and sn._Structure_key = "
-
-#define dictionary_sql_5 "select sn._StructureName_key, sn.structure \
-from GXD_StructureName sn, GXD_Structure s \
-where s._StructureName_key != sn._StructureName_key \
-and s._Structure_key = sn._Structure_key \
-and sn.mgiAdded = 0 \
-and sn._Structure_key = "
+extern char *dictionary_stage(char *);
+extern char *dictionary_system(char *);
+extern char *dictionary_select(char *);
+extern char *dictionary_mgiAlias(char *);
+extern char *dictionary_edinburghAlias(char *);
 
 /* DictionaryLib.d : no sql */
 

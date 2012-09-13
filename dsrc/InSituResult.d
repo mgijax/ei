@@ -278,7 +278,7 @@ rules:
 	  -- Copy the appropriate values to the target table
 
 	  count : string;
-          count := mgi_sql1(insitu_sql_1 + specimenKey);
+          count := mgi_sql1(insitu_specimen_count(specimenKey));
 	  (void) mgi_tblSetCell(target, mgi_tblGetCurrentRow(target), top.targetColumn, count);
 
 	  if (InSituResultCommit.quit) then
@@ -498,7 +498,7 @@ rules:
 	  -- check image list
 	  -- if image cache count <= our configured value, then ok
 	  refKey : string := top.root->mgiCitation->ObjectID->text.value;
-	  refCount : string := mgi_sql1(insitu_sql_2 + refKey);
+	  refCount : string := mgi_sql1(insitu_imageref_count(refKey));
 	  if (integer) refCount <= (integer) python_image_cache then
 	    PythonImageCache.objectKey := refKey;
 	    send(PythonImageCache, 0);
@@ -534,7 +534,7 @@ rules:
 	  newCmd := saveCmd + " " + key;
 	  top->ImagePaneList.cmd := newCmd + "\norder by paneLabel";
 
-	  refCount := mgi_sql1(insitu_sql_2 + key);
+	  refCount := mgi_sql1(insitu_imageref_count(key));
 	  if (integer) refCount > (integer) assay_image_lookup then
 	    LoadList.loadsmall := true;
 	  end if;
@@ -580,7 +580,7 @@ rules:
 	  send(ClipboardLoad, 0);
 
 	  row := 0;
-	  cmd := insitu_sql_3a + specimenKey + insitu_sql_3b;
+	  cmd := insitu_select(specimenKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -599,7 +599,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  row := 0;
-	  cmd := insitu_sql_4a + specimenKey + insitu_sql_4b;
+	  cmd := insitu_imagepane(specimenKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -637,7 +637,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  row := 0;
-	  cmd := insitu_sql_5a + specimenKey + insitu_sql_5b;
+	  cmd := insitu_structure(specimenKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
