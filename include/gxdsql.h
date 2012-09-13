@@ -13,6 +13,7 @@ extern char *antibody_antigen(char *);
 extern char *antibody_marker(char *);
 extern char *antibody_alias(char *);
 extern char *antibody_aliasref(char *);
+extern char *antibody_source(char *, char *, char *);
 
 /* Antigen.d */
 

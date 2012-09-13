@@ -141,8 +141,8 @@ extern char *verify_exec_goreference(char *);
 extern char *verify_organism(char *);
 
 extern char *verify_strainspecies(char *);
-extern char *verify_strains1();
-extern char *verify_strains2();
+extern char *verify_strainspeciesmouse();
+extern char *verify_straintype();
 extern char *verify_strains3(char *);
 extern char *verify_strains4(char *);
 
@@ -152,5 +152,13 @@ extern char *verify_tissue2(char *);
 extern char *verify_user(char *);
 
 extern char *verify_vocabqualifier(char *);
+extern char *verify_vocabterm(char *, char *);
+
+extern char *verify_item_strain(char *);
+extern char *verify_item_tissue(char *);
+extern char *verify_item_ref(char *);
+extern char *verify_item_cross(char *);
+extern char *verify_item_riset(char *);
+extern char *verify_item_term(char *);
 
 #endif

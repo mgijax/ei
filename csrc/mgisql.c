@@ -836,7 +836,7 @@ char *verify_strainspecies(char *key)
   return(buf);
 }
 
-char *verify_strains1()
+char *verify_strainspeciesmouse()
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
@@ -844,7 +844,7 @@ char *verify_strains1()
   return(buf);
 }
 
-char *verify_strains2()
+char *verify_straintype()
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
@@ -900,6 +900,64 @@ char *verify_vocabqualifier(char *key)
    where d._DAG_key = 4 \
    and d._Label_key = 3 \
    and d._Object_key = %s", key);
+  return(buf);
+}
+
+char *verify_vocabterm(char *key, char *abbreviation)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Term_key, abbreviation from VOC_Term \
+	\nwhere abbreviation = %s \
+	\nand _Vocab_key = %s", abbreviation, key);
+  return(buf);
+}
+
+char *verify_item_strain(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Strain_key, strain, standard, private from %s where ", key);
+  return(buf);
+}
+
+char *verify_item_tissue(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Tissue_key, tissue, standard, private = 0 from %s where ", key);
+  return(buf);
+}
+
+char *verify_item_ref(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select distinct id = 0, journal, standard = 1, private = 0 from %s where ", key);
+  return(buf);
+}
+
+char *verify_item_cross(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Cross_key, display, standard = 1, private = 0 from  %s where ", key);
+  return(buf);
+}
+
+char *verify_item_riset(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _RISet_key, designation, standard = 1, private = 0 from %s where ", key);
+  return(buf);
+}
+
+char *verify_item_term(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Term_key, term, standard = 1, private = 0 from %s where ", key);
   return(buf);
 }
 

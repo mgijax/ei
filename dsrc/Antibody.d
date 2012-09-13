@@ -1024,9 +1024,9 @@ rules:
           if (top->AntigenAccession->ObjectID->text.value.length = 0) then
             top->SourceForm->SourceID->text.value := "";
           else
-            cmd := "select _Source_key from " + mgi_DBtable(GXD_ANTIGEN) +
-                    " where " + mgi_DBkey(GXD_ANTIGEN) + " = " + 
-                    top->AntigenAccession->ObjectID->text.value;
+	    cmd := antibody_source(top->AntigenAccession->ObjectID->text.value, 
+		mgi_DBtable(GXD_ANTIGEN), 
+		mgi_DBkey(GXD_ANTIGEN));
             top->SourceForm->SourceID->text.value := mgi_sql1(cmd);
 	  end if;
 

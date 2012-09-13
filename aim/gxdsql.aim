@@ -17,6 +17,7 @@ CALLS
 	antibody_marker("char *")	: "char *";
 	antibody_alias("char *")	: "char *";
 	antibody_aliasref("char *")	: "char *";
+	antibody_source("char *", "char *", "char *")	: "char *";
 
 	antigen_select("char *")	: "char *";
 	antigen_antibody("char *")	: "char *";

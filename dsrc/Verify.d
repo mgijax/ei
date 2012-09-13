@@ -1502,19 +1502,19 @@ rules:
 	  end if;
 
 	  if (tableID = STRAIN) then
-	    select := "select _Strain_key, strain, standard, private from " + table + " where ";
-	    defaultSpecies := mgi_sql1("select _Term_key from VOC_Term where _Vocab_key = 26 and term = 'laboratory mouse'");
-	    defaultStrainType := mgi_sql1("select _Term_key from VOC_Term where _Vocab_key = 55 and term = 'Not Specified'");
+	    select := verify_item_strain(table);
+	    defaultSpecies := mgi_sql1(verify_strainspeciesmouse());
+	    defaultStrainType := mgi_sql1(verify_straintype());
 	  elsif (tableID = TISSUE) then
-	    select := "select _Tissue_key, tissue, standard, private = 0 from " + table + " where ";
+	    select := verify_item_tissue(table);
 	  elsif (tableID = BIB_REFS) then
-	    select := "select distinct id = 0, journal, standard = 1, private = 0 from " + table + " where ";
+	    select := verify_item_ref(table);
 	  elsif (tableID = CROSS) then
-	    select := "select _Cross_key, display, standard = 1, private = 0 from " + table + " where ";
+	    select := verify_item_cross(table);
 	  elsif (tableID = RISET) then
-	    select := "select _RISet_key, designation, standard = 1, private = 0 from " + table + " where ";
+	    select := verify_item_riset(table);
 	  else
-	    select := "select _Term_key, term, standard = 1, private = 0 from " + table + " where ";
+	    select := verify_item_term(table);
 	  end if;
 
 	  dbproc : opaque := mgi_dbexec(select + where + order);
@@ -2358,8 +2358,7 @@ rules:
 	      copyright := "";
 	      if (top->Copyright != nil) then
 		if (top->Copyright->text.value.length = 0) then
-	          copyright := mgi_sp("declare @copyright varchar(255)\nexec BIB_getCopyright " + key + ", @copyright output\nselect @copyright");
---	          copyright := mgi_sp("exec BIB_getCopyright " + key);
+	          copyright := mgi_sp(image_getCopyright(key));
 		  if (copyright.length > 0) then
 		    top->Copyright->text.value := copyright;
 		  end if;
@@ -3064,8 +3063,8 @@ rules:
 	  defaultStrainType : string;
           i : integer;
 
-	  defaultSpecies := mgi_sql1(verify_strains1());
-	  defaultStrainType := mgi_sql1(verify_strains2());
+	  defaultSpecies := mgi_sql1(verify_strainspeciesmouse());
+	  defaultStrainType := mgi_sql1(verify_straintype());
  
           -- Parse Strains
  
@@ -3467,9 +3466,7 @@ rules:
 
 	  (void) busy_cursor(top);
 
-	  select : string := "select _Term_key, abbreviation from VOC_Term " +
-		"where abbreviation = " + mgi_DBprstr(value) + 
-		" and _Vocab_key = " + (string) table.vocabEvidenceKey;
+	  select : string := verify_vocabterm((string) table.vocabEvidenceKey, mgi_DBprstr(value));
 
 	  dbproc : opaque := mgi_dbexec(select);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
@@ -3612,9 +3609,7 @@ rules:
 	      value := "";
 	  end if;
 
-	  select : string := "select _Term_key, abbreviation from VOC_Term " +
-		"where abbreviation = " + mgi_DBprstr(value) + 
-		" and _Vocab_key = " + (string) table.vocabQualifierKey;
+	  select : string := verify_vocabterm((string) (string) table.vocabQualifierKey, mgi_DBprstr(value));
 
 	  dbproc : opaque := mgi_dbexec(select);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do

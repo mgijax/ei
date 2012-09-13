@@ -108,14 +108,21 @@ CALLS
 	 verify_exec_goreference("char *")	: "char *";
 	 verify_organism("char *")		: "char *";
 	 verify_strainspecies("char *")		: "char *";
-	 verify_strains1()			: "char *";
-	 verify_strains2()			: "char *";
+	 verify_strainspeciesmouse()		: "char *";
+	 verify_straintype()			: "char *";
 	 verify_strains3("char *")		: "char *";
 	 verify_strains4("char *")		: "char *";
 	 verify_tissue1("char *")		: "char *";
 	 verify_tissue2("char *")		: "char *";
 	 verify_user("char *")			: "char *";
 	 verify_vocabqualifier("char *")	: "char *";
+	 verify_vocabterm("char *", "char *")	: "char *";
+	 verify_item_strain("char *")		: "char *";
+	 verify_item_tissue("char *")		: "char *";
+	 verify_item_ref("char *")		: "char *";
+	 verify_item_cross("char *")		: "char *";
+	 verify_item_riset("char *")		: "char *";
+	 verify_item_term("char *")		: "char *";
 
   ENDL
 ENDC
