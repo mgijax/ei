@@ -123,6 +123,7 @@ CALLS
 	 verify_item_cross("char *")		: "char *";
 	 verify_item_riset("char *")		: "char *";
 	 verify_item_term("char *")		: "char *";
+	 verify_westernblot("char *", "char *", "char *"): "char *";
 
 	 reftypetable_init("char *")		: "char *";
 	 reftypetable_initallele("char *")	: "char *";

@@ -3894,8 +3894,7 @@ rules:
 
 	  -- Retrieve recogWestern from Antibody table where PK = Accessioned Object key
 
-	  recogWestern := mgi_sql1("select recogWestern from " + mgi_DBtable(tableID) +
-		" where " + mgi_DBkey(tableID) + " = " + accID);
+	  recogWestern := mgi_sql1(verify_westernblot(accID, mgi_DBtable(tableID), mgi_DBkey(tableID)));
 
 	  -- Report to user if Antibody does not recognize Western blot
 

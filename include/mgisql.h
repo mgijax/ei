@@ -161,6 +161,8 @@ extern char *verify_item_cross(char *);
 extern char *verify_item_riset(char *);
 extern char *verify_item_term(char *);
 
+extern char *verify_westernblot(char *, char *, char *);
+
 /* RefTypeTableLib */
 
 extern char *reftypetable_init(char *);

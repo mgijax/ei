@@ -257,6 +257,7 @@ extern char *tdcv_notes(char *);
 extern char *tdcv_markertype(char *);
 extern char *tdcv_evidencecode(char *);
 extern char *tdcv_qualifier(char *);
+extern char *tdcv_dbview(char *);
 
 /* Translation.d */
 

@@ -1899,6 +1899,14 @@ char *tdcv_qualifier(char *key)
   return(buf);
 }
 
+char *tdcv_dbview(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select dbView from ACC_MGIType where _MGIType_key = %s", key);
+  return(buf);
+}
+
 /*
  * Translation.d
 */

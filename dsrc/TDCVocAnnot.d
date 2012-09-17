@@ -782,7 +782,7 @@ rules:
 	  annotTypeKey := (string) top->VocAnnotTypeMenu.menuHistory.defaultValue;
 	  annotType := top->VocAnnotTypeMenu.menuHistory.labelString;
 	  mgiTypeKey := (string) top->VocAnnotTypeMenu.menuHistory.mgiTypeKey;
-	  dbView := mgi_sql1("select dbView from ACC_MGIType where _MGIType_key = " + mgiTypeKey);
+	  dbView := mgi_sql1(tdcv_dbview(mgiTypeKey));
 	  top->mgiAccession.mgiTypeKey := mgiTypeKey;
 	  annotTable.vocabKey := top->VocAnnotTypeMenu.menuHistory.vocabKey;
 	  annotTable.vocabEvidenceKey := top->VocAnnotTypeMenu.menuHistory.evidenceKey;
@@ -796,8 +796,7 @@ rules:
           pos := XmListItemPos(top->EvidenceCodeList->List, xm_xmstring("IC"));
 	  defaultEvidenceCodeKey := top->EvidenceCodeList->List.keys[pos];
 
-	  defaultQualifierKey := 
-	      mgi_sql1(tdcv_qualifier((string) annotTable.vocabQualifierKey));
+	  defaultQualifierKey := mgi_sql1(tdcv_qualifier((string) annotTable.vocabQualifierKey));
 
 	  (void) reset_cursor(mgi);
 	end does;

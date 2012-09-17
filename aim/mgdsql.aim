@@ -211,6 +211,7 @@ CALLS
 	 tdcv_markertype("char *")			: "char *";
 	 tdcv_evidencecode("char *")			: "char *";
 	 tdcv_qualifier("char *")			: "char *";
+	 tdcv_dbview("char *")				: "char *";
 
 	 translation_accession1("char *", "char *")	: "char *";
 	 translation_accession2("char *", "char *")	: "char *";
