@@ -133,6 +133,7 @@ CALLS
 	 reftypetable_loadstrain("char *", "char *", "char *", "char *") : "char *";
 	 reftypetable_refstype("char *", "char *") : "char *";
 
+	 strainalleletype_init()		: "char *";
 	 strainalleletype_load("char *", "char *", "char *")	: "char *";
 
 	 syntypetable_init("char *")		: "char *";

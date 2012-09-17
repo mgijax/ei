@@ -1016,7 +1016,7 @@ char *reftypetable_load(char *key, char *from, char *where, char *order)
 	\njnum, short_citation, _Assoc_key, isReviewArticle, isReviewArticleString \
 	\nfrom %s \
 	\nwhere %s = %s \
-	\n%s", key, from, where, order);
+	\n%s", from, where, key, order);
   return(buf);
 }
 
@@ -1029,7 +1029,7 @@ char *reftypetable_loadstrain(char *key, char *from, char *where, char *order)
 	\nmodifiedBy, modification_date \
 	\nfrom %s \
 	\nwhere %s = %s \
-	\n%s", key, from, where, order);
+	\n%s", from, where, key, order);
   return(buf);
 }
 
@@ -1067,7 +1067,7 @@ char *strainalleletype_load(char *key, char *from, char *where)
 	\nselect _StrainMarker_key, _Marker_key, _Allele_key, _Qualifier_key, \
 	\nsymbol, chromosome, alleleSymbol, qualifier, 99 as chrorder \
 	\nfrom %s \
-	\nwhere %s \ %s \
+	\nwhere %s = %s \
 	\nand chromosome in ('X', 'Y', 'MT', 'UN', 'XY')) \
 	\norder by _Qualifier_key, chrorder, symbol", from, where, key, from, where, key);
   return(buf);

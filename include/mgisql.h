@@ -174,6 +174,7 @@ extern char *reftypetable_refstype(char *, char *);
 
 /* StrainAlleleTypeTableLib */
 
+extern char *strainalleletype_init();
 extern char *strainalleletype_load(char *, char *, char *);
 
 /* SynTypeTableLib.d */
