@@ -961,3 +961,128 @@ char *verify_item_term(char *key)
   return(buf);
 }
 
+/*
+ * RefTypeTableLib
+*/
+
+char *reftypetable_init(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _RefAssocType_key, assocType, allowOnlyOne, _MGIType_key from %s \
+	\norder by allowOnlyOne desc, _RefAssocType_key", key);
+  return(buf);
+}
+
+char *reftypetable_initallele(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _RefAssocType_key, assocType, allowOnlyOne, _MGIType_key from %s \
+	\nwhere assocType in ('Original', 'Transmission', 'Molecular', 'Indexed') \
+	\norder by allowOnlyOne desc, _RefAssocType_key", key);
+  return(buf);
+}
+
+char *reftypetable_loadorder1()
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"order by _RefAssocType_key");
+  return(buf);
+}
+
+char *reftypetable_loadorder2()
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"order by _RefAssocType_key, jnum");
+  return(buf);
+}
+
+char *reftypetable_loadorder3()
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"\norder by allowOnlyOne desc, _RefAssocType_key");
+  return(buf);
+}
+
+char *reftypetable_load(char *key, char *from, char *where, char *order)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Refs_key, _RefAssocType_key, assocType, allowOnlyOne, \
+	\njnum, short_citation, _Assoc_key, isReviewArticle, isReviewArticleString \
+	\nfrom %s \
+	\nwhere %s = %s \
+	\n%s", key, from, where, order);
+  return(buf);
+}
+
+char *reftypetable_loadstrain(char *key, char *from, char *where, char *order)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Refs_key, _RefAssocType_key, assocType, allowOnlyOne, \
+	\njnum, short_citation, _Assoc_key, isReviewArticle, isReviewArticleString, \
+	\nmodifiedBy, modification_date \
+	\nfrom %s \
+	\nwhere %s = %s \
+	\n%s", key, from, where, order);
+  return(buf);
+}
+
+char *reftypetable_refstype(char *key, char *from)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _RefAssocType_key from %s where assocType = %s", from, key);
+  return(buf);
+}
+
+/*
+ * SynTypeTableLib
+*/
+
+char *syntypetable_init(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _SynonymType_key, _MGIType_key, synonymType, allowOnlyOne from %s \
+	\norder by allowOnlyOne desc, _SynonymType_key", key);
+  return(buf);
+}
+
+char *syntypetable_load(char *key, char *from, char *where)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Synonym_key, _SynonymType_key, synonymType, synonym, allowOnlyOne, \
+	\nmodification_date, modifiedBy \
+	\nfrom %s \
+	\nwhere %s = %s \
+	\norder by  allowOnlyOne desc, _SynonymType_key", from, where, key);
+  return(buf);
+}
+
+char *syntypetable_loadref(char *key, char *from, char *where)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Synonym_key, _SynonymType_key, synonymType, synonym, allowOnlyOne, \
+	\nmodification_date, modifiedBy, _Refs_key, jnum, short_citation \
+	\nfrom %s \
+	\nwhere %s = %s \
+	\norder by  allowOnlyOne desc, _SynonymType_key", from, where, key);
+  return(buf);
+}
+
+char *syntypetable_syntypekey(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _SynonymType_key from %s", key);
+  return(buf);
+}
+

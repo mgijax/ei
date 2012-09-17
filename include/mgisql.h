@@ -161,4 +161,22 @@ extern char *verify_item_cross(char *);
 extern char *verify_item_riset(char *);
 extern char *verify_item_term(char *);
 
+/* SynTypeTableLib.d */
+
+extern char *syntypetable_init(char *);
+extern char *syntypetable_load(char *, char *, char *);
+extern char *syntypetable_loadref(char *, char *, char *);
+extern char *syntypetable_syntypekey(char *);
+
+/* RefTypeTableLib */
+
+extern char *reftypetable_init(char *);
+extern char *reftypetable_initallele(char *);
+extern char *reftypetable_loadorder1();
+extern char *reftypetable_loadorder2();
+extern char *reftypetable_loadorder3();
+extern char *reftypetable_load(char *, char *, char*, char *);
+extern char *reftypetable_loadstrain(char *, char *, char*, char *);
+extern char *reftypetable_refstype(char *, char *);
+
 #endif

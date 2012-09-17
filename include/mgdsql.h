@@ -249,4 +249,13 @@ extern char *strain_execmerge(char *, char *);
 extern char *strain_checkuser(char *);
 extern char *strain_count();
 
+/* TDCVocabAnnot.d */
+
+extern char *tdcv_accession(char *, char *);
+extern char *tdcv_select(char *, char *, char *);
+extern char *tdcv_notes(char *);
+extern char *tdcv_markertype(char *);
+extern char *tdcv_evidencecode(char *);
+extern char *tdcv_qualifier(char *);
+
 #endif

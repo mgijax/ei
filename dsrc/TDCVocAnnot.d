@@ -661,11 +661,7 @@ rules:
 	  objectLoaded : boolean := false;
           dbproc : opaque;
  
-	  cmd := "select _Object_key, accID, description, short_description" +
-		  " from " + dbView + 
-		  " where _Object_key = " + currentRecordKey + 
-		  " and prefixPart = 'MGI:' and preferred = 1 " + 
-		  " order by description\n";
+	  cmd := tdcv_accession(currentRecordKey, dbView);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -683,14 +679,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  row := 0;
-	  cmd := "select a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier, e.*" +
-		  " from " + mgi_DBtable(VOC_ANNOT_VIEW) + " a," +
-		    mgi_DBtable(VOC_EVIDENCE_VIEW) + " e" +
-		  " where a._AnnotType_key = " + annotTypeKey +
-		  " and a._LogicalDB_key = " + defaultLogicalDBKey +
-		  " and a._Object_key = " + currentRecordKey + 
-		  " and a._Annot_key = e._Annot_key " +
-		  " order by a.term\n";
+	  cmd := tdcv_select(currentRecordKey, annotTypeKey, defaultLogicalDBKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -723,15 +712,7 @@ rules:
           end while;
 	  (void) mgi_dbclose(dbproc);
 
-	  cmd := "select distinct n._Note_key, n._Object_key, n.note, n.sequenceNum" + 
-		  " from " + 
-		    mgi_DBtable(VOC_ANNOT) + " a, " +
-		    mgi_DBtable(VOC_EVIDENCE) + " e, " +
-		    mgi_DBtable(MGI_NOTE_VOCEVIDENCE_VIEW) + " n" +
-		  " where a._Object_key = " + currentRecordKey +
-		  " and a._Annot_key = e._Annot_key" +
-		  " and e._AnnotEvidence_key = n._Object_key" +
-		  " order by n._Object_key, n.sequenceNum\n";
+	  cmd := tdcv_notes(currentRecordKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -750,8 +731,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  row := 0;
-	  cmd := "select _Marker_Type_key from MRK_Marker" +
-		  " where _Marker_key = " + currentRecordKey + "\n";
+	  cmd := tdcv_markertype(currentRecordKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -809,8 +789,7 @@ rules:
 	  annotTable.vocabQualifierKey := top->VocAnnotTypeMenu.menuHistory.qualifierKey;
 	  annotTable.annotVocab := top->VocAnnotTypeMenu.menuHistory.annotVocab;
 
-	  top->EvidenceCodeList.cmd := "select _Term_key, abbreviation " +
-		"from VOC_Term where _Vocab_key = " + (string) evidenceKey + " order by abbreviation";
+	  top->EvidenceCodeList.cmd := tdcv_evidencecode((string) evidenceKey);
           LoadList.list := top->EvidenceCodeList;
 	  send(LoadList, 0);
 
@@ -818,8 +797,7 @@ rules:
 	  defaultEvidenceCodeKey := top->EvidenceCodeList->List.keys[pos];
 
 	  defaultQualifierKey := 
-	      mgi_sql1("select _Term_key from VOC_Term where _Vocab_key = " + 
-		    (string) annotTable.vocabQualifierKey + " and term is null");
+	      mgi_sql1(tdcv_qualifier((string) annotTable.vocabQualifierKey));
 
 	  (void) reset_cursor(mgi);
 	end does;

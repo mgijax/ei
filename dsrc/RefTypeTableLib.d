@@ -108,21 +108,16 @@ rules:
 	  tableID : integer := InitRefTypeTable.tableID;
 
 	  cmd : string;
-	  where : string := "";
-	  orderBy : string;
 	  row : integer := 0;
 
 	  ClearTable.table := table;
 	  send(ClearTable, 0);
 
 	  if (tableID = MGI_REFTYPE_ALLELE_VIEW) then
-	     where := " where assocType in ('Original', 'Transmission', 'Molecular', 'Indexed') ";
+	     cmd := reftypetable_initallele(mgi_DBtable(tableID));
+	  else
+	     cmd := reftypetable_init(mgi_DBtable(tableID));
 	  end if;
-
-	  orderBy := "\norder by allowOnlyOne desc, _RefAssocType_key";
-
-	  cmd := "select _RefAssocType_key, assocType, allowOnlyOne, _MGIType_key from " + 
-		  mgi_DBtable(tableID) + where + orderBy;
 
 	  dbproc : opaque := mgi_dbexec(cmd);
 
@@ -176,24 +171,17 @@ rules:
 	  send(ClearTable, 0);
 
 	  if (tableID = MGI_REFTYPE_ALLELE_VIEW) then
-	     orderBy := "\norder by _RefAssocType_key";
+	     orderBy := reftypetable_loadorder1();
 	  elsif (tableID = MGI_REFTYPE_ANTIBODY_VIEW) then
-	     orderBy := "\norder by _RefAssocType_key, jnum";
+	     orderBy := reftypetable_loadorder2();
 	  else
-	     orderBy := "\norder by allowOnlyOne desc, _RefAssocType_key";
+	     orderBy := reftypetable_loadorder3();
 	  end if;
 
 	  if (tableID = MGI_REFERENCE_STRAIN_VIEW) then
-            cmd := "select _Refs_key, _RefAssocType_key, assocType, allowOnlyOne, " +
-		  "jnum, short_citation, _Assoc_key, isReviewArticle, isReviewArticleString, " +
-		  "modifiedBy, modification_date" +
-	  	  " from " + mgi_DBtable(tableID) +
-		  " where " + mgi_DBkey(tableID) + " = " + objectKey + orderBy;
+	    cmd := reftypetable_loadstrain(objectKey, mgi_DBtable(tableID), mgi_DBkey(tableID), orderBy);
 	  else
-            cmd := "select _Refs_key, _RefAssocType_key, assocType, allowOnlyOne, " +
-		  "jnum, short_citation, _Assoc_key, isReviewArticle, isReviewArticleString" +
-	  	  " from " + mgi_DBtable(tableID) +
-		  " where " + mgi_DBkey(tableID) + " = " + objectKey + orderBy;
+	    cmd := reftypetable_load(objectKey, mgi_DBtable(tableID), mgi_DBkey(tableID), orderBy);
 	  end  if;
 
 	  row : integer := 0;
@@ -263,8 +251,7 @@ rules:
 	  reftableID : integer := MGI_REFERENCE_ASSOC;
 
 	  if (table.useDefaultRefType) then
-	    defaultRefsTypeKey := mgi_sql1("select _RefAssocType_key from " + mgi_DBtable(tableID) +
-		" where assocType = " + mgi_DBprstr(table.defaultRefType));
+	    defaultRefsTypeKey := reftypetable_refstype(mgi_DBprstr(table.defaultRefType), mgi_DBtable(tableID));
 	  end if;
 
           -- Process 

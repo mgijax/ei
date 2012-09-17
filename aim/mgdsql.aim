@@ -205,6 +205,13 @@ CALLS
 	 strain_checkuser("char *")			: "char *";
 	 strain_count("char *")				: "char *";
 
+	 tdcv_accession("char *", "char *")		: "char *";
+	 tdcv_select("char *", "char *", "char *")	: "char *";
+	 tdcv_notes("char *")				: "char *";
+	 tdcv_markertype("char *")			: "char *";
+	 tdcv_evidencecode("char *")			: "char *";
+	 tdcv_qualifier("char *")			: "char *";
+
   ENDL
 ENDC
 

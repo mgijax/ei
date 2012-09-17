@@ -92,9 +92,7 @@ rules:
 	  ClearTable.table := table;
 	  send(ClearTable, 0);
 
-	  cmd := "select _SynonymType_key, _MGIType_key, synonymType, allowOnlyOne from " + mgi_DBtable(tableID) + 
-		  "\norder by allowOnlyOne desc, _SynonymType_key";
-
+	  cmd := syntypetable_init(mgi_DBtable(tableID));
 	  dbproc : opaque := mgi_dbexec(cmd);
 
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
@@ -136,17 +134,13 @@ rules:
 	  ClearTable.table := table;
 	  send(ClearTable, 0);
 
-          cmd := "select _Synonym_key, _SynonymType_key, synonymType, synonym, allowOnlyOne, modification_date, modifiedBy";
-
 	  if (tableID = MGI_SYNONYM_ALLELE_VIEW or 
 	      tableID = MGI_SYNONYM_NOMEN_VIEW or 
 	      tableID = MGI_SYNONYM_MUSMARKER_VIEW) then
-	      cmd := cmd + " , _Refs_key, jnum, short_citation";
+	      cmd := syntypetable_loadref(objectKey, mgi_DBtable(tableID), mgi_DBkey(tableID));
+	  else
+	      cmd := syntypetable_load(objectKey, mgi_DBtable(tableID), mgi_DBkey(tableID));
           end if;
-
-	  cmd := cmd + " from " + mgi_DBtable(tableID) +
-		 " where " + mgi_DBkey(tableID) + " = " + objectKey +
-		 " order by  allowOnlyOne desc, _SynonymType_key";
 
 	  row : integer := 0;
           dbproc : opaque := mgi_dbexec(cmd);
@@ -213,7 +207,7 @@ rules:
 	  syntableID : integer := MGI_SYNONYM;
 
 	  if (table.useDefaultSynType) then
-	    synTypeKey := mgi_sql1("select _SynonymType_key from " + mgi_DBtable(tableID));
+	    synTypeKey := mgi_sql1(syntypetable_syntypekey(mgi_DBtable(tableID)));
 	  end if;
 
           -- Process 
