@@ -124,11 +124,6 @@ CALLS
 	 verify_item_riset("char *")		: "char *";
 	 verify_item_term("char *")		: "char *";
 
-	 syntypetable_init("char *")		: "char *";
-	 syntypetable_load("char *", "char *", "char *"): "char *";
-	 syntypetable_loadref("char *", "char *", "char *"): "char *";
-	 syntypetable_syntypekey("char *")	: "char *";
-
 	 reftypetable_init("char *")		: "char *";
 	 reftypetable_initallele("char *")	: "char *";
 	 reftypetable_loadorder1()		: "char *";
@@ -137,6 +132,14 @@ CALLS
 	 reftypetable_load("char *", "char *", "char *", "char *") : "char *";
 	 reftypetable_loadstrain("char *", "char *", "char *", "char *") : "char *";
 	 reftypetable_refstype("char *", "char *") : "char *";
+
+	 strainalleletype_load("char *", "char *", "char *")	: "char *";
+
+	 syntypetable_init("char *")		: "char *";
+	 syntypetable_load("char *", "char *", "char *"): "char *";
+	 syntypetable_loadref("char *", "char *", "char *"): "char *";
+	 syntypetable_syntypekey("char *")	: "char *";
+
 
   ENDL
 ENDC
