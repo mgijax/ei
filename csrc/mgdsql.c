@@ -1899,3 +1899,52 @@ char *tdcv_qualifier(char *key)
   return(buf);
 }
 
+/*
+ * Translation.d
+*/
+
+char *translation_accession1(char *key, char *description)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Object_key, description, accID, mgiID from %s where description like %s", key, description);
+  return(buf);
+}
+
+char *translation_accession2(char *key, char *accID)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Object_key, description, accID, mgiID from %s where accID = %s", key, accID);
+  return(buf);
+}
+
+char *translation_select(char *key, char *from, char *where)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select * from %s where %s = %s", from, where, key);
+  return(buf);
+}
+
+char *translation_dbview(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select dbView from ACC_MGIType where _MGIType_key = %s", key);
+  return(buf);
+}
+
+char *translation_badgoodname(char *key, char *dbView)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select distinct t._Translation_key, t._Object_key, t.badName, t.sequenceNum, \
+	\nt.modifiedBy, t.modification_date, v.description, v.accID, v.mgiID \
+	\nfrom MGI_Translation_View t, %s v \
+	\nwhere v._Object_key = t._Object_key \
+	\nand t._TranslationType_key = %s \
+	\norder by v.description, t._Translation_key", dbView, key);
+  return(buf);
+}
+

@@ -140,22 +140,6 @@ rules:
 
           cmd := strainalleletype_load(objectKey, mgi_DBtable(tableID), mgi_DBkey(STRAIN));
 
-          --cmd := "(select _StrainMarker_key, _Marker_key, _Allele_key, _Qualifier_key, " +
-           --   "symbol, chromosome, alleleSymbol, qualifier, " +
-            --  "convert(integer, chromosome) as chrorder " +
-             -- "from " + mgi_DBtable(tableID) +
-              --" where " + mgi_DBkey(STRAIN) + " = " + objectKey +
---              "\nand chromosome not in ('X', 'Y', 'MT', 'UN', 'XY') " +
- --             "union " +
-  --            "select _StrainMarker_key, _Marker_key, _Allele_key, _Qualifier_key, " +
-   --           "symbol, chromosome, alleleSymbol, qualifier, " +
-    --          "99 as chrorder " +
-     --         "from " + mgi_DBtable(tableID) +
-      --        " where " + mgi_DBkey(STRAIN) + " = " + objectKey +
-       --       "\nand chromosome in ('X', 'Y', 'MT', 'UN', 'XY')) " +
-        --      "\norder by _Qualifier_key, chrorder, symbol"
-         --     ;
-
 	  row : integer := 0;
           dbproc : opaque := mgi_dbexec(cmd);
  

@@ -26,6 +26,7 @@ dmodule Translation is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
+#include <mgdsql.h>
 
 devents:
 
@@ -404,7 +405,7 @@ rules:
 	  end if;
 
 	  if (from_term) then 
-	    dbView := mgi_sql1("select dbView from ACC_MGIType where _MGIType_key = " + top->MGITypeMenu.menuHistory.defaultValue);
+	    dbView := mgi_sql1(translation_dbview(top->MGITypeMenu.menuHistory.defaultValue));
 	    from := from + "," + mgi_DBtable(MGI_TRANSLATION) + " m, " + dbView + " v";
 	    where := where + "\nand t._TranslationType_key = m._TranslationType_key";
 	    where := where + "\nand m._Object_key = v._Object_key";
@@ -473,8 +474,7 @@ rules:
 
 	  -- Query for Master Translation Type record
 
-	  cmd : string := "select * from " + mgi_DBtable(MGI_TRANSLATIONTYPE) +
-			  " where " + mgi_DBkey(MGI_TRANSLATIONTYPE) + " = " + currentRecordKey + "\n";
+	  cmd : string := translation_select(currentRecordKey,  mgi_DBtable(MGI_TRANSLATIONTYPE), mgi_DBkey(MGI_TRANSLATIONTYPE));
 
           dbproc : opaque;
 	  
@@ -497,15 +497,8 @@ rules:
 
 	  -- Query for specific bad name/good name records based on Translation Type
 
-	  dbView := mgi_sql1("select dbView from ACC_MGIType where _MGIType_key = " + 
-			top->MGITypeMenu.menuHistory.defaultValue);
-
-	  cmd := "select distinct t._Translation_key, t._Object_key, t.badName, t.sequenceNum, " +
-		  "t.modifiedBy, t.modification_date, v.description, v.accID, v.mgiID " +
-		  "from MGI_Translation_View t, " + dbView + " v" +
-		  " where v._Object_key = t._Object_key" + 
-		  " and t._TranslationType_key = " + currentRecordKey +
-		  " order by v.description, t._Translation_key\n";
+	  dbView := mgi_sql1(translation_dbview(top->MGITypeMenu.menuHistory.defaultValue));
+	  cmd := translation_badgoodname(currentRecordKey, dbView);
 
 	  row : integer := 0;
 	  isDuplicate : boolean := false;
@@ -577,7 +570,7 @@ rules:
 	    mgiTypeKey := SetMGIType.source_widget.searchValue;
 
 	    if (mgiTypeKey != "%") then
-	      dbView := mgi_sql1("select dbView from ACC_MGIType where _MGIType_key = " + mgiTypeKey);
+	      dbView := mgi_sql1(translation_dbview(mgiTypeKey));
 	    else
 	      dbView := "";
 	    end if;
@@ -709,12 +702,12 @@ rules:
 
 	  (void) busy_cursor(top);
 
-	  select : string := "select _Object_key, description, accID, mgiID from " + dbView;
+	  select : string;
 
 	  if (column = sourceWidget.mgiTerm) then
-	    select := select + " where description like " + mgi_DBprstr(value);
+	    select := translation_accession1(dbView, mgi_DBprstr(value));
 	  else
-	    select := select + " where accID = " + mgi_DBprstr(value);
+	    select := translation_accession2(dbView, mgi_DBprstr(value));
 	  end if;
 
 	  dbproc : opaque := mgi_dbexec(select);

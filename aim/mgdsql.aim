@@ -212,6 +212,12 @@ CALLS
 	 tdcv_evidencecode("char *")			: "char *";
 	 tdcv_qualifier("char *")			: "char *";
 
+	 translation_accession1("char *", "char *")	: "char *";
+	 translation_accession2("char *", "char *")	: "char *";
+	 translation_select("char *", "char *", "char *"): "char *";
+	 translation_dbview("char *")			: "char *";
+	 translation_badgoodname("char *", "char *")	: "char *";
+
   ENDL
 ENDC
 

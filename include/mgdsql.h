@@ -258,4 +258,12 @@ extern char *tdcv_markertype(char *);
 extern char *tdcv_evidencecode(char *);
 extern char *tdcv_qualifier(char *);
 
+/* Translation.d */
+
+extern char *translation_accession1(char *, char *);
+extern char *translation_accession2(char *, char *);
+extern char *translation_select(char *, char *, char *);
+extern char *translation_dbview(char *);
+extern char *translation_badgoodname(char *, char *);
+
 #endif
