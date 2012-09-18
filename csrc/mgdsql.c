@@ -171,6 +171,28 @@ char *allele_parentcellline(char *key)
   return(buf);
 }
 
+char *allele_unionnomen(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"\nunion select distinct a._Allele_key, a.symbol, a.statusNum \
+   \nfrom ALL_Allele_View a \
+   \nwhere a.nomenSymbol like %s", key);
+  return(buf);
+}
+
+char *allele_search(char *from, char *where, char *addunion)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"(select distinct a._Allele_key, a.symbol, a.statusNum \
+   \n%s \
+   \n%s \
+   \n%s \
+   \n)\norder by a.statusNum, a.symbol", from, where, addunion);
+  return(buf);
+}
+
 /*
 * AlleleDerivation.d
 */

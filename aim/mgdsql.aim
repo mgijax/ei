@@ -26,6 +26,8 @@ CALLS
 	 allele_stemcellline("char *")			: "char *";
 	 allele_mutantcellline("char *")		: "char *";
 	 allele_parentcellline("char *")		: "char *";
+	 allele_unionnomen("char *")		: "char *";
+	 allele_search("char *", "char *", "char *")	: "char *";
 
 	 derivation_checkdup("char *", "char *", "char *", "char *", "char *") : "char *";
 	 derivation_select("char *")			: "char *";

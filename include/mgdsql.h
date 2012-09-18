@@ -30,6 +30,8 @@ extern char *allele_cellline(char *);
 extern char *allele_stemcellline(char *);
 extern char *allele_mutantcellline(char *);
 extern char *allele_parentcellline(char *);
+extern char *allele_unionnomen(char *);
+extern char *allele_search(char *, char *, char *);
 
 /* AlleleDerivation.d */
 

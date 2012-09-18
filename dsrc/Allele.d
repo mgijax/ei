@@ -1723,11 +1723,8 @@ rules:
 	    where := where + "\nand ma._Marker_key = " + mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
 	    from_marker := true;
 	  elsif (mgi_tblGetCell(markerTable, 0, markerTable.markerSymbol).length > 0) then
-	    where := where + 
-		"\nand ma.symbol like " + mgi_DBprstr(mgi_tblGetCell(markerTable, 0, markerTable.markerSymbol));
-	    union := "\nunion select distinct a._Allele_key, a.symbol, a.statusNum " +
-		" from ALL_Allele_View a " + 
-		"where a.nomenSymbol like " + mgi_DBprstr(mgi_tblGetCell(markerTable, 0, markerTable.markerSymbol));
+	    where := where + "\nand ma.symbol like " + mgi_DBprstr(mgi_tblGetCell(markerTable, 0, markerTable.markerSymbol));
+	    union := allele_unionnomen(mgi_DBprstr(mgi_tblGetCell(markerTable, 0, markerTable.markerSymbol)));
 	    from_marker := true;
 	  end if;
 
@@ -1880,11 +1877,7 @@ rules:
 	  (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
-	  Query.select := "(select distinct a._Allele_key, a.symbol, a.statusNum\n" + 
-	                  from + "\n" + 
-			  where + 
-			  union + 
-			  ")\norder by a.statusNum, a.symbol\n";
+	  Query.select := allele_search(from, where, union);
 	  Query.table := ALL_ALLELE;
 	  send(Query, 0);
           (void) reset_cursor(top);
