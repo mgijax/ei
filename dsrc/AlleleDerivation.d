@@ -520,8 +520,7 @@ rules:
 	  (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
-	  Query.select := "select distinct a._Derivation_key, a.name\n" + from + "\n" + 
-			  where + "\norder by a.name\n";
+	  Query.select := derivation_search(from, where);
 	  Query.table := ALL_CELLLINE_DERIVATION_VIEW;
 	  send(Query, 0);
           (void) reset_cursor(top);

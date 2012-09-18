@@ -181,7 +181,7 @@ char *allele_unionnomen(char *key)
   return(buf);
 }
 
-char *allele_search(char *from, char *where, char *addunion)
+char *allele_search(char *from, char *where, char *addUnion)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
@@ -189,7 +189,7 @@ char *allele_search(char *from, char *where, char *addunion)
    \n%s \
    \n%s \
    \n%s \
-   \n)\norder by a.statusNum, a.symbol", from, where, addunion);
+   \n)\norder by a.statusNum, a.symbol", from, where, addUnion);
   return(buf);
 }
 
@@ -251,6 +251,17 @@ char *derivation_parentcellline(char *key)
    \ncellLineStrain, _CellLine_Type_key \
    \nfrom ALL_CellLine_View \
    \nwhere cellline = %s", key);
+  return(buf);
+}
+
+char *derivation_search(char *from, char *where)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select distinct a._Derivation_key, a.name \
+   \n%s \
+   \n%s \
+   \norder by a.name", from, where);
   return(buf);
 }
 

@@ -40,6 +40,7 @@ extern char *derivation_select(char *);
 extern char *derivation_count(char *);
 extern char *derivation_stemcellline(char *);
 extern char *derivation_parentcellline(char *);
+extern char *derivation_search(char *, char *);
 
 /* Cross.d */
 

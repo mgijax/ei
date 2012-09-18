@@ -34,6 +34,7 @@ CALLS
 	 derivation_count("char *")			: "char *";
 	 derivation_stemcellline("char *")		: "char *";
 	 derivation_parentcellline("char *")		: "char *";
+	 derivation_search("char *", "char *")		: "char *";
 
 	 cross_select("char *")				: "char *";
 
