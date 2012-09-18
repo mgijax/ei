@@ -48,6 +48,7 @@ extern char *alleledisease_search(char *, char *);
 /* Cross.d */
 
 extern char *cross_select(char *);
+extern char *cross_search(char *, char *);
 
 /* Genotype.d */
 

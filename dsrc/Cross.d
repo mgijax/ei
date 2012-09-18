@@ -398,7 +398,7 @@ rules:
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
-	  Query.select := "select distinct c._Cross_key, c.whoseCross\n" + from + "\n" + where + "\norder by c.whoseCross\n";
+	  Query.select := cross_search(from, where);
 	  Query.table := CROSS;
 	  send(Query, 0);
 	  (void) reset_cursor(top);

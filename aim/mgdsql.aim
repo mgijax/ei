@@ -39,6 +39,7 @@ CALLS
 	 alleledisease_search("char *", "char *")	: "char *";
 
 	 cross_select("char *")				: "char *";
+	 cross_search("char *", "char *")		: "char *";
 
 	 marker_select("char *")			: "char *";
 	 marker_offset("char *")			: "char *";

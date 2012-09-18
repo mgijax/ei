@@ -289,6 +289,14 @@ char *cross_select(char *key)
   return(buf);
 }
 
+char *cross_search(char *from, char *where)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select distinct c._Cross_key, c.whoseCross %s %s order by c.whoseCross", from, where);
+  return(buf);
+}
+
 /*
 * Genotype.d
 */
