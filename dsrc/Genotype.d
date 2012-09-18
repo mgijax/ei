@@ -755,7 +755,6 @@ rules:
 	  assayKey : string := SearchGenotype.assayKey;
 	  select : string;
 	  value : string;
-	  orderBy : string := "\norder by g.strain, ap.allele1";
 	  from_allele : boolean := false;
 	  manualSearch : boolean := false;
 
@@ -893,22 +892,15 @@ rules:
 	  -- If current Assay record...
 
 	  if (assayKey.length > 0) then
-	    from := "from " + mgi_DBtable(GXD_GENOTYPE_VIEW) + " g" +
-	  	  ", " + mgi_DBtable(GXD_ALLELEPAIR_VIEW) + " ap";
-	    where := "where g._Genotype_key = a._Genotype_key " +
-		  "and a._Assay_key = " + assayKey + 
-		  " and g._Genotype_key *= ap._Genotype_key";
-
 	    if (mgi->AssayModule->InSituForm.managed) then
-	      from := from + "," + mgi_DBtable(GXD_SPECIMEN) + " a";
+	      from := genotype_assayfromspecimen();
 	    else
-	      from := from + "," + mgi_DBtable(GXD_GELLANE) + " a";
+	      from := genotype_assayfromgellane();
 	    end if;
+	    where := genotype_assaywhere(assayKey);
 	  end if;
 
-	  select := "select distinct g._Genotype_key, " +
-	     "g.strain || ',' || ap.allele1 || ',' || ap.allele2, g.strain, ap.allele1\n" + 
-	     from + "\n" + where;
+	  select := genotype_search1(from, where);
 
 	  -- Reference search
 	  -- if searching by reference, then ignore other search criteria
@@ -916,18 +908,18 @@ rules:
           value := mgi_tblGetCell(top->Reference->Table, 0, top->Reference->Table.refsKey);
           if (value.length > 0) then
 	    Query.source_widget := top;
-	    Query.select := genotype_search(value);
+	    Query.select := genotype_search2(value);
 	    Query.table := (integer) NOTSPECIFIED;
 	    send(Query, 0);
 	  elsif (assayKey.length > 0) then
-	    QueryNoInterrupt.select := select + orderBy;
+	    QueryNoInterrupt.select := select + genotype_orderby();
 	    QueryNoInterrupt.source_widget := top;
 	    QueryNoInterrupt.table := GXD_GENOTYPE_VIEW;
 	    QueryNoInterrupt.selectItem := false;
 	    send(QueryNoInterrupt, 0);
 	  else
 	    Query.source_widget := top;
-	    Query.select := select + orderBy;
+	    Query.select := select + genotype_orderby();
 	    Query.table := GXD_GENOTYPE_VIEW;
 	    send(Query, 0);
 	  end if;

@@ -301,7 +301,51 @@ char *cross_search(char *from, char *where)
 * Genotype.d
 */
 
-char *genotype_search(char *key)
+char *genotype_orderby()
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"\norder by g.strain, ap.allele1");
+  return(buf);
+}
+
+char *genotype_assayfromspecimen()
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"from GXD_Genotype_View g, GXD_AllelePair_View ap, GXD_Specimen a");
+  return(buf);
+}
+
+char *genotype_assayfromgellane()
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"from GXD_Genotype_View g, GXD_AllelePair_View ap, GXD_GelLane a");
+  return(buf);
+}
+
+char *genotype_assaywhere(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"where g._Genotype_key = a._Genotype_key \
+    \nand a._Assay_key = %s \
+    \nand g._Genotype_key *= ap._Genotype_key", key);
+  return(buf);
+}
+
+char *genotype_search1(char *from, char *where)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select distinct g._Genotype_key, \
+    \ng.strain || ',' || ap.allele1 || ',' || ap.allele2, g.strain, ap.allele1 \
+    \n%s %s", from, where);
+  return(buf);
+}
+
+char *genotype_search2(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
