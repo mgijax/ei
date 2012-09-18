@@ -117,6 +117,10 @@ CALLS
 	 verify_user("char *")			: "char *";
 	 verify_vocabqualifier("char *")	: "char *";
 	 verify_vocabterm("char *", "char *")	: "char *";
+
+	 verify_item_count("char *", "char *", "char *"): "char *";
+	 verify_item_order("char *")		: "char *";
+	 verify_item_nextseqnum("char *")	: "char *";
 	 verify_item_strain("char *")		: "char *";
 	 verify_item_tissue("char *")		: "char *";
 	 verify_item_ref("char *")		: "char *";

@@ -913,6 +913,30 @@ char *verify_vocabterm(char *key, char *abbreviation)
   return(buf);
 }
 
+char *verify_item_count(char *key, char *from, char *where)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select count(*) from %s where %s = '%s'", from, where, key);
+  return(buf);
+}
+
+char *verify_item_order(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"\norder by standard desc, %s", key);
+  return(buf);
+}
+
+char *verify_item_nextseqnum(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select max(sequenceNum) + 1 from VOC_Term where _Vocab_key = %s", key);
+  return(buf);
+}
+
 char *verify_item_strain(char *key)
 {
   static char buf[TEXTBUFSIZ];

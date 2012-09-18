@@ -1456,17 +1456,13 @@ rules:
 	  cmd : string;
 	  select : string;
 	  where : string;
-	  order : string;
 	  selectedItem : integer;
 	  found : boolean := false;
 	  defaultSpecies : string;
 	  defaultStrainType : string;
 
-	  select := "select count(*) from " + table + " where ";
-	  where := name + " = '" + item.value + "'";
-	  order := "\norder by standard desc," + name;
-
-	  if ((integer) mgi_sql1(select + where) > 0) then
+	  --if ((integer) mgi_sql1(select + where) > 0) then
+	  if ((integer) mgi_sql1(verify_item_count(item.value, table, name)) > 0) then
 	    found := true;
 	  end if;
 
@@ -1517,7 +1513,7 @@ rules:
 	    select := verify_item_term(table);
 	  end if;
 
-	  dbproc : opaque := mgi_dbexec(select + where + order);
+	  dbproc : opaque := mgi_dbexec(select + where + verify_item_order(name));
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      keys.insert(mgi_getstr(dbproc, 1), keys.count + 1);
@@ -1625,8 +1621,7 @@ rules:
 		       mgi_DBprstr(item.value) + ",0,0," +
 		       global_loginKey + "," + global_loginKey + ")\n";
 	      elsif (tableID = VOC_CELLLINE_VIEW) then
-		nextSeqNum := mgi_sql1("select max(sequenceNum) + 1 from " + 
-			mgi_DBtable(VOC_TERM) + " where _Vocab_key = " + (string) verify.vocabKey);
+		nextSeqNum := mgi_sql1(verify_item_nextseqnum((string) verify.vocabKey));
 	        cmd := mgi_setDBkey(VOC_TERM, NEWKEY, KEYNAME) +
 		       mgi_DBinsert(VOC_TERM, KEYNAME) +
 		       (string) verify.vocabKey + "," +
