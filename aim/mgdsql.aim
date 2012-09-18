@@ -36,6 +36,8 @@ CALLS
 	 derivation_parentcellline("char *")		: "char *";
 	 derivation_search("char *", "char *")		: "char *";
 
+	 alleledisease_search("char *", "char *")	: "char *";
+
 	 cross_select("char *")				: "char *";
 
 	 marker_select("char *")			: "char *";

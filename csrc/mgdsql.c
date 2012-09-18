@@ -258,10 +258,19 @@ char *derivation_search(char *from, char *where)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select distinct a._Derivation_key, a.name \
-   \n%s \
-   \n%s \
-   \norder by a.name", from, where);
+  sprintf(buf,"select distinct a._Derivation_key, a.name %s %s order by a.name", from, where);
+  return(buf);
+}
+
+/*
+ * AlleleDiseaseVocAnnot.d
+*/
+
+char *alleledisease_search(char *from, char *where)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select distinct v._Object_key, v.description %s %s order by description", from, where);
   return(buf);
 }
 

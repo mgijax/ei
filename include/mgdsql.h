@@ -42,6 +42,9 @@ extern char *derivation_stemcellline(char *);
 extern char *derivation_parentcellline(char *);
 extern char *derivation_search(char *, char *);
 
+/* AlleleDiseaseVocAnnot.d */
+extern char *alleledisease_search(char *, char *);
+
 /* Cross.d */
 
 extern char *cross_select(char *);
