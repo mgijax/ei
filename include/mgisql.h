@@ -39,6 +39,7 @@ extern char *acclib_seqacc(char *, char *);
 
 /* ActualLogical.d */
 
+extern char *actuallogical_search(char *, char *);
 extern char *actuallogical_logical(char *);
 extern char *actuallogical_actual(char *);
 

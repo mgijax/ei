@@ -159,6 +159,14 @@ char *acclib_seqacc(char *logicalKey, char *accID)
  * ActualLogical.d
 */
 
+char *actuallogical_search(char *from, char *where)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select distinct * %s %s order by name", from, where);
+  return(buf);
+}
+
 char *actuallogical_logical(char *key)
 {
   static char buf[TEXTBUFSIZ];

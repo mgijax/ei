@@ -349,7 +349,7 @@ rules:
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
-	  Query.select := "select distinct *\n" + from + "\n" + where + "\norder by name\n";
+	  Query.select := actuallogical_search(from, where);
 	  Query.table := ACC_LOGICALDB;
 	  send(Query, 0);
 	  (void) reset_cursor(top);
