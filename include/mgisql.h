@@ -154,6 +154,9 @@ extern char *verify_user(char *);
 extern char *verify_vocabqualifier(char *);
 extern char *verify_vocabterm(char *, char *);
 
+extern char *verify_item_count(char *, char *, char *);
+extern char *verify_item_order(char *);
+extern char *verify_item_nextseqnum(char *);
 extern char *verify_item_strain(char *);
 extern char *verify_item_tissue(char *);
 extern char *verify_item_ref(char *);

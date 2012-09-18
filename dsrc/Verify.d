@@ -1461,7 +1461,6 @@ rules:
 	  defaultSpecies : string;
 	  defaultStrainType : string;
 
-	  --if ((integer) mgi_sql1(select + where) > 0) then
 	  if ((integer) mgi_sql1(verify_item_count(item.value, table, name)) > 0) then
 	    found := true;
 	  end if;
