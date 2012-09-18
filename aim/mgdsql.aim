@@ -70,9 +70,10 @@ CALLS
 	 govoc_type("char *")				: "char *";
 	 govoc_dbview("char *")				: "char *";
 	 govoc_term("char *")				: "char *";
+	 govoc_search("char *", "char *")		: "char *";
 	 govoc_select1("char *", "char *")		: "char *";
 	 govoc_select2("char *", "char *")		: "char *";
-	 govoc_select3("char *")				: "char *";
+	 govoc_select3("char *")			: "char *";
 	 govoc_orderA()					: "char *";
 	 govoc_orderB()					: "char *";
 	 govoc_orderC()					: "char *";

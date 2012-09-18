@@ -69,6 +69,7 @@ extern char *govoc_status(char *);
 extern char *govoc_type(char *);
 extern char *govoc_dbview(char *);
 extern char *govoc_term(char *);
+extern char *govoc_search(char *, char *);
 extern char *govoc_select1(char *, char *);
 extern char *govoc_select2(char *, char *);
 extern char *govoc_select3(char *);

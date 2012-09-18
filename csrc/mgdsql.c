@@ -445,6 +445,14 @@ char *govoc_term(char *key)
   return(buf);
 }
 
+char *govoc_search(char *from, char *where)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select distinct v._Object_key, v.description %s %s order by description", from, where);
+  return(buf);
+}
+
 char *govoc_select1(char *key, char *dbView)
 {
   static char buf[TEXTBUFSIZ];
