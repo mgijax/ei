@@ -1265,11 +1265,13 @@ char *mpvoc_select3(char *key, char *annotTypeKey)
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier, \
 	p._EvidenceProperty_key, p.value, e.* \
-   \nfrom VOC_Annot_View a, VOC_Evidence_View e, VOC_Evidence_Property p \
+   \nfrom VOC_Annot_View a, VOC_Evidence_View e, VOC_Evidence_Property p, VOC_Term t \
    \nwhere a._AnnotType_key = %s \
    \nand a._Object_key = %s \
    \nand a._Annot_key = e._Annot_key \
    \nand e._AnnotEvidence_key = p._AnnotEvidence_key \
+   \nand p._PropertyTerm_key = t._Term_key \
+   \nand t._Vocab_key = 86 \
    \norder by e.jnum, a.term", annotTypeKey, key);
   return(buf);
 }
