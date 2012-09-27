@@ -682,16 +682,16 @@ char *verify_imagepane(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select p._ImagePane_key, substring(i.figureLabel,1,20), a1.accID , a2.accID \
-   from IMG_ImagePane p, IMG_Image i, ACC_Accession a1, ACC_Accession a2, VOC_Term t \
-   where p._Image_key = i._Image_key \
-   and p._Image_key = a1._Object_key \
-   and a1._MGIType_key = 9 \
-   and p._Image_key = a2._Object_key \
-   and a2._MGIType_key = 9 \
-   and a2._LogicalDB_key = 19 \
-   and i._ImageType_key = t._Term_key \
-   and t.term = 'Full Size' \
-   and a1.accID like %s", key);
+   \nfrom IMG_ImagePane p, IMG_Image i, ACC_Accession a1, ACC_Accession a2, VOC_Term t \
+   \nwhere p._Image_key = i._Image_key \
+   \nand p._Image_key = a1._Object_key \
+   \nand a1._MGIType_key = 9 \
+   \nand p._Image_key = a2._Object_key \
+   \nand a2._MGIType_key = 9 \
+   \nand a2._LogicalDB_key = 19 \
+   \nand i._ImageType_key = t._Term_key \
+   \nand t.term = 'Full Size' \
+   \nand a1.accID like %s", key);
   return(buf);
 }
 
@@ -700,9 +700,9 @@ char *verify_marker(char *key, char *symbol)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select _Marker_key, _Marker_Status_key, symbol, chromosome, \
-   cytogeneticOffset, substring(name,1,25) \
-   from MRK_Marker where _Organism_key = %s \
-   and symbol like %s", key, symbol);
+   \ncytogeneticOffset, substring(name,1,25) \
+   \nfrom MRK_Marker where _Organism_key = %s \
+   \nand symbol like %s", key, symbol);
   return(buf);
 }
 
@@ -710,10 +710,10 @@ char *verify_marker_union(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"union \
-   select -1, 1, symbol, chromosome, null, substring(name, 1, 25) \
-   from NOM_Marker_Valid_View \
-   where symbol like %s", key);
+  sprintf(buf,"\nunion \
+   \nselect -1, 1, symbol, chromosome, null, substring(name, 1, 25) \
+   \nfrom NOM_Marker_Valid_View \
+   \nwhere symbol like %s", key);
   return(buf);
 }
 
@@ -730,7 +730,7 @@ char *verify_marker_which(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select cytogeneticOffset, name, mgiID, _Accession_key from MRK_Mouse_View \
-   where _Marker_key = %s", key);
+   \nwhere _Marker_key = %s", key);
   return(buf);
 }
 
@@ -785,20 +785,20 @@ char *verify_marker_intable1(char *probeKey, char *markerKey)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select count(pm._Probe_key) from PRB_Marker pm, PRB_Probe p, VOC_Term t \
-   where pm._Probe_key = p._Probe_key \
-   and p._SegmentType_key = t._Term_key \
-   and t.term != 'primer' \
-   and pm.relationship in ('E', 'H') \
-   and pm._Probe_key = %s \
-   and pm._Marker_key = %s \
-   union \
-   select count(pm._Probe_key) from PRB_Marker pm, PRB_Probe p, VOC_Term t  \
-   where pm._Probe_key = p._Probe_key \
-   and p._SegmentType_key = t._Term_key \
-   and t.term = 'primer' \
-   and pm.relationship = 'A' \
-   and pm._Probe_key = %s \
-   and pm._Marker_key = %s", probeKey, markerKey, probeKey, markerKey);
+   \nwhere pm._Probe_key = p._Probe_key \
+   \nand p._SegmentType_key = t._Term_key \
+   \nand t.term != 'primer' \
+   \nand pm.relationship in ('E', 'H') \
+   \nand pm._Probe_key = %s \
+   \nand pm._Marker_key = %s \
+   \nunion \
+   \nselect count(pm._Probe_key) from PRB_Marker pm, PRB_Probe p, VOC_Term t  \
+   \nwhere pm._Probe_key = p._Probe_key \
+   \nand p._SegmentType_key = t._Term_key \
+   \nand t.term = 'primer' \
+   \nand pm.relationship = 'A' \
+   \nand pm._Probe_key = %s \
+   \nand pm._Marker_key = %s", probeKey, markerKey, probeKey, markerKey);
   return(buf);
 }
 
@@ -973,7 +973,7 @@ char *verify_item_cross(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _Cross_key, display, standard = 1, private = 0 from  %s where ", key);
+  sprintf(buf,"select _Cross_key, display, standard = 1, private = 0 from %s where ", key);
   return(buf);
 }
 

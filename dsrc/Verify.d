@@ -1461,6 +1461,9 @@ rules:
 	  defaultSpecies : string;
 	  defaultStrainType : string;
 
+	  select := "select count(*) from " + table + " where ";
+	  where := name + " = '" + item.value + "'";
+
 	  if ((integer) mgi_sql1(verify_item_count(item.value, table, name)) > 0) then
 	    found := true;
 	  end if;

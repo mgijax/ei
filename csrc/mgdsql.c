@@ -1931,7 +1931,7 @@ char *strain_count(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select count(*) from PRB_Strain where strain = %s", key);
+  sprintf(buf,"\nselect count(*) from PRB_Strain where strain = %s", key);
   return(buf);
 }
 
