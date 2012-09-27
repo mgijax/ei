@@ -673,7 +673,7 @@ char *verify_imagepane(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select p._ImagePane_key, substring(i.figureLabel,1,20), a1.accID , a2.accID \
+  sprintf(buf,"select p._ImagePane_key, substring(i.figureLabel,1,20) as figureLabel, a1.accID , a2.accID \
    \nfrom IMG_ImagePane p, IMG_Image i, ACC_Accession a1, ACC_Accession a2, VOC_Term t \
    \nwhere p._Image_key = i._Image_key \
    \nand p._Image_key = a1._Object_key \
@@ -683,7 +683,8 @@ char *verify_imagepane(char *key)
    \nand a2._LogicalDB_key = 19 \
    \nand i._ImageType_key = t._Term_key \
    \nand t.term = 'Full Size' \
-   \nand a1.accID like %s", key);
+   \nand a1.accID like %s \
+   \norder by figureLabel", key);
   return(buf);
 }
 
