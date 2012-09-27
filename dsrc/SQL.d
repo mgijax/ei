@@ -239,34 +239,26 @@ rules:
 	  newID := "";
 	  dbproc : opaque;
 	  
-	  dbproc := mgi_dbexec(ExecSQL.cmd);
+	  --
+	  -- make sure the is all run from the same transaction dbproc
+	  --
+
+	  result : integer := 1;
+	  dbproc := mgi_dbexec(ExecSQL.cmd + sql_error());
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      newID := mgi_getstr(dbproc, 1);
-	    end while;
-	  end while;
-	  mgi_dbclose(dbproc);
-
-	  -- Process @@error w/in same DBPROCESS
-
-	  dbproc := mgi_dbexec(sql_error());
-          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      error := (integer) mgi_getstr(dbproc, 1);
+	      if (result = 1) then
+	        newID := mgi_getstr(dbproc, 1);
+	      elsif (result = 2) then
+	        error := (integer) mgi_getstr(dbproc, 1);
+	      else
+	        transtate := (integer) mgi_getstr(dbproc, 1);
+	      end if;
+	      result := result + 1;
 	    end while;
 	  end while;
 	  (void) mgi_dbclose(dbproc);
 	  (void) mgi_writeLog("\n@@error:  " + (string) error + "\n");
-
-	  -- Process @@transtate w/in same DBPROCESS
-
-	  dbproc := mgi_dbexec(sql_translate());
-          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	        transtate := (integer) mgi_getstr(dbproc, 1);
-	    end while;
-	  end while;
-	  (void) mgi_dbclose(dbproc);
 	  (void) mgi_writeLog("@@transtate:  " + (string) transtate + "\n");
 
 	  --

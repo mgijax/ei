@@ -1,5 +1,10 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-5-1-0-?
+DATE: 09/27/2012
+STAFF: lec
+1) SQL.d/ExecSQL; all transactions must use the same dbproc 
+
 TAG: ei-5-1-0-5
 TAG: ei-5-1-0-4
 DATE: 09/24/2012

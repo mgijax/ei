@@ -57,15 +57,7 @@ char *sql_error()
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select @@error");
-  return(buf);
-}
-
-char *sql_translate()
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select @@transtate");
+  sprintf(buf,"\nselect @@error\nselect @@transtate");
   return(buf);
 }
 
