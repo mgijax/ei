@@ -236,38 +236,40 @@ rules:
 	  --   do non-API execution
 	  --
 
+	  -- use the same DBPROCESS for all of these processes
+
 	  newID := "";
-	  dbproc : opaque;
-	  
-	  dbproc := mgi_dbexec(ExecSQL.cmd);
+	  dbproc : opaque := mgi_dbopen();
+
+	  mgi_dbexec_bydbproc(dbproc, ExecSQL.cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      newID := mgi_getstr(dbproc, 1);
 	    end while;
 	  end while;
-	  mgi_dbclose(dbproc);
 
 	  -- Process @@error w/in same DBPROCESS
 
-	  dbproc := mgi_dbexec(sql_error());
+	  mgi_dbexec_bydbproc(dbproc, sql_error());
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      error := (integer) mgi_getstr(dbproc, 1);
 	    end while;
 	  end while;
-	  (void) mgi_dbclose(dbproc);
 	  (void) mgi_writeLog("\n@@error:  " + (string) error + "\n");
 
 	  -- Process @@transtate w/in same DBPROCESS
 
-	  dbproc := mgi_dbexec(sql_transtate());
+	  mgi_dbexec_bydbproc(dbproc, sql_transtate());
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	        transtate := (integer) mgi_getstr(dbproc, 1);
 	    end while;
 	  end while;
-	  (void) mgi_dbclose(dbproc);
 	  (void) mgi_writeLog("@@transtate:  " + (string) transtate + "\n");
+
+	  -- we can remove the dbproc
+	  (void) mgi_dbclose(dbproc);
 
 	  --
 	  -- done with non-AP execution

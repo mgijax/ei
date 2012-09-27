@@ -16,8 +16,10 @@ CALLS
 
 	 mgi_dbinit("char *", "char *")                  : "int";
 	 mgi_dbcancel("DBPROCESS *");
+	 mgi_dbopen()					 : "DBPROCESS *";
 	 mgi_dbclose("DBPROCESS *");
 	 mgi_dbexit();
+	 mgi_dbexec_bydbproc("DBPROCESS *", "char *");
 	 mgi_dbexec("char *")                            : "DBPROCESS *";
 	 mgi_dbresults("DBPROCESS *")			 : "RETCODE";
 	 mgi_dbnextrow("DBPROCESS *")			 : "STATUS";

@@ -6,6 +6,9 @@
  * Sybase DB-Library routines for User Interface
  * Needs to be converted to use CT-Library
  *
+ * lec	0927/2012
+ *	added mgi_dbexec_bydbproc to allow execution using the same DBPROCCESS
+ *
  * lec	11/29/2011
  *
  *	as part of the move to postgres and database agnostic-ity
@@ -263,6 +266,32 @@ void mgi_dbclose(DBPROCESS *dbproc)
 }
 
 /* 
+*
+* this version supports the use on one DBPROCESS multiple executions
+* to be used in conjuction with mgi_dbopen()
+*
+* execute the query
+* 
+* RETCODE dbcmd: add text to the DBPROCESS command buffer
+*
+* RETCODE dbsqlexec:  send command batch to server
+*
+*/
+
+void mgi_dbexec_bydbproc(DBPROCESS *dbproc, char *cmd)
+{
+  (void) mgi_writeLog(cmd);
+  (void) mgi_writeLog("\n\n");
+
+  dbcmd(dbproc, cmd);
+  dbsqlexec(dbproc);
+
+  return;
+}
+
+/* 
+*
+* this version supports the use on on DBPROCESS per execution
 *
 * execute the query
 * 

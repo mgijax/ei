@@ -15,9 +15,10 @@
 extern int mgi_dbinit(char *, char *);
 
 extern void mgi_dbexit();
-extern DBPROCESS *mgi_dbopen();
 extern void mgi_dbcancel(DBPROCESS *);
+extern DBPROCESS *mgi_dbopen();
 extern void mgi_dbclose(DBPROCESS *);
+extern void mgi_dbexec_bydbproc(DBPROCESS *, char *);
 extern DBPROCESS *mgi_dbexec(char *);
 extern RETCODE mgi_dbresults(DBPROCESS *);
 extern STATUS mgi_dbnextrow(DBPROCESS *);
