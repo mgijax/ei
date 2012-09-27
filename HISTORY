@@ -4,7 +4,7 @@ TAG: ei-5-1-0-6
 DATE: 09/27/2012
 STAFF: lec
 1) TR11183/csrc/mgisql.c/sql_error/SQL.d/ExecSQL; all transactions must use the same dbproc 
-2) TR11187/csrc/mgisql.c/verify_imagepane/add order
+2) TR11187/csrc/mgisql.c/image_pane/add order by paneLabel
 
 TAG: ei-5-1-0-5
 TAG: ei-5-1-0-4

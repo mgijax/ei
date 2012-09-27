@@ -57,7 +57,15 @@ char *sql_error()
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"\nselect @@error\nselect @@transtate");
+  sprintf(buf,"\nselect @@error");
+  return(buf);
+}
+
+char *sql_transtate()
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"\nselect @@transtate");
   return(buf);
 }
 
@@ -292,7 +300,8 @@ char *image_pane(char *key)
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select _ImagePane_key, paneLabel, \
   	convert(varchar(10), x) || ',' || convert(varchar(10), y) || ',' || convert(varchar(10), width) || ',' || convert(varchar(10), height) \
-  	\nfrom IMG_ImagePane where _Image_key = %s", key);
+  	\nfrom IMG_ImagePane where _Image_key = %s \
+	\norder by paneLabel", key);
   return(buf);
 }
 
@@ -683,8 +692,7 @@ char *verify_imagepane(char *key)
    \nand a2._LogicalDB_key = 19 \
    \nand i._ImageType_key = t._Term_key \
    \nand t.term = 'Full Size' \
-   \nand a1.accID like %s \
-   \norder by figureLabel", key);
+   \nand a1.accID like %s", key);
   return(buf);
 }
 

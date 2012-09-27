@@ -22,6 +22,7 @@ extern char *mgilib_user(char *);
 /* SQL.d */
 
 extern char *sql_error();
+extern char *sql_transtate();
 
 /* AccLib.d */
 

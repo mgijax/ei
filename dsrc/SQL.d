@@ -216,8 +216,8 @@ rules:
 --
 
 	ExecSQL does
-	  error : integer;
-	  transtate : integer;
+	  error : integer := 0;
+	  transtate : integer := 0;
 
 	  if (ExecSQL.list != nil) then
 	    ExecSQL.list->List.sqlSuccessful := true;
@@ -239,26 +239,34 @@ rules:
 	  newID := "";
 	  dbproc : opaque;
 	  
-	  --
-	  -- make sure the is all run from the same transaction dbproc
-	  --
-
-	  result : integer := 1;
-	  dbproc := mgi_dbexec(ExecSQL.cmd + sql_error());
+	  dbproc := mgi_dbexec(ExecSQL.cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (result = 1) then
-	        newID := mgi_getstr(dbproc, 1);
-	      elsif (result = 2) then
-	        error := (integer) mgi_getstr(dbproc, 1);
-	      else
-	        transtate := (integer) mgi_getstr(dbproc, 1);
-	      end if;
-	      result := result + 1;
+	      newID := mgi_getstr(dbproc, 1);
+	    end while;
+	  end while;
+	  mgi_dbclose(dbproc);
+
+	  -- Process @@error w/in same DBPROCESS
+
+	  dbproc := mgi_dbexec(sql_error());
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      error := (integer) mgi_getstr(dbproc, 1);
 	    end while;
 	  end while;
 	  (void) mgi_dbclose(dbproc);
 	  (void) mgi_writeLog("\n@@error:  " + (string) error + "\n");
+
+	  -- Process @@transtate w/in same DBPROCESS
+
+	  dbproc := mgi_dbexec(sql_transtate());
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	        transtate := (integer) mgi_getstr(dbproc, 1);
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
 	  (void) mgi_writeLog("@@transtate:  " + (string) transtate + "\n");
 
 	  --
