@@ -1054,19 +1054,19 @@ rules:
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      (void) mgi_tblSetCell(table, row, table.pairKey, mgi_getstr(dbproc, 1));
-	      (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 8));
-	      (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 8));
+	      (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 10));
+	      (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 10));
 	      (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 5));
-	      (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 13));
-	      (void) mgi_tblSetCell(table, row, table.markerChr, mgi_getstr(dbproc, 14));
+	      (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 15));
+	      (void) mgi_tblSetCell(table, row, table.markerChr, mgi_getstr(dbproc, 16));
 	      (void) mgi_tblSetCell(table, row, (integer) table.alleleKey[1], mgi_getstr(dbproc, 3));
 	      (void) mgi_tblSetCell(table, row, (integer) table.alleleKey[2], mgi_getstr(dbproc, 4));
-	      (void) mgi_tblSetCell(table, row, (integer) table.alleleSymbol[1], mgi_getstr(dbproc, 15));
-	      (void) mgi_tblSetCell(table, row, (integer) table.alleleSymbol[2], mgi_getstr(dbproc, 16));
+	      (void) mgi_tblSetCell(table, row, (integer) table.alleleSymbol[1], mgi_getstr(dbproc, 17));
+	      (void) mgi_tblSetCell(table, row, (integer) table.alleleSymbol[2], mgi_getstr(dbproc, 18));
 	      (void) mgi_tblSetCell(table, row, table.stateKey, mgi_getstr(dbproc, 6));
-	      (void) mgi_tblSetCell(table, row, table.state, mgi_getstr(dbproc, 17));
+	      (void) mgi_tblSetCell(table, row, table.state, mgi_getstr(dbproc, 19));
 	      (void) mgi_tblSetCell(table, row, table.compoundKey, mgi_getstr(dbproc, 7));
-	      (void) mgi_tblSetCell(table, row, table.compound, mgi_getstr(dbproc, 18));
+	      (void) mgi_tblSetCell(table, row, table.compound, mgi_getstr(dbproc, 20));
 	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	      row := row + 1;
 	    end while;
