@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Oct  2 13:58:32 2012";
+      lastWritten = "Wed Oct  3 11:43:12 2012";
       copy = false;
       inCreateMenu = true;
         {
@@ -1154,6 +1154,9 @@ Module: MGI
             activateButtonName = GenotypePush;
               {
                 MainForm = XmForm;
+                Group: Widget
+                  rubberPositioning = False;
+                  resizePolicy = resize_any;
                     {
                       MainMenu = MainMenu : mgiMenu;
                           {
@@ -1533,6 +1536,15 @@ Module: MGI
                     }
                     {
                       Control = Control : mgiControl;
+                      Group: Constraint
+                        leftAttachment = attach_widget;
+                        leftWidget = Edit;
+                        rightAttachment = attach_form;
+                        rightOffset = 2;
+                        topAttachment = attach_widget;
+                        topWidget = MainMenu;
+                        bottomAttachment = attach_none;
+                        resizable = true;
                           {
                             ControlForm = XmForm;
                             Group: Widget
