@@ -1125,7 +1125,7 @@ rules:
 	      (void) mgi_tblSetCell(table, row, (integer) table.mutantCellLine[2], mgi_getstr(dbproc, 22));
 	      (void) mgi_tblSetCell(table, row, table.stateKey, mgi_getstr(dbproc, 8));
 	      (void) mgi_tblSetCell(table, row, table.state, mgi_getstr(dbproc, 19));
-	      (void) mgi_tblSetCell(table, row, table.compoundKey, mgi_getstr(dbproc, 7));
+	      (void) mgi_tblSetCell(table, row, table.compoundKey, mgi_getstr(dbproc, 9));
 	      (void) mgi_tblSetCell(table, row, table.compound, mgi_getstr(dbproc, 20));
 	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	      row := row + 1;
