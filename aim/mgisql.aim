@@ -130,6 +130,10 @@ CALLS
 	 verify_item_term("char *")		: "char *";
 	 verify_westernblot("char *", "char *", "char *"): "char *";
 
+	 verify_vocabtermaccID("char *", "char *"): "char *";
+	 verify_vocabtermaccIDNoObsolete("char *", "char *"): "char *";
+	 verify_vocabtermdag("char *", "char *"): "char *";
+
 	 reftypetable_init("char *")		: "char *";
 	 reftypetable_initallele("char *")	: "char *";
 	 reftypetable_loadorder1()		: "char *";

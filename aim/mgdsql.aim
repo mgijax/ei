@@ -65,6 +65,10 @@ CALLS
 	 genotype_allelepair("char *")			: "char *";
 	 genotype_notes("char *")			: "char *";
 	 genotype_images("char *", "char *")		: "char *";
+	 genotype_orderAllelePairs("char *")		: "char *";
+	 genotype_orderGenotypesAll("char *")		: "char *";
+	 genotype_getGenotypesDataSets("char *")	: "char *";
+	 genotype_checkDuplicateGenotype("char *")	: "char *";
 
 	 govoc_status("char *")				: "char *";
 	 govoc_type("char *")				: "char *";

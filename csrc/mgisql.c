@@ -1002,6 +1002,42 @@ char *verify_westernblot(char *key, char *from, char *where)
   return(buf);
 }
 
+char *verify_vocabtermaccID(char *key, char *vocabKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select t.accID, t._Term_key, t.term \
+     \nfrom VOC_Term_View t \
+     \nwhere t.accID = %s \
+     \nand t._Vocab_key = %s", key, vocabKey);
+  return(buf);
+}
+
+char *verify_vocabtermaccIDNoObsolete(char *key, char *vocabKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select t.accID, t._Term_key, t.term \
+     \nfrom VOC_Term_View t \
+     \nwhere t.accID = %s \
+     \nand t._Vocab_key = %s \
+     \nand t.isObsolete = 0", key, vocabKey);
+  return(buf);
+}
+
+char *verify_vocabtermdag(char *key, char *vocabKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select rtrim(d.dagAbbrev) \
+    \nfrom VOC_Term_View t, DAG_Node_View d \
+    \nwhere t.accID = %s \
+    \nand t._Vocab_key = %s \
+    \nand t._Vocab_key = d._Vocab_key \
+    \nand t._Term_key = d._Object_key", key, vocabKey);
+  return(buf);
+}
+
 /*
  * RefTypeTableLib
 */

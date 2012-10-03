@@ -62,6 +62,10 @@ extern char *genotype_select(char *);
 extern char *genotype_allelepair(char *);
 extern char *genotype_notes(char *);
 extern char *genotype_images(char *, char *);
+extern char *genotype_orderAllelePairs(char *);
+extern char *genotype_orderGenotypesAll(char *);
+extern char *genotype_getGenotypesDataSets(char *);
+extern char *genotype_checkDuplicateGenotype(char *);
 
 /* GOVocAnnot.d */
 

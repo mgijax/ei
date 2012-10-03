@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Oct  1 12:41:23 2012";
+      lastWritten = "Tue Oct  2 13:58:32 2012";
       copy = false;
       inCreateMenu = true;
         {
@@ -1299,21 +1299,23 @@ Module: MGI
                                       {
                                         Table = mgiTable;
                                         Group: Widget
-                                          xrtTblNumColumns = 15;
-                                          xrtTblColumnLabels = "Mode,Current Order,#,Key,M Key, A1 Key,A2 Key,State Key,Comp Key,Chr,Marker,Allele1,Allele 2,State,Compound";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 3)(all 9 3)(all 10 30)(all 11-12 30)(all 13 20)(all 14 15)";
-                                          xrtTblEditableSeries = "(all 0-8 False)";
-                                          xrtTblPixelWidthSeries = "(all 0-1 0)(all 3-8 0)";
-                                          xrtTblTraversableSeries = "(all 0-9 False)";
-                                          xrtTblValidateCellCallback = "D:VerifyMarker,\nD:VerifyAllele,\nD:CommitTableCellEdit";
-                                          userDefinedAttributes = "markerKey:Int(Int)=\"4\"\nmarkerSymbol:Int(Int)=\"10\"\nmarkerChr:Int(Int)=\"9\"\nalleleSymbol:StringTable(StringTable)\nalleleKey:StringTable(StringTable)\npairKey:Int(Int)=\"3\"\nstate:Int(Int)=\"13\"\nmarkerColumns:Int(Int)=\"1\"\nstateKey:Int(Int)=\"7\"\ncompoundKey:Int(Int)=\"8\"\ncompound:Int(Int)=\"14\"\n";
+                                          xrtTblNumColumns = 19;
+                                          xrtTblColumnLabels = "Mode,Current Order,#,Key,M Key, A1 Key,A2 Key,State Key,Comp Key,Mutant1 Key,Mutant2 Key,Chr,Marker,Allele1,Allele 2,State,Compound,Mutant 1,Mutant 2";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 3)(all 11 3)(all 12 30)(all 13-14 30)(all 15 20)(all 16 15)(all 17-18 15)";
+                                          xrtTblEditableSeries = "(all 0-10 False)";
+                                          xrtTblPixelWidthSeries = "(all 0-1 0)(all 3-10 0)";
+                                          xrtTblTraversableSeries = "(all 0-11 False)";
+                                          xrtTblValidateCellCallback = "D:VerifyMarker,\nD:VerifyAllele,\nD:VerifyAlleleMutantCellLine,\nD:CommitTableCellEdit";
+                                          userDefinedAttributes = "markerKey:Int(Int)=\"4\"\nmarkerSymbol:Int(Int)=\"12\"\nmarkerChr:Int(Int)=\"11\"\nalleleSymbol:StringTable(StringTable)\nalleleKey:StringTable(StringTable)\npairKey:Int(Int)=\"3\"\nstate:Int(Int)=\"15\"\nmarkerColumns:Int(Int)=\"1\"\nstateKey:Int(Int)=\"7\"\ncompoundKey:Int(Int)=\"8\"\ncompound:Int(Int)=\"16\"\nmutantCellLine:StringTable(StringTable)\nmutantCellLineKey:StringTable(StringTable)\n";
                                           inTabGroup = True;
                                         Group: User
-                                          alleleSymbol = "11\n12";
+                                          alleleSymbol = "13\n14";
                                           alleleKey = "5\n6";
                                           requiredColumns = 7;
-                                          saveEditableSeries = "(all 0-8 False)";
-                                          saveTraversableSeries = "(all 0-9 False)";
+                                          saveEditableSeries = "(all 0-10 False)";
+                                          saveTraversableSeries = "(all 0-11 False)";
+                                          mutantCellLine = "17\n18";
+                                          mutantCellLineKey = "9\n10";
                                             {
                                               label = XtXrtLabel;
                                               Group: Widget
@@ -1348,7 +1350,7 @@ Module: MGI
                                               AllelePairStatePulldown = OptionPulldown;
                                               Group: User
                                                 tableForm = AllelePair;
-                                                tableOption = 13;
+                                                tableOption = 15;
                                                 tableOptionKey = 7;
                                             }
                                       }
@@ -1369,7 +1371,7 @@ Module: MGI
                                               Group: User
                                                 tableForm = AllelePair;
                                                 tableOptionKey = 8;
-                                                tableOption = 14;
+                                                tableOption = 16;
                                             }
                                       }
                                 }

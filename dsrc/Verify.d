@@ -3765,13 +3765,10 @@ rules:
 	  dbproc : opaque;
 	  select : string;
 
-	  select := "select t.accID, t._Term_key, t.term " +
-		"from VOC_Term_View t " +
-		"where t.accID = " + mgi_DBprstr(value) + 
-		" and t._Vocab_key = " + (string) sourceWidget.vocabKey + "\n";
-
 	  if (not searchObsolete) then
-	    select := select + " and t.isObsolete = 0 ";
+	    select := verify_vocabtermaccIDNoObsolete(mgi_DBprstr(value), (string) sourceWidget.vocabKey);
+	  else
+	    select := verify_vocabtermaccID(mgi_DBprstr(value), (string) sourceWidget.vocabKey);
 	  end if;
 
 	  dbproc := mgi_dbexec(select);
@@ -3784,12 +3781,7 @@ rules:
 	  end while;
 	  (void) mgi_dbclose(dbproc);
 
-	  select := "select rtrim(d.dagAbbrev) " +
-		"from VOC_Term_View t, DAG_Node_View d " +
-		"where t.accID = " + mgi_DBprstr(value) + 
-		" and t._Vocab_key = " + (string) sourceWidget.vocabKey +
-		" and t._Vocab_key = d._Vocab_key" +
-		" and t._Term_key = d._Object_key";
+	  select := verify_vocabtermdag(mgi_DBprstr(value), (string) sourceWidget.vocabKey);
 
 	  if (not searchObsolete) then
 	    select := select + " and t.isObsolete = 0 ";

@@ -14,6 +14,9 @@
  *
  * History:
  *
+ * lec 10/02/2012
+ *	- TR10273/add GXD_ALLELE_PAIR:Mutant Cell Lines
+ *
  * lec 02/15/2012
  *	- TR10955/postgres cleanup/mgi_DBrecordCount
  *
@@ -2087,7 +2090,7 @@ char *mgi_DBinsert(int table, char *keyName)
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_ALLELEPAIR:
-            sprintf(buf, "insert %s (%s, _Genotype_key, _Allele_key_1, _Allele_key_2, _Marker_key, _PairState_key, _Compound_key, sequenceNum, _CreatedBy_key, _ModifiedBy_key)", 
+            sprintf(buf, "insert %s (%s, _Genotype_key, _Allele_key_1, _Allele_key_2, _Marker_key, _MutantCellLine_key_1, _MutantCellLine_key_2, _PairState_key, _Compound_key, sequenceNum, _CreatedBy_key, _ModifiedBy_key)", 
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_ISRESULT:

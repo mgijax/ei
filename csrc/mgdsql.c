@@ -380,7 +380,11 @@ char *genotype_allelepair(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select * from GXD_AllelePair_View where _Genotype_key = %s \
+  sprintf(buf,"select a.*, ac1.cellLine as mutantCellLine1, ac2.cellLine as mutantCellLine2\
+   \nfrom GXD_AllelePair_View a \
+   \n  LEFT OUTER JOIN ALL_Cellline ac1 on (a._MutantCellLine_key_1 = ac1._CellLine_key) \
+   \n  LEFT OUTER JOIN ALL_Cellline ac2 on (a._MutantCellLine_key_2 = ac2._CellLine_key) \
+   \nwhere a._Genotype_key = %s \
    \norder by sequenceNum", key);
   return(buf);
 }
@@ -406,6 +410,38 @@ char *genotype_images(char *key, char *mgiTypeKey)
    \nwhere _Object_key = %s \
    \nand _MGIType_key = %s \
    \norder by isPrimary desc, mgiID", key, mgiTypeKey);
+  return(buf);
+}
+
+char *genotype_orderAllelePairs(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec GXD_orderAllelePairs %s\n", key);
+  return(buf);
+}
+
+char *genotype_orderGenotypesAll(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec GXD_orderGenotypesAll %s\n", key);
+  return(buf);
+}
+
+char *genotype_getGenotypesDataSets(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec GXD_getGenotypesDataSets %s\n", key);
+  return(buf);
+}
+
+char *genotype_checkDuplicateGenotype(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec GXD_checkDuplicateGenotype %s\n", key);
   return(buf);
 }
 

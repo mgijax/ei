@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- 10/02/2012	lec
+--	- TR10273/add Mutant Cell Lines
+--
 -- 02/15/2012	lec
 --	- TR10955/postgres cleanup/genotype_sql_2
 --
@@ -115,6 +118,7 @@ devents:
 
 	VerifyAlleleState :local [];
 	VerifyAlleleCombination :local [];
+	VerifyAlleleMutantCellLine :translation [];
 
 locals:
 	mgi : widget;
@@ -345,7 +349,7 @@ rules:
 	  send(ProcessNoteForm, 0);
 	  cmd := cmd + top->mgiNoteForm.sql;
 
-	  cmd := cmd + "exec GXD_checkDuplicateGenotype " + currentRecordKey + "\n";
+	  cmd := cmd + genotype_checkDuplicateGenotype(currentRecordKey);
 
 	  AddSQL.tableID := GXD_GENOTYPE;
           AddSQL.cmd := cmd;
@@ -497,7 +501,7 @@ rules:
             cmd := mgi_DBupdate(GXD_GENOTYPE, currentRecordKey, set) + cmd;
 	  end if;
 
-	  cmd := cmd + "exec GXD_checkDuplicateGenotype " + currentRecordKey + "\n";
+	  cmd := cmd + genotype_checkDuplicateGenotype(currentRecordKey);
 
           ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
@@ -528,6 +532,8 @@ rules:
           markerKey : string;
           alleleKey1 : string;
           alleleKey2 : string;
+          mutantKey1 : string;
+          mutantKey2 : string;
 	  stateKey : string;
 	  compoundKey : string;
 	  keysDeclared : boolean := false;
@@ -562,6 +568,8 @@ rules:
             markerKey := mgi_tblGetCell(table, row, table.markerKey);
             alleleKey1 := mgi_tblGetCell(table, row, (integer) table.alleleKey[1]);
             alleleKey2 := mgi_tblGetCell(table, row, (integer) table.alleleKey[2]);
+            mutantKey1 := mgi_tblGetCell(table, row, (integer) table.mutantCellLineKey[1]);
+            mutantKey2 := mgi_tblGetCell(table, row, (integer) table.mutantCellLineKey[2]);
             stateKey := mgi_tblGetCell(table, row, table.stateKey);
             compoundKey := mgi_tblGetCell(table, row, table.compoundKey);
  
@@ -580,6 +588,14 @@ rules:
 
 	    if (alleleKey2.length = 0) then
 	      alleleKey2 := "NULL";
+	    end if;
+
+	    if (mutantKey1.length = 0) then
+	      mutantKey1 := "NULL";
+	    end if;
+
+	    if (mutantKey2.length = 0) then
+	      mutantKey2 := "NULL";
 	    end if;
 
             if (compoundKey.length = 0) then
@@ -602,6 +618,8 @@ rules:
 		     alleleKey1 + "," +
 		     alleleKey2 + "," +
 		     markerKey + "," +
+		     mutantKey1 + "," +
+		     mutantKey2 + "," +
 		     stateKey + "," +
 		     compoundKey + "," +
 		     newSeqNum + "," +
@@ -624,6 +642,8 @@ rules:
                 set := "_Allele_key_1 = " + alleleKey1 + "," +
                        "_Allele_key_2 = " + alleleKey2 + "," +
                        "_Marker_key = " + markerKey + "," +
+                       "_MutantCellLine_key_1 = " + mutantKey1 + "," +
+                       "_MutantCellLine_key_2 = " + mutantKey2 + "," +
 		       "_PairState_key = " + stateKey + "," +
 		       "_Compound_key = " + compoundKey;
                 localCmd := localCmd + mgi_DBupdate(GXD_ALLELEPAIR, key, set);
@@ -721,11 +741,11 @@ rules:
 
 	  -- process auto re-ordering if not manually re-ordering
 	  if (not reorderingAlleles) then
-	    cmd := cmd + "exec GXD_orderAllelePairs " + top->ID->text.value + "\n";
+	    cmd := cmd + genotype_orderAllelePairs(top->ID->text.value);
 	  end if;
 
 	  -- refresh gxd_allelegenotype cache
-	  cmd := cmd + "exec GXD_orderGenotypesAll " + currentRecordKey + "\n";
+	  cmd := cmd + genotype_orderGenotypesAll(currentRecordKey);
 
 	  if (cmd.length > 0) then
 	    ExecSQL.cmd := cmd;
@@ -756,6 +776,7 @@ rules:
 	  select : string;
 	  value : string;
 	  from_allele : boolean := false;
+	  from_cellline : boolean := false;
 	  manualSearch : boolean := false;
 
           (void) busy_cursor(top);
@@ -836,6 +857,7 @@ rules:
 	      from_allele := true;
 	  end if;
 
+	  -- Allele 1
           value := mgi_tblGetCell(top->AllelePair->Table, 0, (integer) top->AllelePair->Table.alleleKey[1]);
 
           if (value.length > 0 and value != "NULL") then
@@ -849,6 +871,7 @@ rules:
 	    end if;
 	  end if;
 
+	  -- Allele 2
           value := mgi_tblGetCell(top->AllelePair->Table, 0, (integer) top->AllelePair->Table.alleleKey[2]);
 
           if (value.length > 0 and value != "NULL") then
@@ -862,6 +885,35 @@ rules:
 	    end if;
 	  end if;
 
+	  -- Mutant Cell Line 1
+          value := mgi_tblGetCell(top->AllelePair->Table, 0, (integer) top->AllelePair->Table.mutantCellLineKey[1]);
+
+          if (value.length > 0 and value != "NULL") then
+	    where := where + "\nand ap._MutantCellLine_key_1 = " + value;
+	    from_allele := true;
+	  else
+            value := mgi_tblGetCell(top->AllelePair->Table, 0, (integer) top->AllelePair->Table.mutantCellLine[1]);
+            if (value.length > 0) then
+	      where := where + "\nand ap._MutantCellLine_key_1 = ac._CellLine_key";
+	      where := where + "\nand ac.cellLine like " + mgi_DBprstr(value);
+	      from_cellline := true;
+	    end if;
+	  end if;
+
+	  -- Mutant Cell Line 2
+          value := mgi_tblGetCell(top->AllelePair->Table, 0, (integer) top->AllelePair->Table.mutantCellLineKey[2]);
+
+          if (value.length > 0 and value != "NULL") then
+	    where := where + "\nand ap._MutantCellLine_key_2 = " + value;
+	    from_allele := true;
+	  else
+            value := mgi_tblGetCell(top->AllelePair->Table, 0, (integer) top->AllelePair->Table.mutantCellLine[2]);
+            if (value.length > 0) then
+	      where := where + "\nand ap._MutantCellLine_key_2 = ac._CellLine_key";
+	      where := where + "\nand ac.cellLine like " + mgi_DBprstr(value);
+	      from_cellline := true;
+	    end if;
+	  end if;
           value := mgi_tblGetCell(top->AllelePair->Table, 0, top->AllelePair->Table.stateKey);
 	  if (value.length > 0 and value != "%") then
 	      where := where + "\nand ap._PairState_key = " + value;
@@ -879,11 +931,15 @@ rules:
 	    manualSearch := true;
 	  end if;
 
-	  if (from_allele) then
+	  if (from_allele or from_cellline) then
 	    where := "where g._Genotype_key = ap._Genotype_key" + where;
 	  else
 	    where := "where g._Genotype_key *= ap._Genotype_key" + where;
 	  end if;
+
+	  if (from_cellline) then
+	      from := from + "," + mgi_DBtable(ALL_CELLLINE) + " ac";
+          end if;
 
 	  if (not manualSearch and mgi->AssayModule != nil and assayKey.length = 0) then
 	    assayKey := mgi->AssayModule->ID->text.value;
@@ -1063,6 +1119,10 @@ rules:
 	      (void) mgi_tblSetCell(table, row, (integer) table.alleleKey[2], mgi_getstr(dbproc, 4));
 	      (void) mgi_tblSetCell(table, row, (integer) table.alleleSymbol[1], mgi_getstr(dbproc, 17));
 	      (void) mgi_tblSetCell(table, row, (integer) table.alleleSymbol[2], mgi_getstr(dbproc, 18));
+	      (void) mgi_tblSetCell(table, row, (integer) table.mutantCellLineKey[1], mgi_getstr(dbproc, 6));
+	      (void) mgi_tblSetCell(table, row, (integer) table.mutantCellLineKey[2], mgi_getstr(dbproc, 7));
+	      (void) mgi_tblSetCell(table, row, (integer) table.mutantCellLine[1], mgi_getstr(dbproc, 21));
+	      (void) mgi_tblSetCell(table, row, (integer) table.mutantCellLine[2], mgi_getstr(dbproc, 22));
 	      (void) mgi_tblSetCell(table, row, table.stateKey, mgi_getstr(dbproc, 8));
 	      (void) mgi_tblSetCell(table, row, table.state, mgi_getstr(dbproc, 19));
 	      (void) mgi_tblSetCell(table, row, table.compoundKey, mgi_getstr(dbproc, 7));
@@ -1150,7 +1210,7 @@ rules:
 
 	  (void) busy_cursor(top);
 
-	  cmd := "exec GXD_getGenotypesDataSets " + currentRecordKey;
+	  cmd := genotype_getGenotypesDataSets(currentRecordKey);
           dbproc : opaque := mgi_dbexec(cmd);
 
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
@@ -1385,6 +1445,97 @@ rules:
 	    return;
 	  end if;
 
+	end does;
+
+--
+-- VerifyAlleleMutantCellLine
+--
+--	Verify Mutant Cell Line entered by User.
+-- 	Uses cellLineTable template.
+--
+
+	VerifyAlleleMutantCellLine does
+	  table : widget := VerifyAlleleMutantCellLine.source_widget;
+	  row : integer := VerifyAlleleMutantCellLine.row;
+	  column : integer := VerifyAlleleMutantCellLine.column;
+	  reason : integer := VerifyAlleleMutantCellLine.reason;
+	  value : string := VerifyAlleleMutantCellLine.value;
+	  select : string;
+	  alleleKey1 : string;
+	  alleleKey2 : string;
+	  mutantOK : boolean := false;
+
+	  if (column != (integer) table.mutantCellLine[1] and column != (integer) table.mutantCellLine[2]) then
+	    return;
+	  end if;
+
+	  if (reason = TBL_REASON_VALIDATE_CELL_END) then
+	    return;
+	  end if;
+
+	  -- If a wildcard '%' appears in the field, return
+
+	  if (strstr(value, "%") != nil) then
+	    return;
+	  end if;
+
+	  -- If no value entered, return
+
+	  if (value.length = 0) then
+	    return;
+	  end if;
+
+	  (void) busy_cursor(top);
+
+	  -- Search for value in the database
+
+	  select := 
+	  "select c._CellLine_key, c.cellline from ALL_CellLine c where c.isMutant = 1 and c.cellline = '" + value + "'";
+
+	  if (column = (integer) table.mutantCellLine[1]) then
+            alleleKey1 := mgi_tblGetCell(table, row, (integer) table.alleleKey[1]);
+	    if (alleleKey1.length != 0) then
+	      select := 
+	       "select c._CellLine_key, c.cellline from ALL_CellLine c, ALL_Allele_CellLine a " +
+	       "where c.isMutant = 1 and c.cellline = '" + value + "'" +
+	       "\nand c._CellLine_key = a._MutantCellLine_key" +
+	       "\nand a._Allele_key = " + alleleKey1;
+	    end if;
+          end if;
+
+	  if (column = (integer) table.mutantCellLine[2]) then
+            alleleKey2 := mgi_tblGetCell(table, row, (integer) table.alleleKey[2]);
+	    if (alleleKey2.length != 0) then
+	      select := 
+	       "select c._CellLine_key, c.cellline from ALL_CellLine c, ALL_Allele_CellLine a " +
+	       "where c.isMutant = 1 and c.cellline = '" + value + "'" +
+	       "\nand c._CellLine_key = a._MutantCellLine_key" +
+	       "\nand a._Allele_key = " + alleleKey2;
+	    end if;
+          end if;
+
+	  dbproc : opaque := mgi_dbexec(select);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      (void) mgi_tblSetCell(table, row, column, mgi_getstr(dbproc, 2));
+	      (void) mgi_tblSetCell(table, row, column-8, mgi_getstr(dbproc, 1));
+	      mutantOK := true;
+            end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
+
+          if (not mutantOK) then
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "Invalid Mutant Cell Line:\n\n\t" + value;
+            send(StatusReport);
+	    (void) mgi_tblSetCell(table, row, column, "");
+	    (void) mgi_tblSetCell(table, row, column-8, "");
+	    VerifyAlleleMutantCellLine.doit := (integer) false;
+	  else
+	    (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
+	  end if;
+
+	  (void) reset_cursor(top);
 	end does;
 
 --
