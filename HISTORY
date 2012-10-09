@@ -1,5 +1,12 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-5-1-0-8
+DATE: 10/09/2012
+STAFF: lec
+1) TR11166/SQL.d/MGILib.d/StatusReport
+moved StatusReport to SQL.d/local 'top' variable
+2) this fix has also been made in ei-tr10273-2
+
 TAG: ei-tr10273-2-BP
 DATE: 10/01/2012
 STAFF: lec
