@@ -47,3 +47,9 @@ QueryNoInterrupt [source_widget : widget;	-- Query Database w/out Interruption
 
 QueryEnd [];					-- Things to do after Query event completes
 
+StatusReport [source_widget : widget;  	-- Display Status Report
+              message : string;
+	      appendMessage : boolean := false;];
+
+StatusReportOK [];
+

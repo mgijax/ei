@@ -351,7 +351,6 @@ rules:
 
 	  cmd := cmd + genotype_checkDuplicateGenotype(currentRecordKey);
 
-	  AddSQL.top := top;
 	  AddSQL.tableID := GXD_GENOTYPE;
           AddSQL.cmd := cmd;
 	  AddSQL.list := top->QueryList;
