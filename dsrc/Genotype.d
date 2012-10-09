@@ -351,6 +351,7 @@ rules:
 
 	  cmd := cmd + genotype_checkDuplicateGenotype(currentRecordKey);
 
+	  AddSQL.top := top;
 	  AddSQL.tableID := GXD_GENOTYPE;
           AddSQL.cmd := cmd;
 	  AddSQL.list := top->QueryList;
@@ -1528,7 +1529,7 @@ rules:
             StatusReport.source_widget := top.root;
             StatusReport.message := "Invalid Mutant Cell Line:\n\n\t" + value;
             send(StatusReport);
-	    (void) mgi_tblSetCell(table, row, column, "");
+	    --(void) mgi_tblSetCell(table, row, column, "");
 	    (void) mgi_tblSetCell(table, row, column-8, "");
 	    VerifyAlleleMutantCellLine.doit := (integer) false;
 	  else
