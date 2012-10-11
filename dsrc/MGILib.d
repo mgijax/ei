@@ -193,7 +193,7 @@ rules:
 	    -- If a Job Stream has not finished, then disallow Login
 	    -- If debugging is on, then allow the Login
 
-	    jobStream := mgi_sp("exec " + global_radar + "..APP_EIcheck");
+	    jobStream := mgi_sp(exec_app_EIcheck(global_radar));
 	    if ((getenv("EIDEBUG") = "0") and ((integer) jobStream > 0)) then
 	      StatusReport.source_widget := top;
 	      StatusReport.message := "\nERROR:  EI is unavailable.  A data load job is running.";

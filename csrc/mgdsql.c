@@ -413,38 +413,6 @@ char *genotype_images(char *key, char *mgiTypeKey)
   return(buf);
 }
 
-char *genotype_orderAllelePairs(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec GXD_orderAllelePairs %s\n", key);
-  return(buf);
-}
-
-char *genotype_orderGenotypesAll(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec GXD_orderGenotypesAll %s\n", key);
-  return(buf);
-}
-
-char *genotype_getGenotypesDataSets(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec GXD_getGenotypesDataSets %s\n", key);
-  return(buf);
-}
-
-char *genotype_checkDuplicateGenotype(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec GXD_checkDuplicateGenotype %s\n", key);
-  return(buf);
-}
-
 /*
 * GOVocAnnot.d
 */
@@ -1102,14 +1070,6 @@ char *molecular_probekey(char *key)
   return(buf);
 }
 
-char *molecular_exec_reloadsequence(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec PRB_reloadSequence %s\n", key);
-  return(buf);
-}
-
 char *molecular_shortref(char *key)
 {
   static char buf[TEXTBUFSIZ];
@@ -1214,22 +1174,6 @@ char *molsource_select(char *key)
 /*
  * MPVocAnnot.d
 */
-
-char *mpvoc_exec_copyAnnotEvidenceNotes(char *key, char *keyName)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec VOC_copyAnnotEvidenceNotes %s, @%s\n", key, keyName);
-  return(buf);
-}
-
-char *mpvoc_exec_processAnnotHeader(char *key, char *annotTypeKey)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec VOC_processAnnotHeader %s,%s\n", annotTypeKey, key);
-  return(buf);
-}
 
 char *mpvoc_loadheader(char *key, char *annotTypeKey)
 {
@@ -1931,43 +1875,11 @@ char *strain_genotype(char *key)
   return(buf);
 }
 
-char *strain_execref(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec PRB_getStrainReferences %s\n", key);
-  return(buf);
-}
-
 char *strain_addtoexecref()
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,",1");
-  return(buf);
-}
-
-char *strain_execdataset(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec PRB_getStrainDataSets %s\n", key);
-  return(buf);
-}
-
-char *strain_execmerge(char *key1, char *key2)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec PRB_mergeStrain %s, %s\n", key1, key2);
-  return(buf);
-}
-
-char *strain_checkuser(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec MGI_checkUserRole 'StrainJAXModule', %s\n", key);
   return(buf);
 }
 

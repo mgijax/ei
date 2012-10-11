@@ -350,7 +350,7 @@ rules:
 	  end while;
 
 	  if (cmd.length > 0) then
-	    cmd := cmd + mgi_exec_resetSequenceNum(translationTypeKey, mgi_DBprstr(mgi_DBtable(MGI_TRANSLATION)));
+	    cmd := cmd + exec_mgi_resetSequenceNum(translationTypeKey, mgi_DBprstr(mgi_DBtable(MGI_TRANSLATION)));
 	  end if;
 
           ModifySQL.cmd := cmd;

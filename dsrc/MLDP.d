@@ -840,7 +840,7 @@ rules:
             cmd := cmd + deleteCmd + tmpCmd;
 
 	    if (resetSequenceNum) then
-	      cmd := cmd + mgi_exec_resetSequenceNum(currentExptKey, mgi_DBprstr(mgi_DBtable(MLD_EXPT_MARKER)));
+	      cmd := cmd + exec_mgi_resetSequenceNum(currentExptKey, mgi_DBprstr(mgi_DBtable(MLD_EXPT_MARKER)));
 	    end if;
 	  end if;
         end does;
@@ -1054,7 +1054,7 @@ rules:
  
 	  if (deleteCmd.length > 0 or tmpCmd.length > 0) then
             cmd := cmd + deleteCmd + tmpCmd;
-	    cmd := cmd + mgi_exec_resetSequenceNum(currentExptKey, mgi_DBprstr(mgi_DBtable(MLD_MCHAPLOTYPE)));
+	    cmd := cmd + exec_mgi_resetSequenceNum(currentExptKey, mgi_DBprstr(mgi_DBtable(MLD_MCHAPLOTYPE)));
 	  end if;
         end does;
  
@@ -1157,7 +1157,7 @@ rules:
  
 	  if (deleteCmd.length > 0 or tmpCmd.length > 0) then
             cmd := cmd + deleteCmd + tmpCmd;
-	    cmd := cmd + mgi_exec_resetSequenceNum(currentExptKey, mgi_DBprstr(mgi_DBtable(MLD_MC2POINT)));
+	    cmd := cmd + exec_mgi_resetSequenceNum(currentExptKey, mgi_DBprstr(mgi_DBtable(MLD_MC2POINT)));
 	  end if;
         end does;
  
@@ -1372,7 +1372,7 @@ rules:
  
 	  if (deleteCmd.length > 0 or tmpCmd.length > 0) then
             cmd := cmd + deleteCmd + tmpCmd;
-	    cmd := cmd + mgi_exec_resetSequenceNum(currentExptKey, mgi_DBprstr(mgi_DBtable(MLD_FISH_REGION)));
+	    cmd := cmd + exec_mgi_resetSequenceNum(currentExptKey, mgi_DBprstr(mgi_DBtable(MLD_FISH_REGION)));
 	  end if;
         end does;
  
@@ -1519,7 +1519,7 @@ rules:
  
 	  if (deleteCmd.length > 0 or tmpCmd.length > 0) then
             cmd := cmd + deleteCmd + tmpCmd;
-	    cmd := cmd + mgi_exec_resetSequenceNum(currentExptKey, mgi_DBprstr(mgi_DBtable(MLD_CONCORDANCE)));
+	    cmd := cmd + exec_mgi_resetSequenceNum(currentExptKey, mgi_DBprstr(mgi_DBtable(MLD_CONCORDANCE)));
 	  end if;
         end does;
  
@@ -1667,7 +1667,7 @@ rules:
  
 	  if (deleteCmd.length > 0 or tmpCmd.length > 0) then
             cmd := cmd + deleteCmd + tmpCmd;
-	    cmd := cmd + mgi_exec_resetSequenceNum(currentExptKey, mgi_DBprstr(mgi_DBtable(MLD_INSITU_REGION)));
+	    cmd := cmd + exec_mgi_resetSequenceNum(currentExptKey, mgi_DBprstr(mgi_DBtable(MLD_INSITU_REGION)));
 	  end if;
         end does;
  
@@ -1892,7 +1892,7 @@ rules:
  
 	  if (deleteCmd.length > 0 or tmpCmd.length > 0) then
             cmd := cmd + deleteCmd + tmpCmd;
-	    cmd := cmd + mgi_exec_resetSequenceNum(currentExptKey, mgi_DBprstr(mgi_DBtable(MLD_RIHAPLOTYPE)));
+	    cmd := cmd + exec_mgi_resetSequenceNum(currentExptKey, mgi_DBprstr(mgi_DBtable(MLD_RIHAPLOTYPE)));
 	  end if;
         end does;
  
@@ -1999,7 +1999,7 @@ rules:
  
 	  if (deleteCmd.length > 0 or tmpCmd.length > 0) then
             cmd := cmd + deleteCmd + tmpCmd;
-	    cmd := cmd + mgi_exec_resetSequenceNum(currentExptKey, mgi_DBprstr(mgi_DBtable(MLD_RI2POINT)));
+	    cmd := cmd + exec_mgi_resetSequenceNum(currentExptKey, mgi_DBprstr(mgi_DBtable(MLD_RI2POINT)));
 	  end if;
         end does;
  
@@ -2113,7 +2113,7 @@ rules:
  
 	  if (deleteCmd.length > 0 or tmpCmd.length > 0) then
             cmd := cmd + deleteCmd + tmpCmd;
-	    cmd := cmd + mgi_exec_resetSequenceNum(currentExptKey, mgi_DBprstr(mgi_DBtable(MLD_STATISTICS)));
+	    cmd := cmd + exec_mgi_resetSequenceNum(currentExptKey, mgi_DBprstr(mgi_DBtable(MLD_STATISTICS)));
 	  end if;
 
         end does;

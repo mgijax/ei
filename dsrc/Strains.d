@@ -310,7 +310,7 @@ rules:
 	   pcmd : string;
 	   permOK : integer;
 
-	   pcmd := strain_checkuser(mgi_DBprstr(global_login));
+	   pcmd := exec_mgi_checkUserRole(mgi_DBprstr(global_login));
 		
 	   permOK := (integer) mgi_sql1(pcmd);
 
@@ -905,7 +905,7 @@ rules:
 	  Query.source_widget := top;
 
 	  if (from_reference) then
-	    Query.select := "exec PRB_getStrainByReference " + where;
+	    Query.select := exec_prb_getStrainByReference(where);
 	  else
 	    Query.select := "select distinct s._Strain_key, s.strain\n" + 
 		  from + "\n" + where + "\norder by s.strain\n";
@@ -1112,7 +1112,7 @@ rules:
           row : integer := 0;
           dbproc : opaque;
  
-	  cmd := strain_execref(currentRecordKey);
+	  cmd := exec_prb_getStrainReferences(currentRecordKey);
           dbproc := mgi_dbexec(cmd);
  
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
@@ -1169,7 +1169,7 @@ rules:
           row : integer := 0;
           dbproc : opaque := mgi_dbexec(cmd);
 
-	  cmd := strain_execdataset(currentRecordKey);
+	  cmd := exec_prb_getStrainDataSets(currentRecordKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -1181,7 +1181,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  if (SelectDataSets.doCount) then
-	    cmd := strain_execdataset("");
+	    cmd := exec_prb_getStrainDataSets("");
             dbproc := mgi_dbexec(cmd);
             while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
               while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -1240,7 +1240,7 @@ rules:
  
           (void) busy_cursor(dialog);
 
-	  cmd := strain_execmerge(dialog->Strain1->StrainID->text.value, dialog->Strain2->StrainID->text.value);
+	  cmd := exec_prb_mergeStrain(dialog->Strain1->StrainID->text.value, dialog->Strain2->StrainID->text.value);
 	  
 	  ExecSQL.cmd := cmd;
 	  send(ExecSQL, 0);

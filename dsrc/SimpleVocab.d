@@ -415,7 +415,7 @@ rules:
           end while;
 
 	  if (termModified) then
-	    cmd := cmd + mgi_exec_resetSequenceNum(currentRecordKey, mgi_DBprstr(mgi_DBtable(VOC_TERM)));
+	    cmd := cmd + exec_mgi_resetSequenceNum(currentRecordKey, mgi_DBprstr(mgi_DBtable(VOC_TERM)));
 	  end if;
 	end does;
 

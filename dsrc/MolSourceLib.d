@@ -191,7 +191,7 @@ rules:
           add := add + mgi_DBprstr(age) + ",-1,-1," +
             	       isCuratorEdited + "," +
 		       global_loginKey + "," + global_loginKey + ")\n" +
-		       mgi_exec_resetAgeMinMax("@" + keyLabel, mgi_DBprstr(mgi_DBtable(PRB_SOURCE))) +
+		       exec_mgi_resetAgeMinMax("@" + keyLabel, mgi_DBprstr(mgi_DBtable(PRB_SOURCE))) +
 		       "select @" + keyLabel + "\n";
  
 	  top.sql := add;
@@ -577,7 +577,7 @@ rules:
   
           if (top.sql.length > 0 or set.length > 0) then
             top.sql := top.sql + mgi_DBupdate(PRB_SOURCE, top->SourceID->text.value, set) +
-		       mgi_exec_resetAgeMinMax(top->SourceID->text.value, mgi_DBprstr(mgi_DBtable(PRB_SOURCE)));
+		       exec_mgi_resetAgeMinMax(top->SourceID->text.value, mgi_DBprstr(mgi_DBtable(PRB_SOURCE)));
           end if;
  
         end does;

@@ -1063,14 +1063,14 @@ rules:
 	  send(ModifySQL, 0);
 
 	  if (cmd.length > 0) then
-	    cmd := cmd + mrk_exec_reloadLabel(currentRecordKey) +
-	           mrk_exec_reloadReference(currentRecordKey);
+	    cmd := cmd + exec_mrk_reloadLabel(currentRecordKey) +
+	           exec_mrk_reloadReference(currentRecordKey);
 
             if (modifySequenceCache) then
-	      cmd := cmd + mrk_exec_reloadSequence(currentRecordKey);
+	      cmd := cmd + exec_mrk_reloadSequence(currentRecordKey);
 	    end if;
 
-	    cmd := cmd + mrk_exec_reloadLocation(currentRecordKey);
+	    cmd := cmd + exec_mrk_reloadLocation(currentRecordKey);
 
 	    ModifySQL.cmd := cmd;
 	    ModifySQL.list := top->QueryList;
@@ -1297,7 +1297,7 @@ rules:
           cmd := cmd + deleteCmd + tmpCmd;
 
 	  if (historyModified) then
-	    cmd := cmd + mgi_exec_resetSequenceNum(currentRecordKey, mgi_DBprstr(mgi_DBtable(MRK_HISTORY)));
+	    cmd := cmd + exec_mgi_resetSequenceNum(currentRecordKey, mgi_DBprstr(mgi_DBtable(MRK_HISTORY)));
 	  end if;
 	end does;
 

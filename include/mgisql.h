@@ -17,12 +17,31 @@
 extern char *mgilib_count(char *);
 extern char *mgilib_anchorcount(char *);
 extern char *mgilib_user(char *);
-extern char *mgi_exec_resetAgeMinMax(char *, char *);
-extern char *mgi_exec_resetSequenceNum(char *, char *);
-extern char *mrk_exec_reloadLabel(char *);
-extern char *mrk_exec_reloadReference(char *);
-extern char *mrk_exec_reloadSequence(char *);
-extern char *mrk_exec_reloadLocation(char *);
+extern char *exec_app_EIcheck(char *);
+extern char *exec_acc_insert(char *, char *, char *, char *, char *, char *, char *);
+extern char *exec_acc_update(char *, char *, char *, char *);
+extern char *exec_acc_deleteByAccKey(char *, char *);
+extern char *exec_accref_process(char *, char *, char *, char *, char *, char *, char *);
+extern char *exec_mgi_checkUserRole(char *);
+extern char *exec_mgi_resetAgeMinMax(char *, char *);
+extern char *exec_mgi_resetSequenceNum(char *, char *);
+extern char *exec_mrk_reloadLabel(char *);
+extern char *exec_mrk_reloadReference(char *);
+extern char *exec_mrk_reloadSequence(char *);
+extern char *exec_mrk_reloadLocation(char *);
+extern char *exec_nom_transferToMGD(char *, char *);
+extern char *exec_nom_verifyMarker(char *);
+extern char *exec_prb_getStrainByReference(char *);
+extern char *exec_prb_getStrainReferences(char *);
+extern char *exec_prb_getStrainDataSets(char *);
+extern char *exec_prb_mergeStrain(char *, char *);
+extern char *exec_prb_reloadSequence(char *);
+extern char *exec_voc_copyAnnotEvidenceNotes(char *, char *);
+extern char *exec_voc_processAnnotHeader(char *, char *);
+extern char *exec_gxd_orderAllelePairs(char *);
+extern char *exec_gxd_orderGenotypesAll(char *);
+extern char *exec_gxd_getGenotypesDataSets(char *);
+extern char *exec_gxd_checkDuplicateGenotype(char *);
 
 /* SQL.d */
 

@@ -1700,7 +1700,7 @@ rules:
 		     mgi_DBprstr(ageNote) + "," +
 		     mgi_DBprstr(hybridizationKey) + "," +
 		     mgi_DBprstr(specimenNote) + ")\n" +
-	             mgi_exec_resetAgeMinMax("@" + keyName, mgi_DBprstr(mgi_DBtable(GXD_SPECIMEN)));
+	             exec_mgi_resetAgeMinMax("@" + keyName, mgi_DBprstr(mgi_DBtable(GXD_SPECIMEN)));
 
             elsif (editMode = TBL_ROW_MODIFY and key.length > 0) then
 
@@ -1715,7 +1715,7 @@ rules:
                         "specimenNote = " + mgi_DBprstr(specimenNote) + "," +
 			"sequenceNum = " + newSeqNum;
               cmd := cmd + mgi_DBupdate(GXD_SPECIMEN, key, update) + "\n" +
-	             mgi_exec_resetAgeMinMax(key, mgi_DBprstr(mgi_DBtable(GXD_SPECIMEN)));
+	             exec_mgi_resetAgeMinMax(key, mgi_DBprstr(mgi_DBtable(GXD_SPECIMEN)));
 
             elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
               cmd := cmd + mgi_DBdelete(GXD_SPECIMEN, key);
@@ -1733,7 +1733,7 @@ rules:
             row := row + 1;
           end while;
 
-	  cmd := cmd + mgi_exec_resetSequenceNum(currentAssay, mgi_DBprstr(mgi_DBtable(GXD_SPECIMEN)));
+	  cmd := cmd + exec_mgi_resetSequenceNum(currentAssay, mgi_DBprstr(mgi_DBtable(GXD_SPECIMEN)));
         end
  
 --
@@ -1852,7 +1852,7 @@ rules:
 		     ageMax + "," +
 	    	     mgi_DBprstr(mgi_tblGetCell(table, row, table.ageNote)) + "," +
 	    	     mgi_DBprstr(mgi_tblGetCell(table, row, table.laneNote)) + ")\n" +
-	             mgi_exec_resetAgeMinMax("@" + keyName, mgi_DBprstr(mgi_DBtable(GXD_GELLANE)));
+	             exec_mgi_resetAgeMinMax("@" + keyName, mgi_DBprstr(mgi_DBtable(GXD_GELLANE)));
 
               -- Process Gel Lane Structures
 
@@ -1876,7 +1876,7 @@ rules:
 	    	        "laneNote = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.laneNote)) + "," +
 			"sequenceNum = " + newSeqNum;
               cmd := cmd + mgi_DBupdate(GXD_GELLANE, key, update) +
-	             mgi_exec_resetAgeMinMax(key, mgi_DBprstr(mgi_DBtable(GXD_GELLANE)));
+	             exec_mgi_resetAgeMinMax(key, mgi_DBprstr(mgi_DBtable(GXD_GELLANE)));
 
               -- Process Gel Lane Structures
   
@@ -1903,7 +1903,7 @@ rules:
             row := row + 1;
           end while;
 
-	  cmd := cmd + mgi_exec_resetSequenceNum(currentAssay, mgi_DBprstr(mgi_DBtable(GXD_GELLANE)));
+	  cmd := cmd + exec_mgi_resetSequenceNum(currentAssay, mgi_DBprstr(mgi_DBtable(GXD_GELLANE)));
         end
  
 --
@@ -1995,7 +1995,7 @@ rules:
             row := row + 1;
           end while;
 
-	  cmd := cmd + mgi_exec_resetSequenceNum(currentAssay, mgi_DBprstr(mgi_DBtable(GXD_GELROW)));
+	  cmd := cmd + exec_mgi_resetSequenceNum(currentAssay, mgi_DBprstr(mgi_DBtable(GXD_GELROW)));
         end
  
 --

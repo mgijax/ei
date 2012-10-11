@@ -713,7 +713,7 @@ rules:
 	  -- process Notes solo too
 
           if (top->MolMarkerForm->MolNote.sql.length > 0) then
-            ModifySQL.cmd := top->MolMarkerForm->MolNote.sql + molecular_exec_reloadsequence(currentMasterKey);
+            ModifySQL.cmd := top->MolMarkerForm->MolNote.sql + exec_prb_reloadSequence(currentMasterKey);
 	    ModifySQL.list := top->QueryList;
 	    ModifySQL.reselect := false;
             send(ModifySQL, 0);
@@ -729,7 +729,7 @@ rules:
 
           if (cmd.length > 0 or set.length > 0) then 
             cmd := cmd + mgi_DBupdate(PRB_PROBE, currentMasterKey, set);
-	    cmd := cmd + molecular_exec_reloadsequence(currentMasterKey);
+	    cmd := cmd + exec_prb_reloadSequence(currentMasterKey);
             ModifySQL.cmd := cmd;
 	    ModifySQL.list := top->QueryList;
 	    ModifySQL.reselect := false;

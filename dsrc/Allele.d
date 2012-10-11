@@ -1149,7 +1149,7 @@ rules:
 	    -- need to update the MRK_reloadLabel table for each marker that was updated
 
  	    if (markerKey != "" and markerKey != "NULL") then
-	      cmd := cmd + mrk_exec_reloadLabel(markerKey);
+	      cmd := cmd + exec_mrk_reloadLabel(markerKey);
  	    end if;
 
 	    row := row + 1;

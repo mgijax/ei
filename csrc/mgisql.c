@@ -37,7 +37,62 @@ char *mgilib_anchorcount(char *key)
   return(buf);
 }
 
-char *mgi_exec_resetAgeMinMax(char *key, char *table)
+/*
+ * exec stored procedures
+*/
+
+char *exec_app_EIcheck(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec %s..APP_EIcheck", key);
+  return(buf);
+}
+
+char *exec_acc_insert(char *key, char *accid, char *logicalKey, char *table, char *refsKey, char *isPreferred, char *isPrivate)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec ACC_insert %s,%s,%s,%s,%s,%s,%s\n", \
+	key, accid, logicalKey, table, refsKey, isPreferred, isPrivate);
+  return(buf);
+}
+
+char *exec_acc_update(char *key, char *accid, char *origRefsKey, char *refsKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec ACC_update %s,%s,%s,%s\n", \
+        key, accid, origRefsKey, refsKey);
+  return(buf);
+}
+
+char *exec_acc_deleteByAccKey(char *key, char *refsKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec ACC_delete_byAccKey %s,%s", key, refsKey);
+  return(buf);
+}
+
+char *exec_accref_process(char *key, char *refsKey, char *accid, char *logicalKey, char *table, char *isPreferred, char *isPrivate)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec ACCRef_process %s,%s,%s,%s,%s,%s,%s\n", \
+	key, refsKey, accid, logicalKey, table, isPreferred, isPrivate);
+  return(buf);
+}
+
+char *exec_mgi_checkUserRole(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec MGI_checkUserRole 'StrainJAXModule', %s\n", key);
+  return(buf);
+}
+
+char *exec_mgi_resetAgeMinMax(char *key, char *table)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
@@ -45,7 +100,7 @@ char *mgi_exec_resetAgeMinMax(char *key, char *table)
   return(buf);
 }
 
-char *mgi_exec_resetSequenceNum(char *key, char *table)
+char *exec_mgi_resetSequenceNum(char *key, char *table)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
@@ -53,7 +108,7 @@ char *mgi_exec_resetSequenceNum(char *key, char *table)
   return(buf);
 }
 
-char *mrk_exec_reloadLabel(char *key)
+char *exec_mrk_reloadLabel(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
@@ -61,7 +116,7 @@ char *mrk_exec_reloadLabel(char *key)
   return(buf);
 }
 
-char *mrk_exec_reloadReference(char *key)
+char *exec_mrk_reloadReference(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
@@ -69,7 +124,7 @@ char *mrk_exec_reloadReference(char *key)
   return(buf);
 }
 
-char *mrk_exec_reloadSequence(char *key)
+char *exec_mrk_reloadSequence(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
@@ -77,11 +132,115 @@ char *mrk_exec_reloadSequence(char *key)
   return(buf);
 }
 
-char *mrk_exec_reloadLocation(char *key)
+char *exec_mrk_reloadLocation(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"\nexec MRK_reloadLocation %s\n", key);
+  return(buf);
+}
+
+char *exec_nom_transferToMGD(char *key, char *status)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec NOM_transferToMGD %s, %s", key, status);
+  return(buf);
+}
+
+char *exec_nom_verifyMarker(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec NOM_verifyMarker %s", key);
+  return(buf);
+}
+
+char *exec_prb_getStrainByReference(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec PRB_getStrainByReference %s\n", key);
+  return(buf);
+}
+
+char *exec_prb_getStrainReferences(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec PRB_getStrainReferences %s\n", key);
+  return(buf);
+}
+
+char *exec_prb_getStrainDataSets(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec PRB_getStrainDataSets %s\n", key);
+  return(buf);
+}
+
+char *exec_prb_mergeStrain(char *key1, char *key2)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec PRB_mergeStrain %s, %s\n", key1, key2);
+  return(buf);
+}
+
+char *exec_prb_reloadSequence(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec PRB_reloadSequence %s\n", key);
+  return(buf);
+}
+
+char *exec_voc_copyAnnotEvidenceNotes(char *key, char *keyName)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec VOC_copyAnnotEvidenceNotes %s, @%s\n", key, keyName);
+  return(buf);
+}
+
+char *exec_voc_processAnnotHeader(char *key, char *annotTypeKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec VOC_processAnnotHeader %s,%s\n", annotTypeKey, key);
+  return(buf);
+}
+
+char *exec_gxd_orderAllelePairs(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec GXD_orderAllelePairs %s\n", key);
+  return(buf);
+}
+
+char *exec_gxd_orderGenotypesAll(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec GXD_orderGenotypesAll %s\n", key);
+  return(buf);
+}
+
+char *exec_gxd_getGenotypesDataSets(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec GXD_getGenotypesDataSets %s\n", key);
+  return(buf);
+}
+
+char *exec_gxd_checkDuplicateGenotype(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec GXD_checkDuplicateGenotype %s\n", key);
   return(buf);
 }
 

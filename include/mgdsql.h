@@ -62,10 +62,6 @@ extern char *genotype_select(char *);
 extern char *genotype_allelepair(char *);
 extern char *genotype_notes(char *);
 extern char *genotype_images(char *, char *);
-extern char *genotype_orderAllelePairs(char *);
-extern char *genotype_orderGenotypesAll(char *);
-extern char *genotype_getGenotypesDataSets(char *);
-extern char *genotype_checkDuplicateGenotype(char *);
 
 /* GOVocAnnot.d */
 
@@ -147,8 +143,6 @@ extern char *mldp_assay(char *);
 
 /* MPVocAnnot.d */
 
-extern char *mpvoc_exec_copyAnnotEvidenceNotes(char *, char *);
-extern char *mpvoc_exec_processAnnotHeader(char *, char *);
 extern char *mpvoc_loadheader(char *, char *);
 extern char *mpvoc_dbview(char *);
 extern char *mpvoc_evidencecode(char *);
@@ -166,7 +160,6 @@ extern char *mpvoc_alleles(char *, char *);
 extern char *molecular_termNA();
 extern char *molecular_termPrimer();
 extern char *molecular_probekey(char *);
-extern char *molecular_exec_reloadsequence(char *);
 extern char *molecular_shortref(char *);
 extern char *molecular_select(char *);
 extern char *molecular_parent(char *);
@@ -260,11 +253,7 @@ extern char *strain_select(char *);
 extern char *strain_attribute(char *);
 extern char *strain_needsreview(char *);
 extern char *strain_genotype(char *);
-extern char *strain_execref(char *);
 extern char *strain_addtoexecref();
-extern char *strain_execdataset(char *);
-extern char *strain_execmerge(char *, char *);
-extern char *strain_checkuser(char *);
 extern char *strain_count();
 
 /* TDCVocabAnnot.d */

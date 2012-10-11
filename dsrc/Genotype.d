@@ -349,7 +349,7 @@ rules:
 	  send(ProcessNoteForm, 0);
 	  cmd := cmd + top->mgiNoteForm.sql;
 
-	  cmd := cmd + genotype_checkDuplicateGenotype(currentRecordKey);
+	  cmd := cmd + exec_gxd_checkDuplicateGenotype(currentRecordKey);
 
 	  AddSQL.tableID := GXD_GENOTYPE;
           AddSQL.cmd := cmd;
@@ -501,7 +501,7 @@ rules:
             cmd := mgi_DBupdate(GXD_GENOTYPE, currentRecordKey, set) + cmd;
 	  end if;
 
-	  cmd := cmd + genotype_checkDuplicateGenotype(currentRecordKey);
+	  cmd := cmd + exec_gxd_checkDuplicateGenotype(currentRecordKey);
 
           ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
@@ -741,11 +741,11 @@ rules:
 
 	  -- process auto re-ordering if not manually re-ordering
 	  if (not reorderingAlleles) then
-	    cmd := cmd + genotype_orderAllelePairs(top->ID->text.value);
+	    cmd := cmd + exec_gxd_orderAllelePairs(top->ID->text.value);
 	  end if;
 
 	  -- refresh gxd_allelegenotype cache
-	  cmd := cmd + genotype_orderGenotypesAll(currentRecordKey);
+	  cmd := cmd + exec_gxd_orderGenotypesAll(currentRecordKey);
 
 	  if (cmd.length > 0) then
 	    ExecSQL.cmd := cmd;
@@ -1210,7 +1210,7 @@ rules:
 
 	  (void) busy_cursor(top);
 
-	  cmd := genotype_getGenotypesDataSets(currentRecordKey);
+	  cmd := exec_gxd_getGenotypesDataSets(currentRecordKey);
           dbproc : opaque := mgi_dbexec(cmd);
 
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
