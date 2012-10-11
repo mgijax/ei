@@ -53,6 +53,14 @@ char *mgi_exec_resetSequenceNum(char *key, char *table)
   return(buf);
 }
 
+char *mrk_exec_reloadLabel(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"\nexec MRK_reloadLabel %s\n", key);
+  return(buf);
+}
+
 /*
  * MGILib.d
 */

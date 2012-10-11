@@ -554,7 +554,7 @@ rules:
 
 			if (markerKey != "") then
 	                  cmd := cmd + mgi_DBinsert(HMD_HOMOLOGY_MARKER, homologyKeyName) + markerKey + ")\n";
-			  reloadCmd := reloadCmd + "exec MRK_reloadLabel " + markerKey + "\n";
+			  reloadCmd := reloadCmd + mrk_exec_reloadLabel(markerKey);
 			end if;
 		      end if;
 		    end if;

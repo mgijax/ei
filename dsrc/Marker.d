@@ -1063,8 +1063,8 @@ rules:
 	  send(ModifySQL, 0);
 
 	  if (cmd.length > 0) then
-	    cmd := "exec MRK_reloadLabel " + currentRecordKey +
-		   "\nexec MRK_reloadReference " + currentRecordKey;
+	    cmd := cmd + mrk_exec_reloadLabel(currentRecordKey) +
+		   "exec MRK_reloadReference " + currentRecordKey;
 
             if (modifySequenceCache) then
 	      cmd := cmd + "\nexec MRK_reloadSequence " + currentRecordKey;

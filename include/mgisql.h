@@ -19,6 +19,7 @@ extern char *mgilib_anchorcount(char *);
 extern char *mgilib_user(char *);
 extern char *mgi_exec_resetAgeMinMax(char *, char *);
 extern char *mgi_exec_resetSequenceNum(char *, char *);
+extern char *mrk_exec_reloadLabel(char *);
 
 /* SQL.d */
 
