@@ -61,6 +61,30 @@ char *mrk_exec_reloadLabel(char *key)
   return(buf);
 }
 
+char *mrk_exec_reloadReference(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"\nexec MRK_reloadReference %s\n", key);
+  return(buf);
+}
+
+char *mrk_exec_reloadSequence(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"\nexec MRK_reloadSequence %s\n", key);
+  return(buf);
+}
+
+char *mrk_exec_reloadLocation(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"\nexec MRK_reloadLocation %s\n", key);
+  return(buf);
+}
+
 /*
  * MGILib.d
 */

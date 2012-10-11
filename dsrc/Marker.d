@@ -1064,13 +1064,13 @@ rules:
 
 	  if (cmd.length > 0) then
 	    cmd := cmd + mrk_exec_reloadLabel(currentRecordKey) +
-		   "exec MRK_reloadReference " + currentRecordKey;
+	           mrk_exec_reloadReference(currentRecordKey);
 
             if (modifySequenceCache) then
-	      cmd := cmd + "\nexec MRK_reloadSequence " + currentRecordKey;
+	      cmd := cmd + mrk_exec_reloadSequence(currentRecordKey);
 	    end if;
 
-	    cmd := cmd + "\nexec MRK_reloadLocation " + currentRecordKey;
+	    cmd := cmd + mrk_exec_reloadLocation(currentRecordKey);
 
 	    ModifySQL.cmd := cmd;
 	    ModifySQL.list := top->QueryList;

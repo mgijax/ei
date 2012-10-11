@@ -17,6 +17,9 @@ CALLS
 	 mgi_exec_resetAgeMinMax("char *", "char *")	: "char *";
 	 mgi_exec_resetSequenceNum("char *", "char *")	: "char *";
 	 mrk_exec_reloadLabel("char *")		: "char *";
+	 mrk_exec_reloadReference("char *")	: "char *";
+	 mrk_exec_reloadSequence("char *")	: "char *";
+	 mrk_exec_reloadLocation("char *")	: "char *";
 
 	 sql_error()				: "char *";
 	 sql_transtate()			: "char *";

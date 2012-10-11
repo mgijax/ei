@@ -734,15 +734,15 @@ char *marker_checkaccid(char *key, char *logicalDBKey, char *accID)
 
 char *marker_checkseqaccid(char *logicalDBKey, char *accID)
 {
+   /*\nwhere lower(p.note) like \ */
+  /* \nlower('% staff have found evidence of artifact in the sequence of this molecular%') \ */
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select a.accID from PRB_Notes p, ACC_Accession a \
-   \nwhere lower(p.note) like \
-   \nlower('%staff have found evidence of artifact in the sequence of this molecular%') \
-   \nand p._Probe_key = a._Object_key \
+   \nwhere p._Probe_key = a._Object_key \
    \nand a._MGIType_key = 3 \
    \nand a._LogicalDB_key = %s \
-   \nand a.accID = ", logicalDBKey, accID);
+   \nand a.accID = %s", logicalDBKey, accID);
   return(buf);
 }
 
