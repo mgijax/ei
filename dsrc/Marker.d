@@ -1297,7 +1297,7 @@ rules:
           cmd := cmd + deleteCmd + tmpCmd;
 
 	  if (historyModified) then
-	    cmd := cmd + "exec MGI_resetSequenceNum '" + mgi_DBtable(MRK_HISTORY) + "'," + currentRecordKey + "\n";
+	    cmd := cmd + mgi_exec_resetSequenceNum(currentRecordKey, mgi_DBprstr(mgi_DBtable(MRK_HISTORY)));
 	  end if;
 	end does;
 

@@ -14,6 +14,8 @@ CALLS
 	 mgilib_count("char *")			: "char *";
 	 mgilib_anchorcount("char *")		: "char *";
 	 mgilib_user("char *")			: "char *";
+	 mgi_exec_resetAgeMinMax("char *", "char *")	: "char *";
+	 mgi_exec_resetSequenceNum("char *", "char *")	: "char *";
 
 	 sql_error()				: "char *";
 	 sql_transtate()			: "char *";

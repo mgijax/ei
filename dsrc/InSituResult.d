@@ -483,7 +483,7 @@ rules:
             row := row + 1;
           end while;
 
-	  cmd := cmd + "exec MGI_resetSequenceNum '" + primaryTable + "'," + specimenKey + "\n";
+	  cmd := cmd + mgi_exec_resetSequenceNum(specimenKey, mgi_DBprstr(primaryTable));
 
 	  -- Update the modification date of the GXD_Assay table so that the expression cache
 	  -- gets updated

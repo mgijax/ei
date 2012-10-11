@@ -37,6 +37,22 @@ char *mgilib_anchorcount(char *key)
   return(buf);
 }
 
+char *mgi_exec_resetAgeMinMax(char *key, char *table)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec MGI_resetAgeMinMax %s, %s\n", table, key);
+  return(buf);
+}
+
+char *mgi_exec_resetSequenceNum(char *key, char *table)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec MGI_resetSequenceNum %s, %s\n", table, key);
+  return(buf);
+}
+
 /*
  * MGILib.d
 */
