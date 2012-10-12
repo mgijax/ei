@@ -71,7 +71,7 @@ char *exec_acc_deleteByAccKey(char *key, char *refsKey)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec ACC_delete_byAccKey %s,%s", key, refsKey);
+  sprintf(buf,"exec ACC_delete_byAccKey %s,%s\n", key, refsKey);
   return(buf);
 }
 

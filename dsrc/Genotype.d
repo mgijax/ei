@@ -1482,6 +1482,8 @@ rules:
 	  -- If no value entered, return
 
 	  if (value.length = 0) then
+	    (void) mgi_tblSetCell(table, row, column, "");
+	    (void) mgi_tblSetCell(table, row, column-8, "");
 	    return;
 	  end if;
 
