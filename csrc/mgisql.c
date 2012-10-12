@@ -84,11 +84,19 @@ char *exec_accref_process(char *key, char *refsKey, char *accid, char *logicalKe
   return(buf);
 }
 
-char *exec_mgi_checkUserRole(char *key)
+char *exec_all_reloadLabel(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec MGI_checkUserRole 'StrainJAXModule', %s\n", key);
+  sprintf(buf,"\nexec ALL_reloadLabel %s\n", key);
+  return(buf);
+}
+
+char *exec_mgi_checkUserRole(char *module, char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec MGI_checkUserRole %s, %s\n", module, key);
   return(buf);
 }
 
@@ -217,6 +225,14 @@ char *exec_gxd_orderAllelePairs(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"exec GXD_orderAllelePairs %s\n", key);
+  return(buf);
+}
+
+char *exec_gxd_orderGenotypes(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec GXD_orderGenotypes %s\n", key);
   return(buf);
 }
 

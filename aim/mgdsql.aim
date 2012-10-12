@@ -63,6 +63,7 @@ CALLS
 	 genotype_search2("char *")			: "char *";
 	 genotype_select("char *")			: "char *";
 	 genotype_allelepair("char *")			: "char *";
+	 genotype_verifyallelemcl("char *", "char *")	: "char *";
 	 genotype_notes("char *")			: "char *";
 	 genotype_images("char *", "char *")		: "char *";
 

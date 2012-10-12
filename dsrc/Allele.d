@@ -66,7 +66,7 @@
 --	- replaced global_login with global_loginKey
 --
 -- 02/14/2003 lec
---	- TR 1892; added "exec MRK_reloadLabel"
+--	- TR 1892; added exec_mrk_reloadLabel()
 --
 -- 10/08/2002 lec
 --	- TR 3516; added markerDescription
@@ -602,7 +602,7 @@ rules:
 
 	  -- Execute the add
 
-	  cmd := cmd + "exec ALL_reloadLabel " + currentRecordKey + "\n";
+	  cmd := cmd + exec_all_reloadLabel(currentRecordKey);
 
 	  AddSQL.tableID := ALL_ALLELE;
           AddSQL.cmd := cmd;
@@ -927,8 +927,8 @@ rules:
 	  send(ModifySQL, 0);
 
 	  if (cmd.length > 0) then
-	    cmd := "exec ALL_reloadLabel " + currentRecordKey + "\n" +
-		   "exec GXD_orderGenotypes " + currentRecordKey + "\n";
+	    cmd := exec_all_reloadLabel(currentRecordKey) +
+		   exec_gxd_orderGenotypes(currentRecordKey);
 
 	    ModifySQL.cmd := cmd;
 	    ModifySQL.list := top->QueryList;

@@ -270,7 +270,7 @@ rules:
 	   cmd : string;
 	   permOK : integer;
 
-	   cmd := "exec MGI_checkUserRole " + mgi_DBprstr(top.name) + "," + mgi_DBprstr(global_login);
+	   cmd := exec_mgi_checkUserRole(mgi_DBprstr(top.name), mgi_DBprstr(global_login));
 		
 	   permOK := (integer) mgi_sp(cmd);
 

@@ -20,7 +20,8 @@ CALLS
 	 exec_acc_update("char *", "char *", "char *", "char *") : "char *";
 	 exec_acc_deleteByAccKey("char *", "char *") : "char *";
 	 exec_accref_process("char *", "char *", "char *", "char *", "char *", "char *", "char *") : "char *";
-	 exec_mgi_checkUserRole("char *")			: "char *";
+	 exec_all_reloadLabel("char *")		: "char *";
+	 exec_mgi_checkUserRole("char *", "char *")	: "char *";
 	 exec_mgi_resetAgeMinMax("char *", "char *")	: "char *";
 	 exec_mgi_resetSequenceNum("char *", "char *")	: "char *";
 	 exec_mrk_reloadLabel("char *")		: "char *";
@@ -37,6 +38,7 @@ CALLS
 	 exec_voc_copyAnnotEvidenceNotes("char *", "char *")	: "char *";
 	 exec_voc_processAnnotHeader("char *", "char *")	: "char *";
 	 exec_gxd_orderAllelePairs("char *")	: "char *";
+	 exec_gxd_orderGenotypes("char *")	: "char *";
 	 exec_gxd_orderGenotypesAll("char *")	: "char *";
 	 exec_gxd_getGenotypesDataSets("char *"): "char *";
 	 exec_gxd_checkDuplicateGenotype("char *"): "char *";

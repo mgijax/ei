@@ -389,6 +389,18 @@ char *genotype_allelepair(char *key)
   return(buf);
 }
 
+char *genotype_verifyallelemcl(char *key, char *value)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf, "select c._CellLine_key, c.cellline \
+   \nfrom ALL_CellLine c, ALL_Allele_CellLine a \
+   \nwhere c.isMutant = 1 and c.cellline = '%s' \
+   \nand c._CellLine_key = a._MutantCellLine_key \
+   \nand a._Allele_key = %s", value, key);
+  return(buf);
+}
+
 char *genotype_notes(char *key)
 {
   static char buf[TEXTBUFSIZ];

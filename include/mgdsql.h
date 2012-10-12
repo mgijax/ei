@@ -60,6 +60,7 @@ extern char *genotype_search1(char *, char *);
 extern char *genotype_search2(char *);
 extern char *genotype_select(char *);
 extern char *genotype_allelepair(char *);
+extern char *genotype_verifyallelemcl(char *, char *);
 extern char *genotype_notes(char *);
 extern char *genotype_images(char *, char *);
 

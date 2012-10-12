@@ -310,7 +310,7 @@ rules:
 	   pcmd : string;
 	   permOK : integer;
 
-	   pcmd := exec_mgi_checkUserRole(mgi_DBprstr(global_login));
+	   pcmd := exec_mgi_checkUserRole(mgi_DBprstr("StrainJAXModule"), mgi_DBprstr(global_login));
 		
 	   permOK := (integer) mgi_sql1(pcmd);
 
