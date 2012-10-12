@@ -1497,22 +1497,14 @@ rules:
 	  if (column = (integer) table.mutantCellLine[1]) then
             alleleKey1 := mgi_tblGetCell(table, row, (integer) table.alleleKey[1]);
 	    if (alleleKey1.length != 0) then
-	      select := 
-	       "select c._CellLine_key, c.cellline from ALL_CellLine c, ALL_Allele_CellLine a " +
-	       "where c.isMutant = 1 and c.cellline = '" + value + "'" +
-	       "\nand c._CellLine_key = a._MutantCellLine_key" +
-	       "\nand a._Allele_key = " + alleleKey1;
+	      select := genotype_verifyallelemcl(alleleKey1, value);
 	    end if;
           end if;
 
 	  if (column = (integer) table.mutantCellLine[2]) then
             alleleKey2 := mgi_tblGetCell(table, row, (integer) table.alleleKey[2]);
 	    if (alleleKey2.length != 0) then
-	      select := 
-	       "select c._CellLine_key, c.cellline from ALL_CellLine c, ALL_Allele_CellLine a " +
-	       "where c.isMutant = 1 and c.cellline = '" + value + "'" +
-	       "\nand c._CellLine_key = a._MutantCellLine_key" +
-	       "\nand a._Allele_key = " + alleleKey2;
+	      select := genotype_verifyallelemcl(alleleKey2, value);
 	    end if;
           end if;
 
