@@ -23,6 +23,7 @@ extern char *exec_acc_update(char *, char *, char *, char *);
 extern char *exec_acc_deleteByAccKey(char *, char *);
 extern char *exec_accref_process(char *, char *, char *, char *, char *, char *, char *);
 extern char *exec_all_reloadLabel(char *);
+extern char *exec_hmd_updateClass(char *, char *, char *);
 extern char *exec_mgi_checkUserRole(char *, char *);
 extern char *exec_mgi_resetAgeMinMax(char *, char *);
 extern char *exec_mgi_resetSequenceNum(char *, char *);
@@ -39,11 +40,14 @@ extern char *exec_prb_mergeStrain(char *, char *);
 extern char *exec_prb_reloadSequence(char *);
 extern char *exec_voc_copyAnnotEvidenceNotes(char *, char *);
 extern char *exec_voc_processAnnotHeader(char *, char *);
+extern char *exec_gxd_checkDuplicateGenotype(char *);
+extern char *exec_gxd_computePrintNamesFrom(char *);
+extern char *exec_gxd_duplicateAssay(char *, char *);
+extern char *exec_gxd_getGenotypesDataSets(char *);
 extern char *exec_gxd_orderAllelePairs(char *);
 extern char *exec_gxd_orderGenotypes(char *);
 extern char *exec_gxd_orderGenotypesAll(char *);
-extern char *exec_gxd_getGenotypesDataSets(char *);
-extern char *exec_gxd_checkDuplicateGenotype(char *);
+extern char *exec_gxd_removeBadGelBand(char *);
 
 /* SQL.d */
 

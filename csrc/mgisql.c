@@ -92,6 +92,14 @@ char *exec_all_reloadLabel(char *key)
   return(buf);
 }
 
+char *exec_hmd_updateClass(char *classKey, char *refKey, char *isNewClass)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"\nexec HMD_updateClass %s, %s, %s\n", classKey, refKey, isNewClass);
+  return(buf);
+}
+
 char *exec_mgi_checkUserRole(char *module, char *key)
 {
   static char buf[TEXTBUFSIZ];
@@ -220,6 +228,38 @@ char *exec_voc_processAnnotHeader(char *key, char *annotTypeKey)
   return(buf);
 }
 
+char *exec_gxd_checkDuplicateGenotype(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec GXD_checkDuplicateGenotype %s\n", key);
+  return(buf);
+}
+
+char *exec_gxd_computePrintNamesFrom(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec GXD_ComputePrintNamesFrom %s\n", key);
+  return(buf);
+}
+
+char *exec_gxd_duplicateAssay(char *key, char *duplicateDetails)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec GXD_duplicateAssay %s, %s\n", key, duplicateDetails);
+  return(buf);
+}
+
+char *exec_gxd_getGenotypesDataSets(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec GXD_getGenotypesDataSets %s\n", key);
+  return(buf);
+}
+
 char *exec_gxd_orderAllelePairs(char *key)
 {
   static char buf[TEXTBUFSIZ];
@@ -244,19 +284,11 @@ char *exec_gxd_orderGenotypesAll(char *key)
   return(buf);
 }
 
-char *exec_gxd_getGenotypesDataSets(char *key)
+char *exec_gxd_removeBadGelBand(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec GXD_getGenotypesDataSets %s\n", key);
-  return(buf);
-}
-
-char *exec_gxd_checkDuplicateGenotype(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec GXD_checkDuplicateGenotype %s\n", key);
+  sprintf(buf,"exec GXD_removeBadGelBand %s\n", key);
   return(buf);
 }
 

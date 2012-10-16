@@ -66,14 +66,14 @@
 --	- added SearchDuplicates
 --
 -- lec	08/18/98
---	- 'exec PRB_getStrainDataSets' replaces 'exec PRB_getStrainProbes'
+--	- 'exec_prb_getStrainDataSets' replaces 'exec_prb_getStrainProbes'
 --
 -- lec	07/01/98
 --	- convert to XRT/API
 --
 -- lec	06/10/98
---	- SelectReferenceMGI uses 'exec PRB_getStrainReference'
---	- SelectDataSets uses 'exec PRB_getStrainProbes'
+--	- SelectReferenceMGI uses 'exec_prb_getStrainReference'
+--	- SelectDataSets uses 'exec_prb_getStrainProbes'
 --
 -- lec	06/09/98
 --	- implement Merge functionality

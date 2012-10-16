@@ -139,7 +139,7 @@ char *allele_cellline(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select * from ALL_Allele_CellLine_View where _Allele_key = %s", key);
+  sprintf(buf,"select * from ALL_Allele_CellLine_View where _Allele_key = %s order by cellLine", key);
   return(buf);
 }
 

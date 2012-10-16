@@ -39,7 +39,7 @@
 --	PythonMarkerOMIMCache
 --
 -- lec	02/14/2003
---      - TR 1892; added "exec MRK_reloadLabel"
+--      - TR 1892; added "exec_mrk_reloadLabel"
 --
 -- lec	11/05/2002
 --	- Renamed "Homology" to "Orthology"
@@ -286,7 +286,7 @@ rules:
 
 	  AddSQL.tableID := HMD_CLASS;
 	  AddSQL.transaction := false;
-	  AddSQL.cmd := cmd + "\nexec HMD_updateClass " + classKey + "," + refKey + "\n";
+	  AddSQL.cmd := cmd + exec_hmd_updateClass(classKey, refKey, "1");
           AddSQL.list := top->QueryList;
           AddSQL.item := top->mgiCitation->Citation->text.value;
 	  AddSQL.key := top->ID->text;
@@ -369,7 +369,7 @@ rules:
 	  -- Merge Orthology Classes; record new _Class_key
 
 	  if (top->QueryList->List.sqlSuccessful) then
-	    SplitKey.key := mgi_sp("exec HMD_updateClass " + classKey + "," + refKey + ",0");
+	    SplitKey.key := mgi_sp(exec_hmd_updateClass(classKey, refKey, "0"));
 	    send(SplitKey, 0);
 	  end if;
 

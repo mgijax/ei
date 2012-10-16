@@ -549,9 +549,9 @@ rules:
 	  send(ModifyMolecularMutation, 0);
 	  send(ModifyImagePaneAssociation, 0);
 
-	  if (isWildType = 0) then
-	    send(ModifyMutantCellLine, 0);
-          end if;
+	  --if (isWildType = 0) then
+	  send(ModifyMutantCellLine, 0);
+          --end if;
 
 	  -- TR 5672
 	  -- always set note modified = true so if user has used
@@ -869,9 +869,9 @@ rules:
 	  send(ModifyImagePaneAssociation, 0);
 	  send(ModifyAlleleNotes, 0);
 
-	  if (isWildType = 0) then
-	    send(ModifyMutantCellLine, 0);
-	  end if;
+	  --if (isWildType = 0) then
+	  send(ModifyMutantCellLine, 0);
+	  --end if;
 
 	  if (not top.allowEdit) then
 	    (void) reset_cursor(top);
@@ -1492,35 +1492,35 @@ rules:
 
 	    -- end if addCellLine
 
-	    if (not addAssociation) then
-		return;
-	    end if;
+	    if (addAssociation) then
 
-	    -- if ADD or if no Mutant Cell Line entered on first row...
+	      -- if ADD or if no Mutant Cell Line entered on first row...
 
-	    if (editMode = TBL_ROW_ADD or 
-	        (editMode = TBL_ROW_EMPTY and row = 0 and not isMutant)) then
+	      if (editMode = TBL_ROW_ADD or 
+	          (editMode = TBL_ROW_EMPTY and row = 0 and not isMutant)) then
 
-	      if (not cellAssocDefined) then
-		cmd := cmd + mgi_setDBkey(ALL_ALLELE_CELLLINE, NEWKEY, cellAssocKey);
-		cellAssocDefined := true;
-	      else
-		cmd := cmd + mgi_DBincKey(cellAssocKey);
+	        if (not cellAssocDefined) then
+		  cmd := cmd + mgi_setDBkey(ALL_ALLELE_CELLLINE, NEWKEY, cellAssocKey);
+		  cellAssocDefined := true;
+	        else
+		  cmd := cmd + mgi_DBincKey(cellAssocKey);
+	        end if;
+
+	        cmd := cmd + mgi_DBinsert(ALL_ALLELE_CELLLINE, cellAssocKey) +
+		       currentRecordKey + "," +
+		       mutantCellLineKey + "," +
+		       global_loginKey + "," + global_loginKey + ")\n";
+
+	      elsif (editMode = TBL_ROW_MODIFY) then
+	        set := "_MutantCellLine_key = " + mutantCellLineKey;
+	        cmd := cmd + mgi_DBupdate(ALL_ALLELE_CELLLINE, key, set);
+
+	      -- NEED TO DO:  disallow deletion of the first cell line
+
+	      elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
+	        cmd := cmd + mgi_DBdelete(ALL_ALLELE_CELLLINE, key);
 	      end if;
 
-	      cmd := cmd + mgi_DBinsert(ALL_ALLELE_CELLLINE, cellAssocKey) +
-		     currentRecordKey + "," +
-		     mutantCellLineKey + "," +
-		     global_loginKey + "," + global_loginKey + ")\n";
-
-	    elsif (editMode = TBL_ROW_MODIFY) then
-	      set := "_MutantCellLine_key = " + mutantCellLineKey;
-	      cmd := cmd + mgi_DBupdate(ALL_ALLELE_CELLLINE, key, set);
-
-	    -- NEED TO DO:  disallow deletion of the first cell line
-
-	    elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
-	      cmd := cmd + mgi_DBdelete(ALL_ALLELE_CELLLINE, key);
 	    end if;
 
 	    row := row + 1;
@@ -2290,6 +2290,10 @@ rules:
 
 	  (void) busy_cursor(top);
 
+	  (void) mgi_tblSetCell(cellLineTable, row, cellLineTable.cellLineKey, "");
+	  (void) mgi_tblSetCell(cellLineTable, row, cellLineTable.creator, "");
+	  (void) mgi_tblSetCell(cellLineTable, row, cellLineTable.creatorKey, "");
+
 	  -- Search for value in the database
 
 	  select := allele_mutantcellline(mgi_DBprstr(value));
@@ -2322,15 +2326,15 @@ rules:
 
 	  -- If ID is empty, then value is invalid
 
-	  row := 0;
 	  mutantCellLineKey := mgi_tblGetCell(cellLineTable, row, cellLineTable.cellLineKey);
 	  if (mutantCellLineKey = "" or mutantCellLineKey = "NULL") then
             StatusReport.source_widget := top.root;
             StatusReport.message := "Invalid Mutant Cell Line";
             send(StatusReport);
-	    (void) mgi_tblSetCell(table, row, cellLineTable.cellLine, "");
+	    --(void) mgi_tblSetCell(table, row, cellLineTable.cellLine, "");
 	    (void) mgi_tblSetCell(table, row, cellLineTable.cellLineKey, "");
 	    (void) mgi_tblSetCell(table, row, cellLineTable.creator, "");
+	    (void) mgi_tblSetCell(cellLineTable, row, cellLineTable.creatorKey, "");
 	    VerifyMutantCellLine.doit := (integer) false;
 	  end if;
 

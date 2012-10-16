@@ -1342,7 +1342,7 @@ rules:
 	  duplicate : integer := DuplicateAssay.duplicate;
 
 	  (void) busy_cursor(top);
-	  newAssayKey := mgi_sp("exec GXD_duplicateAssay " + currentAssay + "," + (string) duplicate);
+	  newAssayKey := mgi_sp(exec_gxd_duplicateAssay(currentAssay, (string) duplicate));
 	  (void) reset_cursor(top);
 
           InsertList.list := top->QueryList;
@@ -1454,7 +1454,7 @@ rules:
 	    send(ModifyGelRow, 0);
 	    send(CreateGelBandColumns, 0);
 	    if (cmd.length > 0) then
-	      cmd := cmd + "exec GXD_removeBadGelBand " + currentAssay + "\n";
+	      cmd := cmd + exec_gxd_removeBadGelBand(currentAssay);
 	    end if;
 	  end if;
 
