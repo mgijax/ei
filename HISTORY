@@ -1,5 +1,12 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-tr10273-2-?
+DATE: 10/01/2012
+STAFF: lec
+CHANGES:
+1) branch point tag for TR10273
+2) TR111997/Allele.d/allow add/modify/delete of mutant cell lines
+
 TAG: ei-tr10273-2-BP
 DATE: 10/01/2012
 STAFF: lec

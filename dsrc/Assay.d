@@ -751,11 +751,10 @@ rules:
 
 	  -- TR 8156; new
 
-	  cmd := cmd + "execute MGI_insertReferenceAssoc " +
-		 mgiTypeKey + "," +
-	         prepDetailForm->AntibodyAccession->ObjectID->text.value + "," +
-	         top->mgiCitation->ObjectID->text.value + "," +
-	         refsType + "\n";
+	  cmd := cmd + exec_mgi_insertReferenceAssoc_antibody(mgiTypeKey, \
+		prepDetailForm->AntibodyAccession->ObjectID->text.value, \
+	        top->mgiCitation->ObjectID->text.value, \
+	        mgi_DBprstr(refsType));
 	end
 
 --
@@ -790,9 +789,9 @@ rules:
 
         AddProbeReference does
 
-	  cmd := cmd + "execute PRB_insertReference " +
-	         top->mgiCitation->ObjectID->text.value + "," +
-	         prepDetailForm->ProbeAccession->ObjectID->text.value + "\n";
+	  cmd := cmd + exec_prb_insertReference(top->mgiCitation->ObjectID->text.value, \
+	         prepDetailForm->ProbeAccession->ObjectID->text.value);
+
 	end
 
 --

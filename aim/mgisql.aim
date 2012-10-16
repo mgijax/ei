@@ -16,6 +16,7 @@ CALLS
 	 mgilib_user("char *")					: "char *";
 
 	 exec_app_EIcheck("char *")				: "char *";
+	 exec_acc_assignJ("char *") 				: "char *";
 	 exec_acc_insert("char *", "char *", "char *", "char *", "char *", "char *", "char *") : "char *";
 	 exec_acc_update("char *", "char *", "char *", "char *") : "char *";
 	 exec_acc_deleteByAccKey("char *", "char *") 		: "char *";
@@ -23,6 +24,8 @@ CALLS
 	 exec_all_reloadLabel("char *")				: "char *";
 	 exec_hmd_updateClass("char *", "char *", "char *")	: "char *";
 	 exec_mgi_checkUserRole("char *", "char *")		: "char *";
+	 exec_mgi_insertReferenceAssoc_antibody("char *", "char *", "char *", "char *"): "char *";
+	 exec_mgi_insertReferenceAssoc_usedFC("char *", "char *"): "char *";
 	 exec_mgi_resetAgeMinMax("char *", "char *")		: "char *";
 	 exec_mgi_resetSequenceNum("char *", "char *")		: "char *";
 	 exec_mrk_reloadLabel("char *")				: "char *";
@@ -31,9 +34,11 @@ CALLS
 	 exec_mrk_reloadLocation("char *")			: "char *";
 	 exec_nom_transferToMGD("char *", "char *")		: "char *";
 	 exec_nom_verifyMarker("char *")			: "char *";
+	 exec_prb_insertReference("char *", "char *")		: "char *";
 	 exec_prb_getStrainByReference("char *")		: "char *";
 	 exec_prb_getStrainReferences("char *")			: "char *";
 	 exec_prb_getStrainDataSets("char *")			: "char *";
+	 exec_prb_getTissueDataSets("char *", "char *")		: "char *";
 	 exec_prb_mergeStrain("char *", "char *")		: "char *";
 	 exec_prb_reloadSequence("char *")			: "char *";
 	 exec_voc_copyAnnotEvidenceNotes("char *", "char *")	: "char *";

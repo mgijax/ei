@@ -49,6 +49,14 @@ char *exec_app_EIcheck(char *key)
   return(buf);
 }
 
+char *exec_acc_assignJ(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec ACC_assignJ %s\n", key);
+  return(buf);
+}
+
 char *exec_acc_insert(char *key, char *accid, char *logicalKey, char *table, char *refsKey, char *isPreferred, char *isPrivate)
 {
   static char buf[TEXTBUFSIZ];
@@ -105,6 +113,22 @@ char *exec_mgi_checkUserRole(char *module, char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"exec MGI_checkUserRole %s, %s\n", module, key);
+  return(buf);
+}
+
+char *exec_mgi_insertReferenceAssoc_antibody(char *key, char *mgiTypeKey, char *refKey, char *refType)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec MGI_insertReferenceAssoc %s, %s, %s, %s\n", mgiTypeKey, key, refKey, refType);
+  return(buf);
+}
+
+char *exec_mgi_insertReferenceAssoc_usedFC(char *key, char *refKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec MGI_insertReferenceAssoc 11, %s, %s, 'Used-FC'\n", key, refKey);
   return(buf);
 }
 
@@ -172,6 +196,14 @@ char *exec_nom_verifyMarker(char *key)
   return(buf);
 }
 
+char *exec_prb_insertReference(char *refKey, char *probeKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec PRB_insertReference %s, %s\n", refKey, probeKey);
+  return(buf);
+}
+
 char *exec_prb_getStrainByReference(char *key)
 {
   static char buf[TEXTBUFSIZ];
@@ -193,6 +225,14 @@ char *exec_prb_getStrainDataSets(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"exec PRB_getStrainDataSets %s\n", key);
+  return(buf);
+}
+
+char *exec_prb_getTissueDataSets(char *key, char *countOnly)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec prb_getTissueDataSets %s, %s\n", key, countOnly);
   return(buf);
 }
 

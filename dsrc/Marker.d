@@ -1063,7 +1063,7 @@ rules:
 	  send(ModifySQL, 0);
 
 	  if (cmd.length > 0) then
-	    cmd := cmd + exec_mrk_reloadLabel(currentRecordKey) +
+	    cmd := exec_mrk_reloadLabel(currentRecordKey) +
 	           exec_mrk_reloadReference(currentRecordKey);
 
             if (modifySequenceCache) then

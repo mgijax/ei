@@ -1494,7 +1494,7 @@ rules:
 	      alleles.open;
 	      while (alleles.more) do
 	        s := alleles.next;
-	        (void) mgi_sp("exec MGI_insertReferenceAssoc 11," + s + "," + refsKey + ",'Used-FC'");
+	        (void) mgi_sp(exec_mgi_insertReferenceAssoc_usedFC(s, refsKey));
 	      end while;
 	      alleles.close;
 	    end if;

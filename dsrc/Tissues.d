@@ -355,9 +355,9 @@ rules:
           row : integer := 0;
  
 	  if (SelectDataSets.doCount) then
-	    cmd := "execute PRB_getTissueDataSets " + currentRecordKey + ",1\n";
+	    cmd := exec_prb_getTissueDataSets(currentRecordKey, "1");
 	  else
-	    cmd := "execute PRB_getTissueDataSets " + currentRecordKey + "\n";
+	    cmd := exec_prb_getTissueDataSets(currentRecordKey, "0");
 	  end if;
 
           dbproc : opaque := mgi_dbexec(cmd);

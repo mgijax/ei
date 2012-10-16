@@ -350,7 +350,7 @@ rules:
 	  -- System will assign the J: unless it is overridden by the user
 	  -- J: is in second row of Accession table
 
-	  cmd := cmd + "exec ACC_assignJ " + currentRecordKey;
+	  cmd := cmd + exec_acc_assignJ(currentRecordKey);
 	  jnum := mgi_tblGetCell(accTable, jnumRow, accTable.accID);
 	  if (jnum.length > 0) then
 	    cmd := cmd + "," + jnum;
