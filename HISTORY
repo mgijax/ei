@@ -1,5 +1,16 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ?
+DATE: 10/16/2012
+STAFF: lec
+1) TR11197/mutant ES cells
+this is *ready to go*; just remove:
+if (isWildType = 0) then...end if;
+from 552 & 872
+waiting for OK by PIs
+
+TAG: ei-tr10273-2-BP
+DATE: 10/01/2012
 TAG: ei-5-1-0-8
 DATE: 10/09/2012
 STAFF: lec
