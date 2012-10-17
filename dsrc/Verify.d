@@ -3826,18 +3826,18 @@ rules:
 	      -- for MP annotations
 	      -- if Term is a Header Term, then Qualifier = normal, else none
 
-	      if (top->VocAnnotTypeMenu != nil) then
-	        if (top->VocAnnotTypeMenu.menuHistory.defaultValue = "1002") then
-	          isHeader := mgi_sql1(verify_vocabqualifier(mgi_tblGetCell(sourceWidget, row, sourceWidget.termKey)));
-	          if (isHeader = "1") then
-	            (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifierKey, "2181424");
-	            (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifier, "norm");
-	          else
-	            (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifierKey, "2181423");
-	            (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifier, "");
-	          end if;
-		end if;
-	      end if;
+	      --if (top->VocAnnotTypeMenu != nil) then
+	      --  if (top->VocAnnotTypeMenu.menuHistory.defaultValue = "1002") then
+	      --    isHeader := mgi_sql1(verify_vocabqualifier(mgi_tblGetCell(sourceWidget, row, sourceWidget.termKey)));
+	      --    if (isHeader = "1") then
+	      --      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifierKey, "2181424");
+	      --      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifier, "norm");
+	      --    else
+	      --      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifierKey, "2181423");
+	      --      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifier, "");
+	      --    end if;
+	--	end if;
+	 --     end if;
 
 	    end if;
 
