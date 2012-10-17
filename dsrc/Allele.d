@@ -549,9 +549,7 @@ rules:
 	  send(ModifyMolecularMutation, 0);
 	  send(ModifyImagePaneAssociation, 0);
 
-	  if (isWildType = 0) then
-	    send(ModifyMutantCellLine, 0);
-          end if;
+	  send(ModifyMutantCellLine, 0);
 
 	  -- TR 5672
 	  -- always set note modified = true so if user has used
@@ -869,9 +867,7 @@ rules:
 	  send(ModifyImagePaneAssociation, 0);
 	  send(ModifyAlleleNotes, 0);
 
-	  if (isWildType = 0) then
-	    send(ModifyMutantCellLine, 0);
-	  end if;
+	  send(ModifyMutantCellLine, 0);
 
 	  if (not top.allowEdit) then
 	    (void) reset_cursor(top);
@@ -927,7 +923,7 @@ rules:
 	  send(ModifySQL, 0);
 
 	  if (cmd.length > 0) then
-	    cmd := cmd + "exec ALL_reloadLabel " + currentRecordKey + "\n" +
+	    cmd := "exec ALL_reloadLabel " + currentRecordKey + "\n" +
 		   "exec GXD_orderGenotypes " + currentRecordKey + "\n";
 
 	    ModifySQL.cmd := cmd;
