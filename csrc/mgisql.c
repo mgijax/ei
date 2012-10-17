@@ -57,6 +57,14 @@ char *exec_acc_assignJ(char *key)
   return(buf);
 }
 
+char *exec_acc_assignJNext(char *key, char *nextMGI)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec ACC_assignJ %s,%s\n", key, nextMGI);
+  return(buf);
+}
+
 char *exec_acc_insert(char *key, char *accid, char *logicalKey, char *table, char *refsKey, char *isPreferred, char *isPrivate)
 {
   static char buf[TEXTBUFSIZ];
@@ -96,7 +104,15 @@ char *exec_all_reloadLabel(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"\nexec ALL_reloadLabel %s\n", key);
+  sprintf(buf,"exec ALL_reloadLabel %s\n", key);
+  return(buf);
+}
+
+char *exec_bib_exists(char *table, char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec %s %s\n", table, key);
   return(buf);
 }
 
@@ -104,7 +120,7 @@ char *exec_hmd_updateClass(char *classKey, char *refKey, char *isNewClass)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"\nexec HMD_updateClass %s, %s, %s\n", classKey, refKey, isNewClass);
+  sprintf(buf,"exec HMD_updateClass %s, %s, %s\n", classKey, refKey, isNewClass);
   return(buf);
 }
 
@@ -152,7 +168,7 @@ char *exec_mrk_reloadLabel(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"\nexec MRK_reloadLabel %s\n", key);
+  sprintf(buf,"exec MRK_reloadLabel %s\n", key);
   return(buf);
 }
 
@@ -160,7 +176,7 @@ char *exec_mrk_reloadReference(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"\nexec MRK_reloadReference %s\n", key);
+  sprintf(buf,"exec MRK_reloadReference %s\n", key);
   return(buf);
 }
 
@@ -168,7 +184,7 @@ char *exec_mrk_reloadSequence(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"\nexec MRK_reloadSequence %s\n", key);
+  sprintf(buf,"exec MRK_reloadSequence %s\n", key);
   return(buf);
 }
 
@@ -176,7 +192,7 @@ char *exec_mrk_reloadLocation(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"\nexec MRK_reloadLocation %s\n", key);
+  sprintf(buf,"exec MRK_reloadLocation %s\n", key);
   return(buf);
 }
 
@@ -241,6 +257,94 @@ char *exec_prb_mergeStrain(char *key1, char *key2)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"exec PRB_mergeStrain %s, %s\n", key1, key2);
+  return(buf);
+}
+
+char *exec_prb_processAntigenAnonSource(\
+	char *objectKey,\
+	char *msoKey,\
+	char *organismKey,\
+	char *strainKey,\
+	char *tissueKey,\
+	char *genderKey,\
+	char *cellLineKey,\
+	char *age,\
+	char *tissueTreatment,\
+	char *modifiedByKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec PRB_processAntigenAnonSource %s, %s, %s, %s, %s, %s, %s, %s, %s, %s\n",
+              objectKey,\
+              msoKey,\
+              organismKey,\
+              strainKey,\
+              tissueKey,\
+              genderKey,\
+              cellLineKey,\
+              age,\
+              tissueTreatment,\
+              modifiedByKey);
+  return(buf);
+}
+
+char *exec_prb_processProbeSource(\
+	char *objectKey,\
+	char *msoKey,\
+	char *isAnon,\
+	char *organismKey,\
+	char *strainKey,\
+	char *tissueKey,\
+	char *genderKey,\
+	char *cellLineKey,\
+	char *age,\
+	char *tissueTreatment,\
+	char *modifiedByKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec PRB_processProbeSource %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s\n",
+              objectKey,\
+              msoKey,\
+	      isAnon,\
+              organismKey,\
+              strainKey,\
+              tissueKey,\
+              genderKey,\
+              cellLineKey,\
+              age,\
+              tissueTreatment,\
+              modifiedByKey);
+  return(buf);
+}
+
+char *exec_prb_processSequenceSource(\
+        char *isAnon,\
+        char *assocKey,\
+        char *objectKey,\
+        char *msoKey,\
+        char *organismKey,\
+        char *strainKey,\
+        char *tissueKey,\
+        char *genderKey,\
+        char *cellLineKey,\
+        char *age,\
+        char *modifiedByKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec PRB_processSequenceSource %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s\n",
+              isAnon,\
+              assocKey,\
+              objectKey,\
+              msoKey,\
+              organismKey,\
+              strainKey,\
+              tissueKey,\
+              genderKey,\
+              cellLineKey,\
+              age,\
+              modifiedByKey);
   return(buf);
 }
 

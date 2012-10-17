@@ -600,17 +600,17 @@ rules:
 	    age := age + " " + top->Age->text.value;
 	  end if;
 
-	  top.sql := "exec PRB_processAntigenAnonSource " +
-	      antigenKey + "," +
-	      top->SourceID->text.value + "," +
-	      top->ProbeOrganismMenu.menuHistory.defaultValue + "," +
-	      top->Strain->StrainID->text.value + "," +
-	      top->Tissue->TissueID->text.value + "," +
-	      top->GenderMenu.menuHistory.defaultValue + "," +
-	      top->CellLine->CellLineID->text.value + "," +
-	      mgi_DBprstr(age) + "," +
-	      mgi_DBprstr(top->Description->text.value) + "," +
-	      global_loginKey + "\n";
+	  top.sql := exec_prb_processAntigenAnonSource(
+	      antigenKey,\
+	      top->SourceID->text.value,\
+	      top->ProbeOrganismMenu.menuHistory.defaultValue,\
+	      top->Strain->StrainID->text.value,\
+	      top->Tissue->TissueID->text.value,\
+	      top->GenderMenu.menuHistory.defaultValue,\
+	      top->CellLine->CellLineID->text.value,\
+	      mgi_DBprstr(age),\
+	      mgi_DBprstr(top->Description->text.value),\
+	      global_loginKey);
 
 	end does;
 
@@ -647,18 +647,18 @@ rules:
 	      top->Age->text.modified or
 	      top->Description->text.modified) then
 
-	      top.sql := "exec PRB_processProbeSource " +
-	          probeKey + "," +
-	          top->SourceID->text.value + "," +
-	          isAnon + "," +
-	          top->ProbeOrganismMenu.menuHistory.defaultValue + "," +
-	          top->Strain->StrainID->text.value + "," +
-	          top->Tissue->TissueID->text.value + "," +
-	          top->GenderMenu.menuHistory.defaultValue + "," +
-	          top->CellLine->CellLineID->text.value + "," +
-	          mgi_DBprstr(age) + "," +
-		  mgi_DBprstr(top->Description->text.value) + "," +
-	          global_loginKey + "\n";
+	      top.sql := exec_prb_processProbeSource(\
+	          probeKey,\
+	          top->SourceID->text.value,\
+	          isAnon,\
+	          top->ProbeOrganismMenu.menuHistory.defaultValue,\
+	          top->Strain->StrainID->text.value,\
+	          top->Tissue->TissueID->text.value,\
+	          top->GenderMenu.menuHistory.defaultValue,\
+	          top->CellLine->CellLineID->text.value,\
+	          mgi_DBprstr(age),\
+		  mgi_DBprstr(top->Description->text.value),\
+	          global_loginKey);
 	  else
 	      top.sql := "";
 	  end if;
@@ -689,18 +689,18 @@ rules:
 	    isAnon := NO;
 	  end if;
 
-	  table.sqlCmd := "exec PRB_processSequenceSource " +
-	      isAnon + "," +
-	      mgi_tblGetCell(table, row, table.assocKey) + "," +
-	      sequenceKey + "," +
-	      mgi_tblGetCell(table, row, table.sourceKey) + "," +
-	      mgi_tblGetCell(table, row, table.organismKey) + "," +
-	      mgi_tblGetCell(table, row, table.strainKeys) + "," +
-	      mgi_tblGetCell(table, row, table.tissueKey) + "," +
-	      mgi_tblGetCell(table, row, table.genderKey) + "," +
-	      mgi_tblGetCell(table, row, table.cellLineKey) + "," +
-	      mgi_DBprstr(age) + "," +
-	      global_loginKey + "\n";
+	  table.sqlCmd := exec_prb_processSequenceSource(\
+	      isAnon,\
+	      mgi_tblGetCell(table, row, table.assocKey),\
+	      sequenceKey,\
+	      mgi_tblGetCell(table, row, table.sourceKey),\
+	      mgi_tblGetCell(table, row, table.organismKey),\
+	      mgi_tblGetCell(table, row, table.strainKeys),\
+	      mgi_tblGetCell(table, row, table.tissueKey),\
+	      mgi_tblGetCell(table, row, table.genderKey),\
+	      mgi_tblGetCell(table, row, table.cellLineKey),\
+	      mgi_DBprstr(age),\
+	      global_loginKey);
 
 	end does;
 

@@ -17,11 +17,13 @@ CALLS
 
 	 exec_app_EIcheck("char *")				: "char *";
 	 exec_acc_assignJ("char *") 				: "char *";
+	 exec_acc_assignJNext("char *", "char *")		: "char *";
 	 exec_acc_insert("char *", "char *", "char *", "char *", "char *", "char *", "char *") : "char *";
 	 exec_acc_update("char *", "char *", "char *", "char *") : "char *";
 	 exec_acc_deleteByAccKey("char *", "char *") 		: "char *";
 	 exec_accref_process("char *", "char *", "char *", "char *", "char *", "char *", "char *") : "char *";
 	 exec_all_reloadLabel("char *")				: "char *";
+	 exec_bib_exists("char *", "char *")			: "char *";
 	 exec_hmd_updateClass("char *", "char *", "char *")	: "char *";
 	 exec_mgi_checkUserRole("char *", "char *")		: "char *";
 	 exec_mgi_insertReferenceAssoc_antibody("char *", "char *", "char *", "char *"): "char *";
@@ -40,6 +42,9 @@ CALLS
 	 exec_prb_getStrainDataSets("char *")			: "char *";
 	 exec_prb_getTissueDataSets("char *", "char *")		: "char *";
 	 exec_prb_mergeStrain("char *", "char *")		: "char *";
+	 exec_prb_processAntigenAnonSource("char *", "char *", "char *", "char *", "char *", "char *", "char *", "char *", "char *", "char *")			: "char *";
+	 exec_prb_processProbeSource("char *", "char *", "char *", "char *", "char *", "char *", "char *", "char *", "char *", "char *", "char *")		: "char *";
+	 exec_prb_processSequenceSource("char *", "char *", "char *", "char *", "char *", "char *", "char *", "char *", "char *", "char *", "char *")		: "char *";
 	 exec_prb_reloadSequence("char *")			: "char *";
 	 exec_voc_copyAnnotEvidenceNotes("char *", "char *")	: "char *";
 	 exec_voc_processAnnotHeader("char *", "char *")	: "char *";

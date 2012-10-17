@@ -350,12 +350,12 @@ rules:
 	  -- System will assign the J: unless it is overridden by the user
 	  -- J: is in second row of Accession table
 
-	  cmd := cmd + exec_acc_assignJ(currentRecordKey);
 	  jnum := mgi_tblGetCell(accTable, jnumRow, accTable.accID);
 	  if (jnum.length > 0) then
-	    cmd := cmd + "," + jnum;
+	    cmd := cmd + exec_acc_assignJNext(currentRecordKey,jnum);
+	  else
+	    cmd := cmd + exec_acc_assignJ(currentRecordKey);
 	  end if;
-	  cmd := cmd + "\n";
 
 	  -- If Reference is of type "BOOK", then additional info is required
 
@@ -1098,7 +1098,7 @@ rules:
 	  while (row < mgi_tblNumRows(statusTable)) do
 	    -- has this reference been used?
 	    if (mgi_tblGetCell(statusTable, row, statusTable.existsProc) != "") then
-	      cmd := "exec " + mgi_tblGetCell(statusTable, row, statusTable.existsProc) + " " + currentRecordKey;
+	      cmd := exec_bib_exists(mgi_tblGetCell(statusTable, row, statusTable.existsProc), currentRecordKey);
 	      if (mgi_sql1(cmd) != NO) then
 	        (void) mgi_tblSetCell(statusTable, row, statusTable.used, "X");
 	      else
