@@ -549,9 +549,7 @@ rules:
 	  send(ModifyMolecularMutation, 0);
 	  send(ModifyImagePaneAssociation, 0);
 
-	  --if (isWildType = 0) then
 	  send(ModifyMutantCellLine, 0);
-          --end if;
 
 	  -- TR 5672
 	  -- always set note modified = true so if user has used
@@ -869,9 +867,7 @@ rules:
 	  send(ModifyImagePaneAssociation, 0);
 	  send(ModifyAlleleNotes, 0);
 
-	  --if (isWildType = 0) then
 	  send(ModifyMutantCellLine, 0);
-	  --end if;
 
 	  if (not top.allowEdit) then
 	    (void) reset_cursor(top);
