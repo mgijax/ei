@@ -3667,27 +3667,27 @@ rules:
 	  -- for MP annotations
 	  -- if Term is a Header Term, then Qualifier = normal, else none
 
-	  --isHeader : string;
-	  --termKey : string;
-	  --if (top->VocAnnotTypeMenu.menuHistory.defaultValue = "1002") then
-	  --  termKey := mgi_tblGetCell(table, row, table.termKey);
-	  --  if (termKey.length > 0 and termKey != "NULL") then
-	  --    isHeader := mgi_sql1(verify_vocabqualifier(mgi_tblGetCell(table, row, table.termKey)));
-	  --    if (isHeader = "1") then
-	  --      (void) mgi_tblSetCell(table, row, table.qualifierKey, MP_NORM_QUALIFIER_KEY);
-	  --      (void) mgi_tblSetCell(table, row, table.qualifier, MP_NORM_QUALIFIER);
-          --      StatusReport.source_widget := top.root;
-          --      StatusReport.message := "Qualifier 'norm' is the default for MP header terms.";
-          --      send(StatusReport);
-	  --    else
-	  --      (void) mgi_tblSetCell(table, row, table.qualifierKey, MP_NO_QUALIFIER_KEY);
-	  --      (void) mgi_tblSetCell(table, row, table.qualifier, MP_NO_QUALIFIER);
-          --      StatusReport.source_widget := top.root;
-          --      StatusReport.message := "Qualifier '(none)' is the default for MP non-header terms.";
-          --      send(StatusReport);
-	  --    end if;
-	  --  end if;
-	  --end if;
+	  isHeader : string;
+	  termKey : string;
+	  if (top->VocAnnotTypeMenu.menuHistory.defaultValue = "1002") then
+	    termKey := mgi_tblGetCell(table, row, table.termKey);
+	    if (termKey.length > 0 and termKey != "NULL") then
+	      isHeader := mgi_sql1(verify_vocabqualifier(mgi_tblGetCell(table, row, table.termKey)));
+	      if (isHeader = "1") then
+	        (void) mgi_tblSetCell(table, row, table.qualifierKey, MP_NORM_QUALIFIER_KEY);
+	        (void) mgi_tblSetCell(table, row, table.qualifier, MP_NORM_QUALIFIER);
+                StatusReport.source_widget := top.root;
+                StatusReport.message := "Qualifier 'norm' is the default for MP header terms.";
+                send(StatusReport);
+	      else
+	        (void) mgi_tblSetCell(table, row, table.qualifierKey, MP_NO_QUALIFIER_KEY);
+	        (void) mgi_tblSetCell(table, row, table.qualifier, MP_NO_QUALIFIER);
+                StatusReport.source_widget := top.root;
+                StatusReport.message := "Qualifier '(none)' is the default for MP non-header terms.";
+                send(StatusReport);
+	      end if;
+	    end if;
+	  end if;
 
 	  (void) reset_cursor(top);
 	end does;
@@ -3824,21 +3824,22 @@ rules:
 	      end if;
 	       
 	      -- for MP annotations
-	      -- if Term is a Header Term, then Qualifier = normal, else none
+	      -- if Term is a Header Term, then always set Qualifier = normal
+	      -- a non-Header Term can use either normal or none
 
-	      --if (top->VocAnnotTypeMenu != nil) then
-	      --  if (top->VocAnnotTypeMenu.menuHistory.defaultValue = "1002") then
-	      --    isHeader := mgi_sql1(verify_vocabqualifier(mgi_tblGetCell(sourceWidget, row, sourceWidget.termKey)));
-	      --    if (isHeader = "1") then
-	      --      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifierKey, "2181424");
-	      --      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifier, "norm");
+	      if (top->VocAnnotTypeMenu != nil) then
+	        if (top->VocAnnotTypeMenu.menuHistory.defaultValue = "1002") then
+	          isHeader := mgi_sql1(verify_vocabqualifier(mgi_tblGetCell(sourceWidget, row, sourceWidget.termKey)));
+	          if (isHeader = "1") then
+	            (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifierKey, "2181424");
+	            (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifier, "norm");
+	      --    remove this part; allow any qualifier for any type of MP term
 	      --    else
 	      --      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifierKey, "2181423");
 	      --      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifier, "");
-	      --    end if;
-	--	end if;
-	 --     end if;
-
+	          end if;
+	        end if;
+	      end if;
 	    end if;
 
 	  else

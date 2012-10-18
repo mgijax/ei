@@ -193,6 +193,7 @@ CALLS
 	 syntypetable_loadref("char *", "char *", "char *")	: "char *";
 	 syntypetable_syntypekey("char *")			: "char *";
 
+	 userrole_selecttask("char *")				: "char *";
 
   ENDL
 ENDC

@@ -1594,3 +1594,15 @@ char *syntypetable_syntypekey(char *key)
   return(buf);
 }
 
+/*
+ * UserRole
+*/
+
+char *userrole_selecttask(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select usertask from MGI_RoleTask_View where _Role_key = %s order by usertask\n", key);
+  return(buf);
+}
+

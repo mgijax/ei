@@ -234,4 +234,8 @@ extern char *syntypetable_load(char *, char *, char *);
 extern char *syntypetable_loadref(char *, char *, char *);
 extern char *syntypetable_syntypekey(char *);
 
+/* UserRole.d */
+
+extern char *userrole_selecttask(char *);
+
 #endif
