@@ -9,9 +9,7 @@
 # This program processes the NLM download.
 # Records which exist in the database will be updated (BIB_Refs)
 # Records which do not exist in the database will either be 
-# reported in the nomatch file or added,
-# Records which match a Submission reference in MGD will be reported
-# in the submission file.
+# reported in the nomatch file or added.
 # depending on the mode requested by the user.
 #
 # This program is normally executed from the Editing Interface/Reference form/NLM dialog,
@@ -23,7 +21,6 @@
 # Updates are performed iff PubMed ID, Title or Abstract is NULL
 #
 # Duplicates References are reported in '.duplicates' file
-# Submission References are reported in '.submission' file
 # No Matches are reported in '.nomatch' file
 # Diagnostics are reported in '.diagnostics' file
 # Adds are reported in '.added' file
@@ -86,6 +83,10 @@
 #        	_primary PAU	primary author
 #
 # History
+#
+#	lec	10/30/2012
+#	- remove isSubmission; there is only one "Submission" record in the database
+#	  we don't code References as "Submission" anymore
 #
 #	lec	11/15/2011
 #	- use quote ' instead of " for compatibility with postgres
@@ -482,44 +483,6 @@ def isDuplicate(rec, rectags):
 
 	return ok
 
-def isSubmission(rec, rectags):
-	'''
-	#
-	# requires: rec, a dictionary of NLM records (dictionary)
-	#           rectags, a list of ordered tags for the record
-	#
-	# effects:
-	# Determines if the 'rec' exists as a Submission reference
-	#
-	# returns:
-	# 1 if the record matches a Submission reference, else 0
-	#
-	'''
-
-	cmd = 'select _Refs_key from BIB_Refs where journal = \'Submission\''
-
-	if rec['PAU'] != 'NULL':
-	      cmd = cmd + ' and _primary = \'' + rec['PAU'] + '\''
-	else:
-	      cmd = cmd + ' and _primary = ' + rec['PAU']
-
-	if rec['AU'] != 'NULL':
-	      cmd = cmd + ' and (authors like \'' + rec['AU'] + '\'' + ' or authors2 like \'%s\' ' % rec['AU2']
-	else:
-	      cmd = cmd + ' and (authors = ' + rec['AU'] + ' or authors2 = ' + rec['AU2']
-
-        cmd = cmd + ' or substring(title,1,25) = \'%s\') ' % rec['TISHORT']
-
-	submission = db.sql(cmd, 'auto')
-
-	# If a Submission reference is found, report it and skip
-
-	if len(submission) > 0:
-		printRec(submissionFile, rec, rectags, "SUBMISSION FOUND IN MGD")
-		return 1
- 
-	return 0
-
 def attachQuotes(rec):
 	'''
 	#
@@ -552,11 +515,6 @@ def doUpdate(rec, rectags):
 	# returns:
 	#
 	'''
-
-	# Check if Submission
-
-	if isSubmission(rec, rectags):
-		return
 
 	# If pubmed id already exists in database, allow update
 
@@ -673,11 +631,6 @@ def doAdd(rec, rectags):
 	global nextJnum
 
 	''' Insert new NLM records '''
-
-	# Check for Submission
-
-	if isSubmission(rec, rectags):
-		return 0
 
 	# Check for Duplicates
 
@@ -810,7 +763,7 @@ def processRec(rec, rectags):
 			newValue = re.sub(' \[In Process Citation\]', '', rec[i])
 			rec[i] = newValue
 
-	# Short title for Submission matches
+	# Short title
 	rec['TISHORT'] = rec['TI'][:25]
 
 	if mode == 'nlm':
