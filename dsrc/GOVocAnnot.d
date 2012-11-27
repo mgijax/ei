@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- 11/26/2012	lec
+--	TR 11291/SelectGOReferences; added reference count
+--
 -- 10/25/2011	lec
 --	TR 10785/GOVocAnnot.d;add sort order
 --
@@ -584,6 +587,13 @@ rules:
 	  PythonInferredFromCache.source_widget := top;
 	  PythonInferredFromCache.objectKey := top->mgiAccession->ObjectID->text.value;
 	  send(PythonInferredFromCache, 0);
+
+	  -- if J:73045 is used, then remind user to enter external reference property
+	  if (refsKey = "74017") then
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "\nPlease add external reference data in the properties for your J:73065 annotation";
+            send(StatusReport);
+	  end if;
 
 	  (void) reset_cursor(top);
 	end does;
@@ -1166,6 +1176,9 @@ rules:
           end while;
  
 	  (void) mgi_dbclose(dbproc);
+ 
+          table->label.labelString := (string) row + table->label.defaultLabel;
+
 	end does;
 
 --
