@@ -328,6 +328,13 @@ rules:
 	  -- Re-set the table row
 	  table.row := 0;
 
+	  -- Re-set the table label
+	  if (table->label != nil) then
+	    if (table->label.is_defined("defaultLabel") != nil) then
+	      table->label.labelString := (string) table.row + table->label.defaultLabel;
+	    end if;
+          end if;
+
 	  -- Stop all Flashing
 	  (void) mgi_tblStopFlashAll(table);
 

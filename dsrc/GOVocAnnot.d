@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- 11/26/2012	lec
+--	TR 11291/SelectGOReferences; added reference count
+--
 -- 10/25/2011	lec
 --	TR 10785/GOVocAnnot.d;add sort order
 --
@@ -1166,6 +1169,9 @@ rules:
           end while;
  
 	  (void) mgi_dbclose(dbproc);
+ 
+          table->label.labelString := (string) row + table->label.defaultLabel;
+
 	end does;
 
 --
