@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- 12/06/2012   lec
+--      - TR11234/VerifyItem/query of 'item.value' needs to include 'mgi_DBprstr(item.value)'
+--
 -- 08/07/2012	lec
 -- 	- TR 11103/GO:0005515/IPI
 --
@@ -1462,7 +1465,7 @@ rules:
 	  defaultStrainType : string;
 
 	  select := "select count(*) from " + table + " where ";
-	  where := name + " = '" + item.value + "'";
+	  where := name + " = " + mgi_DBprstr(item.value);
 
 	  if ((integer) mgi_sql1(verify_item_count(item.value, table, name)) > 0) then
 	    found := true;
@@ -1486,16 +1489,16 @@ rules:
             -- Use exact match if verifyChars is -1
  
             elsif (verifyChars < 0) then
-              where := name + " = '" + item.value + "'";
+              where := name + " = " + mgi_DBprstr(item.value);
  
             -- Use like if verifyChars is 0
  
             elsif (verifyChars = 0) then
-              where := name + " like '" + item.value + "%'";
+              where := name + " like " + mgi_DBprstr(item.value + "%");
  
             -- Use like w/ substring if verifyChars > 0
             else
-              where := name + " like '" + item.value->substr(1, verifyChars) + "%'";
+              where := name + " like " + mgi_DBprstr(item.value->substr(1, verifyChars) + "%");
             end if;
 	  end if;
 
