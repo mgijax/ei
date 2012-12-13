@@ -891,16 +891,18 @@ rules:
 
 	  -- If current Assay record...
 
-	  if (assayKey.length > 0) then
-	    if (mgi->AssayModule->InSituForm.managed) then
-	      from := genotype_assayfromspecimen();
-	    else
-	      from := genotype_assayfromgellane();
-	    end if;
-	    where := genotype_assaywhere(assayKey);
-	  end if;
+          -- If current Assay record...
 
-	  select := genotype_search1(from, where);
+          if (assayKey.length > 0) then
+            if (mgi->AssayModule->InSituForm.managed) then
+              from := genotype_assayfromspecimen();
+            else
+              from := genotype_assayfromgellane();
+            end if;
+            where := genotype_assaywhere(assayKey);
+          end if;
+
+          select := genotype_search1(from, where);
 
 	  -- Reference search
 	  -- if searching by reference, then ignore other search criteria

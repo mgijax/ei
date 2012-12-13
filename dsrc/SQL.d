@@ -253,6 +253,7 @@ rules:
 	      newID := mgi_getstr(dbproc, 1);
 	    end while;
 	  end while;
+	  mgi_dbclose(dbproc);
 
 	  -- Process @@error w/in same DBPROCESS
 

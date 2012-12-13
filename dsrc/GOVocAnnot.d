@@ -20,6 +20,12 @@
 -- 11/15/2010	lec
 --	TR 10044/GO-Notes/GO Properties
 --
+-- 10/25/2011	lec
+--	TR 10785/GOVocAnnot.d;add sort order
+--
+-- 11/15/2010	lec
+--	TR 10044/GO-Notes/GO Properties
+--
 -- 08/26/2009
 --	TR 9247; change non-gene marker "cannot modify" message to "warning" message
 --	because we need to allow a modification of "delete row".

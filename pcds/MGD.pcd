@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Nov 27 10:24:18 2012";
+      lastWritten = "Wed Sep 12 08:06:28 2012";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -10400,14 +10400,13 @@ Shift<Key>Tab: prev-tab-group()
                                     resizePolicy = resize_any;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    rightAttachment = attach_form;
+                                    rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = StrainAttribute;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     leftWidget = StrainAttribute;
-                                    rightOffset = 2;
                                       {
                                         Table = mgiTable : mgiTable;
                                         Group: Widget
@@ -17634,17 +17633,7 @@ Shift<Key>Tab: prev-tab-group()
                                         Table = mgiTable;
                                         Group: Widget
                                           xrtTblNumRows = 20;
-                                          xrtTblVisibleRows = 4;
-                                            {
-                                              label = XtXrtLabel;
-                                              Group: Widget
-                                                xrtLblBorderType = border_none;
-                                                marginHeight = 0;
-                                                labelString = "0 Results";
-                                                userDefinedAttributes = "defaultLabel:String(String)=\" Results\"\n";
-                                              Group: Constraint
-                                                xrtTblLocation = location_top;
-                                            }
+                                          xrtTblVisibleRows = 7;
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;
