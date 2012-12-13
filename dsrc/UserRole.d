@@ -279,9 +279,7 @@ rules:
 	  table := top->Tasks->Table;
 	  row := 0;
 
-	  cmd := "select usertask from MGI_RoleTask_View where _Role_key = " +
-		top->UserRoleMenu.menuHistory.searchValue +
-		" order by usertask";
+	  cmd := userrole_selecttask(top->UserRoleMenu.menuHistory.searchValue);
 
 	  dbproc := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do

@@ -751,11 +751,10 @@ rules:
 
 	  -- TR 8156; new
 
-	  cmd := cmd + "execute MGI_insertReferenceAssoc " +
-		 mgiTypeKey + "," +
-	         prepDetailForm->AntibodyAccession->ObjectID->text.value + "," +
-	         top->mgiCitation->ObjectID->text.value + "," +
-	         refsType + "\n";
+	  cmd := cmd + exec_mgi_insertReferenceAssoc_antibody(mgiTypeKey, \
+		prepDetailForm->AntibodyAccession->ObjectID->text.value, \
+	        top->mgiCitation->ObjectID->text.value, \
+	        mgi_DBprstr(refsType));
 	end
 
 --
@@ -790,9 +789,9 @@ rules:
 
         AddProbeReference does
 
-	  cmd := cmd + "execute PRB_insertReference " +
-	         top->mgiCitation->ObjectID->text.value + "," +
-	         prepDetailForm->ProbeAccession->ObjectID->text.value + "\n";
+	  cmd := cmd + exec_prb_insertReference(top->mgiCitation->ObjectID->text.value, \
+	         prepDetailForm->ProbeAccession->ObjectID->text.value);
+
 	end
 
 --
@@ -1342,7 +1341,7 @@ rules:
 	  duplicate : integer := DuplicateAssay.duplicate;
 
 	  (void) busy_cursor(top);
-	  newAssayKey := mgi_sp("exec GXD_duplicateAssay " + currentAssay + "," + (string) duplicate);
+	  newAssayKey := mgi_sp(exec_gxd_duplicateAssay(currentAssay, (string) duplicate));
 	  (void) reset_cursor(top);
 
           InsertList.list := top->QueryList;
@@ -1454,7 +1453,7 @@ rules:
 	    send(ModifyGelRow, 0);
 	    send(CreateGelBandColumns, 0);
 	    if (cmd.length > 0) then
-	      cmd := cmd + "exec GXD_removeBadGelBand " + currentAssay + "\n";
+	      cmd := cmd + exec_gxd_removeBadGelBand(currentAssay);
 	    end if;
 	  end if;
 
@@ -1700,7 +1699,7 @@ rules:
 		     mgi_DBprstr(ageNote) + "," +
 		     mgi_DBprstr(hybridizationKey) + "," +
 		     mgi_DBprstr(specimenNote) + ")\n" +
-		     "exec MGI_resetAgeMinMax '" + mgi_DBtable(GXD_SPECIMEN) + "', @" + keyName + "\n";
+	             exec_mgi_resetAgeMinMax("@" + keyName, mgi_DBprstr(mgi_DBtable(GXD_SPECIMEN)));
 
             elsif (editMode = TBL_ROW_MODIFY and key.length > 0) then
 
@@ -1715,7 +1714,7 @@ rules:
                         "specimenNote = " + mgi_DBprstr(specimenNote) + "," +
 			"sequenceNum = " + newSeqNum;
               cmd := cmd + mgi_DBupdate(GXD_SPECIMEN, key, update) + "\n" +
-		          "exec MGI_resetAgeMinMax '" + mgi_DBtable(GXD_SPECIMEN) + "'," + key + "\n";
+	             exec_mgi_resetAgeMinMax(key, mgi_DBprstr(mgi_DBtable(GXD_SPECIMEN)));
 
             elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
               cmd := cmd + mgi_DBdelete(GXD_SPECIMEN, key);
@@ -1733,7 +1732,7 @@ rules:
             row := row + 1;
           end while;
 
-	  cmd := cmd + "exec MGI_resetSequenceNum '" + mgi_DBtable(GXD_SPECIMEN) + "'," + currentAssay + "\n";
+	  cmd := cmd + exec_mgi_resetSequenceNum(currentAssay, mgi_DBprstr(mgi_DBtable(GXD_SPECIMEN)));
         end
  
 --
@@ -1852,7 +1851,7 @@ rules:
 		     ageMax + "," +
 	    	     mgi_DBprstr(mgi_tblGetCell(table, row, table.ageNote)) + "," +
 	    	     mgi_DBprstr(mgi_tblGetCell(table, row, table.laneNote)) + ")\n" +
-		     "exec MGI_resetAgeMinMax '" + mgi_DBtable(GXD_GELLANE) + "', @" + keyName + "\n";
+	             exec_mgi_resetAgeMinMax("@" + keyName, mgi_DBprstr(mgi_DBtable(GXD_GELLANE)));
 
               -- Process Gel Lane Structures
 
@@ -1876,7 +1875,7 @@ rules:
 	    	        "laneNote = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.laneNote)) + "," +
 			"sequenceNum = " + newSeqNum;
               cmd := cmd + mgi_DBupdate(GXD_GELLANE, key, update) +
-		        "exec MGI_resetAgeMinMax '" + mgi_DBtable(GXD_GELLANE) + "'," + key + "\n";
+	             exec_mgi_resetAgeMinMax(key, mgi_DBprstr(mgi_DBtable(GXD_GELLANE)));
 
               -- Process Gel Lane Structures
   
@@ -1903,7 +1902,7 @@ rules:
             row := row + 1;
           end while;
 
-	  cmd := cmd + "exec MGI_resetSequenceNum '" + mgi_DBtable(GXD_GELLANE) + "'," + currentAssay + "\n";
+	  cmd := cmd + exec_mgi_resetSequenceNum(currentAssay, mgi_DBprstr(mgi_DBtable(GXD_GELLANE)));
         end
  
 --
@@ -1995,7 +1994,7 @@ rules:
             row := row + 1;
           end while;
 
-	  cmd := cmd + "exec MGI_resetSequenceNum '" + mgi_DBtable(GXD_GELROW) + "'," + currentAssay + "\n";
+	  cmd := cmd + exec_mgi_resetSequenceNum(currentAssay, mgi_DBprstr(mgi_DBtable(GXD_GELROW)));
         end
  
 --

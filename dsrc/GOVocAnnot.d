@@ -20,12 +20,6 @@
 -- 11/15/2010	lec
 --	TR 10044/GO-Notes/GO Properties
 --
--- 10/25/2011	lec
---	TR 10785/GOVocAnnot.d;add sort order
---
--- 11/15/2010	lec
---	TR 10044/GO-Notes/GO Properties
---
 -- 08/26/2009
 --	TR 9247; change non-gene marker "cannot modify" message to "warning" message
 --	because we need to allow a modification of "delete row".
@@ -593,6 +587,13 @@ rules:
 	  PythonInferredFromCache.source_widget := top;
 	  PythonInferredFromCache.objectKey := top->mgiAccession->ObjectID->text.value;
 	  send(PythonInferredFromCache, 0);
+
+	  -- if J:73045 is used, then remind user to enter external reference property
+	  if (refsKey = "74017") then
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "\nPlease add external reference data in the properties for your J:73065 annotation";
+            send(StatusReport);
+	  end if;
 
 	  (void) reset_cursor(top);
 	end does;

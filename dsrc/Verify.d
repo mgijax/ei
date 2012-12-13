@@ -16,9 +16,6 @@
 --
 -- History
 --
--- 12/06/2012   lec
---      - TR11234/VerifyItem/query of 'item.value' needs to include 'mgi_DBprstr(item.value)'
---
 -- 08/07/2012	lec
 -- 	- TR 11103/GO:0005515/IPI
 --
@@ -1465,7 +1462,7 @@ rules:
 	  defaultStrainType : string;
 
 	  select := "select count(*) from " + table + " where ";
-	  where := name + " = " + mgi_DBprstr(item.value);
+	  where := name + " = '" + item.value + "'";
 
 	  if ((integer) mgi_sql1(verify_item_count(item.value, table, name)) > 0) then
 	    found := true;
@@ -1489,16 +1486,16 @@ rules:
             -- Use exact match if verifyChars is -1
  
             elsif (verifyChars < 0) then
-              where := name + " = " + mgi_DBprstr(item.value);
+              where := name + " = '" + item.value + "'";
  
             -- Use like if verifyChars is 0
  
             elsif (verifyChars = 0) then
-              where := name + " like " + mgi_DBprstr(item.value + "%");
+              where := name + " like '" + item.value + "%'";
  
             -- Use like w/ substring if verifyChars > 0
             else
-              where := name + " like " + mgi_DBprstr(item.value->substr(1, verifyChars) + "%");
+              where := name + " like '" + item.value->substr(1, verifyChars) + "%'";
             end if;
 	  end if;
 
@@ -3682,12 +3679,12 @@ rules:
                 StatusReport.source_widget := top.root;
                 StatusReport.message := "Qualifier 'norm' is the default for MP header terms.";
                 send(StatusReport);
-	      else
-	        (void) mgi_tblSetCell(table, row, table.qualifierKey, MP_NO_QUALIFIER_KEY);
-	        (void) mgi_tblSetCell(table, row, table.qualifier, MP_NO_QUALIFIER);
-                StatusReport.source_widget := top.root;
-                StatusReport.message := "Qualifier '(none)' is the default for MP non-header terms.";
-                send(StatusReport);
+	      --else
+	      --  (void) mgi_tblSetCell(table, row, table.qualifierKey, MP_NO_QUALIFIER_KEY);
+	      --  (void) mgi_tblSetCell(table, row, table.qualifier, MP_NO_QUALIFIER);
+              --  StatusReport.source_widget := top.root;
+              --  StatusReport.message := "Qualifier '(none)' is the default for MP non-header terms.";
+              --  send(StatusReport);
 	      end if;
 	    end if;
 	  end if;
@@ -3768,13 +3765,10 @@ rules:
 	  dbproc : opaque;
 	  select : string;
 
-	  select := "select t.accID, t._Term_key, t.term " +
-		"from VOC_Term_View t " +
-		"where t.accID = " + mgi_DBprstr(value) + 
-		" and t._Vocab_key = " + (string) sourceWidget.vocabKey + "\n";
-
 	  if (not searchObsolete) then
-	    select := select + " and t.isObsolete = 0 ";
+	    select := verify_vocabtermaccIDNoObsolete(mgi_DBprstr(value), (string) sourceWidget.vocabKey);
+	  else
+	    select := verify_vocabtermaccID(mgi_DBprstr(value), (string) sourceWidget.vocabKey);
 	  end if;
 
 	  dbproc := mgi_dbexec(select);
@@ -3787,12 +3781,7 @@ rules:
 	  end while;
 	  (void) mgi_dbclose(dbproc);
 
-	  select := "select rtrim(d.dagAbbrev) " +
-		"from VOC_Term_View t, DAG_Node_View d " +
-		"where t.accID = " + mgi_DBprstr(value) + 
-		" and t._Vocab_key = " + (string) sourceWidget.vocabKey +
-		" and t._Vocab_key = d._Vocab_key" +
-		" and t._Term_key = d._Object_key";
+	  select := verify_vocabtermdag(mgi_DBprstr(value), (string) sourceWidget.vocabKey);
 
 	  if (not searchObsolete) then
 	    select := select + " and t.isObsolete = 0 ";
@@ -3835,7 +3824,8 @@ rules:
 	      end if;
 	       
 	      -- for MP annotations
-	      -- if Term is a Header Term, then Qualifier = normal, else none
+	      -- if Term is a Header Term, then always set Qualifier = normal
+	      -- a non-Header Term can use either normal or none
 
 	      if (top->VocAnnotTypeMenu != nil) then
 	        if (top->VocAnnotTypeMenu.menuHistory.defaultValue = "1002") then
@@ -3843,13 +3833,13 @@ rules:
 	          if (isHeader = "1") then
 	            (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifierKey, "2181424");
 	            (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifier, "norm");
-	          else
-	            (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifierKey, "2181423");
-	            (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifier, "");
+	      --    remove this part; allow any qualifier for any type of MP term
+	      --    else
+	      --      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifierKey, "2181423");
+	      --      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifier, "");
 	          end if;
-		end if;
+	        end if;
 	      end if;
-
 	    end if;
 
 	  else

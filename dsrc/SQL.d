@@ -105,7 +105,7 @@ rules:
 
 	  -- If a Job Stream has not finished, then disallow Add
 
-	  jobStream := mgi_sp("exec " + global_radar + "..APP_EIcheck");
+	  jobStream := mgi_sp(exec_app_EIcheck(global_radar));
 	  if ((getenv("EIDEBUG") = "0") and (integer) jobStream > 0) then
 	    StatusReport.source_widget := top;
 	    StatusReport.message := "\nERROR:  Add functionality is unavailable.  A data load job is running.";
@@ -189,7 +189,7 @@ rules:
 
 	  top := DeleteSQL.list.top;
 
-	  jobStream := mgi_sp("exec " + global_radar + "..APP_EIcheck");
+	  jobStream := mgi_sp(exec_app_EIcheck(global_radar));
 	  if ((getenv("EIDEBUG") = "0") and (integer) jobStream > 0) then
 	    StatusReport.source_widget := top;
 	    StatusReport.message := "\nERROR:  Delete functionality is unavailable.  A data load job is running.";
@@ -253,7 +253,6 @@ rules:
 	      newID := mgi_getstr(dbproc, 1);
 	    end while;
 	  end while;
-	  mgi_dbclose(dbproc);
 
 	  -- Process @@error w/in same DBPROCESS
 
@@ -304,7 +303,7 @@ rules:
 	  cmd : string;
 	  jobStream : string;
 
-	  jobStream := mgi_sp("exec " + global_radar + "..APP_EIcheck");
+	  jobStream := mgi_sp(exec_app_EIcheck(global_radar));
 	  if ((getenv("EIDEBUG") = "0") and (integer) jobStream > 0) then
 	    StatusReport.source_widget := top;
 	    StatusReport.message := "\nERROR:  Modify functionality is unavailable.  A data load job is running.";
@@ -495,7 +494,7 @@ rules:
 	  -- Don't overwrite Status Dialog if already managed
 
           if (status->StatusDialog = nil) then
-	    (void) mgi_writeLog(get_time() + "ERROR: Could not get StatusDialog for " + status.name + "\n");
+	    --(void) mgi_writeLog(get_time() + "ERROR: Could not get StatusDialog\n");
 	    return;
 	  end if;
 

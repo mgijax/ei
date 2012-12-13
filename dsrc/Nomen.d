@@ -1032,7 +1032,7 @@ rules:
 	  end if;
 
 	  (void) busy_cursor(top);
-	  (void) mgi_sp("exec " + "NOM_verifyMarker " + mgi_DBprstr(value));
+	  (void) mgi_sp(exec_nom_verifyMarker(mgi_DBprstr(value)));
 
 	  (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
 	  (void) reset_cursor(top);
@@ -1131,7 +1131,7 @@ rules:
 	  -- if Add was successful, broadcast to Nomen
 	  if (top->QueryList->List.sqlSuccessful) then
 	    (void) busy_cursor(top);
-	    ExecSQL.cmd := "exec " + mgi_DBtable(NOM_TRANSFERSYMBOL) + " " + currentNomenKey + "," + mgi_DBprstr(BROADCASTOFFICIAL);
+	    ExecSQL.cmd := exec_nom_transferToMGD(currentNomenKey, mgi_DBprstr(BROADCASTOFFICIAL));
 	    send(ExecSQL, 0);
 	    (void) reset_cursor(top);
 	  end if;
@@ -1154,7 +1154,7 @@ rules:
 	  -- if Add was successful, broadcast to Nomen
 	  if (top->QueryList->List.sqlSuccessful) then
 	    (void) busy_cursor(top);
-	    ExecSQL.cmd := "exec " + mgi_DBtable(NOM_TRANSFERSYMBOL) + " " + currentNomenKey + "," + mgi_DBprstr(BROADCASTINTERIM);
+	    ExecSQL.cmd := exec_nom_transferToMGD(currentNomenKey, mgi_DBprstr(BROADCASTINTERIM));
 	    send(ExecSQL, 0);
 	    (void) reset_cursor(top);
 	  end if;
@@ -1169,7 +1169,7 @@ rules:
 
 	BroadcastSymbolOfficial does
 	  (void) busy_cursor(top);
-	  ExecSQL.cmd := "exec " + mgi_DBtable(NOM_TRANSFERSYMBOL) + " " + currentNomenKey + "," + mgi_DBprstr(BROADCASTOFFICIAL);
+	  ExecSQL.cmd := exec_nom_transferToMGD(currentNomenKey, mgi_DBprstr(BROADCASTOFFICIAL));
 	  send(ExecSQL, 0);
 	  (void) reset_cursor(top);
 	end does;
@@ -1182,7 +1182,7 @@ rules:
 
 	BroadcastSymbolInterim does
 	  (void) busy_cursor(top);
-	  ExecSQL.cmd := "exec " + mgi_DBtable(NOM_TRANSFERSYMBOL) + " " + currentNomenKey + "," + mgi_DBprstr(BROADCASTINTERIM);
+	  ExecSQL.cmd := exec_nom_transferToMGD(currentNomenKey, mgi_DBprstr(BROADCASTINTERIM));
 	  send(ExecSQL, 0);
 	  (void) reset_cursor(top);
 	end does;

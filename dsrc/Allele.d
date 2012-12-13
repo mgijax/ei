@@ -600,7 +600,7 @@ rules:
 
 	  -- Execute the add
 
-	  cmd := cmd + "exec ALL_reloadLabel " + currentRecordKey + "\n";
+	  cmd := cmd + exec_all_reloadLabel(currentRecordKey);
 
 	  AddSQL.tableID := ALL_ALLELE;
           AddSQL.cmd := cmd;
@@ -923,8 +923,8 @@ rules:
 	  send(ModifySQL, 0);
 
 	  if (cmd.length > 0) then
-	    cmd := "exec ALL_reloadLabel " + currentRecordKey + "\n" +
-		   "exec GXD_orderGenotypes " + currentRecordKey + "\n";
+	    cmd := exec_all_reloadLabel(currentRecordKey) +
+		   exec_gxd_orderGenotypes(currentRecordKey);
 
 	    ModifySQL.cmd := cmd;
 	    ModifySQL.list := top->QueryList;
@@ -1145,7 +1145,7 @@ rules:
 	    -- need to update the MRK_reloadLabel table for each marker that was updated
 
  	    if (markerKey != "" and markerKey != "NULL") then
-	      cmd := cmd + "exec MRK_reloadLabel " + markerKey + "\n";
+	      cmd := cmd + exec_mrk_reloadLabel(markerKey);
  	    end if;
 
 	    row := row + 1;

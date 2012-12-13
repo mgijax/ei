@@ -401,7 +401,7 @@ rules:
                             "@" + skeyName + "," +
 			    mgi_DBprstr(addDialog->structureText->text.value) + ",1)\n";
 
-	  cmd := cmd + "exec GXD_ComputePrintNamesFrom @_Structure_key\n";
+	  cmd := cmd + exec_gxd_computePrintNamesFrom("@_Structure_key");
 
           ModifyAliases.table := addDialog->mgiAliasTable->Table; 
           ModifyAliases.keyName := mgi_DBkey(GXD_STRUCTURENAME) + "_Aliases";
@@ -625,7 +625,7 @@ rules:
           if (top->structureText->text.modified) then
 	      cmd := cmd + mgi_DBupdate(GXD_STRUCTURENAME, top->structureTextKey->text.value, 
 		    "structure = " +  mgi_DBprstr(top->structureText->text.value) + "\n");
-	      cmd := cmd + "exec GXD_ComputePrintNamesFrom " + top->ID->text.value + "\n";
+	      cmd := cmd + exec_gxd_computePrintNamesFrom(top->ID->text.value);
           end if;
 
           -- now deal with the MGI aliases table

@@ -349,7 +349,7 @@ rules:
 
 	  if (deleteCmd.length > 0 or tmpCmd.length > 0) then
 	    cmd := cmd + deleteCmd + tmpCmd;
-	    cmd := cmd + "exec MGI_resetSequenceNum '" + mgi_DBtable(MRK_CHROMOSOME) + "'," + currentRecordKey + "\n";
+	    cmd := cmd + exec_mgi_resetSequenceNum(currentRecordKey, mgi_DBprstr(mgi_DBtable(MRK_CHROMOSOME)));
 	  end if;
         end does;
  

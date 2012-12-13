@@ -38,6 +38,405 @@ char *mgilib_anchorcount(char *key)
 }
 
 /*
+ * exec stored procedures
+*/
+
+char *exec_app_EIcheck(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec %s..APP_EIcheck", key);
+  return(buf);
+}
+
+char *exec_acc_assignJ(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec ACC_assignJ %s\n", key);
+  return(buf);
+}
+
+char *exec_acc_assignJNext(char *key, char *nextMGI)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec ACC_assignJ %s,%s\n", key, nextMGI);
+  return(buf);
+}
+
+char *exec_acc_insert(char *key, char *accid, char *logicalKey, char *table, char *refsKey, char *isPreferred, char *isPrivate)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec ACC_insert %s,%s,%s,%s,%s,%s,%s\n", \
+	key, accid, logicalKey, table, refsKey, isPreferred, isPrivate);
+  return(buf);
+}
+
+char *exec_acc_update(char *key, char *accid, char *origRefsKey, char *refsKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec ACC_update %s,%s,%s,%s\n", \
+        key, accid, origRefsKey, refsKey);
+  return(buf);
+}
+
+char *exec_acc_deleteByAccKey(char *key, char *refsKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec ACC_delete_byAccKey %s,%s\n", key, refsKey);
+  return(buf);
+}
+
+char *exec_accref_process(char *key, char *refsKey, char *accid, char *logicalKey, char *table, char *isPreferred, char *isPrivate)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec ACCRef_process %s,%s,%s,%s,%s,%s,%s\n", \
+	key, refsKey, accid, logicalKey, table, isPreferred, isPrivate);
+  return(buf);
+}
+
+char *exec_all_reloadLabel(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec ALL_reloadLabel %s\n", key);
+  return(buf);
+}
+
+char *exec_bib_exists(char *table, char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec %s %s\n", table, key);
+  return(buf);
+}
+
+char *exec_hmd_updateClass(char *classKey, char *refKey, char *isNewClass)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec HMD_updateClass %s, %s, %s\n", classKey, refKey, isNewClass);
+  return(buf);
+}
+
+char *exec_mgi_checkUserRole(char *module, char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec MGI_checkUserRole %s, %s\n", module, key);
+  return(buf);
+}
+
+char *exec_mgi_insertReferenceAssoc_antibody(char *key, char *mgiTypeKey, char *refKey, char *refType)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec MGI_insertReferenceAssoc %s, %s, %s, %s\n", mgiTypeKey, key, refKey, refType);
+  return(buf);
+}
+
+char *exec_mgi_insertReferenceAssoc_usedFC(char *key, char *refKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec MGI_insertReferenceAssoc 11, %s, %s, 'Used-FC'\n", key, refKey);
+  return(buf);
+}
+
+char *exec_mgi_resetAgeMinMax(char *key, char *table)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec MGI_resetAgeMinMax %s, %s\n", table, key);
+  return(buf);
+}
+
+char *exec_mgi_resetSequenceNum(char *key, char *table)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec MGI_resetSequenceNum %s, %s\n", table, key);
+  return(buf);
+}
+
+char *exec_mrk_reloadLabel(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec MRK_reloadLabel %s\n", key);
+  return(buf);
+}
+
+char *exec_mrk_reloadReference(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec MRK_reloadReference %s\n", key);
+  return(buf);
+}
+
+char *exec_mrk_reloadSequence(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec MRK_reloadSequence %s\n", key);
+  return(buf);
+}
+
+char *exec_mrk_reloadLocation(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec MRK_reloadLocation %s\n", key);
+  return(buf);
+}
+
+char *exec_nom_transferToMGD(char *key, char *status)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec NOM_transferToMGD %s, %s", key, status);
+  return(buf);
+}
+
+char *exec_nom_verifyMarker(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec NOM_verifyMarker %s", key);
+  return(buf);
+}
+
+char *exec_prb_insertReference(char *refKey, char *probeKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec PRB_insertReference %s, %s\n", refKey, probeKey);
+  return(buf);
+}
+
+char *exec_prb_getStrainByReference(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec PRB_getStrainByReference %s\n", key);
+  return(buf);
+}
+
+char *exec_prb_getStrainReferences(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec PRB_getStrainReferences %s\n", key);
+  return(buf);
+}
+
+char *exec_prb_getStrainDataSets(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec PRB_getStrainDataSets %s\n", key);
+  return(buf);
+}
+
+char *exec_prb_getTissueDataSets(char *key, char *countOnly)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec prb_getTissueDataSets %s, %s\n", key, countOnly);
+  return(buf);
+}
+
+char *exec_prb_mergeStrain(char *key1, char *key2)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec PRB_mergeStrain %s, %s\n", key1, key2);
+  return(buf);
+}
+
+char *exec_prb_processAntigenAnonSource(\
+	char *objectKey,\
+	char *msoKey,\
+	char *organismKey,\
+	char *strainKey,\
+	char *tissueKey,\
+	char *genderKey,\
+	char *cellLineKey,\
+	char *age,\
+	char *tissueTreatment,\
+	char *modifiedByKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec PRB_processAntigenAnonSource %s, %s, %s, %s, %s, %s, %s, %s, %s, %s\n",
+              objectKey,\
+              msoKey,\
+              organismKey,\
+              strainKey,\
+              tissueKey,\
+              genderKey,\
+              cellLineKey,\
+              age,\
+              tissueTreatment,\
+              modifiedByKey);
+  return(buf);
+}
+
+char *exec_prb_processProbeSource(\
+	char *objectKey,\
+	char *msoKey,\
+	char *isAnon,\
+	char *organismKey,\
+	char *strainKey,\
+	char *tissueKey,\
+	char *genderKey,\
+	char *cellLineKey,\
+	char *age,\
+	char *tissueTreatment,\
+	char *modifiedByKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec PRB_processProbeSource %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s\n",
+              objectKey,\
+              msoKey,\
+	      isAnon,\
+              organismKey,\
+              strainKey,\
+              tissueKey,\
+              genderKey,\
+              cellLineKey,\
+              age,\
+              tissueTreatment,\
+              modifiedByKey);
+  return(buf);
+}
+
+char *exec_prb_processSequenceSource(\
+        char *isAnon,\
+        char *assocKey,\
+        char *objectKey,\
+        char *msoKey,\
+        char *organismKey,\
+        char *strainKey,\
+        char *tissueKey,\
+        char *genderKey,\
+        char *cellLineKey,\
+        char *age,\
+        char *modifiedByKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec PRB_processSequenceSource %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s\n",
+              isAnon,\
+              assocKey,\
+              objectKey,\
+              msoKey,\
+              organismKey,\
+              strainKey,\
+              tissueKey,\
+              genderKey,\
+              cellLineKey,\
+              age,\
+              modifiedByKey);
+  return(buf);
+}
+
+char *exec_prb_reloadSequence(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec PRB_reloadSequence %s\n", key);
+  return(buf);
+}
+
+char *exec_voc_copyAnnotEvidenceNotes(char *key, char *keyName)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec VOC_copyAnnotEvidenceNotes %s, @%s\n", key, keyName);
+  return(buf);
+}
+
+char *exec_voc_processAnnotHeader(char *key, char *annotTypeKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec VOC_processAnnotHeader %s,%s\n", annotTypeKey, key);
+  return(buf);
+}
+
+char *exec_gxd_checkDuplicateGenotype(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec GXD_checkDuplicateGenotype %s\n", key);
+  return(buf);
+}
+
+char *exec_gxd_computePrintNamesFrom(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec GXD_ComputePrintNamesFrom %s\n", key);
+  return(buf);
+}
+
+char *exec_gxd_duplicateAssay(char *key, char *duplicateDetails)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec GXD_duplicateAssay %s, %s\n", key, duplicateDetails);
+  return(buf);
+}
+
+char *exec_gxd_getGenotypesDataSets(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec GXD_getGenotypesDataSets %s\n", key);
+  return(buf);
+}
+
+char *exec_gxd_orderAllelePairs(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec GXD_orderAllelePairs %s\n", key);
+  return(buf);
+}
+
+char *exec_gxd_orderGenotypes(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec GXD_orderGenotypes %s\n", key);
+  return(buf);
+}
+
+char *exec_gxd_orderGenotypesAll(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec GXD_orderGenotypesAll %s\n", key);
+  return(buf);
+}
+
+char *exec_gxd_removeBadGelBand(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"exec GXD_removeBadGelBand %s\n", key);
+  return(buf);
+}
+
+/*
  * MGILib.d
 */
 
@@ -1002,6 +1401,42 @@ char *verify_westernblot(char *key, char *from, char *where)
   return(buf);
 }
 
+char *verify_vocabtermaccID(char *key, char *vocabKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select t.accID, t._Term_key, t.term \
+     \nfrom VOC_Term_View t \
+     \nwhere t.accID = %s \
+     \nand t._Vocab_key = %s", key, vocabKey);
+  return(buf);
+}
+
+char *verify_vocabtermaccIDNoObsolete(char *key, char *vocabKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select t.accID, t._Term_key, t.term \
+     \nfrom VOC_Term_View t \
+     \nwhere t.accID = %s \
+     \nand t._Vocab_key = %s \
+     \nand t.isObsolete = 0", key, vocabKey);
+  return(buf);
+}
+
+char *verify_vocabtermdag(char *key, char *vocabKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select rtrim(d.dagAbbrev) \
+    \nfrom VOC_Term_View t, DAG_Node_View d \
+    \nwhere t.accID = %s \
+    \nand t._Vocab_key = %s \
+    \nand t._Vocab_key = d._Vocab_key \
+    \nand t._Term_key = d._Object_key", key, vocabKey);
+  return(buf);
+}
+
 /*
  * RefTypeTableLib
 */
@@ -1156,6 +1591,18 @@ char *syntypetable_syntypekey(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select _SynonymType_key from %s", key);
+  return(buf);
+}
+
+/*
+ * UserRole
+*/
+
+char *userrole_selecttask(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select usertask from MGI_RoleTask_View where _Role_key = %s order by usertask\n", key);
   return(buf);
 }
 

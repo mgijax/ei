@@ -17,7 +17,47 @@
 extern char *mgilib_count(char *);
 extern char *mgilib_anchorcount(char *);
 extern char *mgilib_user(char *);
-
+extern char *exec_app_EIcheck(char *);
+extern char *exec_acc_assignJ(char *);
+extern char *exec_acc_assignJNext(char *, char *);
+extern char *exec_acc_insert(char *, char *, char *, char *, char *, char *, char *);
+extern char *exec_acc_update(char *, char *, char *, char *);
+extern char *exec_acc_deleteByAccKey(char *, char *);
+extern char *exec_accref_process(char *, char *, char *, char *, char *, char *, char *);
+extern char *exec_all_reloadLabel(char *);
+extern char *exec_bib_exists(char *, char *);
+extern char *exec_hmd_updateClass(char *, char *, char *);
+extern char *exec_mgi_checkUserRole(char *, char *);
+extern char *exec_mgi_insertReferenceAssoc_antibody(char *, char *, char *, char *);
+extern char *exec_mgi_insertReferenceAssoc_usedFC(char *, char *);
+extern char *exec_mgi_resetAgeMinMax(char *, char *);
+extern char *exec_mgi_resetSequenceNum(char *, char *);
+extern char *exec_mrk_reloadLabel(char *);
+extern char *exec_mrk_reloadReference(char *);
+extern char *exec_mrk_reloadSequence(char *);
+extern char *exec_mrk_reloadLocation(char *);
+extern char *exec_nom_transferToMGD(char *, char *);
+extern char *exec_nom_verifyMarker(char *);
+extern char *exec_prb_insertReference(char *, char *);
+extern char *exec_prb_getStrainByReference(char *);
+extern char *exec_prb_getStrainReferences(char *);
+extern char *exec_prb_getStrainDataSets(char *);
+extern char *exec_prb_getTissueDataSets(char *, char *);
+extern char *exec_prb_mergeStrain(char *, char *);
+extern char *exec_prb_processAntigenAnonSource(char *, char *, char *, char *, char *, char *, char *, char *, char *, char *);
+extern char *exec_prb_processProbeSource(char *, char *, char *, char *, char *, char *, char *, char *, char *, char *, char *);
+extern char *exec_prb_processSequenceSource(char *, char *, char *, char *, char *, char *, char *, char *, char *, char *, char *);
+extern char *exec_prb_reloadSequence(char *);
+extern char *exec_voc_copyAnnotEvidenceNotes(char *, char *);
+extern char *exec_voc_processAnnotHeader(char *, char *);
+extern char *exec_gxd_checkDuplicateGenotype(char *);
+extern char *exec_gxd_computePrintNamesFrom(char *);
+extern char *exec_gxd_duplicateAssay(char *, char *);
+extern char *exec_gxd_getGenotypesDataSets(char *);
+extern char *exec_gxd_orderAllelePairs(char *);
+extern char *exec_gxd_orderGenotypes(char *);
+extern char *exec_gxd_orderGenotypesAll(char *);
+extern char *exec_gxd_removeBadGelBand(char *);
 
 /* SQL.d */
 
@@ -167,6 +207,10 @@ extern char *verify_item_term(char *);
 
 extern char *verify_westernblot(char *, char *, char *);
 
+extern char *verify_vocabtermaccID(char *, char *);
+extern char *verify_vocabtermaccIDNoObsolete(char *, char *);
+extern char *verify_vocabtermdag(char *, char *);
+
 /* RefTypeTableLib */
 
 extern char *reftypetable_init(char *);
@@ -189,5 +233,9 @@ extern char *syntypetable_init(char *);
 extern char *syntypetable_load(char *, char *, char *);
 extern char *syntypetable_loadref(char *, char *, char *);
 extern char *syntypetable_syntypekey(char *);
+
+/* UserRole.d */
+
+extern char *userrole_selecttask(char *);
 
 #endif

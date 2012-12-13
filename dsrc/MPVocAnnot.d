@@ -155,7 +155,7 @@ rules:
 	   cmd : string;
 	   permOK : integer;
 
-	   cmd := "exec MGI_checkUserRole " + mgi_DBprstr(top.name) + "," + mgi_DBprstr(global_login);
+	   cmd := exec_mgi_checkUserRole(mgi_DBprstr(top.name), mgi_DBprstr(global_login));
 		
 	   permOK := (integer) mgi_sp(cmd);
 
@@ -498,7 +498,7 @@ rules:
 
 	      if (clipAnnotEvidenceKey.length > 0) then
 		-- add notes
-		cmd := cmd + mpvoc_exec_copyAnnotEvidenceNotes(clipAnnotEvidenceKey, keyName);
+		cmd := cmd + exec_voc_copyAnnotEvidenceNotes(clipAnnotEvidenceKey, keyName);
 		isUsingCopyAnnotEvidenceNotes := true;
 	      end if;
 
@@ -544,7 +544,7 @@ rules:
 	  ModifySQL.reselect := false;
           send(ModifySQL, 0);
 
-	  cmd := mpvoc_exec_processAnnotHeader(currentRecordKey, annotTypeKey);
+	  cmd := exec_voc_processAnnotHeader(currentRecordKey, annotTypeKey);
           ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
 	  ModifySQL.reselect := true;
@@ -656,7 +656,7 @@ rules:
 	  -- lose their 'isNormal' bit.  We use a stored procedure to
 	  -- recompute these.
 
-	  cmd := mpvoc_exec_processAnnotHeader(currentRecordKey, annotTypeKey);
+	  cmd := exec_voc_processAnnotHeader(currentRecordKey, annotTypeKey);
 	  ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
 	  ModifySQL.reselect := true;
@@ -973,8 +973,7 @@ rules:
 	  end if;
 
 	  Query.source_widget := top;
-	  Query.select := "select distinct v._Object_key, v.description\n" + 
-	  	from + "\n" + where + "\norder by description\n";
+	  Query.select := mpvoc_search(from, where);
 	  Query.table := VOC_ANNOT_VIEW;
 	  send(Query, 0);
 	  (void) reset_cursor(top);
@@ -1495,7 +1494,7 @@ rules:
 	      alleles.open;
 	      while (alleles.more) do
 	        s := alleles.next;
-	        (void) mgi_sp("exec MGI_insertReferenceAssoc 11," + s + "," + refsKey + ",'Used-FC'");
+	        (void) mgi_sp(exec_mgi_insertReferenceAssoc_usedFC(s, refsKey));
 	      end while;
 	      alleles.close;
 	    end if;

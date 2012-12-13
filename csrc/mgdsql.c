@@ -139,7 +139,7 @@ char *allele_cellline(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select * from ALL_Allele_CellLine_View where _Allele_key = %s", key);
+  sprintf(buf,"select * from ALL_Allele_CellLine_View where _Allele_key = %s order by cellLine", key);
   return(buf);
 }
 
@@ -380,8 +380,24 @@ char *genotype_allelepair(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select * from GXD_AllelePair_View where _Genotype_key = %s \
+  sprintf(buf,"select a.*, ac1.cellLine as mutantCellLine1, ac2.cellLine as mutantCellLine2\
+   \nfrom GXD_AllelePair_View a \
+   \n  LEFT OUTER JOIN ALL_Cellline ac1 on (a._MutantCellLine_key_1 = ac1._CellLine_key) \
+   \n  LEFT OUTER JOIN ALL_Cellline ac2 on (a._MutantCellLine_key_2 = ac2._CellLine_key) \
+   \nwhere a._Genotype_key = %s \
    \norder by sequenceNum", key);
+  return(buf);
+}
+
+char *genotype_verifyallelemcl(char *key, char *value)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf, "select c._CellLine_key, c.cellline \
+   \nfrom ALL_CellLine c, ALL_Allele_CellLine a \
+   \nwhere c.isMutant = 1 and c.cellline = '%s' \
+   \nand c._CellLine_key = a._MutantCellLine_key \
+   \nand a._Allele_key = %s", value, key);
   return(buf);
 }
 
@@ -698,15 +714,15 @@ char *marker_checkaccid(char *key, char *logicalDBKey, char *accID)
 
 char *marker_checkseqaccid(char *logicalDBKey, char *accID)
 {
+   /*\nwhere lower(p.note) like \ */
+  /* \nlower('% staff have found evidence of artifact in the sequence of this molecular%') \ */
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select a.accID from PRB_Notes p, ACC_Accession a \
-   \nwhere lower(p.note) like \
-   \nlower('%staff have found evidence of artifact in the sequence of this molecular%') \
-   \nand p._Probe_key = a._Object_key \
+   \nwhere p._Probe_key = a._Object_key \
    \nand a._MGIType_key = 3 \
    \nand a._LogicalDB_key = %s \
-   \nand a.accID = ", logicalDBKey, accID);
+   \nand a.accID = %s", logicalDBKey, accID);
   return(buf);
 }
 
@@ -1066,14 +1082,6 @@ char *molecular_probekey(char *key)
   return(buf);
 }
 
-char *molecular_exec_reloadsequence(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec PRB_reloadSequence %s\n", key);
-  return(buf);
-}
-
 char *molecular_shortref(char *key)
 {
   static char buf[TEXTBUFSIZ];
@@ -1179,22 +1187,6 @@ char *molsource_select(char *key)
  * MPVocAnnot.d
 */
 
-char *mpvoc_exec_copyAnnotEvidenceNotes(char *key, char *keyName)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec VOC_copyAnnotEvidenceNotes %s, @%s\n", key, keyName);
-  return(buf);
-}
-
-char *mpvoc_exec_processAnnotHeader(char *key, char *annotTypeKey)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec VOC_processAnnotHeader %s,%s\n", annotTypeKey, key);
-  return(buf);
-}
-
 char *mpvoc_loadheader(char *key, char *annotTypeKey)
 {
   static char buf[TEXTBUFSIZ];
@@ -1240,6 +1232,14 @@ char *mpvoc_sexspecific()
   return(buf);
 }
 
+char *mpvoc_search(char *from, char *where)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select distinct v._Object_key, v.description \n%s \n%s \norder by description", from, where);
+  return(buf);
+}
+
 char *mpvoc_select1(char *key, char *dbView)
 {
   static char buf[TEXTBUFSIZ];
@@ -1265,11 +1265,13 @@ char *mpvoc_select3(char *key, char *annotTypeKey)
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier, \
 	p._EvidenceProperty_key, p.value, e.* \
-   \nfrom VOC_Annot_View a, VOC_Evidence_View e, VOC_Evidence_Property p \
+   \nfrom VOC_Annot_View a, VOC_Evidence_View e, VOC_Evidence_Property p, VOC_Term t \
    \nwhere a._AnnotType_key = %s \
    \nand a._Object_key = %s \
    \nand a._Annot_key = e._Annot_key \
    \nand e._AnnotEvidence_key = p._AnnotEvidence_key \
+   \nand p._PropertyTerm_key = t._Term_key \
+   \nand t._Vocab_key = 86 \
    \norder by e.jnum, a.term", annotTypeKey, key);
   return(buf);
 }
@@ -1885,43 +1887,11 @@ char *strain_genotype(char *key)
   return(buf);
 }
 
-char *strain_execref(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec PRB_getStrainReferences %s\n", key);
-  return(buf);
-}
-
 char *strain_addtoexecref()
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,",1");
-  return(buf);
-}
-
-char *strain_execdataset(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec PRB_getStrainDataSets %s\n", key);
-  return(buf);
-}
-
-char *strain_execmerge(char *key1, char *key2)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec PRB_mergeStrain %s, %s\n", key1, key2);
-  return(buf);
-}
-
-char *strain_checkuser(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec MGI_checkUserRole 'StrainJAXModule', %s\n", key);
   return(buf);
 }
 

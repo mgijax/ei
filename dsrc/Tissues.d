@@ -24,7 +24,7 @@
 --	- convert to XRT/API
 --
 -- lec	06/10/98
---	- SelectDataSets uses 'exec PRB_getTissueDataSets'
+--	- SelectDataSets uses 'exec_prb_getTissueDataSets'
 --
 -- lec	06/09/98
 --	- implement Merge functionality
@@ -355,9 +355,9 @@ rules:
           row : integer := 0;
  
 	  if (SelectDataSets.doCount) then
-	    cmd := "execute PRB_getTissueDataSets " + currentRecordKey + ",1\n";
+	    cmd := exec_prb_getTissueDataSets(currentRecordKey, "1");
 	  else
-	    cmd := "execute PRB_getTissueDataSets " + currentRecordKey + "\n";
+	    cmd := exec_prb_getTissueDataSets(currentRecordKey, "0");
 	  end if;
 
           dbproc : opaque := mgi_dbexec(cmd);

@@ -63,6 +63,7 @@ CALLS
 	 genotype_search2("char *")			: "char *";
 	 genotype_select("char *")			: "char *";
 	 genotype_allelepair("char *")			: "char *";
+	 genotype_verifyallelemcl("char *", "char *")	: "char *";
 	 genotype_notes("char *")			: "char *";
 	 genotype_images("char *", "char *")		: "char *";
 
@@ -125,7 +126,6 @@ CALLS
 	 molecular_termNA()				: "char *";
 	 molecular_termPrimer()				: "char *";
 	 molecular_probekey("char *")			: "char *";
-	 molecular_exec_reloadsequence("char *")	: "char *";
 	 molecular_shortref("char *")			: "char *";
 	 molecular_select("char *")			: "char *";
 	 molecular_parent("char *")			: "char *";
@@ -137,13 +137,12 @@ CALLS
 	 molecular_rflv("char *")			: "char *";
 	 molecular_sourcekey("char *")			: "char *";
 
-	 mpvoc_exec_copyAnnotEvidenceNotes("char *", "char *")	: "char *";
-	 mpvoc_exec_processAnnotHeader("char *", "char *")	: "char *";
 	 mpvoc_loadheader("char *", "char *")		: "char *";
 	 mpvoc_dbview("char *")				: "char *";
 	 mpvoc_evidencecode("char *")			: "char *";
 	 mpvoc_qualifier("char *")			: "char *";
 	 mpvoc_sexspecific()				: "char *";
+	 mpvoc_search("char *", "char *")		: "char *";
 	 mpvoc_select1("char *", "char *")		: "char *";
 	 mpvoc_select2("char *", "char *")		: "char *";
 	 mpvoc_select3("char *", "char *")		: "char *";
@@ -210,11 +209,7 @@ CALLS
 	 strain_attribute("char *")			: "char *";
 	 strain_needsreview("char *")			: "char *";
 	 strain_genotype("char *")			: "char *";
-	 strain_execref("char *")			: "char *";
 	 strain_addtoexecref()				: "char *";
-	 strain_execdataset("char *")			: "char *";
-	 strain_execmerge("char *", "char *")		: "char *";
-	 strain_checkuser("char *")			: "char *";
 	 strain_count("char *")				: "char *";
 
 	 tdcv_accession("char *", "char *")		: "char *";
