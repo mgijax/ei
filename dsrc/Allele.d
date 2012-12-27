@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- 12/26/2011	lec
+--	TR11243/add clear/notes to Select()
+--
 -- 08/08/2011	lec
 --	TR10804/can't search by nomen marker in allele EI (use 'union')
 --
@@ -1903,6 +1906,12 @@ rules:
 	    send(ClearTable, 0);
 	  end while;
 	  tables.close;
+
+	  ClearSetNoteForm.notew := top->mgiNoteForm;
+	  send(ClearSetNoteForm, 0);
+
+	  ClearSetNoteForm.notew := top->mgiNoteDriverForm;
+	  send(ClearSetNoteForm, 0);
 
 	  ClearOption.source_widget := top->EditForm->mgiParentCellLine->AlleleCellLineTypeMenu;
 	  send(ClearOption, 0);
