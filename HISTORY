@@ -1,10 +1,19 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-5-1-1-?
+DATE: 01/02/2013
+STAFF: lec
+CHANGES:
+1) TR11204/results dialog/clipboard refresh/Clipboard:ClipboardLoad
+2) TR11204/Dictionary/ADClipboardAdd
+3) TR11224/J:73065
+4) TR11188/MPVocAnnot.d/MPClipboard[Add/AddAll/CopyAnnotation]
+
 TAG: ei-5-1-1-3
 DATE: 12/27/2012
 STAFF: lec
 CHANGES:
-1) TE11243/Allele.d
+1) TR11243/Allele.d
 
 TAG: ei-5-1-1-2
 TAG: ei-5-1-1-1

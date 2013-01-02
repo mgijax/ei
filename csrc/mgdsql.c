@@ -1282,8 +1282,9 @@ char *mpvoc_clipboard(char *key, char *annotTypeKey)
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select a._Term_key, t.term, t.sequenceNum, ac.accID, \
    \na._Qualifier_key, q.term as qualifier, \
-   \ne._EvidenceTerm_key, et.abbreviation, et.sequenceNum \
-   \nfrom VOC_Annot a, ACC_Accession ac, VOC_Term t, VOC_Evidence e, VOC_Term et, VOC_Term q \
+   \ne._EvidenceTerm_key, et.abbreviation, et.sequenceNum, p.value \
+   \nfrom VOC_Annot a, ACC_Accession ac, VOC_Term t, VOC_Evidence e, VOC_Evidence_Property p, \
+   \nVOC_Term et, VOC_Term q, VOC_Term pt \
    \nwhere a._Term_key = ac._Object_key \
    \nand ac._MGIType_key = 13 \
    \nand ac.preferred = 1 \
@@ -1291,6 +1292,9 @@ char *mpvoc_clipboard(char *key, char *annotTypeKey)
    \nand a._Annot_key = e._Annot_key \
    \nand e._EvidenceTerm_key = et._Term_key \
    \nand a._Qualifier_key = q._Term_key \
+   \nand e._AnnotEvidence_key = p._AnnotEvidence_key \
+   \nand p._PropertyTerm_key = pt._Term_key \
+   \nand pt._Vocab_key = 86 \
    \nand a._AnnotType_key = %s \
    \nand e._AnnotEvidence_key = %s", annotTypeKey, key);
   return(buf);
