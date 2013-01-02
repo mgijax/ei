@@ -166,12 +166,12 @@ rules:
 	  end if;
 
 	  -- First, cancel the edit to the target cell
-
-	  table : widget;
-	  if (clipboard->List.targetWidget != nil) then
-	    table := clipboard->List.targetWidget->Table;
-	    (void) XrtTblCancelEdit(table, true);
-	  end if;
+	  -- TR11204/removed this call because cancelling the edit causes no row to be selected
+	  --table : widget;
+	  --if (clipboard->List.targetWidget != nil) then
+	    --table := clipboard->List.targetWidget->Table;
+	    --(void) XrtTblCancelEdit(table, true);
+	  --end if;
 
           -- Get current record key
           key := top->ID->text.value;

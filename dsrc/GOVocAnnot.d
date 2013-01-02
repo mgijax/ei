@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- 01/02/2013	lec
+--	TR11224/J:73065
+--
 -- 11/26/2012	lec
 --	TR 11291/SelectGOReferences; added reference count
 --
@@ -371,6 +374,8 @@ rules:
 	  markerType : string;
 	  markerStatus : string;
 	  printIEAmessage : boolean := false;
+	  printJ73065message : boolean := false;
+	  messages : string;
  
           if (not top.allowEdit) then
             return;
@@ -444,6 +449,11 @@ rules:
 	      -- set it in the table because we need to check it later on...
 	      mgi_tblSetCell(annotTable, row, annotTable.qualifier, "");
 	      mgi_tblSetCell(annotTable, row, annotTable.qualifierKey, qualifierKey);
+	    end if;
+
+	    -- if J:73045 is used...
+            if (editMode != TBL_ROW_DELETE and refsKey = "74017") then
+	      printJ73065message := true;
 	    end if;
 
             if (editMode = TBL_ROW_ADD) then
@@ -570,13 +580,25 @@ rules:
 	    return;
           end if;
 
+	  messages := "";
+
 	  -- warning for non-gene markers
 
 	  markerType := mgi_sql1(govoc_type(currentRecordKey));
 
 	  if (markerType != "1") then
+	    messages := "\nWARNING:  This Marker is not a Gene.";
+	  end if;
+
+	  -- if J:73045 is used, then remind user to enter external reference property
+	  if (printJ73065message) then
+            messages := messages + "\nJ:73065 requires property 'external ref'\nPLEASE VERIFY PMID|Evidence code|Inferred_from";
+	  end if;
+
+	  -- print messages
+	  if (messages.length > 0) then
             StatusReport.source_widget := top.root;
-            StatusReport.message := "\nWARNING:  This Marker is not a Gene.";
+            StatusReport.message := messages;
             send(StatusReport);
 	  end if;
 
@@ -587,13 +609,6 @@ rules:
 	  PythonInferredFromCache.source_widget := top;
 	  PythonInferredFromCache.objectKey := top->mgiAccession->ObjectID->text.value;
 	  send(PythonInferredFromCache, 0);
-
-	  -- if J:73045 is used, then remind user to enter external reference property
-	  if (refsKey = "74017") then
-            StatusReport.source_widget := top.root;
-            StatusReport.message := "\nPlease add external reference data in the properties for your J:73065 annotation";
-            send(StatusReport);
-	  end if;
 
 	  (void) reset_cursor(top);
 	end does;

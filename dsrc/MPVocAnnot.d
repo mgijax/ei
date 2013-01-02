@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- 01/02/2013	lec
+--	TR11188/add Sex-Specificity to MPClipboard
+--
 -- 08/23/2012	lec
 --	TR10273/Sander/Europhenome/Sex-Specificity
 --
@@ -1315,6 +1318,7 @@ rules:
 	  end if;
 
           item := mgi_tblGetCell(annotTable, row, annotTable.termAccID) + "," + 
+		mgi_tblGetCell(annotTable, row, annotTable.sex) + "," +
 		mgi_tblGetCell(annotTable, row, annotTable.term);
 
           ClipboardAdd.clipboard := annotclipboard;
@@ -1346,7 +1350,8 @@ rules:
 	    key := mgi_tblGetCell(annotTable, row, annotTable.annotEvidenceKey);
 
             item := mgi_tblGetCell(annotTable, row, annotTable.termAccID) + "," + 
-		  mgi_tblGetCell(annotTable, row, annotTable.term);
+		mgi_tblGetCell(annotTable, row, annotTable.sex) + "," +
+		mgi_tblGetCell(annotTable, row, annotTable.term);
 
             ClipboardAdd.clipboard := annotclipboard;
             ClipboardAdd.item := item;
@@ -1401,6 +1406,7 @@ rules:
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.qualifier, mgi_getstr(dbproc, 6));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidenceKey, mgi_getstr(dbproc, 7));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidence, mgi_getstr(dbproc, 8));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.sex, mgi_getstr(dbproc, 10));
 		(void) mgi_tblSetCell(annotTable, row, annotTable.editMode, TBL_ROW_ADD);
 		row := row + 1;
               end while;
