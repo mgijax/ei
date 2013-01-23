@@ -751,8 +751,9 @@ rules:
 
 	  -- TR 8156; new
 
-	  cmd := cmd + exec_mgi_insertReferenceAssoc_antibody(mgiTypeKey, \
+	  cmd := cmd + exec_mgi_insertReferenceAssoc_antibody(\
 		prepDetailForm->AntibodyAccession->ObjectID->text.value, \
+		mgiTypeKey, \
 	        top->mgiCitation->ObjectID->text.value, \
 	        mgi_DBprstr(refsType));
 	end
