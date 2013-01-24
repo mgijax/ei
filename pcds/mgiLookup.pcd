@@ -3,7 +3,7 @@ Module: mgiLookup
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Aug 23 13:24:21 2012";
+      lastWritten = "Thu Jan 24 08:18:27 2013";
         {
           LookupLabel = XmPushButton;
           Group: Widget
@@ -407,11 +407,14 @@ Module: mgiLookup
         }
         {
           GenotypeSpecimenClipboard = GenotypeClipboard;
+          Group: Widget
+            userDefinedAttributes = "cmd2:String(String)\n";
           Group: Control
             vip_x = 90;
             vip_y = 965;
           Group: User
-            cmd = "select distinct g._Genotype_key, g.dbName || ',' || ap.allele1 || ',' || ap.allele2, g.mgiID \nfrom GXD_Genotype_View g LEFT OUTER JOIN GXD_AllelePair_View ap on (g._Genotype_key = ap._Genotype_key), GXD_Specimen s \nwhere s._Genotype_key = g._Genotype_key and s._Assay_key =";
+            cmd = "select distinct g._Genotype_key, g.dbName || ',' || a1.symbol || ',' || a2.symbol, g.mgiID\nfrom GXD_Genotype_View g, GXD_AllelePair ap, ALL_Allele a1, ALL_Allele a2, GXD_Specimen s\nwhere s._Genotype_key = g._Genotype_key\nand g._Genotype_key = ap._Genotype_key\nand ap._Allele_key_1 = a1._Allele_key\nand ap._Allele_key_2 *= a2._Allele_key\nand s._Assay_key =";
+            cmd2 = "select distinct g._Genotype_key, g.dbName, g.mgiID\nfrom GXD_Genotype_View g, GXD_Specimen s\nwhere s._Genotype_key = g._Genotype_key\nand not exists (select 1 from GXD_AllelePair ap where g._Genotype_key = ap._Genotype_key)\nand s._Assay_key =";
               {
                 Label = LookupLabel : mgiLookup;
               }
@@ -425,11 +428,14 @@ Module: mgiLookup
         }
         {
           GenotypeGelClipboard = GenotypeClipboard;
+          Group: Widget
+            userDefinedAttributes = "cmd2:String(String)\n";
           Group: Control
             vip_x = 90;
             vip_y = 910;
           Group: User
-            cmd = "select distinct g._Genotype_key, g.dbName || ',' || ap.allele1 || ',' || ap.allele2, g.mgiID \nfrom GXD_Genotype_View g LEFT OUTER JOIN GXD_AllelePair_View ap on (g._Genotype_key = ap._Genotype_key), GXD_GelLane s \nwhere s._Genotype_key = g._Genotype_key and s._Assay_key =";
+            cmd = "select distinct g._Genotype_key, g.dbName || ',' || a1.symbol || ',' || a2.symbol, g.mgiID\nfrom GXD_Genotype_View g, GXD_AllelePair ap, ALL_Allele a1, ALL_Allele a2, GXD_GelLane s\nwhere s._Genotype_key = g._Genotype_key\nand g._Genotype_key = ap._Genotype_key\nand ap._Allele_key_1 = a1._Allele_key\nand ap._Allele_key_2 *= a2._Allele_key\nand s._Assay_key =";
+            cmd2 = "select distinct g._Genotype_key, g.dbName, g.mgiID\nfrom GXD_Genotype_View g, GXD_GelLane s\nwhere s._Genotype_key = g._Genotype_key\nand not exists (select 1 from GXD_AllelePair ap where g._Genotype_key = ap._Genotype_key)\nand s._Assay_key =";
               {
                 Label = LookupLabel : mgiLookup;
               }

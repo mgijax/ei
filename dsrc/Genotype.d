@@ -777,7 +777,10 @@ rules:
 	  value : string;
 	  from_allele : boolean := false;
 	  from_cellline : boolean := false;
+	  from_marker : boolean := false;
 	  manualSearch : boolean := false;
+	  includeUnion : string;
+	  includeNotExists : string;
 
           (void) busy_cursor(top);
 
@@ -785,9 +788,11 @@ rules:
 	  -- See if the user has entered any search constraints;
 	  -- If so, then process the user-specified query
 	  --
-	  from := "from " + mgi_DBtable(GXD_GENOTYPE_VIEW) + " g" +
-	  	", " + mgi_DBtable(GXD_ALLELEPAIR_VIEW) + " ap";
+	  from := "from " + mgi_DBtable(GXD_GENOTYPE_VIEW) + " g";
 	  where := "";
+	  includeUnion := "";
+	  includeNotExists := "";
+	  assayKey := "";
 
           SearchAcc.table := accTable;
           SearchAcc.objectKey := "g." + mgi_DBkey(GXD_GENOTYPE);
@@ -846,15 +851,17 @@ rules:
 	  else
             value := mgi_tblGetCell(top->AllelePair->Table, 0, top->AllelePair->Table.markerSymbol);
             if (value.length > 0) then
-	      where := where + "\nand ap.symbol like " + mgi_DBprstr(value);
+	      where := where + "\nand m.symbol like " + mgi_DBprstr(value);
 	      from_allele := true;
+	      from_marker := true;
 	    end if;
 	  end if;
 
           value := mgi_tblGetCell(top->AllelePair->Table, 0, top->AllelePair->Table.markerChr);
           if (value.length > 0) then
-	      where := where + "\nand ap.chromosome = " + mgi_DBprstr(value);
+	      where := where + "\nand m.chromosome = " + mgi_DBprstr(value);
 	      from_allele := true;
+	      from_marker := true;
 	  end if;
 
 	  -- Allele 1
@@ -931,32 +938,65 @@ rules:
 	    manualSearch := true;
 	  end if;
 
-	  if (from_allele or from_cellline) then
-	    where := "where g._Genotype_key = ap._Genotype_key" + where;
-	  else
-	    where := "where g._Genotype_key *= ap._Genotype_key" + where;
+	  --
+	  -- user has not selected any allele-specific information
+	  -- so we don't know if an allele-pair exists, or not
+	  -- therefore, we will union 2 selects:
+	  -- 1) select where allele pair *does* exist
+	  -- 2) select where allele pair does *not* exist
+	  --
+
+	  -- where allele pair does *not* exist
+	  if (not from_allele and not from_cellline) then
+	    includeUnion := "\nunion " + \
+	  	"select distinct g._Genotype_key, g.strain, g.strain, null\n" + from;
+	    includeNotExists := "\nwhere not exists (select 1 from GXD_AllelePair ap where g._Genotype_key = ap._Genotype_key)" + \
+		where;
 	  end if;
+
+	  -- 'from' where allele pair does exist
+	  from := from + ",GXD_AllelePair ap,ALL_Allele a1,ALL_Allele a2";
+
+	  -- 'where' where allele pair does exist
+	  where := "\nwhere g._Genotype_key = ap._Genotype_key" + \
+		"\nand ap._Allele_key_1 = a1._Allele_key" +
+		"\nand ap._Allele_key_2 *= a2._Allele_key" +
+		where;
 
 	  if (from_cellline) then
 	      from := from + "," + mgi_DBtable(ALL_CELLLINE) + " ac";
           end if;
 
+	  if (from_marker) then
+	      from := from + "," + mgi_DBtable(MRK_MARKER) + " m";
+	      where := where + "\nand ap._Marker_key = m._Marker_key";
+          end if;
+
+	  -- begin: Attach statements for Assay
+	  -- If current Assay record...
+
 	  if (not manualSearch and mgi->AssayModule != nil and assayKey.length = 0) then
 	    assayKey := mgi->AssayModule->ID->text.value;
 	  end if;
 
-	  -- If current Assay record...
-
 	  if (assayKey.length > 0) then
 	    if (mgi->AssayModule->InSituForm.managed) then
-	      from := genotype_assayfromspecimen();
+	      from := from + ",GXD_Specimen s";
+	      includeUnion := includeUnion + ",GXD_Specimen s";
 	    else
-	      from := genotype_assayfromgellane();
+	      from := from + ",GXD_GelLane s";
+	      includeUnion := includeUnion + ",GXD_Specimen s";
 	    end if;
-	    where := genotype_assaywhere(assayKey);
+	    where := where + "\nand g._Genotype_key = s._Genotype_key" + \
+		"\nand s._Assay_key = " + assayKey;
+	    includeNotExists := includeNotExists + "\nand g._Genotype_key = s._Genotype_key" + \
+		"\nand s._Assay_key = " + assayKey;
 	  end if;
+	  -- end: Attach statements for Assay
 
-	  select := genotype_search1(from, where);
+	  -- select/from/where for both allele pair options
+	  select := "(select distinct g._Genotype_key, g.strain || ',' || a1.symbol || ',' || a2.symbol, g.strain, a1.symbol\n" +
+		from + where + includeUnion + includeNotExists + ")";
 
 	  -- Reference search
 	  -- if searching by reference, then ignore other search criteria

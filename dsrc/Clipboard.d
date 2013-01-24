@@ -179,10 +179,20 @@ rules:
 	  if (key.length > 0) then
             -- Save lookup command
             saveCmd := clipboard.cmd;
+	    newCmd := "";
  
+            if (clipboard.is_defined("cmd2") != nil) then
+		newCmd := newCmd + "(";
+	    end if;
+
             -- Append key to lookup command
-            newCmd := saveCmd + " " + key + "\norder by " + clipboard.orderBy;
-            clipboard.cmd := newCmd;
+            newCmd := newCmd + saveCmd + " " + key;
+
+            if (clipboard.is_defined("cmd2") != nil) then
+		newCmd := newCmd + "\nunion\n" + clipboard.cmd2 + " " + key + ")";
+	    end if;
+
+            clipboard.cmd := newCmd + "\norder by " + clipboard.orderBy;
  
             -- Load the list
             LoadList.list := clipboard;

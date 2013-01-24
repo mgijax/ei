@@ -1,13 +1,15 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-5-1-1-7
 TAG: ei-5-1-1-6
 TAG: ei-5-1-1-5
-DATE: 01/23/2013
+DATE: 01/23/2013, 01/24/2013
 STAFF: lec
 CHANGES:
 1) Assay.d/AddAntibodyReference/exec_mgi_insertReferenceAssoc_antibody
    variable order was incorrect
 2) remove TR10204 stuff (for now) to see if it is causing issues
+3) TR10204 was *not* the problem...it was the Genotype/Clipboard query/ClipboardLoad
 
 TAG: ei-5-1-1-4
 DATE: 01/02/2013

@@ -305,7 +305,8 @@ char *genotype_orderby()
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"\norder by g.strain, ap.allele1");
+  /*sprintf(buf,"\norder by g.strain, ap.allele1");*/
+  sprintf(buf,"\norder by g.strain, a1.symbol");
   return(buf);
 }
 
@@ -350,21 +351,39 @@ char *genotype_search2(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"(select distinct v._Genotype_key, \
-   \ng.strain + ',' + ap.allele1 + ',' + ap.allele2 as strain \
-   \nfrom GXD_Expression v, GXD_Genotype_View g \
-   \nLEFT OUTER JOIN GXD_AllelePair_View ap on (g._Genotype_key = ap._Genotype_key) \
+   \ng.strain + ',' + a1.symbol + ',' + a2.symbol as strain \
+   \nfrom GXD_Expression v, GXD_Genotype_View g, GXD_AllelePair ap, ALL_Allele a1, ALL_Allele a2 \
    \nwhere v._Refs_key = %s \
    \nand v._Genotype_key = g._Genotype_key \
+   \nand g._Genotype_key = ap._Genotype_key \
+   \nand ap._Allele_key_1 = a1._Allele_key \
+   \nand ap._Allele_key_2 *= a2._Allele_key \
    \nunion \
    \nselect distinct t._Object_key, \
-   \ng.strain + ',' + ap.allele1 + ',' + ap.allele2 as strain \
-   \nfrom VOC_Evidence v, VOC_Annot_View t, GXD_Genotype_View g \
-   \nLEFT OUTER JOIN GXD_AllelePair_View ap on (g._Genotype_key = ap._Genotype_key) \
+   \ng.strain + ',' + a1.symbol + ',' + a2.symbol as strain \
+   \nfrom VOC_Evidence v, VOC_Annot_View t, GXD_Genotype_View g, GXD_AllelePair ap, ALL_Allele a1, ALL_Allele a2 \
    \nwhere v._Refs_key = %s \
    \nand v._Annot_key = t._Annot_key \
    \nand t._MGIType_key = 12 \
-   \nand t._Object_key = g._Genotype_key) \
-   \norder by strain", key, key);
+   \nand t._Object_key = g._Genotype_key \
+   \nand g._Genotype_key = ap._Genotype_key \
+   \nand ap._Allele_key_1 = a1._Allele_key \
+   \nand ap._Allele_key_2 *= a2._Allele_key \
+   \nunion \
+   \nselect distinct v._Genotype_key, g.strain as strain \
+   \nfrom GXD_Expression v, GXD_Genotype_View g \
+   \nwhere v._Refs_key = %s \
+   \nand v._Genotype_key = g._Genotype_key \
+   \nand not exists (select 1 from GXD_AllelePair ap where g._Genotype_key = ap._Genotype_key) \
+   \nunion \
+   \nselect distinct t._Object_key, g.strain as strain \
+   \nfrom VOC_Evidence v, VOC_Annot_View t, GXD_Genotype_View g \
+   \nwhere v._Refs_key = %s \
+   \nand v._Annot_key = t._Annot_key \
+   \nand t._MGIType_key = 12 \
+   \nand t._Object_key = g._Genotype_key \
+   \nand not exists (select 1 from GXD_AllelePair ap where g._Genotype_key = ap._Genotype_key) \
+   )\norder by strain", key, key, key, key);
   return(buf);
 }
 

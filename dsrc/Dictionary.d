@@ -994,16 +994,16 @@ rules:
        --
        -- TR11204/if AD clipboard is added, then also add to Assay/AD clipboard(s)
        --
-       --top := ADClipboardAdd.source_widget.top;
-       --mgi := top.root.parent;
-       --if (mgi->CVGel->ADClipboard != nil) then
-       --  ClipboardLoad.source_widget := mgi->CVGel->ADClipboard->Label;
-       --  send(ClipboardLoad, 0);
-       --end if;
-       --if (mgi->InSituResultDialog->ADClipboard != nil) then
-       --  ClipboardLoad.source_widget := mgi->InSituResultDialog->ADClipboard->Label;
-       --  send(ClipboardLoad, 0);
-       --end if;
+       top := ADClipboardAdd.source_widget.top;
+       mgi := top.root.parent;
+       if (mgi->CVGel->ADClipboard != nil) then
+         ClipboardLoad.source_widget := mgi->CVGel->ADClipboard->Label;
+         send(ClipboardLoad, 0);
+       end if;
+       if (mgi->InSituResultDialog->ADClipboard != nil) then
+         ClipboardLoad.source_widget := mgi->InSituResultDialog->ADClipboard->Label;
+         send(ClipboardLoad, 0);
+       end if;
 
    end does;
 
