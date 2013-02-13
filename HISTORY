@@ -1,5 +1,11 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-5-1-1-?
+DATE: 02/13/2013
+STAFF: lec
+CHANGES:
+1) TR11287/dsrc/Genotype.d/fix allele1/allele2 bug
+
 TAG: ei-5-1-1-7
 TAG: ei-5-1-1-6
 TAG: ei-5-1-1-5

@@ -310,22 +310,6 @@ char *genotype_orderby()
   return(buf);
 }
 
-char *genotype_assayfromspecimen()
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"from GXD_Genotype_View g, GXD_AllelePair_View ap, GXD_Specimen a");
-  return(buf);
-}
-
-char *genotype_assayfromgellane()
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"from GXD_Genotype_View g, GXD_AllelePair_View ap, GXD_GelLane a");
-  return(buf);
-}
-
 char *genotype_assaywhere(char *key)
 {
   static char buf[TEXTBUFSIZ];

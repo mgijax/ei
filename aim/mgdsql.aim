@@ -56,8 +56,6 @@ CALLS
 	 marker_eventreason()				: "char *";
 
 	 genotype_orderby()				: "char *";
-	 genotype_assayfromspecimen()			: "char *";
-	 genotype_assayfromgellane()			: "char *";
 	 genotype_assaywhere("char *")			: "char *";
 	 genotype_search1("char *", "char *")		: "char *";
 	 genotype_search2("char *")			: "char *";
