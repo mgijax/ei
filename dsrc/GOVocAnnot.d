@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- 03/12/2013	lec
+--	TR11278/J:73065/remove
+--
 -- 01/02/2013	lec
 --	TR11224/J:73065
 --
@@ -374,7 +377,7 @@ rules:
 	  markerType : string;
 	  markerStatus : string;
 	  printIEAmessage : boolean := false;
-	  printJ73065message : boolean := false;
+	  --printJ73065message : boolean := false;
 	  messages : string;
  
           if (not top.allowEdit) then
@@ -452,9 +455,9 @@ rules:
 	    end if;
 
 	    -- if J:73045 is used...
-            if (editMode != TBL_ROW_DELETE and refsKey = "74017") then
-	      printJ73065message := true;
-	    end if;
+            --if (editMode != TBL_ROW_DELETE and refsKey = "74017") then
+	    --  printJ73065message := true;
+	    --end if;
 
             if (editMode = TBL_ROW_ADD) then
 	      
@@ -591,9 +594,9 @@ rules:
 	  end if;
 
 	  -- if J:73045 is used, then remind user to enter external reference property
-	  if (printJ73065message) then
-            messages := messages + "\nJ:73065 requires property 'external ref'\nPLEASE VERIFY PMID|Evidence code|Inferred_from";
-	  end if;
+	  --if (printJ73065message) then
+          --  messages := messages + "\nJ:73065 requires property 'external ref'\nPLEASE VERIFY PMID|Evidence code|Inferred_from";
+	  --end if;
 
 	  -- print messages
 	  if (messages.length > 0) then
