@@ -30,7 +30,9 @@ ClipboardSetItems [table : widget;
 		   column : integer;
 		   reason : integer;];
 
-ADClipboardSetItems [source_widget : widget;];
+ADClipboardSetItems [source_widget : widget;
+		   row : integer;
+		   reason : integer;];
 
 GenotypeClipboardSetItems [source_widget : widget;];
 

@@ -19,6 +19,9 @@
 --
 -- History
 --
+-- lec 05/14/2013
+-- 	- TR11375/ADClipboardAdd/re-set the highlighting
+--
 -- lec 01/02/2013
 --	- TR11204/ADClipboardAdd/add call to update clipboard in Assay module
 --
@@ -993,16 +996,28 @@ rules:
 
        --
        -- TR11204/if AD clipboard is added, then also add to Assay/AD clipboard(s)
+       -- TR11375/re-set the highlighting
        --
+
        top := ADClipboardAdd.source_widget.top;
        mgi := top.root.parent;
+
        if (mgi->CVGel->ADClipboard != nil) then
          ClipboardLoad.source_widget := mgi->CVGel->ADClipboard->Label;
          send(ClipboardLoad, 0);
+         ADClipboardSetItems.source_widget := mgi->GelForm->GelLane->Table;
+         ADClipboardSetItems.reason := TBL_REASON_ENTER_CELL_END;
+         ADClipboardSetItems.row := mgi_tblGetCurrentRow(mgi->GelForm->GelLane->Table);
+	 send(ADClipboardSetItems, 0);
        end if;
+
        if (mgi->InSituResultDialog->ADClipboard != nil) then
          ClipboardLoad.source_widget := mgi->InSituResultDialog->ADClipboard->Label;
          send(ClipboardLoad, 0);
+         ADClipboardSetItems.source_widget := mgi->InSituResultDialog->Results->Table;
+         ADClipboardSetItems.reason := TBL_REASON_ENTER_CELL_END;
+         ADClipboardSetItems.row := mgi_tblGetCurrentRow(mgi->InSituResultDialog->Results->Table);
+	 send(ADClipboardSetItems, 0);
        end if;
 
    end does;
