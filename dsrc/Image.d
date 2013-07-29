@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- lec	07/29/2013
+--	- TR11448/Image/Copyright/External Link Notes
+--
 -- lec	11/23/2010
 --	- TR 10033/added image class
 --
@@ -248,6 +251,7 @@ rules:
         Add does
 	  createThumbnail: boolean := Add.createThumbnail;
 	  refsKey : string;
+	  noteKeyDeclared : boolean := false;
 
           if (not top.allowEdit) then
             return;
@@ -335,20 +339,25 @@ rules:
           cmd := cmd + top->Caption.sql;
  
 	  if (top->Caption.sql.length > 0) then
-	    ModifyNotes.keyDeclared := true;
+	    noteKeyDeclared := true;
 	  else
-	    ModifyNotes.keyDeclared := false;
+	    noteKeyDeclared := false;
 	  end if;
 
           ModifyNotes.source_widget := top->Copyright;
           ModifyNotes.tableID := MGI_NOTE;
           ModifyNotes.key := currentRecordKey;
+	  ModifyNotes.keyDeclared := noteKeyDeclared;
           send(ModifyNotes, 0);
+	  if (top->Copyright.sql.length > 0) then
+	  	noteKeyDeclared := true;
+	  end if;
           cmd := cmd + top->Copyright.sql;
  
 	  ProcessNoteForm.notew := top->mgiNoteForm;
 	  ProcessNoteForm.tableID := MGI_NOTE;
 	  ProcessNoteForm.objectKey := currentRecordKey;
+	  ProcessNoteForm.keyDeclared := noteKeyDeclared;
 	  send(ProcessNoteForm, 0);
 	  cmd := cmd + top->mgiNoteForm.sql;
 
@@ -439,6 +448,7 @@ rules:
 --
 
 	Modify does
+	  noteKeyDeclared : boolean := false;
 
           if (not top.allowEdit) then 
             return; 
@@ -509,20 +519,26 @@ rules:
           cmd := cmd + top->Caption.sql;
  
 	  if (top->Caption.sql.length > 0) then
-	    ModifyNotes.keyDeclared := true;
+	    noteKeyDeclared := true;
 	  else
-	    ModifyNotes.keyDeclared := false;
+	    noteKeyDeclared := false;
 	  end if;
 
           ModifyNotes.source_widget := top->Copyright;
           ModifyNotes.tableID := MGI_NOTE;
           ModifyNotes.key := currentRecordKey;
+	  ModifyNotes.keyDeclared := noteKeyDeclared;
           send(ModifyNotes, 0);
+	  send(ProcessNoteForm, 0);
+	  if (top->Copyright.sql.length > 0) then
+	  	noteKeyDeclared := true;
+	  end if;
           cmd := cmd + top->Copyright.sql;
  
 	  ProcessNoteForm.notew := top->mgiNoteForm;
 	  ProcessNoteForm.tableID := MGI_NOTE;
 	  ProcessNoteForm.objectKey := currentRecordKey;
+	  ProcessNoteForm.keyDeclared := noteKeyDeclared;
 	  send(ProcessNoteForm, 0);
 	  cmd := cmd + top->mgiNoteForm.sql;
 

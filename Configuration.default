@@ -18,7 +18,7 @@ source ${MGICONFIG}/master.config.csh
 setenv EIINSTALLDIR ${EI_USRLOCALMGI}/ei/prod
 
 # CVS tag; keep updated with current tag
-setenv CVS_TAG	ei-5-1-3-2
+setenv CVS_TAG	ei-5-1-4-1
 
 # build directory
 setenv EIBUILDDIR ${EI_USRLOCALMGI}/ei
