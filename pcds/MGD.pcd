@@ -10347,6 +10347,18 @@ Shift<Key>Tab: prev-tab-group()
                                     topOffset = 5;
                                 }
                                 {
+                                  GeneticBackgroundMenu = GeneticBackgroundMenu : mgiOption;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = StandardMenu;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = StandardMenu;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    topOffset = 5;
+                                }
+                                {
                                   StrainAttribute = Table : mgiTable;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;

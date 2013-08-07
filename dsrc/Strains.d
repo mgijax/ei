@@ -13,6 +13,9 @@
 --
 -- History
 --
+-- lec	08/02/2013
+--	- TR11273/add genetic background (Strain Prefix?)
+--
 -- lec	06/19/2012
 --	- TR11110/Needs Review: added Date
 --
@@ -352,6 +355,7 @@ rules:
                  mgi_DBprstr(top->Name->text.value) + "," +
                  top->StandardMenu.menuHistory.defaultValue + "," +
                  top->PrivateMenu.menuHistory.defaultValue + "," +
+                 top->GeneticBackgroundMenu.menuHistory.defaultValue + "," +
 		 global_loginKey + "," + global_loginKey + ")\n";
  
 	  send(ModifyAttribute, 0);
@@ -480,6 +484,11 @@ rules:
           if (top->PrivateMenu.menuHistory.modified and
               top->PrivateMenu.menuHistory.searchValue != "%") then
             set := set + "private = "  + top->PrivateMenu.menuHistory.defaultValue + ",";
+          end if;
+ 
+          if (top->GeneticBackgroundMenu.menuHistory.modified and
+              top->GeneticBackgroundMenu.menuHistory.searchValue != "%") then
+            set := set + "geneticBackground = "  + top->GeneticBackgroundMenu.menuHistory.defaultValue + ",";
           end if;
  
           cmd := mgi_DBupdate(STRAIN, currentRecordKey, set);
@@ -819,6 +828,10 @@ rules:
             where := where + "\nand s.private = " + top->PrivateMenu.menuHistory.searchValue;
           end if;
 
+          if (top->GeneticBackgroundMenu.menuHistory.searchValue != "%") then
+            where := where + "\nand s.geneticBackground = " + top->GeneticBackgroundMenu.menuHistory.searchValue;
+          end if;
+
 	  -- Strain Attributes
 
 	  row := 0;
@@ -978,16 +991,16 @@ rules:
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	        top->ID->text.value := mgi_getstr(dbproc, 1);
 		top->strainSpecies->ObjectID->text.value := mgi_getstr(dbproc, 2);
-		top->strainSpecies->Species->text.value := mgi_getstr(dbproc, 11);
+		top->strainSpecies->Species->text.value := mgi_getstr(dbproc, 12);
 		top->strainTypes->ObjectID->text.value := mgi_getstr(dbproc, 3);
-		top->strainTypes->StrainType->text.value := mgi_getstr(dbproc, 12);
+		top->strainTypes->StrainType->text.value := mgi_getstr(dbproc, 13);
                 top->Name->text.value := mgi_getstr(dbproc, 4);
 		origStrainName := top->Name->text.value;
 
-		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 13));
-		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 9));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 14));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 10));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 14));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 10));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 15));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 11));
 
                 SetOption.source_widget := top->StandardMenu;
                 SetOption.value := mgi_getstr(dbproc, 5);
@@ -995,6 +1008,10 @@ rules:
                 SetOption.source_widget := top->PrivateMenu;
                 SetOption.value := mgi_getstr(dbproc, 6);
                 send(SetOption, 0);
+                SetOption.source_widget := top->GeneticBackgroundMenu;
+                SetOption.value := mgi_getstr(dbproc, 7);
+                send(SetOption, 0);
+
 	        row := row + 1;
             end while;
           end while;
