@@ -1623,7 +1623,7 @@ rules:
 	        cmd := mgi_setDBkey(tableID, NEWKEY, KEYNAME) +
 		       mgi_DBinsert(tableID, KEYNAME) +
                        defaultSpecies + "," + defaultStrainType + "," + 
-		       mgi_DBprstr(item.value) + ",0,0," +
+		       mgi_DBprstr(item.value) + ",0,0,0," +
 		       global_loginKey + "," + global_loginKey + ")\n";
 	      elsif (tableID = VOC_CELLLINE_VIEW) then
 		nextSeqNum := mgi_sql1(verify_item_nextseqnum((string) verify.vocabKey));
@@ -3130,7 +3130,7 @@ rules:
                 ExecSQL.cmd := mgi_setDBkey(STRAIN, NEWKEY, KEYNAME) +
                                mgi_DBinsert(STRAIN, KEYNAME) +
                                defaultSpecies + "," + defaultStrainType + "," + 
-			       mgi_DBprstr(s) + ",0,0," +
+			       mgi_DBprstr(s) + ",0,0,0," +
 			       global_loginKey + "," + global_loginKey + ")\n";
                 send(ExecSQL, 0);
                 added := added + s + "\n";
