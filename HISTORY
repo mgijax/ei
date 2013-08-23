@@ -1,5 +1,11 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-5-1-4-4
+DATE: 08/23/2013
+STAFF: lec
+CHANGES:
+1) TR11464/new experiment type 'TEXT-QTL-Candidate Genes'
+
 TAG: ei-5-1-4-3
 TAG: ei-5-1-4-2
 DATE: 08/07/2013

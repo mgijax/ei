@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Aug  7 09:16:25 2013";
+      lastWritten = "Fri Aug 23 08:52:35 2013";
       copy = false;
       inCreateMenu = true;
         {
@@ -2196,6 +2196,15 @@ Module: mgiOption
                       Group: User
                         searchValue = "TEXT-QTL";
                         defaultValue = "TEXT-QTL";
+                        form = ExptTextForm;
+                    }
+                    {
+                      Text6 = ExptToggle : mgiOption;
+                      Group: Widget
+                        labelString = "Text-QTL-Candidate Genes";
+                      Group: User
+                        searchValue = "TEXT-Radiation Hybrid";
+                        defaultValue = "TEXT-Radiation Hybrid";
                         form = ExptTextForm;
                     }
                     {
