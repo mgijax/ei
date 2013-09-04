@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- 09/03/2013	lec
+--	- TR11417/remove VerifyAlleleCombination
+--
 -- 10/02/2012	lec
 --	- TR10273/add Mutant Cell Lines
 --
@@ -117,7 +120,6 @@ devents:
 	GenotypeClipboardAdd :local [];
 
 	VerifyAlleleState :local [];
-	VerifyAlleleCombination :local [];
 	VerifyAlleleMutantCellLine :translation [];
 
 locals:
@@ -316,12 +318,6 @@ rules:
 	    return;
 	  end if;
 
-	  send(VerifyAlleleCombination, 0);
-	  if (not alleleCombinationOK) then
-	    (void) reset_cursor(top);
-	    return;
-	  end if;
-
           -- If adding, then @KEYNAME must be used in all Modify events
  
           currentRecordKey := "@" + KEYNAME;
@@ -461,12 +457,6 @@ rules:
 
 	  send(VerifyAlleleState, 0);
 	  if (not alleleStateOK) then
-	    (void) reset_cursor(top);
-	    return;
-	  end if;
-
-	  send(VerifyAlleleCombination, 0);
-	  if (not alleleCombinationOK) then
 	    (void) reset_cursor(top);
 	    return;
 	  end if;
@@ -1404,86 +1394,6 @@ rules:
 
 	    row := row + 1;
 	  end while;
-
-	end does;
-
---
--- VerifyAlleleCombination
---
--- Verifies Allele Combination
---
-	VerifyAlleleCombination does
-	  table : widget := top->AllelePair->Table;
-	  row : integer;
-	  editMode : string;
-	  compoundTerm : string;
-	  markerChr : string;
-	  topRow : integer := -1;
-	  bottomRow : integer := -1;
-	  chrList : string_list := create string_list();
-
-	  alleleCombinationOK := true;
-
-          -- Process while non-empty rows are found
- 
-	  row := 0;
-          while (row < mgi_tblNumRows(table)) do
-            editMode := mgi_tblGetCell(table, row, table.editMode);
- 
-            if (editMode = TBL_ROW_EMPTY) then
-              break;
-            end if;
- 
-            if (editMode != TBL_ROW_DELETE) then
-
-              compoundTerm := mgi_tblGetCell(table, row, table.compound);
-              markerChr := mgi_tblGetCell(table, row, table.markerChr);
-
-	      if (compoundTerm = "Top") then
-		topRow := row;
-		chrList.insert(markerChr, chrList.count + 1);
-	      end if;
-
-	      if (compoundTerm = "Bottom") then
-		bottomRow := row;
-		chrList.insert(markerChr, chrList.count + 1);
-	      end if;
-
-	      if (topRow > -1 and bottomRow > -1 and topRow < bottomRow) then
-	        chrList.reduce;
-	        if (chrList.count > 1) then
-	          alleleCombinationOK := false;
-                  StatusReport.source_widget := top;
-                  StatusReport.message := "Compound Attribute Error:  All Markers for Alleles in a Compound Display Group must have the same chromosome.";
-	          send(StatusReport, 0);
-	          return;
-	        end if;
-		chrList.reset;
-	      end if;
-
-	    end if;
-
-	    row := row + 1;
-	  end while;
-
-	  chrList.reduce;
-	  if (chrList.count > 1) then
-	    alleleCombinationOK := false;
-            StatusReport.source_widget := top;
-            StatusReport.message := "Compound Attribute Error:  All Markers for Alleles in a Compound Display Group must have the same chromosome.";
-	    send(StatusReport, 0);
-	    return;
-	  end if;
-
-	  if ((topRow = -1 and bottomRow > -1) or
-	      (topRow > -1 and bottomRow = -1) or
-	      (topRow > bottomRow )) then
-	    alleleCombinationOK := false;
-            StatusReport.source_widget := top;
-            StatusReport.message := "Compound Attribute Error:  A Compound Display Group must be closed: Top and Bottom Annotations.";
-	    send(StatusReport, 0);
-	    return;
-	  end if;
 
 	end does;
 

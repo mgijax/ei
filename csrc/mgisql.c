@@ -731,7 +731,7 @@ char *image_thumbnail(char *key)
   return(buf);
 }
 
-char *image_thumbnailByRef(char *key)
+char *image_byRef(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));

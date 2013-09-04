@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- lec	09/03/2013
+-- 	- TR11350/do not create thumbnails for expression images
+--
 -- lec	07/29/2013
 --	- TR11448/Image/Copyright/External Link Notes
 --
@@ -281,6 +284,11 @@ rules:
 
           cmd := mgi_setDBkey(IMG_IMAGE, NEWKEY, KEYNAME);
 
+	  -- TR11350/do not create thumbnails for expression images
+	  if (defaultImageClassKey = "6481781") then
+		createThumbnail := false;
+	  end if;
+
 	  if (createThumbnail) then
 
 	    -- Create the Thumbnail record first
@@ -389,23 +397,13 @@ rules:
             send(ClearImage, 0);
           end if;
 
-	  -- If a Thumbnail was also created, then select 
+	  -- select by referencer
 
-	  if (createThumbnail) then
-	    -- for big loads (like J:153498), this will take a while
-	    -- we may want to attach the reference check (see Assay.d/python_image_cache)
-	    -- in order to skip this step, if it's taking too long
-            QueryNoInterrupt.source_widget := top;
-	    QueryNoInterrupt.select := image_thumbnailByRef(refsKey) + orderBy;
-	    QueryNoInterrupt.table := IMG_IMAGE;
-	    QueryNoInterrupt.selectItem := false;
-            send(QueryNoInterrupt, 0);
-	  else
-	    top->Caption->text.value := "";
-	    top->Caption.noteKey := -1;
-	    top->Copyright->text.value := "";
-	    top->Copyright.noteKey := -1;
-	  end if;
+          QueryNoInterrupt.source_widget := top;
+	  QueryNoInterrupt.select := image_byRef(refsKey) + orderBy;
+	  QueryNoInterrupt.table := IMG_IMAGE;
+	  QueryNoInterrupt.selectItem := false;
+          send(QueryNoInterrupt, 0);
  
           (void) reset_cursor(top);
 

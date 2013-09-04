@@ -92,7 +92,7 @@ CALLS
          image_orderByJnum()             			: "char *";
          image_orderByImageType()        			: "char *";
          image_thumbnail("char *")       			: "char *";
-         image_thumbnailByRef("char *")  			: "char *";
+         image_byRef("char *")  				: "char *";
 
 	 lib_max("char *")					: "char *";
 

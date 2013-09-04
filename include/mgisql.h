@@ -106,7 +106,7 @@ extern char *image_pane(char *);
 extern char *image_orderByJnum();
 extern char *image_orderByImageType();
 extern char *image_thumbnail(char *);
-extern char *image_thumbnailByRef(char *);
+extern char *image_byRef(char *);
 
 /* Lib.d */
 

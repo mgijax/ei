@@ -1,5 +1,12 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-5-1-5-1
+DATE: 09/03/2013-09/04/2013
+STAFF: lec
+CHANGES:
+1) TR11417/dsrc/Genotype.d/remove VerifyAlleleCombination
+2) TR11350/dsrc/Image.d/do not create thumbnails for Expression
+
 TAG: ei-5-1-4-5
 TAG: ei-5-1-4-4
 DATE: 08/23/2013
