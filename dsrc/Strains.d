@@ -13,6 +13,9 @@
 --
 -- History
 --
+-- lec  08/16/2013
+--	- TR11489/Strain Attribute query error
+--
 -- lec	08/02/2013
 --	- TR11273/add genetic background (Strain Prefix?)
 --
@@ -839,7 +842,7 @@ rules:
             value := mgi_tblGetCell(top->StrainAttribute->Table, row, top->StrainAttribute->Table.termKey);
 
             if (value.length > 0 and value != "NULL") then
-	      from := from + ",PRB_Strain_AttributeVOC_Term_StrainSpecies_View_View v";
+	      from := from + ",PRB_Strain_Attribute_View v";
 	      where := where + "\nand s._Strain_key = v._Strain_key";
 	      where := where + "\nand v._Term_key = " + value;
 	    end if;

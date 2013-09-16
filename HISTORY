@@ -1,5 +1,11 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-5-1-5-2
+DATE: 09/16/2013
+STAFF: lec
+CHANGES:
+1) TR11486/dsrc/Strains.d/strain attribute query
+
 TAG: ei-5-1-5-1
 DATE: 09/03/2013-09/04/2013
 STAFF: lec
