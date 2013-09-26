@@ -131,7 +131,7 @@ devents:
 	BuildDynamicComponents :local [];
 	Delete :local [];				-- Delete record
         ClearGO :local [reset : boolean := false;];
-	GOComplete :local [];				-- Append Completion Date to GO Note
+	--GOComplete :local [];				-- Append Completion Date to GO Note
 	GOTraverse :local [];
 	GOVocAnnotExit :local [];			-- Destroys D module instance & cleans up
 	Init :local [];					-- Initialize globals, etc.
@@ -1262,6 +1262,8 @@ rules:
         end does;
 
 --
+-- OBSOLETED on 09/26/2013
+-- This can be removed the next time you run across this code
 -- GOComplete
 -- (TR 7906)
 --
@@ -1269,11 +1271,11 @@ rules:
 -- Does:            Appends "<d>MM/DD/YYYY</d>" to Go Annotation Notes using today's date
 --
 
-	GOComplete does
-	    GOComplete.source_widget.note := "<d>" + get_date("%m/%d/%Y") + "</d>";
-	    AppendNote.source_widget := GOComplete.source_widget;
-	    send(AppendNote, 0);
-	end does;
+--	GOComplete does
+--	    GOComplete.source_widget.note := "<d>" + get_date("%m/%d/%Y") + "</d>";
+--	    AppendNote.source_widget := GOComplete.source_widget;
+--	    send(AppendNote, 0);
+--	end does;
 
 --
 -- GOTraverse

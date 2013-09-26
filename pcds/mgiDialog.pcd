@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Feb 15 11:11:51 2012";
+      lastWritten = "Thu Sep 26 09:18:51 2013";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -710,9 +710,10 @@ Module: mgiDialog
                   bottomAttachment = attach_form;
                   resizable = true;
                   topWidget = separator;
-                  leftOffset = 100;
+                  leftOffset = 50;
                   bottomOffset = 5;
                   topOffset = 5;
+                  rightOffset = 50;
                     {
                       OK = DialogPush;
                       Group: Widget
@@ -724,6 +725,13 @@ Module: mgiDialog
                       Group: Widget
                         activateCallback = "D:NoteCancel";
                         labelString = "Cancel Changes";
+                    }
+                    {
+                      addNote1 = AppendNotePush : mgiDataTypes;
+                      Group: Widget
+                        activateCallback = "D:AppendNoteButton(note = \"Acc(MGI:||)\")";
+                        labelString = "Add Acc/MGI";
+                        managed = False;
                     }
               }
         }

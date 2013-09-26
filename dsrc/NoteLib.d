@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- 09/26/2013	lec
+--	TR11337/add AppendNoteButton for GXD (addNote1)
+--
 -- 10/28/2009   lec
 --      TR9922/ProcessNoteForm.keyDeclared
 --
@@ -579,6 +582,12 @@ rules:
 	  dialog->Note->text.rows := dialog->Note->text.saveRows;;
 	  dialog->Note->text.maxLength := dialog->Note->text.saveMaxNoteLength;
 
+	  -- TR11337/only display this button if Assay or Specimen note
+	  if (dialog->label.labelString = "Assay Notes" or
+	      dialog->label.labelString = "Specimen Notes") then
+		dialog->Buttons->addNote1.managed := true;
+	  end if;
+
 	  -- For short notes (max 255)
 	  if (NoteInit.shortNote) then
 	    if (target.is_defined("maxLength") != nil) then
@@ -871,6 +880,30 @@ rules:
 		dialogWidget->Note->text.value + sourceWidget.note;
 	    end if;
 	  end if;
+	end does;
+
+--
+-- AppendNoteButton
+--
+-- Append special text in the Notes field
+--
+
+	AppendNoteButton does
+	  top : widget := AppendNoteButton.source_widget.top;
+	  noteWidget : widget := top->Note;
+	  oldValue : string := "";
+	  newValue : string := "";
+
+	  if (noteWidget->text.value.length > 0) then
+		oldValue := noteWidget->text.value + "  ";
+	  end if;
+
+	  newValue := oldValue + AppendNoteButton.note;
+
+	  if (newValue.length <= noteWidget->text.maxLength) then
+	    noteWidget->text.value := newValue;
+	  end if;
+
 	end does;
 
 end dmodule;

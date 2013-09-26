@@ -71,7 +71,11 @@ SetNotesRequired [notew : widget;                -- mgiNoteForm widget
 		  noteType : string;             -- noteType to set
 		  required : boolean := true;];  -- value of "required"
 
--- Events which handle AppendNotePush template
+-- Events which handles AppendNotePush template
 
 AppendNote [source_widget : widget;];
 
+-- Events which handles a NoteDiag/button/add-note
+
+AppendNoteButton [source_widget : widget;
+		  note : string;];

@@ -1,5 +1,11 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-5-1-5-3
+DATE: 09/26/2013
+STAFF: lec
+CHANGES:
+1) TR11337/dsrc/NoteLib*/add AppendNoteButton for GXD/Assay/Specimen notes
+
 TAG: ei-5-1-5-2
 DATE: 09/16/2013
 STAFF: lec
