@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Sep 26 09:18:51 2013";
+      lastWritten = "Mon Oct  7 07:22:32 2013";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -729,7 +729,7 @@ Module: mgiDialog
                     {
                       addNote1 = AppendNotePush : mgiDataTypes;
                       Group: Widget
-                        activateCallback = "D:AppendNoteButton(note = \"Acc(MGI:||)\")";
+                        activateCallback = "D:AppendNoteButton(note = \"\\Acc(MGI:||)\")";
                         labelString = "Add Acc/MGI";
                         managed = False;
                     }
