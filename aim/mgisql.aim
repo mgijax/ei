@@ -170,7 +170,6 @@ CALLS
 	 verify_item_cross("char *")				: "char *";
 	 verify_item_riset("char *")				: "char *";
 	 verify_item_term("char *")				: "char *";
-	 verify_westernblot("char *", "char *", "char *")	: "char *";
 
 	 verify_vocabtermaccID("char *", "char *")		: "char *";
 	 verify_vocabtermaccIDNoObsolete("char *", "char *")	: "char *";

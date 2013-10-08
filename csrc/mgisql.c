@@ -1393,14 +1393,6 @@ char *verify_item_term(char *key)
   return(buf);
 }
 
-char *verify_westernblot(char *key, char *from, char *where)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select recogWestern from %s where %s = %s", from, where, key);
-  return(buf);
-}
-
 char *verify_vocabtermaccID(char *key, char *vocabKey)
 {
   static char buf[TEXTBUFSIZ];

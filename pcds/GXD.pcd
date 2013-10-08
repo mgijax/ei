@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Sep 24 12:50:19 2013";
+      lastWritten = "Mon Oct  7 11:37:06 2013";
       copy = false;
       inCreateMenu = true;
         {
@@ -901,36 +901,12 @@ Module: GXD
                                     resizable = true;
                                 }
                                 {
-                                  WesternMenu = WesternMenu : mgiOption;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = AntibodyTypeMenu;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = AntibodyTypeMenu;
-                                    topOffset = 5;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                }
-                                {
-                                  ImmunoMenu = ImmunoMenu : mgiOption;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = WesternMenu;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = WesternMenu;
-                                    topOffset = 5;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                }
-                                {
                                   separator = XmSeparator;
                                   Group: Constraint
                                     leftAttachment = attach_form;
                                     rightAttachment = attach_form;
                                     topAttachment = attach_widget;
-                                    topWidget = ImmunoMenu;
+                                    topWidget = AntibodyTypeMenu;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -939,10 +915,10 @@ Module: GXD
                                   AntigenAccession = mgiAccession : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = ImmunoMenu;
+                                    leftWidget = Name;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = separator;
+                                    topWidget = AntibodyTypeMenu;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -1263,33 +1239,6 @@ Shift<Key>Tab: prev-tab-group()
                                         text = scrolledText : mgiDataTypes;
                                         Group: Widget
                                           columns = 95;
-                                      }
-                                }
-                                {
-                                  RecogNote = mgiNoteShort : mgiDataTypes;
-                                  Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_opposite_widget;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    leftWidget = CVAntibodyNote;
-                                    topWidget = CVAntibodyNote;
-                                    leftOffset = 55;
-                                  Group: Control
-                                    vipComment = "The XmRowColumn widget is a general purpose manager capable of containing any widget type as a child. In general, it requires no special knowledge about how its children function and provides nothing beyond support for several different layout styles. However, it can be configured as a menu, in which case, it expects only certain children, and it configures to a particular layout. The menus supported are XmMenuBar, XmPulldownMenu, XmPopupMenu, and XmOptionMenu.";
-                                      {
-                                        Note = Notes : mgiDataTypes;
-                                            {
-                                              label = XmLabel;
-                                              Group: Widget
-                                                labelString = "Antigen Recognition Notes";
-                                            }
-                                      }
-                                      {
-                                        NotePush = NotePushShort : mgiDataTypes;
-                                        Group: Widget
-                                          labelString = "Antigen Recognition Notes";
                                       }
                                 }
                                 {
@@ -4132,7 +4081,7 @@ Shift<Key>Tab: prev-tab-group()
                             Group: Widget
                               translations = "#override
 Shift<Key>Tab: prev-tab-group()
-<Key>Tab: VerifyMGIAcc() VerifyMarkerInTable() VerifyWesternBlot()";
+<Key>Tab: VerifyMGIAcc() VerifyMarkerInTable()";
                           }
                     }
                     {

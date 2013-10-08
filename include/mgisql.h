@@ -205,8 +205,6 @@ extern char *verify_item_cross(char *);
 extern char *verify_item_riset(char *);
 extern char *verify_item_term(char *);
 
-extern char *verify_westernblot(char *, char *, char *);
-
 extern char *verify_vocabtermaccID(char *, char *);
 extern char *verify_vocabtermaccIDNoObsolete(char *, char *);
 extern char *verify_vocabtermdag(char *, char *);

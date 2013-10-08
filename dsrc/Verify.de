@@ -70,8 +70,6 @@ VerifyVocabQualifier [];
 
 VerifyVocabTermAccID [];
 
-VerifyWesternBlot :translation [];
-
 WhichItem [];
  
 VerifyDate :translation [];

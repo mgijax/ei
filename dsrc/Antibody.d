@@ -91,7 +91,6 @@ locals:
 
 	options : list;		-- List of Option Menus
 	tables : list;		-- List of Tables
-	notes : list;           -- List of Notes
 
 	currentRecordKey : string;	-- Primary Key value of currently selected record
 					-- Initialized in Select[] and Add[] events
@@ -146,7 +145,6 @@ rules:
 --
 -- Initializes list of Option Menus (options)
 -- Initializes list of Tables (tables)
--- Initializes list of Notes (notes)
 -- Initializes global accTable
 -- Creates dynamic option menus
 -- Initializes global variables
@@ -155,13 +153,10 @@ rules:
 	Init does
 	  options := create list("widget");
 	  tables := create list("widget");
-	  notes := create list("widget");
 
 	  options.append(top->AntibodyTypeMenu);
 	  options.append(top->AntibodyClassMenu);
 	  options.append(top->AntibodyOrganismMenu);
-	  options.append(top->WesternMenu);
-	  options.append(top->ImmunoMenu);
 	  options.append(top->SourceForm->ProbeOrganismMenu);
 	  options.append(top->SourceForm->AgeMenu);
 	  options.append(top->SourceForm->GenderMenu);
@@ -169,9 +164,6 @@ rules:
 	  tables.append(top->Marker->Table);
 	  tables.append(top->Alias->Table);
 	  tables.append(top->Reference->Table);
-
-	  notes.append(top->AntibodyNote);
-	  notes.append(top->RecogNote->Note);
 
 	  accTable := top->mgiAccessionTable->Table;
 	  refTable := top->Reference->Table;
@@ -208,13 +200,6 @@ rules:
 	  Clear.clearKeys := ClearAntibody.clearKeys;
 	  Clear.reset := ClearAntibody.reset;
 	  send(Clear, 0);
-
-	  notes.open;
-	  while (notes.more) do
-	    SetNotesDisplay.note := notes.next;
-	    send(SetNotesDisplay, 0);
-	  end while;
-	  notes.close;
 
 	  -- Initialize Reference table
 
@@ -292,9 +277,6 @@ rules:
 
 	  cmd := cmd + mgi_DBprstr(top->Name->text.value) + "," +
                  mgi_DBprstr(top->AntibodyNote->text.value) + "," +
-                 mgi_DBprstr(top->WesternMenu.menuHistory.defaultValue) + "," +
-                 mgi_DBprstr(top->ImmunoMenu.menuHistory.defaultValue) + "," +
-                 mgi_DBprstr(top->RecogNote->text.value) + "," +
 		 global_loginKey + "," + global_loginKey + ")\n";
 
 	  send(ModifyAlias, 0);
@@ -430,22 +412,8 @@ rules:
             set := set + "_Organism_key = " + top->AntibodyOrganismMenu.menuHistory.defaultValue + ",";
 	  end if;
 
-	  if (top->WesternMenu.menuHistory.modified) then
-            set := set + "recogWestern = " +
-		mgi_DBprstr(top->WesternMenu.menuHistory.defaultValue) + ",";
-	  end if;
-
-	  if (top->ImmunoMenu.menuHistory.modified) then
-            set := set + "recogImmunPrecip = " +
-		mgi_DBprstr(top->ImmunoMenu.menuHistory.defaultValue) + ",";
-	  end if;
-
           if (top->AntibodyNote->text.modified) then
             set := set + "antibodyNote = " + mgi_DBprstr(top->AntibodyNote->text.value) + ",";
-          end if;
- 
-          if (top->RecogNote->text.modified) then
-            set := set + "recogNote = " + mgi_DBprstr(top->RecogNote->text.value) + ",";
           end if;
  
           -- ModifyAntigenSource will set top->SourceForm.sql appropriately
@@ -658,16 +626,6 @@ rules:
             where := where + " and g._Organism_key = " + top->AntibodyOrganismMenu.menuHistory.searchValue;
           end if;
  
-          if (top->WesternMenu.menuHistory.searchValue != "%") then
-            where := where + " and g.recogWestern = " + 
-		mgi_DBprstr(top->WesternMenu.menuHistory.searchValue);
-          end if;
- 
-          if (top->ImmunoMenu.menuHistory.searchValue != "%") then
-            where := where + " and g.recogImmunPrecip = " + 
-		mgi_DBprstr(top->ImmunoMenu.menuHistory.searchValue);
-          end if;
- 
           if (top->AntigenAccession->ObjectID->text.value.length > 0) then
             where := where + " and g._Antigen_key = " + top->AntigenAccession->ObjectID->text.value;
 	  end if;
@@ -675,16 +633,6 @@ rules:
           if (top->AntibodyNote->text.value.length > 0) then
 	    where := where + " and g.antibodyNote like " + 
 		mgi_DBprstr(top->AntibodyNote->text.value);
-	  end if;
-
-          if (top->RecogNote->text.value.length > 0) then
-	    where := where + " and g.recogNote like " + 
-		mgi_DBprstr(top->RecogNote->text.value);
-	  end if;
-
-          if (top->RecogNote->text.value.length > 0) then
-	    where := where + " and g.recogNote like " + 
-		mgi_DBprstr(top->RecogNote->text.value);
 	  end if;
 
 	  -- Aliases
@@ -876,7 +824,6 @@ rules:
 	      top->ID->text.value           := mgi_getstr(dbproc, 1);
 	      top->Name->text.value         := mgi_getstr(dbproc, 6);
 	      top->AntibodyNote->text.value := mgi_getstr(dbproc, 7);
-	      top->RecogNote->text.value  := mgi_getstr(dbproc, 10);
 
               SetOption.source_widget := top->AntibodyClassMenu;
               SetOption.value := mgi_getstr(dbproc, 2);
@@ -890,18 +837,10 @@ rules:
               SetOption.value := mgi_getstr(dbproc, 4);
               send(SetOption, 0);
 
-              SetOption.source_widget := top->WesternMenu;
-              SetOption.value := mgi_getstr(dbproc, 8);
-              send(SetOption, 0);
-
-              SetOption.source_widget := top->ImmunoMenu;
-              SetOption.value := mgi_getstr(dbproc, 9);
-              send(SetOption, 0);
-
-	      (void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 24));
-	      (void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 13));
-	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 25));
-	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 14));
+	      (void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 21));
+	      (void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 10));
+	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 22));
+	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 11));
 	      row := row + 1;
 	    end while;
           end while;
