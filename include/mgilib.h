@@ -151,6 +151,8 @@ extern char *global_version;
 #define GXD_ALLELEPAIR_VIEW	226
 #define IMG_IMAGEPANE_ASSOC	227
 #define IMG_IMAGEPANE_ASSOC_VIEW 228
+#define MGI_EMAPS_MAPPING	229
+#define MGI_EMAPS_MAPPING_VIEW	245
 
 /* Allele Tables */
 

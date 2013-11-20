@@ -3,7 +3,7 @@ Module: mgiLookup
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jan 24 08:18:27 2013";
+      lastWritten = "Wed Oct 30 07:50:38 2013";
         {
           LookupLabel = XmPushButton;
           Group: Widget
@@ -105,7 +105,7 @@ Module: mgiLookup
           LibraryList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1020;
+            vip_y = 1075;
           Group: User
             cmd = "select _Source_key, name from PRB_Source where name is not null and _Source_key > 0 order by name";
               {
@@ -173,7 +173,7 @@ Module: mgiLookup
           OrthologyAssayList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1460;
+            vip_y = 1515;
           Group: User
             cmd = "select * from HMD_Assay where _Assay_key not in (7, 15) order by assay";
               {
@@ -193,7 +193,7 @@ Module: mgiLookup
           OrganismList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1295;
+            vip_y = 1350;
           Group: User
             cmd = "select _Organism_key, organism from MGI_Organism_Marker_View order by organism\n";
               {
@@ -213,7 +213,7 @@ Module: mgiLookup
           MarkerList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1130;
+            vip_y = 1185;
               {
                 Label = LookupLabel;
                 Group: Widget
@@ -231,7 +231,7 @@ Module: mgiLookup
           MappingAssayList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1075;
+            vip_y = 1130;
           Group: User
             cmd = "select * from MLD_Assay_Types order by description";
               {
@@ -251,7 +251,7 @@ Module: mgiLookup
           StrainAttributeList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1570;
+            vip_y = 1625;
           Group: User
             cmd = "(\nselect _Term_key, term, i = 1 from VOC_Term where _Vocab_key = 27 and term like '[a-z]%'\nunion\nselect _Term_key, term, i = 2 from VOC_Term where _Vocab_key = 27 and term like '*%'\n)\norder by i, term\n";
               {
@@ -272,7 +272,7 @@ Module: mgiLookup
           StemCellLineList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1515;
+            vip_y = 1570;
           Group: User
             cmd = "select c._CellLine_key, c.cellLine || ';' || s.strain as cellLine\nfrom ALL_CellLine c, PRB_Strain s\nwhere c.isMutant = 0 and c._CellLine_Type_key = 3982968\nand c._Strain_key = s._Strain_key\nunion\nselect c._CellLine_key, c.cellLine || ';' || s.strain || ';' || vt.term as cellLine\nfrom ALL_CellLine c, PRB_Strain s, VOC_Term vt\nwhere c.isMutant = 0 and c._CellLine_Type_key != 3982968\nand c._Strain_key = s._Strain_key\nand c._CellLine_Type_key = vt._Term_key\norder by cellLine\n";
               {
@@ -392,7 +392,7 @@ Module: mgiLookup
           GenotypeClipboard = ClipboardList;
           Group: Control
             vip_x = 90;
-            vip_y = 800;
+            vip_y = 855;
           Group: User
             clipboardModule = GenotypeModule;
             editClipboard = GenotypeEditClipboard;
@@ -411,7 +411,7 @@ Module: mgiLookup
             userDefinedAttributes = "cmd2:String(String)\n";
           Group: Control
             vip_x = 90;
-            vip_y = 965;
+            vip_y = 1020;
           Group: User
             cmd = "select distinct g._Genotype_key, g.dbName || ',' || a1.symbol || ',' || a2.symbol, g.mgiID\nfrom GXD_Genotype_View g, GXD_AllelePair ap, ALL_Allele a1, ALL_Allele a2, GXD_Specimen s\nwhere s._Genotype_key = g._Genotype_key\nand g._Genotype_key = ap._Genotype_key\nand ap._Allele_key_1 = a1._Allele_key\nand ap._Allele_key_2 *= a2._Allele_key\nand s._Assay_key =";
             cmd2 = "select distinct g._Genotype_key, g.dbName, g.mgiID\nfrom GXD_Genotype_View g, GXD_Specimen s\nwhere s._Genotype_key = g._Genotype_key\nand not exists (select 1 from GXD_AllelePair ap where g._Genotype_key = ap._Genotype_key)\nand s._Assay_key =";
@@ -432,7 +432,7 @@ Module: mgiLookup
             userDefinedAttributes = "cmd2:String(String)\n";
           Group: Control
             vip_x = 90;
-            vip_y = 910;
+            vip_y = 965;
           Group: User
             cmd = "select distinct g._Genotype_key, g.dbName || ',' || a1.symbol || ',' || a2.symbol, g.mgiID\nfrom GXD_Genotype_View g, GXD_AllelePair ap, ALL_Allele a1, ALL_Allele a2, GXD_GelLane s\nwhere s._Genotype_key = g._Genotype_key\nand g._Genotype_key = ap._Genotype_key\nand ap._Allele_key_1 = a1._Allele_key\nand ap._Allele_key_2 *= a2._Allele_key\nand s._Assay_key =";
             cmd2 = "select distinct g._Genotype_key, g.dbName, g.mgiID\nfrom GXD_Genotype_View g, GXD_GelLane s\nwhere s._Genotype_key = g._Genotype_key\nand not exists (select 1 from GXD_AllelePair ap where g._Genotype_key = ap._Genotype_key)\nand s._Assay_key =";
@@ -469,7 +469,7 @@ Module: mgiLookup
           GenotypeEditClipboard = ClipboardEditList;
           Group: Control
             vip_x = 90;
-            vip_y = 855;
+            vip_y = 910;
               {
                 Label = LookupLabel : mgiLookup;
                 Group: Widget
@@ -487,7 +487,7 @@ Module: mgiLookup
           OrganismMGITypeList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1350;
+            vip_y = 1405;
           Group: User
             cmd = "select _MGIType_key, name from ACC_MGIType where _MGIType_key in (2,3,6,7,18,19) order by name";
               {
@@ -542,7 +542,7 @@ Module: mgiLookup
           OrganismSequenceList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1405;
+            vip_y = 1460;
           Group: User
             cmd = "select _Organism_key, commonName from MGI_Organism_Sequence_View order by commonName";
               {
@@ -565,7 +565,7 @@ Module: mgiLookup
             resizePolicy = resize_any;
           Group: Control
             vip_x = 90;
-            vip_y = 1185;
+            vip_y = 1240;
               {
                 Label = LookupLabel : mgiLookup;
                 Group: Widget
@@ -645,7 +645,7 @@ Module: mgiLookup
           StrainTypeList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1625;
+            vip_y = 1680;
           Group: User
             cmd = "select _Term_key, term from VOC_Term where _Vocab_key = 55 order by term";
               {
@@ -666,7 +666,7 @@ Module: mgiLookup
           NeedsReviewList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1240;
+            vip_y = 1295;
           Group: User
             cmd = "select _Term_key, term from VOC_Term where _Vocab_key = 56 order by term";
               {
@@ -726,7 +726,7 @@ Module: mgiLookup
           TDCList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1680;
+            vip_y = 1735;
           Group: User
             cmd = "select _Term_key, term, accID\nfrom VOC_Term_MCV_View\norder by term\n";
               {
@@ -735,6 +735,24 @@ Module: mgiLookup
                   labelString = "0 TDC List";
                 Group: User
                   defaultLabel = "TDC List";
+              }
+              {
+                List = list : mgiDataTypes;
+                Group: Widget
+                  singleSelectionCallback = "D:SelectLookupListItem";
+              }
+        }
+        {
+          EvidencePropertyList = LookupList;
+          Group: Control
+            vip_x = 90;
+            vip_y = 800;
+              {
+                Label = LookupLabel : mgiLookup;
+                Group: Widget
+                  labelString = "Evidence Property";
+                Group: User
+                  defaultLabel = "Evidence Property";
               }
               {
                 List = list : mgiDataTypes;

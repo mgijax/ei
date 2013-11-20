@@ -647,7 +647,7 @@ char *evidenceproperty_select(char *key, char *table, char *objectKey)
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select * from %s \
    where %s = %s \
-   order by stanza, sequenceNum", table, key, objectKey);
+   order by stanza, sequenceNum, term", table, key, objectKey);
   return(buf);
 }
 

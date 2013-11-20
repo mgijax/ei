@@ -243,6 +243,9 @@ rules:
 	  InitOptionMenu.option := top->EvidencePropertyMenu;
 	  send(InitOptionMenu, 0);
 
+	  LoadList.list := top->EvidencePropertyList;
+	  send(LoadList, 0);
+
 	end does;
 
 --

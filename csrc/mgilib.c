@@ -14,6 +14,9 @@
  *
  * History:
  *
+ * lec	11/20/2013
+ *	- TR11468/add MGI_EMAPS_MAPPING
+ *
  * lec 10/02/2012
  *	- TR10273/add GXD_ALLELE_PAIR:Mutant Cell Lines
  *
@@ -709,6 +712,9 @@ char *mgi_DBkey(int table)
     case GXD_INDEXSTAGES:
             strcpy(buf, "_Index_key");
 	    break;
+    case MGI_EMAPS_MAPPING:
+            strcpy(buf, "_Mapping_key");
+            break;
     case HMD_ASSAY:
             strcpy(buf, "_Assay_key");
 	    break;
@@ -1361,6 +1367,12 @@ char *mgi_DBtable(int table)
 	    break;
     case GXD_INDEXSTAGES:
             strcpy(buf, "GXD_Index_Stages");
+	    break;
+    case MGI_EMAPS_MAPPING:
+            strcpy(buf, "MGI_EMAPS_Mapping");
+	    break;
+    case MGI_EMAPS_MAPPING_VIEW:
+            strcpy(buf, "MGI_EMAPS_Mapping_View");
 	    break;
     case HMD_ASSAY:
             strcpy(buf, "HMD_Assay");
@@ -2130,6 +2142,9 @@ char *mgi_DBinsert(int table, char *keyName)
     case GXD_INDEXSTAGES:
 	    sprintf(buf, "insert %s (_Index_key, _IndexAssay_key, _StageID_key, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table));
 	    break;
+    case MGI_EMAPS_MAPPING:
+	    sprintf(buf, "insert %s (_Mapping_key, accID, emapsID, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table));
+	    break;
     case HMD_NOTES:
 	    sprintf(buf, "insert %s (%s, sequenceNum, notes)",
 	      mgi_DBtable(table), mgi_DBkey(table));
@@ -2515,6 +2530,7 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case GXD_GENOTYPE:
       case GXD_INDEX:
       case GXD_INDEXSTAGES:
+      case MGI_EMAPS_MAPPING:
       case IMG_IMAGE:
       case IMG_IMAGEPANE_ASSOC:
       case MGI_NOTE:
@@ -2581,6 +2597,7 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case GXD_GENOTYPE:
       case GXD_INDEX:
       case GXD_INDEXSTAGES:
+      case MGI_EMAPS_MAPPING:
       case IMG_IMAGE:
       case IMG_IMAGEPANE_ASSOC:
       case MGI_NOTE:
