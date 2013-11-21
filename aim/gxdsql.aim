@@ -59,6 +59,8 @@ CALLS
         dictionary_mgiAlias("char *")	: "char *";
         dictionary_edinburghAlias("char *")	: "char *";
 
+        emaps_query1("char *")	        : "char *";
+        emaps_query2("char *")	        : "char *";
   ENDL
 ENDC
 

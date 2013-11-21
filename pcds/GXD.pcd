@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Nov 20 14:02:44 2013";
+      lastWritten = "Thu Nov 21 13:52:11 2013";
       copy = false;
       inCreateMenu = true;
         {
@@ -4137,13 +4137,11 @@ Shift<Key>Tab: prev-tab-group()
         {
           EMAPSMappingModule = Module : MGI;
           Group: Control
-            vip_x = 93;
-            vip_y = 320;
+            vip_x = 150;
+            vip_y = 328;
           Group: User
-            clearForms = "ControlForm\nEditForm\nSourceForm";
-            homeWidget = Name;
-            editForms = "ControlForm\nEditForm\nSourceForm";
-            activateButtonName = Antigen;
+            homeWidget = EMAPSid;
+            activateButtonName = EMAPSMapping;
               {
                 MainForm = XmForm;
                     {
@@ -4164,6 +4162,8 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         Add = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          managed = False;
                                       }
                                       {
                                         Delete = MenuPush : mgiMenu;
@@ -4208,11 +4208,12 @@ Shift<Key>Tab: prev-tab-group()
                             Group: Widget
                               rubberPositioning = False;
                               resizePolicy = resize_any;
+                            Group: User
+                              homeWidget = EMAPSid;
                                 {
                                   ID = ID;
-                                }
-                                {
-                                  EMAPSAccession = mgiAccession : mgiDataTypes;
+                                  Group: Widget
+                                    managed = True;
                                   Group: Constraint
                                     leftAttachment = attach_form;
                                     rightAttachment = attach_none;
@@ -4220,28 +4221,54 @@ Shift<Key>Tab: prev-tab-group()
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                       {
-                                        ObjectID = ID : mgiDataTypes;
+                                        label = XmLabel;
+                                        Group: Widget
+                                          managed = True;
                                       }
                                       {
-                                        AccessionID = CharText : mgiDataTypes;
-                                            {
-                                              label = XmLabel;
-                                              Group: Widget
-                                                labelString = "EMAPS ID";
-                                            }
+                                        text = text;
+                                        Group: Widget
+                                          columns = 30;
+                                          managed = True;
+                                      }
+                                }
+                                {
+                                  EMAPSid = AccessionID : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_form;
+                                    rightAttachment = attach_form;
+                                    topAttachment = attach_widget;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    rightOffset = 5;
+                                    topWidget = ID;
+                                      {
+                                        label = XmLabel;
+                                        Group: Widget
+                                          labelString = "EMAPS  ID";
+                                      }
+                                }
+                                {
+                                  EMAPSterm = CharText : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = EMAPSid;
+                                    rightAttachment = attach_form;
+                                    topAttachment = attach_widget;
+                                    topWidget = EMAPSid;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    rightOffset = 5;
+                                      {
+                                        label = XmLabel;
+                                        Group: Widget
+                                          labelString = "EMAPS Term";
                                       }
                                       {
-                                        AccessionName = CharSText : mgiDataTypes;
-                                            {
-                                              label = XmLabel;
-                                              Group: Widget
-                                                labelString = "EMAPS Term";
-                                            }
-                                            {
-                                              text = scrolledText : mgiDataTypes;
-                                              Group: Widget
-                                                columns = 50;
-                                            }
+                                        text = text : mgiDataTypes;
+                                        Group: Widget
+                                          columns = 60;
                                       }
                                 }
                                 {
@@ -4250,7 +4277,7 @@ Shift<Key>Tab: prev-tab-group()
                                     leftAttachment = attach_form;
                                     rightAttachment = attach_form;
                                     topAttachment = attach_widget;
-                                    topWidget = EMAPSAccession;
+                                    topWidget = EMAPSterm;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                 }
@@ -4258,31 +4285,27 @@ Shift<Key>Tab: prev-tab-group()
                                   OtherAccession = Table : mgiTable;
                                   Group: Constraint
                                     leftAttachment = attach_form;
-                                    rightAttachment = attach_none;
+                                    rightAttachment = attach_form;
                                     topAttachment = attach_widget;
                                     topWidget = separatorGadget;
-                                    bottomAttachment = attach_form;
                                     resizable = true;
                                     leftOffset = 5;
-                                    bottomOffset = 5;
                                     topOffset = 5;
+                                    rightOffset = 5;
+                                    bottomAttachment = attach_none;
                                       {
                                         Table = mgiTable : mgiTable;
                                         Group: Widget
-                                          xrtTblNumColumns = 4;
-                                          xrtTblColumnLabels = "Mode,Key,Acc ID,Structure";
-                                          xrtTblCharWidthSeries = "(all 0 1))(all 1 10)(all 2 30)(all 3 30)";
-                                          userDefinedAttributes = "mappingKey:Int(Int)=\"1\"\naccID:Int(Int)=\"2\"\nstructure:Int(Int)=\"3\"\n";
-                                      }
-                                      {
-                                        AddRow = TablePush : mgiTable;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                      {
-                                        DeleteRow = TablePush : mgiTable;
-                                        Group: Widget
-                                          managed = False;
+                                          xrtTblNumColumns = 5;
+                                          xrtTblColumnLabels = "Mode,Key,Acc ID,Structure,Stage";
+                                          xrtTblCharWidthSeries = "(all 0 10)(all 1 10)(all 2 30)(all 3 30)(all 4 5)";
+                                          userDefinedAttributes = "mappingKey:Int(Int)=\"1\"\naccID:Int(Int)=\"2\"\nstructure:Int(Int)=\"3\"\nstage:Int=\"4\"\n";
+                                          xrtTblEditableSeries = "(all 0-1 False)";
+                                          xrtTblTraversableSeries = "(all 0-1 False)";
+                                          xrtTblPixelWidthSeries = "(all 0-1 0";
+                                        Group: User
+                                          saveEditableSeries = "(all 0-1 False)";
+                                          saveTraversableSeries = "(all 0-1 False)";
                                       }
                                 }
                           }
@@ -4304,12 +4327,18 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   Modify = ControlPush;
+                                  Group: Widget
+                                    activateCallback = "D:Modify,\nD:GoHome";
                                 }
                                 {
                                   Add = ControlPush;
+                                  Group: Widget
+                                    sensitive = False;
                                 }
                                 {
                                   Delete = ControlPush;
+                                  Group: Widget
+                                    sensitive = False;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
                                     leftWidget = Add;

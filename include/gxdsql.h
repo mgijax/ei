@@ -67,4 +67,9 @@ extern char *dictionary_edinburghAlias(char *);
 
 /* DictionaryLib.d : no sql */
 
+/* EMAPSMapping.d */
+
+extern char *emaps_query1(char *);
+extern char *emaps_query2(char *);
+
 #endif

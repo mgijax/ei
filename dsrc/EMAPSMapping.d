@@ -28,6 +28,7 @@ devents:
 	Add :local [];
 	Delete :local [];
 	Exit :local [];
+	Init :local [];
 	Modify :local [];
 	PrepareSearch :local [];
 	Search :local [];
@@ -42,9 +43,9 @@ locals:
 	set : string;
 	from : string;
 	where : string;
-
+	table : widget;
+        historyTable : widget;
 	currentRecordKey : string;      -- Primary Key value of currently selected record
-					-- Set in Add[] and Select[]
 
 rules:
 
@@ -69,16 +70,34 @@ rules:
 	  SetPermissions.source_widget := top;
 	  send(SetPermissions, 0);
 
-	  SetRowCount.source_widget := top;
-	  SetRowCount.tableID := MGI_EMAPS_MAPPING;
-	  send(SetRowCount, 0);
-
-	  Clear.source_widget := top;
-	  Clear.clearLists := 3;
-	  send(Clear, 0);
+	  send(Init, 0);
  
 	  (void) reset_cursor(mgi);
 	end does;
+
+--
+-- Init
+--
+-- Initialize global variables
+-- Set Row count
+-- Clear Form
+--
+
+        Init does
+
+          -- Set Row Count
+          SetRowCount.source_widget := top;
+	  SetRowCount.tableID := MGI_EMAPS_MAPPING;
+          send(SetRowCount, 0);
+ 
+          -- Clear form
+          Clear.source_widget := top;
+          send(Clear, 0);
+
+	  table := top->OtherAccession->Table;
+	  historyTable := top->ModificationHistory->Table;
+
+        end does;
 
 --
 -- Add
@@ -87,51 +106,6 @@ rules:
 --
 
         Add does
-
-          if (not top.allowEdit) then
-            return;
-          end if;
-
-          (void) busy_cursor(top);
-
-	  currentRecordKey := "@" + KEYNAME;
-	  sourceKeyLabel : string := "maxSource";
-
-	  -- Construct insert for Source; SQL placed in SoureForm.sql UDA
-          AddMolecularSource.source_widget := top;
-          AddMolecularSource.keyLabel := sourceKeyLabel;
-          send(AddMolecularSource, 0);
-
-	  if (top->SourceForm.sql.length = 0) then
-	    (void) reset_cursor(top);
-	    return;
-	  end if;
-
-          cmd := top->SourceForm.sql +
-		 mgi_setDBkey(MGI_EMAPS_MAPPING, NEWKEY, KEYNAME) + 
-		 mgi_DBinsert(MGI_EMAPS_MAPPING, KEYNAME) +
-                 "@" + sourceKeyLabel + "," +
-		 mgi_DBprstr(top->Name->text.value) + "," +
-		 global_loginKey + "," + global_loginKey + ")\n";
-
-	  -- Execute the insert
-
-	  AddSQL.tableID := MGI_EMAPS_MAPPING;
-          AddSQL.cmd := cmd;
-          AddSQL.list := top->QueryList;
-          AddSQL.item := top->Name->text.value;
-          AddSQL.key := top->ID->text;
-          send(AddSQL, 0);
-
-	  -- Set the Report dialog select and clear record if Add successful
-
-	  if (top->QueryList->List.sqlSuccessful) then
-	    SetReportSelect.source_widget := top;
-	    SetReportSelect.tableID := MGI_EMAPS_MAPPING;
-	    send(SetReportSelect, 0);
-	  end if;
-
-          (void) reset_cursor(top);
 	end does;
 
 --
@@ -160,10 +134,18 @@ rules:
 --
 -- Modify
 --
--- Modifies current record based on user changes
+-- Processes table for inserts/updates/deletes
+-- Appends to global cmd string
 --
-
-	Modify does
+ 
+        Modify does
+          row : integer := 0;
+	  editMode : string;
+          key : string;
+	  keyName : string := "mappingKey";
+	  keysDeclared : boolean := false;
+	  accID : string;
+          emapsID : string;
 
           if (not top.allowEdit) then 
             return; 
@@ -174,14 +156,48 @@ rules:
 	  cmd := "";
 	  set := "";
 
-          if (top->Name->text.modified) then
-            set := set + "antigenName = " + mgi_DBprstr(top->Name->text.value) + ",";
-          end if;
+	  -- Process while non-empty rows are found
 
-	  if (cmd.length > 0) then
-	    cmd := cmd + mgi_DBupdate(MGI_EMAPS_MAPPING, currentRecordKey, set);
-	  end if;
+          while (row < mgi_tblNumRows(table)) do
+	    editMode := mgi_tblGetCell(table, row, table.editMode);
 
+	    if (editMode = TBL_ROW_EMPTY) then
+	      break;
+	    end if;
+
+	    key := mgi_tblGetCell(table, row, table.mappingKey);
+	    accID := mgi_tblGetCell(table, row, table.accID);
+	    emapsID := top->EMAPSid->text.value;
+
+	    if (editMode = TBL_ROW_ADD) then
+
+		if (not keysDeclared) then
+                  cmd := cmd + mgi_setDBkey(MGI_EMAPS_MAPPING, NEWKEY, keyName);
+		  keysDeclared := true;
+		else
+		  cmd := cmd + mgi_DBincKey(keyName);
+		end if;
+
+                cmd := cmd + 
+		       mgi_DBinsert(MGI_EMAPS_MAPPING, keyName) +
+	               mgi_DBprstr(accID) + "," +
+		       mgi_DBprstr(emapsID) + "," +
+		       global_loginKey + "," + global_loginKey + ")\n";
+
+	    elsif (editMode = TBL_ROW_MODIFY) then
+	      set := "accID = " + mgi_DBprstr(accID) + "," +
+		     "emapsID = " + mgi_DBprstr(emapsID) + "," +
+		     global_loginKey + "," + global_loginKey + ")\n";
+              cmd := cmd + mgi_DBupdate(MGI_EMAPS_MAPPING, key, set);
+	    end if;
+
+	    if (editMode = TBL_ROW_DELETE and key.length > 0) then
+              cmd := cmd + mgi_DBdelete(MGI_EMAPS_MAPPING, key);
+	    end if;
+
+            row := row + 1;
+          end while;
+ 
           ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
           send(ModifySQL, 0);
@@ -197,7 +213,6 @@ rules:
 
 	PrepareSearch does
 	  value : string;
-	  table : widget;
 
 	  from := "from " + mgi_DBtable(MGI_EMAPS_MAPPING_VIEW);
 	  where := "";
@@ -205,32 +220,33 @@ rules:
 	  -- Common Stuff
 
 	  QueryModificationHistory.table := top->ModificationHistory->Table;
-	  QueryModificationHistory.tag := "e";
+	  QueryModificationHistory.tag := "";
 	  send(QueryModificationHistory, 0);
           from := from + top->ModificationHistory->Table.sqlFrom;
           where := where + top->ModificationHistory->Table.sqlWhere;
 
           QueryDate.source_widget := top->CreationDate;
-          QueryDate.tag := "e";
+          QueryDate.tag := "";
           send(QueryDate, 0);
           where := where + top->CreationDate.sql;
  
           QueryDate.source_widget := top->ModifiedDate;
-          QueryDate.tag := "e";
+          QueryDate.tag := "";
           send(QueryDate, 0);
           where := where + top->ModifiedDate.sql;
  
-          if (top->EMAPSAccession->AccessionID->text.value.length > 0) then
-	    where := where + " and e.emapsID like " + 
-		mgi_DBprstr(top->EMAPSAccession->AccessionID->text.value);
+          if (top->EMAPSid->text.value.length > 0) then
+	    where := where + " and emapsID like " + mgi_DBprstr(top->EMAPSid->text.value);
 	  end if;
 
-          if (top->EMAPSAccession->AccessionName->text.value.length > 0) then
-	    where := where + " and e.term like " + 
-		mgi_DBprstr(top->EMAPSAccession->AccessionName->text.value);
+          if (top->EMAPSterm->text.value.length > 0) then
+	    where := where + " and term like " + mgi_DBprstr(top->EMAPSterm->text.value);
 	  end if;
 
-	  table := top->OtherAccession->Table;
+          value := mgi_tblGetCell(table, 0, table.accID);
+          if (value.length > 0) then
+            where := where + "\nand accID like " + mgi_DBprstr(value);
+          end if;
 
           -- Chop off extra " and "
 
@@ -250,7 +266,7 @@ rules:
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
-	  Query.select := "select distinct _Object_key, emapsID + ',' + term\n" + from + "\n" + 
+	  Query.select := "select emapsID, emapsID + ',' + term\n" + from + "\n" + 
 			where + "\norder by emapsID\n";
 	  Query.table := MGI_EMAPS_MAPPING_VIEW;
 	  send(Query, 0);
@@ -265,7 +281,7 @@ rules:
 
 	Select does
 
-          ClearTable.table := top->OtherAccession->Table;
+          ClearTable.table := table;
           send(ClearTable, 0);
 
           if (top->QueryList->List.selectedItemCount = 0) then
@@ -281,34 +297,32 @@ rules:
 
 	  results : integer := 1;
 	  row : integer := 0;
-	  table : widget;
           dbproc : opaque;
 	  
-	  cmd := "select distinct _Object_key, emapsID, term, creation_date, modification_date, createdBy, modifiedBy from MGI_EMAPS_Mapping_View where _Object_key = " + currentRecordKey;
-	  table := top->ModificationHistory->Table;
+	  cmd := emaps_query1(currentRecordKey);
 	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      top->ID->text.value := mgi_getstr(dbproc, 1);
-	      top->EMAPSAccession->AccessionID->text.value := mgi_getstr(dbproc, 2);
-	      top->EMAPSAccession->AccessionName->text.value := mgi_getstr(dbproc, 3);
-              (void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 6));
-              (void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 4));
-              (void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 7));
-              (void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 5));
+	      top->EMAPSid->text.value := mgi_getstr(dbproc, 1);
+	      top->EMAPSterm->text.value := mgi_getstr(dbproc, 2);
+              (void) mgi_tblSetCell(historyTable, historyTable.createdBy, historyTable.byUser, mgi_getstr(dbproc, 5));
+              (void) mgi_tblSetCell(historyTable, historyTable.createdBy, historyTable.byDate, mgi_getstr(dbproc, 3));
+              (void) mgi_tblSetCell(historyTable, historyTable.modifiedBy, historyTable.byUser, mgi_getstr(dbproc, 6));
+              (void) mgi_tblSetCell(historyTable, historyTable.modifiedBy, historyTable.byDate, mgi_getstr(dbproc, 4));
 	    end while;
           end while;
 	  (void) mgi_dbclose(dbproc);
 
 	  row := 0;
-	  cmd := "select * from MGI_EMAPS_Mapping_View where _Object_key = " + currentRecordKey;
-	  table := top->OtherAccession->Table;
+	  cmd := emaps_query2(currentRecordKey);
 	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      (void) mgi_tblSetCell(table, row, table.mappingKey, mgi_getstr(dbproc, 3));
 	      (void) mgi_tblSetCell(table, row, table.accID, mgi_getstr(dbproc, 4));
 	      (void) mgi_tblSetCell(table, row, table.structure, mgi_getstr(dbproc, 10));
+	      (void) mgi_tblSetCell(table, row, table.stage, mgi_getstr(dbproc, 11));
 	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	      row := row + 1;
 	    end while;
