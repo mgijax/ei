@@ -424,9 +424,7 @@ char *emaps_query1(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select distinct emapsID, term, creation_date, modification_date, createdBy, modifiedBy \
-	\nfrom MGI_EMAPS_Mapping_View where emapsID = '%s' \
-	\nunion \
-  	\nselect '%s', null, null, null, null, null where not exists (select 1 from MGI_EMAPS_Mapping where emapsID = '%s')", key, key, key);
+	\nfrom MGI_EMAPS_Mapping_View where emapsID = '%s'", key);
   return(buf);
 }
 

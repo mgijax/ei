@@ -167,9 +167,14 @@ rules:
 	      item := "*[" + AddSQL.key.value + "]:  " + item;
 	    end if;
 
+	    if (AddSQL.useItemAsKey) then
+              InsertList.key := item;
+	    else
+              InsertList.key := AddSQL.key.value;
+	    end if;
+
             InsertList.list := AddSQL.list;
             InsertList.item := item;
-            InsertList.key := AddSQL.key.value;
             send(InsertList, 0);
 	    top->RecordCount->text.value := mgi_DBrecordCount(AddSQL.tableID);
             (void) XmListSelectPos(AddSQL.list->List, AddSQL.list->List.row, AddSQL.selectNewListItem);

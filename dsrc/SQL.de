@@ -17,7 +17,8 @@ AddSQL [tableID : integer := 0;			-- Execute an Add
         key : widget;
 	row : integer;
 	column : integer;
-	appendKeyToItem : boolean := false;];
+	appendKeyToItem : boolean := false;
+        useItemAsKey : boolean := false;];
 
 DeleteSQL [tableID : integer := 0;		-- Execute a Delete
 	   key : string;

@@ -4162,8 +4162,6 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         Add = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          managed = False;
                                       }
                                       {
                                         Delete = MenuPush : mgiMenu;
@@ -4327,18 +4325,12 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   Modify = ControlPush;
-                                  Group: Widget
-                                    activateCallback = "D:Modify,\nD:GoHome";
                                 }
                                 {
                                   Add = ControlPush;
-                                  Group: Widget
-                                    sensitive = False;
                                 }
                                 {
                                   Delete = ControlPush;
-                                  Group: Widget
-                                    sensitive = False;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
                                     leftWidget = Add;

@@ -712,6 +712,9 @@ char *mgi_DBkey(int table)
     case GXD_INDEXSTAGES:
             strcpy(buf, "_Index_key");
 	    break;
+    case MGI_EMAPS_MAPPING_PARENT:
+            strcpy(buf, "emapsID");
+            break;
     case MGI_EMAPS_MAPPING:
             strcpy(buf, "_Mapping_key");
             break;
@@ -1368,6 +1371,7 @@ char *mgi_DBtable(int table)
     case GXD_INDEXSTAGES:
             strcpy(buf, "GXD_Index_Stages");
 	    break;
+    case MGI_EMAPS_MAPPING_PARENT:
     case MGI_EMAPS_MAPPING:
             strcpy(buf, "MGI_EMAPS_Mapping");
 	    break;
@@ -2693,6 +2697,9 @@ char *mgi_DBdelete(int table, char *key)
 	      tokens = (char **) mgi_splitfields(key, ":");
               sprintf(buf, "delete from %s where table_name = '%s' and column_name = '%s'\n", 
 		mgi_DBtable(table), tokens[0], tokens[1]);
+	      break;
+      case MGI_EMAPS_MAPPING_PARENT:
+              sprintf(buf, "delete from %s where %s = '%s'\n", mgi_DBtable(table), mgi_DBkey(table), key);
 	      break;
       default:
               sprintf(buf, "delete from %s where %s = %s\n", mgi_DBtable(table), mgi_DBkey(table), key);

@@ -29,7 +29,7 @@ devents:
 	Delete :local [];
 	Exit :local [];
 	Init :local [];
-	Modify :local [];
+	Modify :local [fromAdd : boolean := false;];
 	PrepareSearch :local [];
 	Search :local [];
 	Select :local [];
@@ -102,10 +102,51 @@ rules:
 --
 -- Add
 --
--- Constructs and executes SQL insert statement
+-- Construct and execute commands for record insertion
 --
 
         Add does
+          accID : string;
+          emapsID : string;
+
+          if (not top.allowEdit) then
+            return;
+          end if;
+
+          (void) busy_cursor(top);
+
+          -- If adding, then @KEYNAME must be used in all Modify events
+ 
+	  accID := mgi_tblGetCell(table, 0, table.accID);
+	  emapsID := top->EMAPSid->text.value;
+
+          currentRecordKey := "@" + KEYNAME;
+ 
+          cmd := mgi_setDBkey(MGI_EMAPS_MAPPING, NEWKEY, KEYNAME) +
+                 mgi_DBinsert(MGI_EMAPS_MAPPING, KEYNAME) +
+	         mgi_DBprstr(accID) + "," +
+		 mgi_DBprstr(emapsID) + "," +
+		 global_loginKey + "," + global_loginKey + ")\n";
+
+	  AddSQL.tableID := MGI_EMAPS_MAPPING;
+          AddSQL.cmd := cmd;
+	  AddSQL.list := top->QueryList;
+          AddSQL.item := top->EMAPSid->text.value;
+          AddSQL.key := top->ID->text;
+	  AddSQL.useItemAsKey := true;
+          send(AddSQL, 0);
+
+	  if (top->QueryList->List.sqlSuccessful) then
+	    Clear.source_widget := top;
+            Clear.clearKeys := false;
+            send(Clear, 0);
+	  end if;
+
+	  -- now call Modify() for the remaining rows
+	  Modify.fromAdd := true;
+	  send(Modify, 0);
+
+          (void) reset_cursor(top);
 	end does;
 
 --
@@ -117,7 +158,7 @@ rules:
         Delete does
           (void) busy_cursor(top);
 
-	  DeleteSQL.tableID := MGI_EMAPS_MAPPING;
+	  DeleteSQL.tableID := MGI_EMAPS_MAPPING_PARENT;
 	  DeleteSQL.key := currentRecordKey;
 	  DeleteSQL.list := top->QueryList;
           send(DeleteSQL, 0);
@@ -153,8 +194,14 @@ rules:
 
 	  (void) busy_cursor(top);
 
+	  if Modify.fromAdd then
+	    row := 1;
+	  end if;
+
 	  cmd := "";
 	  set := "";
+
+	  emapsID := top->EMAPSid->text.value;
 
 	  -- Process while non-empty rows are found
 
@@ -167,7 +214,6 @@ rules:
 
 	    key := mgi_tblGetCell(table, row, table.mappingKey);
 	    accID := mgi_tblGetCell(table, row, table.accID);
-	    emapsID := top->EMAPSid->text.value;
 
 	    if (editMode = TBL_ROW_ADD) then
 
@@ -198,9 +244,11 @@ rules:
             row := row + 1;
           end while;
  
+	  --if (cmd.length > 0 or not Modify.fromAdd) then
           ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
           send(ModifySQL, 0);
+	  --end if;
 
 	  (void) reset_cursor(top);
 	end does;
@@ -214,38 +262,38 @@ rules:
 	PrepareSearch does
 	  value : string;
 
-	  from := "from " + mgi_DBtable(MGI_EMAPS_MAPPING_VIEW);
+	  from := "from " + mgi_DBtable(MGI_EMAPS_MAPPING_VIEW) + " e";
 	  where := "";
 
 	  -- Common Stuff
 
 	  QueryModificationHistory.table := top->ModificationHistory->Table;
-	  QueryModificationHistory.tag := "";
+	  QueryModificationHistory.tag := "e";
 	  send(QueryModificationHistory, 0);
           from := from + top->ModificationHistory->Table.sqlFrom;
           where := where + top->ModificationHistory->Table.sqlWhere;
 
           QueryDate.source_widget := top->CreationDate;
-          QueryDate.tag := "";
+          QueryDate.tag := "e";
           send(QueryDate, 0);
           where := where + top->CreationDate.sql;
  
           QueryDate.source_widget := top->ModifiedDate;
-          QueryDate.tag := "";
+          QueryDate.tag := "e";
           send(QueryDate, 0);
           where := where + top->ModifiedDate.sql;
  
           if (top->EMAPSid->text.value.length > 0) then
-	    where := where + " and emapsID like " + mgi_DBprstr(top->EMAPSid->text.value);
+	    where := where + " and e.emapsID like " + mgi_DBprstr(top->EMAPSid->text.value);
 	  end if;
 
           if (top->EMAPSterm->text.value.length > 0) then
-	    where := where + " and term like " + mgi_DBprstr(top->EMAPSterm->text.value);
+	    where := where + " and e.term like " + mgi_DBprstr(top->EMAPSterm->text.value);
 	  end if;
 
           value := mgi_tblGetCell(table, 0, table.accID);
           if (value.length > 0) then
-            where := where + "\nand accID like " + mgi_DBprstr(value);
+            where := where + "\nand e.accID like " + mgi_DBprstr(value);
           end if;
 
           -- Chop off extra " and "

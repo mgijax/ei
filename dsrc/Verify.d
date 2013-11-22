@@ -287,6 +287,10 @@ rules:
 	  caption : string;
 	  i, j, l : integer;
 
+	  if (VerifyEdit.mode = 0) then
+            return;
+	  end if;
+
 	  if (VerifyEdit.mode = 5) then	-- Selecting
 	    if (top.is_defined("allowSelect") != nil) then
               if (not top.allowSelect) then
