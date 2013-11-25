@@ -139,6 +139,7 @@ rules:
 	  if (top->QueryList->List.sqlSuccessful) then
 	    Clear.source_widget := top;
             Clear.clearKeys := false;
+            Clear.reset := true;
             send(Clear, 0);
 	  end if;
 
@@ -244,11 +245,11 @@ rules:
             row := row + 1;
           end while;
  
-	  --if (cmd.length > 0 or not Modify.fromAdd) then
-          ModifySQL.cmd := cmd;
-	  ModifySQL.list := top->QueryList;
-          send(ModifySQL, 0);
-	  --end if;
+	  if (cmd.length > 0 or not Modify.fromAdd) then
+            ModifySQL.cmd := cmd;
+	    ModifySQL.list := top->QueryList;
+            send(ModifySQL, 0);
+	  end if;
 
 	  (void) reset_cursor(top);
 	end does;

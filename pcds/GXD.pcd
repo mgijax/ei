@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Nov 21 13:52:11 2013";
+      lastWritten = "Mon Nov 25 06:40:57 2013";
       copy = false;
       inCreateMenu = true;
         {
@@ -4162,6 +4162,8 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         Add = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          managed = False;
                                       }
                                       {
                                         Delete = MenuPush : mgiMenu;
@@ -4210,8 +4212,6 @@ Shift<Key>Tab: prev-tab-group()
                               homeWidget = EMAPSid;
                                 {
                                   ID = ID;
-                                  Group: Widget
-                                    managed = True;
                                   Group: Constraint
                                     leftAttachment = attach_form;
                                     rightAttachment = attach_none;
@@ -4220,14 +4220,11 @@ Shift<Key>Tab: prev-tab-group()
                                     resizable = true;
                                       {
                                         label = XmLabel;
-                                        Group: Widget
-                                          managed = True;
                                       }
                                       {
                                         text = text;
                                         Group: Widget
                                           columns = 30;
-                                          managed = True;
                                       }
                                 }
                                 {
@@ -4235,11 +4232,10 @@ Shift<Key>Tab: prev-tab-group()
                                   Group: Constraint
                                     leftAttachment = attach_form;
                                     rightAttachment = attach_form;
-                                    topAttachment = attach_widget;
+                                    topAttachment = attach_form;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     rightOffset = 5;
-                                    topWidget = ID;
                                       {
                                         label = XmLabel;
                                         Group: Widget
@@ -4325,6 +4321,8 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   Modify = ControlPush;
+                                  Group: Widget
+                                    activateCallback = "D:Modify,\nD:GoHome";
                                 }
                                 {
                                   Add = ControlPush;
