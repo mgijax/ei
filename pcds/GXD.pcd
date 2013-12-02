@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Nov 25 06:40:57 2013";
+      lastWritten = "Mon Dec  2 07:21:46 2013";
       copy = false;
       inCreateMenu = true;
         {
@@ -2789,13 +2789,6 @@ Shift<Key>Tab: prev-tab-group()
                                     labelString = Index;
                                 }
                                 {
-                                  EMAPSMapping = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"EMAPSMapping\")";
-                                    traversalOn = False;
-                                    labelString = "EMAPS Mapping";
-                                }
-                                {
                                   Reference = XmPushButton;
                                   Group: Widget
                                     activateCallback = "D:CreateMGIModule(name = \"Reference\")";
@@ -2822,6 +2815,13 @@ Shift<Key>Tab: prev-tab-group()
                                     activateCallback = "D:CreateMGIModule(name = \"SimpleVocab\")";
                                     labelString = "Simple Vocabulary";
                                     traversalOn = False;
+                                }
+                                {
+                                  EMAPSMapping = XmPushButton;
+                                  Group: Widget
+                                    activateCallback = "D:CreateMGIModule(name = \"EMAPSMapping\")";
+                                    traversalOn = False;
+                                    labelString = "EMAPS Mapping";
                                 }
                           }
                     }
