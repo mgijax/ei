@@ -423,8 +423,11 @@ char *emaps_query1(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select distinct emapsID, term, creation_date, modification_date, createdBy, modifiedBy \
-	\nfrom MGI_EMAPS_Mapping_View where emapsID = '%s'", key);
+  sprintf(buf,"select distinct e.emapsID, e.creation_date, e.modification_date, u1.login, u2.login \
+	\nfrom MGI_EMAPS_Mapping e, MGI_User u1, MGI_User u2 \
+	\nwhere e.emapsID = '%s' \
+	\nand e._CreatedBy_key = u1._User_key \
+	and e._ModifiedBy_key = u2._User_key", key);
   return(buf);
 }
 
@@ -432,7 +435,42 @@ char *emaps_query2(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select * from MGI_EMAPS_Mapping_View where emapsID = '%s' order by accID desc", key);
+  sprintf(buf,"select t.term from MGI_EMAPS_Mapping e, ACC_Accession a, VOC_Term t \
+	\nwhere e.emapsID = '%s' \
+	\nand e.emapsID = a.accID \
+	\nand a._LogicalDB_key = 170 \
+	\nand a._Object_key = t._Term_key", key);
+  return(buf);
+}
+
+char *emaps_query3(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select e._Mapping_key, e.accID, s.printName, ts.stage \
+	\nfrom MGI_EMAPS_Mapping e, ACC_Accession a, GXD_Structure s, GXD_TheilerStage ts \
+	\nwhere e.emapsID = '%s' \
+	\nand e.accID = a.accID \
+	\nand a._LogicalDB_key = 1 \
+	\nand a._MGIType_key = 38 \
+	\nand a._Object_key = s._Structure_key \
+	\nand s._Stage_key = ts._Stage_key \
+	\norder by e.accID desc", key);
+  return(buf);
+}
+
+char *emaps_query4(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select e._Mapping_key, e.accID \
+	\nfrom MGI_EMAPS_Mapping e \
+	\nwhere e.emapsID = '%s' \
+	\nand not exists (select 1 from ACC_Accession a \
+		\nwhere e.accID = a.accID \
+		\nand a._LogicalDB_key = 1 \
+		\nand a._MGIType_key = 38) \
+	\norder by e.accID desc", key);
   return(buf);
 }
 

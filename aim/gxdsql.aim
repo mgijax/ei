@@ -61,6 +61,8 @@ CALLS
 
         emaps_query1("char *")	        : "char *";
         emaps_query2("char *")	        : "char *";
+        emaps_query3("char *")	        : "char *";
+        emaps_query4("char *")	        : "char *";
   ENDL
 ENDC
 

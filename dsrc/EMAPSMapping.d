@@ -262,8 +262,9 @@ rules:
 
 	PrepareSearch does
 	  value : string;
+	  from_term : boolean := false;
 
-	  from := "from " + mgi_DBtable(MGI_EMAPS_MAPPING_VIEW) + " e";
+	  from := "from " + mgi_DBtable(MGI_EMAPS_MAPPING) + " e";
 	  where := "";
 
 	  -- Common Stuff
@@ -289,13 +290,19 @@ rules:
 	  end if;
 
           if (top->EMAPSterm->text.value.length > 0) then
-	    where := where + " and e.term like " + mgi_DBprstr(top->EMAPSterm->text.value);
+	    where := where + " and t.term like " + mgi_DBprstr(top->EMAPSterm->text.value);
+	    from_term := true;
 	  end if;
 
           value := mgi_tblGetCell(table, 0, table.accID);
           if (value.length > 0) then
             where := where + "\nand e.accID like " + mgi_DBprstr(value);
           end if;
+
+	  if (from_term) then
+		from := from + ", ACC_Accession a, VOC_Term t";
+		where := where +  "\nand e.emapsID = a.accID\nand a._LogicalDB_key = 170\nand a._Object_key = t._Term_key";
+	  end if;
 
           -- Chop off extra " and "
 
@@ -315,9 +322,9 @@ rules:
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
-	  Query.select := "select emapsID, emapsID + ',' + term\n" + from + "\n" + 
+	  Query.select := "select emapsID, emapsID\n" + from + "\n" + 
 			where + "\norder by emapsID\n";
-	  Query.table := MGI_EMAPS_MAPPING_VIEW;
+	  Query.table := MGI_EMAPS_MAPPING;
 	  send(Query, 0);
 	  (void) reset_cursor(top);
 	end does;
@@ -354,30 +361,50 @@ rules:
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      top->ID->text.value := mgi_getstr(dbproc, 1);
 	      top->EMAPSid->text.value := mgi_getstr(dbproc, 1);
-	      top->EMAPSterm->text.value := mgi_getstr(dbproc, 2);
-              (void) mgi_tblSetCell(historyTable, historyTable.createdBy, historyTable.byUser, mgi_getstr(dbproc, 5));
-              (void) mgi_tblSetCell(historyTable, historyTable.createdBy, historyTable.byDate, mgi_getstr(dbproc, 3));
-              (void) mgi_tblSetCell(historyTable, historyTable.modifiedBy, historyTable.byUser, mgi_getstr(dbproc, 6));
-              (void) mgi_tblSetCell(historyTable, historyTable.modifiedBy, historyTable.byDate, mgi_getstr(dbproc, 4));
+              (void) mgi_tblSetCell(historyTable, historyTable.createdBy, historyTable.byUser, mgi_getstr(dbproc, 4));
+              (void) mgi_tblSetCell(historyTable, historyTable.createdBy, historyTable.byDate, mgi_getstr(dbproc, 2));
+              (void) mgi_tblSetCell(historyTable, historyTable.modifiedBy, historyTable.byUser, mgi_getstr(dbproc, 5));
+              (void) mgi_tblSetCell(historyTable, historyTable.modifiedBy, historyTable.byDate, mgi_getstr(dbproc, 3));
+	    end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  cmd := emaps_query2(currentRecordKey);
+	  dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      top->EMAPSterm->text.value := mgi_getstr(dbproc, 1);
 	    end while;
           end while;
 	  (void) mgi_dbclose(dbproc);
 
 	  row := 0;
-	  cmd := emaps_query2(currentRecordKey);
+	  cmd := emaps_query3(currentRecordKey);
 	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      (void) mgi_tblSetCell(table, row, table.mappingKey, mgi_getstr(dbproc, 3));
-	      (void) mgi_tblSetCell(table, row, table.accID, mgi_getstr(dbproc, 4));
-	      (void) mgi_tblSetCell(table, row, table.structure, mgi_getstr(dbproc, 10));
-	      (void) mgi_tblSetCell(table, row, table.stage, mgi_getstr(dbproc, 11));
+	      (void) mgi_tblSetCell(table, row, table.mappingKey, mgi_getstr(dbproc, 1));
+	      (void) mgi_tblSetCell(table, row, table.accID, mgi_getstr(dbproc, 2));
+	      (void) mgi_tblSetCell(table, row, table.structure, mgi_getstr(dbproc, 3));
+	      (void) mgi_tblSetCell(table, row, table.stage, mgi_getstr(dbproc, 4));
 	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	      row := row + 1;
 	    end while;
           end while;
 	  (void) mgi_dbclose(dbproc);
  
+	  cmd := emaps_query4(currentRecordKey);
+	  dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      (void) mgi_tblSetCell(table, row, table.mappingKey, mgi_getstr(dbproc, 1));
+	      (void) mgi_tblSetCell(table, row, table.accID, mgi_getstr(dbproc, 2));
+	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+	      row := row + 1;
+	    end while;
+          end while;
+	  (void) mgi_dbclose(dbproc);
+
           top->QueryList->List.row := Select.item_position;
 	  Clear.source_widget := top;
           Clear.reset := true;

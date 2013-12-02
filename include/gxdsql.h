@@ -71,5 +71,7 @@ extern char *dictionary_edinburghAlias(char *);
 
 extern char *emaps_query1(char *);
 extern char *emaps_query2(char *);
+extern char *emaps_query3(char *);
+extern char *emaps_query4(char *);
 
 #endif
