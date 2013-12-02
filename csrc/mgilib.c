@@ -1375,9 +1375,6 @@ char *mgi_DBtable(int table)
     case MGI_EMAPS_MAPPING:
             strcpy(buf, "MGI_EMAPS_Mapping");
 	    break;
-    case MGI_EMAPS_MAPPING_VIEW:
-            strcpy(buf, "MGI_EMAPS_Mapping_View");
-	    break;
     case HMD_ASSAY:
             strcpy(buf, "HMD_Assay");
 	    break;
