@@ -1,12 +1,12 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
 TAG: ei-5-1-6-?
-DATE: 11/12/2013
+DATE: 12/05/2013
 STAFF: lec
 CHANGES:
 1) TR11518/dsrc/GOVocAnnot.d : move EvidenceProperty to a side-list
 as it is now > 50 items
-2) TRxxxx: MGI_EMAPS_MAPPING
+2) MGI_EMAPS_MAPPING/for scrum-bob/GXD Anatomy project
 
 TAG: ei-5-1-5-5
 DATE: 10/08/2013

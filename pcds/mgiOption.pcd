@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Oct  7 11:21:55 2013";
+      lastWritten = "Wed Dec  4 13:48:23 2013";
       copy = false;
       inCreateMenu = true;
         {
@@ -2337,7 +2337,7 @@ Module: mgiOption
               {
                 AlleleTypePulldown : OptionPulldown = OptionPulldown : mgiOption;
                 Group: User
-                  sql = "select _Term_key, term from VOC_Term where _Vocab_key = 38 order by sequenceNum";
+                  sql = "(select _Term_key, term, 1 as orderIt from VOC_Term where _Vocab_key = 38\nand term not like 'Not%'\nunion\nselect _Term_key, term, 2 as orderIt from VOC_Term where _Vocab_key = 38 \nand term like 'Not%'\n)\norder by orderIt, term";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
