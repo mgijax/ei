@@ -2,7 +2,7 @@ Module: mgiAnatDictionary
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Sep 24 12:50:13 2013";
+      lastWritten = "Mon Dec  9 12:25:57 2013";
         {
           DictionaryModule = Module : MGI;
           Group: Widget
@@ -107,13 +107,14 @@ Module: mgiAnatDictionary
                                   Group: Widget
                                     sensitive = False;
                                   Group: Constraint
-                                    leftAttachment = attach_none;
-                                    rightAttachment = attach_form;
+                                    leftAttachment = attach_widget;
+                                    rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     topWidget = ID;
-                                    rightOffset = 5;
+                                    leftWidget = ID;
+                                    leftOffset = 5;
                                       {
                                         label = XmLabel;
                                         Group: Widget
@@ -128,7 +129,7 @@ Module: mgiAnatDictionary
                                 {
                                   structureTextKey = CharText : mgiDataTypes;
                                   Group: Widget
-                                    sensitive = False;
+                                    managed = False;
                                   Group: Constraint
                                     leftAttachment = attach_none;
                                     rightAttachment = attach_form;
@@ -139,8 +140,6 @@ Module: mgiAnatDictionary
                                     rightOffset = 5;
                                       {
                                         label = XmLabel;
-                                        Group: Widget
-                                          labelString = "Edinburgh Key";
                                       }
                                       {
                                         text = text : mgiDataTypes;
@@ -189,6 +188,50 @@ Module: mgiAnatDictionary
                                       }
                                 }
                                 {
+                                  emapsID = CharText : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = stagesText;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = stagesText;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                      {
+                                        label = XmLabel;
+                                        Group: Widget
+                                          labelString = "EMAPS ID";
+                                      }
+                                      {
+                                        text = text : mgiDataTypes;
+                                        Group: Widget
+                                          columns = 30;
+                                      }
+                                }
+                                {
+                                  emapsTerm = CharText : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftWidget = emapsID;
+                                    leftOffset = 5;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = emapsID;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                      {
+                                        label = XmLabel;
+                                        Group: Widget
+                                          labelString = "EMAPS Term";
+                                      }
+                                      {
+                                        text = text : mgiDataTypes;
+                                        Group: Widget
+                                          columns = 60;
+                                      }
+                                }
+                                {
                                   mgiAliasTable = aliasTable : mgiAnatDictionary;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
@@ -196,9 +239,9 @@ Module: mgiAnatDictionary
                                     topAttachment = attach_widget;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    leftWidget = structureText;
-                                    topWidget = stagesText;
-                                    topOffset = 40;
+                                    leftWidget = emapsID;
+                                    topWidget = emapsID;
+                                    topOffset = 5;
                                       {
                                         Table = mgiTable;
                                             {
@@ -241,7 +284,7 @@ Module: mgiAnatDictionary
                                     leftOffset = 5;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
-                                    topWidget = structureText;
+                                    topWidget = edinburghKey;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     topOffset = 5;

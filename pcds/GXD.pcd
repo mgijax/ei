@@ -3,14 +3,14 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Dec  2 07:21:46 2013";
+      lastWritten = "Mon Dec  9 12:25:55 2013";
       copy = false;
       inCreateMenu = true;
         {
           AntigenModule = Module : MGI;
           Group: Control
-            vip_x = 175;
-            vip_y = 85;
+            vip_x = 70;
+            vip_y = 195;
           Group: User
             clearForms = "ControlForm\nEditForm\nSourceForm";
             homeWidget = Name;
@@ -790,8 +790,8 @@ Module: GXD
         {
           AntibodyModule = Module : MGI;
           Group: Control
-            vip_x = 175;
-            vip_y = 30;
+            vip_x = 70;
+            vip_y = 85;
           Group: User
             clearForms = "ControlForm\nEditForm\nSourceForm";
             homeWidget = Name;
@@ -1789,8 +1789,8 @@ Shift<Key>Tab: prev-tab-group()
             width = 1000;
             resizePolicy = resize_none;
           Group: Control
-            vip_x = 60;
-            vip_y = 250;
+            vip_x = 70;
+            vip_y = 470;
               {
                 Specimen = OrderedTableLabel : mgiTable;
                 Group: Widget
@@ -1875,8 +1875,8 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_none;
             width = 1000;
           Group: Control
-            vip_x = 175;
-            vip_y = 140;
+            vip_x = 70;
+            vip_y = 305;
               {
                 ImagePaneList = LookupList : mgiLookup;
                 Group: Constraint
@@ -2051,8 +2051,8 @@ Shift<Key>Tab: prev-tab-group()
           Group: Widget
             title = "GXD Index";
           Group: Control
-            vip_x = 60;
-            vip_y = 140;
+            vip_x = 70;
+            vip_y = 250;
           Group: User
             homeWidget = Marker;
             activateButtonName = IndexStage;
@@ -2697,7 +2697,7 @@ Shift<Key>Tab: prev-tab-group()
         {
           GXD = Application : MGI;
           Group: Control
-            vip_x = 60;
+            vip_x = 70;
             vip_y = 30;
           Group: User
             initDialog = "StrainDialog\nTissueDialog";
@@ -2846,8 +2846,8 @@ Shift<Key>Tab: prev-tab-group()
             height = 900;
             width = 1300;
           Group: Control
-            vip_x = 60;
-            vip_y = 85;
+            vip_x = 70;
+            vip_y = 140;
           Group: User
             homeWidget = Jnum;
             clearForms = "ControlForm\nEditForm\nKnockInForm\nProbePrepForm\nAntibodyPrepForm\nInSituForm\nGelForm";
@@ -3895,8 +3895,8 @@ Shift<Key>Tab: prev-tab-group()
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 175;
-            vip_y = 250;
+            vip_x = 70;
+            vip_y = 525;
               {
                 PrepID : ID = ID;
               }
@@ -4015,8 +4015,8 @@ Shift<Key>Tab: prev-tab-group()
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 60;
-            vip_y = 195;
+            vip_x = 70;
+            vip_y = 360;
               {
                 PrepID : ID = ID;
               }
@@ -4107,8 +4107,8 @@ Shift<Key>Tab: prev-tab-group()
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 175;
-            vip_y = 195;
+            vip_x = 70;
+            vip_y = 415;
               {
                 ID = ID : mgiDataTypes;
               }
@@ -4137,8 +4137,8 @@ Shift<Key>Tab: prev-tab-group()
         {
           EMAPSMappingModule = Module : MGI;
           Group: Control
-            vip_x = 150;
-            vip_y = 328;
+            vip_x = 70;
+            vip_y = 580;
           Group: User
             homeWidget = EMAPSid;
             activateButtonName = EMAPSMapping;

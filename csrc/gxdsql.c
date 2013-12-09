@@ -415,6 +415,23 @@ char *dictionary_edinburghAlias(char *key)
   return(buf);
 }
 
+char *dictionary_emaps(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select ea.accID, t.term \
+	\nfrom GXD_Structure sn, ACC_Accession sa, MGI_EMAPS_Mapping e, ACC_Accession ea, VOC_Term t \
+	\nwhere sn._Structure_key = %s \
+	\nand sn._Structure_key = sa._Object_key \
+	\nand sa._LogicalDB_key = 1 \
+	\nand sa._MGIType_key = 38 \
+	\nand sa.accID = e.accID \
+	\nand e.emapsID = ea.accID \
+	\nand ea._MGIType_key = 13 \
+	\nand ea._Object_key = t._Term_key", key);
+  return(buf);
+}
+
 /*
  * EMAPSMapping.d
 */

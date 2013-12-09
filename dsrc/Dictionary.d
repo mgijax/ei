@@ -19,6 +19,9 @@
 --
 -- History
 --
+-- lec 12/09/2013
+--	- TR11468/EMAPS
+--
 -- lec 05/14/2013
 -- 	- TR11375/ADClipboardAdd/re-set the highlighting
 --
@@ -913,6 +916,19 @@ rules:
 
             top->CreationDate->text.value := mgi_getstr(dbproc, 13);
             top->ModifiedDate->text.value := mgi_getstr(dbproc, 14);
+          end while;
+        end while;
+        (void) mgi_dbclose(dbproc);
+
+	--
+	-- EMAPS
+	--
+	cmd := dictionary_emaps(current_structurekey);
+        dbproc := mgi_dbexec(cmd);
+        while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+          while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	    top->emapsID->text.value := mgi_getstr(dbproc, 1);
+	    top->emapsTerm->text.value := mgi_getstr(dbproc, 2);
           end while;
         end while;
         (void) mgi_dbclose(dbproc);
