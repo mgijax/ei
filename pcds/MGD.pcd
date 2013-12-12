@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Dec 12 10:37:28 2013";
+      lastWritten = "Thu Dec 12 12:53:42 2013";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -8826,25 +8826,13 @@ Shift<Key>Tab: prev-tab-group()
                                     topOffset = 5;
                                 }
                                 {
-                                  AlleleCollectionMenu = AlleleCollectionMenu : mgiOption;
+                                  InheritanceModeMenu = InheritanceModeMenu : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = AlleleTypeMenu;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = AlleleTypeMenu;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    topOffset = 5;
-                                }
-                                {
-                                  InheritanceModeMenu = InheritanceModeMenu : mgiOption;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = AlleleCollectionMenu;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = AlleleCollectionMenu;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -8862,16 +8850,28 @@ Shift<Key>Tab: prev-tab-group()
                                     topOffset = 5;
                                 }
                                 {
+                                  AlleleCollectionMenu = AlleleCollectionMenu : mgiOption;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = AlleleTransmissionMenu;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = AlleleTransmissionMenu;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    topOffset = 5;
+                                }
+                                {
                                   MixedMenu = YesNoMenu : mgiOption;
                                   Group: Widget
                                     subMenuId = MixedPulldown;
                                     labelString = Mixed;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = AlleleStatusMenu;
+                                    leftWidget = AlleleCollectionMenu;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = AlleleTransmissionMenu;
+                                    topWidget = AlleleCollectionMenu;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     topOffset = 5;
