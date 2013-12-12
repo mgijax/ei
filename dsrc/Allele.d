@@ -236,6 +236,9 @@ rules:
 	  InitOptionMenu.option := top->AlleleTransmissionMenu;
 	  send(InitOptionMenu, 0);
 
+	  InitOptionMenu.option := top->AlleleCollectionMenu;
+	  send(InitOptionMenu, 0);
+
 	  InitOptionMenu.option := top->InheritanceModeMenu;
 	  send(InitOptionMenu, 0);
 
@@ -538,6 +541,7 @@ rules:
                  top->AlleleTypeMenu.menuHistory.defaultValue + "," +
                  statusKey + "," +
 		 top->AlleleTransmissionMenu.menuHistory.defaultValue + "," +
+		 top->AlleleCollectionMenu.menuHistory.defaultValue + "," +
 	         mgi_DBprstr(top->Symbol->text.value) + "," +
 	         mgi_DBprstr(top->Name->text.value) + "," +
 		 mgi_DBprstr(nomenSymbol) + "," +
@@ -839,6 +843,11 @@ rules:
           if (top->AlleleTransmissionMenu.menuHistory.modified and
 	      top->AlleleTransmissionMenu.menuHistory.searchValue != "%") then
             set := set + "_Transmission_key = "  + top->AlleleTransmissionMenu.menuHistory.defaultValue + ",";
+	  end if;
+
+          if (top->AlleleCollectionMenu.menuHistory.modified and
+	      top->AlleleCollectionMenu.menuHistory.searchValue != "%") then
+            set := set + "_Collection_key = "  + top->AlleleCollectionMenu.menuHistory.defaultValue + ",";
 	  end if;
 
           if (top->MixedMenu.menuHistory.modified and
@@ -1706,6 +1715,10 @@ rules:
             where := where + "\nand a._Transmission_key = " + top->AlleleTransmissionMenu.menuHistory.searchValue;
           end if;
 
+          if (top->AlleleCollectionMenu.menuHistory.searchValue != "%") then
+            where := where + "\nand a._Collection_key = " + top->AlleleCollectionMenu.menuHistory.searchValue;
+          end if;
+
           if (top->MixedMenu.menuHistory.searchValue != "%") then
             where := where + "\nand a.isMixed = " + top->MixedMenu.menuHistory.searchValue;
           end if;
@@ -1943,27 +1956,27 @@ rules:
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      top->ID->text.value           := mgi_getstr(dbproc, 1);
-	      top->Symbol->text.value       := mgi_getstr(dbproc, 8);
-	      top->Name->text.value         := mgi_getstr(dbproc, 9);
+	      top->Symbol->text.value       := mgi_getstr(dbproc, 9);
+	      top->Name->text.value         := mgi_getstr(dbproc, 10);
 	      origAlleleSymbol := top->Symbol->text.value;
 
-	      (void) mgi_tblSetCell(table, table.approvedBy, table.byDate, mgi_getstr(dbproc, 17));
-	      (void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 18));
-	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 19));
+	      (void) mgi_tblSetCell(table, table.approvedBy, table.byDate, mgi_getstr(dbproc, 18));
+	      (void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 19));
+	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 20));
 
-	      (void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 24));
-	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 25));
-	      (void) mgi_tblSetCell(table, table.approvedBy, table.byUser, mgi_getstr(dbproc, 26));
+	      (void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 25));
+	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 26));
+	      (void) mgi_tblSetCell(table, table.approvedBy, table.byUser, mgi_getstr(dbproc, 27));
 
 	      -- If the Marker key is null, then use the Nomen Symbol field
 	      if (mgi_getstr(dbproc, 2) = "") then
 	        (void) mgi_tblSetCell(markerTable, 0, markerTable.markerKey, mgi_getstr(dbproc, 2));
-	        (void) mgi_tblSetCell(markerTable, 0, markerTable.markerSymbol, mgi_getstr(dbproc, 10));
+	        (void) mgi_tblSetCell(markerTable, 0, markerTable.markerSymbol, mgi_getstr(dbproc, 11));
 	      end if;
 
 	      -- Strain of Origin
 	      top->StrainOfOrigin->StrainID->text.value := mgi_getstr(dbproc, 3);
-	      top->StrainOfOrigin->Verify->text.value := mgi_getstr(dbproc, 23);
+	      top->StrainOfOrigin->Verify->text.value := mgi_getstr(dbproc, 24);
 
               SetOption.source_widget := top->InheritanceModeMenu;
               SetOption.value := mgi_getstr(dbproc, 4);
@@ -1981,12 +1994,16 @@ rules:
               SetOption.value := mgi_getstr(dbproc, 7);
               send(SetOption, 0);
 
+              SetOption.source_widget := top->AlleleCollectionMenu;
+              SetOption.value := mgi_getstr(dbproc, 8);
+              send(SetOption, 0);
+
               SetOption.source_widget := top->MixedMenu;
-              SetOption.value := mgi_getstr(dbproc, 13);
+              SetOption.value := mgi_getstr(dbproc, 14);
               send(SetOption, 0);
 
               SetOption.source_widget := top->ExtinctMenu;
-              SetOption.value := mgi_getstr(dbproc, 12);
+              SetOption.value := mgi_getstr(dbproc, 13);
               send(SetOption, 0);
 
 	      -- Parent Cell Line info

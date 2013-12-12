@@ -1,5 +1,12 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-tr11515-?
+DATE: 12/12/2014
+STAFF: lec
+CHANGES:
+1) TR11515/high throughput part II/allele stuff
+added:  ALL_Allele._Collection_key
+
 TAG: ei-tr11515-BP
 DATE: 12/12/2014
 STAFF: lec
