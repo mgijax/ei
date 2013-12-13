@@ -233,8 +233,7 @@ rules:
 
 	    elsif (editMode = TBL_ROW_MODIFY) then
 	      set := "accID = " + mgi_DBprstr(accID) + "," +
-		     "emapsID = " + mgi_DBprstr(emapsID) + "," +
-		     global_loginKey + "," + global_loginKey + ")\n";
+		     "emapsID = " + mgi_DBprstr(emapsID) + ",";
               cmd := cmd + mgi_DBupdate(MGI_EMAPS_MAPPING, key, set);
 	    end if;
 
