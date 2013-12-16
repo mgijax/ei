@@ -3,7 +3,7 @@ Module: mgiLookup
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Oct 30 07:50:38 2013";
+      lastWritten = "Fri Dec 13 11:39:28 2013";
         {
           LookupLabel = XmPushButton;
           Group: Widget
@@ -758,6 +758,27 @@ Module: mgiLookup
                 List = list : mgiDataTypes;
                 Group: Widget
                   singleSelectionCallback = "D:SelectLookupListItem";
+              }
+        }
+        {
+          StrainAttributeList1 = LookupList;
+          Group: Control
+            vip_x = 195;
+            vip_y = 1718;
+          Group: User
+            cmd = "(\nselect _Term_key, term, i = 1 from VOC_Term where _Vocab_key = 27 and term like '[a-z]%'\nunion\nselect _Term_key, term, i = 2 from VOC_Term where _Vocab_key = 27 and term like '*%'\n)\norder by i, term\n";
+              {
+                Label = LookupLabel;
+                Group: Widget
+                  labelString = "Strain Attributes";
+                Group: User
+                  defaultLabel = "Strain Attributes";
+              }
+              {
+                List = list : mgiDataTypes;
+                Group: Widget
+                  singleSelectionCallback = "D:SelectLookupListItem";
+                  visibleItemCount = 4;
               }
         }
 }

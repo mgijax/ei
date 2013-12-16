@@ -58,6 +58,14 @@ char *allele_definheritanceNS()
   return(buf);
 }
 
+char *allele_defcollectionNS()
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Term_key from VOC_Term where _Vocab_key = 92 and term = 'Not Specified'");
+  return(buf);
+}
+
 char *allele_select(char *key)
 {
   static char buf[TEXTBUFSIZ];
@@ -190,6 +198,18 @@ char *allele_search(char *from, char *where, char *addUnion)
    \n%s \
    \n%s \
    \n)\norder by a.statusNum, a.symbol", from, where, addUnion);
+  return(buf);
+}
+
+char *allele_subtype(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select v.*, t.term \
+	\nfrom VOC_Annot v, VOC_Term t \
+	\nwhere v._AnnotType_key = 1014 \
+	\nand v._Term_key = t._Term_key \
+	\nand v._Object_key = %s", key);
   return(buf);
 }
 

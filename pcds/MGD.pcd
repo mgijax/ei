@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Dec 12 12:53:42 2013";
+      lastWritten = "Fri Dec 13 12:11:10 2013";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -9078,10 +9078,49 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         legend = XmLabelGadget;
                                         Group: Widget
-                                          labelString = "1 = Synonyms, 2 = Molecular Mutations, 3 = Image, 4 = Sequence";
+                                          labelString = "1 = Allele Subtype, 2 = Synonyms, 3 = Molecular Mutations, 4 = Image, 5 = Sequence";
                                       }
                                       {
                                         notebook = notebook : mgiNoteBook;
+                                            {
+                                              AlleleSubtype = TableLabel : mgiTable;
+                                              Group: Widget
+                                                rubberPositioning = False;
+                                                resizePolicy = resize_any;
+                                                  {
+                                                    Table = mgiTable : mgiTable;
+                                                    Group: Widget
+                                                      xrtTblPixelWidthSeries = "(all 0-2 0)";
+                                                      xrtTblEditableSeries = "(all 0-2 False)";
+                                                      xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 50)";
+                                                      xrtTblColumnLabels = "Mode,Current Key,Key,Subtype";
+                                                      xrtTblNumColumns = 4;
+                                                      userDefinedAttributes = "annotCurrentKey:Int(Int)=\"1\"\ntermKey:Int(Int)=\"2\"\nterm:Int(Int)=\"3\"\n";
+                                                  {
+                                                    label = XtXrtLabel;
+                                                    Group: Widget
+                                                      labelString = "Allele Subtype";
+                                                  }
+                                                  }
+                                                  {
+                                                    AddRow = TablePush : mgiTable;
+                                                  }
+                                                  {
+                                                    DeleteRow = TablePush : mgiTable;
+                                                  }
+                                                  {
+                                                    AlleleSubTypeMenu = AlleleSubTypeMenu : mgiOption;
+                                                    Group: Constraint
+                                                      leftAttachment = attach_widget;
+                                                      leftWidget = DeleteRow;
+                                                      rightAttachment = attach_none;
+                                                      topAttachment = attach_opposite_widget;
+                                                      topWidget = DeleteRow;
+                                                      bottomAttachment = attach_none;
+                                                      resizable = true;
+                                                      topOffset = 2;
+                                                  }
+                                            }
                                             {
                                               Synonym = SynonymTypeTable : mgiTable;
                                               Group: Widget

@@ -143,6 +143,7 @@ locals:
 	markerTable : widget;
 	cellLineTable : widget;
 	seqTable : widget;
+	subtypeTable : widget;
 	mgiTypeKey : string;
 
 	cmd : string;
@@ -167,6 +168,8 @@ locals:
 
 	defaultInheritanceKeyNS : string;
 	defaultInheritanceKeyNA : string;
+
+	defaultCollectionKeyNS : string;
 
 	defaultStrainKeyNS : string;
 	defaultStrainKeyNA : string;
@@ -304,6 +307,7 @@ rules:
 	  tables.append(top->MutantCellLine->Table);
 	  tables.append(top->Synonym->Table);
 	  tables.append(top->SequenceAllele->Table);
+	  tables.append(top->AlleleSubtype->Table);
 
 	  -- Global Accession number Tables
 
@@ -314,6 +318,7 @@ rules:
 	  markerTable := top->Marker->Table;
 	  cellLineTable := top->MutantCellLine->Table;
 	  seqTable := top->SequenceAllele->Table;
+	  subtypeTable := top->AlleleSubtype->Table;
 	  mgiTypeKey := imgTable.mgiTypeKey;
 
           -- Set Row Count
@@ -336,6 +341,8 @@ rules:
 	  defaultInheritanceKeyNA := mgi_sql1(allele_definheritanceNA());
 
 	  defaultInheritanceKeyNS := mgi_sql1(allele_definheritanceNS());
+
+	  defaultCollectionKeyNS := mgi_sql1(allele_defcollectionNS());
 
 	  defaultStrainKeyNS := NOTSPECIFIED;
 	  defaultStrainKeyNA := NOTAPPLICABLE;
@@ -398,6 +405,7 @@ rules:
 
 	  statusKey : string;
 	  inheritanceKey : string;
+	  collectionKey : string;
 	  strainKey : string;
 	  approvalLoginDate : string;
 	  editMode : string;
@@ -517,6 +525,12 @@ rules:
 	    inheritanceKey := top->InheritanceModeMenu.menuHistory.defaultValue;
 	  end if;
 
+	  if (top->AlleleCollectionMenu.menuHistory.defaultValue = "%") then
+	    collectionKey := defaultCollectionKeyNS;
+	  else
+	    collectionKey := top->AlleleCollectionMenu.menuHistory.defaultValue;
+	  end if;
+
 	  -- set defaults based on allele type
 
 	  strainKey := top->StrainOfOrigin->StrainID->text.value;
@@ -541,7 +555,7 @@ rules:
                  top->AlleleTypeMenu.menuHistory.defaultValue + "," +
                  statusKey + "," +
 		 top->AlleleTransmissionMenu.menuHistory.defaultValue + "," +
-		 top->AlleleCollectionMenu.menuHistory.defaultValue + "," +
+                 collectionKey + "," +
 	         mgi_DBprstr(top->Symbol->text.value) + "," +
 	         mgi_DBprstr(top->Name->text.value) + "," +
 		 mgi_DBprstr(nomenSymbol) + "," +
@@ -2122,6 +2136,21 @@ rules:
 	    end while;
 	  end while;
 	  (void) mgi_dbclose(dbproc);
+
+          row := 0;
+          table := top->AlleleSubtype->Table;
+          cmd := allele_subtype(currentRecordKey);
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+                (void) mgi_tblSetCell(table, row, table.annotCurrentKey, mgi_getstr(dbproc, 1));
+                (void) mgi_tblSetCell(table, row, table.termKey, mgi_getstr(dbproc, 4));
+                (void) mgi_tblSetCell(table, row, table.term, mgi_getstr(dbproc, 8));
+                (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+                row := row + 1;
+            end while;
+          end while;
+          (void) mgi_dbclose(dbproc);
 
           LoadRefTypeTable.table := top->Reference->Table;
 	  LoadRefTypeTable.tableID := MGI_REFERENCE_ALLELE_VIEW;
