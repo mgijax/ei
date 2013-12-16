@@ -1,12 +1,17 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-5-1-6-3
+DATE: 12/16/2013
+STAFF: lec
+CHANGES:
+1) MGI_EMAPS_MAPPING/for scrum-bob/GXD Anatomy project
+
 TAG: ei-tr11515-BP
 DATE: 12/12/2014
 STAFF: lec
 CHANGES:
 1) branch-tag for TR11515/high throughput part II/allele stuff
 
-TAG: ei-5-1-6-?
 TAG: ei-5-1-6-2
 TAG: ei-5-1-6-1
 DATE: 12/05/2013, 12/11/2013
