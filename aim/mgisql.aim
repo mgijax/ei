@@ -155,6 +155,7 @@ CALLS
 	 verify_straintype()					: "char *";
 	 verify_strains3("char *")				: "char *";
 	 verify_strains4("char *")				: "char *";
+	 verify_structure("char *")				: "char *";
 	 verify_tissue1("char *")				: "char *";
 	 verify_tissue2("char *")				: "char *";
 	 verify_user("char *")					: "char *";

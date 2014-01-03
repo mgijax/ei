@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Dec  9 12:25:55 2013";
+      lastWritten = "Fri Jan  3 14:43:13 2014";
       copy = false;
       inCreateMenu = true;
         {
@@ -4294,12 +4294,13 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblColumnLabels = "Mode,Key,Acc ID,Structure,Stage";
                                           xrtTblCharWidthSeries = "(all 0 10)(all 1 10)(all 2 30)(all 3 30)(all 4 5)";
                                           userDefinedAttributes = "mappingKey:Int(Int)=\"1\"\naccID:Int(Int)=\"2\"\nstructure:Int(Int)=\"3\"\nstage:Int=\"4\"\n";
-                                          xrtTblEditableSeries = "(all 0-1 False)";
-                                          xrtTblTraversableSeries = "(all 0-1 False)";
+                                          xrtTblEditableSeries = "(all 0-1 False)(all 3-4 False)";
+                                          xrtTblTraversableSeries = "(all 0-1 False)(all 3-4 False)";
                                           xrtTblPixelWidthSeries = "(all 0-1 0";
+                                          xrtTblValidateCellCallback = "D:VerifyStructure,\nD:CommitTableCellEdit";
                                         Group: User
-                                          saveEditableSeries = "(all 0-1 False)";
-                                          saveTraversableSeries = "(all 0-1 False)";
+                                          saveEditableSeries = "(all 0-1 False)(all 3-4 False)";
+                                          saveTraversableSeries = "(all 0-1 False)(all 3-4 False)";
                                       }
                                 }
                           }

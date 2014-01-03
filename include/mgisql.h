@@ -186,6 +186,7 @@ extern char *verify_strainspeciesmouse();
 extern char *verify_straintype();
 extern char *verify_strains3(char *);
 extern char *verify_strains4(char *);
+extern char *verify_structure(char *);
 
 extern char *verify_tissue1(char *);
 extern char *verify_tissue2(char *);

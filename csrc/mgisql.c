@@ -1276,6 +1276,22 @@ char *verify_strains4(char *key)
   return(buf);
 }
 
+char *verify_structure(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select sa.accID, sn.structure, t.stage \
+  	\nfrom GXD_Structure s, GXD_TheilerStage t, GXD_StructureName sn, ACC_Accession sa \
+  	\nwhere s._StructureName_key = sn._StructureName_key \
+  	\nand s._Structure_key = sn._Structure_key \
+  	\nand s._Stage_key = t._Stage_key \
+	\nand sn._Structure_key = sa._Object_key \
+	\nand sa._LogicalDB_key = 1 \
+	\nand sa._MGIType_key = 38 \
+	\nand sa.accID = %s", key);
+  return(buf);
+}
+
 char *verify_tissue1(char *key)
 {
   static char buf[TEXTBUFSIZ];

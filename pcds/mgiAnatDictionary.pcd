@@ -188,7 +188,7 @@ Module: mgiAnatDictionary
                                       }
                                 }
                                 {
-                                  emapsID = CharText : mgiDataTypes;
+                                  EMAPSid = CharText : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = stagesText;
@@ -210,14 +210,14 @@ Module: mgiAnatDictionary
                                       }
                                 }
                                 {
-                                  emapsTerm = CharText : mgiDataTypes;
+                                  EMAPSterm = CharText : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
-                                    leftWidget = emapsID;
+                                    leftWidget = EMAPSid;
                                     leftOffset = 5;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
-                                    topWidget = emapsID;
+                                    topWidget = EMAPSid;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                       {
@@ -239,8 +239,8 @@ Module: mgiAnatDictionary
                                     topAttachment = attach_widget;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    leftWidget = emapsID;
-                                    topWidget = emapsID;
+                                    leftWidget = EMAPSid;
+                                    topWidget = EMAPSid;
                                     topOffset = 5;
                                       {
                                         Table = mgiTable;
