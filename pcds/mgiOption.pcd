@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Dec 13 12:10:55 2013";
+      lastWritten = "Tue Dec 17 09:18:17 2013";
       copy = false;
       inCreateMenu = true;
         {
@@ -2329,7 +2329,7 @@ Module: mgiOption
           AlleleTypeMenu = OptionMenu;
           Group: Widget
             subMenuId = AlleleTypePulldown;
-            labelString = "Allele Type";
+            labelString = Generation;
           Group: Control
             vip_x = 105;
             vip_y = 2505;
@@ -3354,6 +3354,7 @@ Module: mgiOption
           AlleleSubTypeMenu = OptionMenu;
           Group: Widget
             subMenuId = AlleleSubtypePulldown;
+            labelString = Attribute;
           Group: Control
             vip_x = 105;
             vip_y = 2395;

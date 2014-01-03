@@ -579,6 +579,7 @@ char *mgi_DBkey(int table)
     case ALL_ALLELE_MUTATION:
     case ALL_ALLELE_VIEW:
     case ALL_ALLELE_CELLLINE_VIEW:
+    case ALL_ALLELE_SUBTYPE_VIEW:
     case ALL_MUTATION_VIEW:
     case ALL_MARKER_ASSOC_VIEW:
     case SEQ_ALLELE_ASSOC_VIEW:
@@ -1198,6 +1199,9 @@ char *mgi_DBtable(int table)
 	    break;
     case ALL_ALLELE_CELLLINE_VIEW:
             strcpy(buf, "ALL_Allele_CellLine_View");
+	    break;
+    case ALL_ALLELE_SUBTYPE_VIEW:
+            strcpy(buf, "ALL_Allele_SubType_View");
 	    break;
     case ALL_CELLLINE:
     case ALL_CELLLINE_NONMUTANT:

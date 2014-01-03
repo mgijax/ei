@@ -111,6 +111,7 @@ devents:
 
 	Modify :local [];
 	ModifyAlleleNotes :local [];
+	ModifyAlleleSubType :local [];
 	ModifyImagePaneAssociation :local [];
 	ModifyMarkerAssoc :local [];
 	ModifyMolecularMutation :local [];
@@ -245,6 +246,9 @@ rules:
 	  InitOptionMenu.option := top->InheritanceModeMenu;
 	  send(InitOptionMenu, 0);
 
+	  InitOptionMenu.option := top->AlleleSubType->AlleleSubTypeMenu;
+	  send(InitOptionMenu, 0);
+
 	  InitOptionMenu.option := top->MolecularMutation->MolecularMutationMenu;
 	  send(InitOptionMenu, 0);
 
@@ -302,23 +306,23 @@ rules:
 	  tables.append(top->Control->ModificationHistory->Table);
 	  tables.append(top->Marker->Table);
 	  tables.append(top->Reference->Table);
+	  tables.append(top->AlleleSubType->Table);
 	  tables.append(top->MolecularMutation->Table);
 	  tables.append(top->ImagePane->Table);
 	  tables.append(top->MutantCellLine->Table);
 	  tables.append(top->Synonym->Table);
 	  tables.append(top->SequenceAllele->Table);
-	  tables.append(top->AlleleSubtype->Table);
 
 	  -- Global Accession number Tables
 
 	  accTable := top->mgiAccessionTable->Table;
 	  refTable := top->Reference->Table;
+	  subtypeTable := top->AlleleSubType->Table;
 	  molmutationTable := top->MolecularMutation->Table;
 	  imgTable := top->ImagePane->Table;
 	  markerTable := top->Marker->Table;
 	  cellLineTable := top->MutantCellLine->Table;
 	  seqTable := top->SequenceAllele->Table;
-	  subtypeTable := top->AlleleSubtype->Table;
 	  mgiTypeKey := imgTable.mgiTypeKey;
 
           -- Set Row Count
@@ -567,6 +571,7 @@ rules:
 		 approvalLoginDate;
 
 	  send(ModifyMarkerAssoc, 0);
+	  send(ModifyAlleleSubType, 0);
 	  send(ModifyMolecularMutation, 0);
 	  send(ModifyImagePaneAssociation, 0);
 
@@ -889,6 +894,7 @@ rules:
 	  end if;
 
 	  send(ModifyMarkerAssoc, 0);
+	  send(ModifyAlleleSubType, 0);
 	  send(ModifyMolecularMutation, 0);
 	  send(ModifyImagePaneAssociation, 0);
 	  send(ModifyAlleleNotes, 0);
@@ -1183,6 +1189,58 @@ rules:
             send(StatusReport);
           end if;
 
+	end does;
+ 
+--
+-- ModifyAlleleSubType
+--
+-- Activated from: devent Add/Modify
+--
+-- Construct insert/update/delete for Allele SubType
+-- Appends to global "cmd" string
+--
+ 
+	ModifyAlleleSubType does
+	  table : widget := subtypeTable;
+	  row : integer := 0;
+	  editMode : string;
+	  key : string;
+	  newKey : string;
+	  set : string := "";
+ 
+	  molecularNotesRequired := false;
+
+	  -- Process while non-empty rows are found
+ 
+	  while (row < mgi_tblNumRows(table)) do
+	    editMode := mgi_tblGetCell(table, row, table.editMode);
+
+	    if (editMode = TBL_ROW_EMPTY) then
+	      break;
+	    end if;
+ 
+	    key := mgi_tblGetCell(table, row, table.mutationCurrentKey);
+	    newKey := mgi_tblGetCell(table, row, table.mutationKey);
+
+	    if (editMode = TBL_ROW_ADD) then
+	      cmd := cmd + mgi_DBinsert(ALL_ALLELE_MUTATION, NOKEY) + 
+		     currentRecordKey + "," + newKey + ")\n";
+	    elsif (editMode = TBL_ROW_MODIFY) then
+	      set := "_Mutation_key = " + newKey;
+	      cmd := cmd + 
+		     mgi_DBupdate(ALL_ALLELE_MUTATION, currentRecordKey, set) + 
+		     "and _Mutation_key = " + key + "\n";
+	    elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
+	      cmd := cmd + mgi_DBdelete(ALL_ALLELE_MUTATION, currentRecordKey) + 
+		     "and _Mutation_key = " + key + "\n";
+	    end if;
+ 
+	    if (mgi_tblGetCell(table, row, table.mutation) = OTHERNOTES) then
+	      molecularNotesRequired := true;
+	    end if;
+
+	    row := row + 1;
+	  end while;
 	end does;
  
 --
@@ -1632,6 +1690,7 @@ rules:
 	  from_notes      : boolean := false;
 	  from_cellline   : boolean := false;
 	  from_sequence   : boolean := false;
+	  from_subtype    : boolean := false;
 
 	  value : string;
 
@@ -1784,6 +1843,20 @@ rules:
 	    end if;
 	  end if;
 
+	  -- Allele SubType
+
+	  value := mgi_tblGetCell(subtypeTable, 0, subtypeTable.termKey);
+	  if (value.length > 0 and value != "NULL") then
+	    where := where + "\nand st._Term_key = " + value;
+	    from_subtype := true;
+	  else
+	    value := mgi_tblGetCell(subtypeTable, 0, subtypeTable.term);
+	    if (value.length > 0) then
+	      where := where + "\nand st.term like " + mgi_DBprstr(value);
+	      from_subtype := true;
+	    end if;
+	  end if;
+
 	  -- Molecular Mutation
 
 	  value := mgi_tblGetCell(molmutationTable, 0, molmutationTable.mutationKey);
@@ -1862,6 +1935,11 @@ rules:
 	  if (from_marker) then
 	    from := from + "," + mgi_DBtable(ALL_MARKER_ASSOC_VIEW) + " ma";
 	    where := where + "\nand a." + mgi_DBkey(ALL_ALLELE) + " = ma." + mgi_DBkey(ALL_ALLELE);
+	  end if;
+
+	  if (from_subtype) then
+	    from := from + "," + mgi_DBtable(ALL_ALLELE_SUBTYPE_VIEW) + " st";
+	    where := where + "\nand a." + mgi_DBkey(ALL_ALLELE) + " = st." + mgi_DBkey(ALL_ALLELE);
 	  end if;
 
 	  if (from_mutation) then
@@ -2054,6 +2132,21 @@ rules:
 	  end while;
 	  (void) mgi_dbclose(dbproc);
 
+          row := 0;
+          table := top->AlleleSubType->Table;
+          cmd := allele_subtype(currentRecordKey);
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+                (void) mgi_tblSetCell(table, row, table.annotCurrentKey, mgi_getstr(dbproc, 1));
+                (void) mgi_tblSetCell(table, row, table.termKey, mgi_getstr(dbproc, 4));
+                (void) mgi_tblSetCell(table, row, table.term, mgi_getstr(dbproc, 8));
+                (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+                row := row + 1;
+            end while;
+          end while;
+          (void) mgi_dbclose(dbproc);
+
 	  row := 0;
 	  cmd := allele_mutation(currentRecordKey);
 	  dbproc := mgi_dbexec(cmd);
@@ -2137,21 +2230,6 @@ rules:
 	  end while;
 	  (void) mgi_dbclose(dbproc);
 
-          row := 0;
-          table := top->AlleleSubtype->Table;
-          cmd := allele_subtype(currentRecordKey);
-          dbproc := mgi_dbexec(cmd);
-          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-                (void) mgi_tblSetCell(table, row, table.annotCurrentKey, mgi_getstr(dbproc, 1));
-                (void) mgi_tblSetCell(table, row, table.termKey, mgi_getstr(dbproc, 4));
-                (void) mgi_tblSetCell(table, row, table.term, mgi_getstr(dbproc, 8));
-                (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-                row := row + 1;
-            end while;
-          end while;
-          (void) mgi_dbclose(dbproc);
-
           LoadRefTypeTable.table := top->Reference->Table;
 	  LoadRefTypeTable.tableID := MGI_REFERENCE_ALLELE_VIEW;
           LoadRefTypeTable.objectKey := currentRecordKey;
@@ -2206,6 +2284,12 @@ rules:
  
 	  if (reason != TBL_REASON_ENTER_CELL_END) then
 	    return;
+	  end if;
+
+	  if (table.parent.name = "AlleleSubType") then
+            SetOption.source_widget := top->AlleleSubTypeMenu;
+            SetOption.value := mgi_tblGetCell(table, row, table.termKey);
+            send(SetOption, 0);
 	  end if;
 
 	  if (table.parent.name = "MolecularMutation") then
