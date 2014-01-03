@@ -19,6 +19,9 @@
 --
 -- History
 --
+-- lec	01/03/2014
+--	- TR11561/Add EMAPS seraching in the AD module
+--
 -- lec 12/09/2013
 --	- TR11468/EMAPS
 --
@@ -686,6 +689,8 @@ rules:
 --
 
         PrepareSearch does
+	  from_EMAPS : boolean := false;
+	  from_EMAPSterm : boolean := false;
 
           from := "\nfrom GXD_Structure s, GXD_StructureName sn, GXD_TheilerStage t ";
           where := "\nwhere s._Stage_key = t._Stage_key " + 
@@ -771,6 +776,36 @@ rules:
           if (top->structureNote->text.value.length > 0 and top->structureNote->text.sensitive) then
             where := where + "\nand s.structureNote like " + mgi_DBprstr(top->structureNote->text.value);
           end if;
+
+	  --
+	  -- EMAPS
+	  --
+
+          if (top->EMAPSid->text.value.length > 0) then
+	    where := where + " and em.emapsID like " + mgi_DBprstr(top->EMAPSid->text.value);
+	    from_EMAPS := true;
+	  end if;
+
+          if (top->EMAPSterm->text.value.length > 0) then
+	    where := where + " and emt.term like " + mgi_DBprstr(top->EMAPSterm->text.value);
+	    from_EMAPS := true;
+	    from_EMAPSterm := true;
+	  end if;
+
+	  if from_EMAPS then
+	    from := from + ", ACC_Accession emgi, MGI_EMAPS_Mapping em";
+	    where := where + "\nand em.accID = emgi.accID " + \
+        		"\nand emgi._LogicalDB_key = 1 " + \
+        		"\nand emgi._MGIType_key = 38 " + \
+        		"\nand emgi._Object_key = s._Structure_key";
+	  end if;
+
+	  if (from_EMAPSterm) then
+		from := from + ", ACC_Accession ema, VOC_Term emt";
+		where := where +  "\nand em.emapsID = ema.accID " + \
+        		"\nand ema._LogicalDB_key = 170 " + \
+        		"\nand ema._Object_key = emt._Term_key";
+	  end if;
 
         end does;
 
@@ -927,8 +962,8 @@ rules:
         dbproc := mgi_dbexec(cmd);
         while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
           while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	    top->emapsID->text.value := mgi_getstr(dbproc, 1);
-	    top->emapsTerm->text.value := mgi_getstr(dbproc, 2);
+	    top->EMAPSid->text.value := mgi_getstr(dbproc, 1);
+	    top->EMAPSterm->text.value := mgi_getstr(dbproc, 2);
           end while;
         end while;
         (void) mgi_dbclose(dbproc);
