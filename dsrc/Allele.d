@@ -540,11 +540,7 @@ rules:
 	  strainKey := top->StrainOfOrigin->StrainID->text.value;
 	  if (strainKey.length = 0 and top->mgiParentCellLine->ObjectID->text.value.length = 0) then
 	      if (top->AlleleTypeMenu.menuHistory.labelString = "Gene trapped" or
-	          top->AlleleTypeMenu.menuHistory.labelString = "Targeted (knock-out)" or
-	          top->AlleleTypeMenu.menuHistory.labelString = "Targeted (knock-in)" or
-	          top->AlleleTypeMenu.menuHistory.labelString = "Targeted (Floxed/Frt)" or
-	          top->AlleleTypeMenu.menuHistory.labelString = "Targeted (Reporter)" or
-	          top->AlleleTypeMenu.menuHistory.labelString = "Targeted (other)") then
+	          top->AlleleTypeMenu.menuHistory.labelString = "Targeted") then
 	        strainKey := defaultStrainKeyNS;
 	      else
 	        strainKey := defaultStrainKeyNA;
@@ -1400,12 +1396,7 @@ rules:
 	    if (not isParent and not isMutant) then
 
 	      -- not specified
-              if (alleleType = "Gene trapped" or
-		  alleleType = "Targeted (knock-out)" or
-		  alleleType = "Targeted (knock-in)" or
-		  alleleType = "Targeted (Floxed/Frt)" or
-		  alleleType = "Targeted (Reporter)" or
-		  alleleType = "Targeted (other)") then
+              if (alleleType = "Gene trapped" or alleleType = "Targeted") then
 
 		--
 		-- select the derivation key that is associated with the specified 
@@ -2520,11 +2511,7 @@ rules:
 
 	  if (value.length = 0) then
             if (top->AlleleTypeMenu.menuHistory.labelString = "Gene trapped" or
-		top->AlleleTypeMenu.menuHistory.labelString = "Targeted (knock-out)" or
-		top->AlleleTypeMenu.menuHistory.labelString = "Targeted (knock-in)" or
-		top->AlleleTypeMenu.menuHistory.labelString = "Targeted (Floxed/Frt)" or
-		top->AlleleTypeMenu.menuHistory.labelString = "Targeted (Reporter)" or
-		top->AlleleTypeMenu.menuHistory.labelString = "Targeted (other)") then
+		top->AlleleTypeMenu.menuHistory.labelString = "Targeted") then
 	      value := NOTSPECIFIED_TEXT;
 
 	    -- do not default 'not applicable'
