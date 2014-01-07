@@ -779,14 +779,15 @@ rules:
 
 	  --
 	  -- EMAPS
+	  -- only include in search if the ontological version is being used
 	  --
 
-          if (top->EMAPSid->text.value.length > 0) then
+          if (top->EMAPSid->text.value.length > 0 and top->ID.sensitive) then
 	    where := where + " and em.emapsID like " + mgi_DBprstr(top->EMAPSid->text.value);
 	    from_EMAPS := true;
 	  end if;
 
-          if (top->EMAPSterm->text.value.length > 0) then
+          if (top->EMAPSterm->text.value.length > 0 and top->ID.sensitive) then
 	    where := where + " and emt.term like " + mgi_DBprstr(top->EMAPSterm->text.value);
 	    from_EMAPS := true;
 	    from_EMAPSterm := true;
