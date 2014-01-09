@@ -38,6 +38,3 @@ SelectMolecularSource [source_widget : widget;  	-- Construct SQL for querying M
                        alias : string;          	-- Join table alias
 		       master : boolean := false;];	-- Use master table conditions
 
-ViewMolecularSourceAttributeHistory [source_widget : widget;   		-- View Attribute History for Mol Source record
-                                     sourceForm : string;];
-

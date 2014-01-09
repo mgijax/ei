@@ -60,6 +60,8 @@ VerifyStrains [ignoreRow : integer := -1;];
 
 VerifyStrengthPattern [];
 
+VerifyStructure [];
+
 VerifyTissue [ignoreRow : integer := -1;];
 
 VerifyUser [];

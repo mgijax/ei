@@ -1716,7 +1716,7 @@ char *sequence_selectPrefix()
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select ac._Object_key, \
    \nac.accID || ',' || v1.term || ',' || v2.term, v1.term, ac.accID, \
-   \nac.preferred");
+   \nac.preferred ");
   return(buf);
 }
 

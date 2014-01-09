@@ -124,7 +124,6 @@ extern char *molsource_tissue(char *);
 extern char *molsource_cellline(char *);
 extern char *molsource_date(char *);
 extern char *molsource_reference(char *);
-extern char *molsource_history(char *);
 
 /* NoteLib.d */
 
@@ -186,6 +185,7 @@ extern char *verify_strainspeciesmouse();
 extern char *verify_straintype();
 extern char *verify_strains3(char *);
 extern char *verify_strains4(char *);
+extern char *verify_structure(char *);
 
 extern char *verify_tissue1(char *);
 extern char *verify_tissue2(char *);

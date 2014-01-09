@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- 01/03/2014	lec
+--	- TR11561/VerifyStructure
+--
 -- 12/06/2012   lec
 --      - TR11234/VerifyItem/query of 'item.value' needs to include 'mgi_DBprstr(item.value)'
 --
@@ -3162,6 +3165,72 @@ rules:
 	  end if;
  
           (void) reset_cursor(top);
+	end does;
+
+--
+-- VerifyStructure
+--
+-- Activated from ValidateCellCallback of Table
+--	UDAs required:  
+--
+
+	VerifyStructure does
+	  top : widget := VerifyStructure.source_widget.top;
+	  table : widget := VerifyStructure.source_widget;
+	  row : integer := VerifyStructure.row;
+	  column : integer := VerifyStructure.column;
+	  reason : integer := VerifyStructure.reason;
+	  accID : string := "";
+	  structure : string := "";
+	  stage : string := "";
+	  cmd : string := "";
+
+	  if (reason = TBL_REASON_VALIDATE_CELL_BEGIN) then
+	    return;
+	  end if;
+					   
+	  -- If not in the accID column, return
+
+	  if (column != table.accID) then
+	    return;
+	  end if;
+
+	  accID := mgi_tblGetCell(table, row, table.accID);
+
+	  if (accID.length = 0) then
+	    return;
+          end if;
+
+	  if (strstr(accID.lower_case, "mgi:") = nil) then
+	      return;
+	  end if;
+
+	  (void) busy_cursor(top);
+
+	  cmd := verify_structure(mgi_DBprstr(accID));
+
+	  dbproc : opaque := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      if (mgi_getstr(dbproc, 1) != "") then
+		accID := mgi_getstr(dbproc, 1);
+		structure := mgi_getstr(dbproc, 2);
+		stage := mgi_getstr(dbproc, 3);
+	      end if;
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  if (structure.length > 0) then
+	    (void) mgi_tblSetCell(table, row, table.accID, accID);
+	    (void) mgi_tblSetCell(table, row, table.structure, structure);
+	    (void) mgi_tblSetCell(table, row, table.stage, stage);
+	  else
+	    (void) mgi_tblSetCell(table, row, table.structure, "");
+	    (void) mgi_tblSetCell(table, row, table.stage, "");
+	  end if;
+
+	  (void) reset_cursor(top);
 	end does;
 
 --

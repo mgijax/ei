@@ -3,13 +3,13 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Dec  9 12:25:55 2013";
+      lastWritten = "Thu Jan  9 12:32:48 2014";
       copy = false;
       inCreateMenu = true;
         {
           AntigenModule = Module : MGI;
           Group: Control
-            vip_x = 70;
+            vip_x = 75;
             vip_y = 195;
           Group: User
             clearForms = "ControlForm\nEditForm\nSourceForm";
@@ -790,7 +790,7 @@ Module: GXD
         {
           AntibodyModule = Module : MGI;
           Group: Control
-            vip_x = 70;
+            vip_x = 75;
             vip_y = 85;
           Group: User
             clearForms = "ControlForm\nEditForm\nSourceForm";
@@ -1789,7 +1789,7 @@ Shift<Key>Tab: prev-tab-group()
             width = 1000;
             resizePolicy = resize_none;
           Group: Control
-            vip_x = 70;
+            vip_x = 75;
             vip_y = 470;
               {
                 Specimen = OrderedTableLabel : mgiTable;
@@ -1875,7 +1875,7 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_none;
             width = 1000;
           Group: Control
-            vip_x = 70;
+            vip_x = 75;
             vip_y = 305;
               {
                 ImagePaneList = LookupList : mgiLookup;
@@ -2051,7 +2051,7 @@ Shift<Key>Tab: prev-tab-group()
           Group: Widget
             title = "GXD Index";
           Group: Control
-            vip_x = 70;
+            vip_x = 75;
             vip_y = 250;
           Group: User
             homeWidget = Marker;
@@ -2697,7 +2697,7 @@ Shift<Key>Tab: prev-tab-group()
         {
           GXD = Application : MGI;
           Group: Control
-            vip_x = 70;
+            vip_x = 75;
             vip_y = 30;
           Group: User
             initDialog = "StrainDialog\nTissueDialog";
@@ -2846,7 +2846,7 @@ Shift<Key>Tab: prev-tab-group()
             height = 900;
             width = 1300;
           Group: Control
-            vip_x = 70;
+            vip_x = 75;
             vip_y = 140;
           Group: User
             homeWidget = Jnum;
@@ -3895,7 +3895,7 @@ Shift<Key>Tab: prev-tab-group()
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 70;
+            vip_x = 75;
             vip_y = 525;
               {
                 PrepID : ID = ID;
@@ -4015,7 +4015,7 @@ Shift<Key>Tab: prev-tab-group()
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 70;
+            vip_x = 75;
             vip_y = 360;
               {
                 PrepID : ID = ID;
@@ -4107,7 +4107,7 @@ Shift<Key>Tab: prev-tab-group()
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 70;
+            vip_x = 75;
             vip_y = 415;
               {
                 ID = ID : mgiDataTypes;
@@ -4137,7 +4137,7 @@ Shift<Key>Tab: prev-tab-group()
         {
           EMAPSMappingModule = Module : MGI;
           Group: Control
-            vip_x = 70;
+            vip_x = 75;
             vip_y = 580;
           Group: User
             homeWidget = EMAPSid;
@@ -4294,12 +4294,13 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblColumnLabels = "Mode,Key,Acc ID,Structure,Stage";
                                           xrtTblCharWidthSeries = "(all 0 10)(all 1 10)(all 2 30)(all 3 30)(all 4 5)";
                                           userDefinedAttributes = "mappingKey:Int(Int)=\"1\"\naccID:Int(Int)=\"2\"\nstructure:Int(Int)=\"3\"\nstage:Int=\"4\"\n";
-                                          xrtTblEditableSeries = "(all 0-1 False)";
-                                          xrtTblTraversableSeries = "(all 0-1 False)";
+                                          xrtTblEditableSeries = "(all 0-1 False)(all 3-4 False)";
+                                          xrtTblTraversableSeries = "(all 0-1 False)(all 3-4 False)";
                                           xrtTblPixelWidthSeries = "(all 0-1 0";
+                                          xrtTblValidateCellCallback = "D:VerifyStructure,\nD:CommitTableCellEdit";
                                         Group: User
-                                          saveEditableSeries = "(all 0-1 False)";
-                                          saveTraversableSeries = "(all 0-1 False)";
+                                          saveEditableSeries = "(all 0-1 False)(all 3-4 False)";
+                                          saveTraversableSeries = "(all 0-1 False)(all 3-4 False)";
                                       }
                                 }
                           }

@@ -106,7 +106,6 @@ CALLS
 	 molsource_cellline("char *")				: "char *";
 	 molsource_date("char *")				: "char *";
 	 molsource_reference("char *")				: "char *";
-	 molsource_history("char *")				: "char *";
 
 	 notelib_1("char *")					: "char *";
 	 notelib_2("char *")					: "char *";
@@ -155,6 +154,7 @@ CALLS
 	 verify_straintype()					: "char *";
 	 verify_strains3("char *")				: "char *";
 	 verify_strains4("char *")				: "char *";
+	 verify_structure("char *")				: "char *";
 	 verify_tissue1("char *")				: "char *";
 	 verify_tissue2("char *")				: "char *";
 	 verify_user("char *")					: "char *";

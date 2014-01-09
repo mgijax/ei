@@ -1,5 +1,12 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-5-1-6-4
+DATE: 01/09/2014
+STAFF: lec
+CHANGES:
+1) TR11468/MGI_EMAPS_MAPPING/for scrum-bob/GXD Anatomy project
+2) TR10841/remove attribute/history from Sequence module
+
 TAG: ei-5-1-6-3
 DATE: 12/16/2013
 STAFF: lec
