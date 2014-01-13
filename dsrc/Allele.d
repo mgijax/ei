@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- 12/2013	lec
+--	TR11515/allele generation type (allele type), allele subtype, allele collection
+--
 -- 12/26/2011	lec
 --	TR11243/add clear/notes to Select()
 --
@@ -181,6 +184,10 @@ locals:
 	defaultCellLineTypeKey : string := "3982968"; -- default is 63 ("Embryonic Stem Cell")
 
 	origAlleleSymbol : string;
+
+	-- Allele/SubType annotation stuff
+	attributeAnnotTypeKey : string := "1014";
+	genericQualifierKey : string := "1614158"; -- generic annotation qualifier key
 
 rules:
 
@@ -1190,22 +1197,22 @@ rules:
 --
 -- ModifyAlleleSubType
 --
--- Activated from: devent Add/Modify
+-- Activated from: devent Modify
 --
--- Construct insert/update/delete for Allele SubType
+-- Construct insert/update/delete for Allele SubType (attribute)
 -- Appends to global "cmd" string
 --
  
 	ModifyAlleleSubType does
-	  table : widget := subtypeTable;
+	  table : widget := top->AlleleSubType->Table;
 	  row : integer := 0;
 	  editMode : string;
 	  key : string;
 	  newKey : string;
 	  set : string := "";
+	  keyDeclared : boolean := false;
+	  keyName : string := "attributeAnnotKey";
  
-	  molecularNotesRequired := false;
-
 	  -- Process while non-empty rows are found
  
 	  while (row < mgi_tblNumRows(table)) do
@@ -1215,26 +1222,30 @@ rules:
 	      break;
 	    end if;
  
-	    key := mgi_tblGetCell(table, row, table.mutationCurrentKey);
-	    newKey := mgi_tblGetCell(table, row, table.mutationKey);
+	    key := mgi_tblGetCell(table, row, table.annotCurrentKey);
+	    newKey := mgi_tblGetCell(table, row, table.termKey);
 
 	    if (editMode = TBL_ROW_ADD) then
-	      cmd := cmd + mgi_DBinsert(ALL_ALLELE_MUTATION, NOKEY) + 
-		     currentRecordKey + "," + newKey + ")\n";
+              if (not keyDeclared) then
+                cmd := cmd + mgi_setDBkey(VOC_ANNOT, NEWKEY, keyName);
+                keyDeclared := true;
+              else
+                cmd := cmd + mgi_DBincKey(keyName);
+              end if;
+
+              cmd := cmd + mgi_DBinsert(VOC_ANNOT, keyName) + 
+		     attributeAnnotTypeKey + "," +
+                     currentRecordKey + "," + 
+		     newKey + "," +
+		     genericQualifierKey + ")\n";
+
 	    elsif (editMode = TBL_ROW_MODIFY) then
-	      set := "_Mutation_key = " + newKey;
-	      cmd := cmd + 
-		     mgi_DBupdate(ALL_ALLELE_MUTATION, currentRecordKey, set) + 
-		     "and _Mutation_key = " + key + "\n";
+	      set := "_Term_key = " + newKey;
+	      cmd := cmd + mgi_DBupdate(VOC_ANNOT, key, set);
 	    elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
-	      cmd := cmd + mgi_DBdelete(ALL_ALLELE_MUTATION, currentRecordKey) + 
-		     "and _Mutation_key = " + key + "\n";
+	      cmd := cmd + mgi_DBdelete(VOC_ANNOT, key);
 	    end if;
  
-	    if (mgi_tblGetCell(table, row, table.mutation) = OTHERNOTES) then
-	      molecularNotesRequired := true;
-	    end if;
-
 	    row := row + 1;
 	  end while;
 	end does;
