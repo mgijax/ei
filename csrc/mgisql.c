@@ -845,15 +845,6 @@ char *molsource_reference(char *key)
   return(buf);
 }
 
-char *molsource_history(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select columnName, modifiedBy, modification_date  \
-   from MGI_AttrHistory_Source_View where _Object_key = %s", key);
-  return(buf);
-}
-
 /*
  * NoteLib.d
 */

@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Oct  7 07:22:32 2013";
+      lastWritten = "Mon Jan 13 07:06:43 2014";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -14,7 +14,7 @@ Module: mgiDialog
             managed = False;
             okCallback = "D:StatusReportOK";
           Group: Control
-            vip_x = 120;
+            vip_x = 105;
             vip_y = 470;
         }
         {
@@ -29,7 +29,7 @@ Module: mgiDialog
             okLabelString = Yes;
             cancelLabelString = No;
           Group: Control
-            vip_x = 120;
+            vip_x = 105;
             vip_y = 525;
         }
         {
@@ -39,7 +39,7 @@ Module: mgiDialog
             cancelCallback = "C: TuUnmanage";
             showHelpButton = False;
           Group: Control
-            vip_x = 120;
+            vip_x = 105;
             vip_y = 30;
               {
                 filler = XmSeparator;
@@ -59,7 +59,7 @@ Module: mgiDialog
             dialogStyle = dialog_primary_application_modal;
             autoUnmanage = False;
           Group: Control
-            vip_x = 120;
+            vip_x = 105;
             vip_y = 415;
         }
         {
@@ -70,7 +70,7 @@ Module: mgiDialog
             mapCallback = "D:ReportInit";
             width = 600;
           Group: Control
-            vip_x = 120;
+            vip_x = 105;
             vip_y = 1405;
               {
                 FileSelection = FileSelection;
@@ -154,7 +154,7 @@ Module: mgiDialog
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 120;
+            vip_x = 105;
             vip_y = 1460;
               {
                 FileSelection = FileSelection : mgiDialog;
@@ -260,7 +260,7 @@ Module: mgiDialog
             cancelLabelString = No;
             okLabelString = Yes;
           Group: Control
-            vip_x = 120;
+            vip_x = 105;
             vip_y = 800;
         }
         {
@@ -272,7 +272,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
             dialogTitle = "Which Item?";
           Group: Control
-            vip_x = 120;
+            vip_x = 105;
             vip_y = 1515;
               {
                 ItemList = LookupList : mgiLookup;
@@ -340,7 +340,7 @@ Module: mgiDialog
             marginWidth = 10;
             traversalOn = False;
           Group: Control
-            vip_x = 120;
+            vip_x = 105;
             vip_y = 85;
         }
         {
@@ -355,7 +355,7 @@ Module: mgiDialog
             showSeparator = False;
             dialogTitle = "Working Dialog";
           Group: Control
-            vip_x = 120;
+            vip_x = 105;
             vip_y = 360;
         }
         {
@@ -365,8 +365,8 @@ Module: mgiDialog
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 120;
-            vip_y = 1790;
+            vip_x = 105;
+            vip_y = 1735;
           Group: User
             useReportDir = False;
               {
@@ -473,7 +473,7 @@ Module: mgiDialog
             okCallback = "D:VerifyItemAdd";
             userDefinedAttributes = "doAdd:Boolean=\"False\"\n";
           Group: Control
-            vip_x = 120;
+            vip_x = 105;
             vip_y = 965;
         }
         {
@@ -485,8 +485,8 @@ Module: mgiDialog
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 120;
-            vip_y = 1900;
+            vip_x = 105;
+            vip_y = 1845;
               {
                 ItemList = LookupList : mgiLookup;
                 Group: Constraint
@@ -573,8 +573,8 @@ Module: mgiDialog
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 120;
-            vip_y = 1955;
+            vip_x = 105;
+            vip_y = 1900;
               {
                 ItemList = LookupList : mgiLookup;
                 Group: User
@@ -612,8 +612,8 @@ Module: mgiDialog
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 120;
-            vip_y = 2065;
+            vip_x = 105;
+            vip_y = 2010;
               {
                 ItemList = LookupList : mgiLookup;
                 Group: User
@@ -653,8 +653,8 @@ Module: mgiDialog
             resizePolicy = resize_any;
             dialogTitle = "Notes Dialog";
           Group: Control
-            vip_x = 120;
-            vip_y = 1845;
+            vip_x = 105;
+            vip_y = 1790;
               {
                 label = XmLabel;
                 Group: Widget
@@ -745,7 +745,7 @@ Module: mgiDialog
             spacing = 50;
             traversalOn = False;
           Group: Control
-            vip_x = 120;
+            vip_x = 105;
             vip_y = 140;
               {
                 OK = DialogPush : mgiDialog;
@@ -766,7 +766,7 @@ Module: mgiDialog
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 120;
+            vip_x = 105;
             vip_y = 1350;
             vipComment = "XmFormDialog is a convenience widget combining an unmanaged XmForm within an XmDialogShell parent. It is used for interactions not supported by the standard dialog set. No labels, buttons or other dialog components are automatically available.";
               {
@@ -818,7 +818,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
             height = 500;
           Group: Control
-            vip_x = 120;
+            vip_x = 105;
             vip_y = 1680;
               {
                 EditForm = EditForm : MGI;
@@ -1032,8 +1032,8 @@ Module: mgiDialog
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 120;
-            vip_y = 2010;
+            vip_x = 105;
+            vip_y = 1955;
               {
                 Strain1 = Strain : mgiDataTypes;
                 Group: Constraint
@@ -1137,7 +1137,7 @@ Module: mgiDialog
             managed = False;
             showHelpButton = False;
           Group: Control
-            vip_x = 120;
+            vip_x = 105;
             vip_y = 250;
         }
         {
@@ -1149,7 +1149,7 @@ Module: mgiDialog
             showText = False;
             navigationType = none;
           Group: Control
-            vip_x = 120;
+            vip_x = 105;
             vip_y = 305;
               {
                 mgiMarker = mgiMarker : mgiDataTypes;
@@ -1185,7 +1185,7 @@ Shift<Key>Tab: prev-tab-group()
             dialogTitle = "Exiting Form";
             messageString = "Changes have not been saved!\nAre you sure you want to exit this form?";
           Group: Control
-            vip_x = 120;
+            vip_x = 105;
             vip_y = 745;
         }
         {
@@ -1195,7 +1195,7 @@ Shift<Key>Tab: prev-tab-group()
             messageString = "Changes which have been made to this record have not been saved.\nDo you wish to CANCEL these modifications?";
             okCallback = "C: TuUnmanage";
           Group: Control
-            vip_x = 120;
+            vip_x = 105;
             vip_y = 855;
         }
         {
@@ -1207,7 +1207,7 @@ Shift<Key>Tab: prev-tab-group()
             showApplyButton = False;
             cancelLabelString = Close;
           Group: Control
-            vip_x = 120;
+            vip_x = 105;
             vip_y = 195;
         }
         {
@@ -1217,7 +1217,7 @@ Shift<Key>Tab: prev-tab-group()
             messageString = "Clearing will discard your most recent edits for the current record.\nAre you sure you want to Clear?";
             cancelCallback = "C: TuUnmanage";
           Group: Control
-            vip_x = 120;
+            vip_x = 105;
             vip_y = 635;
         }
         {
@@ -1232,7 +1232,7 @@ Shift<Key>Tab: prev-tab-group()
             cancelLabelString = No;
           Group: Control
             vipComment = "";
-            vip_x = 120;
+            vip_x = 105;
             vip_y = 580;
         }
         {
@@ -1241,7 +1241,7 @@ Shift<Key>Tab: prev-tab-group()
             messageString = "Changes have not been saved!\nAre you sure you want to continue to the next record?";
             dialogTitle = "Continue to Next Record?";
           Group: Control
-            vip_x = 120;
+            vip_x = 105;
             vip_y = 690;
         }
         {
@@ -1251,7 +1251,7 @@ Shift<Key>Tab: prev-tab-group()
             messageString = "Are you sure you want to change this value?";
             cancelCallback = "D:ResetModificationFlags";
           Group: Control
-            vip_x = 120;
+            vip_x = 105;
             vip_y = 910;
         }
         {
@@ -1263,7 +1263,7 @@ Shift<Key>Tab: prev-tab-group()
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 120;
+            vip_x = 105;
             vip_y = 1570;
             vipComment = "";
               {
@@ -1338,23 +1338,6 @@ Shift<Key>Tab: prev-tab-group()
               }
         }
         {
-          MolecularSourceAttributeHistoryDialog = AttributeHistoryDialog;
-          Group: Control
-            vip_x = 120;
-            vip_y = 1735;
-              {
-                AttributeHistoryTable = Table : mgiTable;
-                    {
-                      Table = mgiTable : mgiTable;
-                      Group: Widget
-                        xrtTblRowLabels = "Library,Organism,Strain,Tissue,Cell Line,Age,Gender,Segment Type,Vector";
-                        xrtTblNumRows = 9;
-                        xrtTblVisibleRows = 9;
-                        userDefinedAttributes = "library:Int(Int)=\"0\"\norganism:Int(Int)=\"1\"\nstrain:Int(Int)=\"2\"\ntissue:Int(Int)=\"3\"\ncellLine:Int(Int)=\"4\"\nage:Int(Int)=\"5\"\ngender:Int(Int)=\"6\"\nsegmentType:Int(Int)=\"7\"\nvectorType:Int(Int)=\"8\"\nmodifiedBy:Int=\"1\"\nmodifiedDate:Int=\"2\"\n";
-                    }
-              }
-        }
-        {
           WithdrawalDialog = XmFormDialog;
           Group: Widget
             dialogStyle = dialog_primary_application_modal;
@@ -1366,8 +1349,8 @@ Shift<Key>Tab: prev-tab-group()
             userDefinedAttributes = "eventKey:String(String)\neventLabel:String\n";
           Group: Control
             vipComment = "XmFormDialog is a convenience widget combining an unmanaged XmForm within an XmDialogShell parent. It is used for interactions not supported by the standard dialog set. No labels, buttons or other dialog components are automatically available.";
-            vip_x = 120;
-            vip_y = 2120;
+            vip_x = 105;
+            vip_y = 2065;
               {
                 currentMarker = mgiMarker : mgiDataTypes;
                 Group: Constraint
@@ -1693,7 +1676,7 @@ Shift<Key>Tab: prev-tab-group()
             okCallback = "D:VerifyMutantParentStrain";
             messageString = "You are about to modify the Mutant Cell Line, Parent Cell Line or Strain of Origin.\nAre you sure you want to modify these values?";
           Group: Control
-            vip_x = 120;
+            vip_x = 105;
             vip_y = 1295;
         }
         {
@@ -1705,7 +1688,7 @@ Shift<Key>Tab: prev-tab-group()
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 120;
+            vip_x = 105;
             vip_y = 1625;
             vipComment = "";
               {
@@ -1827,7 +1810,7 @@ Shift<Key>Tab: prev-tab-group()
             okCallback = "D:VerifyAlleleStatusStrain";
             messageString = "You are about to modify the Allele Status of this Not Specified Strain.\nAre you sure you want to modify this value?";
           Group: Control
-            vip_x = 120;
+            vip_x = 105;
             vip_y = 1130;
         }
         {
@@ -1838,7 +1821,7 @@ Shift<Key>Tab: prev-tab-group()
             okCallback = "D:VerifyMCLDuplicateName";
             messageString = "You are about to add/modify a Mutant Cell Line Name that already exists.\nAre you sure you want to add/modify this value?";
           Group: Control
-            vip_x = 120;
+            vip_x = 105;
             vip_y = 1185;
         }
         {
@@ -1849,7 +1832,7 @@ Shift<Key>Tab: prev-tab-group()
             okCallback = "D:VerifyMCLName";
             messageString = "You are about to modify the Mutant Cell Line Name.\nAre you sure you want to modify this value?";
           Group: Control
-            vip_x = 120;
+            vip_x = 105;
             vip_y = 1240;
         }
         {
@@ -1860,7 +1843,7 @@ Shift<Key>Tab: prev-tab-group()
             okCallback = "D:VerifyAlleleMixed";
             messageString = "You are about to modify the Allele Mixed reference or status.\nAre you sure you want to modify this value?";
           Group: Control
-            vip_x = 120;
+            vip_x = 105;
             vip_y = 1075;
         }
         {
@@ -1871,7 +1854,7 @@ Shift<Key>Tab: prev-tab-group()
             okCallback = "D:VerifyAlleleGermlineTransmission";
             messageString = "You are about to modify the Germline Transmission reference or status.\nAre you sure you want to modify this value?";
           Group: Control
-            vip_x = 120;
+            vip_x = 105;
             vip_y = 1020;
         }
 }

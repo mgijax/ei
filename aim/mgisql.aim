@@ -106,7 +106,6 @@ CALLS
 	 molsource_cellline("char *")				: "char *";
 	 molsource_date("char *")				: "char *";
 	 molsource_reference("char *")				: "char *";
-	 molsource_history("char *")				: "char *";
 
 	 notelib_1("char *")					: "char *";
 	 notelib_2("char *")					: "char *";

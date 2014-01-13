@@ -124,7 +124,6 @@ extern char *molsource_tissue(char *);
 extern char *molsource_cellline(char *);
 extern char *molsource_date(char *);
 extern char *molsource_reference(char *);
-extern char *molsource_history(char *);
 
 /* NoteLib.d */
 

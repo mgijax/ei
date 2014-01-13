@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Jan  6 10:16:08 2014";
+      lastWritten = "Mon Jan 13 06:37:23 2014";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -12160,19 +12160,6 @@ Shift<Key>Tab: prev-tab-group()
                                   mgiNoteForm = mgiNoteForm : mgiDataTypes;
                                 }
                                 {
-                                  rowColumn = XmRowColumn;
-                                  Group: Widget
-                                    spacing = 10;
-                                      {
-                                        ViewAttributeHistory = push : mgiDataTypes;
-                                        Group: Widget
-                                          labelString = "View Source Attribute History";
-                                          activateCallback = "D:ViewMolecularSourceAttributeHistory (sourceForm = \"SourceInfo\")";
-                                        Group: Control
-                                          vipComment = "XmPushButtonGadget issues commands within an application. It consists of a text label or pixmap surrounded by a border shadow. The behavior of XmPushButtonGadget differs, depending on the active mouse button. The active mouse button is determined by the parent widget. Normally, mouse button 1 is used to arm and activate the XmPushButtonGadget.";
-                                      }
-                                }
-                                {
                                   CVSequence = CVSequence : mgiCV;
                                       {
                                         AgeMenu = AgeMenu : mgiOption;
@@ -12287,19 +12274,6 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       WorkingDialog = WorkingDialog : mgiDialog;
-                    }
-                    {
-                      MolecularSourceAttributeHistoryDialog = MolecularSourceAttributeHistoryDialog : mgiDialog;
-                          {
-                            AttributeHistoryTable = Table : mgiTable;
-                                {
-                                  Table = mgiTable : mgiTable;
-                                  Group: Widget
-                                    xrtTblDisplayVertScrollBar = dispsb_never;
-                                    xrtTblNumRows = 7;
-                                    xrtTblVisibleRows = 7;
-                                }
-                          }
                     }
                     {
                       NoteDialog = NoteDialog : mgiDialog;
