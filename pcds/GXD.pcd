@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Jan  3 14:43:13 2014";
+      lastWritten = "Mon Jan 13 10:07:43 2014";
       copy = false;
       inCreateMenu = true;
         {
@@ -195,9 +195,6 @@ Module: GXD
                                               Group: User
                                                 sql = "select s.*\nfrom MGI_Organism s, MGI_Organism_MGIType t\nwhere s._Organism_key = t._Organism_key\nand t._MGIType_key = 7\norder by s.commonName";
                                             }
-                                      }
-                                      {
-                                        ViewAttributeHistory = push;
                                       }
                                       {
                                         Strain = Strain : mgiDataTypes;
@@ -1056,9 +1053,6 @@ Shift<Key>Tab: prev-tab-group()
                                               Group: User
                                                 sql = "select s.*\nfrom MGI_Organism s, MGI_Organism_MGIType t\nwhere s._Organism_key = t._Organism_key\nand t._MGIType_key = 7\norder by s.commonName";
                                             }
-                                      }
-                                      {
-                                        ViewAttributeHistory = push;
                                       }
                                       {
                                         Strain = Strain : mgiDataTypes;

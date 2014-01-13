@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Jan 13 07:06:43 2014";
+      lastWritten = "Mon Jan 13 10:06:09 2014";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -366,7 +366,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 105;
-            vip_y = 1735;
+            vip_y = 1680;
           Group: User
             useReportDir = False;
               {
@@ -486,7 +486,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 105;
-            vip_y = 1845;
+            vip_y = 1790;
               {
                 ItemList = LookupList : mgiLookup;
                 Group: Constraint
@@ -574,7 +574,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 105;
-            vip_y = 1900;
+            vip_y = 1845;
               {
                 ItemList = LookupList : mgiLookup;
                 Group: User
@@ -613,7 +613,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 105;
-            vip_y = 2010;
+            vip_y = 1955;
               {
                 ItemList = LookupList : mgiLookup;
                 Group: User
@@ -654,7 +654,7 @@ Module: mgiDialog
             dialogTitle = "Notes Dialog";
           Group: Control
             vip_x = 105;
-            vip_y = 1790;
+            vip_y = 1735;
               {
                 label = XmLabel;
                 Group: Widget
@@ -819,7 +819,7 @@ Module: mgiDialog
             height = 500;
           Group: Control
             vip_x = 105;
-            vip_y = 1680;
+            vip_y = 1625;
               {
                 EditForm = EditForm : MGI;
                 Group: Widget
@@ -1033,7 +1033,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 105;
-            vip_y = 1955;
+            vip_y = 1900;
               {
                 Strain1 = Strain : mgiDataTypes;
                 Group: Constraint
@@ -1255,89 +1255,6 @@ Shift<Key>Tab: prev-tab-group()
             vip_y = 910;
         }
         {
-          AttributeHistoryDialog = XmFormDialog;
-          Group: Widget
-            dialogStyle = dialog_primary_application_modal;
-            dialogTitle = "Attribute History Dialog";
-            managed = False;
-            rubberPositioning = False;
-            resizePolicy = resize_any;
-          Group: Control
-            vip_x = 105;
-            vip_y = 1570;
-            vipComment = "";
-              {
-                AttributeHistoryTable = Table : mgiTable;
-                Group: Constraint
-                  leftAttachment = attach_form;
-                  leftOffset = 5;
-                  rightAttachment = attach_form;
-                  topAttachment = attach_form;
-                  topOffset = 5;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-                  rightOffset = 5;
-                    {
-                      Table = mgiTable : mgiTable;
-                      Group: Widget
-                        xrtTblVisibleRows = 10;
-                        xrtTblNumRows = 11;
-                        xrtTblNumColumns = 3;
-                        xrtTblColumnLabels = "Mode,Modified By,Modification Date";
-                        xrtTblCharWidthSeries = "(all 0 1)(all 1 30)(all 2 20)(all label 20)";
-                        xrtTblEditableSeries = "(all all False)";
-                        xrtTblTraversableSeries = "(all all False)";
-                    }
-                    {
-                      AddRow = TablePush : mgiTable;
-                      Group: Widget
-                        managed = False;
-                    }
-                    {
-                      DeleteRow = TablePush : mgiTable;
-                      Group: Widget
-                        managed = False;
-                    }
-              }
-              {
-                separator = XmSeparator;
-                Group: Constraint
-                  leftAttachment = attach_form;
-                  rightAttachment = attach_form;
-                  topAttachment = attach_widget;
-                  topWidget = AttributeHistoryTable;
-                  topOffset = 2;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-                  leftOffset = 2;
-                  rightOffset = 2;
-              }
-              {
-                Buttons = XmWorkArea;
-                Group: Widget
-                  orientation = horizontal;
-                  entryAlignment = alignment_center;
-                  inTabGroup = True;
-                  spacing = 25;
-                  packing = pack_column;
-                Group: Constraint
-                  leftAttachment = attach_form;
-                  leftOffset = 2;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_widget;
-                  topWidget = separator;
-                  bottomAttachment = attach_form;
-                  bottomOffset = 2;
-                  resizable = true;
-                    {
-                      Done = DialogPush : mgiDialog;
-                      Group: Widget
-                        activateCallback = "C: TuUnmanage";
-                        traversalOn = False;
-                    }
-              }
-        }
-        {
           WithdrawalDialog = XmFormDialog;
           Group: Widget
             dialogStyle = dialog_primary_application_modal;
@@ -1350,7 +1267,7 @@ Shift<Key>Tab: prev-tab-group()
           Group: Control
             vipComment = "XmFormDialog is a convenience widget combining an unmanaged XmForm within an XmDialogShell parent. It is used for interactions not supported by the standard dialog set. No labels, buttons or other dialog components are automatically available.";
             vip_x = 105;
-            vip_y = 2065;
+            vip_y = 2010;
               {
                 currentMarker = mgiMarker : mgiDataTypes;
                 Group: Constraint
@@ -1689,7 +1606,7 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_any;
           Group: Control
             vip_x = 105;
-            vip_y = 1625;
+            vip_y = 1570;
             vipComment = "";
               {
                 mgiCitation = mgiCitation : mgiDataTypes;

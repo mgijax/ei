@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Jan 13 06:37:23 2014";
+      lastWritten = "Mon Jan 13 10:13:54 2014";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -1943,9 +1943,6 @@ Module: MGD
                                               ProbeOrganismMenu = ProbeOrganismMenu : mgiOption;
                                             }
                                             {
-                                              ViewAttributeHistory = push;
-                                            }
-                                            {
                                               Strain = Strain : mgiDataTypes;
                                             }
                                             {
@@ -2802,9 +2799,6 @@ Module: MGD
                           }
                           {
                             ProbeOrganismMenu = ProbeOrganismMenu : mgiOption;
-                          }
-                          {
-                            ViewAttributeHistory = push;
                           }
                           {
                             Strain = Strain : mgiDataTypes;
@@ -3698,9 +3692,6 @@ Module: MGD
                                           topOffset = 5;
                                           bottomAttachment = attach_none;
                                           resizable = true;
-                                      }
-                                      {
-                                        ViewAttributeHistory = push;
                                       }
                                       {
                                         Strain = Strain : mgiDataTypes;
@@ -8391,9 +8382,6 @@ Shift<Key>Tab: prev-tab-group()
                         resizable = true;
                     }
                     {
-                      ViewAttributeHistory = push;
-                    }
-                    {
                       Strain = Strain : mgiDataTypes;
                     }
                     {
@@ -9078,59 +9066,10 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         legend = XmLabelGadget;
                                         Group: Widget
-                                          labelString = "1 = Allele Attribute, 2 = Synonyms, 3 = Molecular Mutations, 4 = Image, 5 = Sequence";
+                                          labelString = "1 = Synonyms, 2 = Allele Attribute, 3 = Molecular Mutations, 4 = Image, 5 = Sequence";
                                       }
                                       {
                                         notebook = notebook : mgiNoteBook;
-                                            {
-                                              AlleleSubType = TableLabel : mgiTable;
-                                              Group: Widget
-                                                rubberPositioning = False;
-                                                resizePolicy = resize_any;
-                                                  {
-                                                    Table = mgiTable : mgiTable;
-                                                    Group: Widget
-                                                      xrtTblPixelWidthSeries = "(all 0-2 0)";
-                                                      xrtTblEditableSeries = "(all 0-2 False)";
-                                                      xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 50)";
-                                                      xrtTblColumnLabels = "Mode,Current Key,Key,Attribute";
-                                                      xrtTblNumColumns = 4;
-                                                      userDefinedAttributes = "annotCurrentKey:Int(Int)=\"1\"\ntermKey:Int(Int)=\"2\"\nterm:Int(Int)=\"3\"\n";
-                                                      xrtTblEnterCellCallback = "D:SetOptions";
-                                                      xrtTblTraverseCellCallback = "(all 0-2 False)";
-                                                  {
-                                                    label = XtXrtLabel;
-                                                    Group: Widget
-                                                      labelString = "Allele Attribute";
-                                                  }
-                                                  }
-                                                  {
-                                                    AddRow = TablePush : mgiTable;
-                                                  }
-                                                  {
-                                                    DeleteRow = TablePush : mgiTable;
-                                                  }
-                                                  {
-                                                    AlleleSubTypeMenu = AlleleSubTypeMenu : mgiOption;
-                                                    Group: Constraint
-                                                      leftAttachment = attach_widget;
-                                                      leftWidget = DeleteRow;
-                                                      rightAttachment = attach_none;
-                                                      topAttachment = attach_opposite_widget;
-                                                      topWidget = DeleteRow;
-                                                      bottomAttachment = attach_none;
-                                                      resizable = true;
-                                                      topOffset = 2;
-                                                  Popups:
-                                                  {
-                                                    AlleleSubtypePulldown = OptionPulldown : mgiOption;
-                                                    Group: User
-                                                      tableOption = 3;
-                                                      tableOptionKey = 2;
-                                                      tableForm = AlleleSubType;
-                                                  }
-                                                  }
-                                            }
                                             {
                                               Synonym = SynonymTypeTable : mgiTable;
                                               Group: Widget
@@ -9177,6 +9116,55 @@ Shift<Key>Tab: prev-tab-group()
                                                     SynonymTypePulldown = OptionPulldown : mgiOption;
                                                     Group: User
                                                       sql = "select _SynonymType_key, synonymType from MGI_SynonymType_Allele_View where allowOnlyOne = 0 order by _SynonymType_key";
+                                                  }
+                                                  }
+                                            }
+                                            {
+                                              AlleleSubType = TableLabel : mgiTable;
+                                              Group: Widget
+                                                rubberPositioning = False;
+                                                resizePolicy = resize_any;
+                                                  {
+                                                    Table = mgiTable : mgiTable;
+                                                    Group: Widget
+                                                      xrtTblPixelWidthSeries = "(all 0-2 0)";
+                                                      xrtTblEditableSeries = "(all 0-2 False)";
+                                                      xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 50)";
+                                                      xrtTblColumnLabels = "Mode,Current Key,Key,Attribute";
+                                                      xrtTblNumColumns = 4;
+                                                      userDefinedAttributes = "annotCurrentKey:Int(Int)=\"1\"\ntermKey:Int(Int)=\"2\"\nterm:Int(Int)=\"3\"\n";
+                                                      xrtTblEnterCellCallback = "D:SetOptions";
+                                                      xrtTblTraverseCellCallback = "(all 0-2 False)";
+                                                  {
+                                                    label = XtXrtLabel;
+                                                    Group: Widget
+                                                      labelString = "Allele Attribute";
+                                                  }
+                                                  }
+                                                  {
+                                                    AddRow = TablePush : mgiTable;
+                                                  }
+                                                  {
+                                                    DeleteRow = TablePush : mgiTable;
+                                                  }
+                                                  {
+                                                    AlleleSubTypeMenu = AlleleSubTypeMenu : mgiOption;
+                                                    Group: Constraint
+                                                      leftAttachment = attach_widget;
+                                                      leftWidget = DeleteRow;
+                                                      rightAttachment = attach_none;
+                                                      topAttachment = attach_opposite_widget;
+                                                      topWidget = DeleteRow;
+                                                      bottomAttachment = attach_none;
+                                                      resizable = true;
+                                                      topOffset = 2;
+                                                  Popups:
+                                                  {
+                                                    AlleleSubtypePulldown = OptionPulldown : mgiOption;
+                                                    Group: User
+                                                      tableOption = 3;
+                                                      tableOptionKey = 2;
+                                                      tableForm = AlleleSubType;
                                                   }
                                                   }
                                             }

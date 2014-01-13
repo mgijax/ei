@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Sep 24 12:50:19 2013";
+      lastWritten = "Mon Jan 13 10:11:43 2014";
       copy = false;
       inCreateMenu = true;
         {
@@ -563,7 +563,7 @@ Module: MGI
                   bottomAttachment = attach_none;
                   resizable = true;
                   leftOffset = 5;
-                  topWidget = ViewAttributeHistory;
+                  topWidget = SourceID;
                     {
                       label = XmLabel;
                       Group: Widget
@@ -662,23 +662,6 @@ Module: MGI
                   topOffset = 5;
                   bottomAttachment = attach_none;
                   resizable = true;
-              }
-              {
-                ViewAttributeHistory = push : mgiDataTypes;
-                Group: Widget
-                  labelString = "View Attribute History";
-                  background = Violet;
-                  activateCallback = "D:ViewMolecularSourceAttributeHistory";
-                Group: Constraint
-                  leftAttachment = attach_form;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_form;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-                  leftOffset = 5;
-                  topOffset = 5;
-                Group: Control
-                  vipComment = "XmPushButtonGadget issues commands within an application. It consists of a text label or pixmap surrounded by a border shadow. The behavior of XmPushButtonGadget differs, depending on the active mouse button. The active mouse button is determined by the parent widget. Normally, mouse button 1 is used to arm and activate the XmPushButtonGadget.";
               }
               {
                 Strain = Strain : mgiDataTypes;

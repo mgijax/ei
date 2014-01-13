@@ -7,7 +7,7 @@ Add
 
 . default Inheritance Mode = Not Applicable
 
-. if Parent Cell Line = blank and Type in: 'Gene trapped', 'Targeted'
+. if Parent Cell Line = blank and Allele Type in: 'Gene trapped', 'Targeted'
 	
 	strain = Not Specified
   else
