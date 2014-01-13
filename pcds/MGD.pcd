@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Jan 13 10:13:54 2014";
+      lastWritten = "Mon Jan 13 11:09:50 2014";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -9127,14 +9127,13 @@ Shift<Key>Tab: prev-tab-group()
                                                   {
                                                     Table = mgiTable : mgiTable;
                                                     Group: Widget
-                                                      xrtTblPixelWidthSeries = "(all 0-2 0)";
-                                                      xrtTblEditableSeries = "(all 0-2 False)";
+                                                      xrtTblPixelWidthSeries = "(all 0-2 0)\t";
                                                       xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 50)";
                                                       xrtTblColumnLabels = "Mode,Current Key,Key,Attribute";
                                                       xrtTblNumColumns = 4;
                                                       userDefinedAttributes = "annotCurrentKey:Int(Int)=\"1\"\ntermKey:Int(Int)=\"2\"\nterm:Int(Int)=\"3\"\n";
                                                       xrtTblEnterCellCallback = "D:SetOptions";
-                                                      xrtTblTraverseCellCallback = "(all 0-2 False)";
+                                                      xrtTblEditableSeries = "(all 0-2 False)";
                                                   {
                                                     label = XtXrtLabel;
                                                     Group: Widget
