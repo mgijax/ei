@@ -2,7 +2,7 @@ Module: mgiAnatDictionary
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jan  9 12:34:11 2014";
+      lastWritten = "Thu Jan 23 07:52:44 2014";
         {
           ADEditClipboard = ClipboardEditList : mgiLookup;
           Group: Widget
@@ -304,13 +304,6 @@ Module: mgiAnatDictionary
                       MainMenu = MainMenu;
                           {
                             File = File;
-                                Popups:
-                                {
-                                  FilePulldown = MenuPulldown : mgiMenu;
-                                      {
-                                        Exit = MenuPush : mgiMenu;
-                                      }
-                                }
                           }
                           {
                             Commands = Commands : mgiMenu;
@@ -330,41 +323,10 @@ Module: mgiAnatDictionary
                                           accelerator = " ";
                                           sensitive = False;
                                       }
-                                      {
-                                        Delete = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        separator1 = XmSeparator;
-                                      }
-                                      {
-                                        Clear = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Clear1 = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Clear2 = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        separator2 = XmSeparator;
-                                      }
-                                      {
-                                        Previous = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Next = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Bottom = MenuPush : mgiMenu;
-                                      }
                                 }
                           }
                           {
                             Edit = Edit;
-                                Popups:
-                                {
-                                  EditPulldown = MenuPulldown : mgiMenu;
-                                }
                           }
                           {
                             View = View;
@@ -381,22 +343,6 @@ Module: mgiAnatDictionary
                                         Group: Widget
                                           managed = False;
                                       }
-                                      {
-                                        Strain = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Tissue = MenuPush : mgiMenu;
-                                      }
-                                }
-                          }
-                          {
-                            Reports = MenuCascade;
-                          }
-                          {
-                            Utilities = Utilities : mgiMenu;
-                                Popups:
-                                {
-                                  UtilitiesPulldown = MenuPulldown : mgiMenu;
                                 }
                           }
                     }
@@ -522,9 +468,6 @@ Module: mgiAnatDictionary
                                         Group: Widget
                                           labelString = "Stage(s)";
                                       }
-                                      {
-                                        text = text : mgiDataTypes;
-                                      }
                                 }
                                 {
                                   EMAPSid = CharText : mgiDataTypes;
@@ -589,12 +532,6 @@ Module: mgiAnatDictionary
                                                 labelString = "MGI Aliases";
                                             }
                                       }
-                                      {
-                                        AddRow = TablePush : mgiTable;
-                                      }
-                                      {
-                                        DeleteRow = TablePush : mgiTable;
-                                      }
                                 }
                                 {
                                   edinburghAliasTable = aliasTable : mgiAnatDictionary;
@@ -616,12 +553,6 @@ Module: mgiAnatDictionary
                                                 labelString = "Edinburgh Aliases";
                                             }
                                       }
-                                      {
-                                        AddRow = TablePush : mgiTable;
-                                      }
-                                      {
-                                        DeleteRow = TablePush : mgiTable;
-                                      }
                                 }
                                 {
                                   MGIAddedMenu = YesNoMenu : mgiOption;
@@ -642,15 +573,6 @@ Module: mgiAnatDictionary
                                       Popups:
                                       {
                                         MGIAddedPulldown : YesNoPulldown = OptionPulldown;
-                                            {
-                                              SearchAll = SearchAll : mgiOption;
-                                            }
-                                            {
-                                              Yes = Yes : mgiOption;
-                                            }
-                                            {
-                                              No = No : mgiOption;
-                                            }
                                       }
                                 }
                                 {
@@ -666,19 +588,6 @@ Module: mgiAnatDictionary
                                     topWidget = MGIAddedMenu;
                                     topOffset = 5;
                                     leftWidget = MGIAddedMenu;
-                                      Popups:
-                                      {
-                                        printStopPulldown = OptionPulldown;
-                                            {
-                                              SearchAll = SearchAll : mgiOption;
-                                            }
-                                            {
-                                              Yes = Yes : mgiOption;
-                                            }
-                                            {
-                                              No = No : mgiOption;
-                                            }
-                                      }
                                 }
                                 {
                                   ADSystemMenu = ADSystemMenu : mgiOption;
@@ -694,13 +603,6 @@ Module: mgiAnatDictionary
                                     topWidget = printStopMenu;
                                     topOffset = 5;
                                     rightOffset = 5;
-                                      Popups:
-                                      {
-                                        ADSystemPulldown = OptionPulldown;
-                                            {
-                                              SearchAll = SearchAll : mgiOption;
-                                            }
-                                      }
                                 }
                                 {
                                   inheritSystemMenu = YesNoMenu : mgiOption;
@@ -723,15 +625,6 @@ Module: mgiAnatDictionary
                                       Popups:
                                       {
                                         inheritSystemPulldown : YesNoPulldown = OptionPulldown;
-                                            {
-                                              SearchAll = SearchAll : mgiOption;
-                                            }
-                                            {
-                                              Yes = Yes : mgiOption;
-                                            }
-                                            {
-                                              No = No : mgiOption;
-                                            }
                                       }
                                 }
                                 {
@@ -877,13 +770,6 @@ Module: mgiAnatDictionary
                                 }
                                 {
                                   Clear1 = XmMenuBar;
-                                      {
-                                        Clear = XmCascadeButton;
-                                            Popups:
-                                            {
-                                              ClearPulldown = XmPulldownMenu;
-                                            }
-                                      }
                                 }
                                 {
                                   RecordCount = RecordCount;
@@ -910,35 +796,11 @@ Module: mgiAnatDictionary
                                     topWidget = Previous;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                      {
-                                        label = XmLabel;
-                                      }
-                                      {
-                                        text = text;
-                                      }
                                 }
                                 {
                                   ModifiedDate = ModifiedDate : mgiDataTypes;
                                   Group: Widget
                                     sensitive = False;
-                                      {
-                                        label = XmLabel;
-                                      }
-                                      {
-                                        text = text;
-                                      }
-                                }
-                                {
-                                  ModificationHistory = ModificationHistory : mgiTable;
-                                      {
-                                        Table = mgiTable : mgiTable;
-                                      }
-                                      {
-                                        AddRow = TablePush : mgiTable;
-                                      }
-                                      {
-                                        DeleteRow = TablePush : mgiTable;
-                                      }
                                 }
                           }
                     }
@@ -1206,19 +1068,22 @@ Module: mgiAnatDictionary
                                                     KOMP = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    NCIMR = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     MTG = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     MUGEN = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    NCIMR = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     NIG = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NMICE = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NRCMM = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     OBS = AccToggle : mgiOption;
@@ -1254,7 +1119,7 @@ Module: mgiAnatDictionary
                                                     BayGenomicGeneTrap = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    TexasGeneTrap = AccToggle : mgiOption;
+                                                    TIGM = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     TIGEMGeneTrap = AccToggle : mgiOption;
@@ -1348,36 +1213,9 @@ Module: mgiAnatDictionary
                                 }
                                 {
                                   QueryList = QueryList;
-                                      {
-                                        Label = LookupLabel;
-                                      }
-                                      {
-                                        List = list;
-                                      }
                                 }
                                 {
                                   ADEditClipboard = ADEditClipboard : mgiAnatDictionary;
-                                      {
-                                        Label = LookupLabel : mgiLookup;
-                                      }
-                                      {
-                                        List = list : mgiDataTypes;
-                                      }
-                                      {
-                                        Add = TablePush : mgiTable;
-                                      }
-                                      {
-                                        AddAll = TablePush : mgiTable;
-                                      }
-                                      {
-                                        Delete = TablePush : mgiTable;
-                                      }
-                                      {
-                                        Clear = TablePush : mgiTable;
-                                      }
-                                      {
-                                        Sort = TablePush : mgiTable;
-                                      }
                                 }
                           }
                     }
@@ -1392,15 +1230,6 @@ Module: mgiAnatDictionary
                       ReportDialog = ReportDialog;
                           {
                             FileSelection = FileSelection;
-                                {
-                                  filler = XmSeparator;
-                                }
-                                {
-                                  Print = XmPushButton;
-                                }
-                                {
-                                  Delete = XmPushButton;
-                                }
                           }
                           {
                             Lookup = XmFrame;
@@ -1408,21 +1237,9 @@ Module: mgiAnatDictionary
                                   panedWindow = XmPanedWindow;
                                       {
                                         ReportList = LookupList : mgiLookup;
-                                            {
-                                              Label = LookupLabel;
-                                            }
-                                            {
-                                              List = list;
-                                            }
                                       }
                                       {
                                         PrinterList = LookupList;
-                                            {
-                                              Label = LookupLabel;
-                                            }
-                                            {
-                                              List = list;
-                                            }
                                       }
                                       {
                                         PrintOrient = Choice : mgiDataTypes;
@@ -1458,9 +1275,6 @@ Module: mgiAnatDictionary
                                                   }
                                             }
                                       }
-                                      {
-                                        Output = XmScrolledText;
-                                      }
                                 }
                           }
                     }
@@ -1469,24 +1283,6 @@ Module: mgiAnatDictionary
                     }
                     {
                       WhichItem = WhichItem;
-                          {
-                            ItemList = LookupList : mgiLookup;
-                                {
-                                  Label = LookupLabel;
-                                }
-                                {
-                                  List = list;
-                                }
-                          }
-                          {
-                            separator = XmSeparator;
-                          }
-                          {
-                            Buttons = XmRowColumn;
-                                {
-                                  Cancel = DialogPush : mgiDialog;
-                                }
-                          }
                     }
                     {
                       VerifyItemAdd = VerifyItemAdd;
@@ -1496,33 +1292,6 @@ Module: mgiAnatDictionary
                     }
                     {
                       NoteDialog = NoteDialog;
-                          {
-                            label = XmLabel;
-                          }
-                          {
-                            Note = Notes : mgiDataTypes;
-                                {
-                                  label = XmLabel;
-                                }
-                                {
-                                  text = scrolledText;
-                                }
-                          }
-                          {
-                            separator = XmSeparator;
-                          }
-                          {
-                            Buttons = Buttons : mgiDialog;
-                                {
-                                  OK = DialogPush;
-                                }
-                                {
-                                  Cancel = DialogPush;
-                                }
-                                {
-                                  addNote1 = AppendNotePush : mgiDataTypes;
-                                }
-                          }
                     }
                     {
                       AddDialog = AddDialog : mgiAnatDictionary;
@@ -1558,75 +1327,6 @@ Module: mgiAnatDictionary
                                           xrtGearAlignerAlignment = aligner_center;
                                       }
                                 }
-                                {
-                                  mgiAliasTable = aliasTable : mgiAnatDictionary;
-                                      {
-                                        Table = mgiTable;
-                                            {
-                                              label = XtXrtLabel;
-                                            }
-                                      }
-                                      {
-                                        AddRow = TablePush : mgiTable;
-                                      }
-                                      {
-                                        DeleteRow = TablePush : mgiTable;
-                                      }
-                                }
-                                {
-                                  printStopMenu = printStopMenu : mgiAnatDictionary;
-                                      Popups:
-                                      {
-                                        printStopPulldown = OptionPulldown;
-                                            {
-                                              SearchAll = SearchAll : mgiOption;
-                                            }
-                                            {
-                                              Yes = Yes : mgiOption;
-                                            }
-                                            {
-                                              No = No : mgiOption;
-                                            }
-                                      }
-                                }
-                                {
-                                  inheritSystemMenu = inheritSystemMenu : mgiAnatDictionary;
-                                      Popups:
-                                      {
-                                        inheritSystemPulldown = OptionPulldown;
-                                            {
-                                              SearchAll = SearchAll : mgiOption;
-                                            }
-                                            {
-                                              Yes = Yes : mgiOption;
-                                            }
-                                            {
-                                              No = No : mgiOption;
-                                            }
-                                      }
-                                }
-                                {
-                                  ADSystemMenu = ADSystemMenu : mgiOption;
-                                      Popups:
-                                      {
-                                        ADSystemPulldown = OptionPulldown;
-                                            {
-                                              SearchAll = SearchAll : mgiOption;
-                                            }
-                                      }
-                                }
-                          }
-                          {
-                            rowColumn = XmRowColumn;
-                                {
-                                  Add = XmPushButton;
-                                }
-                                {
-                                  Cancel = XmPushButton;
-                                }
-                          }
-                          {
-                            separator = XmSeparator;
                           }
                     }
               }

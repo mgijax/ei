@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Dec  4 13:48:23 2013";
+      lastWritten = "Thu Jan 23 08:02:53 2014";
       copy = false;
       inCreateMenu = true;
         {
@@ -612,11 +612,6 @@ Module: mgiOption
                         defaultValue = 106;
                     }
                     {
-                      NCIMR = AccToggle : mgiOption;
-                      Group: User
-                        defaultValue = 54;
-                    }
-                    {
                       MTG = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 92;
@@ -627,6 +622,11 @@ Module: mgiOption
                         defaultValue = 87;
                     }
                     {
+                      NCIMR = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 54;
+                    }
+                    {
                       NIG = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 93;
@@ -635,6 +635,11 @@ Module: mgiOption
                       NMICE = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 56;
+                    }
+                    {
+                      NRCMM = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 167;
                     }
                     {
                       OBS = AccToggle : mgiOption;
@@ -704,9 +709,7 @@ Module: mgiOption
                         defaultValue = 95;
                     }
                     {
-                      TexasGeneTrap = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = TIGM;
+                      TIGM = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 97;
                     }
