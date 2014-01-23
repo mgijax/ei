@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jan 23 08:02:53 2014";
+      lastWritten = "Thu Jan 23 12:45:45 2014";
       copy = false;
       inCreateMenu = true;
         {
@@ -659,16 +659,16 @@ Module: mgiOption
                         defaultValue = 70;
                     }
                     {
-                      TAC = AccToggle : mgiOption;
-                      Group: User
-                        defaultValue = 94;
-                    }
-                    {
                       RMRC = AccToggle : mgiOption;
                       Group: Widget
                         labelString = "RMRC-NLAC";
                       Group: User
                         defaultValue = 161;
+                    }
+                    {
+                      TAC = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 94;
                     }
                     {
                       WTSI = AccToggle : mgiOption;

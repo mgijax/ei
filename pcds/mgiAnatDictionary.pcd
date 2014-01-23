@@ -2,7 +2,7 @@ Module: mgiAnatDictionary
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jan 23 07:52:44 2014";
+      lastWritten = "Thu Jan 23 12:45:47 2014";
         {
           ADEditClipboard = ClipboardEditList : mgiLookup;
           Group: Widget
@@ -1095,10 +1095,10 @@ Module: mgiAnatDictionary
                                                     RIKENBRC = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    TAC = AccToggle : mgiOption;
+                                                    RMRC = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    RMRC = AccToggle : mgiOption;
+                                                    TAC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     WTSI = AccToggle : mgiOption;
