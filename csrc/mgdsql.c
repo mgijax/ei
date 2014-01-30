@@ -983,23 +983,6 @@ char *mldp_insituregion(char *key)
   return(buf);
 }
 
-char *mldp_physmap(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select * from MLD_PhysMap where _Expt_key = %s", key);
-  return(buf);
-}
-
-char *mldp_phymapdistance(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select * from MLD_Distance_View where _Expt_key = %s \
-   \norder by sequenceNum", key);
-  return(buf);
-}
-
 char *mldp_ri(char *key)
 {
   static char buf[TEXTBUFSIZ];

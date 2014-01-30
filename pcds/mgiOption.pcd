@@ -1967,33 +1967,6 @@ Module: mgiOption
               }
         }
         {
-          PhysUnitsMenu = OptionMenu;
-          Group: Widget
-            subMenuId = PhysUnitsPulldown;
-            labelString = Units;
-          Group: Control
-            vip_x = 105;
-            vip_y = 5035;
-          Group: User
-            defaultOption = kb;
-              Popups:
-              {
-                PhysUnitsPulldown : OptionPulldown = OptionPulldown;
-                    {
-                      kb = OptionToggle : mgiOption;
-                      Group: User
-                        searchValue = 0;
-                        defaultValue = 0;
-                    }
-                    {
-                      bp = OptionToggle : mgiOption;
-                      Group: User
-                        searchValue = 1;
-                        defaultValue = 1;
-                    }
-              }
-        }
-        {
           YesNoMenu = OptionMenu;
           Group: Widget
             subMenuId = YesNoPulldown;
@@ -2180,13 +2153,6 @@ Module: mgiOption
                         searchValue = RI;
                         defaultValue = RI;
                         form = ExptRIForm;
-                    }
-                    {
-                      Physical = ExptToggle : mgiOption;
-                      Group: User
-                        searchValue = MAP;
-                        defaultValue = MAP;
-                        form = ExptPhysicalForm;
                     }
               }
         }

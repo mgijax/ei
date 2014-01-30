@@ -97,7 +97,6 @@ extern char *global_version;
 #define HMD_NOTES		154
 
 #define MLD_CONCORDANCE		160
-#define MLD_DISTANCE		161
 #define MLD_EXPT_MARKER		162
 #define MLD_EXPT_NOTES		163
 #define MLD_EXPTS		164
@@ -111,7 +110,6 @@ extern char *global_version;
 #define MLD_MC2POINT		173
 #define MLD_MCHAPLOTYPE		174
 #define MLD_NOTES		175
-#define MLD_PHYSICAL		176
 #define MLD_RI			177
 #define MLD_RIHAPLOTYPE		178
 #define MLD_RI2POINT		179

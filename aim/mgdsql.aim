@@ -110,8 +110,6 @@ CALLS
 	 mldp_hybridconcordance("char *")		: "char *";
 	 mldp_insitu("char *")				: "char *";
 	 mldp_insituregion("char *")			: "char *";
-	 mldp_physmap("char *")				: "char *";
-	 mldp_phymapdistance("char *")			: "char *";
 	 mldp_ri("char *")				: "char *";
 	 mldp_ridata("char *")				: "char *";
 	 mldp_ri2point("char *")			: "char *";
