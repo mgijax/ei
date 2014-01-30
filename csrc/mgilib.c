@@ -821,7 +821,6 @@ char *mgi_DBkey(int table)
             strcpy(buf, "_Assay_Type_key");
 	    break;
     case MLD_CONCORDANCE:
-    case MLD_DISTANCE:
     case MLD_EXPT_MARKER:
     case MLD_EXPT_VIEW:
     case MLD_EXPT_NOTES:
@@ -834,7 +833,6 @@ char *mgi_DBkey(int table)
     case MLD_MCMASTER:
     case MLD_MC2POINT:
     case MLD_MCHAPLOTYPE:
-    case MLD_PHYSICAL:
     case MLD_RI:
     case MLD_RIHAPLOTYPE:
     case MLD_RI2POINT:
@@ -1621,9 +1619,6 @@ char *mgi_DBtable(int table)
     case MLD_CONCORDANCE:
             strcpy(buf, "MLD_Concordance");
 	    break;
-    case MLD_DISTANCE:
-            strcpy(buf, "MLD_Distance");
-	    break;
     case MLD_EXPT_MARKER:
             strcpy(buf, "MLD_Expt_Marker");
 	    break;
@@ -1663,9 +1658,6 @@ char *mgi_DBtable(int table)
 	    break;
     case MLD_NOTES:
             strcpy(buf, "MLD_Notes");
-	    break;
-    case MLD_PHYSICAL:
-            strcpy(buf, "MLD_PhysMap");
 	    break;
     case MLD_RI:
             strcpy(buf, "MLD_RI");
@@ -1961,7 +1953,6 @@ char *mgi_DBinsert(int table, char *keyName)
     case MLC_TEXT:
     case MLC_TEXT_ALL:
     case MLD_CONCORDANCE:
-    case MLD_DISTANCE:
     case MLD_EXPT_MARKER:
     case MLD_EXPT_NOTES:
     case MLD_FISH:
@@ -1973,7 +1964,6 @@ char *mgi_DBinsert(int table, char *keyName)
     case MLD_MC2POINT:
     case MLD_MCHAPLOTYPE:
     case MLD_NOTES:
-    case MLD_PHYSICAL:
     case MLD_RI:
     case MLD_RIHAPLOTYPE:
     case MLD_RI2POINT:
@@ -2253,10 +2243,6 @@ char *mgi_DBinsert(int table, char *keyName)
 	    sprintf(buf, "insert %s (%s, sequenceNum, _Marker_key, chromosome, cpp, cpn, cnp, cnn)",
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
-    case MLD_DISTANCE:
-	    sprintf(buf, "insert %s (%s, _Marker_key_1, _Marker_key_2, sequenceNum, estDistance, endonuclease, minFrag, notes, relativeArrangeCharStr, units, realisticDist)",
-	      mgi_DBtable(table), mgi_DBkey(table));
-	    break;
     case MLD_EXPT_MARKER:
 	    sprintf(buf, "insert %s (%s, _Marker_key, _Allele_key, _Assay_Type_key, sequenceNum, gene, description, matrixData)",
 	      mgi_DBtable(table), mgi_DBkey(table));
@@ -2295,10 +2281,6 @@ char *mgi_DBinsert(int table, char *keyName)
 	    break;
     case MLD_MCHAPLOTYPE:
 	    sprintf(buf, "insert %s (%s, sequenceNum, alleleLine, offspringNmbr)",
-	      mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case MLD_PHYSICAL:
-	    sprintf(buf, "insert %s (%s, definitiveOrder, geneOrder)",
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MLD_RI:

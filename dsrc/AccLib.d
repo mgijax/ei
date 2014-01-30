@@ -522,8 +522,7 @@ rules:
 		    accName = "MGD-CREX-" or accName = "MGD-RIEX-" or
                     accName = "MGD-HYEX-" or accName = "MGD-FSEX-" or
                     accName = "MGD-INEX-" or accName = "MGD-TEXT-" or
-		    accName = "MGD-TXEX-" or accName = "MGD-PMEX-" or
-		    accName = "E" or accName = "J:") then
+		    accName = "MGD-TXEX-" or accName = "E" or accName = "J:") then
 		  accID := "\'" + accName + accID + "\'";
 		else
 	          accID := "\'" + accID + "\'";

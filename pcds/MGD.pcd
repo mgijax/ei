@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Jan 13 11:09:50 2014";
+      lastWritten = "Thu Jan 30 08:27:50 2014";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -454,9 +454,6 @@ Module: MGD
                                                   }
                                                   {
                                                     TXEX = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    PMEX = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     E = AccToggle : mgiOption;
@@ -2185,9 +2182,6 @@ Module: MGD
                                                     TXEX = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    PMEX = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     E = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -2629,7 +2623,7 @@ Module: MGD
             width = 600;
           Group: Control
             vip_x = 90;
-            vip_y = 2065;
+            vip_y = 2010;
               {
                 ID = ID;
               }
@@ -2871,7 +2865,7 @@ Module: MGD
             width = 600;
           Group: Control
             vip_x = 90;
-            vip_y = 2010;
+            vip_y = 1955;
               {
                 Marker = ReferenceTable : mgiTable;
                 Group: Constraint
@@ -3074,7 +3068,7 @@ Module: MGD
             managed = False;
           Group: Control
             vip_x = 90;
-            vip_y = 2175;
+            vip_y = 2120;
           Group: User
             homeWidget = Jnum;
             queryList = ReferenceList;
@@ -3317,9 +3311,6 @@ Module: MGD
                                   TXEX = AccToggle : mgiOption;
                                 }
                                 {
-                                  PMEX = AccToggle : mgiOption;
-                                }
-                                {
                                   E = AccToggle : mgiOption;
                                 }
                                 {
@@ -3502,7 +3493,7 @@ Module: MGD
             width = 600;
           Group: Control
             vip_x = 90;
-            vip_y = 2120;
+            vip_y = 2065;
               {
                 Sequence1 = CharText : mgiDataTypes;
                 Group: Constraint
@@ -3977,9 +3968,6 @@ Module: MGD
                                                     TXEX = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    PMEX = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     E = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -4186,7 +4174,7 @@ Module: MGD
             resizePolicy = resize_any;
           Group: Control
             vip_x = 90;
-            vip_y = 1845;
+            vip_y = 1790;
               {
                 ID = ID;
               }
@@ -4879,7 +4867,7 @@ Module: MGD
             height = 700;
           Group: Control
             vip_x = 90;
-            vip_y = 1790;
+            vip_y = 1735;
               {
                 ID = ID;
               }
@@ -5425,166 +5413,6 @@ Module: MGD
               }
         }
         {
-          ExptPhysicalForm = ExptForm;
-          Group: Widget
-            width = 600;
-            rubberPositioning = False;
-            resizePolicy = resize_any;
-            height = 700;
-          Group: Control
-            vip_x = 90;
-            vip_y = 1735;
-              {
-                ID = ID;
-              }
-              {
-                Notes = Notes : mgiDataTypes;
-                Group: Constraint
-                  leftAttachment = attach_form;
-                  leftOffset = 2;
-                  rightAttachment = attach_form;
-                  rightOffset = 2;
-                  topAttachment = attach_form;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-              }
-              {
-                GeneOrder = CharText : mgiDataTypes;
-                Group: Constraint
-                  leftAttachment = attach_opposite_widget;
-                  leftWidget = Notes;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_widget;
-                  topWidget = Notes;
-                  topOffset = 2;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-                    {
-                      label = XmLabel;
-                      Group: Widget
-                        labelString = "Gene Order";
-                    }
-                    {
-                      text = text;
-                      Group: Widget
-                        columns = 75;
-                    }
-              }
-              {
-                Definitive = toggle : mgiDataTypes;
-                Group: Widget
-                  labelString = "Definitive Order?";
-                Group: Constraint
-                  leftAttachment = attach_opposite_widget;
-                  leftWidget = GeneOrder;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_widget;
-                  topWidget = GeneOrder;
-                  topOffset = 2;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-              }
-              {
-                Distance = Table : mgiTable;
-                Group: Constraint
-                  leftAttachment = attach_form;
-                  rightAttachment = attach_form;
-                  rightOffset = 2;
-                  topAttachment = attach_widget;
-                  topWidget = Definitive;
-                  topOffset = 5;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-                  leftOffset = 5;
-                    {
-                      Table = mgiTable;
-                      Group: Widget
-                        xrtTblNumColumns = 14;
-                        xrtTblColumnLabels = "Mode,Marker 1 key,Marker 2 key,Unit key,Real key,#,Marker 1,Marker 2,Distance,Unit,Endo,Frag,Real?,Arrangement";
-                        xrtTblCharWidthSeries = "(all 0 1)(all 5 3)(all 6-7 12)(all 8 8)(all 9 4)(all 10 10)(all 11-12 5)(all 13 15)";
-                        xrtTblMaxLengthSeries = "(all 6-7 25)(all 8 20)(all 10 20)(all 11 20)(all 13 15)";
-                        xrtTblTraversableSeries = "(all 0-5 False)";
-                        xrtTblPixelWidthSeries = "(all 0-4 0)";
-                        xrtTblValidateCellCallback = "D:VerifyMarker,\nD:CommitTableCellEdit";
-                        userDefinedAttributes = "markerKey:Int=\"1\"\nmarkerSymbol:Int=\"6\"\nmarkerChr:Int=\"-1\"\nmarkerColumns:Int=\"2\"\nunitKey:Int=\"3\"\nrealKey:Int=\"4\"\nseqNum:Int=\"5\"\ndistance:Int=\"8\"\nunit:Int=\"9\"\nendo:Int=\"10\"\nfragment:Int=\"11\"\nrealDistance:Int=\"12\"\narrangement:Int=\"13\"\n";
-                        xrtTblNumRows = 15;
-                        xrtTblVisibleRows = 12;
-                        xrtTblEditableSeries = "(all 0-5 False)";
-                      Group: User
-                        addSeqNum = True;
-                    }
-              }
-              {
-                PhysUnitsMenu = PhysUnitsMenu;
-                Group: Constraint
-                  leftAttachment = attach_opposite_widget;
-                  leftWidget = Distance;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_widget;
-                  topWidget = Distance;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-                  topOffset = 5;
-                    Popups:
-                    {
-                      PhysUnitsPulldown = OptionPulldown;
-                      Group: User
-                        tableOption = 9;
-                        tableOptionKey = 3;
-                        tableForm = Distance;
-                    }
-              }
-              {
-                YesNoMenu = YesNoMenu;
-                Group: Widget
-                  labelString = "Real?";
-                Group: Constraint
-                  leftAttachment = attach_opposite_widget;
-                  leftWidget = PhysUnitsMenu;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_widget;
-                  topWidget = PhysUnitsMenu;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-                  topOffset = 5;
-                Group: User
-                  defaultOption = Yes;
-                    Popups:
-                    {
-                      YesNoPulldown = OptionPulldown;
-                      Group: User
-                        tableForm = Distance;
-                        tableOption = 12;
-                        tableOptionKey = 4;
-                          {
-                            SearchAll = SearchAll : mgiOption;
-                            Group: Widget
-                              managed = False;
-                          }
-                    }
-              }
-              {
-                ArrangeMenu = ArrangeMenu;
-                Group: Constraint
-                  leftAttachment = attach_opposite_widget;
-                  leftWidget = YesNoMenu;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_widget;
-                  topWidget = YesNoMenu;
-                  topOffset = 5;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-                    Popups:
-                    {
-                      ArrangePulldown = OptionPulldown;
-                      Group: User
-                        tableForm = Distance;
-                        tableOptionKey = "-1";
-                        tableOption = 13;
-                    }
-              }
-        }
-        {
           ExptMasterForm = ExptForm;
           Group: Widget
             width = 600;
@@ -5593,7 +5421,7 @@ Module: MGD
             height = 775;
           Group: Control
             vip_x = 90;
-            vip_y = 1900;
+            vip_y = 1845;
           Group: User
             homeWidget = Jnum;
               {
@@ -5949,18 +5777,6 @@ Module: MGD
               }
               {
                 ExptRIForm = ExptRIForm : MGD;
-                Group: Widget
-                  managed = False;
-                Group: Constraint
-                  leftAttachment = attach_form;
-                  rightAttachment = attach_form;
-                  topAttachment = attach_widget;
-                  topWidget = ExptMarker;
-                  bottomAttachment = attach_form;
-                  resizable = true;
-              }
-              {
-                ExptPhysicalForm = ExptPhysicalForm : MGD;
                 Group: Widget
                   managed = False;
                 Group: Constraint
@@ -7332,9 +7148,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     TXEX = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    PMEX = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     E = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -8224,7 +8037,7 @@ Shift<Key>Tab: prev-tab-group()
             width = 600;
           Group: Control
             vip_x = 90;
-            vip_y = 1955;
+            vip_y = 1900;
               {
                 ParentClone = mgiAccession : mgiDataTypes;
                 Group: Widget
@@ -9445,9 +9258,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     TXEX = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    PMEX = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     E = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -9930,9 +9740,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     TXEX = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    PMEX = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     E = AccToggle : mgiOption;
@@ -11061,9 +10868,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     TXEX = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    PMEX = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     E = AccToggle : mgiOption;
@@ -12762,9 +12566,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     TXEX = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    PMEX = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     E = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -14328,18 +14129,6 @@ Shift<Key>Tab: prev-tab-group()
                   bottomAttachment = attach_form;
                   resizable = true;
               }
-              {
-                ExptPhysicalForm = ExptPhysicalForm : MGD;
-                Group: Widget
-                  managed = False;
-                Group: Constraint
-                  leftAttachment = attach_form;
-                  rightAttachment = attach_form;
-                  topAttachment = attach_widget;
-                  topWidget = Marker;
-                  bottomAttachment = attach_form;
-                  resizable = true;
-              }
         }
         {
           MappingModule = Module1 : MGI;
@@ -14348,8 +14137,8 @@ Shift<Key>Tab: prev-tab-group()
             vip_y = 360;
           Group: User
             homeWidget = Jnum;
-            editForms = "ControlForm\nExptDetailForm\nExptCrossForm\nExptHybridForm\nExptInSituForm\nExptFISHForm\nExptRIForm\nExptTextForm\nExptPhysicalForm";
-            clearForms = "ControlForm\nExptDetailForm\nExptCrossForm\nExptHybridForm\nExptInSituForm\nExptFISHForm\nExptRIForm\nExptTextForm\nExptPhysicalForm";
+            editForms = "ControlForm\nExptDetailForm\nExptCrossForm\nExptHybridForm\nExptInSituForm\nExptFISHForm\nExptRIForm\nExptTextForm";
+            clearForms = "ControlForm\nExptDetailForm\nExptCrossForm\nExptHybridForm\nExptInSituForm\nExptFISHForm\nExptRIForm\nExptTextForm";
             activateButtonName = Mapping;
               {
                 MainForm = XmForm;
@@ -14461,33 +14250,9 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   ExptInSituForm = ExptInSituForm;
-                                      {
-                                        Strain = Strain : mgiDataTypes;
-                                            {
-                                              StrainID = XmXrtAligner;
-                                            }
-                                            {
-                                              Verify = CharText;
-                                            }
-                                            {
-                                              StrainID = XmXrtAligner;
-                                            }
-                                      }
                                 }
                                 {
                                   ExptFISHForm = ExptFISHForm;
-                                      {
-                                        Strain = Strain : mgiDataTypes;
-                                            {
-                                              StrainID = XmXrtAligner;
-                                            }
-                                            {
-                                              Verify = CharText;
-                                            }
-                                            {
-                                              StrainID = XmXrtAligner;
-                                            }
-                                      }
                                 }
                                 {
                                   ExptCrossForm = ExptCrossForm;
@@ -14802,11 +14567,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     TXEX = AccToggle;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
-                                                    PMEX = AccToggle;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -17441,8 +17201,8 @@ Shift<Key>Tab: prev-tab-group()
             height = 825;
             closeWindowCallback = "D:GOVocAnnotExit";
           Group: Control
-            vip_x = 100;
-            vip_y = 310;
+            vip_x = 90;
+            vip_y = 305;
           Group: User
             activateButtonName = GOVocAnnot;
             homeWidget = mgiAccession;

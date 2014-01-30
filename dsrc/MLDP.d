@@ -10,7 +10,6 @@
 --				MLD_FISH, MLD_FISH_Region
 --				MLD_InSitu, MLD_ISRegion
 --				MLD_Hybrid, MLD_Concordance
---				MLD_PhysMap, MLD_Distance
 --				MLD_RI, MLD_RIData, MLD_RI2Point
 -- Cross Reference Tables:	BIB_Refs, MRK_Marker, CRS_Cross, PRB_Strain
 -- Actions Allowed:		Add, Modify, Delete
@@ -92,7 +91,6 @@ devents:
 	AddFISH :local [];
 	AddHybrid :local [];
 	AddInSitu :local [];
-	AddPhysMap :local [];
 	AddRI :local [];
 
 	BuildDynamicComponents :local [];
@@ -119,8 +117,6 @@ devents:
 	ModifyHybridConcordance :local [];
 	ModifyInSitu :local [];
 	ModifyInSituRegion :local [];
-	ModifyPhysMap :local [];
-	ModifyPhysMapDistance :local [];
 	ModifyRI :local [];
 	ModifyRIHaplotype :local [];
 	ModifyRITwoPt :local [];
@@ -135,7 +131,6 @@ devents:
 	SelectFISH :local [];
 	SelectHybrid :local [];
 	SelectInSitu :local [];
-	SelectPhysical :local [];
 	SelectRI :local [];
 	SelectStatistics :local [];
 	SetDefaultAssay :local [];
@@ -165,7 +160,6 @@ locals:
 	hybridTables : list;	-- Hybrid tables
 	insituTables : list;	-- InSitu tables
 	crossTables : list;	-- Cross tables
-	pmTables : list;	-- Physical Mapping tables
 	riTables : list;	-- RI tables
 
 	-- Current primary keys
@@ -247,7 +241,6 @@ rules:
 	  hybridTables := create list("widget");
 	  insituTables := create list("widget");
 	  crossTables := create list("widget");
-	  pmTables := create list("widget");
 	  riTables := create list("widget");
 
 	  accTable := top->mgiAccessionTable->Table;
@@ -266,7 +259,6 @@ rules:
 	  exptTables.append(top->ExptDetailForm->ExptRIForm->RIHaplotype->Table);
 	  exptTables.append(top->ExptDetailForm->ExptRIForm->RITwoPt->Table);
 	  exptTables.append(top->ExptDetailForm->ExptRIForm->Statistics->Table);
-	  exptTables.append(top->ExptDetailForm->ExptPhysicalForm->Distance->Table);
 
 	  fishTables.append(top->ExptDetailForm->ExptFISHForm->Region->Table);
 	  hybridTables.append(top->ExptDetailForm->ExptHybridForm->Concordance->Table);
@@ -274,7 +266,6 @@ rules:
 	  crossTables.append(top->ExptDetailForm->ExptCrossForm->CrossHaplotype->Table);
 	  crossTables.append(top->ExptDetailForm->ExptCrossForm->CrossTwoPt->Table);
 	  crossTables.append(top->ExptDetailForm->ExptCrossForm->Statistics->Table);
-	  pmTables.append(top->ExptDetailForm->ExptPhysicalForm->Distance->Table);
 	  riTables.append(top->ExptDetailForm->ExptRIForm->RIHaplotype->Table);
 	  riTables.append(top->ExptDetailForm->ExptRIForm->RITwoPt->Table);
 	  riTables.append(top->ExptDetailForm->ExptRIForm->Statistics->Table);
@@ -386,8 +377,6 @@ rules:
 	    send(AddHybrid, 0);
 	  elsif (ExptForm = top->ExptDetailForm->ExptInSituForm) then
 	    send(AddInSitu, 0);
-	  elsif (ExptForm = top->ExptDetailForm->ExptPhysicalForm) then
-	    send(AddPhysMap, 0);
 	  elsif (ExptForm = top->ExptDetailForm->ExptRIForm) then
 	    send(AddRI, 0);
 	  end if;
@@ -558,23 +547,6 @@ rules:
 	end does;
 
 --
--- AddPhysMap
---
--- Construct insert statements for MLD_PHYSICAL, MLD_DISTANCE
--- Appends to global "cmd" string
---
-
-        AddPhysMap does
-
-          cmd := cmd + mgi_DBinsert(MLD_PHYSICAL, NOKEY) +
-		       currentExptKey + "," +
-		       (string)((integer) ExptForm->Definitive.set) + "," +
-	               mgi_DBprstr(ExptForm->GeneOrder->text.value) + ")\n";
-
-	  send(ModifyPhysMapDistance, 0);
-	end does;
-
---
 -- AddRI
 --
 -- Construct insert statements for MLD_RI, MLD_RIData and MLD_RI2Point from ExptRIForm
@@ -680,8 +652,6 @@ rules:
 	    send(ModifyHybrid, 0);
 	  elsif (ExptForm = top->ExptDetailForm->ExptInSituForm) then
 	    send(ModifyInSitu, 0);
-	  elsif (ExptForm = top->ExptDetailForm->ExptPhysicalForm) then
-	    send(ModifyPhysMap, 0);
 	  elsif (ExptForm = top->ExptDetailForm->ExptRIForm) then
 	    send(ModifyRI, 0);
 	  end if;
@@ -1672,110 +1642,6 @@ rules:
         end does;
  
 --
--- ModifyPhysMap
---
--- Construct update statements for MLD_PHYSICAL, MLD_DISTANCE
--- Appends to global "cmd" string.
---
-
-        ModifyPhysMap does
-
-	  set : string := "";
-
-	  if (ExptForm->Definitive.modified) then
-	    set := set + "definitiveOrder = " + (string) ((integer) ExptForm->Definitive.set) + ",";
-	  end if;
-
-	  if (ExptForm->GeneOrder->text.modified) then
-	    set := set + "geneOrder = " + mgi_DBprstr(ExptForm->GeneOrder->text.value) + ",";
-	  end if;
-
-	  send(ModifyPhysMapDistance, 0);
-
-	  if (cmd.length > 0 or set.length > 0) then
-	    cmd := cmd + mgi_DBupdate(MLD_PHYSICAL, currentExptKey, set);
-	  end if;
-	end does;
-
---
--- ModifyPhysMapDistance
---
--- Constructs update statement for Physical Map Distance (MLD_DISTANCE)
--- Appends to global "cmd" variable
---
-
-        ModifyPhysMapDistance does
-          table : widget := ExptForm->Distance->Table;
-          row : integer;
-          editMode : string;
-          set : string := "";
- 
-          seqNum : string;
-	  markerKey1 : string;
-	  markerKey2 : string;
-	  distance : string;
-	  endo : string;
-	  fragment : string;
-	  arrangement : string;
-	  unitKey : string;
-	  realKey : string;
- 
-          -- Process while non-empty rows are found
- 
-          row := 0;
-          while (row < mgi_tblNumRows(table)) do
-            editMode := mgi_tblGetCell(table, row, table.editMode);
- 
-            if (editMode = TBL_ROW_EMPTY) then
-              break;
-            end if;
- 
-            seqNum := mgi_tblGetCell(table, row, table.seqNum);
-            markerKey1 := mgi_tblGetCell(table, row, table.markerKey);
-            markerKey2 := mgi_tblGetCell(table, row, table.markerKey + 1);
-            distance := mgi_tblGetCell(table, row, table.distance);
-            endo := mgi_tblGetCell(table, row, table.endo);
-            fragment := mgi_tblGetCell(table, row, table.fragment);
-            arrangement := mgi_tblGetCell(table, row, table.arrangement);
-            unitKey := mgi_tblGetCell(table, row, table.unitKey);
-            realKey := mgi_tblGetCell(table, row, table.realKey);
- 
-            if (editMode = TBL_ROW_ADD) then
-              cmd := cmd + mgi_DBinsert(MLD_DISTANCE, NOKEY) +
-                     currentExptKey + "," +
-		     mgi_DBprkey(markerKey1) + "," +
-		     mgi_DBprkey(markerKey2) + "," +
-                     seqNum + "," +
-		     mgi_DBprstr(distance) + "," +
-		     mgi_DBprstr(endo) + "," +
-		     mgi_DBprstr(fragment) + "," +
-		     "NULL," +
-		     mgi_DBprstr(arrangement) + "," +
-		     mgi_DBprkey(unitKey) + "," +
-		     mgi_DBprkey(realKey) + ")\n";
- 
-            elsif (editMode = TBL_ROW_MODIFY) then
-              set := "_Marker_key_1 = " + mgi_DBprkey(markerKey1) + "," +
-                     "_Marker_key_2 = " + mgi_DBprkey(markerKey2) + "," +
-		     "estDistance = " + mgi_DBprstr(distance) + "," +
-		     "endonuclease = " + mgi_DBprstr(endo) + "," +
-		     "minFrag= " + mgi_DBprstr(fragment) + "," +
-		     "relativeArrangeCharStr = " + mgi_DBprstr(arrangement) + "," +
-		     "units = " + mgi_DBprkey(unitKey) + "," +
-		     "realisticDist = " + mgi_DBprkey(realKey) + ",";
-              cmd := cmd + mgi_DBupdate(MLD_DISTANCE, currentExptKey, set) +
-                     "and sequenceNum = " + seqNum + "\n";
- 
-            elsif (editMode = TBL_ROW_DELETE and seqNum.length > 0) then
-              cmd := cmd + mgi_DBdelete(MLD_DISTANCE, currentExptKey) +
-                     "and sequenceNum = " + seqNum + "\n";
-            end if;
- 
-            row := row + 1;
-          end while;
-        end does;
- 
---
 -- ModifyRI
 --
 -- Construct update statements for MLD_RI, MLD_RIHAPLOTYPE, MLD_RI2POINT
@@ -2149,8 +2015,6 @@ rules:
 	  from_strain3 : boolean := false;
 	  from_strain4 : boolean := false;
 	  from_strain5 : boolean := false;
-	  from_physical : boolean := false;
-	  from_physicaldistance : boolean := false;
 
 	  value : string;
 	  table : widget;
@@ -2559,72 +2423,6 @@ rules:
 	    end if;
 	  end if;
 
-	  -- From Physical
-
-	  if (ExptForm = top->ExptPhysicalForm) then
-
-	    if (ExptForm->GeneOrder->text.value.length > 0) then
-	      where := where + "\nand p.geneOrder like " + mgi_DBprstr(ExptForm->GeneOrder->text.value);
-	      from_physical := true;
-	    end if;
-
-	    if (ExptForm->Definitive.set) then
-	      where := where + "\nand p.definitiveOrder = 1";
-	      from_physical := true;
-	    end if;
-
-            table := ExptForm->Distance->Table;
-
-            value := mgi_tblGetCell(table, 0, table.markerKey);
-            if (value.length > 0 and value != "NULL") then
-              where := where + "\nand pd._Marker_key_1 = " + value;
-	      from_physicaldistance := true;
-	    end if;
-
-            value := mgi_tblGetCell(table, 0, table.markerKey + 1);
-            if (value.length > 0 and value != "NULL") then
-              where := where + "\nand pd._Marker_key_2 = " + value;
-	      from_physicaldistance := true;
-	    end if;
-
-            value := mgi_tblGetCell(table, 0, table.unitKey);
-            if (value.length > 0) then
-              where := where + "\nand pd.units = " + value;
-	      from_physicaldistance := true;
-	    end if;
-
-            value := mgi_tblGetCell(table, 0, table.realKey);
-            if (value.length > 0) then
-              where := where + "\nand pd.realisticDist = " + value;
-	      from_physicaldistance := true;
-	    end if;
-
-            value := mgi_tblGetCell(table, 0, table.endo);
-            if (value.length > 0) then
-              where := where + "\nand pd.endonuclease = " + mgi_DBprstr(value);
-	      from_physicaldistance := true;
-	    end if;
-
-            value := mgi_tblGetCell(table, 0, table.fragment);
-            if (value.length > 0) then
-              where := where + "\nand pd.minFrag = " + mgi_DBprstr(value);
-	      from_physicaldistance := true;
-	    end if;
-
-            value := mgi_tblGetCell(table, 0, table.distance);
-            if (value.length > 0) then
-              where := where + "\nand pd.estDistance = " + mgi_DBprstr(value);
-	      from_physicaldistance := true;
-	    end if;
-
-            value := mgi_tblGetCell(table, 0, table.arrangement);
-            if (value.length > 0) then
-              where := where + "\nand pd.relativeArrangeCharStr = " + mgi_DBprstr(value);
-	      from_physicaldistance := true;
-	    end if;
-
-	  end if;
-
 	  -- Construct from/where
 
           if (from_note) then
@@ -2750,16 +2548,6 @@ rules:
 	  if (from_strain5) then
 	    from := from + "," + mgi_DBtable(STRAIN) + " s5";
 	    where := where + " and cs._StrainHT_key = s5._Strain_key";
-	  end if;
-
-	  if (from_physical) then
-	    from := from + "," + mgi_DBtable(MLD_PHYSICAL) + " p";
-	    where := where + " and e._Expt_key = p._Expt_key";
-	  end if;
-
-	  if (from_physicaldistance) then
-	    from := from + "," + mgi_DBtable(MLD_DISTANCE) + " pd";
-	    where := where + " and e._Expt_key = pd._Expt_key";
 	  end if;
 
           if (where.length > 0) then
@@ -2905,8 +2693,6 @@ rules:
 	    send(SelectHybrid, 0);
 	  elsif (ExptForm = top->ExptDetailForm->ExptInSituForm) then
 	    send(SelectInSitu, 0);
-	  elsif (ExptForm = top->ExptDetailForm->ExptPhysicalForm) then
-	    send(SelectPhysical, 0);
 	  elsif (ExptForm = top->ExptDetailForm->ExptRIForm) then
 	    send(SelectRI, 0);
 	  end if;
@@ -3393,72 +3179,6 @@ rules:
 	  end while;
 	  (void) mgi_dbclose(dbproc);
 
-	end does;
-
---
--- SelectPhysical
---
--- Query for selected Phys Map Experiment and fill in form with appropriate values
---
-
-	SelectPhysical does
-	  row : integer := 0;
-	  table : widget := ExptForm->Distance->Table;
-          dbproc : opaque;
-
-          pmTables.open;
-          while (pmTables.more) do
-            ClearTable.table := pmTables.next;
-            send(ClearTable, 0);
-          end while;
-          pmTables.close;
-
-          cmd := mldp_physmap(currentExptKey);
-          dbproc := mgi_dbexec(cmd);
-          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	        ExptForm->GeneOrder->text.value := mgi_getstr(dbproc, 3);
-		ExptForm->Definitive.set        := (boolean)((integer) mgi_getstr(dbproc, 2));
-	    end while;
-	  end while;
-	  (void) mgi_dbclose(dbproc);
-
-	  cmd :=  mldp_phymapdistance(currentExptKey);
-          dbproc := mgi_dbexec(cmd);
-          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-                (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 7));
-                (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 5));
-                (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 17));
-                (void) mgi_tblSetCell(table, row, table.markerKey + 1, mgi_getstr(dbproc, 6));
-                (void) mgi_tblSetCell(table, row, table.markerSymbol + 1, mgi_getstr(dbproc, 18));
-                (void) mgi_tblSetCell(table, row, table.distance, mgi_getstr(dbproc, 8));
-                (void) mgi_tblSetCell(table, row, table.endo, mgi_getstr(dbproc, 9));
-                (void) mgi_tblSetCell(table, row, table.fragment, mgi_getstr(dbproc, 10));
-		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-
-		SetOption.source_widget := ExptForm->PhysUnitsMenu;
-		SetOption.value := mgi_getstr(dbproc, 13);
-		SetOption.copyToTable := true;
-		SetOption.tableRow := row;
-		send(SetOption, 0);
-
-		SetOption.source_widget := ExptForm->YesNoMenu;
-		SetOption.value := mgi_getstr(dbproc, 14);
-		SetOption.copyToTable := true;
-		SetOption.tableRow := row;
-		send(SetOption, 0);
-
-		SetOption.source_widget := ExptForm->ArrangeMenu;
-		SetOption.value := mgi_getstr(dbproc, 12);
-		SetOption.copyToTable := true;
-		SetOption.tableRow := row;
-		send(SetOption, 0);
-
-	        row := row + 1;
-	    end while;
-	  end while;
-	  (void) mgi_dbclose(dbproc);
 	end does;
 
 --

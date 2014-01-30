@@ -7,6 +7,7 @@ CHANGES:
 1) TR11515/high throughput part II/allele stuff
 added:  ALL_Allele._Collection_key
 2) TR11561/EMAPS
+3) TR10841/MLD_PhysMap, MLD_Distance obsoleted
 
 TAG: ei-tr11515-BP
 DATE: 12/12/2014
