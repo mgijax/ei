@@ -2251,22 +2251,19 @@ Module: MGD
                                                     KOMP = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    NCIMR = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     MTG = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     MUGEN = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    NCIMR = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     NIG = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NMICE = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NRCMM = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     OBS = AccToggle : mgiOption;
@@ -2278,10 +2275,10 @@ Module: MGD
                                                     RIKENBRC = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    RMRC = AccToggle : mgiOption;
+                                                    TAC = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    TAC = AccToggle : mgiOption;
+                                                    RMRC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     WTSI = AccToggle : mgiOption;
@@ -2302,7 +2299,7 @@ Module: MGD
                                                     BayGenomicGeneTrap = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    TIGM = AccToggle : mgiOption;
+                                                    TexasGeneTrap = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     TIGEMGeneTrap = AccToggle : mgiOption;
@@ -4042,22 +4039,19 @@ Module: MGD
                                                     KOMP = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    NCIMR = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     MTG = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     MUGEN = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    NCIMR = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     NIG = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NMICE = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NRCMM = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     OBS = AccToggle : mgiOption;
@@ -4069,10 +4063,10 @@ Module: MGD
                                                     RIKENBRC = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    RMRC = AccToggle : mgiOption;
+                                                    TAC = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    TAC = AccToggle : mgiOption;
+                                                    RMRC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     WTSI = AccToggle : mgiOption;
@@ -9333,22 +9327,19 @@ Shift<Key>Tab: prev-tab-group()
                                                     KOMP = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    NCIMR = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     MTG = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     MUGEN = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    NCIMR = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     NIG = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NMICE = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NRCMM = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     OBS = AccToggle : mgiOption;
@@ -9360,10 +9351,10 @@ Shift<Key>Tab: prev-tab-group()
                                                     RIKENBRC = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    RMRC = AccToggle : mgiOption;
+                                                    TAC = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    TAC = AccToggle : mgiOption;
+                                                    RMRC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     WTSI = AccToggle : mgiOption;
@@ -9390,7 +9381,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     BayGenomicGeneTrap = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    TIGM = AccToggle : mgiOption;
+                                                    TexasGeneTrap = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                     Group: User
@@ -9820,22 +9811,19 @@ Shift<Key>Tab: prev-tab-group()
                                                     KOMP = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    NCIMR = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     MTG = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     MUGEN = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    NCIMR = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     NIG = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NMICE = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NRCMM = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     OBS = AccToggle : mgiOption;
@@ -9847,10 +9835,10 @@ Shift<Key>Tab: prev-tab-group()
                                                     RIKENBRC = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    RMRC = AccToggle : mgiOption;
+                                                    TAC = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    TAC = AccToggle : mgiOption;
+                                                    RMRC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     WTSI = AccToggle : mgiOption;
@@ -9871,7 +9859,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     BayGenomicGeneTrap = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    TIGM = AccToggle : mgiOption;
+                                                    TexasGeneTrap = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     TIGEMGeneTrap = AccToggle : mgiOption;
@@ -10970,6 +10958,11 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
+                                                    NCIMR = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
                                                     MTG = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
@@ -10980,22 +10973,12 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
-                                                    NCIMR = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
                                                     NIG = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
                                                   {
                                                     NMICE = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
-                                                    NRCMM = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -11015,17 +10998,12 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
-                                                    RMRC = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
                                                     TAC = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
                                                   {
-                                                    TIGM = AccToggle : mgiOption;
+                                                    RMRC = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -12657,22 +12635,19 @@ Shift<Key>Tab: prev-tab-group()
                                                     KOMP = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    NCIMR = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     MTG = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     MUGEN = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    NCIMR = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     NIG = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NMICE = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NRCMM = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     OBS = AccToggle : mgiOption;
@@ -12684,10 +12659,10 @@ Shift<Key>Tab: prev-tab-group()
                                                     RIKENBRC = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    RMRC = AccToggle : mgiOption;
+                                                    TAC = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    TAC = AccToggle : mgiOption;
+                                                    RMRC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     WTSI = AccToggle : mgiOption;
@@ -12714,7 +12689,7 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
-                                                    TIGM = AccToggle : mgiOption;
+                                                    TexasGeneTrap = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -14162,8 +14137,8 @@ Shift<Key>Tab: prev-tab-group()
             vip_y = 360;
           Group: User
             homeWidget = Jnum;
-            editForms = "ControlForm\nExptDetailForm\nExptCrossForm\nExptHybridForm\nExptInSituForm\nExptFISHForm\nExptRIForm\nExptTextForm\n";
-            clearForms = "ControlForm\nExptDetailForm\nExptCrossForm\nExptHybridForm\nExptInSituForm\nExptFISHForm\nExptRIForm\nExptTextForm\n";
+            editForms = "ControlForm\nExptDetailForm\nExptCrossForm\nExptHybridForm\nExptInSituForm\nExptFISHForm\nExptRIForm\nExptTextForm";
+            clearForms = "ControlForm\nExptDetailForm\nExptCrossForm\nExptHybridForm\nExptInSituForm\nExptFISHForm\nExptRIForm\nExptTextForm";
             activateButtonName = Mapping;
               {
                 MainForm = XmForm;

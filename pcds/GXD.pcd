@@ -9,7 +9,7 @@ Module: GXD
         {
           AntigenModule = Module : MGI;
           Group: Control
-            vip_x = 75;
+            vip_x = 70;
             vip_y = 195;
           Group: User
             clearForms = "ControlForm\nEditForm\nSourceForm";
@@ -605,22 +605,19 @@ Module: GXD
                                                     KOMP = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    NCIMR = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     MTG = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     MUGEN = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    NCIMR = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     NIG = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NMICE = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NRCMM = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     OBS = AccToggle : mgiOption;
@@ -632,10 +629,10 @@ Module: GXD
                                                     RIKENBRC = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    RMRC = AccToggle : mgiOption;
+                                                    TAC = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    TAC = AccToggle : mgiOption;
+                                                    RMRC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     WTSI = AccToggle : mgiOption;
@@ -656,7 +653,7 @@ Module: GXD
                                                     BayGenomicGeneTrap = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    TIGM = AccToggle : mgiOption;
+                                                    TexasGeneTrap = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     TIGEMGeneTrap = AccToggle : mgiOption;
@@ -787,7 +784,7 @@ Module: GXD
         {
           AntibodyModule = Module : MGI;
           Group: Control
-            vip_x = 75;
+            vip_x = 70;
             vip_y = 85;
           Group: User
             clearForms = "ControlForm\nEditForm\nSourceForm";
@@ -1568,22 +1565,19 @@ Shift<Key>Tab: prev-tab-group()
                                                     KOMP = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    NCIMR = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     MTG = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     MUGEN = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    NCIMR = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     NIG = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NMICE = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NRCMM = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     OBS = AccToggle : mgiOption;
@@ -1595,10 +1589,10 @@ Shift<Key>Tab: prev-tab-group()
                                                     RIKENBRC = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    RMRC = AccToggle : mgiOption;
+                                                    TAC = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    TAC = AccToggle : mgiOption;
+                                                    RMRC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     WTSI = AccToggle : mgiOption;
@@ -1619,7 +1613,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     BayGenomicGeneTrap = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    TIGM = AccToggle : mgiOption;
+                                                    TexasGeneTrap = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     TIGEMGeneTrap = AccToggle : mgiOption;
@@ -1783,7 +1777,7 @@ Shift<Key>Tab: prev-tab-group()
             width = 1000;
             resizePolicy = resize_none;
           Group: Control
-            vip_x = 75;
+            vip_x = 70;
             vip_y = 470;
               {
                 Specimen = OrderedTableLabel : mgiTable;
@@ -1869,7 +1863,7 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_none;
             width = 1000;
           Group: Control
-            vip_x = 75;
+            vip_x = 70;
             vip_y = 305;
               {
                 ImagePaneList = LookupList : mgiLookup;
@@ -2045,7 +2039,7 @@ Shift<Key>Tab: prev-tab-group()
           Group: Widget
             title = "GXD Index";
           Group: Control
-            vip_x = 75;
+            vip_x = 70;
             vip_y = 250;
           Group: User
             homeWidget = Marker;
@@ -2691,7 +2685,7 @@ Shift<Key>Tab: prev-tab-group()
         {
           GXD = Application : MGI;
           Group: Control
-            vip_x = 75;
+            vip_x = 70;
             vip_y = 30;
           Group: User
             initDialog = "StrainDialog\nTissueDialog";
@@ -2840,7 +2834,7 @@ Shift<Key>Tab: prev-tab-group()
             height = 900;
             width = 1300;
           Group: Control
-            vip_x = 75;
+            vip_x = 70;
             vip_y = 140;
           Group: User
             homeWidget = Jnum;
@@ -3636,22 +3630,19 @@ Shift<Key>Tab: prev-tab-group()
                                                     KOMP = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    NCIMR = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     MTG = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     MUGEN = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    NCIMR = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     NIG = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NMICE = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NRCMM = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     OBS = AccToggle : mgiOption;
@@ -3663,10 +3654,10 @@ Shift<Key>Tab: prev-tab-group()
                                                     RIKENBRC = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    RMRC = AccToggle : mgiOption;
+                                                    TAC = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    TAC = AccToggle : mgiOption;
+                                                    RMRC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     WTSI = AccToggle : mgiOption;
@@ -3690,7 +3681,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     BayGenomicGeneTrap = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    TIGM = AccToggle : mgiOption;
+                                                    TexasGeneTrap = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     TIGEMGeneTrap = AccToggle : mgiOption;
@@ -3889,7 +3880,7 @@ Shift<Key>Tab: prev-tab-group()
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 75;
+            vip_x = 70;
             vip_y = 525;
               {
                 PrepID : ID = ID;
@@ -4009,7 +4000,7 @@ Shift<Key>Tab: prev-tab-group()
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 75;
+            vip_x = 70;
             vip_y = 360;
               {
                 PrepID : ID = ID;
@@ -4101,7 +4092,7 @@ Shift<Key>Tab: prev-tab-group()
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 75;
+            vip_x = 70;
             vip_y = 415;
               {
                 ID = ID : mgiDataTypes;
@@ -4131,7 +4122,7 @@ Shift<Key>Tab: prev-tab-group()
         {
           EMAPSMappingModule = Module : MGI;
           Group: Control
-            vip_x = 75;
+            vip_x = 70;
             vip_y = 580;
           Group: User
             homeWidget = EMAPSid;
@@ -4627,22 +4618,19 @@ Shift<Key>Tab: prev-tab-group()
                                                     KOMP = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    NCIMR = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     MTG = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     MUGEN = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    NCIMR = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     NIG = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NMICE = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NRCMM = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     OBS = AccToggle : mgiOption;
@@ -4654,10 +4642,10 @@ Shift<Key>Tab: prev-tab-group()
                                                     RIKENBRC = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    RMRC = AccToggle : mgiOption;
+                                                    TAC = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    TAC = AccToggle : mgiOption;
+                                                    RMRC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     WTSI = AccToggle : mgiOption;
@@ -4678,7 +4666,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     BayGenomicGeneTrap = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    TIGM = AccToggle : mgiOption;
+                                                    TexasGeneTrap = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     TIGEMGeneTrap = AccToggle : mgiOption;

@@ -3294,22 +3294,19 @@ Module: MGI
                                                     KOMP = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    NCIMR = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     MTG = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     MUGEN = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    NCIMR = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     NIG = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NMICE = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NRCMM = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     OBS = AccToggle : mgiOption;
@@ -3321,10 +3318,10 @@ Module: MGI
                                                     RIKENBRC = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    RMRC = AccToggle : mgiOption;
+                                                    TAC = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    TAC = AccToggle : mgiOption;
+                                                    RMRC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     WTSI = AccToggle : mgiOption;
@@ -3345,7 +3342,7 @@ Module: MGI
                                                     BayGenomicGeneTrap = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    TIGM = AccToggle : mgiOption;
+                                                    TexasGeneTrap = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     TIGEMGeneTrap = AccToggle : mgiOption;

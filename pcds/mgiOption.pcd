@@ -604,6 +604,11 @@ Module: mgiOption
                         defaultValue = 106;
                     }
                     {
+                      NCIMR = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 54;
+                    }
+                    {
                       MTG = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 92;
@@ -614,11 +619,6 @@ Module: mgiOption
                         defaultValue = 87;
                     }
                     {
-                      NCIMR = AccToggle : mgiOption;
-                      Group: User
-                        defaultValue = 54;
-                    }
-                    {
                       NIG = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 93;
@@ -627,11 +627,6 @@ Module: mgiOption
                       NMICE = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 56;
-                    }
-                    {
-                      NRCMM = AccToggle : mgiOption;
-                      Group: User
-                        defaultValue = 167;
                     }
                     {
                       OBS = AccToggle : mgiOption;
@@ -651,16 +646,16 @@ Module: mgiOption
                         defaultValue = 70;
                     }
                     {
+                      TAC = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 94;
+                    }
+                    {
                       RMRC = AccToggle : mgiOption;
                       Group: Widget
                         labelString = "RMRC-NLAC";
                       Group: User
                         defaultValue = 161;
-                    }
-                    {
-                      TAC = AccToggle : mgiOption;
-                      Group: User
-                        defaultValue = 94;
                     }
                     {
                       WTSI = AccToggle : mgiOption;
@@ -701,7 +696,9 @@ Module: mgiOption
                         defaultValue = 95;
                     }
                     {
-                      TIGM = AccToggle : mgiOption;
+                      TexasGeneTrap = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = TIGM;
                       Group: User
                         defaultValue = 97;
                     }
