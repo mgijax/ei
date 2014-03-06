@@ -2,7 +2,7 @@ Module: mgiAnatDictionary
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jan 23 12:45:47 2014";
+      lastWritten = "Thu Jan 30 08:27:47 2014";
         {
           ADEditClipboard = ClipboardEditList : mgiLookup;
           Group: Widget
@@ -994,9 +994,6 @@ Module: mgiAnatDictionary
                                                   }
                                                   {
                                                     TXEX = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    PMEX = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     E = AccToggle : mgiOption;

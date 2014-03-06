@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- 12/2013	lec
+--	TR11515/allele generation type (allele type), allele subtype, allele collection
+--
 -- 12/26/2011	lec
 --	TR11243/add clear/notes to Select()
 --
@@ -111,6 +114,7 @@ devents:
 
 	Modify :local [];
 	ModifyAlleleNotes :local [];
+	ModifyAlleleSubType :local [];
 	ModifyImagePaneAssociation :local [];
 	ModifyMarkerAssoc :local [];
 	ModifyMolecularMutation :local [];
@@ -143,6 +147,7 @@ locals:
 	markerTable : widget;
 	cellLineTable : widget;
 	seqTable : widget;
+	subtypeTable : widget;
 	mgiTypeKey : string;
 
 	cmd : string;
@@ -168,6 +173,8 @@ locals:
 	defaultInheritanceKeyNS : string;
 	defaultInheritanceKeyNA : string;
 
+	defaultCollectionKeyNS : string;
+
 	defaultStrainKeyNS : string;
 	defaultStrainKeyNA : string;
 
@@ -177,6 +184,10 @@ locals:
 	defaultCellLineTypeKey : string := "3982968"; -- default is 63 ("Embryonic Stem Cell")
 
 	origAlleleSymbol : string;
+
+	-- Allele/SubType annotation stuff
+	attributeAnnotTypeKey : string := "1014";
+	genericQualifierKey : string := "1614158"; -- generic annotation qualifier key
 
 rules:
 
@@ -236,7 +247,13 @@ rules:
 	  InitOptionMenu.option := top->AlleleTransmissionMenu;
 	  send(InitOptionMenu, 0);
 
+	  InitOptionMenu.option := top->AlleleCollectionMenu;
+	  send(InitOptionMenu, 0);
+
 	  InitOptionMenu.option := top->InheritanceModeMenu;
+	  send(InitOptionMenu, 0);
+
+	  InitOptionMenu.option := top->AlleleSubType->AlleleSubTypeMenu;
 	  send(InitOptionMenu, 0);
 
 	  InitOptionMenu.option := top->MolecularMutation->MolecularMutationMenu;
@@ -296,6 +313,7 @@ rules:
 	  tables.append(top->Control->ModificationHistory->Table);
 	  tables.append(top->Marker->Table);
 	  tables.append(top->Reference->Table);
+	  tables.append(top->AlleleSubType->Table);
 	  tables.append(top->MolecularMutation->Table);
 	  tables.append(top->ImagePane->Table);
 	  tables.append(top->MutantCellLine->Table);
@@ -306,6 +324,7 @@ rules:
 
 	  accTable := top->mgiAccessionTable->Table;
 	  refTable := top->Reference->Table;
+	  subtypeTable := top->AlleleSubType->Table;
 	  molmutationTable := top->MolecularMutation->Table;
 	  imgTable := top->ImagePane->Table;
 	  markerTable := top->Marker->Table;
@@ -333,6 +352,8 @@ rules:
 	  defaultInheritanceKeyNA := mgi_sql1(allele_definheritanceNA());
 
 	  defaultInheritanceKeyNS := mgi_sql1(allele_definheritanceNS());
+
+	  defaultCollectionKeyNS := mgi_sql1(allele_defcollectionNS());
 
 	  defaultStrainKeyNS := NOTSPECIFIED;
 	  defaultStrainKeyNA := NOTAPPLICABLE;
@@ -395,6 +416,7 @@ rules:
 
 	  statusKey : string;
 	  inheritanceKey : string;
+	  collectionKey : string;
 	  strainKey : string;
 	  approvalLoginDate : string;
 	  editMode : string;
@@ -514,16 +536,18 @@ rules:
 	    inheritanceKey := top->InheritanceModeMenu.menuHistory.defaultValue;
 	  end if;
 
+	  if (top->AlleleCollectionMenu.menuHistory.defaultValue = "%") then
+	    collectionKey := defaultCollectionKeyNS;
+	  else
+	    collectionKey := top->AlleleCollectionMenu.menuHistory.defaultValue;
+	  end if;
+
 	  -- set defaults based on allele type
 
 	  strainKey := top->StrainOfOrigin->StrainID->text.value;
 	  if (strainKey.length = 0 and top->mgiParentCellLine->ObjectID->text.value.length = 0) then
 	      if (top->AlleleTypeMenu.menuHistory.labelString = "Gene trapped" or
-	          top->AlleleTypeMenu.menuHistory.labelString = "Targeted (knock-out)" or
-	          top->AlleleTypeMenu.menuHistory.labelString = "Targeted (knock-in)" or
-	          top->AlleleTypeMenu.menuHistory.labelString = "Targeted (Floxed/Frt)" or
-	          top->AlleleTypeMenu.menuHistory.labelString = "Targeted (Reporter)" or
-	          top->AlleleTypeMenu.menuHistory.labelString = "Targeted (other)") then
+	          top->AlleleTypeMenu.menuHistory.labelString = "Targeted") then
 	        strainKey := defaultStrainKeyNS;
 	      else
 	        strainKey := defaultStrainKeyNA;
@@ -538,6 +562,7 @@ rules:
                  top->AlleleTypeMenu.menuHistory.defaultValue + "," +
                  statusKey + "," +
 		 top->AlleleTransmissionMenu.menuHistory.defaultValue + "," +
+                 collectionKey + "," +
 	         mgi_DBprstr(top->Symbol->text.value) + "," +
 	         mgi_DBprstr(top->Name->text.value) + "," +
 		 mgi_DBprstr(nomenSymbol) + "," +
@@ -549,6 +574,7 @@ rules:
 		 approvalLoginDate;
 
 	  send(ModifyMarkerAssoc, 0);
+	  send(ModifyAlleleSubType, 0);
 	  send(ModifyMolecularMutation, 0);
 	  send(ModifyImagePaneAssociation, 0);
 
@@ -841,6 +867,11 @@ rules:
             set := set + "_Transmission_key = "  + top->AlleleTransmissionMenu.menuHistory.defaultValue + ",";
 	  end if;
 
+          if (top->AlleleCollectionMenu.menuHistory.modified and
+	      top->AlleleCollectionMenu.menuHistory.searchValue != "%") then
+            set := set + "_Collection_key = "  + top->AlleleCollectionMenu.menuHistory.defaultValue + ",";
+	  end if;
+
           if (top->MixedMenu.menuHistory.modified and
 	      top->MixedMenu.menuHistory.searchValue != "%") then
             set := set + "isMixed = "  + top->MixedMenu.menuHistory.defaultValue + ",";
@@ -866,6 +897,7 @@ rules:
 	  end if;
 
 	  send(ModifyMarkerAssoc, 0);
+	  send(ModifyAlleleSubType, 0);
 	  send(ModifyMolecularMutation, 0);
 	  send(ModifyImagePaneAssociation, 0);
 	  send(ModifyAlleleNotes, 0);
@@ -1163,6 +1195,62 @@ rules:
 	end does;
  
 --
+-- ModifyAlleleSubType
+--
+-- Activated from: devent Modify
+--
+-- Construct insert/update/delete for Allele SubType (attribute)
+-- Appends to global "cmd" string
+--
+ 
+	ModifyAlleleSubType does
+	  table : widget := top->AlleleSubType->Table;
+	  row : integer := 0;
+	  editMode : string;
+	  key : string;
+	  newKey : string;
+	  set : string := "";
+	  keyDeclared : boolean := false;
+	  keyName : string := "attributeAnnotKey";
+ 
+	  -- Process while non-empty rows are found
+ 
+	  while (row < mgi_tblNumRows(table)) do
+	    editMode := mgi_tblGetCell(table, row, table.editMode);
+
+	    if (editMode = TBL_ROW_EMPTY) then
+	      break;
+	    end if;
+ 
+	    key := mgi_tblGetCell(table, row, table.annotCurrentKey);
+	    newKey := mgi_tblGetCell(table, row, table.termKey);
+
+	    if (editMode = TBL_ROW_ADD) then
+              if (not keyDeclared) then
+                cmd := cmd + mgi_setDBkey(VOC_ANNOT, NEWKEY, keyName);
+                keyDeclared := true;
+              else
+                cmd := cmd + mgi_DBincKey(keyName);
+              end if;
+
+              cmd := cmd + mgi_DBinsert(VOC_ANNOT, keyName) + 
+		     attributeAnnotTypeKey + "," +
+                     currentRecordKey + "," + 
+		     newKey + "," +
+		     genericQualifierKey + ")\n";
+
+	    elsif (editMode = TBL_ROW_MODIFY) then
+	      set := "_Term_key = " + newKey;
+	      cmd := cmd + mgi_DBupdate(VOC_ANNOT, key, set);
+	    elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
+	      cmd := cmd + mgi_DBdelete(VOC_ANNOT, key);
+	    end if;
+ 
+	    row := row + 1;
+	  end while;
+	end does;
+ 
+--
 -- ModifyMolecularMutation
 --
 -- Activated from: devent Add/Modify
@@ -1319,12 +1407,7 @@ rules:
 	    if (not isParent and not isMutant) then
 
 	      -- not specified
-              if (alleleType = "Gene trapped" or
-		  alleleType = "Targeted (knock-out)" or
-		  alleleType = "Targeted (knock-in)" or
-		  alleleType = "Targeted (Floxed/Frt)" or
-		  alleleType = "Targeted (Reporter)" or
-		  alleleType = "Targeted (other)") then
+              if (alleleType = "Gene trapped" or alleleType = "Targeted") then
 
 		--
 		-- select the derivation key that is associated with the specified 
@@ -1609,6 +1692,7 @@ rules:
 	  from_notes      : boolean := false;
 	  from_cellline   : boolean := false;
 	  from_sequence   : boolean := false;
+	  from_subtype    : boolean := false;
 
 	  value : string;
 
@@ -1706,6 +1790,10 @@ rules:
             where := where + "\nand a._Transmission_key = " + top->AlleleTransmissionMenu.menuHistory.searchValue;
           end if;
 
+          if (top->AlleleCollectionMenu.menuHistory.searchValue != "%") then
+            where := where + "\nand a._Collection_key = " + top->AlleleCollectionMenu.menuHistory.searchValue;
+          end if;
+
           if (top->MixedMenu.menuHistory.searchValue != "%") then
             where := where + "\nand a.isMixed = " + top->MixedMenu.menuHistory.searchValue;
           end if;
@@ -1754,6 +1842,20 @@ rules:
 	    if (value.length > 0) then
 	      where := where + "\nand ma.status like " + mgi_DBprstr(value);
               from_marker := true;
+	    end if;
+	  end if;
+
+	  -- Allele SubType
+
+	  value := mgi_tblGetCell(subtypeTable, 0, subtypeTable.termKey);
+	  if (value.length > 0 and value != "NULL") then
+	    where := where + "\nand st._Term_key = " + value;
+	    from_subtype := true;
+	  else
+	    value := mgi_tblGetCell(subtypeTable, 0, subtypeTable.term);
+	    if (value.length > 0) then
+	      where := where + "\nand st.term like " + mgi_DBprstr(value);
+	      from_subtype := true;
 	    end if;
 	  end if;
 
@@ -1835,6 +1937,11 @@ rules:
 	  if (from_marker) then
 	    from := from + "," + mgi_DBtable(ALL_MARKER_ASSOC_VIEW) + " ma";
 	    where := where + "\nand a." + mgi_DBkey(ALL_ALLELE) + " = ma." + mgi_DBkey(ALL_ALLELE);
+	  end if;
+
+	  if (from_subtype) then
+	    from := from + "," + mgi_DBtable(ALL_ALLELE_SUBTYPE_VIEW) + " st";
+	    where := where + "\nand a." + mgi_DBkey(ALL_ALLELE) + " = st." + mgi_DBkey(ALL_ALLELE);
 	  end if;
 
 	  if (from_mutation) then
@@ -1943,27 +2050,27 @@ rules:
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      top->ID->text.value           := mgi_getstr(dbproc, 1);
-	      top->Symbol->text.value       := mgi_getstr(dbproc, 8);
-	      top->Name->text.value         := mgi_getstr(dbproc, 9);
+	      top->Symbol->text.value       := mgi_getstr(dbproc, 9);
+	      top->Name->text.value         := mgi_getstr(dbproc, 10);
 	      origAlleleSymbol := top->Symbol->text.value;
 
-	      (void) mgi_tblSetCell(table, table.approvedBy, table.byDate, mgi_getstr(dbproc, 17));
-	      (void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 18));
-	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 19));
+	      (void) mgi_tblSetCell(table, table.approvedBy, table.byDate, mgi_getstr(dbproc, 18));
+	      (void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 19));
+	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 20));
 
-	      (void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 24));
-	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 25));
-	      (void) mgi_tblSetCell(table, table.approvedBy, table.byUser, mgi_getstr(dbproc, 26));
+	      (void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 26));
+	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 27));
+	      (void) mgi_tblSetCell(table, table.approvedBy, table.byUser, mgi_getstr(dbproc, 28));
 
 	      -- If the Marker key is null, then use the Nomen Symbol field
 	      if (mgi_getstr(dbproc, 2) = "") then
 	        (void) mgi_tblSetCell(markerTable, 0, markerTable.markerKey, mgi_getstr(dbproc, 2));
-	        (void) mgi_tblSetCell(markerTable, 0, markerTable.markerSymbol, mgi_getstr(dbproc, 10));
+	        (void) mgi_tblSetCell(markerTable, 0, markerTable.markerSymbol, mgi_getstr(dbproc, 11));
 	      end if;
 
 	      -- Strain of Origin
 	      top->StrainOfOrigin->StrainID->text.value := mgi_getstr(dbproc, 3);
-	      top->StrainOfOrigin->Verify->text.value := mgi_getstr(dbproc, 23);
+	      top->StrainOfOrigin->Verify->text.value := mgi_getstr(dbproc, 24);
 
               SetOption.source_widget := top->InheritanceModeMenu;
               SetOption.value := mgi_getstr(dbproc, 4);
@@ -1981,12 +2088,16 @@ rules:
               SetOption.value := mgi_getstr(dbproc, 7);
               send(SetOption, 0);
 
+              SetOption.source_widget := top->AlleleCollectionMenu;
+              SetOption.value := mgi_getstr(dbproc, 8);
+              send(SetOption, 0);
+
               SetOption.source_widget := top->MixedMenu;
-              SetOption.value := mgi_getstr(dbproc, 13);
+              SetOption.value := mgi_getstr(dbproc, 14);
               send(SetOption, 0);
 
               SetOption.source_widget := top->ExtinctMenu;
-              SetOption.value := mgi_getstr(dbproc, 12);
+              SetOption.value := mgi_getstr(dbproc, 13);
               send(SetOption, 0);
 
 	      -- Parent Cell Line info
@@ -2022,6 +2133,21 @@ rules:
 	    end while;
 	  end while;
 	  (void) mgi_dbclose(dbproc);
+
+          row := 0;
+          table := top->AlleleSubType->Table;
+          cmd := allele_subtype(currentRecordKey);
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+                (void) mgi_tblSetCell(table, row, table.annotCurrentKey, mgi_getstr(dbproc, 1));
+                (void) mgi_tblSetCell(table, row, table.termKey, mgi_getstr(dbproc, 4));
+                (void) mgi_tblSetCell(table, row, table.term, mgi_getstr(dbproc, 8));
+                (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+                row := row + 1;
+            end while;
+          end while;
+          (void) mgi_dbclose(dbproc);
 
 	  row := 0;
 	  cmd := allele_mutation(currentRecordKey);
@@ -2160,6 +2286,12 @@ rules:
  
 	  if (reason != TBL_REASON_ENTER_CELL_END) then
 	    return;
+	  end if;
+
+	  if (table.parent.name = "AlleleSubType") then
+            SetOption.source_widget := top->AlleleSubTypeMenu;
+            SetOption.value := mgi_tblGetCell(table, row, table.termKey);
+            send(SetOption, 0);
 	  end if;
 
 	  if (table.parent.name = "MolecularMutation") then
@@ -2390,11 +2522,7 @@ rules:
 
 	  if (value.length = 0) then
             if (top->AlleleTypeMenu.menuHistory.labelString = "Gene trapped" or
-		top->AlleleTypeMenu.menuHistory.labelString = "Targeted (knock-out)" or
-		top->AlleleTypeMenu.menuHistory.labelString = "Targeted (knock-in)" or
-		top->AlleleTypeMenu.menuHistory.labelString = "Targeted (Floxed/Frt)" or
-		top->AlleleTypeMenu.menuHistory.labelString = "Targeted (Reporter)" or
-		top->AlleleTypeMenu.menuHistory.labelString = "Targeted (other)") then
+		top->AlleleTypeMenu.menuHistory.labelString = "Targeted") then
 	      value := NOTSPECIFIED_TEXT;
 
 	    -- do not default 'not applicable'

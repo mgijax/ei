@@ -1,5 +1,11 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-5-1-8-?
+DATE: 03/06/2014
+STAFF: lec
+CHANGES:
+1) merge to trunk : branch-tag for TR11515/high throughput part II/allele stuff
+
 TAG: ei-linux-BP
 DATE: 02/25/2014
 STAFF: lec
@@ -25,6 +31,15 @@ DATE: 12/16/2013
 STAFF: lec
 CHANGES:
 1) TR11468/MGI_EMAPS_MAPPING/for scrum-bob/GXD Anatomy project
+
+TAG: ei-tr11515-?
+DATE: 12/12/2014
+STAFF: lec
+CHANGES:
+1) TR11515/high throughput part II/allele stuff
+added:  ALL_Allele._Collection_key
+2) TR11561/EMAPS
+3) TR10841/MLD_PhysMap, MLD_Distance obsoleted
 
 TAG: ei-tr11515-BP
 DATE: 12/12/2014

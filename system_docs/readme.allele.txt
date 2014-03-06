@@ -7,13 +7,7 @@ Add
 
 . default Inheritance Mode = Not Applicable
 
-. if Parent Cell Line = blank and Type in:
-	Gene trapped
-	Targeted (knock-out)
-	Targeted (knock-in)
-	Targeted (Floxed/Frt)
-	Targeted (Reporter)
-	Targeted (other)
+. if Parent Cell Line = blank and Allele Type in: 'Gene trapped', 'Targeted'
 	
 	strain = Not Specified
   else
@@ -58,12 +52,7 @@ Add/Modify:
 . Mutant Cell Line
 
   if no parent and no mutant:
-	if Gene trapped
-	   Targeted (knock-out)
-	   Targeted (knock-in)
-	   Targeted (Floxed/Frt)
-	   Targeted (Reporter)
-	   Targeted (other)
+	if 'Gene trapped' or 'Targeted'
 
               select the derivation key that is associated with the specified 
                    allele type

@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jan  9 11:59:44 2014";
+      lastWritten = "Mon Jan 13 10:06:09 2014";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -366,7 +366,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 105;
-            vip_y = 1735;
+            vip_y = 1680;
           Group: User
             useReportDir = False;
               {
@@ -486,7 +486,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 105;
-            vip_y = 1845;
+            vip_y = 1790;
               {
                 ItemList = LookupList : mgiLookup;
                 Group: Constraint
@@ -574,7 +574,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 105;
-            vip_y = 1900;
+            vip_y = 1845;
               {
                 ItemList = LookupList : mgiLookup;
                 Group: User
@@ -613,7 +613,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 105;
-            vip_y = 2010;
+            vip_y = 1955;
               {
                 ItemList = LookupList : mgiLookup;
                 Group: User
@@ -654,7 +654,7 @@ Module: mgiDialog
             dialogTitle = "Notes Dialog";
           Group: Control
             vip_x = 105;
-            vip_y = 1790;
+            vip_y = 1735;
               {
                 label = XmLabel;
                 Group: Widget
@@ -819,7 +819,7 @@ Module: mgiDialog
             height = 500;
           Group: Control
             vip_x = 105;
-            vip_y = 1680;
+            vip_y = 1625;
               {
                 EditForm = EditForm : MGI;
                 Group: Widget
@@ -1033,7 +1033,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 105;
-            vip_y = 1955;
+            vip_y = 1900;
               {
                 Strain1 = Strain : mgiDataTypes;
                 Group: Constraint
@@ -1255,6 +1255,7 @@ Shift<Key>Tab: prev-tab-group()
             vip_y = 910;
         }
         {
+<<<<<<< mgiDialog.pcd
           AttributeHistoryDialog = XmFormDialog;
           Group: Widget
             dialogStyle = dialog_primary_application_modal;
@@ -1350,7 +1351,7 @@ Shift<Key>Tab: prev-tab-group()
           Group: Control
             vipComment = "XmFormDialog is a convenience widget combining an unmanaged XmForm within an XmDialogShell parent. It is used for interactions not supported by the standard dialog set. No labels, buttons or other dialog components are automatically available.";
             vip_x = 105;
-            vip_y = 2065;
+            vip_y = 2010;
               {
                 currentMarker = mgiMarker : mgiDataTypes;
                 Group: Constraint
@@ -1689,7 +1690,7 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_any;
           Group: Control
             vip_x = 105;
-            vip_y = 1625;
+            vip_y = 1570;
             vipComment = "";
               {
                 mgiCitation = mgiCitation : mgiDataTypes;

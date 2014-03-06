@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jan 23 12:45:55 2014";
+      lastWritten = "Thu Jan 30 08:27:50 2014";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -454,9 +454,6 @@ Module: MGD
                                                   }
                                                   {
                                                     TXEX = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    PMEX = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     E = AccToggle : mgiOption;
@@ -1943,9 +1940,6 @@ Module: MGD
                                               ProbeOrganismMenu = ProbeOrganismMenu : mgiOption;
                                             }
                                             {
-                                              ViewAttributeHistory = push;
-                                            }
-                                            {
                                               Strain = Strain : mgiDataTypes;
                                             }
                                             {
@@ -2186,9 +2180,6 @@ Module: MGD
                                                   }
                                                   {
                                                     TXEX = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    PMEX = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     E = AccToggle : mgiOption;
@@ -2635,7 +2626,7 @@ Module: MGD
             width = 600;
           Group: Control
             vip_x = 90;
-            vip_y = 2065;
+            vip_y = 2010;
               {
                 ID = ID;
               }
@@ -2807,9 +2798,6 @@ Module: MGD
                             ProbeOrganismMenu = ProbeOrganismMenu : mgiOption;
                           }
                           {
-                            ViewAttributeHistory = push;
-                          }
-                          {
                             Strain = Strain : mgiDataTypes;
                           }
                           {
@@ -2880,7 +2868,7 @@ Module: MGD
             width = 600;
           Group: Control
             vip_x = 90;
-            vip_y = 2010;
+            vip_y = 1955;
               {
                 Marker = ReferenceTable : mgiTable;
                 Group: Constraint
@@ -3083,7 +3071,7 @@ Module: MGD
             managed = False;
           Group: Control
             vip_x = 90;
-            vip_y = 2175;
+            vip_y = 2120;
           Group: User
             homeWidget = Jnum;
             queryList = ReferenceList;
@@ -3326,9 +3314,6 @@ Module: MGD
                                   TXEX = AccToggle : mgiOption;
                                 }
                                 {
-                                  PMEX = AccToggle : mgiOption;
-                                }
-                                {
                                   E = AccToggle : mgiOption;
                                 }
                                 {
@@ -3511,7 +3496,7 @@ Module: MGD
             width = 600;
           Group: Control
             vip_x = 90;
-            vip_y = 2120;
+            vip_y = 2065;
               {
                 Sequence1 = CharText : mgiDataTypes;
                 Group: Constraint
@@ -3701,9 +3686,6 @@ Module: MGD
                                           topOffset = 5;
                                           bottomAttachment = attach_none;
                                           resizable = true;
-                                      }
-                                      {
-                                        ViewAttributeHistory = push;
                                       }
                                       {
                                         Strain = Strain : mgiDataTypes;
@@ -3989,9 +3971,6 @@ Module: MGD
                                                     TXEX = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    PMEX = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     E = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -4201,7 +4180,7 @@ Module: MGD
             resizePolicy = resize_any;
           Group: Control
             vip_x = 90;
-            vip_y = 1845;
+            vip_y = 1790;
               {
                 ID = ID;
               }
@@ -4894,7 +4873,7 @@ Module: MGD
             height = 700;
           Group: Control
             vip_x = 90;
-            vip_y = 1790;
+            vip_y = 1735;
               {
                 ID = ID;
               }
@@ -5448,7 +5427,7 @@ Module: MGD
             height = 775;
           Group: Control
             vip_x = 90;
-            vip_y = 1900;
+            vip_y = 1845;
           Group: User
             homeWidget = Jnum;
               {
@@ -7175,9 +7154,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     TXEX = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    PMEX = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     E = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -8067,7 +8043,7 @@ Shift<Key>Tab: prev-tab-group()
             width = 600;
           Group: Control
             vip_x = 90;
-            vip_y = 1955;
+            vip_y = 1900;
               {
                 ParentClone = mgiAccession : mgiDataTypes;
                 Group: Widget
@@ -8223,9 +8199,6 @@ Shift<Key>Tab: prev-tab-group()
                         topOffset = 5;
                         bottomAttachment = attach_none;
                         resizable = true;
-                    }
-                    {
-                      ViewAttributeHistory = push;
                     }
                     {
                       Strain = Strain : mgiDataTypes;
@@ -8684,16 +8657,28 @@ Shift<Key>Tab: prev-tab-group()
                                     topOffset = 5;
                                 }
                                 {
+                                  AlleleCollectionMenu = AlleleCollectionMenu : mgiOption;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = AlleleTransmissionMenu;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = AlleleTransmissionMenu;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    topOffset = 5;
+                                }
+                                {
                                   MixedMenu = YesNoMenu : mgiOption;
                                   Group: Widget
                                     subMenuId = MixedPulldown;
                                     labelString = Mixed;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = AlleleStatusMenu;
+                                    leftWidget = AlleleCollectionMenu;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = AlleleTransmissionMenu;
+                                    topWidget = AlleleCollectionMenu;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     topOffset = 5;
@@ -8900,7 +8885,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         legend = XmLabelGadget;
                                         Group: Widget
-                                          labelString = "1 = Synonyms, 2 = Molecular Mutations, 3 = Image, 4 = Sequence";
+                                          labelString = "1 = Synonyms, 2 = Allele Attribute, 3 = Molecular Mutations, 4 = Image, 5 = Sequence";
                                       }
                                       {
                                         notebook = notebook : mgiNoteBook;
@@ -8950,6 +8935,54 @@ Shift<Key>Tab: prev-tab-group()
                                                     SynonymTypePulldown = OptionPulldown : mgiOption;
                                                     Group: User
                                                       sql = "select _SynonymType_key, synonymType from MGI_SynonymType_Allele_View where allowOnlyOne = 0 order by _SynonymType_key";
+                                                  }
+                                                  }
+                                            }
+                                            {
+                                              AlleleSubType = TableLabel : mgiTable;
+                                              Group: Widget
+                                                rubberPositioning = False;
+                                                resizePolicy = resize_any;
+                                                  {
+                                                    Table = mgiTable : mgiTable;
+                                                    Group: Widget
+                                                      xrtTblPixelWidthSeries = "(all 0-2 0)\t";
+                                                      xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 50)";
+                                                      xrtTblColumnLabels = "Mode,Current Key,Key,Attribute";
+                                                      xrtTblNumColumns = 4;
+                                                      userDefinedAttributes = "annotCurrentKey:Int(Int)=\"1\"\ntermKey:Int(Int)=\"2\"\nterm:Int(Int)=\"3\"\n";
+                                                      xrtTblEnterCellCallback = "D:SetOptions";
+                                                      xrtTblEditableSeries = "(all 0-2 False)";
+                                                  {
+                                                    label = XtXrtLabel;
+                                                    Group: Widget
+                                                      labelString = "Allele Attribute";
+                                                  }
+                                                  }
+                                                  {
+                                                    AddRow = TablePush : mgiTable;
+                                                  }
+                                                  {
+                                                    DeleteRow = TablePush : mgiTable;
+                                                  }
+                                                  {
+                                                    AlleleSubTypeMenu = AlleleSubTypeMenu : mgiOption;
+                                                    Group: Constraint
+                                                      leftAttachment = attach_widget;
+                                                      leftWidget = DeleteRow;
+                                                      rightAttachment = attach_none;
+                                                      topAttachment = attach_opposite_widget;
+                                                      topWidget = DeleteRow;
+                                                      bottomAttachment = attach_none;
+                                                      resizable = true;
+                                                      topOffset = 2;
+                                                  Popups:
+                                                  {
+                                                    AlleleSubtypePulldown = OptionPulldown : mgiOption;
+                                                    Group: User
+                                                      tableOption = 3;
+                                                      tableOptionKey = 2;
+                                                      tableForm = AlleleSubType;
                                                   }
                                                   }
                                             }
@@ -9229,9 +9262,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     TXEX = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    PMEX = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     E = AccToggle : mgiOption;
@@ -9719,9 +9749,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     TXEX = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    PMEX = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     E = AccToggle : mgiOption;
@@ -10853,9 +10880,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     TXEX = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    PMEX = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     E = AccToggle : mgiOption;
@@ -12564,9 +12588,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     TXEX = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    PMEX = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     E = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -14254,33 +14275,9 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   ExptInSituForm = ExptInSituForm;
-                                      {
-                                        Strain = Strain : mgiDataTypes;
-                                            {
-                                              StrainID = XmXrtAligner;
-                                            }
-                                            {
-                                              Verify = CharText;
-                                            }
-                                            {
-                                              StrainID = XmXrtAligner;
-                                            }
-                                      }
                                 }
                                 {
                                   ExptFISHForm = ExptFISHForm;
-                                      {
-                                        Strain = Strain : mgiDataTypes;
-                                            {
-                                              StrainID = XmXrtAligner;
-                                            }
-                                            {
-                                              Verify = CharText;
-                                            }
-                                            {
-                                              StrainID = XmXrtAligner;
-                                            }
-                                      }
                                 }
                                 {
                                   ExptCrossForm = ExptCrossForm;
@@ -14595,11 +14592,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     TXEX = AccToggle;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
-                                                    PMEX = AccToggle;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -17234,8 +17226,8 @@ Shift<Key>Tab: prev-tab-group()
             height = 825;
             closeWindowCallback = "D:GOVocAnnotExit";
           Group: Control
-            vip_x = 100;
-            vip_y = 310;
+            vip_x = 90;
+            vip_y = 305;
           Group: User
             activateButtonName = GOVocAnnot;
             homeWidget = mgiAccession;
@@ -17419,7 +17411,7 @@ Shift<Key>Tab: prev-tab-group()
                                     rightAttachment = attach_form;
                                     topAttachment = attach_widget;
                                     topWidget = mgiAccession;
-                                    topOffset = 40;
+                                    topOffset = 45;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                       {

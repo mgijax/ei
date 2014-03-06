@@ -16,6 +16,7 @@ CALLS
 	 allele_defstatus()				: "char *";
 	 allele_definheritanceNA()			: "char *";
 	 allele_definheritanceNS()			: "char *";
+	 allele_defcollectionNS()			: "char *";
 	 allele_select("char *")			: "char *";
 	 allele_derivation("char *", "char *", "char *", "char *", "char *", "char *") : "char *";
 	 allele_markerassoc("char *")			: "char *";
@@ -28,6 +29,7 @@ CALLS
 	 allele_parentcellline("char *")		: "char *";
 	 allele_unionnomen("char *")		: "char *";
 	 allele_search("char *", "char *", "char *")	: "char *";
+	 allele_subtype("char *")			: "char *";
 
 	 derivation_checkdup("char *", "char *", "char *", "char *", "char *") : "char *";
 	 derivation_select("char *")			: "char *";

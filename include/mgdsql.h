@@ -20,6 +20,7 @@ extern char *allele_defqualifier();
 extern char *allele_defstatus();
 extern char *allele_definheritanceNA();
 extern char *allele_definheritanceNS();
+extern char *allele_defcollectionNS();
 extern char *allele_select(char *);
 extern char *allele_derivation(char *, char *, char *, char *, char *, char *);
 extern char *allele_markerassoc(char *);
@@ -32,6 +33,7 @@ extern char *allele_mutantcellline(char *);
 extern char *allele_parentcellline(char *);
 extern char *allele_unionnomen(char *);
 extern char *allele_search(char *, char *, char *);
+extern char *allele_subtype(char *);
 
 /* AlleleDerivation.d */
 
