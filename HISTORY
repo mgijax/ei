@@ -1,10 +1,11 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
-TAG: ei-5-1-8-?
+TAG: ei-5-1-8-1
 DATE: 03/06/2014
 STAFF: lec
 CHANGES:
 1) merge to trunk : branch-tag for TR11515/high throughput part II/allele stuff
+2) TR11599/EMAPSMapping.d/add upper case
 
 TAG: ei-linux-BP
 DATE: 02/25/2014
