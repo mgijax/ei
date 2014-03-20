@@ -96,6 +96,7 @@ rules:
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 		label := mgi_getstr(dbproc, 2);
+		--(void) mgi_writeLog(label + "\n");
 
 		-- Create a unique name for the child instance
 

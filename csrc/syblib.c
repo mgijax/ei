@@ -337,7 +337,7 @@ RETCODE mgi_dbresults(DBPROCESS *dbproc)
 *
 */
 
-STATUS mgi_dbnextrow(DBPROCESS *dbproc)
+int mgi_dbnextrow(DBPROCESS *dbproc)
 {
   return(dbnextrow(dbproc));
 }
