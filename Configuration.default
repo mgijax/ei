@@ -14,11 +14,35 @@ endif
 
 source ${MGICONFIG}/master.config.csh
 
+unsetenv OPENWINHOME
+unsetenv XKEYSYMDB
+
+setenv TeleUSE /opt/teleuseXRT
+setenv XRTHOME $TeleUSE/XRT
+
+setenv VIPIMAGES ${TeleUSE}/pixmaps
+setenv XNLSPATH ${TeleUSE}/X11R5/lib/nls
+setenv XUSERFILESEARCHPATH %N:${TeleUSE}/appl_res/%L/%N:${TeleUSE}/appl_res/%N:/usr/lib/X11/app-defaults/%L/%N:/usr/lib/X11/app-defaults/%N
+setenv MANPATH ${TeleUSE}/man:${MANPATH}
+
+setenv PATH	.:${PATH}:${TeleUSE}/bin:${XRTHOME}/bin
+
+switch (`uname -n`)
+    case bhmgiei01:
+	setenv SYBASE /opt/sybase/15.7
+	setenv LD_LIBRARY_PATH ${SYBASE}/OCS-15_0/lib:${TeleUSE}/lib:${TeleUSE}/XRT/lib-shared:${TeleUSE}/conf/lib
+        breaksw
+    default:
+	setenv SYBASE /opt/sybase/12.5
+	setenv LD_LIBRARY_PATH ${SYBASE}/OCS-12_5/lib:${TeleUSE}/lib:${TeleUSE}/XRT/lib-shared:${TeleUSE}/conf/lib
+        breaksw
+endsw
+
 # installation directory
 setenv EIINSTALLDIR ${EI_USRLOCALMGI}/ei/prod
 
 # CVS tag; keep updated with current tag
-setenv CVS_TAG	ei-5-1-8-1
+setenv CVS_TAG	ei-5-1-6-6
 
 # build directory
 setenv EIBUILDDIR ${EI_USRLOCALMGI}/ei
