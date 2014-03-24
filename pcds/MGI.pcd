@@ -2,8 +2,8 @@ Module: MGI
 {
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
-      release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jan 30 08:27:51 2014";
+      release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
+      lastWritten = "Mon Mar 24 12:23:59 2014";
       copy = false;
       inCreateMenu = true;
         {
