@@ -7,8 +7,8 @@
 
 all:	xrt_auth
 
-xrt_auth: $${EIAPP}
-	$$XRTHOME/bin/xrt_auth $${EIAPP}
+xrt_auth: ${EIAPP}
+	${XRTHOME}/bin/xrt_auth ${EIAPP}
 	@echo xrt authentication done
 
 clean::
