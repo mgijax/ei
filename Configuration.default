@@ -36,7 +36,6 @@ switch (`uname -n`)
 	setenv EISSHCOMMAND  "eissh.sh"
         breaksw
     default:
-	setenv IS_LINUX		0
 	setenv SYBASE /opt/sybase/12.5
 	setenv LD_LIBRARY_PATH ${SYBASE}/OCS-12_5/lib:${TeleUSE}/lib:${TeleUSE}/XRT/lib-shared:${TeleUSE}/conf/lib
         breaksw
