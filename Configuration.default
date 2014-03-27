@@ -29,14 +29,16 @@ setenv PATH	.:${PATH}:${TeleUSE}/bin:${XRTHOME}/bin
 
 switch (`uname -n`)
     case bhmgiei01:
+	setenv IS_LINUX		1
 	setenv SYBASE /opt/sybase/15.7
 	setenv LD_LIBRARY_PATH ${SYBASE}/OCS-15_0/lib:${TeleUSE}/lib:${TeleUSE}/XRT/lib-shared:${TeleUSE}/conf/lib
-	setenv EISSH   "ssh lindon "
+	setenv EISSHSERVER   "lindon "
+	setenv EISSHCOMMAND  "eissh.sh"
         breaksw
     default:
+	setenv IS_LINUX		0
 	setenv SYBASE /opt/sybase/12.5
 	setenv LD_LIBRARY_PATH ${SYBASE}/OCS-12_5/lib:${TeleUSE}/lib:${TeleUSE}/XRT/lib-shared:${TeleUSE}/conf/lib
-	setenv EISSH   ""
         breaksw
 endsw
 
