@@ -1158,14 +1158,14 @@ rules:
    ADVersion1 does
      top->ID.sensitive := false;
      top->edinburghKey.sensitive := false;
-     top->printStopMenu.sensitive := false;
-     top->ADSystemMenu.sensitive := false;
-     top->inheritSystemMenu.sensitive := false;
-     top->MGIAddedMenu.sensitive := false;
      top->RefreshADSystem.sensitive := false;
      top->CreationDate.sensitive := false;
      top->ModifiedDate.sensitive := false;
      top->mgiAccessionTable.sensitive := false;
+     top->printStopFrame.sensitive := false;
+     top->ADSystemFrame.sensitive := false;
+     top->inheritSystemFrame.sensitive := false;
+     top->MGIAddedFrame.sensitive := false;
    end does;
 
 --
@@ -1177,14 +1177,14 @@ rules:
    ADVersion2 does
      top->ID.sensitive := true;
      top->edinburghKey.sensitive := true;
-     top->printStopMenu.sensitive := true;
-     top->ADSystemMenu.sensitive := true;
-     top->inheritSystemMenu.sensitive := true;
-     top->MGIAddedMenu.sensitive := true;
      top->RefreshADSystem.sensitive := true;
      top->CreationDate.sensitive := true;
      top->ModifiedDate.sensitive := true;
      top->mgiAccessionTable.sensitive := true;
+     top->printStopFrame.sensitive := true;
+     top->ADSystemFrame.sensitive := true;
+     top->inheritSystemFrame.sensitive := true;
+     top->MGIAddedFrame.sensitive := true;
    end does;
 
 end dmodule;

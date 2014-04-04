@@ -1,290 +1,8 @@
 Module: mgiAnatDictionary
 {
       autoCuil = False;
-      release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jan 23 12:45:47 2014";
-        {
-          ADEditClipboard = ClipboardEditList : mgiLookup;
-          Group: Widget
-            rubberPositioning = False;
-            resizePolicy = resize_any;
-            horizontalSpacing = 5;
-            width = 290;
-          Group: Control
-            vip_x = 180;
-            vip_y = 85;
-            vipComment = "XmForm is a container widget with no input semantics. Constraints are placed on its children to define attachments for each of the child's four sides. These attachments can be to the XmForm, to another child, to a relative position or to the initial position of the child. The attachments determine the layout behavior of XmForm when resizing occurs.";
-              {
-                Label = LookupLabel : mgiLookup;
-                Group: Widget
-                  labelString = "Anatomical Clipboard";
-                Group: User
-                  defaultLabel = "Anatomical Clipboard";
-              }
-              {
-                List = list : mgiDataTypes;
-                Group: Widget
-                  visibleItemCount = 15;
-              }
-              {
-                Add = TablePush : mgiTable;
-                Group: Widget
-                  activateCallback = "D:ADClipboardAdd";
-              }
-              {
-                AddAll = TablePush : mgiTable;
-                Group: Widget
-                  activateCallback = "D:ADClipboardAddAll";
-                  labelString = "Add All";
-                Group: Constraint
-                  leftAttachment = attach_widget;
-                  leftWidget = Add;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_opposite_widget;
-                  topWidget = Add;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-              }
-              {
-                Delete = TablePush : mgiTable;
-                Group: Constraint
-                  leftAttachment = attach_widget;
-                  leftWidget = AddAll;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_opposite_widget;
-                  topWidget = AddAll;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-              }
-        }
-        {
-          treeDisplay = XmXrtOutliner;
-          Group: Control
-            vip_x = 60;
-            vip_y = 85;
-        }
-        {
-          aliasTable = TableLabel : mgiTable;
-          Group: Widget
-            rubberPositioning = False;
-            resizePolicy = resize_any;
-          Group: Constraint
-            leftAttachment = attach_form;
-            rightAttachment = attach_form;
-            topAttachment = attach_form;
-            bottomAttachment = attach_none;
-            resizable = true;
-          Group: Control
-            vip_x = 60;
-            vip_y = 140;
-              {
-                Table = mgiTable;
-                Group: Widget
-                  xrtTblVisibleRows = 3;
-                  xrtTblNumColumns = 3;
-                  xrtTblPixelWidthSeries = "(all 0 0) (all 1 0)";
-                  xrtTblTraversableSeries = "(all 0 False) (all 1 False)";
-                  userDefinedAttributes = "structureNameKeyIndex:Int(Int)=\"1\"\nstructureIndex:Int(Int)=\"2\"\n";
-                  xrtTblCharWidthSeries = "(all 0 1)(all 2 40)";
-                Group: Constraint
-                  topOffset = 0;
-                  leftAttachment = attach_form;
-                  rightAttachment = attach_form;
-                  topAttachment = attach_form;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-              }
-        }
-        {
-          AddDialog = XmFormDialog;
-          Group: Widget
-            rubberPositioning = False;
-            resizePolicy = resize_any;
-          Group: Control
-            vip_x = 180;
-            vip_y = 30;
-              {
-                theForm = XmForm;
-                Group: Widget
-                  rubberPositioning = False;
-                  resizePolicy = resize_any;
-                  horizontalSpacing = 10;
-                  verticalSpacing = 10;
-                Group: Constraint
-                  leftAttachment = attach_form;
-                  rightAttachment = attach_form;
-                  topAttachment = attach_form;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-                    {
-                      structureText = CharText : mgiDataTypes;
-                      Group: Constraint
-                        leftAttachment = attach_form;
-                        rightAttachment = attach_form;
-                        topAttachment = attach_form;
-                        bottomAttachment = attach_none;
-                        resizable = true;
-                          {
-                            label = XmLabel;
-                            Group: Widget
-                              labelString = "Structure:";
-                          }
-                          {
-                            text = text;
-                            Group: Widget
-                              columns = 50;
-                          }
-                    }
-                    {
-                      structureNote = Notes : mgiDataTypes;
-                      Group: Widget
-                        xrtGearOrientation = horizontal;
-                      Group: Constraint
-                        leftAttachment = attach_form;
-                        rightAttachment = attach_form;
-                        topAttachment = attach_widget;
-                        bottomAttachment = attach_none;
-                        resizable = true;
-                        topWidget = structureText;
-                          {
-                            label = XmLabel;
-                          }
-                          {
-                            text = scrolledText;
-                            Group: Widget
-                              columns = 50;
-                              rows = 2;
-                            Group: Constraint
-                              xrtGearAlignerAlignment = aligner_center;
-                          }
-                    }
-                    {
-                      mgiAliasTable = aliasTable : mgiAnatDictionary;
-                      Group: Constraint
-                        leftAttachment = attach_opposite_widget;
-                        rightAttachment = attach_none;
-                        topAttachment = attach_widget;
-                        bottomAttachment = attach_form;
-                        resizable = true;
-                        topWidget = structureNote;
-                        leftWidget = structureText;
-                          {
-                            Table = mgiTable;
-                                {
-                                  label = XtXrtLabel;
-                                  Group: Widget
-                                    labelString = "MGI Aliases";
-                                }
-                          }
-                    }
-                    {
-                      printStopMenu = printStopMenu : mgiAnatDictionary;
-                      Group: Constraint
-                        leftAttachment = attach_widget;
-                        leftWidget = mgiAliasTable;
-                        rightAttachment = attach_form;
-                        topAttachment = attach_opposite_widget;
-                        topWidget = mgiAliasTable;
-                        bottomAttachment = attach_none;
-                        resizable = true;
-                        rightOffset = 5;
-                      Group: User
-                        defaultOption = Yes;
-                    }
-                    {
-                      inheritSystemMenu = inheritSystemMenu : mgiAnatDictionary;
-                      Group: Constraint
-                        leftAttachment = attach_widget;
-                        leftWidget = mgiAliasTable;
-                        rightAttachment = attach_form;
-                        topAttachment = attach_widget;
-                        topWidget = printStopMenu;
-                        bottomAttachment = attach_none;
-                        resizable = true;
-                        rightOffset = 5;
-                    }
-                    {
-                      ADSystemMenu = ADSystemMenu : mgiOption;
-                      Group: Constraint
-                        leftAttachment = attach_widget;
-                        leftWidget = mgiAliasTable;
-                        rightAttachment = attach_form;
-                        topAttachment = attach_widget;
-                        topWidget = inheritSystemMenu;
-                        bottomAttachment = attach_none;
-                        resizable = true;
-                    }
-              }
-              {
-                rowColumn = XmRowColumn;
-                Group: Widget
-                  orientation = horizontal;
-                  packing = pack_tight;
-                  spacing = 10;
-                  numColumns = 1;
-                Group: Constraint
-                  leftAttachment = attach_position;
-                  rightAttachment = attach_form;
-                  topAttachment = attach_none;
-                  bottomAttachment = attach_form;
-                  resizable = true;
-                  leftPosition = 40;
-                  bottomOffset = 5;
-                    {
-                      Add = XmPushButton;
-                      Group: Widget
-                        labelString = Add;
-                        activateCallback = "D:Add";
-                        traversalOn = False;
-                    }
-                    {
-                      Cancel = XmPushButton;
-                      Group: Widget
-                        labelString = Cancel;
-                        traversalOn = False;
-                        activateCallback = "C: TuUnmanage";
-                    }
-              }
-              {
-                separator = XmSeparator;
-                Group: Constraint
-                  leftAttachment = attach_form;
-                  rightAttachment = attach_form;
-                  topAttachment = attach_widget;
-                  bottomAttachment = attach_widget;
-                  bottomWidget = rowColumn;
-                  resizable = true;
-                  topWidget = theForm;
-              }
-        }
-        {
-          printStopMenu = YesNoMenu : mgiOption;
-          Group: Widget
-            labelString = "PrintStop Set?";
-            subMenuId = printStopPulldown;
-          Group: Control
-            vip_x = 180;
-            vip_y = 140;
-              Popups:
-              {
-                printStopPulldown : YesNoPulldown = OptionPulldown;
-              }
-        }
-        {
-          inheritSystemMenu = YesNoMenu : mgiOption;
-          Group: Widget
-            subMenuId = inheritSystemPulldown;
-            labelString = "Inherit System Term?";
-          Group: Control
-            vip_x = 60;
-            vip_y = 195;
-          Group: User
-            defaultOption = Yes;
-              Popups:
-              {
-                inheritSystemPulldown : YesNoPulldown = OptionPulldown;
-              }
-        }
+      release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
+      lastWritten = "Fri Apr  4 08:18:49 2014";
         {
           DictionaryModule = Module : MGI;
           Group: Widget
@@ -477,7 +195,7 @@ Module: mgiAnatDictionary
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = stagesText;
-                                    topOffset = 5;
+                                    topOffset = 20;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                       {
@@ -555,10 +273,8 @@ Module: mgiAnatDictionary
                                       }
                                 }
                                 {
-                                  MGIAddedMenu = YesNoMenu : mgiOption;
+                                  MGIAddedFrame = YesNoFrame : mgiOption;
                                   Group: Widget
-                                    subMenuId = MGIAddedPulldown;
-                                    labelString = "MGI Added?";
                                     sensitive = False;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
@@ -570,13 +286,19 @@ Module: mgiAnatDictionary
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     topOffset = 5;
+                                      {
+                                        MGIAddedMenu : YesNoMenu = XmOptionMenu;
+                                        Group: Widget
+                                          labelString = "MGI Added?";
+                                          subMenuId = MGIAddedPulldown;
+                                      }
                                       Popups:
                                       {
                                         MGIAddedPulldown : YesNoPulldown = OptionPulldown;
                                       }
                                 }
                                 {
-                                  printStopMenu = printStopMenu : mgiAnatDictionary;
+                                  printStopFrame = printStopFrame : mgiAnatDictionary;
                                   Group: Widget
                                     sensitive = False;
                                   Group: Constraint
@@ -585,47 +307,36 @@ Module: mgiAnatDictionary
                                     topAttachment = attach_widget;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    topWidget = MGIAddedMenu;
+                                    topWidget = MGIAddedFrame;
                                     topOffset = 5;
-                                    leftWidget = MGIAddedMenu;
+                                    leftWidget = MGIAddedFrame;
                                 }
                                 {
-                                  ADSystemMenu = ADSystemMenu : mgiOption;
+                                  ADSystemFrame = ADSystemFrame : mgiOption;
                                   Group: Widget
                                     sensitive = False;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = printStopMenu;
+                                    leftWidget = printStopFrame;
                                     rightAttachment = attach_form;
                                     topAttachment = attach_widget;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    topWidget = printStopMenu;
+                                    topWidget = printStopFrame;
                                     topOffset = 5;
                                     rightOffset = 5;
                                 }
                                 {
-                                  inheritSystemMenu = YesNoMenu : mgiOption;
-                                  Group: Widget
-                                    subMenuId = inheritSystemPulldown;
-                                    labelString = "Inherit System Term?";
-                                    sensitive = False;
+                                  inheritSystemFrame = inheritSystemFrame : mgiAnatDictionary;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = ADSystemMenu;
-                                    rightAttachment = attach_form;
+                                    rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = ADSystemMenu;
-                                    topOffset = 5;
+                                    topWidget = ADSystemFrame;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    rightOffset = 5;
-                                  Group: User
-                                    defaultOption = Yes;
-                                      Popups:
-                                      {
-                                        inheritSystemPulldown : YesNoPulldown = OptionPulldown;
-                                      }
+                                    leftWidget = ADSystemFrame;
+                                    topOffset = 5;
                                 }
                                 {
                                   structureNote = Notes : mgiDataTypes;
@@ -830,9 +541,12 @@ Module: mgiAnatDictionary
                                         Delete = TablePush;
                                       }
                                       {
-                                        AccSourceMenu = AccSourceMenu : mgiOption;
-                                        Group: User
-                                          defaultOption = AdultMouseAntatomy;
+                                        AccSourceFrame = AccSourceFrame : mgiOption;
+                                            {
+                                              AccSourceMenu = XmOptionMenu;
+                                              Group: User
+                                                defaultOption = AdultMouseAntatomy;
+                                            }
                                             Popups:
                                             {
                                               AccSourcePulldown = OptionPulldown;
@@ -996,9 +710,6 @@ Module: mgiAnatDictionary
                                                     TXEX = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    PMEX = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     E = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -1068,22 +779,19 @@ Module: mgiAnatDictionary
                                                     KOMP = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    NCIMR = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     MTG = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     MUGEN = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    NCIMR = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     NIG = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NMICE = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NRCMM = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     OBS = AccToggle : mgiOption;
@@ -1095,10 +803,10 @@ Module: mgiAnatDictionary
                                                     RIKENBRC = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    RMRC = AccToggle : mgiOption;
+                                                    TAC = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    TAC = AccToggle : mgiOption;
+                                                    RMRC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     WTSI = AccToggle : mgiOption;
@@ -1119,7 +827,7 @@ Module: mgiAnatDictionary
                                                     BayGenomicGeneTrap = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    TIGM = AccToggle : mgiOption;
+                                                    TexasGeneTrap = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     TIGEMGeneTrap = AccToggle : mgiOption;
@@ -1327,8 +1035,313 @@ Module: mgiAnatDictionary
                                           xrtGearAlignerAlignment = aligner_center;
                                       }
                                 }
+                                {
+                                  mgiAliasTable = aliasTable : mgiAnatDictionary;
+                                }
+                                {
+                                  printStopMenu = printStopFrame : mgiAnatDictionary;
+                                      {
+                                        OptionMenu = XmOptionMenu;
+                                      }
+                                }
+                                {
+                                  inheritSystemMenu = inheritSystemFrame : mgiAnatDictionary;
+                                      {
+                                        OptionMenu = XmOptionMenu;
+                                      }
+                                }
                           }
                     }
+              }
+        }
+        {
+          ADEditClipboard = ClipboardEditList : mgiLookup;
+          Group: Widget
+            rubberPositioning = False;
+            resizePolicy = resize_any;
+            horizontalSpacing = 5;
+            width = 290;
+          Group: Control
+            vip_x = 60;
+            vip_y = 85;
+            vipComment = "XmForm is a container widget with no input semantics. Constraints are placed on its children to define attachments for each of the child's four sides. These attachments can be to the XmForm, to another child, to a relative position or to the initial position of the child. The attachments determine the layout behavior of XmForm when resizing occurs.";
+              {
+                Label = LookupLabel : mgiLookup;
+                Group: Widget
+                  labelString = "Anatomical Clipboard";
+                Group: User
+                  defaultLabel = "Anatomical Clipboard";
+              }
+              {
+                List = list : mgiDataTypes;
+                Group: Widget
+                  visibleItemCount = 15;
+              }
+              {
+                Add = TablePush : mgiTable;
+                Group: Widget
+                  activateCallback = "D:ADClipboardAdd";
+              }
+              {
+                AddAll = TablePush : mgiTable;
+                Group: Widget
+                  activateCallback = "D:ADClipboardAddAll";
+                  labelString = "Add All";
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  leftWidget = Add;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = Add;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+              }
+              {
+                Delete = TablePush : mgiTable;
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  leftWidget = AddAll;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = AddAll;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+              }
+        }
+        {
+          treeDisplay = XmXrtOutliner;
+          Group: Control
+            vip_x = 175;
+            vip_y = 85;
+        }
+        {
+          aliasTable = TableLabel : mgiTable;
+          Group: Widget
+            rubberPositioning = False;
+            resizePolicy = resize_any;
+          Group: Constraint
+            leftAttachment = attach_form;
+            rightAttachment = attach_form;
+            topAttachment = attach_form;
+            bottomAttachment = attach_none;
+            resizable = true;
+          Group: Control
+            vip_x = 60;
+            vip_y = 140;
+              {
+                Table = mgiTable;
+                Group: Widget
+                  xrtTblVisibleRows = 3;
+                  xrtTblNumColumns = 3;
+                  xrtTblPixelWidthSeries = "(all 0 0) (all 1 0)";
+                  xrtTblTraversableSeries = "(all 0 False) (all 1 False)";
+                  userDefinedAttributes = "structureNameKeyIndex:Int(Int)=\"1\"\nstructureIndex:Int(Int)=\"2\"\n";
+                  xrtTblCharWidthSeries = "(all 0 1)(all 2 40)";
+                Group: Constraint
+                  topOffset = 0;
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_form;
+                  topAttachment = attach_form;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+              }
+        }
+        {
+          AddDialog = XmFormDialog;
+          Group: Widget
+            rubberPositioning = False;
+            resizePolicy = resize_any;
+          Group: Control
+            vip_x = 175;
+            vip_y = 30;
+              {
+                theForm = XmForm;
+                Group: Widget
+                  rubberPositioning = False;
+                  resizePolicy = resize_any;
+                  horizontalSpacing = 10;
+                  verticalSpacing = 10;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_form;
+                  topAttachment = attach_form;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                    {
+                      structureText = CharText : mgiDataTypes;
+                      Group: Constraint
+                        leftAttachment = attach_form;
+                        rightAttachment = attach_form;
+                        topAttachment = attach_form;
+                        bottomAttachment = attach_none;
+                        resizable = true;
+                          {
+                            label = XmLabel;
+                            Group: Widget
+                              labelString = "Structure:";
+                          }
+                          {
+                            text = text;
+                            Group: Widget
+                              columns = 50;
+                          }
+                    }
+                    {
+                      structureNote = Notes : mgiDataTypes;
+                      Group: Widget
+                        xrtGearOrientation = horizontal;
+                      Group: Constraint
+                        leftAttachment = attach_form;
+                        rightAttachment = attach_form;
+                        topAttachment = attach_widget;
+                        bottomAttachment = attach_none;
+                        resizable = true;
+                        topWidget = structureText;
+                          {
+                            label = XmLabel;
+                          }
+                          {
+                            text = scrolledText;
+                            Group: Widget
+                              columns = 50;
+                              rows = 2;
+                            Group: Constraint
+                              xrtGearAlignerAlignment = aligner_center;
+                          }
+                    }
+                    {
+                      mgiAliasTable = aliasTable : mgiAnatDictionary;
+                      Group: Constraint
+                        leftAttachment = attach_opposite_widget;
+                        rightAttachment = attach_none;
+                        topAttachment = attach_widget;
+                        bottomAttachment = attach_form;
+                        resizable = true;
+                        topWidget = structureNote;
+                        leftWidget = structureText;
+                          {
+                            Table = mgiTable;
+                                {
+                                  label = XtXrtLabel;
+                                  Group: Widget
+                                    labelString = "MGI Aliases";
+                                }
+                          }
+                    }
+                    {
+                      printStopMenu = printStopFrame : mgiAnatDictionary;
+                      Group: Constraint
+                        leftAttachment = attach_widget;
+                        leftWidget = mgiAliasTable;
+                        rightAttachment = attach_form;
+                        topAttachment = attach_opposite_widget;
+                        topWidget = mgiAliasTable;
+                        bottomAttachment = attach_none;
+                        resizable = true;
+                        rightOffset = 5;
+                    }
+                    {
+                      inheritSystemMenu = inheritSystemFrame : mgiAnatDictionary;
+                      Group: Constraint
+                        leftAttachment = attach_widget;
+                        leftWidget = mgiAliasTable;
+                        rightAttachment = attach_form;
+                        topAttachment = attach_widget;
+                        topWidget = printStopMenu;
+                        bottomAttachment = attach_none;
+                        resizable = true;
+                        rightOffset = 5;
+                    }
+                    {
+                      ADSystemMenu = ADSystemFrame : mgiOption;
+                      Group: Constraint
+                        leftAttachment = attach_widget;
+                        leftWidget = mgiAliasTable;
+                        rightAttachment = attach_form;
+                        topAttachment = attach_widget;
+                        topWidget = inheritSystemMenu;
+                        bottomAttachment = attach_none;
+                        resizable = true;
+                    }
+              }
+              {
+                rowColumn = XmRowColumn;
+                Group: Widget
+                  orientation = horizontal;
+                  packing = pack_tight;
+                  spacing = 10;
+                  numColumns = 1;
+                Group: Constraint
+                  leftAttachment = attach_position;
+                  rightAttachment = attach_form;
+                  topAttachment = attach_none;
+                  bottomAttachment = attach_form;
+                  resizable = true;
+                  leftPosition = 40;
+                  bottomOffset = 5;
+                    {
+                      Add = XmPushButton;
+                      Group: Widget
+                        labelString = Add;
+                        activateCallback = "D:Add";
+                        traversalOn = False;
+                    }
+                    {
+                      Cancel = XmPushButton;
+                      Group: Widget
+                        labelString = Cancel;
+                        traversalOn = False;
+                        activateCallback = "C: TuUnmanage";
+                    }
+              }
+              {
+                separator = XmSeparator;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_form;
+                  topAttachment = attach_widget;
+                  bottomAttachment = attach_widget;
+                  bottomWidget = rowColumn;
+                  resizable = true;
+                  topWidget = theForm;
+              }
+        }
+        {
+          printStopFrame = YesNoFrame : mgiOption;
+          Group: Control
+            vip_x = 175;
+            vip_y = 140;
+              {
+                printStopMenu : YesNoMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = printStopPulldown;
+                  labelString = "PrintStop Set?";
+                Group: User
+                  defaultOption = Yes;
+              }
+              Popups:
+              {
+                printStopPulldown : YesNoPulldown = OptionPulldown;
+              }
+        }
+        {
+          inheritSystemFrame = YesNoFrame : mgiOption;
+          Group: Widget
+            sensitive = False;
+          Group: Control
+            vip_x = 177;
+            vip_y = 208;
+              {
+                inheritSystemMenu : YesNoMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = inheritSystemPulldown;
+                  labelString = "Inherit System Term?";
+                Group: User
+                  defaultOption = Yes;
+              }
+              Popups:
+              {
+                inheritSystemPulldown : YesNoPulldown = OptionPulldown;
               }
         }
 }

@@ -1,8 +1,8 @@
 Module: mgiTable
 {
       autoCuil = False;
-      release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jan 23 12:45:46 2014";
+      release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
+      lastWritten = "Tue Apr  1 07:42:44 2014";
         {
           mgiTable = XtXrtTable;
           Group: Widget
@@ -114,11 +114,11 @@ Module: mgiTable
                   activateCallback = "D:VerifyAccAdd";
                 Group: Constraint
                   leftAttachment = attach_widget;
-                  leftWidget = AccSourceMenu;
+                  leftWidget = AccSourceFrame;
                   leftOffset = 2;
                   rightAttachment = attach_none;
                   topAttachment = attach_opposite_widget;
-                  topWidget = AccSourceMenu;
+                  topWidget = AccSourceFrame;
                   bottomAttachment = attach_none;
                   resizable = true;
               }
@@ -129,7 +129,7 @@ Module: mgiTable
                   topWidget = Add;
               }
               {
-                AccSourceMenu = AccSourceMenu : mgiOption;
+                AccSourceFrame = AccSourceFrame : mgiOption;
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
                   rightAttachment = attach_none;
@@ -449,6 +449,9 @@ Module: mgiTable
         }
         {
           AccessionReference = mgiAccessionTable : mgiTable;
+          Group: Widget
+            rubberPositioning = False;
+            resizePolicy = resize_any;
           Group: Control
             vip_x = 75;
             vip_y = 525;
@@ -471,12 +474,22 @@ Module: mgiTable
               }
               {
                 Add = TablePush;
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  leftWidget = AccSourceFrame;
+                  leftOffset = 2;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = AccSourceFrame;
+                  topOffset = 2;
+                  bottomAttachment = attach_none;
+                  resizable = true;
               }
               {
                 Delete = TablePush;
               }
               {
-                AccSourceMenu = AccSourceMenu : mgiOption;
+                AccSourceFrame = AccSourceFrame : mgiOption;
                     Popups:
                     {
                       AccSourcePulldown = OptionPulldown;
@@ -548,10 +561,10 @@ Module: mgiTable
                   labelString = "Add Ref Type";
                 Group: Constraint
                   leftAttachment = attach_widget;
-                  leftWidget = ReferenceTypeMenu;
+                  leftWidget = ReferenceTypeFrame;
                   rightAttachment = attach_none;
                   topAttachment = attach_opposite_widget;
-                  topWidget = ReferenceTypeMenu;
+                  topWidget = ReferenceTypeFrame;
                   bottomAttachment = attach_none;
                   resizable = true;
                   leftOffset = 5;
@@ -561,7 +574,7 @@ Module: mgiTable
                 DeleteRow = TablePush : mgiTable;
               }
               {
-                ReferenceTypeMenu = ReferenceTypeMenu : mgiOption;
+                ReferenceTypeFrame = ReferenceTypeFrame : mgiOption;
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
                   leftWidget = Table;
@@ -580,11 +593,7 @@ Module: mgiTable
                     }
               }
               {
-                ReviewMenu = YesNoMenu : mgiOption;
-                Group: Widget
-                  labelString = "Review?";
-                  subMenuId = ReviewPulldown;
-                  managed = False;
+                ReviewFrame = YesNoFrame : mgiOption;
                 Group: Constraint
                   leftAttachment = attach_none;
                   rightAttachment = attach_opposite_widget;
@@ -594,8 +603,14 @@ Module: mgiTable
                   topOffset = 2;
                   bottomAttachment = attach_none;
                   resizable = true;
-                Group: User
-                  defaultOption = No;
+                    {
+                      ReviewMenu : YesNoMenu = XmOptionMenu;
+                      Group: Widget
+                        subMenuId = ReviewPulldown;
+                        labelString = "Review?";
+                      Group: User
+                        defaultOption = No;
+                    }
                     Popups:
                     {
                       ReviewPulldown : YesNoPulldown = OptionPulldown : mgiOption;
@@ -647,6 +662,9 @@ Module: mgiTable
         }
         {
           Accession = mgiAccessionTable : mgiTable;
+          Group: Widget
+            rubberPositioning = False;
+            resizePolicy = resize_any;
           Group: Control
             vip_x = 75;
             vip_y = 470;
@@ -673,12 +691,22 @@ Module: mgiTable
               }
               {
                 Add = TablePush;
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  leftWidget = AccSourceFrame;
+                  leftOffset = 2;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = AccSourceFrame;
+                  topOffset = 2;
+                  bottomAttachment = attach_none;
+                  resizable = true;
               }
               {
                 Delete = TablePush;
               }
               {
-                AccSourceMenu = AccSourceMenu : mgiOption;
+                AccSourceFrame = AccSourceFrame : mgiOption;
                     Popups:
                     {
                       AccSourcePulldown = OptionPulldown;
@@ -719,11 +747,11 @@ Module: mgiTable
                   labelString = "Add Syn Type";
                 Group: Constraint
                   leftAttachment = attach_widget;
-                  leftWidget = SynonymTypeMenu;
+                  leftWidget = SynonymTypeFrame;
                   leftOffset = 5;
                   rightAttachment = attach_none;
                   topAttachment = attach_opposite_widget;
-                  topWidget = SynonymTypeMenu;
+                  topWidget = SynonymTypeFrame;
                   bottomAttachment = attach_none;
                   resizable = true;
                   topOffset = 2;
@@ -732,7 +760,7 @@ Module: mgiTable
                 DeleteRow = TablePush : mgiTable;
               }
               {
-                SynonymTypeMenu = SynonymTypeMenu : mgiOption;
+                SynonymTypeFrame = SynonymTypeFrame : mgiOption;
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
                   leftWidget = Table;
@@ -796,11 +824,11 @@ Module: mgiTable
                   activateCallback = "D:AddNoteTypeRow";
                 Group: Constraint
                   leftAttachment = attach_widget;
-                  leftWidget = NoteTypeMenu;
+                  leftWidget = NoteTypeFrame;
                   leftOffset = 2;
                   rightAttachment = attach_none;
                   topAttachment = attach_opposite_widget;
-                  topWidget = NoteTypeMenu;
+                  topWidget = NoteTypeFrame;
                   topOffset = 2;
                   bottomAttachment = attach_none;
                   resizable = true;
@@ -819,7 +847,7 @@ Module: mgiTable
                   managed = False;
               }
               {
-                NoteTypeMenu = NoteTypeMenu : mgiOption;
+                NoteTypeFrame = NoteTypeFrame : mgiOption;
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
                   leftWidget = Table;
@@ -917,9 +945,7 @@ Module: mgiTable
                 DeleteRow = TablePush : mgiTable;
               }
               {
-                IsPrimaryMenu = YesNoMenu : mgiOption;
-                Group: Widget
-                  subMenuId = IsPrimaryPulldown;
+                IsPrimaryFrame = YesNoFrame : mgiOption;
                 Group: Constraint
                   leftAttachment = attach_widget;
                   leftWidget = DeleteRow;
@@ -929,8 +955,13 @@ Module: mgiTable
                   bottomAttachment = attach_none;
                   resizable = true;
                   leftOffset = 5;
-                Group: User
-                  defaultOption = Yes;
+                    {
+                      IsPrimaryMenu : YesNoMenu = XmOptionMenu;
+                      Group: Widget
+                        subMenuId = IsPrimaryPulldown;
+                      Group: User
+                        defaultOption = Yes;
+                    }
                     Popups:
                     {
                       IsPrimaryPulldown : YesNoPulldown = OptionPulldown;
@@ -989,10 +1020,10 @@ Module: mgiTable
                   labelString = "Add Ref Type";
                 Group: Constraint
                   leftAttachment = attach_widget;
-                  leftWidget = ReferenceTypeMenu;
+                  leftWidget = ReferenceTypeFrame;
                   rightAttachment = attach_none;
                   topAttachment = attach_opposite_widget;
-                  topWidget = ReferenceTypeMenu;
+                  topWidget = ReferenceTypeFrame;
                   bottomAttachment = attach_none;
                   resizable = true;
                   leftOffset = 5;
@@ -1002,7 +1033,7 @@ Module: mgiTable
                 DeleteRow = TablePush : mgiTable;
               }
               {
-                ReferenceTypeMenu = ReferenceTypeMenu : mgiOption;
+                ReferenceTypeFrame = ReferenceTypeFrame : mgiOption;
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
                   leftWidget = Table;
@@ -1022,11 +1053,7 @@ Module: mgiTable
                     }
               }
               {
-                ReviewMenu = YesNoMenu : mgiOption;
-                Group: Widget
-                  labelString = "Review?";
-                  subMenuId = ReviewPulldown;
-                  managed = False;
+                ReviewFrame = YesNoFrame : mgiOption;
                 Group: Constraint
                   leftAttachment = attach_none;
                   rightAttachment = attach_opposite_widget;
@@ -1036,8 +1063,14 @@ Module: mgiTable
                   topOffset = 2;
                   bottomAttachment = attach_none;
                   resizable = true;
-                Group: User
-                  defaultOption = No;
+                    {
+                      ReviewMenu : YesNoMenu = XmOptionMenu;
+                      Group: Widget
+                        subMenuId = ReviewPulldown;
+                        labelString = "Review?";
+                      Group: User
+                        defaultOption = No;
+                    }
                     Popups:
                     {
                       ReviewPulldown : YesNoPulldown = OptionPulldown : mgiOption;
@@ -1098,11 +1131,11 @@ Module: mgiTable
                   activateCallback = "D:AddEvidencePropertyRow";
                 Group: Constraint
                   leftAttachment = attach_widget;
-                  leftWidget = EvidencePropertyMenu;
+                  leftWidget = EvidencePropertyFrame;
                   leftOffset = 2;
                   rightAttachment = attach_none;
                   topAttachment = attach_opposite_widget;
-                  topWidget = EvidencePropertyMenu;
+                  topWidget = EvidencePropertyFrame;
                   topOffset = 2;
                   bottomAttachment = attach_none;
                   resizable = true;
@@ -1119,7 +1152,7 @@ Module: mgiTable
                   managed = False;
               }
               {
-                EvidencePropertyMenu = EvidencePropertyMenu : mgiOption;
+                EvidencePropertyFrame = EvidencePropertyFrame : mgiOption;
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
                   leftWidget = Table;

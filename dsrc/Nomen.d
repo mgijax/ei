@@ -257,10 +257,12 @@ rules:
 	  -- Type and Chromosome Menus
 
 	  top->MarkerEventMenu.subMenuId.sql := nomen_event();
+	  top->MarkerEventMenu.defaultChild := 2;
 	  InitOptionMenu.option := top->MarkerEventMenu;
 	  send(InitOptionMenu, 0);
 
 	  top->MarkerStatusMenu.subMenuId.sql := nomen_status(); 
+	  top->MarkerStatusMenu.defaultChild := 2;
 	  InitOptionMenu.option := top->MarkerStatusMenu;
 	  send(InitOptionMenu, 0);
 

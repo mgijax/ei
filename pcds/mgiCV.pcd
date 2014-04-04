@@ -1,8 +1,8 @@
 Module: mgiCV
 {
       autoCuil = False;
-      release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Aug 14 13:03:26 2009";
+      release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
+      lastWritten = "Thu Apr  3 08:34:13 2014";
         {
           CVMenu = XmRowColumn;
           Group: Widget
@@ -17,7 +17,7 @@ Module: mgiCV
             vip_x = 150;
             vip_y = 30;
               {
-                MarkerEventMenu = MarkerEventMenu : mgiOption;
+                MarkerEventFrame = MarkerEventFrame : mgiOption;
                     Popups:
                     {
                       MarkerEventPulldown = OptionPulldown : mgiOption;
@@ -33,7 +33,12 @@ Module: mgiCV
                     }
               }
               {
-                MarkerEventReasonMenu = MarkerEventReasonMenu : mgiOption;
+                MarkerEventReasonFrame = MarkerEventReasonFrame : mgiOption;
+                    {
+                      MarkerEventReasonMenu = XmOptionMenu;
+                      Group: Widget
+                        labelString = "Event\nReason";
+                    }
                     Popups:
                     {
                       MarkerEventReasonPulldown = OptionPulldown : mgiOption;
@@ -55,7 +60,7 @@ Module: mgiCV
             vip_x = 50;
             vip_y = 85;
               {
-                StrengthMenu = StrengthMenu : mgiOption;
+                StrengthFrame = StrengthFrame : mgiOption;
                     Popups:
                     {
                       StrengthPulldown = OptionPulldown : mgiOption;
@@ -68,7 +73,7 @@ Module: mgiCV
                     }
               }
               {
-                PatternMenu = PatternMenu : mgiOption;
+                PatternFrame = PatternFrame : mgiOption;
                     Popups:
                     {
                       PatternPulldown = OptionPulldown : mgiOption;
@@ -126,7 +131,7 @@ Module: mgiCV
                     {
                       CVMenu1 = CVMenu;
                           {
-                            GelControlMenu = GelControlMenu : mgiOption;
+                            GelControlFrame = GelControlFrame : mgiOption;
                                 Popups:
                                 {
                                   GelControlPulldown = OptionPulldown : mgiOption;
@@ -137,7 +142,7 @@ Module: mgiCV
                                 }
                           }
                           {
-                            GelRNATypeMenu = GelRNATypeMenu : mgiOption;
+                            GelRNATypeFrame = GelRNATypeFrame : mgiOption;
                                 Popups:
                                 {
                                   GelRNATypePulldown = OptionPulldown : mgiOption;
@@ -148,7 +153,7 @@ Module: mgiCV
                                 }
                           }
                           {
-                            AgeMenu = AgeMenu : mgiOption;
+                            AgeFrame = AgeFrame : mgiOption;
                                 Popups:
                                 {
                                   AgePulldown = OptionPulldown : mgiOption;
@@ -156,60 +161,10 @@ Module: mgiCV
                                     tableForm = GelLane;
                                     tableOption = 18;
                                     tableOptionKey = 7;
-                                      {
-                                        SearchAll = SearchAll : mgiOption;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                      {
-                                        embryonic = AgeToggle : mgiOption;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                      {
-                                        embryonicDay = AgeToggle : mgiOption;
-                                      }
-                                      {
-                                        postnatal = AgeToggle : mgiOption;
-                                      }
-                                      {
-                                        postnatalDay = AgeToggle : mgiOption;
-                                      }
-                                      {
-                                        postnatalWeek = AgeToggle : mgiOption;
-                                      }
-                                      {
-                                        postnatalMonth = AgeToggle : mgiOption;
-                                      }
-                                      {
-                                        postnatalYear = AgeToggle : mgiOption;
-                                      }
-                                      {
-                                        postnatalAdult = AgeToggle : mgiOption;
-                                      }
-                                      {
-                                        postnatalNewborn = AgeToggle : mgiOption;
-                                      }
-                                      {
-                                        NotSpecified = AgeToggle : mgiOption;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                      {
-                                        NotApplicable = AgeToggle : mgiOption;
-                                      }
-                                      {
-                                        NotResolved = AgeToggle : mgiOption;
-                                      }
-                                      {
-                                        NotLoaded = AgeToggle : mgiOption;
-                                        Group: Widget
-                                          managed = False;
-                                      }
                                 }
                           }
                           {
-                            SexMenu = SexMenu : mgiOption;
+                            SexFrame = SexFrame : mgiOption;
                                 Popups:
                                 {
                                   SexPulldown = OptionPulldown;
@@ -220,7 +175,7 @@ Module: mgiCV
                                 }
                           }
                           {
-                            GelUnitsMenu = GelUnitsMenu : mgiOption;
+                            GelUnitsFrame = GelUnitsFrame : mgiOption;
                                 Popups:
                                 {
                                   GelUnitsPulldown = OptionPulldown : mgiOption;
@@ -231,7 +186,7 @@ Module: mgiCV
                                 }
                           }
                           {
-                            StrengthMenu = StrengthMenu : mgiOption;
+                            StrengthFrame = StrengthFrame : mgiOption;
                                 Popups:
                                 {
                                   StrengthPulldown = OptionPulldown : mgiOption;
@@ -282,7 +237,7 @@ Module: mgiCV
                     {
                       CVMenu = CVMenu;
                           {
-                            AgeMenu = AgeMenu : mgiOption;
+                            AgeFrame = AgeFrame : mgiOption;
                                 Popups:
                                 {
                                   AgePulldown = OptionPulldown : mgiOption;
@@ -290,71 +245,13 @@ Module: mgiCV
                                     tableForm = Specimen;
                                     tableOption = 14;
                                     tableOptionKey = 5;
-                                      {
-                                        SearchAll = SearchAll : mgiOption;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                      {
-                                        embryonic = AgeToggle : mgiOption;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                      {
-                                        embryonicDay = AgeToggle : mgiOption;
-                                      }
-                                      {
-                                        postnatal = AgeToggle : mgiOption;
-                                      }
-                                      {
-                                        postnatalDay = AgeToggle : mgiOption;
-                                      }
-                                      {
-                                        postnatalWeek = AgeToggle : mgiOption;
-                                      }
-                                      {
-                                        postnatalMonth = AgeToggle : mgiOption;
-                                      }
-                                      {
-                                        postnatalYear = AgeToggle : mgiOption;
-                                      }
-                                      {
-                                        postnatalAdult = AgeToggle : mgiOption;
-                                      }
-                                      {
-                                        postnatalNewborn = AgeToggle : mgiOption;
-                                      }
-                                      {
-                                        NotSpecified = AgeToggle : mgiOption;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                      {
-                                        NotApplicable = AgeToggle : mgiOption;
-                                      }
-                                      {
-                                        NotResolved = AgeToggle : mgiOption;
-                                      }
-                                      {
-                                        NotLoaded = AgeToggle : mgiOption;
-                                        Group: Widget
-                                          managed = False;
-                                      }
                                 }
                           }
                           {
-                            SexMenu = SexMenu : mgiOption;
-                                Popups:
-                                {
-                                  SexPulldown = OptionPulldown;
-                                  Group: User
-                                    tableForm = Specimen;
-                                    tableOption = 17;
-                                    tableOptionKey = 8;
-                                }
+                            SexFrame = SexFrame : mgiOption;
                           }
                           {
-                            FixationMenu = FixationMenu : mgiOption;
+                            FixationFrame = FixationFrame : mgiOption;
                                 Popups:
                                 {
                                   FixationPulldown = OptionPulldown : mgiOption;
@@ -365,7 +262,7 @@ Module: mgiCV
                                 }
                           }
                           {
-                            EmbeddingMenu = EmbeddingMenu : mgiOption;
+                            EmbeddingFrame = EmbeddingFrame : mgiOption;
                                 Popups:
                                 {
                                   EmbeddingPulldown = OptionPulldown : mgiOption;
@@ -376,7 +273,7 @@ Module: mgiCV
                                 }
                           }
                           {
-                            HybridizationMenu = HybridizationMenu : mgiOption;
+                            HybridizationFrame = HybridizationFrame : mgiOption;
                                 Popups:
                                 {
                                   HybridizationPulldown = OptionPulldown : mgiOption;
@@ -463,7 +360,7 @@ Module: mgiCV
             vip_x = 50;
             vip_y = 195;
               {
-                AgeMenu = AgeMenu : mgiOption;
+                AgeFrame = AgeFrame : mgiOption;
                     Popups:
                     {
                       AgePulldown = OptionPulldown;
@@ -474,7 +371,7 @@ Module: mgiCV
                     }
               }
               {
-                GenderMenu = GenderMenu : mgiOption;
+                GenderFrame = GenderFrame : mgiOption;
                     Popups:
                     {
                       GenderPulldown = OptionPulldown;

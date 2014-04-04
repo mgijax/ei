@@ -2,8 +2,8 @@ Module: mgiOption
 {
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
-      release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jan 23 12:45:45 2014";
+      release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
+      lastWritten = "Thu Apr  3 11:02:02 2014";
       copy = false;
       inCreateMenu = true;
         {
@@ -50,7 +50,7 @@ Module: mgiOption
             background = Wheat;
           Group: Control
             vip_x = 105;
-            vip_y = 140;
+            vip_y = 195;
             vipComment = "XmToggleButton sets nontransitory state data within an application. Usually this widget consists of an indicator (square or diamond) with either text or a pixmap to its right. The indicator implies a selected or unselected state. Normally, mouse button 1 is used to arm and activate the XmToggleButton.";
         }
         {
@@ -60,7 +60,7 @@ Module: mgiOption
             activateCallback = "D:SetModify";
           Group: Control
             vip_x = 105;
-            vip_y = 195;
+            vip_y = 250;
         }
         {
           SearchAll = OptionToggle;
@@ -68,19 +68,23 @@ Module: mgiOption
             labelString = "Search All";
           Group: Control
             vip_x = 105;
-            vip_y = 250;
+            vip_y = 305;
           Group: User
             defaultValue = "%";
         }
         {
-          AccSourceMenu = OptionMenu;
-          Group: Widget
-            subMenuId = AccSourcePulldown;
+          AccSourceFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 1790;
-          Group: User
-            defaultOption = J;
+            vip_y = 1845;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                AccSourceMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = AccSourcePulldown;
+                Group: User
+                  defaultOption = J;
+              }
               Popups:
               {
                 AccSourcePulldown : OptionPulldown = OptionPulldown;
@@ -467,14 +471,6 @@ Module: mgiOption
                         preferred = False;
                     }
                     {
-                      PMEX = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = "MGD-PMEX-";
-                      Group: User
-                        defaultValue = 1;
-                        preferred = False;
-                    }
-                    {
                       E = AccToggle : mgiOption;
                       Group: Widget
                         labelString = E;
@@ -612,6 +608,11 @@ Module: mgiOption
                         defaultValue = 106;
                     }
                     {
+                      NCIMR = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 54;
+                    }
+                    {
                       MTG = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 92;
@@ -622,11 +623,6 @@ Module: mgiOption
                         defaultValue = 87;
                     }
                     {
-                      NCIMR = AccToggle : mgiOption;
-                      Group: User
-                        defaultValue = 54;
-                    }
-                    {
                       NIG = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 93;
@@ -635,11 +631,6 @@ Module: mgiOption
                       NMICE = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 56;
-                    }
-                    {
-                      NRCMM = AccToggle : mgiOption;
-                      Group: User
-                        defaultValue = 167;
                     }
                     {
                       OBS = AccToggle : mgiOption;
@@ -659,16 +650,16 @@ Module: mgiOption
                         defaultValue = 70;
                     }
                     {
+                      TAC = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 94;
+                    }
+                    {
                       RMRC = AccToggle : mgiOption;
                       Group: Widget
                         labelString = "RMRC-NLAC";
                       Group: User
                         defaultValue = 161;
-                    }
-                    {
-                      TAC = AccToggle : mgiOption;
-                      Group: User
-                        defaultValue = 94;
                     }
                     {
                       WTSI = AccToggle : mgiOption;
@@ -709,7 +700,9 @@ Module: mgiOption
                         defaultValue = 95;
                     }
                     {
-                      TIGM = AccToggle : mgiOption;
+                      TexasGeneTrap = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = TIGM;
                       Group: User
                         defaultValue = 97;
                     }
@@ -878,7 +871,7 @@ Module: mgiOption
             userDefinedAttributes = "allowAdd:Boolean(Boolean)=\"True\"\nallowModify:Boolean(Boolean)=\"True\"\nallowDelete:Boolean(Boolean)=\"True\"\npreferred:Boolean(Boolean)=\"True\"\nprivate:Boolean(Boolean)=\"False\"\nrequired:Boolean=\"False\"\n";
           Group: Control
             vip_x = 105;
-            vip_y = 305;
+            vip_y = 360;
         }
         {
           SourceToggle = OptionToggle;
@@ -886,7 +879,7 @@ Module: mgiOption
             valueChangedCallback = "D:SelectMolecularSource,\nD:SetModify";
           Group: Control
             vip_x = 105;
-            vip_y = 1460;
+            vip_y = 1515;
         }
         {
           ControlledVocabToggle = OptionToggle;
@@ -895,7 +888,7 @@ Module: mgiOption
             valueChangedCallback = "D:SelectControlledVocab,\nD:SetModify";
           Group: Control
             vip_x = 105;
-            vip_y = 580;
+            vip_y = 635;
         }
         {
           NotSpecified = OptionToggle : mgiOption;
@@ -904,7 +897,7 @@ Module: mgiOption
             background = Thistle;
           Group: Control
             vip_x = 105;
-            vip_y = 1240;
+            vip_y = 1295;
           Group: User
             searchValue = "Not Specified";
             defaultValue = "Not Specified";
@@ -915,18 +908,24 @@ Module: mgiOption
             background = Thistle;
           Group: Control
             vip_x = 105;
-            vip_y = 635;
+            vip_y = 690;
         }
         {
-          GenderMenu = OptionMenu;
-          Group: Widget
-            subMenuId = GenderPulldown;
-            labelString = Gender;
+          GenderFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 3825;
+            vip_y = 3770;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
           Group: User
             defaultValue = "Not Specified";
+              {
+                GenderMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = GenderPulldown;
+                  labelString = Gender;
+                Group: User
+                  defaultValue = "Not Specified";
+              }
               Popups:
               {
                 GenderPulldown : OptionPulldown = OptionPulldown;
@@ -938,15 +937,19 @@ Module: mgiOption
               }
         }
         {
-          AgeMenu = OptionMenu;
-          Group: Widget
-            subMenuId = AgePulldown;
-            labelString = Age;
+          AgeFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 1900;
-          Group: User
-            defaultOption = NotSpecified;
+            vip_y = 1955;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                AgeMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  labelString = Age;
+                  subMenuId = AgePulldown;
+                Group: User
+                  defaultOption = NotSpecified;
+              }
               Popups:
               {
                 AgePulldown : OptionPulldown = OptionPulldown;
@@ -1065,7 +1068,7 @@ Module: mgiOption
             labelString = "Not Applicable";
           Group: Control
             vip_x = 105;
-            vip_y = 1185;
+            vip_y = 1240;
           Group: User
             searchValue = "Not Applicable";
             defaultValue = "Not Applicable";
@@ -1074,16 +1077,20 @@ Module: mgiOption
           AgeToggle = OptionToggle;
           Group: Control
             vip_x = 105;
-            vip_y = 360;
+            vip_y = 415;
         }
         {
-          AntibodyClassMenu = OptionMenu;
-          Group: Widget
-            subMenuId = AntibodyClassPulldown;
-            labelString = "Antibody\nClass";
+          AntibodyClassFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 2560;
+            vip_y = 2725;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                AntibodyClassMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  labelString = "Antibody\nClass";
+                  subMenuId = AntibodyClassPulldown;
+              }
               Popups:
               {
                 AntibodyClassPulldown : OptionPulldown = OptionPulldown;
@@ -1095,13 +1102,17 @@ Module: mgiOption
               }
         }
         {
-          AntibodyTypeMenu = OptionMenu;
-          Group: Widget
-            subMenuId = AntibodyTypePulldown;
-            labelString = "Antibody\nType";
+          AntibodyTypeFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 2670;
+            vip_y = 2835;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                AntibodyTypeMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = AntibodyTypePulldown;
+                  labelString = "Antibody\nType";
+              }
               Popups:
               {
                 AntibodyTypePulldown : OptionPulldown = OptionPulldown;
@@ -1117,7 +1128,7 @@ Module: mgiOption
           Yes = OptionToggle : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 1680;
+            vip_y = 1735;
           Group: User
             searchValue = Yes;
             defaultValue = Yes;
@@ -1126,22 +1137,26 @@ Module: mgiOption
           No = OptionToggle : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 1295;
+            vip_y = 1350;
           Group: User
             searchValue = No;
             defaultValue = No;
         }
         {
-          LabelMenu = OptionMenu;
-          Group: Widget
-            subMenuId = LabelPulldown;
-            labelString = "Labelled with";
+          LabelTypeFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 4375;
+            vip_y = 4320;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                LabelTypeMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = LabelTypePulldown;
+                  labelString = "Labelled with";
+              }
               Popups:
               {
-                LabelPulldown : OptionPulldown = OptionPulldown;
+                LabelTypePulldown : OptionPulldown = OptionPulldown;
                 Group: User
                   sql = "select * from GXD_Label order by label";
                     {
@@ -1150,16 +1165,20 @@ Module: mgiOption
               }
         }
         {
-          VisualizationMenu = OptionMenu;
-          Group: Widget
-            subMenuId = VisualiazationPulldown;
-            labelString = "Visualized with";
+          VisualizationFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 6300;
+            vip_y = 6190;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                VisualizationMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = VisualizationPulldown;
+                  labelString = "Visualized with";
+              }
               Popups:
               {
-                VisualiazationPulldown : OptionPulldown = OptionPulldown;
+                VisualizationPulldown : OptionPulldown = OptionPulldown;
                 Group: User
                   sql = "select * from GXD_VisualizationMethod order by visualization";
                     {
@@ -1168,13 +1187,17 @@ Module: mgiOption
               }
         }
         {
-          SenseMenu = OptionMenu;
-          Group: Widget
-            subMenuId = SensePulldown;
-            labelString = Hybridization;
+          SenseFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 5530;
+            vip_y = 5420;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                SenseMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = SensePulldown;
+                  labelString = Hybridization;
+              }
               Popups:
               {
                 SensePulldown : OptionPulldown = OptionPulldown;
@@ -1186,13 +1209,17 @@ Module: mgiOption
               }
         }
         {
-          PrepTypeMenu = OptionMenu;
-          Group: Widget
-            subMenuId = PrepTypePulldown;
-            labelString = Type;
+          PrepTypeFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 5090;
+            vip_y = 4980;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                PrepTypeMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = PrepTypePulldown;
+                  labelString = Type;
+              }
               Popups:
               {
                 PrepTypePulldown : OptionPulldown = OptionPulldown;
@@ -1217,13 +1244,17 @@ Module: mgiOption
               }
         }
         {
-          SecondaryMenu = OptionMenu;
-          Group: Widget
-            subMenuId = SecondaryPulldown;
-            labelString = "Secondary Antibody";
+          SecondaryFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 5420;
+            vip_y = 5310;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                SecondaryMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = SecondaryPulldown;
+                  labelString = "Secondary Antibody";
+              }
               Popups:
               {
                 SecondaryPulldown : OptionPulldown = OptionPulldown;
@@ -1235,13 +1266,17 @@ Module: mgiOption
               }
         }
         {
-          AssayTypeMenu = OptionMenu;
-          Group: Widget
-            subMenuId = AssayTypePulldown;
-            labelString = "Assay Type";
+          AssayTypeFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 2780;
+            vip_y = 2890;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                AssayTypeMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = AssayTypePulldown;
+                  labelString = "Assay Type";
+              }
               Popups:
               {
                 AssayTypePulldown : OptionPulldown = OptionPulldown;
@@ -1254,13 +1289,17 @@ Module: mgiOption
               }
         }
         {
-          FixationMenu = OptionMenu;
-          Group: Widget
-            subMenuId = FixationPulldown;
-            labelString = Fixation;
+          FixationFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 3440;
+            vip_y = 3385;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                FixationMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = FixationPulldown;
+                  labelString = Fixation;
+              }
               Popups:
               {
                 FixationPulldown : OptionPulldown = OptionPulldown;
@@ -1269,13 +1308,17 @@ Module: mgiOption
               }
         }
         {
-          EmbeddingMenu = OptionMenu;
-          Group: Widget
-            subMenuId = EmbeddingPulldown;
-            labelString = Embedding;
+          EmbeddingFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 3165;
+            vip_y = 3110;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                EmbeddingMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = EmbeddingPulldown;
+                  labelString = Embedding;
+              }
               Popups:
               {
                 EmbeddingPulldown : OptionPulldown = OptionPulldown;
@@ -1284,15 +1327,19 @@ Module: mgiOption
               }
         }
         {
-          HybridizationMenu = OptionMenu;
-          Group: Widget
-            subMenuId = HybridizationPulldown;
-            labelString = Hybridization;
+          HybridizationFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 4155;
-          Group: User
-            defaultOption = NotSpecified;
+            vip_y = 4100;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                HybridizationMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = HybridizationPulldown;
+                  labelString = Hybridization;
+                Group: User
+                  defaultOption = NotSpecified;
+              }
               Popups:
               {
                 HybridizationPulldown : OptionPulldown = OptionPulldown;
@@ -1337,15 +1384,19 @@ Module: mgiOption
               }
         }
         {
-          RNAAssayMenu = OptionMenu;
-          Group: Widget
-            subMenuId = RNAAssayPulldown;
-            labelString = Detects;
+          RNAAssayFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 5365;
-          Group: User
-            required = False;
+            vip_y = 5255;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                RNAAssayMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  labelString = Detects;
+                  subMenuId = RNAAssayPulldown;
+                Group: User
+                  required = False;
+              }
               Popups:
               {
                 RNAAssayPulldown : OptionPulldown = OptionPulldown;
@@ -1367,15 +1418,19 @@ Module: mgiOption
               }
         }
         {
-          GelAssayMenu = OptionMenu;
-          Group: Widget
-            subMenuId = GelAssayPulldown;
-            labelString = "Gel Assay";
+          GelAssayFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 3495;
-          Group: User
-            required = False;
+            vip_y = 3440;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                GelAssayMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = GelAssayPulldown;
+                  labelString = "Gel Assay";
+                Group: User
+                  required = False;
+              }
               Popups:
               {
                 GelAssayPulldown : OptionPulldown = OptionPulldown;
@@ -1397,15 +1452,19 @@ Module: mgiOption
               }
         }
         {
-          ControlledVocabMenu = OptionMenu;
-          Group: Widget
-            subMenuId = ControlledVocabPulldown;
-            labelString = Table;
+          ControlledVocabFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 2945;
-          Group: User
-            clear = False;
+            vip_y = 3000;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                ControlledVocabMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = ControlledVocabPulldown;
+                  labelString = Table;
+                Group: User
+                  clear = False;
+              }
               Popups:
               {
                 ControlledVocabPulldown : OptionPulldown = OptionPulldown;
@@ -1565,15 +1624,17 @@ Module: mgiOption
               }
         }
         {
-          AntibodyOrganismMenu = OptionMenu;
-          Group: Widget
-            subMenuId = AntibodyOrganismPulldown;
-            labelString = "Antibody\nRaised In";
+          AntibodyOrganismFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 2615;
-          Group: User
-            defaultValue = 76;
+            vip_y = 2780;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                AntibodyOrganismMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = AntibodyOrganismPulldown;
+                  labelString = "Antibody\nOrganism";
+              }
               Popups:
               {
                 AntibodyOrganismPulldown : OptionPulldown = OptionPulldown;
@@ -1591,16 +1652,20 @@ Module: mgiOption
             userDefinedAttributes = "prepForm:String(String)\nassayForm:String(String)\nisRNAAssay:Int=\"0\"\nisGelAssay:Int=\"0\"\n";
           Group: Control
             vip_x = 105;
-            vip_y = 470;
+            vip_y = 525;
         }
         {
-          StrengthMenu = OptionMenu;
-          Group: Widget
-            subMenuId = StrengthPulldown;
-            labelString = Strength;
+          StrengthFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 6080;
+            vip_y = 5970;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                StrengthMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = StrengthPulldown;
+                  labelString = Strength;
+              }
               Popups:
               {
                 StrengthPulldown : OptionPulldown = OptionPulldown;
@@ -1609,13 +1674,17 @@ Module: mgiOption
               }
         }
         {
-          PatternMenu = OptionMenu;
-          Group: Widget
-            labelString = Pattern;
-            subMenuId = PatternPulldown;
+          PatternFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 4980;
+            vip_y = 4925;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                PatternMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = PatternPulldown;
+                  labelString = Pattern;
+              }
               Popups:
               {
                 PatternPulldown : OptionPulldown = OptionPulldown;
@@ -1624,13 +1693,17 @@ Module: mgiOption
               }
         }
         {
-          GelRNATypeMenu = OptionMenu;
-          Group: Widget
-            subMenuId = GelRNATypePulldown;
-            labelString = "Gel RNA Type";
+          GelRNATypeFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 3605;
+            vip_y = 3550;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                GelRNATypeMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = GelRNATypePulldown;
+                  labelString = "Gel RNA Type";
+              }
               Popups:
               {
                 GelRNATypePulldown : OptionPulldown = OptionPulldown;
@@ -1640,15 +1713,17 @@ Module: mgiOption
               }
         }
         {
-          GelControlMenu = OptionMenu;
-          Group: Widget
-            subMenuId = GelControlPulldown;
-            labelString = Control;
+          GelControlFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 3550;
-          Group: User
-            defaultChild = 1;
+            vip_y = 3495;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                GelControlMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = GelControlPulldown;
+                  labelString = Control;
+              }
               Popups:
               {
                 GelControlPulldown : OptionPulldown = OptionPulldown;
@@ -1658,13 +1733,17 @@ Module: mgiOption
               }
         }
         {
-          GelUnitsMenu = OptionMenu;
-          Group: Widget
-            subMenuId = GelUnitsPulldown;
-            labelString = "Gel Units";
+          GelUnitsFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 3770;
+            vip_y = 3715;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                GelUnitsMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = GelUnitsPulldown;
+                  labelString = Units;
+              }
               Popups:
               {
                 GelUnitsPulldown : OptionPulldown = OptionPulldown;
@@ -1678,18 +1757,22 @@ Module: mgiOption
             valueChangedCallback = "D:CopyOptionToTable,\nD:VerifyAntibodyType,\nD:SetModify";
           Group: Control
             vip_x = 105;
-            vip_y = 415;
+            vip_y = 470;
         }
         {
-          NLMStatusMenu = OptionMenu;
-          Group: Widget
-            subMenuId = NLMStatusPulldown;
-            labelString = "In NLM?";
+          NLMStatusFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 4815;
-          Group: User
-            defaultOption = Yes;
+            vip_y = 4760;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                NLMStatusMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = NLMStatusPulldown;
+                  labelString = "In NLM?";
+                Group: User
+                  defaultOption = YesNLM;
+              }
               Popups:
               {
                 NLMStatusPulldown : OptionPulldown = OptionPulldown;
@@ -1722,15 +1805,19 @@ Module: mgiOption
               }
         }
         {
-          ReviewStatusMenu = OptionMenu;
-          Group: Widget
-            subMenuId = ReviewStatusPulldown;
-            labelString = "Review Status";
+          ReviewStatusFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 5310;
-          Group: User
-            defaultChild = 4;
+            vip_y = 5200;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                ReviewStatusMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  labelString = "Review Status";
+                  subMenuId = ReviewStatusPulldown;
+                Group: User
+                  defaultChild = 4;
+              }
               Popups:
               {
                 ReviewStatusPulldown : OptionPulldown = OptionPulldown;
@@ -1742,14 +1829,18 @@ Module: mgiOption
               }
         }
         {
-          CrossTypeMenu = OptionMenu;
-          Group: Widget
-            subMenuId = CrossTypePulldown;
+          CrossTypeFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 3000;
-          Group: User
-            defaultOption = NotSpecified;
+            vip_y = 3055;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                CrossTypeMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = CrossTypePulldown;
+                Group: User
+                  defaultOption = NotSpecified;
+              }
               Popups:
               {
                 CrossTypePulldown : OptionPulldown = OptionPulldown;
@@ -1847,45 +1938,59 @@ Module: mgiOption
               }
         }
         {
-          StandardMenu = YesNoMenu : mgiOption;
-          Group: Widget
-            subMenuId = StandardPulldown;
-            labelString = "Standard?";
+          StandardFrame = YesNoFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 5915;
+            vip_y = 5805;
           Group: User
             defaultOption = No;
+              {
+                StandardMenu : YesNoMenu = XmOptionMenu;
+                Group: Widget
+                  labelString = "Standard?";
+                  subMenuId = StandardPulldown;
+                Group: User
+                  defaultOption = No;
+              }
               Popups:
               {
                 StandardPulldown : YesNoPulldown = OptionPulldown;
               }
         }
         {
-          GeneticBackgroundMenu = YesNoMenu : mgiOption;
-          Group: Widget
-            subMenuId = GeneticBackgroundPulldown;
-            labelString = "Strain Prefix?";
+          GenericFrame = YesNoFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 3660;
+            vip_y = 3605;
           Group: User
             defaultOption = No;
+              {
+                GenericBackground : YesNoMenu = XmOptionMenu;
+                Group: Widget
+                  labelString = "Strain Prefix?";
+                  subMenuId = GeneticBackgroundPulldown;
+                Group: User
+                  defaultOption = No;
+              }
               Popups:
               {
                 GeneticBackgroundPulldown : YesNoPulldown = OptionPulldown;
               }
         }
         {
-          ChromosomeMenu = OptionMenu;
-          Group: Widget
-            subMenuId = ChromosomePulldown;
-            labelString = Chromosome;
+          ChromosomeFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 2835;
-          Group: User
-            defaultChild = 24;
+            vip_y = 2945;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                ChromosomeMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  labelString = Chromosome;
+                  subMenuId = ChromosomePulldown;
+                Group: User
+                  defaultChild = 24;
+              }
               Popups:
               {
                 ChromosomePulldown : OptionPulldown = OptionPulldown;
@@ -1898,18 +2003,22 @@ Module: mgiOption
               }
         }
         {
-          MarkerTypeMenu = OptionMenu;
-          Group: Widget
-            subMenuId = MarkerTypePulldown;
-            labelString = "Marker Type";
+          MarkerTypeFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 4595;
-          Group: User
-            defaultChild = 2;
+            vip_y = 4540;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                MarkerTypeMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  labelString = "Marker Type";
+                  subMenuId = MarkerTypePulldown;
+                Group: User
+                  defaultChild = 2;
+              }
               Popups:
               {
-                MarkerTypePulldown : OptionPulldown = OptionPulldown;
+                MarkerTypePulldown : OptionPulldown = OptionPulldown : mgiOption;
                 Group: User
                   sql = "select * from MRK_Types";
                     {
@@ -1923,18 +2032,22 @@ Module: mgiOption
             valueChangedCallback = "D:SetModify,\nD:ModifyChromosome";
           Group: Control
             vip_x = 105;
-            vip_y = 525;
+            vip_y = 580;
         }
         {
-          SegmentTypeMenu = OptionMenu;
-          Group: Widget
-            subMenuId = SegmentTypePulldown;
-            labelString = "Segment Type";
+          SegmentTypeFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 5475;
-          Group: User
-            defaultValue = "Not Specified";
+            vip_y = 5365;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                SegmentTypeMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = SegmentTypePulldown;
+                  labelString = "Segment Type";
+                Group: User
+                  defaultValue = "Not Specified";
+              }
               Popups:
               {
                 SegmentTypePulldown : OptionPulldown = OptionPulldown;
@@ -1947,15 +2060,19 @@ Module: mgiOption
               }
         }
         {
-          VectorTypeMenu = OptionMenu;
-          Group: Widget
-            subMenuId = VectorTypePulldown;
-            labelString = "Vector Type";
+          VectorTypeFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 6245;
-          Group: User
-            defaultValue = "Not Specified";
+            vip_y = 6135;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                VectorTypeMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = VectorTypePulldown;
+                  labelString = "Vector Type";
+                Group: User
+                  defaultValue = "Not Specified";
+              }
               Popups:
               {
                 VectorTypePulldown : OptionPulldown = OptionPulldown;
@@ -1967,14 +2084,20 @@ Module: mgiOption
               }
         }
         {
-          YesNoMenu = OptionMenu;
-          Group: Widget
-            subMenuId = YesNoPulldown;
+          YesNoFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 6520;
+            vip_y = 6410;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
           Group: User
             defaultOption = SearchAll;
+              {
+                YesNoMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = YesNoPulldown;
+                Group: User
+                  defaultOption = SearchAll;
+              }
               Popups:
               {
                 YesNoPulldown : OptionPulldown = OptionPulldown;
@@ -2000,58 +2123,17 @@ Module: mgiOption
               }
         }
         {
-          ArrangeMenu = OptionMenu;
-          Group: Widget
-            subMenuId = ArrangePulldown;
-            labelString = Arrangement;
+          ExptTypeFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 2725;
-          Group: User
-            defaultOption = A1;
-              Popups:
+            vip_y = 3330;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
               {
-                ArrangePulldown : OptionPulldown = OptionPulldown;
-                    {
-                      A1 = OptionToggle : mgiOption;
-                      Group: Widget
-                        labelString = "5'->3' 5'->3'";
-                      Group: User
-                        searchValue = "5'->3' 5'->3'";
-                        defaultValue = "5'->3' 5'->3'";
-                    }
-                    {
-                      A2 = OptionToggle : mgiOption;
-                      Group: Widget
-                        labelString = "5'->3' 3'->5'";
-                      Group: User
-                        searchValue = "5'->3' 3'->5'";
-                        defaultValue = "5'->3' 3'->5'";
-                    }
-                    {
-                      A3 = OptionToggle : mgiOption;
-                      Group: Widget
-                        labelString = "3'->5' 5'->3'";
-                      Group: User
-                        searchValue = "3'->5' 5'->3'";
-                        defaultValue = "3'->5' 5'->3'";
-                    }
-                    {
-                      unknown = OptionToggle : mgiOption;
-                      Group: User
-                        searchValue = unknown;
-                        defaultValue = unknown;
-                    }
+                ExptTypeMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = ExptTypePulldown;
+                  labelString = "Experiment Type";
               }
-        }
-        {
-          ExptTypeMenu = OptionMenu;
-          Group: Widget
-            subMenuId = ExptTypePulldown;
-            labelString = "Experiment Type";
-          Group: Control
-            vip_x = 105;
-            vip_y = 3385;
               Popups:
               {
                 ExptTypePulldown : OptionPulldown = OptionPulldown;
@@ -2162,18 +2244,22 @@ Module: mgiOption
             valueChangedCallback = "D:ViewExpt";
           Group: Control
             vip_x = 105;
-            vip_y = 855;
+            vip_y = 910;
         }
         {
-          MLCModeMenu = OptionMenu;
-          Group: Widget
-            subMenuId = MLCModePulldown;
-            labelString = Mode;
+          MLCModeFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 4705;
-          Group: User
-            defaultOption = NotSpecified;
+            vip_y = 4650;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                MLCModeMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = MLCModePulldown;
+                  labelString = Mode;
+                Group: User
+                  defaultOption = NotSpecified;
+              }
               Popups:
               {
                 MLCModePulldown : OptionPulldown = OptionPulldown;
@@ -2207,13 +2293,17 @@ Module: mgiOption
               }
         }
         {
-          MarkerStatusMenu = OptionMenu;
-          Group: Widget
-            subMenuId = MarkerStatusPulldown;
-            labelString = Status;
+          MarkerStatusFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 4540;
+            vip_y = 4485;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                MarkerStatusMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = MarkerStatusPulldown;
+                  labelString = Status;
+              }
               Popups:
               {
                 MarkerStatusPulldown : OptionPulldown = OptionPulldown;
@@ -2225,15 +2315,19 @@ Module: mgiOption
               }
         }
         {
-          MarkerEventMenu = OptionMenu;
-          Group: Widget
-            subMenuId = MarkerEventPulldown;
-            labelString = Event;
+          MarkerEventFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 4430;
-          Group: User
-            defaultChild = 1;
+            vip_y = 4375;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                MarkerEventMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = MarkerEventPulldown;
+                  labelString = Event;
+                Group: User
+                  defaultChild = 1;
+              }
               Popups:
               {
                 MarkerEventPulldown : OptionPulldown = OptionPulldown;
@@ -2250,23 +2344,7 @@ Module: mgiOption
             valueChangedCallback = "D:CopyOptionToTable,\nD:VerifyGelLaneControl,\nD:SetModify";
           Group: Control
             vip_x = 105;
-            vip_y = 910;
-        }
-        {
-          DatabaseMenu = OptionMenu;
-          Group: Widget
-            subMenuId = DatabasePulldown;
-            labelString = Database;
-          Group: Control
-            vip_x = 105;
-            vip_y = 3110;
-              Popups:
-              {
-                DatabasePulldown : OptionPulldown = OptionPulldown;
-                Group: User
-                  childTemplate = DBToggle;
-                  sql = "select id = name, name from master..sysdatabases order by name";
-              }
+            vip_y = 965;
         }
         {
           DBToggle = OptionToggle;
@@ -2274,16 +2352,19 @@ Module: mgiOption
             valueChangedCallback = "D:NewDatabase,\nD:SetModify";
           Group: Control
             vip_x = 105;
-            vip_y = 690;
+            vip_y = 745;
         }
         {
-          MarkerEventReasonMenu = OptionMenu;
-          Group: Widget
-            subMenuId = MarkerEventReasonPulldown;
-            labelString = "Event\nReason";
+          MarkerEventReasonFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 4485;
+            vip_y = 4430;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                MarkerEventReasonMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = MarkerEventReasonPulldown;
+              }
               Popups:
               {
                 MarkerEventReasonPulldown : OptionPulldown = OptionPulldown : mgiOption;
@@ -2295,13 +2376,17 @@ Module: mgiOption
               }
         }
         {
-          AlleleTypeMenu = OptionMenu;
-          Group: Widget
-            subMenuId = AlleleTypePulldown;
-            labelString = "Allele Type";
+          AlleleTypeFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 2395;
+            vip_y = 2560;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                AlleleTypeMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = AlleleTypePulldown;
+                  labelString = Generation;
+              }
               Popups:
               {
                 AlleleTypePulldown : OptionPulldown = OptionPulldown : mgiOption;
@@ -2313,16 +2398,21 @@ Module: mgiOption
               }
         }
         {
-          InheritanceModeMenu = OptionMenu;
-          Group: Widget
-            subMenuId = InheritanceModePulldown;
-            labelString = "Inheritance Mode";
+          InheritanceModeFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 4320;
+            vip_y = 4265;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
           Group: User
-            defaultValue = "Not Applicable";
             required = False;
+              {
+                InheritanceModeMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  labelString = "Inheritance Mode";
+                  subMenuId = InheritanceModePulldown;
+                Group: User
+                  defaultValue = "Not Applicable";
+              }
               Popups:
               {
                 InheritanceModePulldown : OptionPulldown = OptionPulldown : mgiOption;
@@ -2334,12 +2424,16 @@ Module: mgiOption
               }
         }
         {
-          MolecularMutationMenu = OptionMenu;
-          Group: Widget
-            subMenuId = MolecularMutationPulldown;
+          MolecularMutationFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 4760;
+            vip_y = 4705;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                MolecularMutationMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = MolecularMutationPulldown;
+              }
               Popups:
               {
                 MolecularMutationPulldown : OptionPulldown = OptionPulldown : mgiOption;
@@ -2353,16 +2447,20 @@ Module: mgiOption
             valueChangedCallback = "D:SetMarkerWithdrawalFields,\nD:CopyOptionToTable,\nD:SetModify";
           Group: Control
             vip_x = 105;
-            vip_y = 745;
+            vip_y = 800;
         }
         {
-          AlleleStatusMenu = OptionMenu;
-          Group: Widget
-            subMenuId = AlleleStatusPulldown;
-            labelString = Status;
+          AlleleStatusFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 2285;
+            vip_y = 2395;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                AlleleStatusMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  labelString = Status;
+                  subMenuId = AlleleStatusPulldown;
+              }
               Popups:
               {
                 AlleleStatusPulldown : OptionPulldown = OptionPulldown;
@@ -2374,27 +2472,35 @@ Module: mgiOption
               }
         }
         {
-          ReferenceTypeMenu = OptionMenu;
-          Group: Widget
-            subMenuId = ReferenceTypePulldown;
+          ReferenceTypeFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 5200;
+            vip_y = 5090;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                ReferenceTypeMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = ReferenceTypePulldown;
+              }
               Popups:
               {
                 ReferenceTypePulldown : OptionPulldown = OptionPulldown : mgiOption;
               }
         }
         {
-          ProbeOrganismMenu = OptionMenu;
-          Group: Widget
-            subMenuId = ProbeOrganismPulldown;
-            labelString = Organism;
+          ProbeOrganismFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 5145;
-          Group: User
-            defaultValue = "Not Specified";
+            vip_y = 5035;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                ProbeOrganismMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = ProbeOrganismPulldown;
+                  labelString = Organism;
+                Group: User
+                  defaultValue = "Not Specified";
+              }
               Popups:
               {
                 ProbeOrganismPulldown : OptionPulldown = OptionPulldown;
@@ -2406,13 +2512,17 @@ Module: mgiOption
               }
         }
         {
-          AllelePairStateMenu = OptionMenu;
-          Group: Widget
-            subMenuId = AllelePairStatePulldown;
-            labelString = State;
+          AllelePairStateFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 2230;
+            vip_y = 2340;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                AllelePairStateMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = AllelePairStatePulldown;
+                  labelString = State;
+              }
               Popups:
               {
                 AllelePairStatePulldown : OptionPulldown = OptionPulldown;
@@ -2421,13 +2531,17 @@ Module: mgiOption
               }
         }
         {
-          MGITypeMenu = OptionMenu;
-          Group: Widget
-            subMenuId = MGITypePulldown;
-            labelString = "MGI Type";
+          MGITypeFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 4650;
+            vip_y = 4595;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                MGITypeMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = MGITypePulldown;
+                  labelString = "MGI Type";
+              }
               Popups:
               {
                 MGITypePulldown : OptionPulldown = OptionPulldown;
@@ -2439,13 +2553,17 @@ Module: mgiOption
               }
         }
         {
-          EvidenceVocabMenu = OptionMenu;
-          Group: Widget
-            subMenuId = EvidenceVocabPulldown;
-            labelString = "Evidence Vocabulary";
+          EvidenceVocabFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 3330;
+            vip_y = 3275;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                EvidenceVocabMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = EvidenceVocabPulldown;
+                  labelString = "Evidence Vocabulary";
+              }
               Popups:
               {
                 EvidenceVocabPulldown : OptionPulldown = OptionPulldown;
@@ -2457,13 +2575,17 @@ Module: mgiOption
               }
         }
         {
-          VocabMenu = OptionMenu;
-          Group: Widget
-            subMenuId = VocabPulldown;
-            labelString = Vocabulary;
+          VocabFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 6410;
+            vip_y = 6300;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                VocabMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = VocabPulldown;
+                  labelString = Vocabulary;
+              }
               Popups:
               {
                 VocabPulldown : OptionPulldown = OptionPulldown;
@@ -2475,28 +2597,36 @@ Module: mgiOption
               }
         }
         {
-          VocAnnotTypeMenu = OptionMenu;
-          Group: Widget
-            subMenuId = VocAnnotTypePulldown;
-            labelString = "Annotation Type";
+          VocAnnotTypeFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 6355;
+            vip_y = 6245;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                VocAnnotTypeMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  labelString = "Annotation Type";
+                  subMenuId = VocAnnotTypePulldown;
+              }
               Popups:
               {
                 VocAnnotTypePulldown : OptionPulldown = OptionPulldown;
               }
         }
         {
-          RefTypeMenu = OptionMenu;
-          Group: Widget
-            subMenuId = RefTypePulldown;
-            labelString = Type;
+          RefTypeFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 5255;
-          Group: User
-            defaultOption = Article;
+            vip_y = 5145;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                RefTypeMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  labelString = Type;
+                  subMenuId = RefTypePulldown;
+                Group: User
+                  defaultOption = Article;
+              }
               Popups:
               {
                 RefTypePulldown : OptionPulldown = OptionPulldown;
@@ -2522,13 +2652,17 @@ Module: mgiOption
               }
         }
         {
-          ACCLogicalMenu = OptionMenu;
-          Group: Widget
-            subMenuId = ACCLogicalPulldown;
-            labelString = "Accession ID Type";
+          ACCLogicalFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 1735;
+            vip_y = 1790;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                ACCLogicalMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  labelString = "Accession ID Type";
+                  subMenuId = ACCLogicalPulldown;
+              }
               Popups:
               {
                 ACCLogicalPulldown : OptionPulldown = OptionPulldown;
@@ -2537,33 +2671,19 @@ Module: mgiOption
               }
         }
         {
-          CurationStateMenu = OptionMenu;
-          Group: Widget
-            subMenuId = CurationStatePulldown;
-            labelString = "Curation State";
+          GXDIndexPriorityFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 3055;
-              Popups:
+            vip_y = 3935;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
               {
-                CurationStatePulldown : OptionPulldown = OptionPulldown : mgiOption;
+                GXDIndexPriorityMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = GXDIndexPriorityPulldown;
+                  labelString = Priority;
                 Group: User
-                  sql = "select _Term_key, term from VOC_Term where _Vocab_key = 15 order by _Term_key";
-                    {
-                      SearchAll = SearchAll : mgiOption;
-                    }
+                  required = False;
               }
-        }
-        {
-          GXDIndexPriorityMenu = OptionMenu;
-          Group: Widget
-            subMenuId = GXDIndexPriorityPulldown;
-            labelString = Priority;
-          Group: Control
-            vip_x = 105;
-            vip_y = 3990;
-          Group: User
-            required = False;
               Popups:
               {
                 GXDIndexPriorityPulldown : OptionPulldown = OptionPulldown : mgiOption;
@@ -2575,15 +2695,19 @@ Module: mgiOption
               }
         }
         {
-          SexMenu = OptionMenu;
-          Group: Widget
-            subMenuId = SexPulldown;
-            labelString = Sex;
+          SexFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 5805;
-          Group: User
-            defaultOption = NotSpecified;
+            vip_y = 5695;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                SexMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = SexPulldown;
+                  labelString = Sex;
+                Group: User
+                  defaultOption = NotSpecified;
+              }
               Popups:
               {
                 SexPulldown : OptionPulldown = OptionPulldown;
@@ -2617,13 +2741,17 @@ Module: mgiOption
               }
         }
         {
-          GXDReporterGeneMenu = OptionMenu;
-          Group: Widget
-            subMenuId = GXDReporterGenePulldown;
-            labelString = "Reporter \nGene";
+          GXDReporterGeneFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 4100;
+            vip_y = 4045;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                GXDReporterGeneMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = GXDReporterGenePulldown;
+                  labelString = "Reporter\nGene";
+              }
               Popups:
               {
                 GXDReporterGenePulldown : OptionPulldown = OptionPulldown : mgiOption;
@@ -2635,15 +2763,19 @@ Module: mgiOption
               }
         }
         {
-          GXDKnockInMenu = OptionMenu;
-          Group: Widget
-            subMenuId = GXDKnockInPulldown;
-            labelString = "Detection\nMethod";
+          GXDKnockInFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 4045;
-          Group: User
-            defaultOption = nucleotide;
+            vip_y = 3990;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                GXDKnockInMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = GXDKnockInPulldown;
+                  labelString = "Detection\nMethod";
+                Group: User
+                  defaultOption = nucleotide;
+              }
               Popups:
               {
                 GXDKnockInPulldown : OptionPulldown = OptionPulldown : mgiOption;
@@ -2685,7 +2817,7 @@ Module: mgiOption
             userDefinedAttributes = "prepForm:String(String)\n";
           Group: Control
             vip_x = 105;
-            vip_y = 1075;
+            vip_y = 1130;
         }
         {
           SegmentTypeToggle = OptionToggle;
@@ -2694,39 +2826,20 @@ Module: mgiOption
             valueChangedCallback = "D:ViewMolSegDetail,\nD:SetModify";
           Group: Control
             vip_x = 105;
-            vip_y = 1350;
+            vip_y = 1405;
         }
         {
-          CloneLibrarySetMenu = OptionMenu;
-          Group: Widget
-            subMenuId = CloneLibraryPulldown;
-            labelString = "Clone Library Set";
+          SequenceTypeFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 2890;
-              Popups:
+            vip_y = 5640;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
               {
-                CloneLibraryPulldown : OptionPulldown = OptionPulldown : mgiOption;
-                Group: User
-                  sql = "select _Set_key, name from MGI_Set where _MGIType_key = 5 order by name";
-                    {
-                      SearchAll = SearchAll : mgiOption;
-                    }
-                    {
-                      NotSpecified = NotSpecified : mgiOption;
-                      Group: Widget
-                        labelString = None;
-                    }
+                SequenceTypeMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = SequenceTypePulldown;
+                  labelString = Type;
               }
-        }
-        {
-          SequenceTypeMenu = OptionMenu;
-          Group: Widget
-            subMenuId = SequenceTypePulldown;
-            labelString = Type;
-          Group: Control
-            vip_x = 105;
-            vip_y = 5750;
               Popups:
               {
                 SequenceTypePulldown : OptionPulldown = OptionPulldown;
@@ -2738,13 +2851,17 @@ Module: mgiOption
               }
         }
         {
-          SequenceStatusMenu = OptionMenu;
-          Group: Widget
-            subMenuId = SequenceStatusPulldown;
-            labelString = Status;
+          SequenceStatusFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 5695;
+            vip_y = 5585;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                SequenceStatusMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = SequenceStatusPulldown;
+                  labelString = Status;
+              }
               Popups:
               {
                 SequenceStatusPulldown : OptionPulldown = OptionPulldown;
@@ -2756,13 +2873,17 @@ Module: mgiOption
               }
         }
         {
-          SequenceProviderMenu = OptionMenu;
-          Group: Widget
-            subMenuId = SequenceProviderPulldown;
-            labelString = Provider;
+          SequenceProviderFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 5585;
+            vip_y = 5475;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                SequenceProviderMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = SequenceProviderPulldown;
+                  labelString = Provider;
+              }
               Popups:
               {
                 SequenceProviderPulldown : OptionPulldown = OptionPulldown;
@@ -2781,13 +2902,17 @@ Module: mgiOption
               }
         }
         {
-          SequenceQualityMenu = OptionMenu;
-          Group: Widget
-            subMenuId = SequenceQualityPulldown;
-            labelString = Quality;
+          SequenceQualityFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 5640;
+            vip_y = 5530;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                SequenceQualityMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = SequenceQualityPulldown;
+                  labelString = Quality;
+              }
               Popups:
               {
                 SequenceQualityPulldown : OptionPulldown = OptionPulldown;
@@ -2799,25 +2924,33 @@ Module: mgiOption
               }
         }
         {
-          NoteMenu = OptionMenu;
-          Group: Widget
-            subMenuId = NotePulldown;
+          NoteFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 4870;
+            vip_y = 4815;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                NoteMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = NotePulldown;
+              }
               Popups:
               {
                 NotePulldown : OptionPulldown = OptionPulldown : mgiOption;
               }
         }
         {
-          TranslationTypeMenu = OptionMenu;
-          Group: Widget
-            subMenuId = TranslationTypePulldown;
-            labelString = "Translation Type";
+          TranslationTypeFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 6190;
+            vip_y = 6080;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                TranslationTypeMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = TranslationTypePulldown;
+                  labelString = TranslationType;
+              }
               Popups:
               {
                 TranslationTypePulldown : OptionPulldown = OptionPulldown : mgiOption;
@@ -2835,7 +2968,7 @@ Module: mgiOption
             valueChangedCallback = "D:SetMGIType,\nD:SetModify";
           Group: Control
             vip_x = 105;
-            vip_y = 1130;
+            vip_y = 1185;
         }
         {
           SortToggle = OptionToggle : mgiOption;
@@ -2843,16 +2976,20 @@ Module: mgiOption
             userDefinedAttributes = "dbField:String\ncolumnValue:Int\n";
           Group: Control
             vip_x = 105;
-            vip_y = 1405;
+            vip_y = 1460;
         }
         {
-          SortMenu = OptionMenu : mgiOption;
-          Group: Widget
-            subMenuId = SortMenuPulldown;
-            labelString = "Sort By";
+          SortFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 5860;
+            vip_y = 5750;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                SortMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = SortMenuPulldown;
+                  labelString = "Sort By";
+              }
               Popups:
               {
                 SortMenuPulldown : OptionPulldown = OptionPulldown : mgiOption;
@@ -2861,24 +2998,32 @@ Module: mgiOption
               }
         }
         {
-          SynonymTypeMenu = OptionMenu;
-          Group: Widget
-            subMenuId = SynonymTypePulldown;
+          SynonymTypeFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 6135;
+            vip_y = 6025;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                SynonymTypeMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = SynonymTypePulldown;
+              }
               Popups:
               {
                 SynonymTypePulldown : OptionPulldown = OptionPulldown : mgiOption;
               }
         }
         {
-          StrainAlleleTypeMenu = OptionMenu;
-          Group: Widget
-            subMenuId = StrainAlleleTypePulldown;
+          StrainAlleleTypeFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 5970;
+            vip_y = 5860;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                StrainAlleleTypeMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = StrainAlleleTypePulldown;
+              }
               Popups:
               {
                 StrainAlleleTypePulldown : OptionPulldown = OptionPulldown : mgiOption;
@@ -2887,24 +3032,32 @@ Module: mgiOption
               }
         }
         {
-          NoteTypeMenu = OptionMenu;
-          Group: Widget
-            subMenuId = NoteTypePulldown;
+          NoteTypeFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 4925;
+            vip_y = 4870;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                NoteTypeMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = NoteTypePulldown;
+              }
               Popups:
               {
                 NoteTypePulldown : OptionPulldown = OptionPulldown : mgiOption;
               }
         }
         {
-          StrainGenoQualMenu = OptionMenu;
-          Group: Widget
-            subMenuId = StrainGenoQualPulldown;
+          StrainGenoQualFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 6025;
+            vip_y = 5915;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                StrainGenoQualMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = StrainGenoQualPulldown;
+              }
               Popups:
               {
                 StrainGenoQualPulldown : OptionPulldown = OptionPulldown : mgiOption;
@@ -2913,13 +3066,17 @@ Module: mgiOption
               }
         }
         {
-          UserRoleMenu = OptionMenu;
-          Group: Widget
-            subMenuId = UserRolePulldown;
-            labelString = "User Role";
+          UserRoleFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 6465;
+            vip_y = 6355;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                UserRoleMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = UserRolePulldown;
+                  labelString = "User Role";
+              }
               Popups:
               {
                 UserRolePulldown : OptionPulldown = OptionPulldown : mgiOption;
@@ -2935,16 +3092,20 @@ Module: mgiOption
             valueChangedCallback = "D:LoadRoleTasks,\nD:SetModify";
           Group: Control
             vip_x = 105;
-            vip_y = 1570;
+            vip_y = 1625;
         }
         {
-          AlleleCompoundMenu = OptionMenu;
-          Group: Widget
-            subMenuId = AlleleCompoundPulldown;
-            labelString = Compound;
+          AlleleCompoundFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 2010;
+            vip_y = 2120;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                AlleleCompoundMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = AlleleCompoundPulldown;
+                  labelString = Compound;
+              }
               Popups:
               {
                 AlleleCompoundPulldown : OptionPulldown = OptionPulldown;
@@ -2953,13 +3114,17 @@ Module: mgiOption
               }
         }
         {
-          ImageTypeMenu = OptionMenu;
-          Group: Widget
-            subMenuId = ImageTypePulldown;
-            labelString = "Image Type";
+          ImageTypeFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 4265;
+            vip_y = 4210;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                ImageTypeMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  labelString = "Image Type";
+                  subMenuId = ImageTypePulldown;
+              }
               Popups:
               {
                 ImageTypePulldown : OptionPulldown = OptionPulldown : mgiOption;
@@ -2976,16 +3141,20 @@ Module: mgiOption
             valueChangedCallback = "D:CopyOptionToTable,\nD:VerifyStrengthPattern,\nD:SetModify";
           Group: Control
             vip_x = 105;
-            vip_y = 1515;
+            vip_y = 1570;
         }
         {
-          EvidenceCodeMenu = OptionMenu;
-          Group: Widget
-            subMenuId = EvidenceCodePulldown;
-            labelString = "Evidence Code";
+          EvidenceCodeFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 3220;
+            vip_y = 3165;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                EvidenceCodeMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = EvidenceCodePulldown;
+                  labelString = "Evidence Code";
+              }
               Popups:
               {
                 EvidenceCodePulldown : OptionPulldown = OptionPulldown;
@@ -2994,13 +3163,17 @@ Module: mgiOption
               }
         }
         {
-          AnnotQualifierMenu = OptionMenu;
-          Group: Widget
-            subMenuId = AnnotQualifierPulldown;
-            labelString = Qualifier;
+          AnnotQualifierFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 2505;
+            vip_y = 2670;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                AnnotQualifierMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = AnnotQualifierPulldown;
+                  labelString = Qualifier;
+              }
               Popups:
               {
                 AnnotQualifierPulldown : OptionPulldown = OptionPulldown;
@@ -3014,7 +3187,7 @@ Module: mgiOption
             valueChangedCallback = "D:CopyOptionToTable,\nD:VerifyVocabQualifier,\nD:SetModify";
           Group: Control
             vip_x = 105;
-            vip_y = 1625;
+            vip_y = 1680;
         }
         {
           EvidenceToggle = OptionToggle;
@@ -3022,7 +3195,7 @@ Module: mgiOption
             valueChangedCallback = "D:CopyOptionToTable,\nD:VerifyVocabEvidenceCode,\nD:SetModify";
           Group: Control
             vip_x = 105;
-            vip_y = 800;
+            vip_y = 855;
         }
         {
           GelRNAToggle = OptionToggle;
@@ -3030,18 +3203,22 @@ Module: mgiOption
             valueChangedCallback = "D:CopyOptionToTable,\nD:VerifyGelLaneRNAType,\nD:SetModify";
           Group: Control
             vip_x = 105;
-            vip_y = 965;
+            vip_y = 1020;
         }
         {
-          AlleleTransmissionMenu = OptionMenu;
-          Group: Widget
-            subMenuId = AlleleTransmissionPulldown;
-            labelString = "Germ Line Transmission";
+          AlleleTransmissionFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 2340;
-          Group: User
-            defaultValue = " ";
+            vip_y = 2505;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                AlleleTransmissionMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = AlleleTransmissionPulldown;
+                  labelString = "Germ Line Transmission";
+                Group: User
+                  defaultValue = "";
+              }
               Popups:
               {
                 AlleleTransmissionPulldown : OptionPulldown = OptionPulldown;
@@ -3053,15 +3230,19 @@ Module: mgiOption
               }
         }
         {
-          GenotypeExistsAsMenu = OptionMenu;
-          Group: Widget
-            subMenuId = GenotypeExistsAsPulldown;
-            labelString = "Genotype Exists As";
+          GenotypeExistsAsFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 3715;
-          Group: User
-            defaultValue = "Mouse Line";
+            vip_y = 3660;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                GenotypeExistsAsMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = GenotypeExistsAsPulldown;
+                  labelString = "Genotype Exists As";
+                Group: User
+                  defaultValue = "Mouse Line";
+              }
               Popups:
               {
                 GenotypeExistsAsPulldown : OptionPulldown = OptionPulldown;
@@ -3073,15 +3254,19 @@ Module: mgiOption
               }
         }
         {
-          AlleleMarkerStatusMenu = OptionMenu;
-          Group: Widget
-            subMenuId = AlleleMarkerStatusPulldown;
-            labelString = Status;
+          AlleleMarkerStatusFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 2175;
-          Group: User
-            defaultValue = Curated;
+            vip_y = 2285;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                AlleleMarkerStatusMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  labelString = Status;
+                  subMenuId = AlleleMarkerStatusPulldown;
+                Group: User
+                  defaultValue = Curated;
+              }
               Popups:
               {
                 AlleleMarkerStatusPulldown : OptionPulldown = OptionPulldown;
@@ -3093,15 +3278,19 @@ Module: mgiOption
               }
         }
         {
-          AlleleVectorTypeMenu = OptionMenu;
-          Group: Widget
-            subMenuId = AlleleVectorTypePulldown;
-            labelString = "Vector Type";
+          AlleleVectorTypeFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 2450;
-          Group: User
-            defaultValue = "Not Specified";
+            vip_y = 2615;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                AlleleVectorTypeMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  labelString = "Vector Type";
+                  subMenuId = AlleleVectorTypePulldown;
+                Group: User
+                  defaultValue = "Not Specified";
+              }
               Popups:
               {
                 AlleleVectorTypePulldown : OptionPulldown = OptionPulldown : mgiOption;
@@ -3113,15 +3302,19 @@ Module: mgiOption
               }
         }
         {
-          AlleleCellLineTypeMenu = OptionMenu;
-          Group: Widget
-            subMenuId = AlleleCellLineTypePulldown;
-            labelString = "Cell Line Type";
+          AlleleCellLineTypeFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 1955;
-          Group: User
-            defaultValue = "Embryonic Stem Cell";
+            vip_y = 2010;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                AlleleCellLineTypeMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  labelString = "Cell Line Type";
+                  subMenuId = AlleleCellLineTypePulldown;
+                Group: User
+                  defaultValue = "Embryonic Stem Cell";
+              }
               Popups:
               {
                 AlleleCellLineTypePulldown : OptionPulldown = OptionPulldown : mgiOption;
@@ -3133,15 +3326,19 @@ Module: mgiOption
               }
         }
         {
-          AlleleDerivationTypeMenu = OptionMenu;
-          Group: Widget
-            subMenuId = AlleleDerivationTypePulldown;
-            labelString = "Derivation Type";
+          AlleleDerivationTypeFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 2120;
-          Group: User
-            defaultValue = "Not Specified";
+            vip_y = 2230;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                AlleleDerivationTypeMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = AlleleDerivationTypePulldown;
+                  labelString = "Derivation Type";
+                Group: User
+                  defaultValue = "Not Specified";
+              }
               Popups:
               {
                 AlleleDerivationTypePulldown : OptionPulldown = OptionPulldown : mgiOption;
@@ -3153,15 +3350,19 @@ Module: mgiOption
               }
         }
         {
-          AlleleCreatorMenu = OptionMenu;
-          Group: Widget
-            subMenuId = AlleleCreatorPulldown;
-            labelString = Creator;
+          AlleleCreatorFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 2065;
-          Group: User
-            defaultValue = "Not Specified";
+            vip_y = 2175;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                AlleleCreatorMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = AlleleCreatorPulldown;
+                  labelString = Creator;
+                Group: User
+                  defaultValue = "Not Specified";
+              }
               Popups:
               {
                 AlleleCreatorPulldown : OptionPulldown = OptionPulldown : mgiOption;
@@ -3173,15 +3374,19 @@ Module: mgiOption
               }
         }
         {
-          GXDIndexConditionalMutantsMenu = OptionMenu;
-          Group: Widget
-            subMenuId = GXDIndexConditionalMutantsPulldown;
-            labelString = Conditional;
+          GXDIndexConditionalMutantsFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 3935;
-          Group: User
-            required = False;
+            vip_y = 3880;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                GXDIndexConditionalMutantsMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = GXDIndexConditionalMutantsPulldown;
+                  labelString = Conditional;
+                Group: User
+                  required = False;
+              }
               Popups:
               {
                 GXDIndexConditionalMutantsPulldown : OptionPulldown = OptionPulldown : mgiOption;
@@ -3193,13 +3398,17 @@ Module: mgiOption
               }
         }
         {
-          ADSystemMenu = OptionMenu;
-          Group: Widget
-            subMenuId = ADSystemPulldown;
-            labelString = "Anatomical System";
+          ADSystemFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 1845;
+            vip_y = 1900;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                ADSystemMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = ADSystemPulldown;
+                  labelString = "Anatomical System";
+              }
               Popups:
               {
                 ADSystemPulldown : OptionPulldown = OptionPulldown;
@@ -3211,13 +3420,17 @@ Module: mgiOption
               }
         }
         {
-          EvidencePropertyMenu = OptionMenu;
-          Group: Widget
-            subMenuId = EvidencePropertyPulldown;
-            labelString = "Evidence Property";
+          EvidencePropertyFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 3275;
+            vip_y = 3220;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                EvidencePropertyMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = EvidencePropertyPulldown;
+                  labelString = "Evidence Property";
+              }
               Popups:
               {
                 EvidencePropertyPulldown : OptionPulldown = OptionPulldown;
@@ -3227,13 +3440,17 @@ Module: mgiOption
               }
         }
         {
-          ImageClassMenu = OptionMenu;
-          Group: Widget
-            subMenuId = ImageClassPulldown;
-            labelString = "Image Class";
+          ImageClassFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 4210;
+            vip_y = 4155;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                ImageClassMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = ImageClassPulldown;
+                  labelString = "Image Class";
+              }
               Popups:
               {
                 ImageClassPulldown : OptionPulldown = OptionPulldown : mgiOption;
@@ -3245,13 +3462,17 @@ Module: mgiOption
               }
         }
         {
-          GOAnnotSortMenu = OptionMenu;
-          Group: Widget
-            subMenuId = GOAnnotSortPulldown;
-            labelString = "Sort Order";
+          GOAnnotSortFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 105;
-            vip_y = 3880;
+            vip_y = 3825;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                GOAnnotSortMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = GOAnnotSortPulldown;
+                  labelString = "Sort Order";
+              }
               Popups:
               {
                 GOAnnotSortPulldown : OptionPulldown = OptionPulldown;
@@ -3297,7 +3518,81 @@ Module: mgiOption
           Group: Control
             vipComment = "XmToggleButton sets nontransitory state data within an application. Usually this widget consists of an indicator (square or diamond) with either text or a pixmap to its right. The indicator implies a selected or unselected state. Normally, mouse button 1 is used to arm and activate the XmToggleButton.";
             vip_x = 105;
-            vip_y = 1020;
+            vip_y = 1075;
+        }
+        {
+          AlleleCollectionFrame = OptionFrame : mgiOption;
+          Group: Control
+            vip_x = 105;
+            vip_y = 2065;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                AlleleCollectionMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  labelString = Collection;
+                  subMenuId = AlleleCollectionPulldown;
+                Group: User
+                  defaultValue = "Not Specified";
+              }
+              Popups:
+              {
+                AlleleCollectionPulldown : OptionPulldown = OptionPulldown : mgiOption;
+                Group: User
+                  sql = "(select _Term_key, term, 1 as orderIt from VOC_Term where _Vocab_key = 92\nand term not like 'Not%'\nunion\nselect _Term_key, term, 2 as orderIt from VOC_Term where _Vocab_key = 92 \nand term like 'Not%'\n)\norder by orderIt, term";
+                    {
+                      SearchAll = SearchAll : mgiOption;
+                    }
+              }
+        }
+        {
+          AlleleSubTypeFrame = OptionFrame : mgiOption;
+          Group: Control
+            vip_x = 105;
+            vip_y = 2450;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
+              {
+                AlleleSubTypeMenu : OptionMenu = XmOptionMenu;
+                Group: Widget
+                  subMenuId = AlleleSubTypePulldown;
+                  labelString = Attribute;
+              }
+              Popups:
+              {
+                AlleleSubTypePulldown : OptionPulldown = OptionPulldown : mgiOption;
+                Group: User
+                  sql = "select _Term_key, term from VOC_Term \nwhere _Vocab_key = 93\norder by term";
+              }
+        }
+        {
+          OptionFrame = XmFrame;
+          Group: Widget
+            shadowThickness = 0;
+            userDefinedAttributes = "frameType:String(String)=\"OptionFrame\"\n";
+            background = Wheat;
+          Group: Control
+            vipComment = "";
+            vip_x = 105;
+            vip_y = 140;
+              {
+                OptionMenu = XmOptionMenu;
+                Group: Widget
+                  background = Wheat;
+                  spacing = 0;
+                  subMenuId = OptionPulldown;
+                  marginHeight = 0;
+                  marginWidth = 0;
+                  navigationType = none;
+                  traversalOn = False;
+                  userDefinedAttributes = "defaultOption:Widget(Widget)\nmodified:Boolean(Boolean)=\"False\"\nrequired:Boolean(Boolean)=\"False\"\nclear:Boolean(Boolean)=\"True\"\ndefaultChild:Int(Int)=\"0\"\ndefaultValue:String(String)=\"-1\"\n";
+                Group: User
+                  required = True;
+              }
+              Popups:
+              {
+                OptionPulldown = OptionPulldown : mgiOption;
+                Group: Widget
+                  tearOffModel = tear_off_enabled;
+              }
         }
 }
 

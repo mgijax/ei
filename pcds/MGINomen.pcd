@@ -1,8 +1,8 @@
 Module: MGINomen
 {
       autoCuil = False;
-      release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jan 23 12:45:48 2014";
+      release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
+      lastWritten = "Thu Apr  3 10:27:46 2014";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -109,7 +109,7 @@ Module: MGINomen
                                       }
                                 }
                                 {
-                                  MarkerEventMenu = MarkerEventMenu : mgiOption;
+                                  MarkerEventFrame = MarkerEventFrame : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     rightAttachment = attach_none;
@@ -119,46 +119,40 @@ Module: MGINomen
                                     topOffset = 10;
                                     leftWidget = SymbolName;
                                     topWidget = SymbolName;
-                                  Group: User
-                                    defaultChild = 2;
                                 }
                                 {
-                                  MarkerStatusMenu = MarkerStatusMenu : mgiOption;
+                                  MarkerStatusFrame = MarkerStatusFrame : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
-                                    leftWidget = MarkerEventMenu;
+                                    leftWidget = MarkerEventFrame;
                                     leftOffset = 5;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
-                                    topWidget = MarkerEventMenu;
+                                    topWidget = MarkerEventFrame;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                  Group: User
-                                    defaultChild = 2;
                                 }
                                 {
-                                  MarkerTypeMenu = MarkerTypeMenu : mgiOption;
-                                  Group: Widget
-                                    labelString = "Marker Type";
+                                  MarkerTypeFrame = MarkerTypeFrame : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    leftWidget = MarkerStatusMenu;
-                                    topWidget = MarkerStatusMenu;
+                                    leftWidget = MarkerStatusFrame;
+                                    topWidget = MarkerStatusFrame;
                                     leftOffset = 5;
                                 }
                                 {
-                                  ChromosomeMenu = ChromosomeMenu : mgiOption;
+                                  ChromosomeFrame = ChromosomeFrame : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
-                                    leftWidget = MarkerTypeMenu;
+                                    leftWidget = MarkerTypeFrame;
                                     leftOffset = 5;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
-                                    topWidget = MarkerTypeMenu;
+                                    topWidget = MarkerTypeFrame;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                       Popups:
@@ -170,29 +164,13 @@ Module: MGINomen
                                       }
                                 }
                                 {
-                                  CurationStateMenu = CurationStateMenu : mgiOption;
-                                  Group: Widget
-                                    managed = False;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = MarkerEventMenu;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = MarkerEventMenu;
-                                    topOffset = 10;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                  Group: User
-                                    required = False;
-                                }
-                                {
                                   Symbol = CharText : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = MarkerEventMenu;
+                                    leftWidget = MarkerEventFrame;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = MarkerEventMenu;
+                                    topWidget = MarkerEventFrame;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     topOffset = 5;
@@ -217,7 +195,7 @@ Shift<Key>Tab: prev-tab-group()
                                   Name = CharText : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = CurationStateMenu;
+                                    leftWidget = Symbol;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = Symbol;
@@ -285,7 +263,7 @@ Shift<Key>Tab: prev-tab-group()
                                         DeleteRow = TablePush : mgiTable;
                                       }
                                       {
-                                        ReferenceTypeMenu = ReferenceTypeMenu : mgiOption;
+                                        ReferenceTypeFrame = ReferenceTypeFrame : mgiOption;
                                             Popups:
                                             {
                                               ReferenceTypePulldown = OptionPulldown : mgiOption;
@@ -294,7 +272,7 @@ Shift<Key>Tab: prev-tab-group()
                                             }
                                       }
                                       {
-                                        ReviewMenu = YesNoMenu : mgiOption;
+                                        ReviewFrame = YesNoFrame : mgiOption;
                                         Group: Widget
                                           managed = True;
                                       }
@@ -325,7 +303,7 @@ Shift<Key>Tab: prev-tab-group()
                                         DeleteRow = TablePush : mgiTable;
                                       }
                                       {
-                                        SynonymTypeMenu = SynonymTypeMenu : mgiOption;
+                                        SynonymTypeFrame = SynonymTypeFrame : mgiOption;
                                             Popups:
                                             {
                                               SynonymTypePulldown = OptionPulldown : mgiOption;
@@ -397,7 +375,7 @@ Shift<Key>Tab: prev-tab-group()
                                         Delete = TablePush;
                                       }
                                       {
-                                        AccSourceMenu = AccSourceMenu;
+                                        AccSourceFrame = AccSourceFrame;
                                         Group: User
                                           defaultOption = NSequence;
                                             Popups:
@@ -687,7 +665,7 @@ Shift<Key>Tab: prev-tab-group()
                                         Delete = TablePush;
                                       }
                                       {
-                                        AccSourceMenu = AccSourceMenu;
+                                        AccSourceFrame = AccSourceFrame;
                                         Group: User
                                           defaultOption = EC;
                                             Popups:

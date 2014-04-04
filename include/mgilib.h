@@ -169,6 +169,7 @@ extern char *global_version;
 #define ALL_CELLLINE_NONMUTANT	242
 #define SEQ_ALLELE_ASSOC	243
 #define SEQ_ALLELE_ASSOC_VIEW	244
+#define ALL_ALLELE_SUBTYPE_VIEW	246
 
 /* MGI Controlled Vocabulary Tables */
 

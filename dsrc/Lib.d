@@ -180,7 +180,9 @@ rules:
 
 		-- For XmOption menus (except the ControlForm and Lookups)...
 
-		elsif (clearForm.name != "ControlForm" and class = "XmRowColumn") then
+		elsif (clearForm.name != "ControlForm" and \
+			(class = "XmRowColumn" or \
+			(class = "XmFrame" and clearForm.child(i).is_defined("frameType") != nil))) then
 
 		  -- Not an XmOptionMenu
 
@@ -230,7 +232,18 @@ rules:
 		            ClearOption.source_widget := clearForm.child(i).child(l);
 		            send(ClearOption, 0);
 		          end if;
-		        clearForm.child(i).child(l).modified := false;
+
+		          clearForm.child(i).child(l).modified := false;
+
+		        elsif (clearForm.child(i).child(l).class_name = "XmFrame" and
+			       clearForm.child(i).child(l).child(1).is_defined("subMenuId") != nil) then
+		          if (not Clear.reset) then
+		            ClearOption.source_widget := clearForm.child(i).child(l).child(1);
+		            send(ClearOption, 0);
+		          end if;
+
+		          clearForm.child(i).child(l).child(1).modified := false;
+
 		        end if;
 
 		        m := m + 1;
@@ -238,12 +251,22 @@ rules:
 		      l := l + 1;
 		    end while;
 
-		  elsif (clearForm.child(i).is_defined("clear") != nil) then	-- XmOptionMenu
+		  -- OptionFrame/OptionPulldown/OptionMenu parent/sibling template
+		  elsif (clearForm.child(i).child(1).is_defined("clear") != nil) then
+		    if (not Clear.reset and clearForm.child(i).child(1).clear) then
+		      ClearOption.source_widget := clearForm.child(i).child(1);
+		      send(ClearOption, 0);
+		    end if;
+		    clearForm.child(i).child(1).modified := false;
+
+		  -- OptionMenu/OptionPulldown parent/child template
+		  elsif (clearForm.child(i).is_defined("clear") != nil) then
 		    if (not Clear.reset and clearForm.child(i).clear) then
 		      ClearOption.source_widget := clearForm.child(i);
 		      send(ClearOption, 0);
 		    end if;
 		    clearForm.child(i).modified := false;
+
 		  end if;
 
 		-- Radio Boxes are enclosed in Frames

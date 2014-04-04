@@ -406,6 +406,8 @@ rules:
           options := create list("widget");
 	  prepForms := create list("string");
 
+          top->CVGel->GelControlMenu.defaultChild := 1;
+
 	  -- Initialize Option Menus
 
           options.append(top->AssayTypeMenu);

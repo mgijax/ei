@@ -1,8 +1,8 @@
 Module: MGIAdmin
 {
       autoCuil = False;
-      release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Sep 24 12:50:14 2013";
+      release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
+      lastWritten = "Thu Apr  3 10:42:16 2014";
         {
           MGIAdmin = Application : MGI;
           Group: Control
@@ -213,7 +213,7 @@ Module: MGIAdmin
                                       }
                                 }
                                 {
-                                  ActiveMenu = YesNoMenu : mgiOption;
+                                  ActiveMenu = YesNoFrame : mgiOption;
                                   Group: Widget
                                     labelString = "URL is Active?";
                                     subMenuId = ActivePulldown;
@@ -236,7 +236,7 @@ Module: MGIAdmin
                                       }
                                 }
                                 {
-                                  MultipleMenu = YesNoMenu : mgiOption;
+                                  MultipleMenu = YesNoFrame : mgiOption;
                                   Group: Widget
                                     subMenuId = MultiplePulldown;
                                     labelString = "URL Allows Multiple \nAccession Numbers?";
@@ -606,7 +606,7 @@ Module: MGIAdmin
                                       }
                                 }
                                 {
-                                  MGITypeMenu = MGITypeMenu : mgiOption;
+                                  MGITypeMenu = MGITypeFrame : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_form;
                                     rightAttachment = attach_none;
@@ -618,7 +618,7 @@ Module: MGIAdmin
                                     leftOffset = 5;
                                 }
                                 {
-                                  VocabMenu = VocabMenu : mgiOption;
+                                  VocabFrame = VocabFrame : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = MGITypeMenu;
@@ -630,13 +630,13 @@ Module: MGIAdmin
                                     resizable = true;
                                 }
                                 {
-                                  EvidenceVocabMenu = EvidenceVocabMenu : mgiOption;
+                                  EvidenceVocabFrame = EvidenceVocabFrame : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = VocabMenu;
+                                    leftWidget = VocabFrame;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = VocabMenu;
+                                    topWidget = VocabFrame;
                                     topOffset = 10;
                                     bottomAttachment = attach_none;
                                     resizable = true;

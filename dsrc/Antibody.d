@@ -154,6 +154,8 @@ rules:
 	  options := create list("widget");
 	  tables := create list("widget");
 
+	  top->AntibodyOrganismMenu.defaultValue := 76;
+
 	  options.append(top->AntibodyTypeMenu);
 	  options.append(top->AntibodyClassMenu);
 	  options.append(top->AntibodyOrganismMenu);
