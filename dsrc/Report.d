@@ -105,7 +105,7 @@ rules:
      -- Other Python scripts are not user-dependent and can execute using the public login
      -- These programs rely on the last search the User performed from within the form
 
-     elsif (strstr(commands[1], ".py") != nil) then
+     elsif (strstr(which_commands[1], ".py") != nil) then
 
        if (getenv("EISSHCOMMAND") != "") then
            commands.insert(getenv("EISSHCOMMAND"), commands.count + 1);
@@ -132,7 +132,7 @@ rules:
      -- 	MGD_DBSERVER, DATABASE, LOGIN, PASSWORDFILE  and FILE TO PROCESS
      --
 
-     elsif (strstr(commands[1], ".csh") != nil) then
+     elsif (strstr(which_commands[1], ".csh") != nil) then
        commands.insert(which_commands[1], commands.count + 1);
        commands.insert(getenv("MGD_DBSERVER"), commands.count + 1);
        commands.insert(getenv("MGD_DBNAME"), commands.count + 1);
