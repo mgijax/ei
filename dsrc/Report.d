@@ -2,6 +2,9 @@
 -- Name: Report.d
 -- Report.d 06/11/99
 --
+-- lec	04/04/2014
+--   - TR11549/EISSHCOMMAND/EIUTIL
+--
 -- lec   04/09/1999
 --   - ReportInit; set default printer value based on env variable PRINTER
 --   - ReportInit; set default printer as first item in printer list
@@ -104,7 +107,11 @@ rules:
 
      elsif (strstr(commands[1], ".py") != nil) then
 
-       commands.insert(which_commands[1], commands.count + 1);
+       if (getenv("EISSHCOMMAND") != "") then
+           commands.insert(getenv("EISSHCOMMAND"), commands.count + 1);
+       end if;
+
+       commands.insert(getenv("EIUTILS") + "/" + which_commands[1], commands.count + 1);
 
        if (dialog->ReportList->List.row = 1 and select.length = 0) then
          StatusReport.source_widget := top;
