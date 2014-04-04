@@ -534,7 +534,7 @@ int mgi_process_sql(Widget dialog)
 
 int mgi_process_results(Widget dialog)
 {
-  STATUS ret;
+  int ret;
 
   if (search_proc == (DBPROCESS *) NULL)
     return 1;
