@@ -49,13 +49,13 @@ switch (`uname -n`)
 endsw
 
 # installation directory
-setenv EIINSTALLDIR ${EI_USRLOCALMGI}/ei/prod
+setenv EIINSTALLDIR ${MGI_LIVE}/ei/prod
 
 # CVS tag; keep updated with current tag
 setenv CVS_TAG	ei-5-1-6-6
 
 # build directory
-setenv EIBUILDDIR ${EI_USRLOCALMGI}/ei
+setenv EIBUILDDIR ${MGI_LIVE}/ei
 
 # data directory
 setenv EIDATADIR /data/ei
@@ -67,7 +67,7 @@ setenv EIDEBUG	0
 setenv USERLOG	${HOME}/${EI_LOGFILE}
 
 # User password file
-setenv EIPASSWORDFILE  ${HOME}/${EI_PASSWORDFILE}
+setenv EIPASSWORDFILE  ${HOME}/${MGD_DBPASSWORDFILE}
 
 # EI Applications
 setenv EIAPPS	"mgd gxd mgiadmin mgi"
