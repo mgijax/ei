@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Thu Apr  3 08:13:24 2014";
+      lastWritten = "Fri Apr  4 11:03:59 2014";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -1347,6 +1347,11 @@ Shift<Key>Tab: prev-tab-group()
                   bottomAttachment = attach_none;
                   resizable = true;
                   topOffset = 5;
+                    {
+                      MarkerEventReasonMenu = XmOptionMenu;
+                      Group: Widget
+                        labelString = "Event\nReason";
+                    }
               }
               {
                 nonVerified = mgiMarker : mgiDataTypes;

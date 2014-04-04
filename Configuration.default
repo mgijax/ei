@@ -29,6 +29,9 @@ setenv MANPATH ${TeleUSE}/man:${MANPATH}
 
 setenv PATH	.:${PATH}:${TeleUSE}/bin:${XRTHOME}/bin
 
+# EI utilities (formerly in ei/utilities)
+setenv EIUTILS  ${MGI_DBUTILS}/bin/ei
+
 switch (`uname -n`)
     case bhmgiei01:
 	setenv IS_LINUX		1

@@ -52,11 +52,18 @@ rules:
 
      -- Retrieve program and parameters for selected Report
 
-     commands : string_list;
-     newcommands : string_list := create string_list();
-     commands := mgi_splitfields(dialog->ReportList->List.keys[dialog->ReportList->List.row], " ");
+     which_commands : string_list := create string_list();
+     commands : string_list := create string_list();
 
-     if (commands[1] = "nlm.py") then      -- NLM program
+     which_commands := mgi_splitfields(dialog->ReportList->List.keys[dialog->ReportList->List.row], " ");
+
+     if (which_commands[1] = "nlm.py") then      -- NLM program
+
+       if (getenv("EISSHCOMMAND") != "") then
+           commands.insert(getenv("EISSHCOMMAND"), commands.count + 1);
+       end if;
+
+       commands.insert(getenv("EIUTILS") + "/" + which_commands[1], commands.count + 1);
 
        -- NLM Mode = 1 is the NLM Update
        -- NLM Mode = 2 is the NLM Add and requires a starting J#
@@ -97,6 +104,8 @@ rules:
 
      elsif (strstr(commands[1], ".py") != nil) then
 
+       commands.insert(which_commands[1], commands.count + 1);
+
        if (dialog->ReportList->List.row = 1 and select.length = 0) then
          StatusReport.source_widget := top;
          StatusReport.message := "Must Return to Form and Perform A Search";
@@ -117,7 +126,7 @@ rules:
      --
 
      elsif (strstr(commands[1], ".csh") != nil) then
-
+       commands.insert(which_commands[1], commands.count + 1);
        commands.insert(getenv("MGD_DBSERVER"), commands.count + 1);
        commands.insert(getenv("MGD_DBNAME"), commands.count + 1);
        commands.insert(global_login, commands.count + 1);
@@ -147,7 +156,9 @@ rules:
      while (tu_fork_ok(proc_id)) do
        (void) keep_busy();
      end while;
+
      tu_fork_free(proc_id);
+
    end does;
 
 --
