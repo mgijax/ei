@@ -14,6 +14,9 @@
 --
 -- History
 --
+-- 04/04/2014	lec
+--	- TR11549/EISSHCOMMAND,etc. for EI/Linux
+--
 -- 02/10/2010	lec
 --	- TR 9784/added 2nd reference type
 --
@@ -715,7 +718,12 @@ rules:
 	  -- Execute Python Wrapper
 
 	  cmds : string_list := create string_list();
-	  cmds.insert("markerWithdrawal.py", cmds.count + 1);
+
+          if (getenv("EISSHCOMMAND") != "") then
+                cmds.insert(getenv("EISSHCOMMAND"), cmds.count + 1);
+          end if;
+
+          cmds.insert(getenv("EIUTILS") + "/markerWithdrawal.py", cmds.count + 1);
 	  cmds.insert("-S" + getenv("MGD_DBSERVER"), cmds.count + 1);
 	  cmds.insert("-D" + getenv("MGD_DBNAME"), cmds.count + 1);
 	  cmds.insert("-U" + global_login, cmds.count + 1);
