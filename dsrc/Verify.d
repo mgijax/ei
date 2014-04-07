@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- 04/07/2014	lec
+--	- TR11549/change some documetation/no semi-colons
+--
 -- 01/03/2014	lec
 --	- TR11561/VerifyStructure
 --
@@ -695,7 +698,7 @@ rules:
                (void) mgi_dbclose(dbproc);
  
 	        -- Add items to Marker List
-                -- If keys doesn't exist already, create it
+                -- If keys does not exist already, create it
  
                 if (root->WhichItem->ItemList->List.keys = nil) then
                   root->WhichItem->ItemList->List.keys := create string_list();
@@ -803,7 +806,7 @@ rules:
 --
 --	Copy Unique Key into Appropriate widget/column
 --
---	If ignoreRow > -1, then don't valid that row.
+--	If ignoreRow > -1, then do not valid that row.
 --
 
 	VerifyCellLine does
@@ -912,7 +915,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  -- Add items to CellLine List
-          -- If keys doesn't exist already, create it
+          -- If keys does not exist already, create it
  
           if (whichItem->ItemList->List.keys = nil) then
             whichItem->ItemList->List.keys := create string_list();
@@ -1537,7 +1540,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  -- Add items to Item List
-          -- If keys doesn't exist already, create it
+          -- If keys does not exist already, create it
  
           if (whichItem->ItemList->List.keys = nil) then
             whichItem->ItemList->List.keys := create string_list();
@@ -1870,7 +1873,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  -- Add items to Marker List
-          -- If keys doesn't exist already, create it
+          -- If keys does not exist already, create it
  
           if (whichItem->ItemList->List.keys = nil) then
             whichItem->ItemList->List.keys := create string_list();
@@ -2461,7 +2464,7 @@ rules:
 	    (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.inferredFrom, "");
 	  end if;
 
-	  -- If Inferred From is null, it's okay, return
+	  -- If Inferred From is null, it is okay, return
 
 	  if (value.length = 0 or value = "%") then
 	    return;
@@ -2586,7 +2589,7 @@ rules:
 --
 --	Copy Unique Key into Appropriate widget/column
 --
---	If ignoreRow > -1, then don't valid that row.
+--	If ignoreRow > -1, then do not valid that row.
 --
 
 	VerifyOrganism does
@@ -2698,7 +2701,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  -- Add items to Organism List
-          -- If keys doesn't exist already, create it
+          -- If keys does not exist already, create it
  
           if (whichItem->ItemList->List.keys = nil) then
             whichItem->ItemList->List.keys := create string_list();
@@ -2949,7 +2952,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  -- Add items to Species List
-          -- If keys doesn't exist already, create it
+          -- If keys does not exist already, create it
  
           if (whichItem->ItemList->List.keys = nil) then
             whichItem->ItemList->List.keys := create string_list();
@@ -3021,7 +3024,7 @@ rules:
 --	If a Strain entered cannot be validated, give the user the option
 --	to add the Strain (as Non-Standard).
 --
---	If ignoreRow > -1, then don't valid that row.
+--	If ignoreRow > -1, then do not valid that row.
 --
  
         VerifyStrains does
@@ -3276,7 +3279,7 @@ rules:
 --	If a Tissue entered cannot be validated, give the user the option
 --	to add the Tissue (as Non-Standard).
 --
---	If ignoreRow > -1, then don't valid that row.
+--	If ignoreRow > -1, then do not valid that row.
 --
  
         VerifyTissue does
@@ -3396,7 +3399,7 @@ rules:
 --	If a User entered cannot be validated, give the user the option
 --	to add the User.
 --
---	If ignoreRow > -1, then don't valid that row.
+--	If ignoreRow > -1, then do not valid that row.
 --
  
         VerifyUser does
