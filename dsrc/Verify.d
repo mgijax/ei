@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- 04/07/2014	lec
+--	- TR11549/change some documetation/no semi-colons
+--
 -- 01/03/2014	lec
 --	- TR11561/VerifyStructure
 --
