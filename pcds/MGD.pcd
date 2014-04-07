@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Fri Apr  4 10:46:57 2014";
+      lastWritten = "Mon Apr  7 13:34:29 2014";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -15893,29 +15893,12 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     ReviewFrame = YesNoFrame : mgiOption;
-                                                  Popups:
-                                                  {
-                                                    ReviewPulldown = OptionPulldown : mgiOption;
-                                                  }
-                                                  {
-                                                    YesNoPulldown = OptionPulldown;
-                                                  {
-                                                    SearchAll = SearchAll : mgiOption;
-                                                  }
-                                                  {
-                                                    Yes = Yes : mgiOption;
-                                                  }
-                                                  {
-                                                    No = No : mgiOption;
-                                                  }
-                                                  }
+                                                    Group: Widget
+                                                      managed = False;
                                                   }
                                             }
                                             {
                                               AccessionReference1 = AccessionReference : mgiTable;
-                                              Group: Widget
-                                                rubberPositioning = False;
-                                                resizePolicy = resize_any;
                                                   {
                                                     Table = mgiTable;
                                                     Group: Widget
