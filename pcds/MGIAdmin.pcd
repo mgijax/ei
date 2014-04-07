@@ -2,7 +2,7 @@ Module: MGIAdmin
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Thu Apr  3 10:42:16 2014";
+      lastWritten = "Mon Apr  7 12:33:42 2014";
         {
           MGIAdmin = Application : MGI;
           Group: Control
@@ -213,10 +213,7 @@ Module: MGIAdmin
                                       }
                                 }
                                 {
-                                  ActiveMenu = YesNoFrame : mgiOption;
-                                  Group: Widget
-                                    labelString = "URL is Active?";
-                                    subMenuId = ActivePulldown;
+                                  ActiveFrame = YesNoFrame : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_none;
                                     rightAttachment = attach_form;
@@ -226,6 +223,12 @@ Module: MGIAdmin
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     rightOffset = 5;
+                                      {
+                                        ActiveMenu : YesNoMenu = XmOptionMenu;
+                                        Group: Widget
+                                          subMenuId = ActivePulldown;
+                                          labelString = "URL is Active?";
+                                      }
                                       Popups:
                                       {
                                         ActivePulldown : YesNoPulldown = OptionPulldown;
@@ -236,19 +239,22 @@ Module: MGIAdmin
                                       }
                                 }
                                 {
-                                  MultipleMenu = YesNoFrame : mgiOption;
-                                  Group: Widget
-                                    subMenuId = MultiplePulldown;
-                                    labelString = "URL Allows Multiple \nAccession Numbers?";
+                                  MultipleFrame = YesNoFrame : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_none;
                                     rightAttachment = attach_form;
                                     topAttachment = attach_widget;
-                                    topWidget = ActiveMenu;
+                                    topWidget = ActiveFrame;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     rightOffset = 5;
+                                      {
+                                        MultipleMenu : YesNoMenu = XmOptionMenu;
+                                        Group: Widget
+                                          subMenuId = MultiplePulldown;
+                                          labelString = "URL Allows Multiple\nAccession Numbers?";
+                                      }
                                       Popups:
                                       {
                                         MultiplePulldown : YesNoPulldown = OptionPulldown;
@@ -606,7 +612,7 @@ Module: MGIAdmin
                                       }
                                 }
                                 {
-                                  MGITypeMenu = MGITypeFrame : mgiOption;
+                                  MGITypeFrame = MGITypeFrame : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_form;
                                     rightAttachment = attach_none;
@@ -621,10 +627,10 @@ Module: MGIAdmin
                                   VocabFrame = VocabFrame : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = MGITypeMenu;
+                                    leftWidget = MGITypeFrame;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = MGITypeMenu;
+                                    topWidget = MGITypeFrame;
                                     topOffset = 10;
                                     bottomAttachment = attach_none;
                                     resizable = true;
