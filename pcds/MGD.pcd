@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Mon Apr  7 14:22:51 2014";
+      lastWritten = "Tue Apr  8 11:06:34 2014";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -3659,6 +3659,11 @@ Module: MGD
                                       }
                                       {
                                         AccSourceFrame = AccSourceFrame : mgiOption;
+                                            {
+                                              AccSourceMenu = XmOptionMenu;
+                                              Group: User
+                                                defaultOption = IMAGELibrary;
+                                            }
                                             Popups:
                                             {
                                               AccSourcePulldown = OptionPulldown;
