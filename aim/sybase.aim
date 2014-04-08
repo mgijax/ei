@@ -9,7 +9,6 @@ CALLS
              "char **"       <--> string_list;
 
 	     "RETCODE"     <--> integer;
-	     "STATUS"      <--> integer;
 	     "DBPROCESS *" <--> opaque;
              
 	ENTRY 
@@ -22,7 +21,7 @@ CALLS
 	 mgi_dbexec_bydbproc("DBPROCESS *", "char *");
 	 mgi_dbexec("char *")                            : "DBPROCESS *";
 	 mgi_dbresults("DBPROCESS *")			 : "RETCODE";
-	 mgi_dbnextrow("DBPROCESS *")			 : "STATUS";
+	 mgi_dbnextrow("DBPROCESS *")			 : "int";
 	 mgi_execute_search("Widget", "Widget", "char *", "int", "char *");
 	 mgi_getstr("DBPROCESS *", "int")                : "char *";
 	 mgi_citation("DBPROCESS *", "int")              : "char *";

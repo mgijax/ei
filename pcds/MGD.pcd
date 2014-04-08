@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Mon Apr  7 13:34:29 2014";
+      lastWritten = "Mon Apr  7 14:22:51 2014";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -2411,6 +2411,23 @@ Module: MGD
                             panedWindow = XmPanedWindow;
                                 {
                                   mgiAccessionTable = mgiAccessionTable : mgiTable;
+                                      {
+                                        Table = mgiTable;
+                                      }
+                                      {
+                                        Add = TablePush;
+                                      }
+                                      {
+                                        Delete = TablePush;
+                                      }
+                                      {
+                                        AccSourceFrame = AccSourceFrame : mgiOption;
+                                            {
+                                              AccSourceMenu = XmOptionMenu;
+                                              Group: Widget
+                                                managed = False;
+                                            }
+                                      }
                                 }
                                 {
                                   QueryList = QueryList;
@@ -3642,11 +3659,6 @@ Module: MGD
                                       }
                                       {
                                         AccSourceFrame = AccSourceFrame : mgiOption;
-                                            {
-                                              AccSourceMenu = XmOptionMenu;
-                                              Group: User
-                                                defaultOption = IMAGELibrary;
-                                            }
                                             Popups:
                                             {
                                               AccSourcePulldown = OptionPulldown;
@@ -8366,6 +8378,8 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         ReviewFrame = YesNoFrame : mgiOption;
+                                        Group: Widget
+                                          managed = False;
                                         Group: Constraint
                                           rightWidget = Table;
                                           topWidget = Table;

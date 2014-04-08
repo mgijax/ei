@@ -26,7 +26,7 @@
 -- lec 10/24/2002
 --      - TR 4184; ExitWindow; check if top is realized (not managed).
 --        if window is iconified, then it is not currently managed
---        and won't get destroyed.
+--        and will not get destroyed.
 --
 -- lec 03/27/2001
 --	- Added "AlleleStatusMenu" to SetOption
@@ -843,7 +843,7 @@ rules:
 	  --
 	  -- Work backwards thru the children
 	  -- Dynamic changes to the option menu (i.e. destroying widgets)
-	  -- cause undesirable behavior...the destroyed widget isn't
+	  -- cause undesirable behavior...the destroyed widget is not
 	  -- really *gone*.  By working backwards, we are guaranteed??
 	  -- to be selecting a newer widget
 	  --
