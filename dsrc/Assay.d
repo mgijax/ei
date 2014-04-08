@@ -33,7 +33,7 @@
 --
 -- lec  02/08/2011
 --	- TR10583/LoadList.loadsmall
---	- don't run PythonImageCache if > python_image_cache
+--	- do not run PythonImageCache if > python_image_cache
 --
 -- lec  09/15/2010
 --	- TR 9695/skip J:153498
@@ -71,8 +71,8 @@
 --
 -- lec  02/01/2007
 --	- TR 8135; CopyGelLane
---	- don't copy anything into a control lane
---	- don't copy Not Applicable RNA Type into non-Control lanes
+--	- do not copy anything into a control lane
+--	- do not copy Not Applicable RNA Type into non-Control lanes
 --
 -- lec	12/04/2006
 --	- TR 7710; add calls to PythonImageCache
@@ -80,7 +80,7 @@
 -- lec  12/14/2005
 --	- TR 7328; added VerifyProbePrep
 --	- removed AnitbodyPrepVerifyForm, ProbePrepVerifyForm;
---	  can't remember why there were duplicate Prep forms?
+--	  cannot remember why there were duplicate Prep forms?
 --
 -- lec  11/10/2005
 --	- TR 7224; dbclose not getting called every time in Select
@@ -137,7 +137,7 @@
 --	- TR 2869
 --
 -- lec 08/16/2001
---	- TR 2855; CopyGelLane; don't copy Age Range during Age Prefix copy
+--	- TR 2855; CopyGelLane; do not copy Age Range during Age Prefix copy
 --	- TR 2847; Set Note color appropriately
 --
 -- lec 07/11/2001
@@ -875,7 +875,7 @@ rules:
 --
 -- CopySpecimen
 --
---	Copy the previous row's values to the current row
+--	Copy the previous  values to the current row
 --	if current row value is blank and previous row value is not blank.
 --
 --	Don't copy Results, Age Range, Age Notes or Specimen Notes.
@@ -1011,7 +1011,7 @@ rules:
 --
 -- CopyGelLane
 --
---	Copy the previous row's values to the current row
+--	Copy the previous  values to the current row
 --	if current row value is blank and previous row value is not blank.
 --
 
@@ -1041,7 +1041,7 @@ rules:
 	    return;
 	  end if;
 
-	  -- If the current lane is a control lane, then don't copy any values
+	  -- If the current lane is a control lane, then do not copy any values
 
           controlKey := mgi_tblGetCell(table, row, table.controlKey);
 	  if (controlKey.length > 0) then
@@ -1050,7 +1050,7 @@ rules:
 	    end if;
 	  end if;
 
-	  -- If the previous lane is a control lane, then don't copy any values
+	  -- If the previous lane is a control lane, then do not copy any values
 
           controlKey := mgi_tblGetCell(table, row-1, table.controlKey);
 	  if (controlKey.length > 0) then
@@ -1162,7 +1162,7 @@ rules:
 --
 -- CopyGelRow
 --
---	Copy the previous row's values to the current row
+--	Copy the previous  values to the current row
 --	if current row value is blank and previous row value is not blank.
 --
 
@@ -1484,7 +1484,7 @@ rules:
           send(ModifySQL, 0);
 
           if (modifyCache) then
-	    -- don't show a working dialog...it drives the GXD folks crazy!
+	    -- do not show a working dialog...it drives the GXD folks crazy!
 
 	    -- check image list
 	    -- if image cache count <= our configured value, then ok
@@ -3065,7 +3065,7 @@ rules:
 	      x := lane * gelTable.bandIncrement;
 
 	      -- If the Gel Lane key from the query is the same as the Gel Lane key in the Gel Row table...
-	      --	then we're okay
+	      --	then we are okay
 	      -- else
 	      --	skip to the appropriate Gel Lane in the Gel Row table
 	      --        flag Gel Band for Add
@@ -3226,7 +3226,7 @@ rules:
 
 	   segmentType := mgi_sql1(assay_segmenttype(objectKey));
 
-	   -- if no Assay selected, don't do the verification
+	   -- if no Assay selected, do not do the verification
 
 	   if (top->AssayTypeMenu.menuHistory.defaultValue = "%") then
 	     return;

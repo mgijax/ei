@@ -507,7 +507,7 @@ rules:
 	      if (organism1.length > 0) then
 
 	        -- Must get all of the appropriate marker keys from the Marker table
-	        -- If Organism list different than previous row's, a new Orthology group is defined
+	        -- If Organism list different than previous , a new Orthology group is defined
 
 	        if (organism1 != organismPrev) then
 

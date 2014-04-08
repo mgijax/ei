@@ -104,7 +104,7 @@ rules:
 	  top->LoginServer->text.value := getenv("MGD_DBSERVER");
 	  top->LoginDB->text.value := getenv("MGD_DBNAME");
 
-	  -- If Server is a Development server, then don't allow selection
+	  -- If Server is a Development server, then do not allow selection
 	  -- of Production or Public server
 
 	  (void) mgi_tblSetReasonValues();
@@ -288,7 +288,7 @@ rules:
 
 	      top->MainMenu->Utilities.managed := false;
 
-	      --don't need this right now...but may in the future...
+	      --do not need this right now...but may in the future...
 	      --if (top->MainMenu->NLM != nil) then
 	      --  top->MainMenu->NLM.managed := false;
 	      --end if;

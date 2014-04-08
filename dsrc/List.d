@@ -147,7 +147,7 @@ rules:
 
 	  verify : widget := targetWidget.ancestor_by_class("XmRowColumn"); -- Verify template
 
-	  -- If can't determine Verify template, return 
+	  -- If cannot determine Verify template, return 
 
 	  if (verify = nil) then
 	    StatusReport.source_widget := top.root;

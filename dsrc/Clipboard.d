@@ -42,7 +42,7 @@ rules:
        key : string := ClipboardAdd.key;
        accID : string := ClipboardAdd.accID;
 
-       -- don't add duplicates; use keys to determine duplicates
+       -- do not add duplicates; use keys to determine duplicates
 
        if (clipboard->List.keys != nil) then
 	 if (clipboard->List.keys.find(key) >= 0) then

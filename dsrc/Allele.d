@@ -19,7 +19,7 @@
 --	TR11243/add clear/notes to Select()
 --
 -- 08/08/2011	lec
---	TR10804/can't search by nomen marker in allele EI (use 'union')
+--	TR10804/cannot search by nomen marker in allele EI (use 'union')
 --
 -- 11/23/2010	lec
 --	TR10033/added image class
@@ -1111,7 +1111,7 @@ rules:
 	  end if;
 
 	  -- there is only one nomen symbol per allele...
-	  -- if the marker key is NULL, then this is a nomen symbol and we're done
+	  -- if the marker key is NULL, then this is a nomen symbol and we are done
 
 	  markerKey := mgi_tblGetCell(table, 0, table.markerKey);
 	  if (markerKey = "-1" or markerKey = "" or markerKey = "NULL") then
@@ -1493,7 +1493,7 @@ rules:
 	        addAssociation := true;
 
 	        --
-		-- only if we're changing the derivation...
+		-- only if we are changing the derivation...
 	        -- select the derivation key that is associated with the specified 
 	        --   allele type
 		--   creator
@@ -2033,7 +2033,7 @@ rules:
           (void) busy_cursor(top);
 
 	  -- TR 5672
-	  -- don't wipe out the Marker Clip if the record is de-selected, 
+	  -- do not wipe out the Marker Clip if the record is de-selected, 
 	  -- so if user has used another allele as a template for the new allele,
 	  -- the marker clip of the template allele is preserved
 
@@ -2454,7 +2454,7 @@ rules:
               SetOption.source_widget := top->mgiParentCellLine->AlleleCellLineTypeMenu;
               SetOption.value := mgi_getstr(dbproc, 3);
               send(SetOption, 0);
-	      --turning this on will display MCL's with the same name on separate lines
+	      --turning this on will display MCL with the same name on separate lines
 	      --else it will only display the last row it finds
 	      --row := row + 1;
             end while;

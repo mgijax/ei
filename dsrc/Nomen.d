@@ -28,7 +28,7 @@
 --
 -- lec 06/21/2001
 --	- revised code in Modify so that you can modify notes
---	  even if you don't have permission to modify the rest
+--	  even if you do not have permission to modify the rest
 --	  of the Nomen entry. Previous bug fix was incorrect.
 --	  Need to check value of "set" in Modify event.
 --

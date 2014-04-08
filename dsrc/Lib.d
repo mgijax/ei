@@ -844,7 +844,7 @@ rules:
 	  -- Work backwards thru the children
 	  -- Dynamic changes to the option menu (i.e. destroying widgets)
 	  -- cause undesirable behavior...the destroyed widget isn't
-	  -- really *gone*.  By working backwards, we're guaranteed??
+	  -- really *gone*.  By working backwards, we are guaranteed??
 	  -- to be selecting a newer widget
 	  --
 

@@ -62,7 +62,7 @@
 --	- update GXD_Assay modification date so that Expression cache gets updated
 --
 -- lec	05/18/98
---	- don't copy Notes in CopyInSituRow
+--	- do not copy Notes in CopyInSituRow
 --
 -- lec	05/05/98
 --	- added functionality so edits can be saved without unmanaging dialog
@@ -107,7 +107,7 @@ rules:
 --
 -- CopyInSituRow
 --
---      Copy the previous row's values to the current row
+--      Copy the previous  values to the current row
 --      if current row value is blank and previous row value is not blank.
 --
 -- Cannot copy Structures

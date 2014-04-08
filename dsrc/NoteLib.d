@@ -289,7 +289,7 @@ rules:
 	          childnote->Note.noteKey := -1;
 		end if;
 
--- don't print an error...we'll assume we're just not displaying this note type
+-- do not print an error...we'll assume we are just not displaying this note type
 --	      else
 --                StatusReport.source_widget := notew.top;
 --                StatusReport.message := "Cannot determine Note Type\n";
