@@ -861,7 +861,7 @@ rules:
 	  src : widget := ModifyChromosome.source_widget.root;
 
 	  -- 
-	  -- Don't do anything if not in this module
+	  -- Do not do anything if not in this module
 	  --
 
 	  if (src.name != "MarkerModule") then
@@ -869,7 +869,7 @@ rules:
 	  end if;
 
 	  --
-	  -- Don't do anything if de-selecting
+	  -- Do not do anything if de-selecting
 	  --
 
 	  if (not top->ChromosomeMenu.menuHistory.set) then

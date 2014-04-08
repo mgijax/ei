@@ -28,7 +28,7 @@
 --
 -- Future modifications:
 --
---      Some of the event definitions are getting long, since D doesn't
+--      Some of the event definitions are getting long, since D does not
 --      provide the ability to define functions without writing them
 --      in C.  Therefore, more functions should be defined in C to minimize
 --      the length of functions in this module.
@@ -1336,7 +1336,7 @@ rules:
 -- Activated from:  tab out of mgiMarker->Marker
 --
 -- If mgiMarker->ObjectID exists, then check if an MLC entry exists for 
--- this Marker.  If it does, perform a search for the user. If it doesn't, 
+-- this Marker.  If it does, perform a search for the user. If it does not, 
 -- do nothing
 --
 

@@ -435,7 +435,7 @@ rules:
  
           (void) mgi_dbclose(dbproc);
  
-	  -- If keys doesn't exist already, create it
+	  -- If keys does not exist already, create it
 	  -- Even if no results are returned
 
           if (list_w->List.keys = nil) then

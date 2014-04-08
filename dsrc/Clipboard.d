@@ -212,13 +212,13 @@ rules:
             end if;
 	  end if;
 
-          -- If clipboard->List.keys doesn't exist already, create it
+          -- If clipboard->List.keys does not exist already, create it
  
           if (clipboard->List.keys = nil) then
             clipboard->List.keys := create string_list();
           end if;
  
-          -- If clipboard->List.accIDs doesn't exist already, create it
+          -- If clipboard->List.accIDs does not exist already, create it
  
           if (clipboard->List.accIDs = nil) then
             clipboard->List.accIDs := create string_list();

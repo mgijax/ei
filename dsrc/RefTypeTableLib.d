@@ -230,7 +230,7 @@ rules:
           table : widget := ProcessRefTypeTable.table;
 	  
 	  -- temporary id for table that has only one
-	  -- reference type (like Markers) that the user doesn't even see
+	  -- reference type (like Markers) that the user does not even see
 
 	  tableID : integer := ProcessRefTypeTable.tableID;
 

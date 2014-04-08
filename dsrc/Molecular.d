@@ -1740,11 +1740,11 @@ rules:
           end while;
 	  (void) mgi_dbclose(dbproc);
  
-	  -- Don't forget last record
+	  -- Do not forget last record
 
 	  if (row >= 0) then
             mgi_tblSetCell(table, row, table.strains, strains);
-            mgi_tblSetCell(table, row, table.strainKeys, strainKeys);	-- Don't forget last record
+            mgi_tblSetCell(table, row, table.strainKeys, strainKeys);	-- Do not forget last record
 	  end if;
 
           LoadAcc.table := top->MolReferenceForm->AccRef->Table;

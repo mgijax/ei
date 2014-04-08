@@ -128,7 +128,7 @@ rules:
 	    return;
 	  end if;
 
-	  -- Don't copy Structures or Notes
+	  -- Do not copy Structures or Notes
 
 	  if (column = table.structures or
 	      column = table.notes) then

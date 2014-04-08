@@ -3560,7 +3560,7 @@ rules:
 
           alleles := mgi_splitfields(value, "/");
  
-	  -- If '/' separator doesn't work, then try " "
+	  -- If '/' separator does not work, then try " "
 
           if (alleles.count = 1) then
             alleles := mgi_splitfields(value, " ");

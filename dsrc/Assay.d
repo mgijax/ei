@@ -312,7 +312,7 @@ devents:
 
 	VerifyProbePrep :translation [];
 
-	-- Must be non-local so that DynamicLib.InitOptionMenu[] doesn't complain
+	-- Must be non-local so that DynamicLib.InitOptionMenu[] does not complain
 	ViewAssayDetail [source_widget : widget;];
 	ViewPrepDetail [source_widget : widget;];
 
@@ -876,7 +876,7 @@ rules:
 --	Copy the previous row values to the current row
 --	if current row value is blank and previous row value is not blank.
 --
---	Don't copy Results, Age Range, Age Notes or Specimen Notes.
+--	Do not copy Results, Age Range, Age Notes or Specimen Notes.
 --
 
 	CopySpecimen does
@@ -894,7 +894,7 @@ rules:
             return;
           end if;
  
-	  -- Don't copy Results or Age Range or Notes
+	  -- Do not copy Results or Age Range or Notes
 
 	  if (row = 0 or
 	      column = table.results or
@@ -1030,7 +1030,7 @@ rules:
             return;
           end if;
  
-	  -- Don't copy Age Range or Notes
+	  -- Do not copy Age Range or Notes
 
 	  if (row = 0 or 
 	      column = table.ageRange or
@@ -1179,7 +1179,7 @@ rules:
             return;
           end if;
  
-	  -- Don't copy Notes
+	  -- Do not copy Notes
 
 	  if (row = 0 or
 	      column = table.rowNotes or
@@ -2633,7 +2633,7 @@ rules:
           SetNotesDisplay.note := top->AssayNote->Note;
           send(SetNotesDisplay, 0);
 
-	  -- Don't clear the form because it'll wipe out editMode flags on Gel Bands
+	  -- Do not clear the form because it'll wipe out editMode flags on Gel Bands
 
 --	  if (assayDetailForm.name = "GelForm") then
 --	    ClearAssay.clearForms := clearAssayGel;

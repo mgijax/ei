@@ -550,7 +550,7 @@ rules:
 	    if (table.parent.name = "GelRow" and push.targetColumn < 0) then
 	      dialog.targetColumn := mgi_tblGetCurrentColumn(table);
 
-	      -- Don't initialize Notes if Note column cannot be determined
+	      -- Do not initialize Notes if Note column cannot be determined
 
 	      if ((dialog.targetColumn - table.bandNotes) mod table.bandIncrement != 0 or
 		  dialog.targetColumn < table.bandNotes) then
