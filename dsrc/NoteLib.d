@@ -38,7 +38,7 @@
 --	- TR 2860; moved AppendNote buttons to Age Notes
 --
 -- lec 08/21/2001
---	- TR 2860; added add'l functionality to AppendNote to handle
+--	- TR 2860; added additional functionality to AppendNote to handle
 --	  notes with dialogs.
 --
 -- lec 07/11/2001
@@ -289,7 +289,7 @@ rules:
 	          childnote->Note.noteKey := -1;
 		end if;
 
--- do not print an error...we'll assume we are just not displaying this note type
+-- do not print an error...we will assume we are just not displaying this note type
 --	      else
 --                StatusReport.source_widget := notew.top;
 --                StatusReport.message := "Cannot determine Note Type\n";
@@ -550,7 +550,7 @@ rules:
 	    if (table.parent.name = "GelRow" and push.targetColumn < 0) then
 	      dialog.targetColumn := mgi_tblGetCurrentColumn(table);
 
-	      -- Don't initialize Notes if Note column cannot be determined
+	      -- Do not initialize Notes if Note column cannot be determined
 
 	      if ((dialog.targetColumn - table.bandNotes) mod table.bandIncrement != 0 or
 		  dialog.targetColumn < table.bandNotes) then

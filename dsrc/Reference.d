@@ -1001,7 +1001,7 @@ rules:
 	      neverUsed := YES;
             end if;
  
-	    -- then it's new
+	    -- then it is new
 
             if (assocKey = "" and selected != "") then 
 	      
