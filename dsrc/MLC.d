@@ -900,14 +900,14 @@ rules:
 -- PLEASE NOTE: The correctness of the algorithm used when renumbering the 
 -- text references depends on the user being able to Delete and Add rows
 -- only. A *bad* problem occurred in the past when a "Insert Row" button 
--- was added to the MLC References table, invalidating the algorithm's 
+-- was added to the MLC References table, invalidating the algorithms 
 -- assumptions. 
 --
 -- We determine if each sorted row needs to be modified based on the 
 -- editMode value in the Table row before updating with the sorted list.
 --
 -- Since ModifyReference will delete all MLC References for a given Marker
--- during modification, it's not necessary to re-load the deleted Markers
+-- during modification, it is not necessary to re-load the deleted Markers
 -- back into the table after sorting.
 --
 
@@ -1355,7 +1355,7 @@ rules:
 --
 -- UncondExit 
 --
--- Calls Lib.d's Exit routine.  
+-- Calls Lib.d Exit routine.  
 -- 
 -- if "integrated" then real Lib.d Exit routine is called 
 --

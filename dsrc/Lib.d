@@ -317,7 +317,7 @@ rules:
  
               while (k <= lookups.num_children) do
  
-                -- Must ignore XmPanedWindow's other children
+                -- Must ignore XmPanedWindow other children
  
                 child := lookups.child(k).child_by_class(TABLE_CLASS);
  
