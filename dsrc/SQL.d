@@ -496,7 +496,7 @@ rules:
 	    status := top;
 	  end if;
 
-	  -- Don't overwrite Status Dialog if already managed
+	  -- Do not overwrite Status Dialog if already managed
 
           if (status->StatusDialog = nil) then
 	    --(void) mgi_writeLog(get_time() + "ERROR: Could not get StatusDialog\n");

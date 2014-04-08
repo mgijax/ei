@@ -265,7 +265,7 @@ rules:
 	  cmd := "";
 	  set : string := "";
 
-	  -- You can't modify the Name, Private Flag of a Vocabulary once it
+	  -- You cannot modify the Name, Private Flag of a Vocabulary once it
 	  -- has been defined.
 
           if (top->ACCLogicalMenu.menuHistory.modified and

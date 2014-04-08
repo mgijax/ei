@@ -744,7 +744,8 @@ rules:
 	  -- Not every form has a AccSourceMenu managed
 
 	  if (logicalKey.length = 0 and source.managed) then
-	    logicalKey := source.menuHistory.defaultValue;
+	    --logicalKey := source.menuHistory.defaultValue;
+	    logicalKey := source.defaultValue;
 	  end if;
 
 	  if (logicalKey.length = 0) then

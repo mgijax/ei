@@ -77,7 +77,7 @@
 --    - removed Add; Add and Modify are really the same thing
 --    - use VerifyMarker and VerifyMLCMarker upon user entry of a Symbol
 --    - fixed Select to work properly when selecting another record when one is
---      current locked.  Also, if de-selecting, don't clear the Search Results list.
+--      current locked.  Also, if de-selecting, do not clear the Search Results list.
 --    - use currentMarkerKey global to store Marker key of currently selected Marker.
 --      As a result, "lockon" can be a boolean
 --    - add more options for searching (PrepareSearch)

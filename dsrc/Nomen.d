@@ -28,7 +28,7 @@
 --
 -- lec 06/21/2001
 --	- revised code in Modify so that you can modify notes
---	  even if you don't have permission to modify the rest
+--	  even if you do not have permission to modify the rest
 --	  of the Nomen entry. Previous bug fix was incorrect.
 --	  Need to check value of "set" in Modify event.
 --
@@ -257,10 +257,12 @@ rules:
 	  -- Type and Chromosome Menus
 
 	  top->MarkerEventMenu.subMenuId.sql := nomen_event();
+	  top->MarkerEventMenu.defaultChild := 2;
 	  InitOptionMenu.option := top->MarkerEventMenu;
 	  send(InitOptionMenu, 0);
 
 	  top->MarkerStatusMenu.subMenuId.sql := nomen_status(); 
+	  top->MarkerStatusMenu.defaultChild := 2;
 	  InitOptionMenu.option := top->MarkerStatusMenu;
 	  send(InitOptionMenu, 0);
 

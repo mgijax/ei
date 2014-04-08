@@ -698,7 +698,7 @@ rules:
 	  -- then we cannot update the modification date/user of the PRB_Probe
 	  -- record due to an edit of the Marker relationships.
 	  --
-	  -- We don't refresh the Probe record until we're done with
+	  -- We do not refresh the Probe record until we are done with
 	  -- all transactions.
 	  --
 
@@ -1843,7 +1843,7 @@ rules:
 --
 -- CopyEndoMarker
 --
---      Copy the previous row's Endonuclease/Marker values to the current row
+--      Copy the previous row Endonuclease/Marker values to the current row
 --      if current row value is blank and previous row value is not blank.
 --
  

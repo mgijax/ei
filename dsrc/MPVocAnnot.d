@@ -388,7 +388,7 @@ rules:
 
 	  -- First, sort the table by the Term so that all like Terms are grouped together.  
 	  -- This will enable us to easily create 1 _Annot_key per Term.
-	  -- If the current row's Term is not equal to the previous row's Term,
+	  -- If the current row Term is not equal to the previous row Term,
 	  -- then we have a new _Annot_key.
 
 	  (void) mgi_tblSort(annotTable, annotTable.annotKey);
@@ -430,8 +430,8 @@ rules:
 
             if (editMode = TBL_ROW_ADD) then
 	      
-	      -- Since the annotTable is sorted by Term, if the previous row's
-	      -- Term is equal to the current row's Term, then use the same
+	      -- Since the annotTable is sorted by Term, if the previous row
+	      -- Term is equal to the current row Term, then use the same
 	      -- _Annot_key value, else generate a new one.
 
   	      dupAnnot := false;
@@ -531,7 +531,7 @@ rules:
 	  end while;
 
 	  --
-	  -- if we're calling VOC_copyAnnotEvidenceNotes, we can't use a transaction...
+	  -- if we are calling VOC_copyAnnotEvidenceNotes, we cannot use a transaction...
 	  -- need to find a workaround for this...
 	  --
 
@@ -1205,7 +1205,7 @@ rules:
 --
 -- CopyAnnotation
 --
---	Copy the previous row's values to the current row
+--	Copy the previous row values to the current row
 --	if current row value is blank and previous row value is not blank.
 --
 
@@ -1463,7 +1463,7 @@ rules:
 
 	  (void) busy_cursor(top);
 
-	  -- Generate list of Alleles from this Genotype that don't have this J:
+	  -- Generate list of Alleles from this Genotype that do not have this J:
 	  -- Ignore wild type alleles
 
 	  select : string;

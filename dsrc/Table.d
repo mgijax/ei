@@ -70,7 +70,7 @@
 -- lec	05/20/98
 --	- ClearTable; make first cell visible
 --	- CommitTableCellEdit; if row has already been flagged for deletion,
---	  inform the user and don't change the edit mode
+--	  inform the user and do not change the edit mode
 --
 -- lec	03/23-??
 --	- first release 
@@ -343,7 +343,7 @@ rules:
 	    table.xrtTblBackgroundSeries := table.saveBackgroundSeries;
 	  end if;
 
-	  -- Reset the form's home widget
+	  -- Reset the forms home widget
 	  GoHome.source_widget := table.root;
 	  send(GoHome, 0);
 
@@ -446,7 +446,7 @@ rules:
 	  -- But this callback gets call twice if the user selects
 	  -- the same toggle button as is already selected.
 	  -- The callback reason and set values are identical.
-	  -- Can't find a way to distinguish between the two events, so...
+	  -- Cannot find a way to distinguish between the two events, so...
 	  -- need special processing for GelRow since Strength can be
 	  -- added to many columns...
 	  -- Convert the 'column' variable to the next lowest strength value.

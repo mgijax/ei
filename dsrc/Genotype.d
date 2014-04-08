@@ -66,7 +66,7 @@
 --	- TR 3802; added call to GXD_loadGenoCacheByGenotype
 --
 -- lec  06/05/2002
---	- TR 3677; ResetEditMode; don't clear fields on de-select
+--	- TR 3677; ResetEditMode; do not clear fields on de-select
 --
 -- lec  01/18/2002
 --	- add Seq# to Allele Pair table
@@ -620,7 +620,7 @@ rules:
 
             elsif (editMode = TBL_ROW_MODIFY) then
 
-              -- If current Seq # not equal to new Seq #, then we're manually re-ordering
+              -- If current Seq # not equal to new Seq #, then we are manually re-ordering
  
               if (currentSeqNum != newSeqNum) then
 		set := "sequenceNum = " + newSeqNum;
@@ -930,7 +930,7 @@ rules:
 
 	  --
 	  -- user has not selected any allele-specific information
-	  -- so we don't know if an allele-pair exists, or not
+	  -- so we do not know if an allele-pair exists, or not
 	  -- therefore, we will union 2 selects:
 	  -- 1) select where allele pair *does* exist
 	  -- 2) select where allele pair does *not* exist

@@ -20,7 +20,7 @@
 --	- cleaned up unionalias
 --
 -- lec  12/23/2004
---	- TR 6438; don't clear newly added item after add
+--	- TR 6438; do not clear newly added item after add
 --
 -- lec	07/25/2003
 --	- JSAM
@@ -675,7 +675,7 @@ rules:
             from_marker := true;
           end if;
  
-	  -- If Antigen Accesion number has been entered, don't bother with
+	  -- If Antigen Accesion number has been entered, do not bother with
 	  -- the rest of the source information
 
           if (top->AntigenAccession->ObjectID->text.value.length = 0) then

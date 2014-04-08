@@ -12,7 +12,7 @@
 -- History
 --
 -- 09/21/2005 lec
---	- TR 7109; don't update modified by if re-ordering
+--	- TR 7109; do not update modified by if re-ordering
 --
 -- 06/17/2004 lec
 --	- TR 5929/revisions; sorting option, searching

@@ -2805,7 +2805,7 @@ rules:
 
 	SelectCrossLookup does
 
-	  -- If no Cross or Anonymous Cross, don't overwrite any values
+	  -- If no Cross or Anonymous Cross, do not overwrite any values
 
 	  if (ExptForm->mgiCross->CrossID->text.value.length = 0 or
 	      ExptForm->mgiCross->CrossID->text.value = NOTSPECIFIED) then
@@ -3629,7 +3629,7 @@ rules:
           alleles := mgi_splitfields(value, " ");
 	  alleles.rewind;
 
-	  -- Determine if any alleles don't match abbreviations
+	  -- Determine if any alleles do not match abbreviations
 
 	  while (alleles.more) do
 	    if (abbrevs.find(alleles.next) < 0) then
@@ -3649,7 +3649,7 @@ rules:
 	  -- If number of typings != number of alleles, disallow edit
 
 	  else
-	    -- If animals contains ranges (e.g. 1-20), don't verify number of typings
+	    -- If animals contains ranges (e.g. 1-20), do not verify number of typings
             animals := mgi_splitfields(top->Animal->text.value, "-");
 
 	    if (animals.count > 0) then

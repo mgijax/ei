@@ -188,7 +188,7 @@ rules:
 	  objectKey : string := ProcessSynTypeTable.objectKey;
 
 	  -- temporary id for table that has only one
-	  -- synonym type (like Alleles) that the user doesn't even see
+	  -- synonym type (like Alleles) that the user does not even see
 
 	  tableID : integer := ProcessSynTypeTable.tableID;
 

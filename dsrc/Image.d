@@ -26,7 +26,7 @@
 --	- TR 8002; add MGIType menu; defaults; processing; allow no updates
 --
 -- lec  09/29/2005
---	- TR 7018; don't query by copyright unless a "%" character is present
+--	- TR 7018; do not query by copyright unless a "%" character is present
 --
 -- lec	09/21/2005
 --	- TR 7111; change query results display format

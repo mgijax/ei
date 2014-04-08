@@ -37,7 +37,7 @@ rules:
 --	07/01/2005..07/06/2005 (between)
 --	07/01/2005 (=)
 --
--- Note that <= and >= don't work as you would expect.
+-- Note that <= and >= do not work as you would expect.
 -- If you want to query for <= "04/10/2001", then you really
 -- need to enter use <  "04/11/2001"
 --

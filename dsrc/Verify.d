@@ -142,7 +142,7 @@
 --	  items cannot be used.
 --
 -- lec 08/16/2001
---	- TR 2846; VerifyAllele; don't launch Allele module upon invalid entry
+--	- TR 2846; VerifyAllele; do not launch Allele module upon invalid entry
 --	- TR 2849; VerifyGelLaneControl; remove defaults for Control = 'No'
 --
 -- lec 06/27/2001

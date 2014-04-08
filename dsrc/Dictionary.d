@@ -421,7 +421,7 @@ rules:
           send(ModifyAliases, 0);
 
 	  -- Execute the add
-	  -- The new item will be added to the selection list, but we don't
+	  -- The new item will be added to the selection list, but we do not
 	  -- want the Select callback called until the tree is refreshed!
 
 	  AddSQL.tableID := GXD_STRUCTURE;
@@ -515,7 +515,7 @@ rules:
           isMGIAdded : string := ModifyAliases.isMGIAdded;
 
           -- key that needs incrementing when adding aliases 
-          -- can't be the same as used elsewhere in the batch, so we
+          -- cannot be the same as used elsewhere in the batch, so we
           -- append the name of the event.
 
 	  keyName : string := ModifyAliases.keyName;
@@ -573,7 +573,7 @@ rules:
                   if (not ModifyAliases.addStructureMode) then
                       cmd := cmd + mgi_DBdelete(GXD_STRUCTURENAME, key);
                       -- Save key here so we can update display of 
-                      -- aliases (since once they are gone we can't query
+                      -- aliases (since once they are gone we cannot query
                       -- their dates in the DB...)
                       delaliaskey_list.append(key);
                   end if;

@@ -11,7 +11,7 @@
 -- History
 --
 -- lec 12/23/2004
---	- TR 6438; don't clear newly added item after add
+--	- TR 6438; do not clear newly added item after add
 --
 -- lec 07/25/2003
 --	- JSAM
