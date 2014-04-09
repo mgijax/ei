@@ -2,8 +2,8 @@ Module: mgiDialog
 {
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
-      release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Jan 13 10:06:09 2014";
+      release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
+      lastWritten = "Wed Apr  9 10:48:39 2014";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -1295,7 +1295,7 @@ Shift<Key>Tab: prev-tab-group()
                     }
               }
               {
-                ChromosomeMenu = ChromosomeMenu : mgiOption;
+                ChromosomeFrame = ChromosomeFrame : mgiOption;
                 Group: Constraint
                   leftAttachment = attach_widget;
                   leftWidget = currentMarker;
@@ -1337,7 +1337,7 @@ Shift<Key>Tab: prev-tab-group()
                   topOffset = 5;
               }
               {
-                MarkerEventReasonMenu = MarkerEventReasonMenu : mgiOption;
+                MarkerEventReasonFrame = MarkerEventReasonFrame : mgiOption;
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
                   leftWidget = addAsSynonym;
@@ -1347,15 +1347,20 @@ Shift<Key>Tab: prev-tab-group()
                   bottomAttachment = attach_none;
                   resizable = true;
                   topOffset = 5;
+                    {
+                      MarkerEventReasonMenu = XmOptionMenu;
+                      Group: Widget
+                        labelString = "Event\nReason";
+                    }
               }
               {
                 nonVerified = mgiMarker : mgiDataTypes;
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
-                  leftWidget = MarkerEventReasonMenu;
+                  leftWidget = MarkerEventReasonFrame;
                   rightAttachment = attach_none;
                   topAttachment = attach_widget;
-                  topWidget = MarkerEventReasonMenu;
+                  topWidget = MarkerEventReasonFrame;
                   topOffset = 5;
                   bottomAttachment = attach_none;
                   resizable = true;
@@ -1404,10 +1409,10 @@ Shift<Key>Tab: prev-tab-group()";
                 mgiMarker = mgiMarker : mgiDataTypes;
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
-                  leftWidget = MarkerEventReasonMenu;
+                  leftWidget = MarkerEventReasonFrame;
                   rightAttachment = attach_none;
                   topAttachment = attach_widget;
-                  topWidget = MarkerEventReasonMenu;
+                  topWidget = MarkerEventReasonFrame;
                   topOffset = 5;
                   bottomAttachment = attach_none;
                   resizable = true;
@@ -1516,7 +1521,7 @@ Shift<Key>Tab: prev-tab-group()
                   topOffset = 5;
                   bottomAttachment = attach_none;
                   resizable = true;
-                  leftWidget = MarkerEventReasonMenu;
+                  leftWidget = MarkerEventReasonFrame;
                     {
                       ObjectID = ID;
                     }

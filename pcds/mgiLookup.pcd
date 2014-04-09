@@ -2,8 +2,8 @@ Module: mgiLookup
 {
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
-      release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Dec 13 11:39:28 2013";
+      release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
+      lastWritten = "Thu Apr  3 10:34:53 2014";
         {
           LookupLabel = XmPushButton;
           Group: Widget
@@ -726,7 +726,7 @@ Module: mgiLookup
           TDCList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1735;
+            vip_y = 1790;
           Group: User
             cmd = "select _Term_key, term, accID\nfrom VOC_Term_MCV_View\norder by term\n";
               {
@@ -743,28 +743,10 @@ Module: mgiLookup
               }
         }
         {
-          EvidencePropertyList = LookupList;
-          Group: Control
-            vip_x = 90;
-            vip_y = 800;
-              {
-                Label = LookupLabel : mgiLookup;
-                Group: Widget
-                  labelString = "Evidence Property";
-                Group: User
-                  defaultLabel = "Evidence Property";
-              }
-              {
-                List = list : mgiDataTypes;
-                Group: Widget
-                  singleSelectionCallback = "D:SelectLookupListItem";
-              }
-        }
-        {
           StrainAttributeList1 = LookupList;
           Group: Control
-            vip_x = 195;
-            vip_y = 1718;
+            vip_x = 90;
+            vip_y = 1735;
           Group: User
             cmd = "(\nselect _Term_key, term, i = 1 from VOC_Term where _Vocab_key = 27 and term like '[a-z]%'\nunion\nselect _Term_key, term, i = 2 from VOC_Term where _Vocab_key = 27 and term like '*%'\n)\norder by i, term\n";
               {
@@ -779,6 +761,24 @@ Module: mgiLookup
                 Group: Widget
                   singleSelectionCallback = "D:SelectLookupListItem";
                   visibleItemCount = 4;
+              }
+        }
+        {
+          EvidencePropertyList = LookupList : mgiLookup;
+          Group: Control
+            vip_x = 90;
+            vip_y = 800;
+              {
+                Label = LookupLabel : mgiLookup;
+                Group: Widget
+                  labelString = "Evidence Property";
+                Group: User
+                  defaultLabel = "Evidence Property";
+              }
+              {
+                List = list : mgiDataTypes;
+                Group: Widget
+                  singleSelectionCallback = "D:SelectLookupListItem";
               }
         }
 }

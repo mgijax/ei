@@ -1,7 +1,8 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-5-1-8-3
 TAG: ei-5-1-8-2
-DATE: 04/08/2014
+DATE: 04/08/2014, 04/09/2014
 STAFF: lec
 CHANGES:
 1) csrc/syblib.c, aim/sybase.aim : remove STATUS variable
