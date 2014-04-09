@@ -1,8 +1,8 @@
 Module: mgiDataTypes
 {
       autoCuil = False;
-      release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Mon Mar 31 10:31:49 2014";
+      release = "TeleUSE v3.2.3 / Solaris 8";
+      lastWritten = "Wed Dec 28 10:12:57 2011";
         {
           toggle = XmToggleButton;
           Group: Widget
@@ -1165,7 +1165,7 @@ Shift<Key>Tab: prev-tab-group()
                     }
               }
               {
-                AlleleCellLineTypeFrame = AlleleCellLineTypeFrame : mgiOption;
+                AlleleCellLineTypeMenu = AlleleCellLineTypeMenu : mgiOption;
               }
         }
         {

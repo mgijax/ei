@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Wed Apr  9 11:18:08 2014";
+      lastWritten = "Mon Mar 24 12:24:00 2014";
       copy = false;
       inCreateMenu = true;
         {
@@ -176,17 +176,19 @@ Module: GXD
                                         mgiCitation = mgiCitation : mgiDataTypes;
                                       }
                                       {
-                                        SourceSegmentTypeFrame = SegmentTypeFrame : mgiOption;
+                                        SourceSegmentTypeMenu = SegmentTypeMenu : mgiOption;
                                         Group: User
                                           required = False;
                                       }
                                       {
-                                        SourceVectorTypeFrame = VectorTypeFrame : mgiOption;
+                                        SourceVectorTypeMenu = VectorTypeMenu : mgiOption;
                                         Group: User
                                           required = False;
                                       }
                                       {
-                                        ProbeOrganismFrame = ProbeOrganismFrame : mgiOption;
+                                        ProbeOrganismMenu = ProbeOrganismMenu : mgiOption;
+                                        Group: Widget
+                                          subMenuId = ProbeOrganismPulldown;
                                             Popups:
                                             {
                                               ProbeOrganismPulldown = OptionPulldown;
@@ -197,8 +199,8 @@ Module: GXD
                                       {
                                         Strain = Strain : mgiDataTypes;
                                         Group: Constraint
-                                          leftWidget = ProbeOrganismFrame;
-                                          topWidget = ProbeOrganismFrame;
+                                          leftWidget = ProbeOrganismMenu;
+                                          topWidget = ProbeOrganismMenu;
                                       }
                                       {
                                         Tissue = Tissue : mgiDataTypes;
@@ -210,13 +212,13 @@ Module: GXD
                                         CellLine = mgiVerify : mgiDataTypes;
                                       }
                                       {
-                                        AgeFrame = AgeFrame : mgiOption;
+                                        AgeMenu = AgeMenu : mgiOption;
                                       }
                                       {
                                         Age = CharText : mgiDataTypes;
                                       }
                                       {
-                                        GenderFrame = GenderFrame : mgiOption;
+                                        GenderMenu = GenderMenu : mgiOption;
                                       }
                                       {
                                         mgiNoteForm = mgiNoteForm : mgiDataTypes;
@@ -377,7 +379,7 @@ Module: GXD
                                           managed = False;
                                       }
                                       {
-                                        AccSourceFrame = AccSourceFrame;
+                                        AccSourceMenu = AccSourceMenu;
                                         Group: Widget
                                           managed = False;
                                             Popups:
@@ -857,7 +859,7 @@ Module: GXD
                                       }
                                 }
                                 {
-                                  AntibodyTypeFrame = AntibodyTypeFrame : mgiOption;
+                                  AntibodyTypeMenu = AntibodyTypeMenu : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = Name;
@@ -869,26 +871,26 @@ Module: GXD
                                     resizable = true;
                                 }
                                 {
-                                  AntibodyClassFrame = AntibodyClassFrame : mgiOption;
+                                  AntibodyClassMenu = AntibodyClassMenu : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
-                                    leftWidget = AntibodyTypeFrame;
+                                    leftWidget = AntibodyTypeMenu;
                                     leftOffset = 10;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
-                                    topWidget = AntibodyTypeFrame;
+                                    topWidget = AntibodyTypeMenu;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                 }
                                 {
-                                  AntibodyOrganismFrame = AntibodyOrganismFrame : mgiOption;
+                                  AntibodyOrganismMenu = AntibodyOrganismMenu : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
-                                    leftWidget = AntibodyClassFrame;
+                                    leftWidget = AntibodyClassMenu;
                                     leftOffset = 10;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
-                                    topWidget = AntibodyClassFrame;
+                                    topWidget = AntibodyClassMenu;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                 }
@@ -898,7 +900,7 @@ Module: GXD
                                     leftAttachment = attach_form;
                                     rightAttachment = attach_form;
                                     topAttachment = attach_widget;
-                                    topWidget = AntibodyTypeFrame;
+                                    topWidget = AntibodyTypeMenu;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -910,7 +912,7 @@ Module: GXD
                                     leftWidget = Name;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = AntibodyTypeFrame;
+                                    topWidget = AntibodyTypeMenu;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -1033,13 +1035,15 @@ Shift<Key>Tab: prev-tab-group()
                                         mgiCitation = mgiCitation : mgiDataTypes;
                                       }
                                       {
-                                        SourceSegmentTypeFrame = SegmentTypeFrame : mgiOption;
+                                        SourceSegmentTypeMenu = SegmentTypeMenu : mgiOption;
                                       }
                                       {
-                                        SourceVectorTypeFrame = VectorTypeFrame : mgiOption;
+                                        SourceVectorTypeMenu = VectorTypeMenu : mgiOption;
                                       }
                                       {
-                                        ProbeOrganismFrame = ProbeOrganismFrame : mgiOption;
+                                        ProbeOrganismMenu = ProbeOrganismMenu : mgiOption;
+                                        Group: Widget
+                                          subMenuId = ProbeOrganismPulldown;
                                             Popups:
                                             {
                                               ProbeOrganismPulldown = OptionPulldown;
@@ -1050,8 +1054,8 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         Strain = Strain : mgiDataTypes;
                                         Group: Constraint
-                                          leftWidget = ProbeOrganismFrame;
-                                          topWidget = ProbeOrganismFrame;
+                                          leftWidget = ProbeOrganismMenu;
+                                          topWidget = ProbeOrganismMenu;
                                       }
                                       {
                                         Tissue = Tissue : mgiDataTypes;
@@ -1063,13 +1067,13 @@ Shift<Key>Tab: prev-tab-group()
                                         CellLine = mgiVerify : mgiDataTypes;
                                       }
                                       {
-                                        AgeFrame = AgeFrame : mgiOption;
+                                        AgeMenu = AgeMenu : mgiOption;
                                       }
                                       {
                                         Age = CharText : mgiDataTypes;
                                       }
                                       {
-                                        GenderFrame = GenderFrame : mgiOption;
+                                        GenderMenu = GenderMenu : mgiOption;
                                       }
                                       {
                                         mgiNoteForm = mgiNoteForm : mgiDataTypes;
@@ -1167,18 +1171,13 @@ Shift<Key>Tab: prev-tab-group()
                                           resizable = true;
                                       }
                                       {
-                                        ReferenceTypeFrame = ReferenceTypeFrame : mgiOption;
+                                        ReferenceTypeMenu = ReferenceTypeMenu : mgiOption;
                                             Popups:
                                             {
                                               ReferenceTypePulldown = OptionPulldown : mgiOption;
                                               Group: User
                                                 sql = "select _RefAssocType_key, assocType, allowOnlyOne from MGI_RefType_Antibody_View order by assocType";
                                             }
-                                      }
-                                      {
-                                        ReviewFrame = YesNoFrame : mgiOption;
-                                        Group: Widget
-                                          managed = False;
                                       }
                                 }
                                 {
@@ -1338,14 +1337,9 @@ Shift<Key>Tab: prev-tab-group()
                                         Delete = TablePush;
                                       }
                                       {
-                                        AccSourceFrame = AccSourceFrame;
+                                        AccSourceMenu = AccSourceMenu;
                                         Group: User
                                           defaultOption = ATCC;
-                                            {
-                                              AccSourceMenu = XmOptionMenu;
-                                              Group: User
-                                                defaultOption = ATCC;
-                                            }
                                             Popups:
                                             {
                                               AccSourcePulldown = OptionPulldown;
@@ -2144,7 +2138,7 @@ Shift<Key>Tab: prev-tab-group()
                                     leftWidget = mgiMarker;
                                 }
                                 {
-                                  GXDIndexPriorityFrame = GXDIndexPriorityFrame : mgiOption;
+                                  GXDIndexPriorityMenu = GXDIndexPriorityMenu : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
                                     leftOffset = 30;
@@ -2157,34 +2151,31 @@ Shift<Key>Tab: prev-tab-group()
                                     topOffset = 10;
                                 }
                                 {
-                                  GXDIndexConditionalMutantsFrame = GXDIndexConditionalMutantsFrame : mgiOption;
+                                  GXDIndexConditionalMutantsMenu = GXDIndexConditionalMutantsMenu : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
-                                    leftWidget = GXDIndexPriorityFrame;
+                                    leftWidget = GXDIndexPriorityMenu;
                                     leftOffset = 20;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
-                                    topWidget = GXDIndexPriorityFrame;
+                                    topWidget = GXDIndexPriorityMenu;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                 }
                                 {
-                                  CodedFrame = YesNoFrame : mgiOption;
+                                  CodedMenu = YesNoMenu : mgiOption;
+                                  Group: Widget
+                                    labelString = "Coded?";
+                                    subMenuId = CodedPulldown;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
-                                    leftWidget = GXDIndexConditionalMutantsFrame;
+                                    leftWidget = GXDIndexConditionalMutantsMenu;
                                     leftOffset = 20;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
-                                    topWidget = GXDIndexConditionalMutantsFrame;
+                                    topWidget = GXDIndexConditionalMutantsMenu;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                      {
-                                        CodedMenu : YesNoMenu = XmOptionMenu;
-                                        Group: Widget
-                                          subMenuId = CodedPulldown;
-                                          labelString = "Coded?";
-                                      }
                                       Popups:
                                       {
                                         CodedPulldown : YesNoPulldown = OptionPulldown;
@@ -2287,7 +2278,10 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  IndexNoteFrame = NoteFrame : mgiOption;
+                                  IndexNoteMenu = NoteMenu : mgiOption;
+                                  Group: Widget
+                                    labelString = "Pick List of Index Notes";
+                                    subMenuId = IndexNotePulldown;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
                                     leftWidget = CVStagingNote;
@@ -2298,12 +2292,6 @@ Shift<Key>Tab: prev-tab-group()
                                     resizable = true;
                                     leftOffset = 5;
                                     topOffset = 5;
-                                      {
-                                        IndexNoteMenu : NoteMenu = XmOptionMenu;
-                                        Group: Widget
-                                          subMenuId = IndexNotePulldown;
-                                          labelString = "Pick List of Index Notes";
-                                      }
                                       Popups:
                                       {
                                         IndexNotePulldown : NotePulldown = OptionPulldown : mgiOption;
@@ -2981,7 +2969,7 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  AssayTypeFrame = AssayTypeFrame : mgiOption;
+                                  AssayTypeMenu = AssayTypeMenu : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = mgiCitation;
@@ -2996,10 +2984,10 @@ Shift<Key>Tab: prev-tab-group()
                                   mgiMarker = mgiMarker : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
-                                    leftWidget = AssayTypeFrame;
+                                    leftWidget = AssayTypeMenu;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
-                                    topWidget = AssayTypeFrame;
+                                    topWidget = AssayTypeMenu;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     leftOffset = 5;
@@ -3417,16 +3405,11 @@ Shift<Key>Tab: prev-tab-group()
                                         Delete = TablePush;
                                       }
                                       {
-                                        AccSourceFrame = AccSourceFrame;
+                                        AccSourceMenu = AccSourceMenu;
                                         Group: Widget
                                           managed = False;
                                         Group: User
                                           defaultOption = MGI;
-                                            {
-                                              AccSourceMenu = XmOptionMenu;
-                                              Group: User
-                                                defaultOption = MGI;
-                                            }
                                             Popups:
                                             {
                                               AccSourcePulldown = OptionPulldown;
@@ -3916,7 +3899,7 @@ Shift<Key>Tab: prev-tab-group()
                   resizable = true;
               }
               {
-                PrepTypeFrame = PrepTypeFrame : mgiOption;
+                PrepTypeMenu = PrepTypeMenu : mgiOption;
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
                   leftWidget = label;
@@ -3928,37 +3911,37 @@ Shift<Key>Tab: prev-tab-group()
                   resizable = true;
               }
               {
-                SenseFrame = SenseFrame : mgiOption;
+                SenseMenu = SenseMenu : mgiOption;
                 Group: Constraint
                   leftAttachment = attach_widget;
-                  leftWidget = PrepTypeFrame;
+                  leftWidget = PrepTypeMenu;
                   rightAttachment = attach_none;
                   topAttachment = attach_opposite_widget;
-                  topWidget = PrepTypeFrame;
+                  topWidget = PrepTypeMenu;
                   bottomAttachment = attach_none;
                   resizable = true;
                   leftOffset = 15;
               }
               {
-                LabelTypeFrame = LabelTypeFrame : mgiOption;
+                LabelTypeMenu = LabelMenu : mgiOption;
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
-                  leftWidget = PrepTypeFrame;
+                  leftWidget = PrepTypeMenu;
                   rightAttachment = attach_none;
                   topAttachment = attach_widget;
-                  topWidget = PrepTypeFrame;
+                  topWidget = PrepTypeMenu;
                   bottomAttachment = attach_none;
                   resizable = true;
                   topOffset = 5;
               }
               {
-                VisualizationFrame = VisualizationFrame : mgiOption;
+                VisualizationMenu = VisualizationMenu : mgiOption;
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
-                  leftWidget = LabelTypeFrame;
+                  leftWidget = LabelTypeMenu;
                   rightAttachment = attach_none;
                   topAttachment = attach_widget;
-                  topWidget = LabelTypeFrame;
+                  topWidget = LabelTypeMenu;
                   bottomAttachment = attach_form;
                   resizable = true;
                   topOffset = 5;
@@ -3970,10 +3953,10 @@ Shift<Key>Tab: prev-tab-group()
                   userDefinedAttributes = "markerTableID:Int(Int)=\"133\"\n";
                 Group: Constraint
                   leftAttachment = attach_widget;
-                  leftWidget = SenseFrame;
+                  leftWidget = SenseMenu;
                   rightAttachment = attach_none;
                   topAttachment = attach_opposite_widget;
-                  topWidget = SenseFrame;
+                  topWidget = SenseMenu;
                   bottomAttachment = attach_none;
                   resizable = true;
                   leftOffset = 20;
@@ -4036,7 +4019,7 @@ Shift<Key>Tab: prev-tab-group()
                   resizable = true;
               }
               {
-                SecondaryFrame = SecondaryFrame : mgiOption;
+                SecondaryMenu = SecondaryMenu : mgiOption;
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
                   leftWidget = label;
@@ -4048,13 +4031,13 @@ Shift<Key>Tab: prev-tab-group()
                   resizable = true;
               }
               {
-                LabelTypeFrame = LabelTypeFrame : mgiOption;
+                LabelTypeMenu = LabelMenu : mgiOption;
                 Group: Constraint
                   leftAttachment = attach_widget;
-                  leftWidget = SecondaryFrame;
+                  leftWidget = SecondaryMenu;
                   rightAttachment = attach_none;
                   topAttachment = attach_opposite_widget;
-                  topWidget = SecondaryFrame;
+                  topWidget = SecondaryMenu;
                   bottomAttachment = attach_none;
                   resizable = true;
                   leftOffset = 10;
@@ -4066,10 +4049,10 @@ Shift<Key>Tab: prev-tab-group()
                   userDefinedAttributes = "markerTableID:Int=\"202\"\n";
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
-                  leftWidget = SecondaryFrame;
+                  leftWidget = SecondaryMenu;
                   rightAttachment = attach_none;
                   topAttachment = attach_widget;
-                  topWidget = SecondaryFrame;
+                  topWidget = SecondaryMenu;
                   topOffset = 5;
                   bottomAttachment = attach_none;
                   resizable = true;
@@ -4115,7 +4098,7 @@ Shift<Key>Tab: prev-tab-group()
                 ID = ID : mgiDataTypes;
               }
               {
-                GXDReporterGeneFrame = GXDReporterGeneFrame : mgiOption;
+                GXDReporterGeneMenu = GXDReporterGeneMenu : mgiOption;
                 Group: Constraint
                   leftAttachment = attach_form;
                   rightAttachment = attach_none;
@@ -4124,14 +4107,14 @@ Shift<Key>Tab: prev-tab-group()
                   resizable = true;
               }
               {
-                GXDKnockInFrame = GXDKnockInFrame : mgiOption;
+                GXDKnockInMenu = GXDKnockInMenu : mgiOption;
                 Group: Constraint
                   leftAttachment = attach_widget;
-                  leftWidget = GXDReporterGeneFrame;
+                  leftWidget = GXDReporterGeneMenu;
                   leftOffset = 5;
                   rightAttachment = attach_none;
                   topAttachment = attach_opposite_widget;
-                  topWidget = GXDReporterGeneFrame;
+                  topWidget = GXDReporterGeneMenu;
                   bottomAttachment = attach_none;
                   resizable = true;
               }
@@ -4409,7 +4392,7 @@ Shift<Key>Tab: prev-tab-group()
                                           managed = False;
                                       }
                                       {
-                                        AccSourceFrame = AccSourceFrame;
+                                        AccSourceMenu = AccSourceMenu;
                                         Group: Widget
                                           managed = False;
                                             Popups:

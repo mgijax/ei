@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Wed Apr  9 10:47:38 2014";
+      lastWritten = "Mon Mar 24 12:23:59 2014";
       copy = false;
       inCreateMenu = true;
         {
@@ -615,9 +615,10 @@ Module: MGI
                     }
               }
               {
-                SourceSegmentTypeFrame = SegmentTypeFrame : mgiOption;
+                SourceSegmentTypeMenu = SegmentTypeMenu : mgiOption;
                 Group: Widget
                   managed = False;
+                  subMenuId = SourceSegmentTypePulldown;
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
                   leftWidget = Library;
@@ -627,41 +628,32 @@ Module: MGI
                   bottomAttachment = attach_none;
                   resizable = true;
                   topOffset = 5;
-                    {
-                      SourceSegmentTypeMenu : SegmentTypeMenu = XmOptionMenu;
-                      Group: Widget
-                        subMenuId = SourceSegmentTypePulldown;
-                    }
                     Popups:
                     {
                       SourceSegmentTypePulldown : SegmentTypePulldown = OptionPulldown;
                     }
               }
               {
-                SourceVectorTypeFrame = VectorTypeFrame : mgiOption;
+                SourceVectorTypeMenu = VectorTypeMenu : mgiOption;
                 Group: Widget
                   managed = False;
+                  subMenuId = SourceVectorTypePulldown;
                 Group: Constraint
                   leftAttachment = attach_widget;
-                  leftWidget = SourceSegmentTypeFrame;
+                  leftWidget = SourceSegmentTypeMenu;
                   leftOffset = 5;
                   rightAttachment = attach_none;
                   topAttachment = attach_opposite_widget;
-                  topWidget = SourceSegmentTypeFrame;
+                  topWidget = SourceSegmentTypeMenu;
                   bottomAttachment = attach_none;
                   resizable = true;
-                    {
-                      SourceVectorTypeMenu : VectorTypeMenu = XmOptionMenu;
-                      Group: Widget
-                        subMenuId = SourceVectorTypePulldown;
-                    }
                     Popups:
                     {
                       SourceVectorTypePulldown : VectorTypePulldown = OptionPulldown;
                     }
               }
               {
-                ProbeOrganismFrame = ProbeOrganismFrame : mgiOption;
+                ProbeOrganismMenu = ProbeOrganismMenu : mgiOption;
                 Group: Constraint
                   leftAttachment = attach_form;
                   leftOffset = 5;
@@ -675,10 +667,10 @@ Module: MGI
                 Strain = Strain : mgiDataTypes;
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
-                  leftWidget = ProbeOrganismFrame;
+                  leftWidget = ProbeOrganismMenu;
                   rightAttachment = attach_none;
                   topAttachment = attach_widget;
-                  topWidget = ProbeOrganismFrame;
+                  topWidget = ProbeOrganismMenu;
                   bottomAttachment = attach_none;
                   resizable = true;
                     {
@@ -759,7 +751,7 @@ Module: MGI
                     }
               }
               {
-                AgeFrame = AgeFrame : mgiOption;
+                AgeMenu = AgeMenu : mgiOption;
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
                   leftWidget = CellLine;
@@ -774,10 +766,10 @@ Module: MGI
                 Age = CharText : mgiDataTypes;
                 Group: Constraint
                   leftAttachment = attach_widget;
-                  leftWidget = AgeFrame;
+                  leftWidget = AgeMenu;
                   rightAttachment = attach_none;
                   topAttachment = attach_opposite_widget;
-                  topWidget = AgeFrame;
+                  topWidget = AgeMenu;
                   bottomAttachment = attach_none;
                   resizable = true;
                   topOffset = "-5";
@@ -794,15 +786,15 @@ Module: MGI
                     }
               }
               {
-                GenderFrame = GenderFrame : mgiOption;
+                GenderMenu = GenderMenu : mgiOption;
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
-                  leftWidget = AgeFrame;
+                  leftWidget = AgeMenu;
                   rightAttachment = attach_none;
                   topAttachment = attach_widget;
                   bottomAttachment = attach_form;
                   resizable = true;
-                  topWidget = AgeFrame;
+                  topWidget = AgeMenu;
                   topOffset = 5;
                   bottomOffset = 5;
               }
@@ -815,7 +807,7 @@ Module: MGI
                   rightAttachment = attach_form;
                   rightOffset = 50;
                   topAttachment = attach_opposite_widget;
-                  topWidget = GenderFrame;
+                  topWidget = GenderMenu;
                   bottomAttachment = attach_none;
                   resizable = true;
               }
@@ -827,7 +819,7 @@ Module: MGI
                   leftAttachment = attach_form;
                   rightAttachment = attach_none;
                   topAttachment = attach_widget;
-                  topWidget = GenderFrame;
+                  topWidget = GenderMenu;
                   topOffset = 10;
                   bottomAttachment = attach_none;
                   resizable = true;
@@ -871,7 +863,7 @@ Module: MGI
                                   ID = ID;
                                 }
                                 {
-                                  ControlledVocabFrame = ControlledVocabFrame : mgiOption;
+                                  ControlledVocabMenu = ControlledVocabMenu : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_form;
                                     leftOffset = 5;
@@ -903,7 +895,7 @@ Module: MGI
                                     leftOffset = 5;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = ControlledVocabFrame;
+                                    topWidget = ControlledVocabMenu;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -921,7 +913,7 @@ Module: MGI
                                       }
                                 }
                                 {
-                                  RNAAssayFrame = RNAAssayFrame : mgiOption;
+                                  RNAAssayMenu = RNAAssayMenu : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = Name;
@@ -933,13 +925,13 @@ Module: MGI
                                     resizable = true;
                                 }
                                 {
-                                  GelAssayFrame = GelAssayFrame : mgiOption;
+                                  GelAssayMenu = GelAssayMenu : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = RNAAssayFrame;
+                                    leftWidget = RNAAssayMenu;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = RNAAssayFrame;
+                                    topWidget = RNAAssayMenu;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -951,7 +943,7 @@ Module: MGI
                                     leftWidget = Name;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = GelAssayFrame;
+                                    topWidget = GelAssayMenu;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -968,7 +960,10 @@ Module: MGI
                                       }
                                 }
                                 {
-                                  AllowOnlyOneFrame = YesNoFrame : mgiOption;
+                                  AllowOnlyOneMenu = YesNoMenu : mgiOption;
+                                  Group: Widget
+                                    subMenuId = AllowOnlyOnePulldown;
+                                    labelString = "Allow Only One";
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     rightAttachment = attach_none;
@@ -982,26 +977,23 @@ Module: MGI
                                     vip_x = 80;
                                     vip_y = 4100;
                                     vipComment = "";
-                                      {
-                                        AllowOnlyOneMenu : YesNoMenu = XmOptionMenu;
-                                        Group: Widget
-                                          subMenuId = AllowOnlyOnePulldown;
-                                          labelString = "Allow Only One";
-                                        Group: User
-                                          defaultOption = Yes;
-                                      }
+                                  Group: User
+                                    defaultOption = Yes;
                                       Popups:
                                       {
                                         AllowOnlyOnePulldown : YesNoPulldown = OptionPulldown;
                                       }
                                 }
                                 {
-                                  PrivateFrame = YesNoFrame : mgiOption;
+                                  PrivateMenu = YesNoMenu : mgiOption;
+                                  Group: Widget
+                                    subMenuId = PrivatePulldown;
+                                    labelString = Private;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = AllowOnlyOneFrame;
+                                    topWidget = AllowOnlyOneMenu;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     leftWidget = Name;
@@ -1010,27 +1002,21 @@ Module: MGI
                                     vip_x = 80;
                                     vip_y = 4100;
                                     vipComment = "";
-                                      {
-                                        PrivateMenu : YesNoMenu = XmOptionMenu;
-                                        Group: Widget
-                                          subMenuId = PrivatePulldown;
-                                          labelString = Private;
-                                        Group: User
-                                          defaultOption = No;
-                                      }
+                                  Group: User
+                                    defaultOption = No;
                                       Popups:
                                       {
                                         PrivatePulldown : YesNoPulldown = OptionPulldown;
                                       }
                                 }
                                 {
-                                  MGITypeFrame = MGITypeFrame : mgiOption;
+                                  MGITypeMenu = MGITypeMenu : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = Name;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = PrivateFrame;
+                                    topWidget = PrivateMenu;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -1335,16 +1321,16 @@ Module: MGI
                                         EditOrder = toggle : mgiDataTypes;
                                       }
                                       {
-                                        AllelePairStateFrame = AllelePairStateFrame : mgiOption;
+                                        AllelePairStateMenu = AllelePairStateMenu : mgiOption;
                                         Group: Constraint
                                           leftAttachment = attach_none;
                                           rightAttachment = attach_widget;
-                                          rightWidget = AlleleCompoundFrame;
+                                          rightWidget = AlleleCompoundMenu;
                                           rightOffset = 2;
                                           topAttachment = attach_opposite_widget;
                                           bottomAttachment = attach_none;
                                           resizable = true;
-                                          topWidget = AlleleCompoundFrame;
+                                          topWidget = AlleleCompoundMenu;
                                             Popups:
                                             {
                                               AllelePairStatePulldown = OptionPulldown;
@@ -1355,7 +1341,7 @@ Module: MGI
                                             }
                                       }
                                       {
-                                        AlleleCompoundFrame = AlleleCompoundFrame : mgiOption;
+                                        AlleleCompoundMenu = AlleleCompoundMenu : mgiOption;
                                         Group: Constraint
                                           leftAttachment = attach_none;
                                           rightAttachment = attach_opposite_widget;
@@ -1376,7 +1362,10 @@ Module: MGI
                                       }
                                 }
                                 {
-                                  ConditionalFrame = YesNoFrame : mgiOption;
+                                  ConditionalMenu = YesNoMenu : mgiOption;
+                                  Group: Widget
+                                    labelString = "Conditionally Targeted";
+                                    subMenuId = ConditionalPulldown;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = AllelePair;
@@ -1388,28 +1377,20 @@ Module: MGI
                                     resizable = true;
                                   Group: User
                                     defaultOption = No;
-                                      {
-                                        ConditionalMenu : YesNoMenu = XmOptionMenu;
-                                        Group: Widget
-                                          subMenuId = ConditionalPulldown;
-                                          labelString = "Conditionally Targeted";
-                                        Group: User
-                                          defaultOption = No;
-                                      }
                                       Popups:
                                       {
                                         ConditionalPulldown : YesNoPulldown = OptionPulldown;
                                       }
                                 }
                                 {
-                                  GenotypeExistsAsFrame = GenotypeExistsAsFrame : mgiOption;
+                                  GenotypeExistsAsMenu = GenotypeExistsAsMenu : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
-                                    leftWidget = ConditionalFrame;
+                                    leftWidget = ConditionalMenu;
                                     leftOffset = 25;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
-                                    topWidget = ConditionalFrame;
+                                    topWidget = ConditionalMenu;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                 }
@@ -1417,10 +1398,10 @@ Module: MGI
                                   CombinationNote1 = Notes : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = ConditionalFrame;
+                                    leftWidget = ConditionalMenu;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = ConditionalFrame;
+                                    topWidget = ConditionalMenu;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     topOffset = 10;
@@ -1444,7 +1425,7 @@ Module: MGI
                                     resizePolicy = resize_any;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = ConditionalFrame;
+                                    leftWidget = ConditionalMenu;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = CombinationNote1;
@@ -1702,14 +1683,9 @@ Module: MGI
                                           managed = False;
                                       }
                                       {
-                                        AccSourceFrame = AccSourceFrame : mgiOption;
+                                        AccSourceMenu = AccSourceMenu : mgiOption;
                                         Group: Widget
                                           managed = False;
-                                            {
-                                              AccSourceMenu = XmOptionMenu;
-                                              Group: User
-                                                defaultOption = MGI;
-                                            }
                                       }
                                 }
                                 {
@@ -1783,7 +1759,7 @@ Module: MGI
                                       }
                                 }
                                 {
-                                  ACCLogicalFrame = ACCLogicalFrame : mgiOption;
+                                  ACCLogicalMenu = ACCLogicalMenu : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
                                     leftWidget = Name;
@@ -1802,24 +1778,21 @@ Module: MGI
                                       }
                                 }
                                 {
-                                  ACCPrivateFrame = YesNoFrame : mgiOption;
+                                  ACCPrivateMenu = YesNoMenu : mgiOption;
+                                  Group: Widget
+                                    subMenuId = ACCPrivatePulldown;
+                                    labelString = "Accession IDs Private?";
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = ACCLogicalFrame;
+                                    leftWidget = ACCLogicalMenu;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = ACCLogicalFrame;
+                                    topWidget = ACCLogicalMenu;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                      {
-                                        AccPrivateMenu : YesNoMenu = XmOptionMenu;
-                                        Group: Widget
-                                          subMenuId = ACCPrivatePulldown;
-                                          labelString = "Accession IDs Private?";
-                                        Group: User
-                                          defaultOption = No;
-                                      }
+                                  Group: User
+                                    defaultOption = No;
                                       Popups:
                                       {
                                         ACCPrivatePulldown : YesNoPulldown = OptionPulldown;
@@ -1832,7 +1805,7 @@ Module: MGI
                                     leftWidget = Name;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = ACCPrivateFrame;
+                                    topWidget = ACCPrivateMenu;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -1955,16 +1928,11 @@ Module: MGI
                                     targetColumn = 8;
                                 }
                                 {
-                                  YesNoFrame = YesNoFrame : mgiOption;
+                                  YesNoMenu = YesNoMenu : mgiOption;
+                                  Group: Widget
+                                    labelString = "Obsolete?";
                                   Group: User
                                     defaultOption = No;
-                                      {
-                                        YesNoMenu = XmOptionMenu;
-                                        Group: Widget
-                                          labelString = "Obsolete?";
-                                        Group: User
-                                          defaultOption = No;
-                                      }
                                       Popups:
                                       {
                                         YesNoPulldown = OptionPulldown;
@@ -2008,7 +1976,7 @@ Module: MGI
                                   ID = ID : mgiDataTypes;
                                 }
                                 {
-                                  TranslationTypeFrame = TranslationTypeFrame : mgiOption;
+                                  TranslationTypeMenu = TranslationTypeMenu : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_form;
                                     leftOffset = 5;
@@ -2019,14 +1987,14 @@ Module: MGI
                                     resizable = true;
                                 }
                                 {
-                                  MGITypeFrame = MGITypeFrame : mgiOption;
+                                  MGITypeMenu = MGITypeMenu : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
-                                    leftWidget = TranslationTypeFrame;
+                                    leftWidget = TranslationTypeMenu;
                                     leftOffset = 20;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
-                                    topWidget = TranslationTypeFrame;
+                                    topWidget = TranslationTypeMenu;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                       Popups:
@@ -2037,12 +2005,12 @@ Module: MGI
                                       }
                                 }
                                 {
-                                  SortFrame = SortFrame : mgiOption;
+                                  SortMenu = SortMenu : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_none;
                                     rightAttachment = attach_form;
                                     topAttachment = attach_opposite_widget;
-                                    topWidget = MGITypeFrame;
+                                    topWidget = MGITypeMenu;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     rightOffset = 5;
@@ -2073,10 +2041,10 @@ Module: MGI
                                     managed = False;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
-                                    leftWidget = MGITypeFrame;
+                                    leftWidget = MGITypeMenu;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
-                                    topWidget = MGITypeFrame;
+                                    topWidget = MGITypeMenu;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     leftOffset = 20;
@@ -2096,7 +2064,7 @@ Module: MGI
                                   Translation = OrderedTable : mgiTable;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = TranslationTypeFrame;
+                                    leftWidget = TranslationTypeMenu;
                                     rightAttachment = attach_form;
                                     topAttachment = attach_widget;
                                     topWidget = FindTerm2;
@@ -2144,12 +2112,12 @@ Module: MGI
                                     activateCallback = "D:FindTerm(column = 5),\nD:GoHome";
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = TranslationTypeFrame;
+                                    leftWidget = TranslationTypeMenu;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    topWidget = TranslationTypeFrame;
+                                    topWidget = TranslationTypeMenu;
                                     topOffset = 5;
                                 }
                                 {
@@ -2354,7 +2322,7 @@ Module: MGI
                                   ID = ID : mgiDataTypes;
                                 }
                                 {
-                                  UserRoleFrame = UserRoleFrame : mgiOption;
+                                  UserRoleMenu = UserRoleMenu : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_form;
                                     leftOffset = 5;
@@ -2370,7 +2338,7 @@ Module: MGI
                                     leftAttachment = attach_form;
                                     rightAttachment = attach_form;
                                     topAttachment = attach_widget;
-                                    topWidget = UserRoleFrame;
+                                    topWidget = UserRoleMenu;
                                     topOffset = 10;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -2637,7 +2605,7 @@ Module: MGI
                                       }
                                 }
                                 {
-                                  MGITypeMenu = MGITypeFrame : mgiOption;
+                                  MGITypeMenu = MGITypeMenu : mgiOption;
                                   Group: Widget
                                     labelString = "Image used in\n(search only)";
                                     managed = False;
@@ -2680,7 +2648,7 @@ Module: MGI
                                       }
                                 }
                                 {
-                                  ImageClassFrame = ImageClassFrame : mgiOption;
+                                  ImageClassMenu = ImageClassMenu : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
                                     leftWidget = FigureLabel;
@@ -2876,7 +2844,7 @@ Module: MGI
                                     rightOffset = 5;
                                 }
                                 {
-                                  ImageTypeFrame = ImageTypeFrame : mgiOption;
+                                  ImageTypeMenu = ImageTypeMenu : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     rightAttachment = attach_none;
@@ -2895,10 +2863,10 @@ Module: MGI
                                     orientation = horizontal;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = ImageTypeFrame;
+                                    leftWidget = ImageTypeMenu;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = ImageTypeFrame;
+                                    topWidget = ImageTypeMenu;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -3094,12 +3062,9 @@ Module: MGI
                                         Delete = TablePush;
                                       }
                                       {
-                                        AccSourceFrame = AccSourceFrame;
-                                            {
-                                              AccSourceMenu = XmOptionMenu;
-                                              Group: User
-                                                defaultOption = MGIImage;
-                                            }
+                                        AccSourceMenu = AccSourceMenu;
+                                        Group: User
+                                          defaultOption = MGIImage;
                                             Popups:
                                             {
                                               AccSourcePulldown = OptionPulldown;

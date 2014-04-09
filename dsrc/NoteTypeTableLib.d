@@ -113,7 +113,7 @@ rules:
 
 	  (void) mgi_dbclose(dbproc);
 
-	  if (top->NoteTypeMenu.subMenuId.numChildren = 1) then
+	  if (top->NoteTypeMenu.subMenuId.numChildren = 0) then
 	    InitOptionMenu.option := top->NoteTypeMenu;
 	    send(InitOptionMenu, 0);
 	  end if;

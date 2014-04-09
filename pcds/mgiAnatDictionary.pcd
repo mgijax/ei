@@ -1,8 +1,8 @@
 Module: mgiAnatDictionary
 {
       autoCuil = False;
-      release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Fri Apr  4 08:18:49 2014";
+      release = "TeleUSE v3.2.3 / Solaris 8";
+      lastWritten = "Thu Jan 30 08:27:47 2014";
         {
           DictionaryModule = Module : MGI;
           Group: Widget
@@ -195,7 +195,7 @@ Module: mgiAnatDictionary
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = stagesText;
-                                    topOffset = 20;
+                                    topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                       {
@@ -273,8 +273,10 @@ Module: mgiAnatDictionary
                                       }
                                 }
                                 {
-                                  MGIAddedFrame = YesNoFrame : mgiOption;
+                                  MGIAddedMenu = YesNoMenu : mgiOption;
                                   Group: Widget
+                                    subMenuId = MGIAddedPulldown;
+                                    labelString = "MGI Added?";
                                     sensitive = False;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
@@ -286,19 +288,13 @@ Module: mgiAnatDictionary
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     topOffset = 5;
-                                      {
-                                        MGIAddedMenu : YesNoMenu = XmOptionMenu;
-                                        Group: Widget
-                                          labelString = "MGI Added?";
-                                          subMenuId = MGIAddedPulldown;
-                                      }
                                       Popups:
                                       {
                                         MGIAddedPulldown : YesNoPulldown = OptionPulldown;
                                       }
                                 }
                                 {
-                                  printStopFrame = printStopFrame : mgiAnatDictionary;
+                                  printStopMenu = printStopMenu : mgiAnatDictionary;
                                   Group: Widget
                                     sensitive = False;
                                   Group: Constraint
@@ -307,36 +303,47 @@ Module: mgiAnatDictionary
                                     topAttachment = attach_widget;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    topWidget = MGIAddedFrame;
+                                    topWidget = MGIAddedMenu;
                                     topOffset = 5;
-                                    leftWidget = MGIAddedFrame;
+                                    leftWidget = MGIAddedMenu;
                                 }
                                 {
-                                  ADSystemFrame = ADSystemFrame : mgiOption;
+                                  ADSystemMenu = ADSystemMenu : mgiOption;
                                   Group: Widget
                                     sensitive = False;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = printStopFrame;
+                                    leftWidget = printStopMenu;
                                     rightAttachment = attach_form;
                                     topAttachment = attach_widget;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    topWidget = printStopFrame;
+                                    topWidget = printStopMenu;
                                     topOffset = 5;
                                     rightOffset = 5;
                                 }
                                 {
-                                  inheritSystemFrame = inheritSystemFrame : mgiAnatDictionary;
+                                  inheritSystemMenu = YesNoMenu : mgiOption;
+                                  Group: Widget
+                                    subMenuId = inheritSystemPulldown;
+                                    labelString = "Inherit System Term?";
+                                    sensitive = False;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    rightAttachment = attach_none;
+                                    leftWidget = ADSystemMenu;
+                                    rightAttachment = attach_form;
                                     topAttachment = attach_widget;
-                                    topWidget = ADSystemFrame;
+                                    topWidget = ADSystemMenu;
+                                    topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    leftWidget = ADSystemFrame;
-                                    topOffset = 5;
+                                    rightOffset = 5;
+                                  Group: User
+                                    defaultOption = Yes;
+                                      Popups:
+                                      {
+                                        inheritSystemPulldown : YesNoPulldown = OptionPulldown;
+                                      }
                                 }
                                 {
                                   structureNote = Notes : mgiDataTypes;
@@ -541,12 +548,9 @@ Module: mgiAnatDictionary
                                         Delete = TablePush;
                                       }
                                       {
-                                        AccSourceFrame = AccSourceFrame : mgiOption;
-                                            {
-                                              AccSourceMenu = XmOptionMenu;
-                                              Group: User
-                                                defaultOption = AdultMouseAntatomy;
-                                            }
+                                        AccSourceMenu = AccSourceMenu : mgiOption;
+                                        Group: User
+                                          defaultOption = AdultMouseAntatomy;
                                             Popups:
                                             {
                                               AccSourcePulldown = OptionPulldown;
@@ -1035,21 +1039,6 @@ Module: mgiAnatDictionary
                                           xrtGearAlignerAlignment = aligner_center;
                                       }
                                 }
-                                {
-                                  mgiAliasTable = aliasTable : mgiAnatDictionary;
-                                }
-                                {
-                                  printStopMenu = printStopFrame : mgiAnatDictionary;
-                                      {
-                                        OptionMenu = XmOptionMenu;
-                                      }
-                                }
-                                {
-                                  inheritSystemMenu = inheritSystemFrame : mgiAnatDictionary;
-                                      {
-                                        OptionMenu = XmOptionMenu;
-                                      }
-                                }
                           }
                     }
               }
@@ -1229,7 +1218,7 @@ Module: mgiAnatDictionary
                           }
                     }
                     {
-                      printStopMenu = printStopFrame : mgiAnatDictionary;
+                      printStopMenu = printStopMenu : mgiAnatDictionary;
                       Group: Constraint
                         leftAttachment = attach_widget;
                         leftWidget = mgiAliasTable;
@@ -1239,9 +1228,11 @@ Module: mgiAnatDictionary
                         bottomAttachment = attach_none;
                         resizable = true;
                         rightOffset = 5;
+                      Group: User
+                        defaultOption = Yes;
                     }
                     {
-                      inheritSystemMenu = inheritSystemFrame : mgiAnatDictionary;
+                      inheritSystemMenu = inheritSystemMenu : mgiAnatDictionary;
                       Group: Constraint
                         leftAttachment = attach_widget;
                         leftWidget = mgiAliasTable;
@@ -1253,7 +1244,7 @@ Module: mgiAnatDictionary
                         rightOffset = 5;
                     }
                     {
-                      ADSystemMenu = ADSystemFrame : mgiOption;
+                      ADSystemMenu = ADSystemMenu : mgiOption;
                       Group: Constraint
                         leftAttachment = attach_widget;
                         leftWidget = mgiAliasTable;
@@ -1307,38 +1298,28 @@ Module: mgiAnatDictionary
               }
         }
         {
-          printStopFrame = YesNoFrame : mgiOption;
+          printStopMenu = YesNoMenu : mgiOption;
+          Group: Widget
+            labelString = "PrintStop Set?";
+            subMenuId = printStopPulldown;
           Group: Control
             vip_x = 175;
             vip_y = 140;
-              {
-                printStopMenu : YesNoMenu = XmOptionMenu;
-                Group: Widget
-                  subMenuId = printStopPulldown;
-                  labelString = "PrintStop Set?";
-                Group: User
-                  defaultOption = Yes;
-              }
               Popups:
               {
                 printStopPulldown : YesNoPulldown = OptionPulldown;
               }
         }
         {
-          inheritSystemFrame = YesNoFrame : mgiOption;
+          inheritSystemMenu = YesNoMenu : mgiOption;
           Group: Widget
-            sensitive = False;
+            subMenuId = inheritSystemPulldown;
+            labelString = "Inherit System Term?";
           Group: Control
             vip_x = 177;
             vip_y = 208;
-              {
-                inheritSystemMenu : YesNoMenu = XmOptionMenu;
-                Group: Widget
-                  subMenuId = inheritSystemPulldown;
-                  labelString = "Inherit System Term?";
-                Group: User
-                  defaultOption = Yes;
-              }
+          Group: User
+            defaultOption = Yes;
               Popups:
               {
                 inheritSystemPulldown : YesNoPulldown = OptionPulldown;

@@ -110,7 +110,7 @@ rules:
 
 	  (void) mgi_dbclose(dbproc);
 
-	  if (top->StrainAlleleTypeMenu.subMenuId.numChildren = 1) then
+	  if (top->StrainAlleleTypeMenu.subMenuId.numChildren = 0) then
 	    InitOptionMenu.option := top->StrainAlleleTypeMenu;
 	    send(InitOptionMenu, 0);
 	  end if;
