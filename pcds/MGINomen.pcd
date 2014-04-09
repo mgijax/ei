@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Thu Apr  3 10:27:46 2014";
+      lastWritten = "Wed Apr  9 10:50:44 2014";
         {
           NomenModule = Module : MGI;
           Group: Control

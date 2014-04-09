@@ -141,7 +141,7 @@ rules:
 	  --
 	  -- load the drop-down list
 	  --
-	  if (top->ReferenceTypeMenu.subMenuId.numChildren = 0) then
+	  if (top->ReferenceTypeMenu.subMenuId.numChildren = 1) then
 	    InitOptionMenu.option := top->ReferenceTypeMenu;
 	    send(InitOptionMenu, 0);
 	  end if;

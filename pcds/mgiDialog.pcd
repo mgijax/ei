@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Fri Apr  4 11:03:59 2014";
+      lastWritten = "Wed Apr  9 10:48:39 2014";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget

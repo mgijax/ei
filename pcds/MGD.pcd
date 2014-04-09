@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Tue Apr  8 11:06:34 2014";
+      lastWritten = "Wed Apr  9 11:10:23 2014";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -10342,6 +10342,8 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         ReviewFrame = YesNoFrame : mgiOption;
+                                        Group: Widget
+                                          managed = False;
                                             Popups:
                                             {
                                               ReviewPulldown : YesNoPulldown = OptionPulldown : mgiOption;
@@ -10429,6 +10431,9 @@ Shift<Key>Tab: prev-tab-group()
                                                 tableForm = Genotype;
                                                 tableOption = 4;
                                                 tableOptionKey = 3;
+                                                  {
+                                                    SearhAllNoShow = SearhAllNoShow : mgiOption;
+                                                  }
                                             }
                                       }
                                       {
@@ -17213,8 +17218,8 @@ Shift<Key>Tab: prev-tab-group()
                                     leftWidget = VocAnnotTypeFrame;
                                     rightAttachment = attach_form;
                                     topAttachment = attach_widget;
-                                    topWidget = mgiAccession;
-                                    topOffset = 45;
+                                    topWidget = GoAnnotSortFrame;
+                                    topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                       {
@@ -17407,13 +17412,15 @@ Shift<Key>Tab: prev-tab-group()
                                   Group: Widget
                                     orientation = horizontal;
                                   Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = ReferenceGeneFrame;
+                                    leftAttachment = attach_widget;
+                                    leftWidget = GoAnnotSortFrame;
                                     rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
+                                    topAttachment = attach_opposite_widget;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    topWidget = ReferenceGeneFrame;
+                                    topWidget = GoAnnotSortFrame;
+                                    leftOffset = 5;
+                                    topOffset = "-5";
                                 }
                                 {
                                   CompleteFrame = YesNoFrame : mgiOption;
