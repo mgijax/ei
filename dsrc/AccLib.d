@@ -738,6 +738,12 @@ rules:
 	  accName : string;
 	  i : integer;
 
+	  -- some AccSourceMenu/AccSourceMenuPulldown only have one child
+	  -- in which case the source.menuHistory is nil
+	  if (source.menuHistory = nil) then
+	    return;
+	  end if;
+
           logicalKey := mgi_tblGetCell(table, row, table.logicalKey);
           accName := mgi_tblGetCell(table, row, table.accName);
 

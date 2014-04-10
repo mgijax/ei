@@ -1340,7 +1340,6 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         AccSourceFrame = AccSourceFrame;
                                         Group: User
-                                          defaultOption = ATCC;
                                             {
                                               AccSourceMenu = XmOptionMenu;
                                               Group: User

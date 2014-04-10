@@ -375,16 +375,16 @@ rules:
 
 	  top := create widget("AssayModule", nil, mgi);
 
+          ab := INITIALLY.launchedFrom;
+          ab.sensitive := false;
+	  top.show;
+
 	  -- Set Permissions
 	  SetPermissions.source_widget := top;
 	  send(SetPermissions, 0);
 
 	  -- Build Dynamic GUI Components
 	  send(BuildDynamicComponents, 0);
-
-          ab := INITIALLY.launchedFrom;
-          ab.sensitive := false;
-	  top.show;
 
 	  send(Init, 0);
 
