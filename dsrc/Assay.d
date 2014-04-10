@@ -544,9 +544,9 @@ rules:
 	  end if;
 
           imageList.cmd := imageCmd + " " + refKey + "\norder by paneLabel";
-	  (void) mgi_writeLog("\nSTART: imageList\n");
-	  (void) mgi_writeLog(imageList.cmd);
-	  (void) mgi_writeLog("\nEND: imageList\n\n");
+	  --(void) mgi_writeLog("\nSTART: imageList\n");
+	  --(void) mgi_writeLog(imageList.cmd);
+	  --(void) mgi_writeLog("\nEND: imageList\n\n");
 
 	  -- Load the Image list
 	  refCount := mgi_sql1(assay_imagecount(refKey));
@@ -574,8 +574,6 @@ rules:
 	    imageKey := mgi_sql1(assay_imagepane(currentAssay));
 	    currentPane := imageList->List.keys.find(imageKey);
 	  end if;
-
-	  (void) mgi_writeLog("\nCURRENT PANE: " + (string) currentPane + "\n");
 
 	  if (currentPane > -1) then
 	    -- ERROR occurs

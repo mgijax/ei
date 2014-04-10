@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Wed Apr  9 11:18:07 2014";
+      lastWritten = "Thu Apr 10 09:58:23 2014";
       copy = false;
       inCreateMenu = true;
         {
@@ -1678,7 +1678,7 @@ Module: mgiOption
                 Group: User
                   sql = "select * from GXD_Strength order by strength";
                     {
-                      SearchAll = SearchAll : mgiOption;
+                      SearhAllNoShow = SearhAllNoShow : mgiOption;
                     }
               }
         }
@@ -1720,7 +1720,7 @@ Module: mgiOption
                   sql = "select * from GXD_GelRNAType order by rnaType";
                   childTemplate = GelRNAToggle;
                     {
-                      SearchAll = SearchAll : mgiOption;
+                      SearhAllNoShow = SearhAllNoShow : mgiOption;
                     }
               }
         }
@@ -1743,7 +1743,7 @@ Module: mgiOption
                   sql = "select * from GXD_GelControl order by _GelControl_key";
                   childTemplate = GelControlToggle;
                     {
-                      SearchAll = SearchAll : mgiOption;
+                      SearhAllNoShow = SearhAllNoShow : mgiOption;
                     }
               }
         }
@@ -1757,7 +1757,7 @@ Module: mgiOption
                 GelUnitsMenu : OptionMenu = XmOptionMenu;
                 Group: Widget
                   subMenuId = GelUnitsPulldown;
-                  labelString = Units;
+                  labelString = "Gel Units";
               }
               Popups:
               {
@@ -1765,7 +1765,7 @@ Module: mgiOption
                 Group: User
                   sql = "select * from GXD_GelUnits order by units";
                     {
-                      SearchAll = SearchAll : mgiOption;
+                      SearhAllNoShow = SearhAllNoShow : mgiOption;
                     }
               }
         }
@@ -1976,14 +1976,14 @@ Module: mgiOption
               }
         }
         {
-          GenericFrame = YesNoFrame : mgiOption;
+          GeneticBackgroundFrame = YesNoFrame : mgiOption;
           Group: Control
             vip_x = 110;
             vip_y = 3660;
           Group: User
             defaultOption = No;
               {
-                GenericBackground : YesNoMenu = XmOptionMenu;
+                GeneticBackgroundMenu : YesNoMenu = XmOptionMenu;
                 Group: Widget
                   labelString = "Strain Prefix?";
                   subMenuId = GeneticBackgroundPulldown;

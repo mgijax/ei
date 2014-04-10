@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Wed Apr  9 11:10:23 2014";
+      lastWritten = "Thu Apr 10 09:58:26 2014";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -885,7 +885,7 @@ Module: MGD
                                       }
                                 }
                                 {
-                                  CrossTypeMenu = CrossTypeFrame : mgiOption;
+                                  CrossTypeFrame = CrossTypeFrame : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
                                     leftWidget = Name;
@@ -1304,7 +1304,7 @@ Module: MGD
                                       }
                                 }
                                 {
-                                  StandardMenu = StandardFrame : mgiOption;
+                                  StandardFrame = StandardFrame : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = Name;
@@ -1324,7 +1324,7 @@ Module: MGD
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     leftOffset = 10;
-                                    topWidget = StandardMenu;
+                                    topWidget = StandardFrame;
                                     topOffset = 5;
                                 }
                           }
@@ -10038,7 +10038,7 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  StandardMenu = StandardFrame : mgiOption;
+                                  StandardFrame = StandardFrame : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = PrivateFrame;
@@ -10050,13 +10050,13 @@ Shift<Key>Tab: prev-tab-group()
                                     topOffset = 5;
                                 }
                                 {
-                                  GeneticBackgroundMenu = GenericFrame : mgiOption;
+                                  GeneticBackgroundFrame = GeneticBackgroundFrame : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = StandardMenu;
+                                    leftWidget = StandardFrame;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = StandardMenu;
+                                    topWidget = StandardFrame;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     topOffset = 5;
