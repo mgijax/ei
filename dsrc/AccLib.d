@@ -744,7 +744,6 @@ rules:
 	  -- Not every form has a AccSourceMenu managed
 
 	  if (logicalKey.length = 0 and source.managed) then
-	    (void) mgi_writeLog("SetAccSourceMenu: " + source.name + "\n\n");
 	    logicalKey := source.menuHistory.defaultValue;
 	  end if;
 
