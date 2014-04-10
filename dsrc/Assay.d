@@ -519,12 +519,13 @@ rules:
  
         InitImagePane does
           refKey : string;
-          saveCmd : string;
-          newCmd : string;
 	  imageList : widget := top->GelForm->ImagePaneList;
 	  currentPane : integer := -1;
 	  refCount : string;
+	  imageCmd : string;
 	  
+	  imageCmd := "select _ImagePane_key, paneLabel from IMG_ImagePaneGXD_View where _Refs_key =";
+
 	  -- Get currently selected image pane
 
 	  if (imageList->List.selectedItemCount > 0) then
@@ -542,12 +543,10 @@ rules:
 	    return;
 	  end if;
 
-          -- Save the original SQL command
-          saveCmd := imageList.cmd;
- 
-          -- Append Reference key to lookup command
-          newCmd := saveCmd + " " + refKey;
-          imageList.cmd := newCmd + "\norder by paneLabel";
+          imageList.cmd := imageCmd + " " + refKey + "\norder by paneLabel";
+	  (void) mgi_writeLog("\nSTART: imageList\n");
+	  (void) mgi_writeLog(imageList.cmd);
+	  (void) mgi_writeLog("\nEND: imageList\n\n");
 
 	  -- Load the Image list
 	  refCount := mgi_sql1(assay_imagecount(refKey));
@@ -558,9 +557,6 @@ rules:
 	  LoadList.source_widget := imageList;
 	  LoadList.list := imageList;
 	  send(LoadList, 0);
-
-          -- Restore original SQL command
-          imageList.cmd := saveCmd;
 
 	  -- Newly added Assay
 
@@ -579,10 +575,14 @@ rules:
 	    currentPane := imageList->List.keys.find(imageKey);
 	  end if;
 
+	  (void) mgi_writeLog("\nCURRENT PANE: " + (string) currentPane + "\n");
+
 	  if (currentPane > -1) then
-	    (void) XmListSelectPos(imageList->List, currentPane, false);
+	    -- ERROR occurs
+	    --(void) XmListSelectPos(imageList->List, currentPane, false);
 	    (void) XmListSetPos(imageList->List, currentPane);
 	  end if;
+
         end does;
  
 --
@@ -2635,7 +2635,7 @@ rules:
           SetNotesDisplay.note := top->AssayNote->Note;
           send(SetNotesDisplay, 0);
 
-	  -- Do not clear the form because it'll wipe out editMode flags on Gel Bands
+	  -- Do not clear the form because it is will wipe out editMode flags on Gel Bands
 
 --	  if (assayDetailForm.name = "GelForm") then
 --	    ClearAssay.clearForms := clearAssayGel;
