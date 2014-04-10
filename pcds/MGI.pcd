@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Thu Apr 10 08:40:01 2014";
+      lastWritten = "Thu Apr 10 10:18:48 2014";
       copy = false;
       inCreateMenu = true;
         {
@@ -2637,7 +2637,7 @@ Module: MGI
                                       }
                                 }
                                 {
-                                  MGITypeMenu = MGITypeFrame : mgiOption;
+                                  MGITypeFrame = MGITypeFrame : mgiOption;
                                   Group: Widget
                                     labelString = "Image used in\n(search only)";
                                     managed = False;
@@ -2652,7 +2652,6 @@ Module: MGI
                                     resizable = true;
                                     rightOffset = 5;
                                   Group: User
-                                    required = False;
                                       Popups:
                                       {
                                         MGITypePulldown = OptionPulldown;
