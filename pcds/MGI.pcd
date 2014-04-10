@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Thu Apr 10 10:18:48 2014";
+      lastWritten = "Thu Apr 10 10:32:34 2014";
       copy = false;
       inCreateMenu = true;
         {
@@ -1034,8 +1034,11 @@ Module: MGI
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                  Group: User
-                                    required = False;
+                                      {
+                                        MGITypeMenu = XmOptionMenu;
+                                        Group: User
+                                          required = False;
+                                      }
                                       Popups:
                                       {
                                         MGITypePulldown = OptionPulldown;
@@ -2637,48 +2640,6 @@ Module: MGI
                                       }
                                 }
                                 {
-                                  MGITypeFrame = MGITypeFrame : mgiOption;
-                                  Group: Widget
-                                    labelString = "Image used in\n(search only)";
-                                    managed = False;
-                                  Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    leftWidget = FigureLabel;
-                                    leftOffset = 10;
-                                    rightAttachment = attach_form;
-                                    topAttachment = attach_opposite_widget;
-                                    topWidget = FigureLabel;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    rightOffset = 5;
-                                  Group: User
-                                      Popups:
-                                      {
-                                        MGITypePulldown = OptionPulldown;
-                                        Group: Widget
-                                          managed = False;
-                                            {
-                                              SearchAll = SearchAll : mgiOption;
-                                            }
-                                            {
-                                              Expression = OptionToggle : mgiOption;
-                                              Group: Widget
-                                                labelString = Expression;
-                                              Group: User
-                                                defaultValue = 8;
-                                                searchValue = 8;
-                                            }
-                                            {
-                                              Alleles = OptionToggle : mgiOption;
-                                              Group: Widget
-                                                labelString = "Alleles & Phenotypes";
-                                              Group: User
-                                                defaultValue = 11;
-                                                searchValue = 11;
-                                            }
-                                      }
-                                }
-                                {
                                   ImageClassFrame = ImageClassFrame : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
@@ -2885,8 +2846,6 @@ Module: MGI
                                     resizable = true;
                                     leftWidget = mgiNoteForm;
                                     topWidget = separatorGadget2;
-                                  Group: User
-                                    required = False;
                                 }
                                 {
                                   ThumbnailImage = mgiAccession : mgiDataTypes;
