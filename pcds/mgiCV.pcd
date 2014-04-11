@@ -2,7 +2,7 @@ Module: mgiCV
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Thu Apr 10 08:14:59 2014";
+      lastWritten = "Fri Apr 11 08:02:36 2014";
         {
           CVMenu = XmRowColumn;
           Group: Widget
@@ -72,6 +72,9 @@ Module: mgiCV
                         tableOption = 10;
                         tableOptionKey = 6;
                         childTemplate = StrengthPatternToggle;
+                          {
+                            SearhAllNoShow = SearhAllNoShow : mgiOption;
+                          }
                     }
               }
               {

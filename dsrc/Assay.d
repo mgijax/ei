@@ -377,7 +377,6 @@ rules:
 
           ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
-	  top.show;
 
 	  -- Set Permissions
 	  SetPermissions.source_widget := top;
@@ -385,6 +384,8 @@ rules:
 
 	  -- Build Dynamic GUI Components
 	  send(BuildDynamicComponents, 0);
+
+	  top.show;
 
 	  send(Init, 0);
 
@@ -524,13 +525,14 @@ rules:
 	  refCount : string;
 	  imageCmd : string;
 	  
-	  imageCmd := "select _ImagePane_key, paneLabel from IMG_ImagePaneGXD_View where _Refs_key =";
+	  imageCmd := "select _ImagePane_key, paneLabel, NULL from IMG_ImagePaneGXD_View where _Refs_key =";
 
 	  -- Get currently selected image pane
 
-	  if (imageList->List.selectedItemCount > 0) then
-	    currentPane := XmListItemPos(imageList->List, imageList->List.selectedItems[0]);
-	  end if;
+	  -- do not use this/causes a segmentation fault
+	  --if (imageList->List.selectedItemCount > 0) then
+	    --currentPane := (integer) XmListItemPos(imageList->List, imageList->List.selectedItems[0]);
+	  --end if;
  
           -- Get current Reference key
           refKey := top->mgiCitation->ObjectID->text.value;
@@ -543,10 +545,8 @@ rules:
 	    return;
 	  end if;
 
-          imageList.cmd := imageCmd + " " + refKey + "\norder by paneLabel";
-	  --(void) mgi_writeLog("\nSTART: imageList\n");
-	  --(void) mgi_writeLog(imageList.cmd);
-	  --(void) mgi_writeLog("\nEND: imageList\n\n");
+          imageList.cmd := imageCmd + " " + refKey + "\norder by paneLabel\n";
+	  (void) mgi_writeLog(imageList.cmd);
 
 	  -- Load the Image list
 	  refCount := mgi_sql1(assay_imagecount(refKey));
@@ -576,8 +576,7 @@ rules:
 	  end if;
 
 	  if (currentPane > -1) then
-	    -- ERROR occurs
-	    --(void) XmListSelectPos(imageList->List, currentPane, false);
+	    (void) XmListSelectPos(imageList->List, currentPane, false);
 	    (void) XmListSetPos(imageList->List, currentPane);
 	  end if;
 
