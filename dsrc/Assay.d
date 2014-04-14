@@ -28,6 +28,9 @@
 --
 -- History
 --
+-- lec	04/14/2014
+--	- TR11549/PythonImageCache obsolete
+--
 -- lec  01/30/2012
 --	- TR10969/dsrc/Assay.d/add search by Gel Row Note
 --
@@ -519,9 +522,9 @@ rules:
 --
  
         InitImagePane does
-          refKey : string;
 	  imageList : widget := top->GelForm->ImagePaneList;
 	  currentPane : integer := -1;
+          refKey : string;
 	  refCount : string;
 	  imageCmd : string;
 	  
@@ -702,15 +705,6 @@ rules:
 			top->AssayTypeMenu.menuHistory.labelString;
           AddSQL.key := top->ID->text;
           send(AddSQL, 0);
-
-	  -- check image list
-	  -- if image cache count <= our configured value, then ok
-          refKey : string := top->mgiCitation->ObjectID->text.value;
-	  refCount : string := mgi_sql1(assay_imagecount(refKey));
-	  if (integer) refCount <= (integer) python_image_cache then
-	    PythonImageCache.objectKey := top->mgiCitation->ObjectID->text.value;
-	    send(PythonImageCache, 0);
-          end if;
 
           PythonAlleleCreCache.source_widget := top;
           PythonAlleleCreCache.pythonevent := EVENT_ALLELECRE_BYASSAY;
@@ -1218,8 +1212,6 @@ rules:
 --
 
         Delete does
-          refKey : string;
-	  refCount : string;
 
           (void) busy_cursor(top);
 
@@ -1229,15 +1221,6 @@ rules:
           send(DeleteSQL, 0);
 
 	  if top->Control->Delete.deleteReturn then
-
-	    -- check image list
-	    -- if image cache count <= our configured value, then ok
-            refKey := top->mgiCitation->ObjectID->text.value;
-	    refCount := mgi_sql1(assay_imagecount(refKey));
-	    if (integer) refCount <= (integer) python_image_cache then
-	      PythonImageCache.objectKey := top->mgiCitation->ObjectID->text.value;
-	      send(PythonImageCache, 0);
-            end if;
 
             PythonAlleleCreCache.source_widget := top;
             PythonAlleleCreCache.pythonevent := EVENT_ALLELECRE_BYASSAY;
@@ -1381,9 +1364,6 @@ rules:
 --
 
 	Modify does
-          refKey : string;
-	  refCount : string;
-
 	  modifyCache : boolean := true;
 
           if (not top.allowEdit) then 
@@ -1482,16 +1462,6 @@ rules:
 
           if (modifyCache) then
 	    -- do not show a working dialog...it drives the GXD folks crazy!
-
-	    -- check image list
-	    -- if image cache count <= our configured value, then ok
-            refKey := top->mgiCitation->ObjectID->text.value;
-	    refCount := mgi_sql1(assay_imagecount(refKey));
-	    if (integer) refCount <= (integer) python_image_cache then
-	      PythonImageCache.objectKey := top->mgiCitation->ObjectID->text.value;
-	      send(PythonImageCache, 0);
-            end if;
-
             PythonAlleleCreCache.source_widget := top;
             PythonAlleleCreCache.pythonevent := EVENT_ALLELECRE_BYASSAY;
             PythonAlleleCreCache.objectKey := currentAssay;

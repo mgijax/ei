@@ -22,12 +22,10 @@
 #          getenv("ALLCACHELOAD") + "/allelecrecacheByAllele.py"
 #          getenv("ALLCACHELOAD") + "/allelecrecacheByAssay.py"
 #          getenv("MRKCACHELOAD") + "/mrkmcv.py"
-#          getenv("MRKCACHELOAD") + "/mrkhomologyByClass.py"
 #          getenv("MRKCACHELOAD") + "/mrkomimByAllele.py"
 #          getenv("MRKCACHELOAD") + "/mrkomimByMarker.py"
 #          getenv("MRKCACHELOAD") + "/mrkomimByGenotype.py"
 #          getenv("MGICACHELOAD") + "/bibcitation.py"
-#          getenv("MGICACHELOAD") + "/imgcache.py"
 #          getenv("MGICACHELOAD") + "/inferredfrom.py"
 #
 

@@ -31,6 +31,9 @@
 --
 -- History
 --
+-- lec  04/14/2014
+--	obsolete : PythonMarkerHomologyCache
+--
 -- lec  04/05/2006
 --	TR 7607; PythonMarkerHomologyCache
 --
@@ -297,8 +300,8 @@ rules:
 	  PythonMarkerOMIMCache.objectKey := mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
 	  send(PythonMarkerOMIMCache, 0);
 
-	  PythonMarkerHomologyCache.objectKey := top->ID->text.value;
-	  send(PythonMarkerHomologyCache, 0);
+	  --PythonMarkerHomologyCache.objectKey := top->ID->text.value;
+	  --send(PythonMarkerHomologyCache, 0);
 
 	  (void) reset_cursor(top);
 	end
@@ -325,8 +328,8 @@ rules:
 	  PythonMarkerOMIMCache.objectKey := mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
 	  send(PythonMarkerOMIMCache, 0);
 
-	  PythonMarkerHomologyCache.objectKey := top->ID->text.value;
-	  send(PythonMarkerHomologyCache, 0);
+	  --PythonMarkerHomologyCache.objectKey := top->ID->text.value;
+	  --send(PythonMarkerHomologyCache, 0);
 
 	  if (top->QueryList->List.row = 0) then
 	    ClearOrthology.source_widget := top;
@@ -378,8 +381,8 @@ rules:
 	  PythonMarkerOMIMCache.objectKey := mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
 	  send(PythonMarkerOMIMCache, 0);
 
-	  PythonMarkerHomologyCache.objectKey := classKey;
-	  send(PythonMarkerHomologyCache, 0);
+	  --PythonMarkerHomologyCache.objectKey := classKey;
+	  --send(PythonMarkerHomologyCache, 0);
 
 	  (void) reset_cursor(top);
 	end

@@ -1,6 +1,10 @@
 --
 -- Name: PythonLib.d
 --
+-- lec	04/14/2014
+--	- TR11549/PythonImageCache obsolete
+--	- TR11549/PythonMarkerHomologyCache obsolete
+--
 -- 06/30/2010	lec
 --	- TR 9316
 --	  PythonMarkerCVCache
@@ -241,49 +245,6 @@ rules:
 	end does;
 
 --
--- PythonMarkerHomologyCache
---
--- Activated from:  Orthology module
--- after an update 
---
-
-	PythonMarkerHomologyCache does
-	  objectKey : string := PythonMarkerHomologyCache.objectKey;
-	  cmds : string_list := create string_list();
-	  buf : string;
-
-	  if (getenv("EISSHCOMMAND") != "") then
-	  	cmds.insert(getenv("EISSHCOMMAND"), cmds.count + 1);
-	  end if;
-
-	  cmds.insert(getenv("MRKCACHELOAD") + "/mrkhomologyByClass.py", cmds.count + 1);
-	  cmds.insert("-S" + getenv("MGD_DBSERVER"), cmds.count + 1);
-	  cmds.insert("-D" + getenv("MGD_DBNAME"), cmds.count + 1);
-	  cmds.insert("-U" + global_login, cmds.count + 1);
-	  cmds.insert("-P" + global_passwd_file, cmds.count + 1);
-	  cmds.insert("-K" + objectKey, cmds.count + 1);
-
-	  -- Write cmds to user log
-	  buf := "";
-	  cmds.rewind;
-	  while (cmds.more) do
-	    buf := buf + cmds.next + " ";
-	  end while;
-	  buf := buf + "\n\n";
-	  (void) mgi_writeLog(buf);
-
-	  -- Execute
-          proc_id : opaque := tu_fork_process(cmds[1], cmds, nil, PythonMarkerHomologyCacheEnd);
-
-	  while (tu_fork_ok(proc_id)) do
-	    (void) keep_busy();
-	  end while;
-
-	  tu_fork_free(proc_id);
-
-	end does;
-
---
 -- PythonMarkerOMIMCache
 --
 -- Activated from:  Genotype module, Allele module, Marker module
@@ -366,49 +327,6 @@ rules:
 
 	  -- Execute
           proc_id : opaque := tu_fork_process(cmds[1], cmds, nil, PythonReferenceCacheEnd);
-
-	  while (tu_fork_ok(proc_id)) do
-	    (void) keep_busy();
-	  end while;
-
-	  tu_fork_free(proc_id);
-
-	end does;
-
---
--- PythonImageCache
---
--- Activated from:  Assay module
--- after an insert, update or delete
---
-
-	PythonImageCache does
-	  objectKey : string := PythonImageCache.objectKey;
-	  cmds : string_list := create string_list();
-	  buf : string;
-
-	  if (getenv("EISSHCOMMAND") != "") then
-	  	cmds.insert(getenv("EISSHCOMMAND"), cmds.count + 1);
-	  end if;
-
-	  cmds.insert(getenv("MGICACHELOAD") + "/imgcache.py", cmds.count + 1);
-	  cmds.insert("-S" + global_server, cmds.count + 1);
-	  cmds.insert("-D" + global_database, cmds.count + 1);
-	  cmds.insert("-U" + global_login, cmds.count + 1);
-	  cmds.insert("-P" + global_passwd_file, cmds.count + 1);
-	  cmds.insert("-K" + objectKey, cmds.count + 1);
-
-	  -- Write cmds to user log
-	  buf := "";
-	  cmds.rewind;
-	  while (cmds.more) do
-	    buf := buf + cmds.next + " ";
-	  end while;
-	  buf := buf + "\n\n";
-	  (void) mgi_writeLog(buf);
-
-	  -- Execute
-          proc_id : opaque := tu_fork_process(cmds[1], cmds, nil, PythonImageCacheEnd);
 
 	  while (tu_fork_ok(proc_id)) do
 	    (void) keep_busy();
@@ -506,14 +424,6 @@ rules:
 	end does;
 
 --
--- PythonMarkerHomologyCacheEnd
---
-
-	PythonMarkerHomologyCacheEnd does
-	  (void) mgi_writeLog("Homology Cache done.\n\n");
-	end does;
-
---
 -- PythonMarkerOMIMCacheEnd
 --
 
@@ -527,14 +437,6 @@ rules:
 
 	PythonReferenceCacheEnd does
 	  (void) mgi_writeLog("Reference Cache done.\n\n");
-	end does;
-
---
--- PythonImageCacheEnd
---
-
-	PythonImageCacheEnd does
-	  (void) mgi_writeLog("Image Cache done.\n\n");
 	end does;
 
 --

@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Thu Apr 10 09:58:23 2014";
+      lastWritten = "Mon Apr 14 09:58:18 2014";
       copy = false;
       inCreateMenu = true;
         {
@@ -3596,7 +3596,7 @@ Module: mgiOption
                 Group: User
                   sql = "(select _Term_key, term, 1 as orderIt from VOC_Term where _Vocab_key = 92\nand term not like 'Not%'\nunion\nselect _Term_key, term, 2 as orderIt from VOC_Term where _Vocab_key = 92 \nand term like 'Not%'\n)\norder by orderIt, term";
                     {
-                      SearhAllNoShow = SearhAllNoShow : mgiOption;
+                      SearchAll = SearchAll : mgiOption;
                     }
               }
         }
