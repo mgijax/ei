@@ -21,6 +21,12 @@ cat - <<EOSQL | doisql.csh $MGD_DBSERVER $MGD_DBNAME $0 | tee -a $LOG
 use $MGD_DBNAME
 go
 
+-- remove data from cache tables
+-- 840509 Zbtb16<tm1.1(EGFP/cre)Aben>
+
+delete from ALL_Cre_Cache where _Allele_key = 840509
+go
+
 checkpoint
 go
 
