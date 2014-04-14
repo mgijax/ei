@@ -529,7 +529,7 @@ rules:
 
 	  -- Get currently selected image pane
 
-	  -- do not use this/causes a segmentation fault
+	  -- do not use this/causes a segmentation fault on linux
 	  --if (imageList->List.selectedItemCount > 0) then
 	    --currentPane := (integer) XmListItemPos(imageList->List, imageList->List.selectedItems[0]);
 	  --end if;
