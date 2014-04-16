@@ -35,11 +35,20 @@ go
 
 -- by Genotype
 -- 59525 (WB Kit<W> x B6.Cg-Kit<W-v>)F1 Kit Kit<W>
-delete from MGI_Note
-where _Object_key = 59525 
-and _MGIType_key = 12
-and _NoteType_key in (1016,1017,1018)
-go
+--delete from MGI_Note
+--where _Object_key = 59525 
+--and _MGIType_key = 12
+--and _NoteType_key in (1016,1017,1018)
+--go
+
+-- by Marker (must edit the Marker Symbol)
+-- 10603 Kit
+--delete MGI_Note from MGI_Note n, GXD_AlleleGenotype g
+--where n._MGIType_key = 12
+--and n._NoteType_key in (1016,1017,1018)
+--and n._Object_key = g._Genotype_key
+--and g._Marker_key = 10603
+--go
 
 -- ALL_Cre_Cache tests
 -- edit Allele Symbol 
@@ -53,9 +62,11 @@ go
 --delete from ALL_Cre_Cache where _Assay_key = 74699
 --go
 
---
 -- MRK_MCV_Cache
+-- 10603 Kit
 --
+delete from MRK_MCV_Cache where _Marker_key = 10603
+go
 
 --
 -- MRK_OMIM_Cache

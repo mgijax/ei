@@ -66,12 +66,14 @@ go
 -- MRK_MCV_Cache
 -- 10603 Kit
 --
-select * from MRK_MCV_Cache where _Marker_key = 10603
-go
+--select * from MRK_MCV_Cache where _Marker_key = 10603
+--go
 
 --
 -- MRK_OMIM_Cache
 --
+select * from MRK_OMIM_Cache where _Marker_key = 10603
+go
 
 --
 -- BIB_Citation_Cache
