@@ -23,6 +23,9 @@ go
 
 --
 -- Allele Detal Display
+-- allcacheload/allelecombinationByAllele.py
+-- allcacheload/allelecombinationByMarker.py
+-- allcacheload/allelecombinationByGenotype.py
 --
 
 -- by Allele
@@ -51,6 +54,8 @@ go
 --go
 
 -- ALL_Cre_Cache tests
+-- allcacheload/allelecrecacheByAllele.py
+-- allcacheload/allelecrecacheByAssay.py
 -- edit Allele Symbol 
 -- edit Allele Driver Note
 
@@ -64,6 +69,7 @@ go
 
 --
 -- MRK_MCV_Cache
+-- mrkcacheload/mrkmcv.py
 -- 10603 Kit
 --
 --select * from MRK_MCV_Cache where _Marker_key = 10603
@@ -71,7 +77,10 @@ go
 
 --
 -- MRK_OMIM_Cache
-
+-- mrkcacheload/mrkomimByAllele.py
+-- mrkcacheload/mrkomimByMarker.py
+-- mrkcacheload/mrkomimByGenotype.py
+--
 -- by Marker (must edit the Marker Symbol)
 -- by OMIM Vocabulary
 -- by Genotype
@@ -82,12 +91,15 @@ go
 
 --
 -- BIB_Citation_Cache
+-- mgicacheload/bibcitation.py
 --
 --select * from BIB_Citation_Cache where _Refs_key = 41510
 --go
 
 --
 -- InferredFrom/ACC_Accession
+-- mgicacheload/imgcache.py
+--
 -- 35407 Zap70
 --
 select a.accID, a._Object_key 
@@ -99,6 +111,21 @@ and a._Object_key = e._AnnotEvidence_key
 and v._Object_key = 35407
 order by a.accID
 go
+
+--
+-- GXD_Structure
+-- adsystemloada/adsystemload.py
+--
+-- in the GXD/Anatomical Dictionary module, click on:
+--	'Refresh AD System Terms' returns immediately, then this did not work
+-- should see in the EI display:
+-- 	'Re-freshing the AD System keys...'
+-- should see in the ei-log file:
+-- 	Reset system key default (-1) where inheritSystem = 1
+-- 	Building lists...
+-- 	Finding the closest parents and updating...
+-- 	Setting system for structures not yet assigned...
+--
 
 checkpoint
 go
