@@ -35,10 +35,10 @@ go
 
 -- by Genotype
 -- 59525 (WB Kit<W> x B6.Cg-Kit<W-v>)F1 Kit Kit<W>
-select _NoteType_key, _Object_key, note
-from MGI_Note_Genotype_View    
+select * from MGI_Note
 where _Object_key = 59525 
-order by _NoteType_key, _Note_key, sequenceNum
+and _MGIType_key = 12
+and _NoteType_key in (1016,1017,1018)
 go
 
 -- ALL_Cre_Cache tests

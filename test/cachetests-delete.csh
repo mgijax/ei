@@ -36,8 +36,9 @@ go
 -- by Genotype
 -- 59525 (WB Kit<W> x B6.Cg-Kit<W-v>)F1 Kit Kit<W>
 delete from MGI_Note
-where _NoteType_key in (1016,1017,1018)
-and _Object_key = 59525 
+where _Object_key = 59525 
+and _MGIType_key = 12
+and _NoteType_key in (1016,1017,1018)
 go
 
 -- ALL_Cre_Cache tests
