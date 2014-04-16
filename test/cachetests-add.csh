@@ -77,15 +77,28 @@ go
 -- by Genotype
 -- 10603 Kit
 --
-select * from MRK_OMIM_Cache where _Marker_key = 10603
-go
+--select * from MRK_OMIM_Cache where _Marker_key = 10603
+--go
 
 --
 -- BIB_Citation_Cache
 --
-
 --select * from BIB_Citation_Cache where _Refs_key = 41510
 --go
+
+--
+-- InferredFrom/ACC_Accession
+-- 35407 Zap70
+--
+select a.accID, a._Object_key 
+from ACC_Accession a, VOC_Annot v, VOC_Evidence e
+where a._MGIType_key = 25 
+and v._AnnotType_key = 1000 
+and v._Annot_key = e._Annot_key 
+and a._Object_key = e._AnnotEvidence_key 
+and v._Object_key = 35407
+order by a.accID
+go
 
 checkpoint
 go

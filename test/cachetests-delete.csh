@@ -79,9 +79,21 @@ go
 --
 -- BIB_Citation_Cache
 --
-
---update BIB_Citation_Cache set citation = 'TESTING EI/LINUX' where _Refs_key = 41510
+--update BIB_Citation_Cache set short_citation = '', citation = '' where _Refs_key = 41510
 --go
+
+--
+-- InferredFrom/ACC_Accession
+-- 35407 Zap70
+--
+delete ACC_Accession
+from ACC_Accession a, VOC_Annot v, VOC_Evidence e
+where a._MGIType_key = 25 
+and v._AnnotType_key = 1000 
+and v._Annot_key = e._Annot_key 
+and a._Object_key = e._AnnotEvidence_key 
+and v._Object_key = 35407
+go
 
 checkpoint
 go
