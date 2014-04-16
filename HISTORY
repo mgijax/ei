@@ -1,5 +1,11 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-5-1-8-7
+DATE: 04/16/2014
+STAFF: lec
+CHANGES:
+1) dsrc/PythonLib.d/PythonReference
+
 TAG: ei-5-1-8-6
 TAG: ei-5-1-8-5
 TAG: ei-5-1-8-4
