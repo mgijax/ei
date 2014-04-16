@@ -68,8 +68,10 @@ go
 --delete from MRK_MCV_Cache where _Marker_key = 10603
 --go
 
---
--- MRK_OMIM_Cache
+-- by Marker (must edit the Marker Symbol)
+-- by OMIM Vocabulary
+-- by Genotype
+-- 10603 Kit
 --
 delete from MRK_OMIM_Cache where _Marker_key = 10603
 go
