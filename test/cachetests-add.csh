@@ -71,6 +71,11 @@ go
 
 --
 -- MRK_OMIM_Cache
+
+-- by Marker (must edit the Marker Symbol)
+-- by OMIM Vocabulary
+-- by Genotype
+-- 10603 Kit
 --
 select * from MRK_OMIM_Cache where _Marker_key = 10603
 go

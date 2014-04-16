@@ -65,12 +65,14 @@ go
 -- MRK_MCV_Cache
 -- 10603 Kit
 --
-delete from MRK_MCV_Cache where _Marker_key = 10603
-go
+--delete from MRK_MCV_Cache where _Marker_key = 10603
+--go
 
 --
 -- MRK_OMIM_Cache
 --
+delete from MRK_OMIM_Cache where _Marker_key = 10603
+go
 
 --
 -- BIB_Citation_Cache
