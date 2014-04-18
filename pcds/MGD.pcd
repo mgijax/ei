@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Fri Apr 18 06:23:06 2014";
+      lastWritten = "Fri Apr 18 06:37:22 2014";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -6322,12 +6322,6 @@ Shift<Key>Tab: prev-tab-group()
                                     traversalOn = False;
                                 }
                                 {
-                                  Orthology = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"Orthology\")";
-                                    traversalOn = False;
-                                }
-                                {
                                   NonMouseMarkers = XmPushButton;
                                   Group: Widget
                                     activateCallback = "D:CreateMGIModule(name = \"MarkerNonMouse\")";
@@ -6471,6 +6465,25 @@ Shift<Key>Tab: prev-tab-group()
                                   Group: Widget
                                     separatorType = shadow_etched_out;
                                     shadowThickness = 5;
+                                }
+                                {
+                                  MLC = XmPushButton;
+                                  Group: Widget
+                                    activateCallback = "D:CreateMGIModule(name = \"MLC\")";
+                                    traversalOn = False;
+                                }
+                                {
+                                  Orthology = XmPushButton;
+                                  Group: Widget
+                                    activateCallback = "D:CreateMGIModule(name = \"Orthology\")";
+                                    traversalOn = False;
+                                }
+                                {
+                                  Sequence = XmPushButton;
+                                  Group: Widget
+                                    activateCallback = "D:CreateMGIModule(name = \"Sequence\")";
+                                    labelString = Sequences;
+                                    traversalOn = False;
                                 }
                           }
                     }
