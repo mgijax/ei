@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Mon Apr 14 09:58:21 2014";
+      lastWritten = "Fri Apr 18 06:23:06 2014";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -6342,12 +6342,6 @@ Shift<Key>Tab: prev-tab-group()
                                     traversalOn = False;
                                 }
                                 {
-                                  MLC = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"MLC\")";
-                                    traversalOn = False;
-                                }
-                                {
                                   Nomen = XmPushButton;
                                   Group: Widget
                                     labelString = Nomenclature;
@@ -6402,13 +6396,6 @@ Shift<Key>Tab: prev-tab-group()
                                   Group: Widget
                                     separatorType = shadow_etched_out;
                                     shadowThickness = 5;
-                                }
-                                {
-                                  Sequence = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"Sequence\")";
-                                    labelString = Sequences;
-                                    traversalOn = False;
                                 }
                                 {
                                   MolecularSource = XmPushButton;
