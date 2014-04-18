@@ -1693,6 +1693,7 @@ rules:
 	  from_cellline   : boolean := false;
 	  from_sequence   : boolean := false;
 	  from_subtype    : boolean := false;
+	  from_image      : boolean := false;
 
 	  value : string;
 
@@ -1932,6 +1933,20 @@ rules:
 	    from_cellline := true;
           end if;
 
+	  -- Image
+
+	  value := mgi_tblGetCell(imgTable, 0, imgTable.mgiID);
+	  if (value.length > 0 and value != "NULL") then
+	    where := where + "\nand i.mgiID like " + mgi_DBprstr(value);
+	    from_image := true;
+	  end if;
+
+	  value := mgi_tblGetCell(imgTable, 0, imgTable.pixID);
+	  if (value.length > 0 and value != "NULL") then
+	    where := where + "\nand i.pixID like " + mgi_DBprstr(value);
+	    from_image := true;
+	  end if;
+
 	  -- get the additional tables using the "from" values
 
 	  if (from_marker) then
@@ -1962,6 +1977,11 @@ rules:
 	  if (from_sequence) then
 	    from := from + "," + mgi_DBtable(SEQ_ALLELE_ASSOC_VIEW) + " r";
 	    where := where + "\nand a." + mgi_DBkey(SEQ_ALLELE_ASSOC_VIEW) + " = r." + mgi_DBkey(STRAIN);
+	  end if;
+
+	  if (from_image) then
+	    from := from + "," + mgi_DBtable(IMG_IMAGEPANE_ASSOC_VIEW) + " i";
+	    where := where + "\nand a." + mgi_DBkey(ALL_ALLELE) + " = i._Object_key";
 	  end if;
 
 	  if (where.length > 0) then
