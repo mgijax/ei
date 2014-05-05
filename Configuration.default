@@ -9,17 +9,16 @@
 #
 
 if ( ${?MGICONFIG} == 0 ) then
-	#setenv MGICONFIG /home/lec/mgi/mgiconfig
-	setenv MGICONFIG /usr/local/mgi/scrum-dog/mgiconfig
+	setenv MGICONFIG /usr/local/mgi/live/mgiconfig
 endif
 
 source ${MGICONFIG}/master.config.csh
 
 # installation directory
-setenv EIINSTALLDIR ${EI_USRLOCALMGI}/ei
+setenv EIINSTALLDIR ${EI_USRLOCALMGI}/ei/prod
 
 # CVS tag; keep updated with current tag
-setenv CVS_TAG	ei-5-1-8-6
+setenv CVS_TAG	ei-5-1-8-9
 
 # build directory
 setenv EIBUILDDIR ${EI_USRLOCALMGI}/ei
@@ -28,7 +27,7 @@ setenv EIBUILDDIR ${EI_USRLOCALMGI}/ei
 setenv EIDATADIR /data/ei
 
 # Debug mode
-setenv EIDEBUG	1
+setenv EIDEBUG	0
 
 # User log
 setenv USERLOG	${HOME}/${EI_LOGFILE}
