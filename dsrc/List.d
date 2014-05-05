@@ -91,7 +91,8 @@ rules:
 
 	  --(void) mgi_writeLog("clearing:  " + top.name + "\n\n");
 
-	  (void) XmListDeleteAllItems(top->List);
+	  (void) XmListDeselectAllItems(top->List);
+	  top->List.row := 0;
 
 	  if (ClearList.clearkeys) then
 
