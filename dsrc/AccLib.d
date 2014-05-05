@@ -738,19 +738,14 @@ rules:
 	  accName : string;
 	  i : integer;
 
-	  -- some AccSourceMenu/AccSourceMenuPulldown only have one child
-	  -- in which case the source.menuHistory is nil
-	  if (source.menuHistory = nil) then
-	    return;
-	  end if;
-
           logicalKey := mgi_tblGetCell(table, row, table.logicalKey);
           accName := mgi_tblGetCell(table, row, table.accName);
 
 	  -- Not every form has a AccSourceMenu managed
 
 	  if (logicalKey.length = 0 and source.managed) then
-	    logicalKey := source.menuHistory.defaultValue;
+	    --logicalKey := source.menuHistory.defaultValue;
+	    logicalKey := source.defaultValue;
 	  end if;
 
 	  if (logicalKey.length = 0) then
