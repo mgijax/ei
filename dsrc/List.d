@@ -89,29 +89,17 @@ rules:
         ClearList does
 	  top : widget := ClearList.source_widget;
 
-	  --(void) mgi_writeLog("clearing:  " + top.name + "\n\n");
-
 	  (void) XmListDeselectAllItems(top->List);
 	  top->List.row := 0;
 
 	  if (ClearList.clearkeys) then
-
-            if (top->List.keys != nil) then
-	      destroy top->List.keys;
-	      top->List.keys := nil;
-	    end if;
-
-            if (top->List.accIDs != nil) then
-	      destroy top->List.accIDs;
-	      top->List.accIDs := nil;
-	    end if;
-
+	    (void) XmListDeleteAllItems(top->List);
+	    destroy top->List.keys;
+	    top->List.keys := nil;
+	    destroy top->List.accIDs;
+	    top->List.accIDs := nil;
 	    top->Label.labelString := "0 " + top->Label.defaultLabel;
-
 	  end if;
-
-	  --(void) mgi_writeLog("done clearing:  " + top.name + "\n\n");
-
 	end does;
 
 --
