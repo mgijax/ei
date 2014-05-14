@@ -50,11 +50,8 @@ rules:
 	  cmds : string_list := create string_list();
 	  buf : string;
 
-	  if (getenv("EISSHCOMMAND") != "") then
-	  	cmds.insert(getenv("EISSHCOMMAND"), cmds.count + 1);
-	  end if;
-
 	  cmds.insert(getenv("ADSYSTEMLOAD") + "/adsystemload.py", cmds.count + 1);
+
 	  cmds.insert("-S" + getenv("MGD_DBSERVER"), cmds.count + 1);
 	  cmds.insert("-D" + getenv("MGD_DBNAME"), cmds.count + 1);
 	  cmds.insert("-U" + global_login, cmds.count + 1);
@@ -99,10 +96,6 @@ rules:
 	  dialog : widget := top->ReportDialog->Output;
 	  cmds : string_list := create string_list();
 	  buf : string;
-
-	  if (getenv("EISSHCOMMAND") != "") then
-	  	cmds.insert(getenv("EISSHCOMMAND"), cmds.count + 1);
-	  end if;
 
 	  if (pythonevent = EVENT_ALLELECOMB_BYALLELE) then
 	    cmds.insert(getenv("ALLCACHELOAD") + "/allelecombinationByAllele.py", cmds.count + 1);
@@ -157,10 +150,6 @@ rules:
 	  cmds : string_list := create string_list();
 	  buf : string;
 
-	  if (getenv("EISSHCOMMAND") != "") then
-	  	cmds.insert(getenv("EISSHCOMMAND"), cmds.count + 1);
-	  end if;
-
 	  if (pythonevent = EVENT_ALLELECRE_BYALLELE) then
 	    cmds.insert(getenv("ALLCACHELOAD") + "/allelecrecacheByAllele.py", cmds.count + 1);
 	  elsif (pythonevent = EVENT_ALLELECRE_BYASSAY) then
@@ -209,11 +198,8 @@ rules:
 	  cmds : string_list := create string_list();
 	  buf : string;
 
-	  if (getenv("EISSHCOMMAND") != "") then
-	  	cmds.insert(getenv("EISSHCOMMAND"), cmds.count + 1);
-	  end if;
-
 	  cmds.insert(getenv("MRKCACHELOAD") + "/mrkmcv.py", cmds.count + 1);
+
 	  cmds.insert("-S" + getenv("MGD_DBSERVER"), cmds.count + 1);
 	  cmds.insert("-D" + getenv("MGD_DBNAME"), cmds.count + 1);
 	  cmds.insert("-U" + global_login, cmds.count + 1);
@@ -252,11 +238,8 @@ rules:
 	  cmds : string_list := create string_list();
 	  buf : string;
 
-	  if (getenv("EISSHCOMMAND") != "") then
-	  	cmds.insert(getenv("EISSHCOMMAND"), cmds.count + 1);
-	  end if;
-
 	  cmds.insert(getenv("MRKCACHELOAD") + "/mrkhomologyByClass.py", cmds.count + 1);
+
 	  cmds.insert("-S" + getenv("MGD_DBSERVER"), cmds.count + 1);
 	  cmds.insert("-D" + getenv("MGD_DBNAME"), cmds.count + 1);
 	  cmds.insert("-U" + global_login, cmds.count + 1);
@@ -295,10 +278,6 @@ rules:
 	  objectKey : string := PythonMarkerOMIMCache.objectKey;
 	  cmds : string_list := create string_list();
 	  buf : string;
-
-	  if (getenv("EISSHCOMMAND") != "") then
-	  	cmds.insert(getenv("EISSHCOMMAND"), cmds.count + 1);
-	  end if;
 
 	  if (pythonevent = EVENT_OMIM_BYALLELE) then
 	    cmds.insert(getenv("MRKCACHELOAD") + "/mrkomimByAllele.py", cmds.count + 1);
@@ -346,11 +325,8 @@ rules:
 	  cmds : string_list := create string_list();
 	  buf : string;
 
-	  if (getenv("EISSHCOMMAND") != "") then
-	  	cmds.insert(getenv("EISSHCOMMAND"), cmds.count + 1);
-	  end if;
-
 	  cmds.insert(getenv("MGICACHELOAD") + "/bibcitation.py", cmds.count + 1);
+
 	  cmds.insert("-U" + global_login, cmds.count + 1);
 	  cmds.insert("-P" + global_passwd_file, cmds.count + 1);
 	  cmds.insert("-K" + objectKey, cmds.count + 1);
@@ -387,11 +363,8 @@ rules:
 	  cmds : string_list := create string_list();
 	  buf : string;
 
-	  if (getenv("EISSHCOMMAND") != "") then
-	  	cmds.insert(getenv("EISSHCOMMAND"), cmds.count + 1);
-	  end if;
-
 	  cmds.insert(getenv("MGICACHELOAD") + "/imgcache.py", cmds.count + 1);
+
 	  cmds.insert("-S" + global_server, cmds.count + 1);
 	  cmds.insert("-D" + global_database, cmds.count + 1);
 	  cmds.insert("-U" + global_login, cmds.count + 1);
@@ -432,11 +405,8 @@ rules:
 	  cmds : string_list := create string_list();
 	  buf : string;
 
-	  if (getenv("EISSHCOMMAND") != "") then
-	  	cmds.insert(getenv("EISSHCOMMAND"), cmds.count + 1);
-	  end if;
-
 	  cmds.insert(getenv("MGICACHELOAD") + "/inferredfrom.py", cmds.count + 1);
+
 	  cmds.insert("-S" + global_server, cmds.count + 1);
 	  cmds.insert("-D" + global_database, cmds.count + 1);
 	  cmds.insert("-U" + global_login, cmds.count + 1);

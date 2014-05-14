@@ -337,7 +337,7 @@ RETCODE mgi_dbresults(DBPROCESS *dbproc)
 *
 */
 
-int mgi_dbnextrow(DBPROCESS *dbproc)
+STATUS mgi_dbnextrow(DBPROCESS *dbproc)
 {
   return(dbnextrow(dbproc));
 }
@@ -534,7 +534,7 @@ int mgi_process_sql(Widget dialog)
 
 int mgi_process_results(Widget dialog)
 {
-  int ret;
+  STATUS ret;
 
   if (search_proc == (DBPROCESS *) NULL)
     return 1;
