@@ -919,8 +919,8 @@ def citationCache():
 	#
 	'''
 
-	args = '%s -S%s -D%s -U%s -P%s -K' \
-		% (CITATIONCACHE, db.get_sqlServer(), db.get_sqlDatabase(), db.get_sqlUser(), passwordFile)
+	args = '%s -U%s -P%s -K' \
+		% (CITATIONCACHE, db.get_sqlUser(), passwordFile)
 
 	# if adding, then insert cache records for every reference that does not have a cache record
 	if mode == 'addnlm':
