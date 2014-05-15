@@ -2,9 +2,6 @@
 -- Name: Report.d
 -- Report.d 06/11/99
 --
--- lec	04/04/2014
---   - TR11549/EISSHCOMMAND/EIUTIL
---
 -- lec   04/09/1999
 --   - ReportInit; set default printer value based on env variable PRINTER
 --   - ReportInit; set default printer as first item in printer list
@@ -55,18 +52,11 @@ rules:
 
      -- Retrieve program and parameters for selected Report
 
-     which_commands : string_list := create string_list();
-     commands : string_list := create string_list();
+     commands : string_list;
+     newcommands : string_list := create string_list();
+     commands := mgi_splitfields(dialog->ReportList->List.keys[dialog->ReportList->List.row], " ");
 
-     which_commands := mgi_splitfields(dialog->ReportList->List.keys[dialog->ReportList->List.row], " ");
-
-     if (which_commands[1] = "nlm.py") then      -- NLM program
-
-       if (getenv("EISSHCOMMAND") != "") then
-           commands.insert(getenv("EISSHCOMMAND"), commands.count + 1);
-       end if;
-
-       commands.insert(getenv("EIUTILS") + "/" + which_commands[1], commands.count + 1);
+     if (commands[1] = "nlm.py") then      -- NLM program
 
        -- NLM Mode = 1 is the NLM Update
        -- NLM Mode = 2 is the NLM Add and requires a starting J#
@@ -105,13 +95,7 @@ rules:
      -- Other Python scripts are not user-dependent and can execute using the public login
      -- These programs rely on the last search the User performed from within the form
 
-     elsif (strstr(which_commands[1], ".py") != nil) then
-
-       if (getenv("EISSHCOMMAND") != "") then
-           commands.insert(getenv("EISSHCOMMAND"), commands.count + 1);
-       end if;
-
-       commands.insert(getenv("EIUTILS") + "/" + which_commands[1], commands.count + 1);
+     elsif (strstr(commands[1], ".py") != nil) then
 
        if (dialog->ReportList->List.row = 1 and select.length = 0) then
          StatusReport.source_widget := top;
@@ -132,8 +116,8 @@ rules:
      -- 	MGD_DBSERVER, DATABASE, LOGIN, PASSWORDFILE  and FILE TO PROCESS
      --
 
-     elsif (strstr(which_commands[1], ".csh") != nil) then
-       commands.insert(which_commands[1], commands.count + 1);
+     elsif (strstr(commands[1], ".csh") != nil) then
+
        commands.insert(getenv("MGD_DBSERVER"), commands.count + 1);
        commands.insert(getenv("MGD_DBNAME"), commands.count + 1);
        commands.insert(global_login, commands.count + 1);
@@ -163,9 +147,7 @@ rules:
      while (tu_fork_ok(proc_id)) do
        (void) keep_busy();
      end while;
-
      tu_fork_free(proc_id);
-
    end does;
 
 --
