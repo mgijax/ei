@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Fri Apr 18 08:26:59 2014";
+      lastWritten = "Mon May 19 13:35:25 2014";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -8042,9 +8042,19 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       SourceSegmentTypeFrame = SegmentTypeFrame : mgiOption;
+                          {
+                            SourceSegmentTypeMenu = XmOptionMenu;
+                            Group: User
+                              required = False;
+                          }
                     }
                     {
                       SourceVectorTypeFrame = VectorTypeFrame : mgiOption;
+                          {
+                            SourceVectorTypeMenu = XmOptionMenu;
+                            Group: User
+                              required = False;
+                          }
                     }
                     {
                       ProbeOrganismFrame = ProbeOrganismFrame : mgiOption;
