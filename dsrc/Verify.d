@@ -426,7 +426,7 @@ rules:
 
 		-- XmOptionMenu or Verify
 
-		elsif (editForm.child(i).class_name = "XmRowColumn" and editForm.child(i).num_children > 0) then
+		elsif ((editForm.child(i).class_name = "XmFrame" or editForm.child(i).class_name = "XmRowColumn") and editForm.child(i).num_children > 0) then
 
 		  caption := editForm.child(i).name;
 
@@ -464,7 +464,8 @@ rules:
                     end while;
 
                   else  -- XmOptionMenu
-		    child := editForm.child(i);
+		    caption := editForm.child(i).child(1).name;
+		    child := editForm.child(i).child(1);
 
 		    if (child != nil) then
 		      if (child.menuHistory != nil) then

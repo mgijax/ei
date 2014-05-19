@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Thu Apr 10 10:54:26 2014";
+      lastWritten = "Fri Apr 18 08:04:08 2014";
       copy = false;
       inCreateMenu = true;
         {
@@ -2659,6 +2659,29 @@ Module: MGI
                                           managed = False;
                                         Group: User
                                           required = False;
+                                      }
+                                      Popups:
+                                      {
+                                        MGITypePulldown = OptionPulldown;
+                                            {
+                                              SearchAll = SearchAll : mgiOption;
+                                            }
+                                            {
+                                              Expression = OptionToggle : mgiOption;
+                                              Group: Widget
+                                                labelString = Expression;
+                                              Group: User
+                                                defaultValue = 8;
+                                                searchValue = 8;
+                                            }
+                                            {
+                                              Alleles = OptionToggle : mgiOption;
+                                              Group: Widget
+                                                labelString = "Alleles & Phenotypes";
+                                              Group: User
+                                                defaultValue = 11;
+                                                searchValue = 11;
+                                            }
                                       }
                                 }
                                 {

@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Thu Apr 10 11:38:38 2014";
+      lastWritten = "Mon May 19 10:50:59 2014";
       copy = false;
       inCreateMenu = true;
         {
@@ -177,13 +177,19 @@ Module: GXD
                                       }
                                       {
                                         SourceSegmentTypeFrame = SegmentTypeFrame : mgiOption;
-                                        Group: User
-                                          required = False;
+                                            {
+                                              SourceSegmentTypeMenu = XmOptionMenu;
+                                              Group: User
+                                                required = False;
+                                            }
                                       }
                                       {
                                         SourceVectorTypeFrame = VectorTypeFrame : mgiOption;
-                                        Group: User
-                                          required = False;
+                                            {
+                                              SourceVectorTypeMenu = XmOptionMenu;
+                                              Group: User
+                                                required = False;
+                                            }
                                       }
                                       {
                                         ProbeOrganismFrame = ProbeOrganismFrame : mgiOption;
@@ -1339,7 +1345,6 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         AccSourceFrame = AccSourceFrame;
-                                        Group: User
                                             {
                                               AccSourceMenu = XmOptionMenu;
                                               Group: User

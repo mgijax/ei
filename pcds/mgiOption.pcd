@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Mon Apr 14 09:58:18 2014";
+      lastWritten = "Mon May 19 10:56:54 2014";
       copy = false;
       inCreateMenu = true;
         {
@@ -1640,6 +1640,8 @@ Module: mgiOption
                 Group: Widget
                   subMenuId = AntibodyOrganismPulldown;
                   labelString = "Antibody\nOrganism";
+                Group: User
+                  defaultValue = 76;
               }
               Popups:
               {

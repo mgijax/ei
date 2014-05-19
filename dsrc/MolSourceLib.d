@@ -115,13 +115,17 @@ rules:
                    mgi_DBinsert(PRB_SOURCE, keyLabel);
 	  end if;
 
-	  if (top->SourceSegmentTypeMenu.menuHistory.defaultValue = "%") then
+	  if (top->SourceSegmentTypeMenu.menuHistory.defaultValue = nil) then
+	    segmentType := mgi_sql1(molsource_segment(top->SourceSegmentTypeMenu.defaultValue));
+	  elsif (top->SourceSegmentTypeMenu.menuHistory.defaultValue = "%") then
 	    segmentType := mgi_sql1(molsource_segment(top->SourceSegmentTypeMenu.defaultValue));
 	  else
-	    segmentType := top->SourceSegmentTypeMenu.menuHistory.defaultValue;
+	    segmentType := top->SourceSegmentTypeMenu.menuHistory.defaultOption;
 	  end if;
 
-	  if (top->SourceVectorTypeMenu.menuHistory.defaultValue = "%") then
+	  if (top->SourceVectorTypeMenu.menuHistory.defaultValue = nil) then
+	    vectorType := mgi_sql1(molsource_vectorType(top->SourceVectorTypeMenu.defaultValue));
+	  elsif (top->SourceVectorTypeMenu.menuHistory.defaultValue = "%") then
 	    vectorType := mgi_sql1(molsource_vectorType(top->SourceVectorTypeMenu.defaultValue));
 	  else
 	    vectorType := top->SourceVectorTypeMenu.menuHistory.defaultValue;

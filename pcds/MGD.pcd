@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Fri Apr 18 06:37:22 2014";
+      lastWritten = "Fri Apr 18 08:26:59 2014";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
