@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Wed Apr  9 10:50:44 2014";
+      lastWritten = "Tue May 20 14:18:57 2014";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -622,22 +622,10 @@ Shift<Key>Tab: prev-tab-group()
                                     activateCallback = "D:VerifyEdit(mode = 2),\nD:Broadcast (type = 1),\nD:GoHome";
                                 }
                                 {
-                                  AddBroadcastInterim = ControlPush : mgiControl;
-                                  Group: Widget
-                                    labelString = "Add and Broadcast Interim to MGD";
-                                    activateCallback = "D:VerifyEdit(mode = 2),\nD:Broadcast (type = 2),\nD:GoHome";
-                                }
-                                {
                                   BroadcastOfficial = ControlPush : mgiControl;
                                   Group: Widget
                                     labelString = "Broadcast Official Symbol to MGD";
                                     activateCallback = "D:Broadcast(type = 3),\nD:GoHome";
-                                }
-                                {
-                                  BroadcastInterim = ControlPush : mgiControl;
-                                  Group: Widget
-                                    labelString = "Broadcast Interim Symbol to MGD";
-                                    activateCallback = "D:Broadcast(type = 4),\nD:GoHome";
                                 }
                           }
                     }
