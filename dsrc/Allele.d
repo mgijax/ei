@@ -2043,6 +2043,10 @@ rules:
 	  ClearOption.source_widget := top->EditForm->mgiParentCellLine->AlleleCellLineTypeMenu;
 	  send(ClearOption, 0);
 
+          top->markerDescription->Note->text.value := "";
+          SetNotesDisplay.note := top->markerDescription->Note;
+          send(SetNotesDisplay, 0);
+
           if (top->QueryList->List.selectedItemCount = 0) then
 	    currentRecordKey := "";
             top->QueryList->List.row := 0;
