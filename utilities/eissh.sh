@@ -7,6 +7,7 @@
 #
 # see ei/Configuration for variables
 #	${EISSHSERVER} : name of ssh server (rohan, lindon)
+#	source ${MGICONFIG}/master.config.csh &&
 #	$1 = name of the Python script (hard-coded in PythonLib.d)
 #	$2 = ${MGD_DBSERVER}
 #	$3 = ${MGD_DBNAME}
@@ -27,6 +28,8 @@
 #          getenv("MRKCACHELOAD") + "/mrkomimByGenotype.py"
 #          getenv("MGICACHELOAD") + "/bibcitation.py"
 #          getenv("MGICACHELOAD") + "/inferredfrom.py"
+#
+# Make sure the $MGICONFIG is run on the server
 #
 
 ssh ${EISSHSERVER} source ${MGICONFIG}/master.config.csh && $1 $2 $3 $4 $5 $6
