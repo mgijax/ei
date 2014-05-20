@@ -81,6 +81,8 @@ rules:
          return;
        end if;
  
+       commands.insert("-S" + getenv("MGD_DBSERVER"), commands.count + 1); 
+       commands.insert("-D" + getenv("MGD_DBNAME"), commands.count + 1); 
        commands.insert("-U" + global_login, commands.count + 1);
        commands.insert("-P" + global_passwd_file, commands.count + 1);
  
