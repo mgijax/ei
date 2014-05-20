@@ -29,5 +29,5 @@
 #          getenv("MGICACHELOAD") + "/inferredfrom.py"
 #
 
-ssh ${EISSHSERVER} $1 $2 $3 $4 $5 $6
+ssh ${EISSHSERVER} source ${MGICONFIG}/master.config.csh && $1 $2 $3 $4 $5 $6
 
