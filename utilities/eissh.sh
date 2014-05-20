@@ -7,7 +7,6 @@
 #
 # see ei/Configuration for variables
 #	${EISSHSERVER} : name of ssh server (rohan, lindon)
-#	source ${MGICONFIG}/master.config.csh &&
 #	$1 = name of the Python script (hard-coded in PythonLib.d)
 #	$2 = ${MGD_DBSERVER}
 #	$3 = ${MGD_DBNAME}
@@ -32,5 +31,8 @@
 # Make sure the $MGICONFIG is run on the server
 #
 
-ssh ${EISSHSERVER} source ${MGICONFIG}/master.config.csh && $1 $2 $3 $4 $5 $6
+ssh ${EISSHSERVER} <<END
+source ${MGICONFIG}/master.config.csh 
+$1 $2 $3 $4 $5 $6
+END
 
