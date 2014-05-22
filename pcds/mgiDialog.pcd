@@ -404,7 +404,7 @@ Module: mgiDialog
                                   Group: Widget
                                     items = "NLM Updates/Adds";
                                   Group: User
-                                    keys = "nlm.py";
+                                    keys = "nlm.csh";
                                 }
                           }
                           {

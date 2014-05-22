@@ -60,7 +60,7 @@ rules:
 
      which_commands := mgi_splitfields(dialog->ReportList->List.keys[dialog->ReportList->List.row], " ");
 
-     if (which_commands[1] = "nlm.py") then      -- NLM program
+     if (which_commands[1] = "nlm.csh") then      -- NLM program
 
        if (getenv("EISSHCOMMAND") != "") then
            commands.insert(getenv("EISSHCOMMAND"), commands.count + 1);

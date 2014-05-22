@@ -467,7 +467,7 @@ rules:
 		    caption := editForm.child(i).child(1).name;
 		    child := editForm.child(i).child(1);
 
-		    if (child != nil) then
+		    if (child != nil and caption != "separator") then
 		      if (child.menuHistory != nil) then
 		        if (child.is_defined("required") != nil and child.menuHistory.is_defined("defaultValue") != nil) then
 		          if (child.required and child.menuHistory.defaultValue = "%") then

@@ -980,10 +980,6 @@ rules:
 	    PythonAlleleCombination.objectKey := currentRecordKey;
 	    send(PythonAlleleCombination, 0);
 
---	    PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYALLELE;
---	    PythonMarkerOMIMCache.objectKey := currentRecordKey;
---	    send(PythonMarkerOMIMCache, 0);
-
 	  end if;
 
 	  if (modifyCacheCre) then
