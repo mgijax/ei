@@ -2,7 +2,7 @@ Module: MGIAdmin
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Thu May 22 08:21:43 2014";
+      lastWritten = "Fri May 23 08:55:41 2014";
         {
           MGIAdmin = Application : MGI;
           Group: Control
@@ -75,6 +75,12 @@ Module: MGIAdmin
                                   Group: Widget
                                     activateCallback = "D:CreateMGIModule(name = \"Sequence\")";
                                     labelString = Sequences;
+                                    traversalOn = False;
+                                }
+                                {
+                                  MLC = XmPushButton;
+                                  Group: Widget
+                                    activateCallback = "D:CreateMGIModule(name = \"MLC\")";
                                     traversalOn = False;
                                 }
                           }
