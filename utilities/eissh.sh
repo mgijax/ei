@@ -33,5 +33,5 @@
 # Make sure the $MGICONFIG is run on the server
 #
 
-ssh ${EISSHSERVER} $1 $2 $3 $4 $5 $6 $7 $8
+ssh ${EISSHSERVER} $1 $2 $3 $4 $5 $6 $7 $8 $9 $10 $11 $12
 
