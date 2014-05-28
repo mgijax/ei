@@ -23,9 +23,11 @@ if ( ! -d ${EIWITHDRAWALDIR} ) then
 	mkdir ${EIWITHDRAWALDIR}
 endif
 
-#if ( ! -d ${EINLMDIR} ) then
-#	mkdir ${EINLMDIR}
-#endif
+setenv LOG `pwd`/installall.log
+rm -f $LOG
 
-./installall compiled
+foreach app ($EIAPPS)
+   echo "INSTALLING $app"
+   installapp $app >>& $LOG
+end
 
