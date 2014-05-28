@@ -723,7 +723,7 @@ rules:
                 cmds.insert(getenv("EISSHCOMMAND"), cmds.count + 1);
           end if;
 
-          cmds.insert(getenv("EIUTILS") + "/markerWithdrawal.py", cmds.count + 1);
+          cmds.insert(getenv("EIUTILS") + "/markerWithdrawal.csh", cmds.count + 1);
 	  cmds.insert("-S" + getenv("MGD_DBSERVER"), cmds.count + 1);
 	  cmds.insert("-D" + getenv("MGD_DBNAME"), cmds.count + 1);
 	  cmds.insert("-U" + global_login, cmds.count + 1);
