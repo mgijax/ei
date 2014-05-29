@@ -19,10 +19,6 @@ if ( ! -d ${EIINSTALLDIR} ) then
 	mkdir ${EIINSTALLDIR}
 endif
 
-if ( ! -d ${EIWITHDRAWALDIR} ) then
-	mkdir ${EIWITHDRAWALDIR}
-endif
-
 setenv LOG `pwd`/installall.log
 rm -f $LOG
 

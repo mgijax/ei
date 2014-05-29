@@ -37,7 +37,7 @@ switch (`uname -n`)
 	setenv IS_LINUX		1
 	setenv SYBASE /opt/sybase/15.7
 	setenv LD_LIBRARY_PATH ${SYBASE}/OCS-15_0/lib:${TeleUSE}/lib:${TeleUSE}/XRT/lib-shared:${TeleUSE}/conf/lib
-	setenv EISSHSERVER   "lindon"
+	setenv EISSHSERVER   "lindon.informatics.jax.org"
 	setenv EISSHCOMMAND  "eissh.sh"
         breaksw
     default:

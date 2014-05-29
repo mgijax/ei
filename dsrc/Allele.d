@@ -166,9 +166,10 @@ locals:
 	modifyCache : boolean;
 	modifyCacheCre : boolean;
 
+	--defaultStatus1Key : string := "847113";
 	pendingStatusKey : string;
 	defaultQualifierKey : string;
-	defaultStatusKey : string;
+	defaultStatus2Key : string;
 
 	defaultInheritanceKeyNS : string;
 	defaultInheritanceKeyNA : string;
@@ -347,7 +348,7 @@ rules:
 
 	  defaultQualifierKey := mgi_sql1(allele_defqualifier());
 
-	  defaultStatusKey := mgi_sql1(allele_defstatus());
+	  defaultStatus2Key := mgi_sql1(allele_defstatus());
 
 	  defaultInheritanceKeyNA := mgi_sql1(allele_definheritanceNA());
 
@@ -526,6 +527,7 @@ rules:
 	    statusKey := top->AlleleStatusMenu.menuHistory.defaultValue;
 	    approvalLoginDate := global_loginKey + ",getdate())\n";
 	  else
+	    --statusKey := defaultStatus1Key;
 	    statusKey := top->AlleleStatusMenu.menuHistory.defaultValue;
 	    approvalLoginDate := "NULL,NULL)\n";
 	  end if;
@@ -1142,7 +1144,7 @@ rules:
 	    end if;
 
 	    if (statusKey.length = 0) then
-	      statusKey := defaultStatusKey;
+	      statusKey := defaultStatus2Key;
 	    end if;
 
 	    if (editMode = TBL_ROW_ADD) then
