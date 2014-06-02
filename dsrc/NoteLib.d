@@ -278,9 +278,11 @@ rules:
 
 	      if (childnote != nil) then
 		if (not notecontinuation) then
-		  childnote->Note->text.value := note;
+		  --childnote->Note->text.value := note;
+		  childnote->Note->text.value := "here is a sample";
 		else
-		  childnote->Note->text.value := childnote->Note->text.value + note;
+		  --childnote->Note->text.value := childnote->Note->text.value + note;
+		  childnote->Note->text.value := "here is a sample";
 		end if;
 	        childnote->Note->text.modified := false;
 		if (noteKey.length > 0) then

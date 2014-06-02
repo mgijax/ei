@@ -381,14 +381,6 @@ rules:
 	    (void) keep_busy();
 	  end while;
 
-	  -- Print out the output from the subroutine
-
-	  if (dialog.value.length > 0) then
-	      StatusReport.source_widget := top;
-	      StatusReport.message := dialog.value;
-	      send(StatusReport);
-	  end if;
-
 	  tu_fork_free(proc_id);
 
 	end does;
