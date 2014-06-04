@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Fri May 30 12:08:57 2014";
+      lastWritten = "Tue Jun  3 07:46:30 2014";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -9852,6 +9852,9 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       NoteDialog = NoteDialog : mgiDialog;
+                      Group: Widget
+                        rubberPositioning = False;
+                        resizePolicy = resize_any;
                           {
                             label = XmLabel;
                           }
@@ -9866,6 +9869,23 @@ Shift<Key>Tab: prev-tab-group()
                                     columns = 100;
                                     rows = 50;
                                 }
+                          }
+                          {
+                            separator = XmSeparator;
+                          }
+                          {
+                            Buttons = Buttons : mgiDialog;
+                            Group: Constraint
+                              leftAttachment = attach_form;
+                              leftOffset = 50;
+                              rightAttachment = attach_form;
+                              rightOffset = 50;
+                              topAttachment = attach_widget;
+                              topWidget = separator;
+                              topOffset = 5;
+                              bottomAttachment = attach_form;
+                              bottomOffset = 5;
+                              resizable = true;
                           }
                     }
                     {

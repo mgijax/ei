@@ -10,14 +10,8 @@
 # See motif.ics.com/forum
 #
 
-if ( ${?MGICONFIG} == 0 ) then
-	setenv MGICONFIG /usr/local/mgi/live/mgiconfig
-endif
-
+setenv MGICONFIG /usr/local/mgi/live/mgiconfig
 source ${MGICONFIG}/master.config.csh
-
-unsetenv OPENWINHOME
-unsetenv XKEYSYMDB
 
 setenv TeleUSE /opt/teleuseXRT
 setenv XRTHOME $TeleUSE/XRT
@@ -49,7 +43,7 @@ switch (`uname -n`)
 endsw
 
 # installation directory
-setenv EIINSTALLDIR ${MGI_LIVE}/ei/prod
+setenv EIINSTALLDIR ${MGI_LIVE}/ei
 
 # CVS tag; keep updated with current tag
 setenv CVS_TAG	ei-5-1-6-6

@@ -278,11 +278,9 @@ rules:
 
 	      if (childnote != nil) then
 		if (not notecontinuation) then
-		  --childnote->Note->text.value := note;
-		  childnote->Note->text.value := "here is a sample";
+		  childnote->Note->text.value := note;
 		else
-		  --childnote->Note->text.value := childnote->Note->text.value + note;
-		  childnote->Note->text.value := "here is a sample";
+		  childnote->Note->text.value := childnote->Note->text.value + note;
 		end if;
 	        childnote->Note->text.modified := false;
 		if (noteKey.length > 0) then
@@ -605,6 +603,8 @@ rules:
 
 	  dialog.targetWidget := target;
 	  dialog.managed := true;
+	  (void) mgi_writeLog("target: " + dialog.targetWidget.value + "\n");
+	  (void) mgi_writeLog("note: " + dialog->Note->text.value + "\n");
         end does;
 
 --
