@@ -1,5 +1,14 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei_linux-5-1-8-1
+DATE: 06/24/2014
+STAFF: lec
+CHANGES: TR11549/TR11654 (scrum-dog)
+1) copied ei/ei-linux branch to new "ei_linux" product
+2) Note that the PythonLib.d + Python libraries can be run either from 
+   bhmgiei01 (linux) from from lindon/rohan (Solaris) by commenting out the EISSH calls
+   in the PythonLib.d/Marker.d/Report.d scripts.
+
 TAG: ei-linux-BP
 DATE: 02/25/2014
 STAFF: lec
