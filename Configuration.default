@@ -47,7 +47,7 @@ endsw
 setenv EIINSTALLDIR ${MGI_LIVE}/ei
 
 # CVS tag; keep updated with current tag
-setenv CVS_TAG	ei-5-1-6-6
+setenv CVS_TAG	ei_linux-5-1-8-1
 
 # build directory
 setenv EIBUILDDIR ${MGI_LIVE}/ei
