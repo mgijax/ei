@@ -17,6 +17,9 @@
 --
 -- History
 --
+-- lec	04/14/2014
+--	- TR11549/PythonImageCache obsolete
+--
 -- lec  02/08/2011
 --	- TR10583/LoadList.loadsmall
 --
@@ -107,7 +110,7 @@ rules:
 --
 -- CopyInSituRow
 --
---      Copy the previous row values to the current row
+--      Copy the previous  values to the current row
 --      if current row value is blank and previous row value is not blank.
 --
 -- Cannot copy Structures
@@ -247,7 +250,7 @@ rules:
 --
 -- InSituResultExit
 --
--- Calls Lib.d's Exit routine.  
+-- Calls Lib.d/Exit routine.  
 -- 
 
 	InSituResultExit does
@@ -495,15 +498,6 @@ rules:
           ModifySQL.list := nil;
           send(ModifySQL, 0);
  
-	  -- check image list
-	  -- if image cache count <= our configured value, then ok
-	  refKey : string := top.root->mgiCitation->ObjectID->text.value;
-	  refCount : string := mgi_sql1(insitu_imageref_count(refKey));
-	  if (integer) refCount <= (integer) python_image_cache then
-	    PythonImageCache.objectKey := refKey;
-	    send(PythonImageCache, 0);
-          end if;
-
 	  send(Select, 0);
 
           (void) reset_cursor(top);

@@ -20,11 +20,11 @@ extern char *mgi_DBtable(int);
 extern char *mgi_DBtype(int);
 extern char *mgi_DBinsert(int, char *);
 extern char *mgi_DBdelete(int, char *);
+extern char *mgi_DBdelete2(int, char *, char *);
 extern char *mgi_DBupdate(int, char *, char *);
 extern char *mgi_DBreport(int, char *);
 extern char *mgi_DBaccSelect(int, int, int);
 extern char *mgi_DBcvname(int);
-extern Boolean mgi_DBisAnchorMarker(char *);
 extern char *mgi_escape_quotes(char *);
 
 extern char *global_application;
@@ -73,10 +73,6 @@ extern char *global_version;
 #define MRK_ACC_REFERENCE1	125
 #define MRK_ACC_REFERENCE2	121
 #define MRK_ACC_REFERENCE3	122
-#define MLC_MARKER		126
-#define MLC_REFERENCE		127
-#define MLC_TEXT		128
-#define MLC_TEXT_ALL		129
 
 #define PRB_ALIAS		130
 #define PRB_ALLELE		131
@@ -89,12 +85,6 @@ extern char *global_version;
 #define PRB_RFLV		138
 #define PRB_SOURCE		139
 #define PRB_SOURCE_MASTER	140		/* Behavior when table treated as Master record */
-
-#define HMD_CLASS		150
-#define HMD_HOMOLOGY		151
-#define HMD_HOMOLOGY_MARKER	152
-#define HMD_HOMOLOGY_ASSAY	153
-#define HMD_NOTES		154
 
 #define MLD_CONCORDANCE		160
 #define MLD_EXPT_MARKER		162
@@ -114,7 +104,6 @@ extern char *global_version;
 #define MLD_RIHAPLOTYPE		178
 #define MLD_RI2POINT		179
 #define MLD_STATISTICS		180
-#define MLC_MARKER_VIEW		181
 #define MLD_MARKERBYREF		182
 #define MLD_EXPT_VIEW		183
 
@@ -186,7 +175,6 @@ extern char *global_version;
 #define GXD_ANTIBODYTYPE	312
 #define GXD_GELRNATYPE		313
 #define GXD_GELUNITS		314
-#define HMD_ASSAY		315
 #define MLD_ASSAY		316
 #define MRK_CLASS    		317
 #define MRK_TYPE		318

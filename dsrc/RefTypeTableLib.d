@@ -141,7 +141,7 @@ rules:
 	  --
 	  -- load the drop-down list
 	  --
-	  if (top->ReferenceTypeMenu.subMenuId.numChildren = 0) then
+	  if (top->ReferenceTypeMenu.subMenuId.numChildren = 1) then
 	    InitOptionMenu.option := top->ReferenceTypeMenu;
 	    send(InitOptionMenu, 0);
 	  end if;
@@ -232,7 +232,7 @@ rules:
 	  -- temporary id for table that has only one
 	  -- reference type (like Markers) that the user does not even see
 
-	  tableID : integer := ProcessRefTypeTable.tableID;
+	  tableID : integer := MGI_REFERENCE_ASSOC;
 
 	  objectKey : string := ProcessRefTypeTable.objectKey;
 	  cmd : string;

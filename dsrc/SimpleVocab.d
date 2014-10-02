@@ -61,7 +61,6 @@ locals:
  
 	tables : list;
 	termTable : widget;
-	termmasterTable : widget;
 
 	synTypeKey : string;		-- Synonym Type Key for Vocabulary Synonyms
 
@@ -120,7 +119,6 @@ rules:
 	  -- Dynamically create Menus
 
 	  termTable := top->Term->Table;
-	  termmasterTable := top->Term;
 	  InitOptionMenu.option := top->ACCLogicalMenu;
 	  send(InitOptionMenu, 0);
 
@@ -630,23 +628,6 @@ rules:
 	  Clear.source_widget := top;
           Clear.reset := true;
           send(Clear, 0);
-
-	  if (top->Name->text.value = "Allele Type" or \
-	      top->Name->text.value = "Allele Subtype") then
-             top->Control->Add.sensitive := false;
-             top->Control->Modify.sensitive := false;
-             top->Control->Delete.sensitive := false;
-             top->CommandsPulldown->Add.sensitive := false;
-             top->CommandsPulldown->Modify.sensitive := false;
-             top->CommandsPulldown->Delete.sensitive := false;
-	  else
-             top->Control->Add.sensitive := true;
-             top->Control->Modify.sensitive := true;
-             top->Control->Delete.sensitive := true;
-             top->CommandsPulldown->Add.sensitive := true;
-             top->CommandsPulldown->Modify.sensitive := true;
-             top->CommandsPulldown->Delete.sensitive := true;
-	  end if;
 
 	  (void) reset_cursor(top);
 	end does;

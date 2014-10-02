@@ -11,7 +11,7 @@
 --
 -- Module controls edits of Controlled Vocabulary tables:
 --
--- Orthology Assays, Mapping Assays, 
+-- Mapping Assays, 
 -- Marker Types, Molecuar Segment Vector Types,
 -- Antibody Classes, Antibody Types, Assay Types, Expression Patterns,
 -- Expression Strengths, Gel RNA Types, Gel Units, Image Field Types,
@@ -177,8 +177,6 @@ rules:
 	  if (tableID = GXD_ASSAYTYPE) then
             cmd := cmd + "," + top->RNAAssayMenu.menuHistory.defaultValue;
             cmd := cmd + "," + top->GelAssayMenu.menuHistory.defaultValue;
-	  elsif (tableID = HMD_ASSAY) then
-	    cmd := cmd + "," + mgi_DBprstr(top->AssayAbbrev->text.value);
 	  end if;
 
 	  cmd := cmd + ")\n";
@@ -283,12 +281,6 @@ rules:
             end if;
 	  end if;
 
-	  if (tableID = HMD_ASSAY) then
-	    if (top->AssayAbbrev->text.modified) then
-	      set := set + "abbrev = " + mgi_DBprstr(top->AssayAbbrev->text.value) + ",";
-	    end if;
-	  end if;
-
 	  if (tableID = MGI_NOTETYPE) then
 	    if (top->PrivateMenu.menuHistory.modified and
 		top->PrivateMenu.menuHistory.searchValue != "%") then
@@ -350,12 +342,6 @@ rules:
             end if;
 	  end if;
  
-	  if (tableID = HMD_ASSAY) then
-	    if (top->AssayAbbrev->text.value.length > 0) then
-	      where := where + "\nand abbrev like " + mgi_DBprstr(top->AssayAbbrev->text.value);
-	    end if;
-	  end if;
-
 	  if (tableID = MGI_NOTETYPE) then
 	    if (top->PrivateMenu.menuHistory.searchValue != "%") then
 	      where := where + "\nand private = " + top->PrivateMenu.menuHistory.defaultValue;
@@ -457,10 +443,6 @@ rules:
                 send(SetOption, 0);
 	        top->CreationDate->text.value := mgi_getstr(dbproc, 5);
 	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 6);
-	      elsif (tableID = HMD_ASSAY) then
-	        top->AssayAbbrev->text.value := mgi_getstr(dbproc, 3);
-	        top->CreationDate->text.value := mgi_getstr(dbproc, 4);
-	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 5);
 	      elsif (tableID = MGI_NOTETYPE) then
                 SetOption.source_widget := top->PrivateMenu;
                 SetOption.value := mgi_getstr(dbproc, 4);
@@ -533,14 +515,6 @@ rules:
 	    top->GelAssayMenu.sensitive := false;
 	    top->RNAAssayMenu.required := false;
 	    top->GelAssayMenu.required := false;
-	  end if;
-
-	  if (tableID = HMD_ASSAY) then
-	    top->AssayAbbrev.sensitive := true;
-	    top->AssayAbbrev->text.required := true;
-	  else
-	    top->AssayAbbrev.sensitive := false;
-	    top->AssayAbbrev->text.required := false;
 	  end if;
 
 	  if (tableID = MGI_NOTETYPE) then

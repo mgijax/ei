@@ -105,14 +105,6 @@ extern char *nonmouse_term();
 extern char *nonmouse_select(char *);
 extern char *nonmouse_notes(char *);
 
-/* MLC.d */
-
-extern char *mlc_select(char *);
-extern char *mlc_class(char *);
-extern char *mlc_ref(char *);
-extern char *mlc_text(char *);
-extern char *mlc_description(char *);
-
 /* MLDP.d */
 
 extern char *mldp_assaynull();
@@ -148,7 +140,6 @@ extern char *mpvoc_loadheader(char *, char *);
 extern char *mpvoc_dbview(char *);
 extern char *mpvoc_evidencecode(char *);
 extern char *mpvoc_qualifier(char *);
-extern char *mpvoc_sexspecific();
 extern char *mpvoc_search(char *, char *);
 extern char *mpvoc_select1(char *, char *);
 extern char *mpvoc_select2(char *, char *);
@@ -192,6 +183,7 @@ extern char *nomen_event();
 extern char *nomen_status();
 extern char *nomen_internal();
 extern char *nomen_select(char *);
+extern char *nomen_verifyMarker(char *);
 
 /* NonMutantCellLine.d */
 
@@ -207,17 +199,6 @@ extern char *omimvoc_dbview(char *);
 extern char *omimvoc_evidencecode(char *);
 extern char *omimvoc_qualifier(char *);
 
-/* Orthology.d */
-
-extern char *orthology_searchByClass(char *);
-extern char *orthology_citation(char *, char *);
-extern char *orthology_marker(char *, char *);
-extern char *orthology_homology1(char *, char *);
-extern char *orthology_homology2(char *, char *);
-extern char *orthology_homology3(char *);
-extern char *orthology_homology4(char *);
-extern char *orthology_organism(char *);
-
 /* RI.d */
 
 extern char *ri_select(char *);
@@ -230,6 +211,16 @@ extern char *ref_dataset3(char *);
 extern char *ref_select(char *);
 extern char *ref_books(char *);
 extern char *ref_notes(char *);
+extern char *ref_go_exists(char *);
+extern char *ref_gxd_exists(char *);
+extern char *ref_hmd_exists(char *);
+extern char *ref_mlc_exists(char *);
+extern char *ref_mld_exists(char *);
+extern char *ref_nom_exists(char *);
+extern char *ref_prb_exists(char *);
+extern char *ref_allele_exists(char *);
+extern char *ref_allele_load(char *);
+extern char *ref_marker_load(char *);
 
 /* Sequence.d */
 

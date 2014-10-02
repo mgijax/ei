@@ -100,7 +100,7 @@ locals:
 	dbView : string;		-- DB View Table (of ACC_MGIType._MGIType_key)
 
 	defaultQualifierKey : string;
-	defaultSexSpecificKey : string;
+	defaultSexSpecificKey : string := "8836535";
 	defaultSex : string := "NA";
 
 	annotTable : widget;		-- Annotation table
@@ -317,6 +317,19 @@ rules:
 --
 
         Delete does
+	  (void) busy_cursor(top);
+
+	  DeleteSQL.tableID := VOC_ANNOT;
+	  DeleteSQL.key := currentRecordKey;
+	  DeleteSQL.key2 := annotTypeKey;
+	  DeleteSQL.list := top->QueryList;
+	  send(DeleteSQL, 0);
+
+          if (top->QueryList->List.row = 0) then
+	    send(ClearMP, 0);
+	  end if;
+
+	  (void) reset_cursor(top);
         end does;
 
 --
@@ -388,7 +401,7 @@ rules:
 
 	  -- First, sort the table by the Term so that all like Terms are grouped together.  
 	  -- This will enable us to easily create 1 _Annot_key per Term.
-	  -- If the current row Term is not equal to the previous row Term,
+	  -- If the current  Term is not equal to the previous  Term,
 	  -- then we have a new _Annot_key.
 
 	  (void) mgi_tblSort(annotTable, annotTable.annotKey);
@@ -430,8 +443,8 @@ rules:
 
             if (editMode = TBL_ROW_ADD) then
 	      
-	      -- Since the annotTable is sorted by Term, if the previous row
-	      -- Term is equal to the current row Term, then use the same
+	      -- Since the annotTable is sorted by Term, if the previous 
+	      -- Term is equal to the current  Term, then use the same
 	      -- _Annot_key value, else generate a new one.
 
   	      dupAnnot := false;
@@ -1169,7 +1182,6 @@ rules:
 	  send(LoadList, 0);
 
 	  defaultQualifierKey := mgi_sql1(mpvoc_qualifier((string) annotTable.vocabQualifierKey));
-	  defaultSexSpecificKey := mgi_sql1(mpvoc_sexspecific());
 
 	  (void) reset_cursor(mgi);
 	end does;
@@ -1205,7 +1217,7 @@ rules:
 --
 -- CopyAnnotation
 --
---	Copy the previous row values to the current row
+--	Copy the previous  values to the current row
 --	if current row value is blank and previous row value is not blank.
 --
 

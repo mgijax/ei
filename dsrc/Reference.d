@@ -10,6 +10,9 @@
 --
 -- History:
 --
+-- 10/01/2014	lec
+--	- TR11786/add Allele and Marker tabs
+--
 -- lec 11/18/2008
 --	- TR9381/mgi_DBprstr changed to mgi_DBprstr2 so that blanks, etc. are not stripped
 --
@@ -77,6 +80,8 @@ devents:
 	Add :local [];
 	AddBook :local [];
 	BuildDynamicComponents :local[];
+        ClearReference :local [clearKeys : boolean := true;
+                            reset : boolean := false;];
 	Delete :local [];
 	Exit :local [];
 	Init :local [];
@@ -114,6 +119,8 @@ locals:
 
 	clearForms : integer := 15;
 	clearLists : integer := 5;
+
+	tables : list;
 
 rules:
 
@@ -163,6 +170,12 @@ rules:
           InitOptionMenu.option := top->ReviewStatusMenu;
           send(InitOptionMenu, 0);
 
+          InitOptionMenu.option := top->RefAllele->ReferenceTypeMenu;
+	  send(InitOptionMenu, 0); 
+
+          InitOptionMenu.option := top->RefMarker->ReferenceTypeMenu;
+	  send(InitOptionMenu, 0); 
+
 	  -- Initialize Global Data Set widgets and string lists
 	  statusTable := top->DataSets->RefDBSStatus->Table;
 	  nonstatusTable := top->DataSets->RefDBSNonStatus->Table;
@@ -183,6 +196,10 @@ rules:
 --
 
         Init does
+          tables := create list("widget");
+
+          tables.append(top->RefAllele->Table);
+          tables.append(top->RefMarker->Table);
 
 	  statusTableList := create list("widget");
 	  statusTableList.append(statusTable);
@@ -201,9 +218,7 @@ rules:
           send(SetRowCount, 0);
 
 	  -- Clear form
-	  Clear.source_widget := top;
-	  Clear.clearForms := clearForms;
-	  send(Clear, 0);
+	  send(ClearReference, 0);
 
 	  top->DataSets->Query->OR.set := true;
 	  top->DataSets->Query->AND.set := false;
@@ -276,6 +291,34 @@ rules:
 	  nonstatusTable.xrtTblRowLabels := labels->substr(1, labels.length - 1);
 	  nonstatusTable.xrtTblVisibleRows := row;
 	  nonstatusTable.unbatch;
+
+	end does;
+
+--
+-- ClearReference
+-- 
+-- Local Clear
+--
+
+	ClearReference does
+
+          Clear.source_widget := top;
+	  Clear.clearLists := clearLists;
+	  Clear.clearForms := clearForms;
+	  Clear.clearKeys := ClearReference.clearKeys;
+	  Clear.reset := ClearReference.reset;
+	  send(Clear, 0);
+
+	  if (not ClearReference.reset) then
+          	tables.open;
+          	while (tables.more) do
+            	ClearTable.table := tables.next;
+            	send(ClearTable, 0);
+          	end while;
+          	tables.close;
+		top->Notes->text.value := "";
+		top->Abstract->text.value := "";
+	  end if;
 
 	end does;
 
@@ -377,6 +420,20 @@ rules:
 	  send(ModifyNotes, 0);
 	  cmd := cmd + top->Notes.sql;
 
+	  -- Process Allele associations
+
+          ProcessRefAlleleTable.table := top->RefAllele->Table;
+          ProcessRefAlleleTable.objectKey := currentRecordKey;
+          send(ProcessRefAlleleTable, 0);
+	  cmd := cmd + top->RefAllele->Table.sqlCmd;
+
+	  -- Process Marker associations
+
+          ProcessRefMarkerTable.table := top->RefMarker->Table;
+          ProcessRefMarkerTable.objectKey := currentRecordKey;
+          send(ProcessRefMarkerTable, 0);
+	  cmd := cmd + top->RefMarker->Table.sqlCmd;
+
 	  -- Process Accesion Numbers
 
 	  ProcessAcc.table := accTable;
@@ -406,11 +463,9 @@ rules:
 	    SetReportSelect.tableID := BIB_REFS;
 	    send(SetReportSelect, 0);
 
-	    Clear.source_widget := top;
-	    Clear.clearKeys := false;
-	    Clear.clearForms := clearForms;
-	    Clear.clearLists := clearLists;
-	    send(Clear, 0);
+	    ClearReference.clearKeys := false;
+	    ClearReference.clearLists := clearLists;
+	    send(ClearReference, 0);
 
 	    NextJnum.source_widget := top;
 	    send(NextJnum, 0);
@@ -456,11 +511,9 @@ rules:
 	  -- Re-initialize form if no more results in result set
 
 	  if (top->QueryList->List.row = 0) then
-	    Clear.source_widget := top;
-	    Clear.clearKeys := false;
-	    Clear.clearForms := clearForms;
-	    Clear.clearLists := clearLists;
-	    send(Clear, 0);
+	    ClearReference.clearKeys := false;
+	    ClearReference.clearLists := clearLists;
+	    send(ClearReference, 0);
 	  end if;
 
 	  -- Re-initialize next J:
@@ -587,6 +640,20 @@ rules:
 	    send(AddBook, 0);
 	  end if;
 
+	  -- Process Allele associations
+
+          ProcessRefAlleleTable.table := top->RefAllele->Table;
+          ProcessRefAlleleTable.objectKey := currentRecordKey;
+          send(ProcessRefAlleleTable, 0);
+	  cmd := cmd + top->RefAllele->Table.sqlCmd;
+
+	  -- Process Marker associations
+
+          ProcessRefMarkerTable.table := top->RefMarker->Table;
+          ProcessRefMarkerTable.objectKey := currentRecordKey;
+          send(ProcessRefMarkerTable, 0);
+	  cmd := cmd + top->RefMarker->Table.sqlCmd;
+
 	  -- Process Accession numbers
 
 	  ProcessAcc.table := accTable;
@@ -675,6 +742,18 @@ rules:
           from := from + accTable.sqlFrom;
           where := where + accTable.sqlWhere;
  
+          SearchRefAlleleTable.table := top->RefAllele->Table;
+          SearchRefAlleleTable.join := "r." + mgi_DBkey(BIB_REFS);
+          send(SearchRefAlleleTable, 0);
+          from := from + top->RefAllele->Table.sqlFrom;
+          where := where + top->RefAllele->Table.sqlWhere;
+
+          SearchRefMarkerTable.table := top->RefMarker->Table;
+          SearchRefMarkerTable.join := "r." + mgi_DBkey(BIB_REFS);
+          send(SearchRefMarkerTable, 0);
+          from := from + top->RefMarker->Table.sqlFrom;
+          where := where + top->RefMarker->Table.sqlWhere;
+
 	  QueryModificationHistory.table := modTable;
 	  QueryModificationHistory.tag := "r";
 	  send(QueryModificationHistory, 0);
@@ -860,6 +939,13 @@ rules:
           InitAcc.table := accTable;
           send(InitAcc, 0);
  
+          tables.open;
+          while (tables.more) do
+            ClearTable.table := tables.next;
+            send(ClearTable, 0);
+          end while;
+          tables.close;
+
 	  -- If no item selected, return
 
 	  if (top->QueryList->List.selectedItemCount = 0) then
@@ -950,12 +1036,18 @@ rules:
 	  LoadAcc.reportError := false;
 	  send(LoadAcc, 0);
 
+          LoadRefAlleleTable.table := top->RefAllele->Table;
+          LoadRefAlleleTable.objectKey := currentRecordKey;
+          send(LoadRefAlleleTable, 0);
+
+          LoadRefMarkerTable.table := top->RefMarker->Table;
+          LoadRefMarkerTable.objectKey := currentRecordKey;
+          send(LoadRefMarkerTable, 0);
+
 	  -- Re-set the modified attributes and the Next J:
 
-	  Clear.source_widget := top;
-	  Clear.reset := true;
-	  Clear.clearForms := clearForms;
-	  send(Clear, 0);
+	  ClearReference.reset := true;
+	  send(ClearReference, 0);
 
 	  NextJnum.source_widget := top;
 	  send(NextJnum, 0);
@@ -1093,12 +1185,31 @@ rules:
 	  end while;
 	  (void) mgi_dbclose(dbproc);
 
+	  --
 	  -- Now fill in used/not used values
+	  --
+	  -- TR11654/stored procedures have been obsoleted and moved to mgdsql scripts
+	  --
 	  row := 0;
 	  while (row < mgi_tblNumRows(statusTable)) do
+
 	    -- has this reference been used?
+
 	    if (mgi_tblGetCell(statusTable, row, statusTable.existsProc) != "") then
-	      cmd := exec_bib_exists(mgi_tblGetCell(statusTable, row, statusTable.existsProc), currentRecordKey);
+	      if (mgi_tblGetCell(statusTable, row, statusTable.existsProc) = "BIB_GO_Exists") then
+	        cmd := ref_go_exists(currentRecordKey);
+	      elsif (mgi_tblGetCell(statusTable, row, statusTable.existsProc) = "BIB_GXD_Exists") then
+	        cmd := ref_gxd_exists(currentRecordKey);
+	      elsif (mgi_tblGetCell(statusTable, row, statusTable.existsProc) = "BIB_MLD_Exists") then
+	        cmd := ref_mld_exists(currentRecordKey);
+	      elsif (mgi_tblGetCell(statusTable, row, statusTable.existsProc) = "BIB_NOM_Exists") then
+	        cmd := ref_nom_exists(currentRecordKey);
+	      elsif (mgi_tblGetCell(statusTable, row, statusTable.existsProc) = "BIB_PRB_Exists") then
+	        cmd := ref_prb_exists(currentRecordKey);
+	      elsif (mgi_tblGetCell(statusTable, row, statusTable.existsProc) = "BIB_MLC_Exists") then
+	        cmd := ref_allele_exists(currentRecordKey);
+	      end if;
+
 	      if (mgi_sql1(cmd) != NO) then
 	        (void) mgi_tblSetCell(statusTable, row, statusTable.used, "X");
 	      else
@@ -1106,6 +1217,7 @@ rules:
 	          (void) mgi_tblSetCell(statusTable, row, statusTable.notUsed, "X");
 		end if;
 	      end if;
+
 	    end if;
 	    row := row + 1;
 	  end while;

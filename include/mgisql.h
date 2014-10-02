@@ -15,7 +15,7 @@
 /* MGILib.d */
 
 extern char *mgilib_count(char *);
-extern char *mgilib_anchorcount(char *);
+extern char *mgilib_isAnchor(char *);
 extern char *mgilib_user(char *);
 extern char *exec_app_EIcheck(char *);
 extern char *exec_acc_assignJ(char *);
@@ -25,7 +25,6 @@ extern char *exec_acc_update(char *, char *, char *, char *);
 extern char *exec_acc_deleteByAccKey(char *, char *);
 extern char *exec_accref_process(char *, char *, char *, char *, char *, char *, char *);
 extern char *exec_all_reloadLabel(char *);
-extern char *exec_bib_exists(char *, char *);
 extern char *exec_hmd_updateClass(char *, char *, char *);
 extern char *exec_mgi_checkUserRole(char *, char *);
 extern char *exec_mgi_insertReferenceAssoc_antibody(char *, char *, char *, char *);
@@ -37,7 +36,6 @@ extern char *exec_mrk_reloadReference(char *);
 extern char *exec_mrk_reloadSequence(char *);
 extern char *exec_mrk_reloadLocation(char *);
 extern char *exec_nom_transferToMGD(char *, char *);
-extern char *exec_nom_verifyMarker(char *);
 extern char *exec_prb_insertReference(char *, char *);
 extern char *exec_prb_getStrainByReference(char *);
 extern char *exec_prb_getStrainReferences(char *);
@@ -167,8 +165,6 @@ extern char *verify_marker(char *, char *);
 extern char *verify_marker_union(char *);
 extern char *verify_marker_current(char *);
 extern char *verify_marker_which(char *);
-extern char *verify_marker_homolog(char *);
-extern char *verify_marker_homologcount(char *, char *, char *);
 extern char *verify_marker_nonmouse(char *);
 extern char *verify_marker_mgiid(char *);
 
@@ -177,7 +173,7 @@ extern char *verify_marker_intable1(char *, char *);
 extern char *verify_marker_intable2(char *, char *, char *, char *);
 
 extern char *verify_reference(char *);
-extern char *verify_exec_goreference(char *);
+extern char *verify_goreference(char *);
 extern char *verify_organism(char *);
 
 extern char *verify_strainspecies(char *);

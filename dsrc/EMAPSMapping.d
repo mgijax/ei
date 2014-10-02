@@ -117,8 +117,8 @@ rules:
 
           -- If adding, then @KEYNAME must be used in all Modify events
  
-	  accID := mgi_tblGetCell(table, 0, table.accID).raise_case;
-	  emapsID := top->EMAPSid->text.value.raise_case;
+	  accID := mgi_tblGetCell(table, 0, table.accID);
+	  emapsID := top->EMAPSid->text.value;
 
           currentRecordKey := "@" + KEYNAME;
  
@@ -202,7 +202,7 @@ rules:
 	  cmd := "";
 	  set := "";
 
-	  emapsID := top->EMAPSid->text.value.raise_case;
+	  emapsID := top->EMAPSid->text.value;
 
 	  -- Process while non-empty rows are found
 
@@ -214,7 +214,7 @@ rules:
 	    end if;
 
 	    key := mgi_tblGetCell(table, row, table.mappingKey);
-	    accID := mgi_tblGetCell(table, row, table.accID).raise_case;
+	    accID := mgi_tblGetCell(table, row, table.accID);
 
 	    if (editMode = TBL_ROW_ADD) then
 

@@ -854,16 +854,18 @@ rules:
 	      top->Caption.noteKey := (integer) mgi_getstr(dbproc, 1);
 	    end while;
           end while;
+	  (void) mgi_writeLog(top->Caption->text.value);
 	  (void) mgi_dbclose(dbproc);
 
 	  cmd := image_copyright(currentRecordKey);
 	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      top->Copyright->text.value := top->Copyright->text.value + mgi_getstr(dbproc, 2);
+	      top->Copyright->text.value := top->Copyright->text.value + mgi_getstr(dbproc, 2) + "\n";
 	      top->Copyright.noteKey := (integer) mgi_getstr(dbproc, 1);
 	    end while;
           end while;
+	  --top->Copyright->text.value := top->Copyright->text.value + "\n";
 	  (void) mgi_dbclose(dbproc);
 
 	  row := 0;

@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- lec 05/20/2014
+--	TR 11549/remove 'Interim' calls
+--
 -- lec	03/2005
 --	TR 4289, MPR
 --
@@ -157,9 +160,7 @@ devents:
 	Broadcast :local [type : integer;];
 	BroadcastExec :local [];
 	AddBroadcastOfficial :local [];
-	AddBroadcastInterim :local [];
 	BroadcastSymbolOfficial :local [];
-	BroadcastSymbolInterim :local [];
 
 	Modify :local [];
 	ModifyNomenNotes :local [];
@@ -1026,6 +1027,7 @@ rules:
 
 	VerifyNomenSymbol does
 	  value : string := VerifyNomenSymbol.source_widget.value;
+	  v_status : string := "";
 
 	  -- If wildcard (%), then skip verification
 
@@ -1034,7 +1036,17 @@ rules:
 	  end if;
 
 	  (void) busy_cursor(top);
-	  (void) mgi_sp(exec_nom_verifyMarker(mgi_DBprstr(value)));
+
+	  (void) mgi_writeLog(value);
+	  if (value.length > 0) then
+	      v_status := mgi_sql1(nomen_verifyMarker(mgi_DBprstr(value)));
+          end if;
+
+	  if (v_status.length > 0) then
+            StatusReport.source_widget := top;
+            StatusReport.message := v_status;
+            send(StatusReport);
+	  end if;
 
 	  (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
 	  (void) reset_cursor(top);
@@ -1098,12 +1110,8 @@ rules:
 
 	  if (broadcastType = 1) then
 	    BroadcastEvent := AddBroadcastOfficial;
-	  elsif (broadcastType = 2) then
-	    BroadcastEvent := AddBroadcastInterim;
 	  elsif (broadcastType = 3) then
 	    BroadcastEvent := BroadcastSymbolOfficial;
-	  elsif (broadcastType = 4) then
-	    BroadcastEvent := BroadcastSymbolInterim;
 	  end if;
 
 	  -- Send appropriate Broadcast event
@@ -1141,29 +1149,6 @@ rules:
 	end does;
 
 --
--- AddBroadcastInterim
---
--- Adds symbol to Nomen and broadcasts to MGD in one step
---
-
-	AddBroadcastInterim does
-
-	  -- add the Nomen record
-
-	  Add.broadcast := true;
-	  send(Add, 0);
-
-	  -- if Add was successful, broadcast to Nomen
-	  if (top->QueryList->List.sqlSuccessful) then
-	    (void) busy_cursor(top);
-	    ExecSQL.cmd := exec_nom_transferToMGD(currentNomenKey, mgi_DBprstr(BROADCASTINTERIM));
-	    send(ExecSQL, 0);
-	    (void) reset_cursor(top);
-	  end if;
-
-	end does;
-
---
 -- BroadcastSymbolOfficial
 --
 -- Broadcast selected symbol to MGD
@@ -1172,19 +1157,6 @@ rules:
 	BroadcastSymbolOfficial does
 	  (void) busy_cursor(top);
 	  ExecSQL.cmd := exec_nom_transferToMGD(currentNomenKey, mgi_DBprstr(BROADCASTOFFICIAL));
-	  send(ExecSQL, 0);
-	  (void) reset_cursor(top);
-	end does;
-
---
--- BroadcastSymbolInterim
---
--- Broadcast selected symbol to MGD
---
-
-	BroadcastSymbolInterim does
-	  (void) busy_cursor(top);
-	  ExecSQL.cmd := exec_nom_transferToMGD(currentNomenKey, mgi_DBprstr(BROADCASTINTERIM));
 	  send(ExecSQL, 0);
 	  (void) reset_cursor(top);
 	end does;

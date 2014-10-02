@@ -10,9 +10,14 @@
 -- Actions Allowed:		Add, Modify, Delete
 --
 -- Module process edits for master Marker tables, Mouse Marker only!
--- Non-Mouse Markers can only be edited using the Homology module.
 --
 -- History
+--
+-- 09/11/2014	lec
+--	- TR11780/fix isAnchor
+--
+-- 04/04/2014	lec
+--	- TR11549/EISSHCOMMAND,etc. for EI/Linux
 --
 -- 02/10/2010	lec
 --	- TR 9784/added 2nd reference type
@@ -232,29 +237,46 @@ rules:
 --
 
 	INITIALLY does
+	  (void) mgi_writeLog("starting initialization...\n");
+	  (void) mgi_writeLog(get_time());
+
+	  (void) mgi_writeLog("initially/parent\n");
+	  (void) mgi_writeLog(get_time());
 	  mgi := INITIALLY.parent;
 
 	  (void) busy_cursor(mgi);
 
+	  (void) mgi_writeLog("create widget\n");
+	  (void) mgi_writeLog(get_time());
 	  top := create widget("MarkerModule", nil, mgi);
 
 	  -- Prevent multiple instances of the Marker form
+	  (void) mgi_writeLog("initially launch\n");
+	  (void) mgi_writeLog(get_time());
           ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
 
 	  -- Set Permissions
+	  (void) mgi_writeLog("send(Permissions)\n");
+	  (void) mgi_writeLog(get_time());
 	  SetPermissions.source_widget := top;
 	  send(SetPermissions, 0);
 
 	  -- Build Dynamic GUI Components
+	  (void) mgi_writeLog("send(BuildDynamic)\n");
+	  (void) mgi_writeLog(get_time());
 	  send(BuildDynamicComponents, 0);
 
 	  top.show;
 
 	  -- Initialize
+	  (void) mgi_writeLog("send(Init)\n");
+	  (void) mgi_writeLog(get_time());
 	  send(Init, 0);
 
 	  (void) reset_cursor(mgi);
+	  (void) mgi_writeLog("ending initialization...\n");
+	  (void) mgi_writeLog(get_time());
 	end does;
 
 --
@@ -715,7 +737,12 @@ rules:
 	  -- Execute Python Wrapper
 
 	  cmds : string_list := create string_list();
-	  cmds.insert("markerWithdrawal.py", cmds.count + 1);
+
+          --if (getenv("EISSHCOMMAND") != "") then
+                --cmds.insert(getenv("EISSHCOMMAND"), cmds.count + 1);
+          --end if;
+
+          cmds.insert(getenv("EIUTILS") + "/markerWithdrawal.csh", cmds.count + 1);
 	  cmds.insert("-S" + getenv("MGD_DBSERVER"), cmds.count + 1);
 	  cmds.insert("-D" + getenv("MGD_DBNAME"), cmds.count + 1);
 	  cmds.insert("-U" + global_login, cmds.count + 1);
@@ -859,6 +886,7 @@ rules:
 
 	ModifyChromosome does
 	  src : widget := ModifyChromosome.source_widget.root;
+	  isAnchor : string;
 
 	  -- 
 	  -- Do not do anything if not in this module
@@ -888,11 +916,9 @@ rules:
 		 currentChr != "UN" and
 		 top->ChromosomeMenu.menuHistory.defaultValue != "UN") then
 
-            StatusReport.source_widget := top;
-	    StatusReport.message := "Check genome coordinates, cytogenetic band and centiMorgan assignments.";
-	    send(StatusReport);
+	    isAnchor := mgi_sql1(mgilib_isAnchor(currentRecordKey));
 
-	    if (mgi_DBisAnchorMarker(currentRecordKey)) then
+	    if (isAnchor.length > 0) then
               StatusReport.source_widget := top;
 	      StatusReport.message := "Symbol is an Anchor Locus.  Remove Anchor record before modifying the Chromosome value.";
 	      send(StatusReport);
@@ -901,6 +927,10 @@ rules:
               send(SetOption, 0);
 	      return;
 	    end if;
+
+            StatusReport.source_widget := top;
+	    StatusReport.message := "Check genome coordinates, cytogenetic band and centiMorgan assignments.";
+	    send(StatusReport);
 
 	    (void) mgi_tblSetCell(top->Offset->Table, 0, top->Offset->Table.offset, "-1.00");
 
@@ -1645,7 +1675,11 @@ rules:
 	  Query.select := "select distinct m._Marker_key, m.symbol, m._Marker_Type_key\n" + from + "\n" + 
 			  where + "\norder by m._Marker_Type_key, m.symbol\n";
 	  Query.table := MRK_MARKER;
+	  (void) mgi_writeLog("start query\n");
+	  (void) mgi_writeLog(get_time());
 	  send(Query, 0);
+	  (void) mgi_writeLog("end query\n");
+	  (void) mgi_writeLog(get_time());
           (void) reset_cursor(top);
         end does;
 
@@ -1660,6 +1694,9 @@ rules:
 --
 
         Select does
+
+	  (void) mgi_writeLog("begin : select result\n");
+	  (void) mgi_writeLog(get_time());
 
 	  InitAcc.table := accTable;
           send(InitAcc, 0);
@@ -1788,7 +1825,7 @@ rules:
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    row := 0;
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-		-- Some _Refs_keys are still NULL, so they won't return a J:
+		-- Some _Refs_keys are still NULL, so they will not return a J:
 
 		seqRow := 0;
 		seqNum1 := "";
@@ -1923,6 +1960,9 @@ rules:
 	  top->QueryList->List.row := Select.item_position;
 	  ClearMarker.reset := true;
 	  send(ClearMarker, 0);
+
+	  (void) mgi_writeLog("end : select result\n");
+	  (void) mgi_writeLog(get_time());
 
 	  (void) reset_cursor(top);
 	end does;

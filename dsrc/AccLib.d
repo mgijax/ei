@@ -221,6 +221,9 @@ rules:
 	  preferred : string;
 	  orderBy : string;
 
+	  --(void) mgi_writeLog("begin : LoadAcc\n");
+	  --(void) mgi_writeLog(get_time());
+
 	  if (tableID = MRK_MARKER or tableID = MLD_EXPTS) then
 	    orderBy := acclib_orderA();
 	  elsif (tableID = MRK_ACC_REFERENCE or 
@@ -382,6 +385,9 @@ rules:
 	  end if;
 
           source.menuHistory := source.defaultOption;
+
+	  --(void) mgi_writeLog("end : LoadAcc\n");
+	  --(void) mgi_writeLog(get_time());
 	end does;
 
 --
@@ -738,14 +744,19 @@ rules:
 	  accName : string;
 	  i : integer;
 
+	  -- some AccSourceMenu/AccSourceMenuPulldown only have one child
+	  -- in which case the source.menuHistory is nil
+	  if (source.menuHistory = nil) then
+	    return;
+	  end if;
+
           logicalKey := mgi_tblGetCell(table, row, table.logicalKey);
           accName := mgi_tblGetCell(table, row, table.accName);
 
 	  -- Not every form has a AccSourceMenu managed
 
 	  if (logicalKey.length = 0 and source.managed) then
-	    --logicalKey := source.menuHistory.defaultValue;
-	    logicalKey := source.defaultValue;
+	    logicalKey := source.menuHistory.defaultValue;
 	  end if;
 
 	  if (logicalKey.length = 0) then

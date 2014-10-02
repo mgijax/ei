@@ -233,6 +233,8 @@ rules:
 		            send(ClearOption, 0);
 		          end if;
 
+		          clearForm.child(i).child(l).modified := false;
+
 		        elsif (clearForm.child(i).child(l).class_name = "XmFrame" and
 			       clearForm.child(i).child(l).child(1).is_defined("subMenuId") != nil) then
 		          if (not Clear.reset) then
@@ -240,7 +242,7 @@ rules:
 		            send(ClearOption, 0);
 		          end if;
 
-		        clearForm.child(i).child(l).modified := false;
+		          clearForm.child(i).child(l).child(1).modified := false;
 
 		        end if;
 
@@ -430,7 +432,7 @@ rules:
 	    default := top.defaultOption;
 	  end if;
 
-	  if (default != nil) then
+	  if (top.menuHistory != nil and default != nil) then
 	    top.menuHistory := default;
 	  end if;
 

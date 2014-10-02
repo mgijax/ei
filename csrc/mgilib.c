@@ -722,18 +722,6 @@ char *mgi_DBkey(int table)
     case MGI_EMAPS_MAPPING:
             strcpy(buf, "_Mapping_key");
             break;
-    case HMD_ASSAY:
-            strcpy(buf, "_Assay_key");
-	    break;
-    case HMD_CLASS:
-            strcpy(buf, "_Class_key");
-	    break;
-    case HMD_HOMOLOGY:
-    case HMD_HOMOLOGY_MARKER:
-    case HMD_HOMOLOGY_ASSAY:
-    case HMD_NOTES:
-            strcpy(buf, "_Homology_key");
-	    break;
     case IMG_IMAGE:
             strcpy(buf, "_Image_key");
 	    break;
@@ -852,10 +840,6 @@ char *mgi_DBkey(int table)
     case MRK_HISTORY:
     case MRK_NOTES:
     case MRK_OFFSET:
-    case MLC_MARKER:
-    case MLC_REFERENCE:
-    case MLC_TEXT:
-    case MLC_TEXT_ALL:
             strcpy(buf, "_Marker_key");
 	    break;
     case MRK_ALLELE:
@@ -1380,24 +1364,6 @@ char *mgi_DBtable(int table)
     case MGI_EMAPS_MAPPING:
             strcpy(buf, "MGI_EMAPS_Mapping");
 	    break;
-    case HMD_ASSAY:
-            strcpy(buf, "HMD_Assay");
-	    break;
-    case HMD_CLASS:
-            strcpy(buf, "HMD_Class");
-	    break;
-    case HMD_HOMOLOGY:
-            strcpy(buf, "HMD_Homology");
-	    break;
-    case HMD_HOMOLOGY_MARKER:
-            strcpy(buf, "HMD_Homology_Marker");
-	    break;
-    case HMD_HOMOLOGY_ASSAY:
-            strcpy(buf, "HMD_Homology_Assay");
-	    break;
-    case HMD_NOTES:
-            strcpy(buf, "HMD_Notes");
-	    break;
     case IMG_IMAGE:
             strcpy(buf, "IMG_Image");
 	    break;
@@ -1599,19 +1565,6 @@ char *mgi_DBtable(int table)
 	    break;
     case MGI_USERROLE_VIEW:
 	    strcpy(buf, "MGI_UserRole_View");
-	    break;
-    case MLC_MARKER:
-            strcpy(buf, "MLC_Marker");
-	    break;
-    case MLC_MARKER_VIEW:
-            strcpy(buf, "MLC_Marker_View");
-	    break;
-    case MLC_REFERENCE:
-            strcpy(buf, "MLC_Reference");
-	    break;
-    case MLC_TEXT:
-    case MLC_TEXT_ALL:
-            strcpy(buf, "MLC_Text");
 	    break;
     case MLD_ASSAY:
             strcpy(buf, "MLD_Assay_Types");
@@ -1932,10 +1885,6 @@ char *mgi_DBinsert(int table, char *keyName)
     case GXD_GELLANESTRUCTURE:
     case GXD_STRUCTURENAME:
     case GXD_INDEXSTAGES:
-    case HMD_HOMOLOGY:
-    case HMD_HOMOLOGY_MARKER:
-    case HMD_HOMOLOGY_ASSAY:
-    case HMD_NOTES:
     case IMG_IMAGEPANE:
     case IMG_IMAGEPANE_ASSOC:
     case MGI_TABLES:
@@ -1948,10 +1897,6 @@ char *mgi_DBinsert(int table, char *keyName)
     case MGI_SYNONYM:
     case MGI_USER:
     case MGI_USERROLE:
-    case MLC_MARKER:
-    case MLC_REFERENCE:
-    case MLC_TEXT:
-    case MLC_TEXT_ALL:
     case MLD_CONCORDANCE:
     case MLD_EXPT_MARKER:
     case MLD_EXPT_NOTES:
@@ -2143,30 +2088,6 @@ char *mgi_DBinsert(int table, char *keyName)
     case MGI_EMAPS_MAPPING:
 	    sprintf(buf, "insert %s (_Mapping_key, accID, emapsID, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table));
 	    break;
-    case HMD_NOTES:
-	    sprintf(buf, "insert %s (%s, sequenceNum, notes)",
-	      mgi_DBtable(table), mgi_DBkey(table));
- 	    break;
-    case HMD_CLASS:
-	    sprintf(buf, "insert %s (%s)", 
-	      mgi_DBtable(table), mgi_DBkey(table));
- 	    break;
-    case HMD_HOMOLOGY:
-	    sprintf(buf, "insert %s (%s, _Class_key, _Refs_key)",
-	      mgi_DBtable(table), mgi_DBkey(table));
- 	    break;
-    case HMD_HOMOLOGY_MARKER:
-	    sprintf(buf, "insert %s (%s, _Marker_key)",
-	      mgi_DBtable(table), mgi_DBkey(table));
- 	    break;
-    case HMD_HOMOLOGY_ASSAY:
-	    sprintf(buf, "insert %s (%s, _Assay_key)",
-	      mgi_DBtable(table), mgi_DBkey(table));
- 	    break;
-    case HMD_ASSAY:
-            sprintf(buf, "insert %s (%s, %s, abbrev)", 
-		mgi_DBtable(table), mgi_DBkey(table), mgi_DBcvname(table));
-	    break;
     case IMG_IMAGE:
             sprintf(buf, "insert %s (%s, _MGIType_key, _ImageClass_key, _ImageType_key, _Refs_key, _ThumbnailImage_key, xDim, yDim, figureLabel, _CreatedBy_key, _ModifiedBy_key)", 
 		mgi_DBtable(table), mgi_DBkey(table));
@@ -2226,18 +2147,6 @@ char *mgi_DBinsert(int table, char *keyName)
 	    break;
     case MGI_USERROLE:
 	    sprintf(buf, "insert %s (%s, _Role_key, _User_key, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case MLC_MARKER:
-	    sprintf(buf, "insert %s (%s, tag, _Marker_key_2)",
-	      mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case MLC_REFERENCE:
-	    sprintf(buf, "insert %s (%s, _Refs_key, tag)",
-	      mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case MLC_TEXT:
-	    sprintf(buf, "insert %s (%s, mode, description, isDeleted, creation_date)",
-	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MLD_CONCORDANCE:
 	    sprintf(buf, "insert %s (%s, sequenceNum, _Marker_key, chromosome, cpp, cpn, cnp, cnn)",
@@ -2443,9 +2352,6 @@ char *mgi_DBinsert(int table, char *keyName)
     /* Some tables only have one field and don't require the trailing comma */
     switch(table)
     {
-      case HMD_CLASS:
-              sprintf(buf3, "\nvalues(@%s)\n", keyName);
-	      break;
       default:
 	      if (isalpha(keyName[0]))
                 sprintf(buf3, "\nvalues(@%s,", keyName);
@@ -2651,12 +2557,6 @@ char *mgi_DBupdate(int table, char *key, char *str)
 
             delete from GXD_Antigen where _Antigen_key = 1000
 
-	buf := mgi_DBdelete(HMD_HOMOLOGY, "") + "_Refs_key = 100";
-
-	buf contains:
-
-	    delete from HMD_HOMOLOGY where _Refs_key = 100
-
 */
 
 char *mgi_DBdelete(int table, char *key)
@@ -2674,11 +2574,6 @@ char *mgi_DBdelete(int table, char *key)
   {
     switch (table)
     {
-      case HMD_HOMOLOGY:
-	      tokens = (char **) mgi_splitfields(key, ":");
-              sprintf(buf, "delete from %s where _Class_key = %s and _Refs_key = %s\n", 
-		mgi_DBtable(table), tokens[0], tokens[1]);
-	      break;
       case MGI_COLUMNS:
 	      tokens = (char **) mgi_splitfields(key, ":");
               sprintf(buf, "delete from %s where table_name = '%s' and column_name = '%s'\n", 
@@ -2686,6 +2581,35 @@ char *mgi_DBdelete(int table, char *key)
 	      break;
       case MGI_EMAPS_MAPPING_PARENT:
               sprintf(buf, "delete from %s where %s = '%s'\n", mgi_DBtable(table), mgi_DBkey(table), key);
+	      break;
+      default:
+              sprintf(buf, "delete from %s where %s = %s\n", mgi_DBtable(table), mgi_DBkey(table), key);
+	      break;
+    }
+  }
+
+  return(buf);
+}
+
+/* version with second key parameter */
+
+char *mgi_DBdelete2(int table, char *key, char *key2)
+{
+  static char buf[TEXTBUFSIZ];
+  char **tokens;
+
+  memset(buf, '\0', sizeof(buf));
+
+  if (strlen(key) == 0)
+  {
+    sprintf(buf, "delete from %s where \n", mgi_DBtable(table));
+  }
+  else
+  {
+    switch (table)
+    {
+      case VOC_ANNOT:
+              sprintf(buf, "delete from %s where _Object_key = %s and _AnnotType_key = %s\n", mgi_DBtable(table), key, key2);
 	      break;
       default:
               sprintf(buf, "delete from %s where %s = %s\n", mgi_DBtable(table), mgi_DBkey(table), key);
@@ -2816,9 +2740,6 @@ char *mgi_DBcvname(int table)
     case CROSS:
             strcpy(buf, "whoseCross");
 	    break;
-    case HMD_ASSAY:
-            strcpy(buf, "assay");
-	    break;
     case MGI_NOTETYPE:
             strcpy(buf, "noteType");
 	    break;
@@ -2900,29 +2821,6 @@ char *mgi_DBcvname(int table)
   }
 
   return(buf);
-}
-
-/*
-   Determine if the given Marker key is an Anchor Marker
-
-   requires:
-	key (string), the record key
-
-   returns:
-	true, if the Marker is an Anchor Marker
-	false, if the Marker is not an Anchor Marker
-
-   example:
-	if (mgi_DBisAnchorMarker("1000")) then...end if;
-*/
-
-Boolean mgi_DBisAnchorMarker(char *key)
-{
-  char cmd[TEXTBUFSIZ];
-
-  memset(cmd, '\0', sizeof(cmd));
-  sprintf(cmd, "%s", mgilib_anchorcount(key));
-  return ((strcmp(mgi_sql1(cmd), "1") == 0) ? True : False);
 }
 
 /*

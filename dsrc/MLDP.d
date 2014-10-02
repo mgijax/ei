@@ -3261,7 +3261,7 @@ rules:
 --
 -- SelectStatistics
 --
--- Query for selected Experiment's Statistics and fill in form with appropriate values
+-- Query for selected Experiment Statistics and fill in form with appropriate values
 --
  
         SelectStatistics does
@@ -3451,7 +3451,7 @@ rules:
 -- VerifyExptChromosome
 --
 -- Activated from ExptDetailForm->Marker->Table
--- Verify that Marker's chromosome matches 
+-- Verify that Marker has chromosome matches 
 -- ExptDetailForm->ChromosomeMenu.menuHistory.defaultValue entered by user
 --
 

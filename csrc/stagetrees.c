@@ -65,7 +65,7 @@ int node_compare_proc(XtPointer item1, XtPointer item2);
       effects:
          compares node names and returns -1,0,1, if item1 is <,=,> than item2,
          respectively.
-      modifies: nothing.
+      tagetree_AddStructuresodifies: nothing.
       returns: -1, 0, 1
     */
 
@@ -255,22 +255,6 @@ void stagetrees_destroy()
       to like to have no children when it is destroyed */
 }
 
-char *stagetrees_convertDateToString(DBDATETIME *dbdate)
-{
-    static BYTE strdate[MAXDATELEN];
-    static DBDATEREC dateinfo;
-
-    int rc;
-
-    rc = dbdatecrack(stagetrees.dbproc, &dateinfo, dbdate); 
-
-    if (rc < 0 || rc == FAIL)
-       stagetrees_error("Couldn't convert datetime (Structure)");
-
-    sprintf(strdate, "%d/%d/%4d", dateinfo.datemonth+1, dateinfo.datedmonth, dateinfo.dateyear);
-    return strdate;
-}
-
 void turnOnRepaint (XtPointer client_data, XtIntervalId *ID)
 {
    XtVaSetValues ((Widget)client_data, XmNxrtGearRepaint, True, NULL);
@@ -442,7 +426,7 @@ Structure *stagetrees_select(DBINT sk)
        return structure;
     }
 
-    tu_printf("DEBUG: Returning NULL, structure not found\n");
+    /*tu_printf("DEBUG: Returning NULL, structure not found\n");*/
 
     return NULL;  /* structure not found */
 }
@@ -538,7 +522,9 @@ static void stagetrees_internalLoadStages(int countdstages, int *distinctstages)
 {
     StageTree *stagetree;
     int i, rc;
-    BYTE smaxmod[MAXDATELEN], snmaxmod[MAXDATELEN];
+    char buf[BUFSIZ];
+
+    /*tu_printf("DEBUG: stagetrees_internalLoadStages\n");*/
 
     if (countdstages == 0)
         return;
@@ -557,14 +543,6 @@ static void stagetrees_internalLoadStages(int countdstages, int *distinctstages)
 
         stagetrees_setProgressValue(i+1); 
 
-         /* convert the time/datestamp for Structures stored in the specific tree to a string */
-
-        strcpy(smaxmod, stagetrees_convertDateToString( &(stagetree_getMaxMod_S(stagetree))));
-
-         /* convert the time/datestamp for StructureNames stored in the specific tree to a string */
-
-        strcpy(snmaxmod, stagetrees_convertDateToString(&(stagetree_getMaxMod_SN(stagetree))));
-
         /*
              Retrieve all Structures and StructureNames
              for which max(date) is > last_loaded_date.
@@ -573,14 +551,14 @@ static void stagetrees_internalLoadStages(int countdstages, int *distinctstages)
              tag tree with maximum date for its stage. 
         */
 
-        /* tu_printf("DEBUG: Adding Structures\n"); */
+        /*tu_printf("DEBUG: Adding Structures\n");*/
         /* Retrieve and store all new Structure records */ 
-        stagetree_AddStructures(stagetree, smaxmod);
+        stagetree_AddStructures(stagetree);
 
 
-        /* tu_printf("DEBUG: Adding StructureNames\n"); */
+        /*tu_printf("DEBUG: Adding StructureNames\n");*/
         /* Retrieve and store all new StructureName records */ 
-        stagetree_AddStructureNames(stagetree, snmaxmod);
+        stagetree_AddStructureNames(stagetree);
 
         fixup_leaves(stagetree);
         /* now sort nodes */
@@ -601,6 +579,8 @@ void stagetrees_loadStages(char *from, char *where)
     int distinctstages[MAXSTAGE];
     /* a count of the number of distinct stages we are processing */
     int countdstages = 0;
+
+    /*tu_printf("DEBUG: stagetrees_loadStages\n");*/
 
     /* determine what stages are affected by the current query.  It would
        be nice to read them from the results already obtained, but the
@@ -635,6 +615,8 @@ void stagetrees_refresh()
    int distinctstages[MAXSTAGE];
    int i, countdstages = 0;
 
+   /*tu_printf("DEBUG: stagetrees_refresh\n");*/
+
    for (i=0;i<MAXSTAGE; i++)  
    {
        StageTree *st;
@@ -652,11 +634,10 @@ void stagetrees_refresh()
 
 void stagetree_init(StageTree *stagetree, int stgnum) 
 {
+    /*tu_printf("DEBUG: stagetree_init\n");*/
     stagetree->Structures = hashtbl_create();
     stagetree->stage = stgnum;
     stagetree->stageroot = NULL;   /* will be set when stage is loaded */
-    dbdatezero(stagetrees.dbproc,&(stagetree->maxmod_S));
-    dbdatezero(stagetrees.dbproc,&(stagetree->maxmod_SN));
 }
 
 void stagetree_deleteStructures(StageTree *stagetree, Widget node)
@@ -724,10 +705,6 @@ void stagetree_unload(StageTree *stagetree)
       Must do so recursively, from the leaves first. */
 
    stagetree_deleteStructures(stagetree, stagetree->stageroot);
-
-   /* clear the datestamps on the tree data */
-   dbdatezero(stagetrees.dbproc,&(stagetree->maxmod_S));
-   dbdatezero(stagetrees.dbproc,&(stagetree->maxmod_SN));
 }
 
 void stagetree_destroy(StageTree *stagetree)
@@ -760,6 +737,8 @@ void stagetree_AddStructureName(StageTree *stagetree, StructureName *stn)
 
    char slabel[TEXTBUFSIZ];
    
+   /*tu_printf("DEBUG: stagetree_AddStructureName\n");*/
+
    key = structurename_getStructureKey(stn);
    hst = (Structure *)hashtbl_retrieve_obj(ht,key);
 
@@ -839,65 +818,47 @@ void stagetree_AddStructureName(StageTree *stagetree, StructureName *stn)
        stagetrees_error("Could not find structure for this structure name");
    }
 
-   /* update the max datetime for structurenames in this stage tree, 
-      if greater than the one stored */
-
-   if (dbdatecmp(stagetrees_getdbproc(stagetrees), 
-                 &(stagetree_getMaxMod_SN(stagetree)),
-                 &(structurename_getModificationDate(stn))
-                ) < 0)
-   { 
-       /* then we need to set the maximum modification date for this tree */
-       stagetree_setMaxMod_SN(stagetree, 
-                              structurename_getModificationDate(stn));
-   }
 }
 
-void stagetree_AddStructureNames(StageTree *stagetree, char *snmaxmod)
+void stagetree_AddStructureNames(StageTree *stagetree)
 {
     /* iterate through the StructureName results. Save each result
        in the tree's Structure hash table by _Structure_key, appending
        or replacing names/aliases according to their _StructureName_key. */
+
     char buf[BUFSIZ];
     int stage = stagetree_getStage(stagetree);
-    StructureName tmpstn;
+    static StructureName tmpstn;
+
+    /*tu_printf("DEBUG: stagetree_AddStructureNames\n");*/
 
     sprintf(buf,"select sn.* "
                 "from GXD_Structure s, GXD_StructureName sn, "
                 "     GXD_TheilerStage t "
                 "where t.stage = %d "
                 "and t._Stage_key = s._Stage_key "
-                "and s._Structure_key = sn._Structure_key " 
-                "and sn.modification_date > '%s' ",
-                stage, snmaxmod);
+                "and s._Structure_key = sn._Structure_key ",
+                stage);
 
     DBPROCESS *dbproc;
     dbproc = mgi_dbexec(buf);
     while (mgi_dbresults(dbproc) != NO_MORE_RESULTS)
     {
-       dbbind(dbproc, 1, INTBIND, (DBINT) 0, 
-             (BYTE *) &(tmpstn._StructureName_key)); 
-
-       dbbind(dbproc, 2, INTBIND, (DBINT) 0, 
-             (BYTE *) &(tmpstn._Structure_key)); 
-
-       dbbind(dbproc, 3, STRINGBIND, (DBINT) 0, tmpstn.structure);
-
+       dbbind(dbproc, 1, INTBIND, (DBINT) 0, (BYTE *) &(tmpstn._StructureName_key)); 
+       dbbind(dbproc, 2, INTBIND, (DBINT) 0, (BYTE *) &(tmpstn._Structure_key)); 
+       dbbind(dbproc, 3, STRINGBIND, (DBINT) 0, tmpstn.structure); 
        dbbind(dbproc, 4, BITBIND, (DBINT) 0, (BYTE *) &(tmpstn.mgiAdded)); 
-
-       dbbind(dbproc, 5, DATETIMEBIND, (DBINT) 0, 
-             (BYTE *) &(tmpstn.creation_date));
-
-       dbbind(dbproc, 6, DATETIMEBIND, (DBINT) 0, 
-             (BYTE *) &(tmpstn.modification_date));
+       dbbind(dbproc, 5, DATETIMEBIND, (DBINT) 0, (BYTE *) &(tmpstn.creation_date));
+       dbbind(dbproc, 6, DATETIMEBIND, (DBINT) 0, (BYTE *) &(tmpstn.modification_date));
 
        while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS)
        {
-          /* tu_printf("DEBUG: Adding a structure name\n"); */
+          /*tu_printf("DEBUG: stagetree_AddStructureNames: Adding a structure name\n");*/
           stagetree_AddStructureName(stagetree, &tmpstn);
        }
     }
     (void) mgi_dbclose(dbproc);
+    /*tu_printf("DEBUG: end stagetree_AddStructureNames\n");*/
 }
 
 void stagetree_AddStructure(StageTree *stagetree, Structure *st)
@@ -996,20 +957,9 @@ void stagetree_AddStructure(StageTree *stagetree, Structure *st)
       rc = hashtbl_insert_obj(ht,key,newst);
    }
 
-   /* update the max datetime for structures in this stage tree, 
-      if greater than the one stored */
-
-   if (dbdatecmp(stagetrees_getdbproc(stagetrees), 
-                 &(stagetree_getMaxMod_S(stagetree)),
-                 &(structure_getModificationDate(st))
-                ) < 0)
-   { 
-       /* then we need to set the maximum modification date for this tree */
-       stagetree_setMaxMod_S(stagetree, structure_getModificationDate(st));
-   }
 }
 
-void stagetree_AddStructures(StageTree *stagetree, char *smaxmod)
+void stagetree_AddStructures(StageTree *stagetree)
 {
     /* make sure we get results in ascending order of tree depth,
        since it is important that new parents are created before
@@ -1018,15 +968,14 @@ void stagetree_AddStructures(StageTree *stagetree, char *smaxmod)
 
     char buf[BUFSIZ];
     int stage = stagetree_getStage(stagetree);
-    Structure tmpst; /* a temporary structure used for reading DB results */
+    static Structure tmpst; /* a temporary structure used for reading DB results */
 
     sprintf(buf,"select s.*, t.stage "
                 "from GXD_Structure s, GXD_TheilerStage t "
                 "where t.stage = %d "
                 "and s._Stage_key = t._Stage_key "
-                "and s.modification_date > '%s' "
                 "order by s.treeDepth asc ",
-                 stage, smaxmod);
+                 stage);
 
     DBPROCESS *dbproc;
     dbproc = mgi_dbexec(buf);
@@ -1034,8 +983,7 @@ void stagetree_AddStructures(StageTree *stagetree, char *smaxmod)
     {
        dbbind(dbproc, 1, INTBIND, (DBINT) 0, (BYTE *) &(tmpst._Structure_key));
        dbbind(dbproc, 2, INTBIND, (DBINT) 0, (BYTE *) &(tmpst._Parent_key));
-       dbbind(dbproc, 3, INTBIND, (DBINT) 0, 
-              (BYTE *) &(tmpst._StructureName_key));
+       dbbind(dbproc, 3, INTBIND, (DBINT) 0, (BYTE *) &(tmpst._StructureName_key));
        dbbind(dbproc, 4, INTBIND, (DBINT) 0, (BYTE *) &(tmpst._Stage_key));
        dbbind(dbproc, 5, INTBIND, (DBINT) 0, (BYTE *) &(tmpst._System_key));
        dbbind(dbproc, 6, INTBIND, (DBINT) 0, (BYTE *) &(tmpst.edinburghKey));
@@ -1045,16 +993,14 @@ void stagetree_AddStructures(StageTree *stagetree, char *smaxmod)
        dbbind(dbproc, 10, INTBIND, (DBINT) 0, (BYTE *) &(tmpst.topoSort));
        dbbind(dbproc, 11, INTBIND, (DBINT) 0, (BYTE *) &(tmpst.inheritSystem));
        dbbind(dbproc, 12, STRINGBIND, (DBINT) 0, tmpst.structureNote);
-       dbbind(dbproc, 13, DATETIMEBIND, (DBINT) 0, 
-              (BYTE *) &(tmpst.creation_date));
-       dbbind(dbproc, 14, DATETIMEBIND, (DBINT) 0, 
-              (BYTE *) &(tmpst.modification_date));
+       dbbind(dbproc, 13, DATETIMEBIND, (DBINT) 0, (BYTE *) &(tmpst.creation_date));
+       dbbind(dbproc, 14, DATETIMEBIND, (DBINT) 0, (BYTE *) &(tmpst.modification_date));
        dbbind(dbproc, 15, INTBIND, (DBINT) 0, (BYTE *) &(tmpst.stage)); 
 
        /* iterate through the Structure results. */
        while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS)
        {
-          /* tu_printf("DEBUG: Adding a structure\n"); */
+          /*tu_printf("DEBUG: stagetree_AddStructures: Adding a structure\n");*/
           stagetree_AddStructure(stagetree, &tmpst);
        }
     }

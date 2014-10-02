@@ -1843,7 +1843,7 @@ rules:
 --
 -- CopyEndoMarker
 --
---      Copy the previous row Endonuclease/Marker values to the current row
+--      Copy the previous  Endonuclease/Marker values to the current row
 --      if current row value is blank and previous row value is not blank.
 --
  

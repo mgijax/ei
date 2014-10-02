@@ -166,9 +166,10 @@ locals:
 	modifyCache : boolean;
 	modifyCacheCre : boolean;
 
+	--defaultStatus1Key : string := "847113";
 	pendingStatusKey : string;
 	defaultQualifierKey : string;
-	defaultStatusKey : string;
+	defaultStatus2Key : string;
 
 	defaultInheritanceKeyNS : string;
 	defaultInheritanceKeyNA : string;
@@ -347,7 +348,7 @@ rules:
 
 	  defaultQualifierKey := mgi_sql1(allele_defqualifier());
 
-	  defaultStatusKey := mgi_sql1(allele_defstatus());
+	  defaultStatus2Key := mgi_sql1(allele_defstatus());
 
 	  defaultInheritanceKeyNA := mgi_sql1(allele_definheritanceNA());
 
@@ -526,6 +527,7 @@ rules:
 	    statusKey := top->AlleleStatusMenu.menuHistory.defaultValue;
 	    approvalLoginDate := global_loginKey + ",getdate())\n";
 	  else
+	    --statusKey := defaultStatus1Key;
 	    statusKey := top->AlleleStatusMenu.menuHistory.defaultValue;
 	    approvalLoginDate := "NULL,NULL)\n";
 	  end if;
@@ -980,10 +982,6 @@ rules:
 	    PythonAlleleCombination.objectKey := currentRecordKey;
 	    send(PythonAlleleCombination, 0);
 
---	    PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYALLELE;
---	    PythonMarkerOMIMCache.objectKey := currentRecordKey;
---	    send(PythonMarkerOMIMCache, 0);
-
 	  end if;
 
 	  if (modifyCacheCre) then
@@ -1146,7 +1144,7 @@ rules:
 	    end if;
 
 	    if (statusKey.length = 0) then
-	      statusKey := defaultStatusKey;
+	      statusKey := defaultStatus2Key;
 	    end if;
 
 	    if (editMode = TBL_ROW_ADD) then
@@ -1693,6 +1691,7 @@ rules:
 	  from_cellline   : boolean := false;
 	  from_sequence   : boolean := false;
 	  from_subtype    : boolean := false;
+	  from_image      : boolean := false;
 
 	  value : string;
 
@@ -1932,6 +1931,20 @@ rules:
 	    from_cellline := true;
           end if;
 
+	  -- Image
+
+	  value := mgi_tblGetCell(imgTable, 0, imgTable.mgiID);
+	  if (value.length > 0 and value != "NULL") then
+	    where := where + "\nand i.mgiID like " + mgi_DBprstr(value);
+	    from_image := true;
+	  end if;
+
+	  value := mgi_tblGetCell(imgTable, 0, imgTable.pixID);
+	  if (value.length > 0 and value != "NULL") then
+	    where := where + "\nand i.pixID like " + mgi_DBprstr(value);
+	    from_image := true;
+	  end if;
+
 	  -- get the additional tables using the "from" values
 
 	  if (from_marker) then
@@ -1962,6 +1975,11 @@ rules:
 	  if (from_sequence) then
 	    from := from + "," + mgi_DBtable(SEQ_ALLELE_ASSOC_VIEW) + " r";
 	    where := where + "\nand a." + mgi_DBkey(SEQ_ALLELE_ASSOC_VIEW) + " = r." + mgi_DBkey(STRAIN);
+	  end if;
+
+	  if (from_image) then
+	    from := from + "," + mgi_DBtable(IMG_IMAGEPANE_ASSOC_VIEW) + " i";
+	    where := where + "\nand a." + mgi_DBkey(ALL_ALLELE) + " = i._Object_key";
 	  end if;
 
 	  if (where.length > 0) then
@@ -2022,6 +2040,10 @@ rules:
 
 	  ClearOption.source_widget := top->EditForm->mgiParentCellLine->AlleleCellLineTypeMenu;
 	  send(ClearOption, 0);
+
+          top->markerDescription->Note->text.value := "";
+          SetNotesDisplay.note := top->markerDescription->Note;
+          send(SetNotesDisplay, 0);
 
           if (top->QueryList->List.selectedItemCount = 0) then
 	    currentRecordKey := "";
@@ -2454,7 +2476,7 @@ rules:
               SetOption.source_widget := top->mgiParentCellLine->AlleleCellLineTypeMenu;
               SetOption.value := mgi_getstr(dbproc, 3);
               send(SetOption, 0);
-	      --turning this on will display MCL's with the same name on separate lines
+	      --turning this on will display MCL with the same name on separate lines
 	      --else it will only display the last row it finds
 	      --row := row + 1;
             end while;

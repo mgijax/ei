@@ -1,6 +1,10 @@
 --
 -- Name: PythonLib.de
 --
+-- lec	04/14/2014
+--	- TR11549/PythonImageCache obsolete
+--	- TR11549/PythonMarkerHomologyCache obsolete
+--
 -- 06/30/2010	lec
 --	- TR 9316
 --	  PythonMarkerCVCache
@@ -36,14 +40,10 @@ PythonAlleleCreCache [source_widget : widget;
 
 PythonMarkerCVCache [objectKey : string;];
 
-PythonMarkerHomologyCache [objectKey : string;];
-
 PythonMarkerOMIMCache [pythonevent : string;
 		       objectKey : string;];
 
 PythonReferenceCache [objectKey : string;];
-
-PythonImageCache [objectKey : string;];
 
 PythonInferredFromCache [source_widget : widget;
 			 objectKey : string;];
@@ -56,13 +56,9 @@ PythonAlleleCreCacheEnd [];
 
 PythonMarkerCVCacheEnd [];
 
-PythonMarkerHomologyCacheEnd [];
-
 PythonMarkerOMIMCacheEnd [];
 
 PythonReferenceCacheEnd [];
-
-PythonImageCacheEnd [];
 
 PythonInferredFromCacheEnd [];
 

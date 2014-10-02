@@ -12,7 +12,7 @@
 --
 -- lec  01/26/2011
 --	- TR 10432
---      - change 'is coded (or not) by checking the count from Index->Expression by Reference
+--      - change is coded (or not) by checking the count from Index->Expression by Reference
 --
 -- lec  09/15/2010
 --	- TR 9695/skip J:153498

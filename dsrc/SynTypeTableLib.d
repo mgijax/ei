@@ -106,7 +106,7 @@ rules:
 	  end while;
 	  (void) mgi_dbclose(dbproc);
 
-	  if (top->SynonymTypeMenu.subMenuId.numChildren = 0) then
+	  if (top->SynonymTypeMenu.subMenuId.numChildren = 1) then
 	    InitOptionMenu.option := top->SynonymTypeMenu;
 	    send(InitOptionMenu, 0);
 	  end if;

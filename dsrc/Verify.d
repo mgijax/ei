@@ -426,7 +426,7 @@ rules:
 
 		-- XmOptionMenu or Verify
 
-		elsif (editForm.child(i).class_name = "XmRowColumn" and editForm.child(i).num_children > 0) then
+		elsif ((editForm.child(i).class_name = "XmFrame" or editForm.child(i).class_name = "XmRowColumn") and editForm.child(i).num_children > 0) then
 
 		  caption := editForm.child(i).name;
 
@@ -464,22 +464,25 @@ rules:
                     end while;
 
                   else  -- XmOptionMenu
-		    child := editForm.child(i);
+		    caption := editForm.child(i).child(1).name;
+		    child := editForm.child(i).child(1);
 
-		    if (child != nil) then
-		      if (child.menuHistory != nil) then
-		        if (child.is_defined("required") != nil and child.menuHistory.is_defined("defaultValue") != nil) then
-		          if (child.required and child.menuHistory.defaultValue = "%") then
-		            -- If Child is required and has a default, use it
-		            if (child.defaultOption = nil) then
-	                      top.allowEdit := false;
-                              StatusReport.source_widget := top;
-                              StatusReport.message := "Required Field \n\n'" + caption + "'";
-                              send(StatusReport);
-	                      (void) XmProcessTraversal(child, XmTRAVERSE_CURRENT);
-		              break;
-		            else
-		              child.menuHistory := child.defaultOption;
+		    if (child != nil and caption != "separator") then
+		      if (child.is_defined("menuHistory") != nil) then
+		        if (child.menuHistory != nil) then
+		          if (child.is_defined("required") != nil and child.menuHistory.is_defined("defaultValue") != nil) then
+		            if (child.required and child.menuHistory.defaultValue = "%") then
+		              -- If Child is required and has a default, use it
+		              if (child.defaultOption = nil) then
+	                        top.allowEdit := false;
+                                StatusReport.source_widget := top;
+                                StatusReport.message := "Required Field \n\n'" + caption + "'";
+                                send(StatusReport);
+	                        (void) XmProcessTraversal(child, XmTRAVERSE_CURRENT);
+		                break;
+		              else
+		                child.menuHistory := child.defaultOption;
+			      end if;
 		            end if;
 			  end if;
 		        end if;
@@ -1960,75 +1963,6 @@ rules:
 	    return;
 	  end if;
 
-          -- Populate information for Homology
- 
-          found : boolean := false;
-
-          if (isTable and VerifyMarker.verifyOtherOrganism) then
-
-	    select := verify_marker_which(whichMarker);
-            dbproc := mgi_dbexec(select);
-            while (mgi_dbresults(dbproc) != NO_MORE_RESULTS and not found) do
-              while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-                  (void) mgi_tblSetCell(sourceWidget, VerifyMarker.row, sourceWidget.markerChr, whichChrom);
-                  (void) mgi_tblSetCell(sourceWidget, VerifyMarker.row, sourceWidget.markerCyto, mgi_getstr(dbproc, 1));
-                  (void) mgi_tblSetCell(sourceWidget, VerifyMarker.row, sourceWidget.markerName, mgi_getstr(dbproc, 2));
-                  (void) mgi_tblSetCell(sourceWidget, VerifyMarker.row, sourceWidget.accID, mgi_getstr(dbproc, 3));
-                  (void) mgi_tblSetCell(sourceWidget, VerifyMarker.row, sourceWidget.accKey, mgi_getstr(dbproc, 4));
-                  found := true;
-              end while;
-            end while;
-            (void) mgi_dbcancel(dbproc);
-            (void) mgi_dbclose(dbproc);
-
-	    select := verify_marker_homolog(whichMarker);
-            dbproc := mgi_dbexec(select);
-            while (mgi_dbresults(dbproc) != NO_MORE_RESULTS and not found) do
-              while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-                  (void) mgi_tblSetCell(sourceWidget, VerifyMarker.row, sourceWidget.markerChr, whichChrom);
-                  (void) mgi_tblSetCell(sourceWidget, VerifyMarker.row, sourceWidget.markerCyto, mgi_getstr(dbproc, 1));
-                  (void) mgi_tblSetCell(sourceWidget, VerifyMarker.row, sourceWidget.markerName, mgi_getstr(dbproc, 2));
-              end while;
-            end while;
-            (void) mgi_dbcancel(dbproc);
-            (void) mgi_dbcancel(dbproc);
-
-	    select := verify_marker_nonmouse(whichMarker);
-            dbproc := mgi_dbexec(select);
-            while (mgi_dbresults(dbproc) != NO_MORE_RESULTS and not found) do
-              while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-                  (void) mgi_tblSetCell(sourceWidget, VerifyMarker.row, sourceWidget.accID, mgi_getstr(dbproc, 2));
-                  (void) mgi_tblSetCell(sourceWidget, VerifyMarker.row, sourceWidget.accKey, mgi_getstr(dbproc, 3));
-                  found := true;
-              end while;
-            end while;
-            (void) mgi_dbcancel(dbproc);
-            (void) mgi_dbclose(dbproc);
-
-            if (top->ID->text.value.length > 0) then
- 
-              -- Check if record already exists for same Class/Organism/different Marker
- 
-              message := "";
-              select := verify_marker_homologcount(top->ID->text.value, organismKey, whichMarker);
- 
-              if ((integer) mgi_sql1(select) > 0) then
-                message := "This Homology Class already contains a Symbol for this Organism\n";
-              end if;
- 
-              if (message.length > 0) then
-                VerifyMarker.doit := (integer) false;
-                (void) mgi_tblSetCell(sourceWidget, VerifyMarker.row, markerKey, "");
-                StatusReport.source_widget := top;
-                StatusReport.message := message;
-                send(StatusReport);
-	        (void) reset_cursor(top);
-		return;
-              end if;
-            end if;
-
-          end if;
-
 	  if (isTable) then
             (void) mgi_tblSetCell(sourceWidget, row, markerKey, whichMarker);
             (void) mgi_tblSetCell(sourceWidget, row, markerSymbol, whichSymbol);
@@ -2543,7 +2477,7 @@ rules:
 	  (void) busy_cursor(top);
 
 	  isNOGO : string;
-	  select : string := verify_exec_goreference(value);
+	  select : string := verify_goreference(value);
 
 	  dbproc : opaque := mgi_dbexec(select);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do

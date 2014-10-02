@@ -88,12 +88,6 @@ CALLS
 	 nonmouse_select("char *")			: "char *";
 	 nonmouse_notes("char *")			: "char *";
 
-	 mlc_select("char *")				: "char *";
-	 mlc_class("char *")				: "char *";
-	 mlc_ref("char *")				: "char *";
-	 mlc_text("char *")				: "char *";
-	 mlc_description("char *")			: "char *";
-
 	 mldp_assaynull()				: "char *";
 	 mldp_tag("char *", "char *")			: "char *";
 	 mldp_select("char *")				: "char *";
@@ -139,7 +133,6 @@ CALLS
 	 mpvoc_dbview("char *")				: "char *";
 	 mpvoc_evidencecode("char *")			: "char *";
 	 mpvoc_qualifier("char *")			: "char *";
-	 mpvoc_sexspecific()				: "char *";
 	 mpvoc_search("char *", "char *")		: "char *";
 	 mpvoc_select1("char *", "char *")		: "char *";
 	 mpvoc_select2("char *", "char *")		: "char *";
@@ -162,19 +155,11 @@ CALLS
 	 omimvoc_evidencecode("char *")			: "char *";
 	 omimvoc_qualifier("char *")			: "char *";
 
-	 orthology_searchByClass("char *")		: "char *";
-	 orthology_citation("char *", "char *")		: "char *";
-	 orthology_marker("char *", "char *")		: "char *";
-	 orthology_homology1("char *", "char *")	: "char *";
-	 orthology_homology2("char *", "char *")	: "char *";
-	 orthology_homology3("char *")			: "char *";
-	 orthology_homology4("char *")			: "char *";
-	 orthology_organism("char *")			: "char *";
-
 	 nomen_event()					: "char *";
 	 nomen_status()					: "char *";
 	 nomen_internal()				: "char *";
 	 nomen_select("char *")				: "char *";
+	 nomen_verifyMarker("char *")			: "char *";
 
 	 nonmutant_select("char *")			: "char *";
 	 nonmutant_count("char *")			: "char *";
@@ -187,6 +172,14 @@ CALLS
 	 ref_select("char *")				: "char *";
 	 ref_books("char *")				: "char *";
 	 ref_notes("char *")				: "char *";
+	 ref_go_exists("char *")			: "char *";
+	 ref_gxd_exists("char *")			: "char *";
+	 ref_mld_exists("char *")			: "char *";
+	 ref_nom_exists("char *")			: "char *";
+	 ref_prb_exists("char *")			: "char *";
+	 ref_allele_exists("char *")			: "char *";
+	 ref_allele_load("char *")		: "char *";
+	 ref_marker_load("char *")		: "char *";
 
 	 sequence_selectPrefix()			: "char *";
 	 sequence_select("char *")			: "char *";

@@ -332,8 +332,6 @@ Boolean structurename_getMgiAdded(StructureName *stn);
 typedef struct stagetree 
 {
    HashTable *Structures;
-   DBDATETIME maxmod_S;
-   DBDATETIME maxmod_SN;
    int stage;    /* stage number associated with this tree */
    Widget stageroot; /* Stage nodes for this stage tree, parent is 
                         "Stages" node */
@@ -375,39 +373,16 @@ void stagetree_destroy(StageTree *stagetree);
    /* macro to return the stage number associated with this tree */
 
 
-#define stagetree_getMaxMod_S(st) st->maxmod_S
-   /* macro to return the maximum modification date for a Structure object
-      held within this tree */
-
-
-#define stagetree_setMaxMod_S(st, dt) st->maxmod_S = dt
-   /* macro to set the maximum modification date for a Structure object
-      held within this tree */
-
-
-#define stagetree_getMaxMod_SN(st) st->maxmod_SN
-   /* macro to return the maximum modification date for a StructureName 
-      object held within this tree */
-
-
-#define stagetree_setMaxMod_SN(st, dt) st->maxmod_SN = dt
-   /* macro to set the maximum modification date for a StructureName object
-      held within this tree */
-
-
 #define stagetree_getstageroot(st) st->stageroot
    /* macro to return the presentation element for this stagetree */
 
 
-void stagetree_AddStructureNames(StageTree *stagetree, char *snmaxmod);
+void stagetree_AddStructureNames(StageTree *stagetree);
    /* 
      requires: 
          stagetree: pointer to a stagetree.
-         snmaxmod: string form of a date.
-     effects: Does an incremental update of StructuresNames.  Reads in all
-              StructureNames with modification date > snmaxmod.
-     modifies: stagetree. Sets the modification dates of the stagetree to 
-               the max obtained from Structure objects stored within the tree.
+     effects: Does an incremental update of StructuresNames.
+     modifies: stagetree. 
      returns: nothing.
     */
 
@@ -424,15 +399,12 @@ void stagetree_AddStructureName(StageTree *stagetree, StructureName *stn);
    */
 
 
-void stagetree_AddStructures(StageTree *stagetree, char *smaxmod);
+void stagetree_AddStructures(StageTree *stagetree);
    /* 
      requires: 
          stagetree: pointer to a stagetree.
-         snmaxmod: string form of a date.
-     effects: Does an incremental update of Structures.  Reads in all
-              Structures with modification date > snmaxmod.
-     modifies: stagetree. Sets the modification dates of the stagetree to 
-               the max obtained from Structure objects stored within the tree.
+     effects: Does an incremental update of Structures.
+     modifies: stagetree. 
      returns: nothing.
     */
 
@@ -655,17 +627,6 @@ Structure *stagetrees_select(DBINT sk);
       modifies: nothing.
       returns: pointer to the Structure object with _Structure_key = sk,
                or NULL if no such Structure object exists. 
-    */
-
-
-char *stagetrees_convertDateToString(DBDATETIME *dbdate);
-   /*
-     requires: 
-         dbdate: pointer to a static buffer containing the string rep
-                 for the dbdate argument.
-     effects: converts a DBDATETIME to a character string for query purposes. 
-     modifies: local static character buffer.
-     returns: null-terminated date string.
     */
 
 

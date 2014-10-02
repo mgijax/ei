@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- 09/04/2014	lec
+--	scrum-bob/IMPC note ; do not allow edits
+--
 -- 09/26/2013	lec
 --	TR11337/add AppendNoteButton for GXD (addNote1)
 --
@@ -383,6 +386,7 @@ rules:
 	  join : string := SearchNoteForm.join;
 	  tableTag : string := SearchNoteForm.tableTag;
 	  textw : widget;
+	  newValue : string;
  
 	  notew.sqlFrom := "";
 	  notew.sqlWhere := "";
@@ -602,6 +606,12 @@ rules:
 	  end if;
 
 	  dialog.targetWidget := target;
+
+	  -- add new line due to issue with word-wrapping that occurs in linux
+	  if (dialog->text.value.length > 0) then
+	      dialog->text.value := dialog->text.value + "\n";
+	  end if;
+
 	  dialog.managed := true;
         end does;
 
@@ -675,6 +685,11 @@ rules:
 	    end if;
 	  elsif (noteWidget.noteType.length > 0) then
 	    noteType := mgi_DBprstr(noteWidget.noteType);
+	  end if;
+
+	  -- IMPC Colony ID : do not allow edits
+	  if (noteType = "1012") then
+	    return;
 	  end if;
 
 	  if (noteWidget.is_defined("mgiTypeKey") != nil) then
@@ -895,7 +910,7 @@ rules:
 	  newValue : string := "";
 
 	  if (noteWidget->text.value.length > 0) then
-		oldValue := noteWidget->text.value + "  ";
+	    oldValue := noteWidget->text.value + " ";
 	  end if;
 
 	  newValue := oldValue + AppendNoteButton.note;

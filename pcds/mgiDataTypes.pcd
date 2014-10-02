@@ -1,8 +1,8 @@
 Module: mgiDataTypes
 {
       autoCuil = False;
-      release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Dec 28 10:12:57 2011";
+      release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
+      lastWritten = "Thu Jul 10 09:57:00 2014";
         {
           toggle = XmToggleButton;
           Group: Widget
@@ -889,16 +889,6 @@ Shift<Key>Tab: prev-tab-group()
             vip_y = 2120;
               {
                 Date = Date : mgiDataTypes;
-                    {
-                      label = XmLabel;
-                    }
-                    {
-                      text = text;
-                      Group: Widget
-                        translations = "#override
-Shift<Key>Tab: prev-tab-group()
-<Key>Tab: VerifyDate()";
-                    }
               }
         }
         {
@@ -1165,7 +1155,7 @@ Shift<Key>Tab: prev-tab-group()
                     }
               }
               {
-                AlleleCellLineTypeMenu = AlleleCellLineTypeMenu : mgiOption;
+                AlleleCellLineTypeFrame = AlleleCellLineTypeFrame : mgiOption;
               }
         }
         {

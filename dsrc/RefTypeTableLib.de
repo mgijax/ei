@@ -23,7 +23,6 @@ LoadRefTypeTable [table : widget;        -- Reference Type Table
 
 -- Process Reference Type Table; Sets table.sqlcmd 
 ProcessRefTypeTable [table : widget;     -- Reference Type Table
-            tableID : integer;           -- ID of table
             objectKey : string;];        -- Unique identifier of Object
 
 -- Search Reference Type Table

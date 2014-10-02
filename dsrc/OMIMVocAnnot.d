@@ -278,7 +278,7 @@ rules:
 	  -- First, sort the table by the Term so that all like Terms
 	  -- are grouped together.  
 	  -- This will enable us to easily create 1 _Annot_key per Term.
-	  -- If the current row Term is not equal to the previous row Term,
+	  -- If the current  Term is not equal to the previous  Term,
 	  -- then we have a new _Annot_key.
 
 	  (void) mgi_tblSort(annotTable, annotTable.annotKey);
@@ -312,8 +312,8 @@ rules:
 
             if (editMode = TBL_ROW_ADD) then
 	      
-	      -- Since the annotTable is sorted by Term, if the previous row
-	      -- Term is equal to the current row Term, then use the same
+	      -- Since the annotTable is sorted by Term, if the previous 
+	      -- Term is equal to the current  Term, then use the same
 	      -- _Annot_key value, else generate a new one.
 
   	      dupAnnot := false;

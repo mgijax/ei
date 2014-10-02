@@ -2,7 +2,7 @@ Module: mgiCV
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Mon Mar 24 12:24:08 2014";
+      lastWritten = "Fri Apr 11 08:02:36 2014";
         {
           CVMenu = XmRowColumn;
           Group: Widget
@@ -17,7 +17,7 @@ Module: mgiCV
             vip_x = 150;
             vip_y = 30;
               {
-                MarkerEventMenu = MarkerEventMenu : mgiOption;
+                MarkerEventFrame = MarkerEventFrame : mgiOption;
                     Popups:
                     {
                       MarkerEventPulldown = OptionPulldown : mgiOption;
@@ -25,15 +25,15 @@ Module: mgiCV
                         tableForm = History;
                         tableOption = 12;
                         tableOptionKey = 4;
-                          {
-                            SearchAll = SearchAll : mgiOption;
-                            Group: Widget
-                              managed = False;
-                          }
                     }
               }
               {
-                MarkerEventReasonMenu = MarkerEventReasonMenu : mgiOption;
+                MarkerEventReasonFrame = MarkerEventReasonFrame : mgiOption;
+                    {
+                      MarkerEventReasonMenu = XmOptionMenu;
+                      Group: Widget
+                        labelString = "Event\nReason";
+                    }
                     Popups:
                     {
                       MarkerEventReasonPulldown = OptionPulldown : mgiOption;
@@ -41,11 +41,6 @@ Module: mgiCV
                         tableForm = History;
                         tableOption = 13;
                         tableOptionKey = 5;
-                          {
-                            SearchAll = SearchAll : mgiOption;
-                            Group: Widget
-                              managed = False;
-                          }
                     }
               }
         }
@@ -55,7 +50,7 @@ Module: mgiCV
             vip_x = 50;
             vip_y = 85;
               {
-                StrengthMenu = StrengthMenu : mgiOption;
+                StrengthFrame = StrengthFrame : mgiOption;
                     Popups:
                     {
                       StrengthPulldown = OptionPulldown : mgiOption;
@@ -68,7 +63,7 @@ Module: mgiCV
                     }
               }
               {
-                PatternMenu = PatternMenu : mgiOption;
+                PatternFrame = PatternFrame : mgiOption;
                     Popups:
                     {
                       PatternPulldown = OptionPulldown : mgiOption;
@@ -77,6 +72,9 @@ Module: mgiCV
                         tableOption = 10;
                         tableOptionKey = 6;
                         childTemplate = StrengthPatternToggle;
+                          {
+                            SearhAllNoShow = SearhAllNoShow : mgiOption;
+                          }
                     }
               }
               {
@@ -126,7 +124,7 @@ Module: mgiCV
                     {
                       CVMenu1 = CVMenu;
                           {
-                            GelControlMenu = GelControlMenu : mgiOption;
+                            GelControlFrame = GelControlFrame : mgiOption;
                                 Popups:
                                 {
                                   GelControlPulldown = OptionPulldown : mgiOption;
@@ -137,7 +135,7 @@ Module: mgiCV
                                 }
                           }
                           {
-                            GelRNATypeMenu = GelRNATypeMenu : mgiOption;
+                            GelRNATypeFrame = GelRNATypeFrame : mgiOption;
                                 Popups:
                                 {
                                   GelRNATypePulldown = OptionPulldown : mgiOption;
@@ -148,7 +146,12 @@ Module: mgiCV
                                 }
                           }
                           {
-                            AgeMenu = AgeMenu : mgiOption;
+                            AgeFrame = AgeFrame : mgiOption;
+                                {
+                                  AgeMenu = XmOptionMenu;
+                                  Group: User
+                                    defaultOption = embryonicDay;
+                                }
                                 Popups:
                                 {
                                   AgePulldown = OptionPulldown : mgiOption;
@@ -209,7 +212,7 @@ Module: mgiCV
                                 }
                           }
                           {
-                            SexMenu = SexMenu : mgiOption;
+                            SexFrame = SexFrame : mgiOption;
                                 Popups:
                                 {
                                   SexPulldown = OptionPulldown;
@@ -217,10 +220,15 @@ Module: mgiCV
                                     tableForm = GelLane;
                                     tableOption = 21;
                                     tableOptionKey = 10;
+                                      {
+                                        SearchAll = SearchAll : mgiOption;
+                                        Group: Widget
+                                          managed = False;
+                                      }
                                 }
                           }
                           {
-                            GelUnitsMenu = GelUnitsMenu : mgiOption;
+                            GelUnitsFrame = GelUnitsFrame : mgiOption;
                                 Popups:
                                 {
                                   GelUnitsPulldown = OptionPulldown : mgiOption;
@@ -231,7 +239,7 @@ Module: mgiCV
                                 }
                           }
                           {
-                            StrengthMenu = StrengthMenu : mgiOption;
+                            StrengthFrame = StrengthFrame : mgiOption;
                                 Popups:
                                 {
                                   StrengthPulldown = OptionPulldown : mgiOption;
@@ -282,7 +290,12 @@ Module: mgiCV
                     {
                       CVMenu = CVMenu;
                           {
-                            AgeMenu = AgeMenu : mgiOption;
+                            AgeFrame = AgeFrame : mgiOption;
+                                {
+                                  AgeMenu = XmOptionMenu;
+                                  Group: User
+                                    defaultOption = embryonicDay;
+                                }
                                 Popups:
                                 {
                                   AgePulldown = OptionPulldown : mgiOption;
@@ -343,7 +356,7 @@ Module: mgiCV
                                 }
                           }
                           {
-                            SexMenu = SexMenu : mgiOption;
+                            SexFrame = SexFrame : mgiOption;
                                 Popups:
                                 {
                                   SexPulldown = OptionPulldown;
@@ -351,10 +364,15 @@ Module: mgiCV
                                     tableForm = Specimen;
                                     tableOption = 17;
                                     tableOptionKey = 8;
+                                      {
+                                        SearchAll = SearchAll : mgiOption;
+                                        Group: Widget
+                                          managed = False;
+                                      }
                                 }
                           }
                           {
-                            FixationMenu = FixationMenu : mgiOption;
+                            FixationFrame = FixationFrame : mgiOption;
                                 Popups:
                                 {
                                   FixationPulldown = OptionPulldown : mgiOption;
@@ -365,7 +383,7 @@ Module: mgiCV
                                 }
                           }
                           {
-                            EmbeddingMenu = EmbeddingMenu : mgiOption;
+                            EmbeddingFrame = EmbeddingFrame : mgiOption;
                                 Popups:
                                 {
                                   EmbeddingPulldown = OptionPulldown : mgiOption;
@@ -376,7 +394,7 @@ Module: mgiCV
                                 }
                           }
                           {
-                            HybridizationMenu = HybridizationMenu : mgiOption;
+                            HybridizationFrame = HybridizationFrame : mgiOption;
                                 Popups:
                                 {
                                   HybridizationPulldown = OptionPulldown : mgiOption;
@@ -463,7 +481,7 @@ Module: mgiCV
             vip_x = 50;
             vip_y = 195;
               {
-                AgeMenu = AgeMenu : mgiOption;
+                AgeFrame = AgeFrame : mgiOption;
                     Popups:
                     {
                       AgePulldown = OptionPulldown;
@@ -474,7 +492,7 @@ Module: mgiCV
                     }
               }
               {
-                GenderMenu = GenderMenu : mgiOption;
+                GenderFrame = GenderFrame : mgiOption;
                     Popups:
                     {
                       GenderPulldown = OptionPulldown;

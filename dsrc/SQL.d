@@ -203,9 +203,15 @@ rules:
 	    return;
  	  end if;
 
-	  ExecSQL.cmd := mgi_DBdelete(DeleteSQL.tableID, DeleteSQL.key);
-	  ExecSQL.list := DeleteSQL.list;
-	  send(ExecSQL, 0);
+	  if (DeleteSQL.key2 != nil) then
+	     ExecSQL.cmd := mgi_DBdelete2(DeleteSQL.tableID, DeleteSQL.key, DeleteSQL.key2);
+	     ExecSQL.list := DeleteSQL.list;
+	     send(ExecSQL, 0);
+          else
+	     ExecSQL.cmd := mgi_DBdelete(DeleteSQL.tableID, DeleteSQL.key);
+	     ExecSQL.list := DeleteSQL.list;
+	     send(ExecSQL, 0);
+          end if;
 
 	  -- If delete was successful, delete row from list and re-count records
 

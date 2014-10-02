@@ -154,6 +154,8 @@ rules:
 	  options := create list("widget");
 	  tables := create list("widget");
 
+	  top->AntibodyOrganismMenu.defaultValue := 76;
+
 	  options.append(top->AntibodyTypeMenu);
 	  options.append(top->AntibodyClassMenu);
 	  options.append(top->AntibodyOrganismMenu);
@@ -910,7 +912,7 @@ rules:
 	      value := "";
 	      newValue := mgi_getstr(dbproc, 1);
  
-              -- _Refs_key is not required, so if NULL it won't return a J:
+              -- _Refs_key is not required, so if NULL it will not return a J:
  
               while (i < mgi_tblNumRows(table)) do
 	        value := mgi_tblGetCell(table, i, table.aliasKey);

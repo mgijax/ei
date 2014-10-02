@@ -6,9 +6,6 @@
  * SQL select statemens
  * to replace include/mgdsql.h 'define' statements
  *
- * History:
- *	08/13/2012	lec
- *
 */
 
 #include <mgilib.h>
@@ -790,55 +787,6 @@ char *nonmouse_notes(char *key)
 }
 
 /*
- * MLC.d
-*/
-
-char *mlc_select(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _Marker_key, symbol, name, chromosome from MRK_Marker where _Marker_key = %s", key);
-  return(buf);
-}
-
-char *mlc_class(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _Class_key, name from MRK_Classes_View where _Marker_key = %s \
-   \norder by name", key);
-  return(buf);
-}
-
-char *mlc_ref(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select b._Refs_key, r.tag, b.jnum, b.short_citation \
-   \nfrom MLC_Reference r, BIB_View b \
-   \nwhere r._Refs_key = b._Refs_key and r._Marker_key = %s \
-   \norder by r.tag", key);
-  return(buf);
-}
-
-char *mlc_text(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select mode, isDeleted, description, creation_date, modification_date, userID \
-   \nfrom MLC_Text where _Marker_key = %s", key);
-  return(buf);
-}
-
-char *mlc_description(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select description from MLC_Text where _Marker_key = %s", key);
-  return(buf);
-}
-
-/*
  * MLDP.d
 */
 
@@ -1230,14 +1178,6 @@ char *mpvoc_qualifier(char *key)
   return(buf);
 }
 
-char *mpvoc_sexspecific()
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _Term_key from VOC_Term where _Vocab_key = 86");
-  return(buf);
-}
-
 char *mpvoc_search(char *from, char *where)
 {
   static char buf[TEXTBUFSIZ];
@@ -1278,6 +1218,7 @@ char *mpvoc_select3(char *key, char *annotTypeKey)
    \nand e._AnnotEvidence_key = p._AnnotEvidence_key \
    \nand p._PropertyTerm_key = t._Term_key \
    \nand t._Vocab_key = 86 \
+   \nand t._Term_key = 8836535 \
    \norder by e.jnum, a.term", annotTypeKey, key);
   return(buf);
 }
@@ -1442,6 +1383,23 @@ char *nomen_select(char *key)
   return(buf);
 }
 
+char *nomen_verifyMarker(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"declare @status varchar(255) \
+    \nif exists (select 1 from MRK_Marker m where m.symbol = %s and m._Organism_key = 1 and m._Marker_Status_key = 1) \
+    \nselect @status = 'Official Symbol '%s' exists in MGD\n' \
+    \nif exists (select 1 from MRK_Marker m where m.symbol = %s and m._Organism_key = 1 and m._Marker_Status_key = 2) \
+    \nselect @status = 'Withdrawn Symbol '%s' exists in MGD\n' \
+    \nif exists (select 1 from MRK_Marker m where m.symbol = %s and m._Organism_key = 1 and m._Marker_Status_key = 3) \
+    \nselect @status = 'Interim Symbol '%s' exists in MGD\n' \
+    \nif exists (select 1 from NOM_Marker where symbol = %s) \
+    \nselect @status = @status + 'Symbol '%s' exists in Nomen\n' \
+    \nselect @status\n", key, key, key, key, key, key, key, key);
+  return(buf);
+}
+
 /*
 * NonMutantCellLine.d
 */
@@ -1529,116 +1487,6 @@ char *omimvoc_qualifier(char *key)
 }
 
 /*
- * Orthology.d
-*/
-
-char *orthology_searchByClass(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select distinct h.classRef, h.short_citation, h.jnum \
-   \nfrom HMD_Homology_View h \
-   \nwhere h._Class_key = %s \
-   \norder by h.short_citation", key);
-  return(buf);
-}
-
-char *orthology_citation(char *classKey, char *refKey)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select distinct _Class_key, jnum, short_citation, _Refs_key, \
-   \ncreation_date, modification_date \
-   \nfrom HMD_Homology_View \
-   \nwhere _Class_key = %s \
-   \nand _Refs_key = %s", classKey, refKey);
-  return(buf);
-}
-
-char *orthology_marker(char *classKey, char *refKey)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select distinct _Marker_key, _Organism_key, organism, symbol, \
-   \nchromosome, cytogeneticOffset, name \
-   \nfrom HMD_Homology_View \
-   \nwhere _Class_key = %s \
-   \nand _Refs_key = %s \
-   \norder by _Organism_key", classKey, refKey);
-  return(buf);
-}
-
-char *orthology_homology1(char *classKey, char *refKey)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select distinct hm._Marker_key, a.accID, a._Accession_key, a._Organism_key \
-   \nfrom HMD_Homology h, HMD_Homology_Marker hm, MRK_Acc_View a \
-   \nwhere _Class_key = %s \
-   \nand _Refs_key = %s \
-   \nand h._Homology_key = hm._Homology_key \
-   \nand hm._Marker_key = a._Object_key \
-   \nand a._LogicalDB_key = 1 \
-   \nand a.prefixPart = 'mgi:' \
-   \nand a.preferred = 1 \
-   \norder by a._Organism_key", classKey, refKey);
-  return(buf);
-}
-
-char *orthology_homology2(char *classKey, char *refKey)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select distinct hm._Marker_key, a.accID, a._Accession_key, a._Organism_key \
-   \nfrom HMD_Homology h, HMD_Homology_Marker hm, MRK_Marker m, MRK_Acc_View a \
-   \nwhere _Class_key = %s \
-   \nand _Refs_key = %s \
-   \nand h._Homology_key = hm._Homology_key \
-   \nand hm._Marker_key = m._Marker_key \
-   \nand m._Organism_key != 1 \
-   \nand hm._Marker_key = a._Object_key \
-   \nand a._LogicalDB_key = 55 \
-   \norder by a._Organism_key", classKey, refKey);
-  return(buf);
-}
-
-char *orthology_homology3(char *classRefWhere)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select distinct a._Homology_key, a._Assay_key, a.assay, s._Organism_key \
-   \nfrom HMD_Homology h, HMD_Homology_Assay_View a, HMD_Homology_Marker m, MRK_Marker s \
-   \n%s \
-   \nand h._Homology_key = m._Homology_key \
-   \nand m._Marker_key = s._Marker_key \
-   \nand m._Homology_key = a._Homology_key \
-   \norder by a._Homology_key, a._Assay_key, s._Organism_key", classRefWhere);
-  return(buf);
-}
-
-char *orthology_homology4(char *classRefWhere)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select distinct n._Homology_key, n.sequenceNum, n.notes \
-   \nfrom HMD_Homology h, HMD_Notes n \
-   \n%s \
-   \nand h._Homology_key = n._Homology_key \
-   \norder by n._Homology_key, n.sequenceNum", classRefWhere);
-  return(buf);
-}
-
-char *orthology_organism(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _Organism_key, organism from MGI_Organism_Homology_View \
-   \nwhere _Organism_key in %s \
-   \norder by _Organism_key", key);
-  return(buf);
-}
-
-/*
 * RI.d
 */
 
@@ -1706,6 +1554,85 @@ char *ref_notes(char *key)
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select rtrim(note) from BIB_Notes where _Refs_key = %s \
    \norder by sequenceNum", key);
+  return(buf);
+}
+
+char *ref_go_exists(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select count(e._Annot_key) \
+   \nfrom VOC_Evidence e, VOC_Annot a \
+   \nwhere e._Refs_key = %s \
+   \nand e._Annot_key = a._Annot_key \
+   \nand a._AnnotType_key = 1000", key);
+  return(buf);
+}
+
+char *ref_gxd_exists(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select count(*) from GXD_Index where _Refs_key = %s \
+   \nunion \
+   \nselect count(*) from GXD_Assay where _Refs_key = %s", key, key);
+  return(buf);
+}
+
+char *ref_mld_exists(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select count(*) from MLD_Expts where _Refs_key = %s", key);
+  return(buf);
+}
+
+char *ref_nom_exists(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select count(*) from MGI_Reference_Nomen_View where _Refs_key = %s", key);
+  return(buf);
+}
+
+char *ref_prb_exists(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select count(*) from PRB_Reference where _Refs_key = %s", key);
+  return(buf);
+}
+
+char *ref_allele_exists(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select count(*) from MGI_Reference_Allele_View where _Refs_key = %s", key);
+  return(buf);
+}
+
+char *ref_allele_load(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select r._Assoc_key, r._RefAssocType_key, r.assocType, r._Object_key, a.symbol, m._Marker_key, m.symbol \
+  \nfrom MGI_Reference_Allele_View r, ALL_Allele a, MRK_Marker m \
+  \nwhere r._Object_key = a._Allele_key \
+  \nand a._Marker_key = m._Marker_key \
+  \nand r._Refs_key = %s \
+  \norder by a.symbol, r.assocType", key);
+  return(buf);
+}
+
+char *ref_marker_load(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select r._Assoc_key, r._RefAssocType_key, r.assocType, r._Object_key, m.symbol \
+  \nfrom MGI_Reference_Marker_View r, MRK_Marker m \
+  \nwhere r._Object_key = m._Marker_key \
+  \nand r._Refs_key = %s \
+  \norder by m.symbol, r.assocType", key);
   return(buf);
 }
 

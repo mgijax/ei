@@ -22,6 +22,7 @@ AddSQL [tableID : integer := 0;			-- Execute an Add
 
 DeleteSQL [tableID : integer := 0;		-- Execute a Delete
 	   key : string;
+	   key2 : string := "";
            list : widget;];
  
 ExecSQL [cmd : string;				-- Execute an SQL command

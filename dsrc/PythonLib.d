@@ -1,6 +1,10 @@
 --
 -- Name: PythonLib.d
 --
+-- lec	04/14/2014
+--	- TR11549/PythonImageCache obsolete
+--	- TR11549/PythonMarkerHomologyCache obsolete
+--
 -- 06/30/2010	lec
 --	- TR 9316
 --	  PythonMarkerCVCache
@@ -50,8 +54,11 @@ rules:
 	  cmds : string_list := create string_list();
 	  buf : string;
 
-	  cmds.insert(getenv("ADSYSTEMLOAD") + "/adsystemload.py", cmds.count + 1);
+	  --if (getenv("EISSHCOMMAND") != "") then
+	  	--cmds.insert(getenv("EISSHCOMMAND"), cmds.count + 1);
+	  --end if;
 
+	  cmds.insert(getenv("ADSYSTEMLOAD") + "/adsystemload.py", cmds.count + 1);
 	  cmds.insert("-S" + getenv("MGD_DBSERVER"), cmds.count + 1);
 	  cmds.insert("-D" + getenv("MGD_DBNAME"), cmds.count + 1);
 	  cmds.insert("-U" + global_login, cmds.count + 1);
@@ -96,6 +103,10 @@ rules:
 	  dialog : widget := top->ReportDialog->Output;
 	  cmds : string_list := create string_list();
 	  buf : string;
+
+	  --if (getenv("EISSHCOMMAND") != "") then
+	  	--cmds.insert(getenv("EISSHCOMMAND"), cmds.count + 1);
+	  --end if;
 
 	  if (pythonevent = EVENT_ALLELECOMB_BYALLELE) then
 	    cmds.insert(getenv("ALLCACHELOAD") + "/allelecombinationByAllele.py", cmds.count + 1);
@@ -150,6 +161,10 @@ rules:
 	  cmds : string_list := create string_list();
 	  buf : string;
 
+	  --if (getenv("EISSHCOMMAND") != "") then
+	  	--cmds.insert(getenv("EISSHCOMMAND"), cmds.count + 1);
+	  --end if;
+
 	  if (pythonevent = EVENT_ALLELECRE_BYALLELE) then
 	    cmds.insert(getenv("ALLCACHELOAD") + "/allelecrecacheByAllele.py", cmds.count + 1);
 	  elsif (pythonevent = EVENT_ALLELECRE_BYASSAY) then
@@ -198,8 +213,11 @@ rules:
 	  cmds : string_list := create string_list();
 	  buf : string;
 
-	  cmds.insert(getenv("MRKCACHELOAD") + "/mrkmcv.py", cmds.count + 1);
+	  --if (getenv("EISSHCOMMAND") != "") then
+	  	--cmds.insert(getenv("EISSHCOMMAND"), cmds.count + 1);
+	  --end if;
 
+	  cmds.insert(getenv("MRKCACHELOAD") + "/mrkmcv.py", cmds.count + 1);
 	  cmds.insert("-S" + getenv("MGD_DBSERVER"), cmds.count + 1);
 	  cmds.insert("-D" + getenv("MGD_DBNAME"), cmds.count + 1);
 	  cmds.insert("-U" + global_login, cmds.count + 1);
@@ -227,46 +245,6 @@ rules:
 	end does;
 
 --
--- PythonMarkerHomologyCache
---
--- Activated from:  Orthology module
--- after an update 
---
-
-	PythonMarkerHomologyCache does
-	  objectKey : string := PythonMarkerHomologyCache.objectKey;
-	  cmds : string_list := create string_list();
-	  buf : string;
-
-	  cmds.insert(getenv("MRKCACHELOAD") + "/mrkhomologyByClass.py", cmds.count + 1);
-
-	  cmds.insert("-S" + getenv("MGD_DBSERVER"), cmds.count + 1);
-	  cmds.insert("-D" + getenv("MGD_DBNAME"), cmds.count + 1);
-	  cmds.insert("-U" + global_login, cmds.count + 1);
-	  cmds.insert("-P" + global_passwd_file, cmds.count + 1);
-	  cmds.insert("-K" + objectKey, cmds.count + 1);
-
-	  -- Write cmds to user log
-	  buf := "";
-	  cmds.rewind;
-	  while (cmds.more) do
-	    buf := buf + cmds.next + " ";
-	  end while;
-	  buf := buf + "\n\n";
-	  (void) mgi_writeLog(buf);
-
-	  -- Execute
-          proc_id : opaque := tu_fork_process(cmds[1], cmds, nil, PythonMarkerHomologyCacheEnd);
-
-	  while (tu_fork_ok(proc_id)) do
-	    (void) keep_busy();
-	  end while;
-
-	  tu_fork_free(proc_id);
-
-	end does;
-
---
 -- PythonMarkerOMIMCache
 --
 -- Activated from:  Genotype module, Allele module, Marker module
@@ -278,6 +256,10 @@ rules:
 	  objectKey : string := PythonMarkerOMIMCache.objectKey;
 	  cmds : string_list := create string_list();
 	  buf : string;
+
+	  --if (getenv("EISSHCOMMAND") != "") then
+	  	--cmds.insert(getenv("EISSHCOMMAND"), cmds.count + 1);
+	  --end if;
 
 	  if (pythonevent = EVENT_OMIM_BYALLELE) then
 	    cmds.insert(getenv("MRKCACHELOAD") + "/mrkomimByAllele.py", cmds.count + 1);
@@ -325,8 +307,13 @@ rules:
 	  cmds : string_list := create string_list();
 	  buf : string;
 
-	  cmds.insert(getenv("MGICACHELOAD") + "/bibcitation.py", cmds.count + 1);
+	  --if (getenv("EISSHCOMMAND") != "") then
+	  	--cmds.insert(getenv("EISSHCOMMAND"), cmds.count + 1);
+	  --end if;
 
+	  cmds.insert(getenv("MGICACHELOAD") + "/bibcitation.py", cmds.count + 1);
+	  cmds.insert("-S" + global_server, cmds.count + 1);
+	  cmds.insert("-D" + global_database, cmds.count + 1);
 	  cmds.insert("-U" + global_login, cmds.count + 1);
 	  cmds.insert("-P" + global_passwd_file, cmds.count + 1);
 	  cmds.insert("-K" + objectKey, cmds.count + 1);
@@ -352,46 +339,6 @@ rules:
 	end does;
 
 --
--- PythonImageCache
---
--- Activated from:  Assay module
--- after an insert, update or delete
---
-
-	PythonImageCache does
-	  objectKey : string := PythonImageCache.objectKey;
-	  cmds : string_list := create string_list();
-	  buf : string;
-
-	  cmds.insert(getenv("MGICACHELOAD") + "/imgcache.py", cmds.count + 1);
-
-	  cmds.insert("-S" + global_server, cmds.count + 1);
-	  cmds.insert("-D" + global_database, cmds.count + 1);
-	  cmds.insert("-U" + global_login, cmds.count + 1);
-	  cmds.insert("-P" + global_passwd_file, cmds.count + 1);
-	  cmds.insert("-K" + objectKey, cmds.count + 1);
-
-	  -- Write cmds to user log
-	  buf := "";
-	  cmds.rewind;
-	  while (cmds.more) do
-	    buf := buf + cmds.next + " ";
-	  end while;
-	  buf := buf + "\n\n";
-	  (void) mgi_writeLog(buf);
-
-	  -- Execute
-          proc_id : opaque := tu_fork_process(cmds[1], cmds, nil, PythonImageCacheEnd);
-
-	  while (tu_fork_ok(proc_id)) do
-	    (void) keep_busy();
-	  end while;
-
-	  tu_fork_free(proc_id);
-
-	end does;
-
---
 -- PythonInferredFromCache
 --
 -- Activated from:  GO Annotation module
@@ -405,8 +352,11 @@ rules:
 	  cmds : string_list := create string_list();
 	  buf : string;
 
-	  cmds.insert(getenv("MGICACHELOAD") + "/inferredfrom.py", cmds.count + 1);
+	  --if (getenv("EISSHCOMMAND") != "") then
+	  	--cmds.insert(getenv("EISSHCOMMAND"), cmds.count + 1);
+	  --end if;
 
+	  cmds.insert(getenv("MGICACHELOAD") + "/inferredfrom.py", cmds.count + 1);
 	  cmds.insert("-S" + global_server, cmds.count + 1);
 	  cmds.insert("-D" + global_database, cmds.count + 1);
 	  cmds.insert("-U" + global_login, cmds.count + 1);
@@ -430,14 +380,6 @@ rules:
 	  while (tu_fork_ok(proc_id)) do
 	    (void) keep_busy();
 	  end while;
-
-	  -- Print out the output from the subroutine
-
-	  if (dialog.value.length > 0) then
-	      StatusReport.source_widget := top;
-	      StatusReport.message := dialog.value;
-	      send(StatusReport);
-	  end if;
 
 	  tu_fork_free(proc_id);
 
@@ -476,14 +418,6 @@ rules:
 	end does;
 
 --
--- PythonMarkerHomologyCacheEnd
---
-
-	PythonMarkerHomologyCacheEnd does
-	  (void) mgi_writeLog("Homology Cache done.\n\n");
-	end does;
-
---
 -- PythonMarkerOMIMCacheEnd
 --
 
@@ -497,14 +431,6 @@ rules:
 
 	PythonReferenceCacheEnd does
 	  (void) mgi_writeLog("Reference Cache done.\n\n");
-	end does;
-
---
--- PythonImageCacheEnd
---
-
-	PythonImageCacheEnd does
-	  (void) mgi_writeLog("Image Cache done.\n\n");
 	end does;
 
 --

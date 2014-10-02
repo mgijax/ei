@@ -28,6 +28,9 @@
 --
 -- History
 --
+-- lec	04/14/2014
+--	- TR11549/PythonImageCache obsolete
+--
 -- lec  01/30/2012
 --	- TR10969/dsrc/Assay.d/add search by Gel Row Note
 --
@@ -375,6 +378,9 @@ rules:
 
 	  top := create widget("AssayModule", nil, mgi);
 
+          ab := INITIALLY.launchedFrom;
+          ab.sensitive := false;
+
 	  -- Set Permissions
 	  SetPermissions.source_widget := top;
 	  send(SetPermissions, 0);
@@ -382,8 +388,6 @@ rules:
 	  -- Build Dynamic GUI Components
 	  send(BuildDynamicComponents, 0);
 
-          ab := INITIALLY.launchedFrom;
-          ab.sensitive := false;
 	  top.show;
 
 	  send(Init, 0);
@@ -405,6 +409,8 @@ rules:
 	BuildDynamicComponents does
           options := create list("widget");
 	  prepForms := create list("string");
+
+          top->CVGel->GelControlMenu.defaultChild := 1;
 
 	  -- Initialize Option Menus
 
@@ -516,18 +522,20 @@ rules:
 --
  
         InitImagePane does
-          refKey : string;
-          saveCmd : string;
-          newCmd : string;
 	  imageList : widget := top->GelForm->ImagePaneList;
 	  currentPane : integer := -1;
+          refKey : string;
 	  refCount : string;
+	  imageCmd : string;
 	  
+	  imageCmd := "select _ImagePane_key, paneLabel, NULL from IMG_ImagePaneGXD_View where _Refs_key =";
+
 	  -- Get currently selected image pane
 
-	  if (imageList->List.selectedItemCount > 0) then
-	    currentPane := XmListItemPos(imageList->List, imageList->List.selectedItems[0]);
-	  end if;
+	  -- do not use this/causes a segmentation fault on linux
+	  --if (imageList->List.selectedItemCount > 0) then
+	    --currentPane := (integer) XmListItemPos(imageList->List, imageList->List.selectedItems[0]);
+	  --end if;
  
           -- Get current Reference key
           refKey := top->mgiCitation->ObjectID->text.value;
@@ -540,12 +548,8 @@ rules:
 	    return;
 	  end if;
 
-          -- Save the original SQL command
-          saveCmd := imageList.cmd;
- 
-          -- Append Reference key to lookup command
-          newCmd := saveCmd + " " + refKey;
-          imageList.cmd := newCmd + "\norder by paneLabel";
+          imageList.cmd := imageCmd + " " + refKey + "\norder by paneLabel\n";
+	  (void) mgi_writeLog(imageList.cmd);
 
 	  -- Load the Image list
 	  refCount := mgi_sql1(assay_imagecount(refKey));
@@ -556,9 +560,6 @@ rules:
 	  LoadList.source_widget := imageList;
 	  LoadList.list := imageList;
 	  send(LoadList, 0);
-
-          -- Restore original SQL command
-          imageList.cmd := saveCmd;
 
 	  -- Newly added Assay
 
@@ -581,6 +582,7 @@ rules:
 	    (void) XmListSelectPos(imageList->List, currentPane, false);
 	    (void) XmListSetPos(imageList->List, currentPane);
 	  end if;
+
         end does;
  
 --
@@ -703,15 +705,6 @@ rules:
 			top->AssayTypeMenu.menuHistory.labelString;
           AddSQL.key := top->ID->text;
           send(AddSQL, 0);
-
-	  -- check image list
-	  -- if image cache count <= our configured value, then ok
-          refKey : string := top->mgiCitation->ObjectID->text.value;
-	  refCount : string := mgi_sql1(assay_imagecount(refKey));
-	  if (integer) refCount <= (integer) python_image_cache then
-	    PythonImageCache.objectKey := top->mgiCitation->ObjectID->text.value;
-	    send(PythonImageCache, 0);
-          end if;
 
           PythonAlleleCreCache.source_widget := top;
           PythonAlleleCreCache.pythonevent := EVENT_ALLELECRE_BYASSAY;
@@ -873,7 +866,7 @@ rules:
 --
 -- CopySpecimen
 --
---	Copy the previous row values to the current row
+--	Copy the previous  values to the current row
 --	if current row value is blank and previous row value is not blank.
 --
 --	Do not copy Results, Age Range, Age Notes or Specimen Notes.
@@ -1009,7 +1002,7 @@ rules:
 --
 -- CopyGelLane
 --
---	Copy the previous row values to the current row
+--	Copy the previous  values to the current row
 --	if current row value is blank and previous row value is not blank.
 --
 
@@ -1160,7 +1153,7 @@ rules:
 --
 -- CopyGelRow
 --
---	Copy the previous row values to the current row
+--	Copy the previous  values to the current row
 --	if current row value is blank and previous row value is not blank.
 --
 
@@ -1219,8 +1212,6 @@ rules:
 --
 
         Delete does
-          refKey : string;
-	  refCount : string;
 
           (void) busy_cursor(top);
 
@@ -1230,15 +1221,6 @@ rules:
           send(DeleteSQL, 0);
 
 	  if top->Control->Delete.deleteReturn then
-
-	    -- check image list
-	    -- if image cache count <= our configured value, then ok
-            refKey := top->mgiCitation->ObjectID->text.value;
-	    refCount := mgi_sql1(assay_imagecount(refKey));
-	    if (integer) refCount <= (integer) python_image_cache then
-	      PythonImageCache.objectKey := top->mgiCitation->ObjectID->text.value;
-	      send(PythonImageCache, 0);
-            end if;
 
             PythonAlleleCreCache.source_widget := top;
             PythonAlleleCreCache.pythonevent := EVENT_ALLELECRE_BYASSAY;
@@ -1382,9 +1364,6 @@ rules:
 --
 
 	Modify does
-          refKey : string;
-	  refCount : string;
-
 	  modifyCache : boolean := true;
 
           if (not top.allowEdit) then 
@@ -1483,16 +1462,6 @@ rules:
 
           if (modifyCache) then
 	    -- do not show a working dialog...it drives the GXD folks crazy!
-
-	    -- check image list
-	    -- if image cache count <= our configured value, then ok
-            refKey := top->mgiCitation->ObjectID->text.value;
-	    refCount := mgi_sql1(assay_imagecount(refKey));
-	    if (integer) refCount <= (integer) python_image_cache then
-	      PythonImageCache.objectKey := top->mgiCitation->ObjectID->text.value;
-	      send(PythonImageCache, 0);
-            end if;
-
             PythonAlleleCreCache.source_widget := top;
             PythonAlleleCreCache.pythonevent := EVENT_ALLELECRE_BYASSAY;
             PythonAlleleCreCache.objectKey := currentAssay;
@@ -2057,7 +2026,7 @@ rules:
             if (bandMode = TBL_ROW_DELETE and bandKey.length > 0) then
 	      cmd := cmd + mgi_DBdelete(GXD_GELBAND, bandKey);
 
-	    -- If no Gel Band key, it's a new record
+	    -- If no Gel Band key, it is a new record
 
 	    elsif (bandKey.length = 0) then
 
@@ -2633,7 +2602,7 @@ rules:
           SetNotesDisplay.note := top->AssayNote->Note;
           send(SetNotesDisplay, 0);
 
-	  -- Do not clear the form because it'll wipe out editMode flags on Gel Bands
+	  -- Do not clear the form because it is will wipe out editMode flags on Gel Bands
 
 --	  if (assayDetailForm.name = "GelForm") then
 --	    ClearAssay.clearForms := clearAssayGel;

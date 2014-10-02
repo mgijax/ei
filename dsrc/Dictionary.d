@@ -60,7 +60,7 @@
 --	- TR 9797; add RefreshADSystem.d, ADSystemMenu
 --
 -- lec 09/05/2006
---	- TR 7889; make "Ingeborg's version" the default
+--	- TR 7889; make "Ingeborg version" the default
 --
 -- lec	05/16/2006
 --	- TR 7673; added MGI key, Edinburgh key; search for keys and notes
@@ -356,7 +356,7 @@ rules:
 --
 --
 -- Adds a new node as a child of the current node to the database
--- and the treedisplay.  Called by the Add dialog's callback.
+-- and the treedisplay.  Called by the Add dialogs callback.
 --
 -- requires: current_structure must not be nil
 --
@@ -586,7 +586,7 @@ rules:
 --
 -- Modify
 --
--- Modifies current structure in the database, based on user's changes. 
+-- Modifies current structure in the database, based on user changes. 
 --
 
         Modify does
@@ -1158,14 +1158,14 @@ rules:
    ADVersion1 does
      top->ID.sensitive := false;
      top->edinburghKey.sensitive := false;
-     top->printStopMenu.sensitive := false;
-     top->ADSystemMenu.sensitive := false;
-     top->inheritSystemMenu.sensitive := false;
-     top->MGIAddedMenu.sensitive := false;
      top->RefreshADSystem.sensitive := false;
      top->CreationDate.sensitive := false;
      top->ModifiedDate.sensitive := false;
      top->mgiAccessionTable.sensitive := false;
+     top->printStopFrame.sensitive := false;
+     top->ADSystemFrame.sensitive := false;
+     top->inheritSystemFrame.sensitive := false;
+     top->MGIAddedFrame.sensitive := false;
    end does;
 
 --
@@ -1177,14 +1177,14 @@ rules:
    ADVersion2 does
      top->ID.sensitive := true;
      top->edinburghKey.sensitive := true;
-     top->printStopMenu.sensitive := true;
-     top->ADSystemMenu.sensitive := true;
-     top->inheritSystemMenu.sensitive := true;
-     top->MGIAddedMenu.sensitive := true;
      top->RefreshADSystem.sensitive := true;
      top->CreationDate.sensitive := true;
      top->ModifiedDate.sensitive := true;
      top->mgiAccessionTable.sensitive := true;
+     top->printStopFrame.sensitive := true;
+     top->ADSystemFrame.sensitive := true;
+     top->inheritSystemFrame.sensitive := true;
+     top->MGIAddedFrame.sensitive := true;
    end does;
 
 end dmodule;

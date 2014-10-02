@@ -145,7 +145,7 @@ char *mgi_year(char *date)
   memset(buf, '\0', sizeof(buf));
   memset(cmd, '\0', sizeof(buf));
 
-  sprintf(cmd, "declare @year int\nexec BIB_getYear '%s', @year out\n", date);
+  sprintf(cmd, "select convert(int, substring('%s', patindex('%[0-9][0-9][0-9][0-9]%', '%s'), 4))", date, date);
   strcpy(buf, (char *) mgi_sql1(cmd));
   return(buf);
 }

@@ -25,11 +25,11 @@ CALLS
 	 mgi_DBtype("int")				: "char *";
 	 mgi_DBinsert("int", "char *")			: "char *";
 	 mgi_DBdelete("int", "char *")			: "char *";
+	 mgi_DBdelete2("int", "char *", "char *")	: "char *";
 	 mgi_DBupdate("int", "char *", "char *")	: "char *";
 	 mgi_DBreport("int", "char *")			: "char *";
 	 mgi_DBaccSelect("int", "int", "int")		: "char *";
 	 mgi_DBcvname("int")				: "char *";
-	 mgi_DBisAnchorMarker("char *")			: "Boolean";
 	 global_application                             : "char *";
 	 global_version                             	: "char *";
 

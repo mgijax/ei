@@ -29,11 +29,11 @@ char *mgilib_count(char *key)
   return(buf);
 }
 
-char *mgilib_anchorcount(char *key)
+char *mgilib_isAnchor(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select count(*) from MRK_Anchors where _Marker_key = %s", key);
+  sprintf(buf,"select _Marker_key from MRK_Anchors where _Marker_key = %s", key);
   return(buf);
 }
 
@@ -105,22 +105,6 @@ char *exec_all_reloadLabel(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"exec ALL_reloadLabel %s\n", key);
-  return(buf);
-}
-
-char *exec_bib_exists(char *table, char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec %s %s\n", table, key);
-  return(buf);
-}
-
-char *exec_hmd_updateClass(char *classKey, char *refKey, char *isNewClass)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec HMD_updateClass %s, %s, %s\n", classKey, refKey, isNewClass);
   return(buf);
 }
 
@@ -201,14 +185,6 @@ char *exec_nom_transferToMGD(char *key, char *status)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"exec NOM_transferToMGD %s, %s", key, status);
-  return(buf);
-}
-
-char *exec_nom_verifyMarker(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec NOM_verifyMarker %s", key);
   return(buf);
 }
 
@@ -667,7 +643,11 @@ char *image_caption(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select n._Note_key, n.note from MGI_Note_Image_View n \
+  /*
+  sprintf(buf,"select n._Note_key, n.note \
+  */
+  sprintf(buf,"select n._Note_key, str_replace(n.note,char(13)||char(10),'') as note \
+  	\nfrom MGI_Note_Image_View n \
   	\nwhere n.noteType = 'Caption' and n._Object_key = %s \
   	\norder by n.sequenceNum", key);
   return(buf);
@@ -687,7 +667,11 @@ char *image_copyright(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select n._Note_key, n.note from MGI_Note_Image_View n \
+  /*
+  sprintf(buf,"select n._Note_key, n.note \
+  */
+  sprintf(buf,"select n._Note_key, str_replace(n.note,char(13)||char(10),'') as note \
+  	\nfrom MGI_Note_Image_View n \
   	\nwhere n.noteType = 'Copyright' and n._Object_key = %s \
   	\norder by n.sequenceNum", key);
   return(buf);
@@ -1125,26 +1109,6 @@ char *verify_marker_which(char *key)
   return(buf);
 }
 
-char *verify_marker_homolog(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select cytogeneticOffset, name from MRK_Marker \
-   where _Organism_key != 1 and _Marker_key = %s", key);
-  return(buf);
-}
-
-char *verify_marker_homologcount(char *key, char *organismKey, char *whichMarkerKey)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select count(*) from HMD_Homology_View \
-   where _Class_key = %s \
-   and _Organism_key = %s \
-   and _Marker_key != %s", key, organismKey, whichMarkerKey);
-  return(buf);
-}
-
 char *verify_marker_nonmouse(char *key)
 {
   static char buf[TEXTBUFSIZ];
@@ -1210,11 +1174,18 @@ char *verify_reference(char *key)
   return(buf);
 }
 
-char *verify_exec_goreference(char *key)
+char *verify_goreference(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec BIB_isNOGO %s\n", key);
+  sprintf(buf,"select 1 from ACC_Accession a, BIB_DataSet_Assoc ba \
+        \nwhere a._MGIType_key = 1 \
+        \nand a._LogicalDB_key = 1 \
+        \nand a.prefixPart = 'J:' \
+        \nand a.numericPart = %s \
+        \nand a._Object_key = ba._Refs_key \
+        \nand ba._DataSet_key = 1005 \
+        \nand ba.isNeverUsed = 1", key);
   return(buf);
 }
 
