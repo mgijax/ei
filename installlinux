@@ -1,0 +1,17 @@
+#!/bin/csh -f
+
+#
+# Quick script to copy the ei_linux changes to this product
+# 
+# then rebuild
+#
+# make sure you check the */uxb.conf scripts as well
+#
+
+cp ../ei_linux/aim/*aim aim
+cp ../ei_linux/csrc/*.c csrc
+cp ../ei_linux/dsrc/*.d dsrc
+cp ../ei_linux/dsrc/*.de dsrc
+cp ../ei_linux/include/*.h include
+cp ../ei_linux/pcds/*.pcd pcd
+
