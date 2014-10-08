@@ -1,0 +1,26 @@
+--
+-- Name    : RefAlleleTableLib.de
+-- Creator : lec
+-- Date	   : 10/01/2014
+--
+-- Purpose:
+--
+-- This is the companion D event declarations file for RefAlleleTableLib.d.
+--
+-- 10/01/2014	lec
+--	- TR11786/add Allele and Marker tabs
+--
+
+-- Load Reference Allele-Marker Table
+LoadRefAlleleTable [table : widget;      -- Reference Allele-Marker Table
+            objectKey : string;];        -- Unique identifier of Object
+
+-- Process Reference Allele-Marker Table; Sets table.sqlcmd 
+ProcessRefAlleleTable [table : widget;   -- Reference Allele-Marker Table
+            objectKey : string;];        -- Unique identifier of Object
+
+-- Search Reference Allele-Marker Table
+SearchRefAlleleTable [table : widget;    -- Reference Allele-Marker Table
+            tableTag : string := "ra";   -- Table Alias Tag for Query
+            join : string;];             -- Join command
+

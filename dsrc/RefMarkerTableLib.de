@@ -1,0 +1,26 @@
+--
+-- Name    : RefMarkerTableLib.de
+-- Creator : lec
+-- Date	   : 10/01/2014
+--
+-- Purpose:
+--
+-- This is the companion D event declarations file for RefMarkerTableLib.d.
+--
+-- 10/01/2014	lec
+--	- TR11786/add Allele and Marker tabs
+--
+
+-- Load Reference Marker Table
+LoadRefMarkerTable [table : widget;      -- Reference Marker Table
+            objectKey : string;];        -- Unique identifier of Object
+
+-- Process Reference Marker Table; Sets table.sqlcmd 
+ProcessRefMarkerTable [table : widget;   -- Reference Marker Table
+            objectKey : string;];        -- Unique identifier of Object
+
+-- Search Reference Marker Table
+SearchRefMarkerTable [table : widget;    -- Reference Marker Table
+            tableTag : string := "rm";   -- Table Alias Tag for Query
+            join : string;];             -- Join command
+
