@@ -33,6 +33,7 @@ date > ${LOG}
 #
 
 cd ${EIAPP}
+uxb uxb_solaris clean
 uxb uxb_solaris.conf ${OPTIONS} -destdir ${EIINSTALLDIR}/${EIAPP} install >>& ${LOG}
 cd ..
 
