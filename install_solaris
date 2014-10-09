@@ -1,0 +1,59 @@
+#!/bin/csh -f
+
+#
+# Installs all EI apps as compiled applications
+# Progress of install is sent to stdout and a logfile.
+#
+# Assumes: Must be executed in the same directory as the application 
+#          target directories, mgd, gxd, etc.
+# 
+# Usage: install_solaris
+#
+# Output: install_solaris.log contains report of stdout and stderr messages
+#
+
+source ./Configuration
+
+setenv LOG `pwd`/install_solaris.log
+rm -f $LOG
+
+setenv MODE	compiled
+setenv OPTIONS "-dmode compiled"
+
+foreach app ($EIAPPS)
+
+echo "INSTALLING $app"
+setenv EIAPP $app
+
+# create the application directory if it isn't already there
+
+if ( ! -d ${EIINSTALLDIR}/${EIAPP} ) then
+	mkdir -p ${EIINSTALLDIR}/${EIAPP}
+endif
+
+date > ${LOG}
+
+#
+# uxb.conf is assumed...
+#
+
+cd ${EIAPP}
+uxb ${OPTIONS} -destdir ${EIINSTALLDIR}/${EIAPP} install >>& ${LOG}
+cd ..
+
+#
+# Copy main files to installation directory
+#
+
+if ( ! -f ${EIINSTALLDIR}/Configuration ) then
+	cp Configuration ${EIINSTALLDIR}
+endif
+
+if ( ! -f ${EIINSTALLDIR}/runapp ) then
+	cp runapp ${EIINSTALLDIR}
+endif
+
+date >> ${LOG}
+
+end
+

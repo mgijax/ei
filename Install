@@ -1,4 +1,4 @@
-#!/bin/csh -f -x
+#!/bin/csh -f
 
 #
 # Program: Install
@@ -9,23 +9,37 @@
 #
 # Modification History:
 #
+# 06/25/2014	lec
+#
 # 07/11/2006	lec
 #	- new
 #
 
 cd `dirname $0` && source ./Configuration
 
-if ( ! -d ${EIINSTALLDIR} ) then
-	mkdir ${EIINSTALLDIR}
-endif
+setenv LOG `pwd`/Install.log
+rm -f $LOG
 
-if ( ! -d ${EIWITHDRAWALDIR} ) then
-	mkdir ${EIWITHDRAWALDIR}
-endif
+switch (`uname -n`)
+	case bhmgiei01:
+	case bheidev01:
+		# create symlink from ei_linux to ei
+		rm -rf ${MGI_LIVE}/ei
+		ln -s ${MGI_LIVE}/ei_linux ${MGI_LIVE}/ei
+		echo "building for linux..." >>& ${LOG}
 
-#if ( ! -d ${EINLMDIR} ) then
-#	mkdir ${EINLMDIR}
-#endif
+		# clean all existing builds
+		cleanall
 
-./installall compiled
+		# run build for each product
+		foreach app ($EIAPPS)
+   			echo "INSTALLING $app" >>& ${LOG}
+   			buildapp $app compiled >>& ${LOG}
+		end
+		breaksw
+	default:
+		echo "building for solaris..." >>& ${LOG}
+		./install_solaris >>& ${LOG}
+endsw
+
 
