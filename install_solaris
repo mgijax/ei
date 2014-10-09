@@ -2,22 +2,17 @@
 
 #
 # Installs all EI apps as compiled applications
-# Progress of install is sent to stdout and a logfile.
 #
-# Assumes: Must be executed in the same directory as the application 
-#          target directories, mgd, gxd, etc.
-# 
 # Usage: install_solaris
 #
-# Output: install_solaris.log contains report of stdout and stderr messages
+# Output: install_solaris.log
 #
 
 source ./Configuration
 
-setenv LOG `pwd`/install_solaris.log
+setenv LOG $0.log
 rm -f $LOG
 
-setenv MODE	compiled
 setenv OPTIONS "-dmode compiled"
 
 foreach app ($EIAPPS)

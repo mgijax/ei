@@ -1,0 +1,34 @@
+#!/bin/csh -f
+
+#
+# Installs all EI apps as non-compiled applications
+#
+# Usage: install_solaris_dev
+#
+# Output: install_solaris_dev.log
+#
+
+source ./Configuration
+
+setenv LOG $0.log
+rm -f $LOG
+
+foreach app ($EIAPPS)
+
+echo "INSTALLING $app"
+setenv EIAPP $app
+
+date > ${LOG}
+
+#
+# uxb.conf is assumed...
+#
+
+cd ${EIAPP}
+uxb -destdir ${EIINSTALLDIR}/${EIAPP} install >>& ${LOG}
+cd ..
+
+date >> ${LOG}
+
+end
+

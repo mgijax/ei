@@ -37,6 +37,9 @@ switch (`uname -n`)
    			buildapp $app compiled >>& ${LOG}
 		end
 		breaksw
+	case rohan:
+		echo "building for solaris/dev..." >>& ${LOG}
+		./install_solaris_dev >>& ${LOG}
 	default:
 		echo "building for solaris..." >>& ${LOG}
 		./install_solaris >>& ${LOG}
