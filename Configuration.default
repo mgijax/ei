@@ -17,9 +17,6 @@ source ${MGICONFIG}/master.config.csh
 # installation directory
 setenv EIINSTALLDIR ${EI_USRLOCALMGI}/ei/prod
 
-# CVS tag; keep updated with current tag
-setenv CVS_TAG	ei-5-1-9-1
-
 # build directory
 setenv EIBUILDDIR ${EI_USRLOCALMGI}/ei
 
@@ -60,4 +57,15 @@ umask 002
 # archive area for "old" log files
 setenv USERHOME /userhome
 setenv LOGEI	/logs/ei
+
+switch (`uname -n`)
+	case bhmgiei01:
+	case bheidev01:
+		# CVS tag; keep updated with current tag
+		setenv CVS_TAG	ei-5-1-8-9-linux
+		breaksw
+	default:
+		# CVS tag; keep updated with current tag
+		setenv CVS_TAG	ei-5-1-8-9-solaris
+endsw
 

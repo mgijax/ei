@@ -41,13 +41,10 @@ cd ..
 # Copy main files to installation directory
 #
 
-if ( ! -f ${EIINSTALLDIR}/Configuration ) then
-	cp Configuration ${EIINSTALLDIR}
-endif
-
-if ( ! -f ${EIINSTALLDIR}/runapp ) then
-	cp runapp ${EIINSTALLDIR}
-endif
+rm -rf ${EIINSTALLDIR}/Configuration
+rm -rf  ${EIINSTALLDIR}/runapp
+cp Configuration ${EIINSTALLDIR}
+cp runapp ${EIINSTALLDIR}
 
 date >> ${LOG}
 
