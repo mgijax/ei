@@ -9,7 +9,8 @@
 #
 # Modification History:
 #
-# 06/25/2014	lec
+# 10/13/2014	lec
+#	- TR11750/merge solaris/linux installs
 #
 # 07/11/2006	lec
 #	- new
@@ -22,24 +23,20 @@ rm -f $LOG
 
 switch (`uname -n`)
 	case bhmgiei01:
-	case bheidev01:
-		# create symlink from ei_linux to ei
-		rm -rf ${MGI_LIVE}/ei
-		ln -s ${MGI_LIVE}/ei_linux ${MGI_LIVE}/ei
-		echo "building for linux..." >>& ${LOG}
-
-		# clean all existing builds
-		cleanall
-
-		# run build for each product
-		foreach app ($EIAPPS)
-   			echo "INSTALLING $app" >>& ${LOG}
-   			buildapp $app compiled >>& ${LOG}
-		end
+		echo "building for linux/production..." >>& ${LOG}
+		./install_linux >>& ${LOG}
 		breaksw
+
+	case bheidev01:
+		echo "building for linux/dev..." >>& ${LOG}
+		./install_linux_dev >>& ${LOG}
+		breaksw
+
 	case rohan:
 		echo "building for solaris/dev..." >>& ${LOG}
 		./install_solaris_dev >>& ${LOG}
+		breaksw
+
 	default:
 		echo "building for solaris..." >>& ${LOG}
 		./install_solaris >>& ${LOG}

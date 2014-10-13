@@ -70,13 +70,6 @@ Module: MGIAdmin
                                     traversalOn = False;
                                     managed = True;
                                 }
-                                {
-                                  Sequence = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"Sequence\")";
-                                    labelString = Sequences;
-                                    traversalOn = False;
-                                }
                           }
                     }
               }

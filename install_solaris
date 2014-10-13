@@ -13,8 +13,6 @@ source ./Configuration
 setenv LOG $0.log
 rm -f $LOG
 
-setenv OPTIONS "-dmode compiled"
-
 foreach app ($EIAPPS)
 
 echo "INSTALLING $app"
@@ -35,7 +33,7 @@ date > ${LOG}
 cd ${EIAPP}
 uxb uxb_solaris.conf clean >>& ${LOG}
 rm -rf *.o *.c *.do *.ui cderes* ${EIAPP} *.log install_linux_dev >>& ${LOG}
-uxb uxb_solaris.conf ${OPTIONS} -destdir ${EIINSTALLDIR}/${EIAPP} install >>& ${LOG}
+uxb uxb_solaris.conf -dmode compiled -destdir ${EIINSTALLDIR}/${EIAPP} install >>& ${LOG}
 cd ..
 
 #

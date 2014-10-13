@@ -3,9 +3,9 @@
 #
 # Installs all EI apps as non-compiled applications
 #
-# Usage: install_linux_dev
+# Usage: install_linux
 #
-# Output: install_linux_dev.log
+# Output: install_linux.log
 #
 
 source ./Configuration
@@ -27,7 +27,7 @@ date > ${LOG}
 cd ${EIAPP}
 uxb uxb_linux.conf clean >>& ${LOG}
 rm -rf *.o *.c *.do *.ui cderes* ${EIAPP} *.log >>& ${LOG}
-uxb uxb_linux.conf ${OPTIONS} >>& ${LOG}
+uxb uxb_linux.conf -dmode compild >>& ${LOG}
 cd ..
 
 date >> ${LOG}
