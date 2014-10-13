@@ -10,9 +10,6 @@
 
 source ./Configuration
 
-setenv SYBASE /opt/sybase/15.7
-setenv LD_LIBRARY_PATH ${SYBASE}/OCS-15_0/lib:${TeleUSE}/lib:${TeleUSE}/XRT/lib-shared:${TeleUSE}/conf/lib
-
 setenv LOG $0.log
 rm -f $LOG
 
@@ -28,7 +25,10 @@ date > ${LOG}
 #
 
 cd ${EIAPP}
-uxb -destdir ${EIINSTALLDIR}/${EIAPP} install >>& ${LOG}
+#uxb uxb_linux.conf clean >>& ${LOG}
+#uxb uxb_linux.conf >>& ${LOG}
+uxb uxb_linux.conf clean
+uxb uxb_linux.conf 
 cd ..
 
 date >> ${LOG}
