@@ -33,8 +33,8 @@ date > ${LOG}
 #
 
 cd ${EIAPP}
-uxb uxb_solaris.conf clean | >>& $P{LOG}
-rm -rf *.o *.c *.do *.ui cderes* ${EIAPP}
+uxb uxb_solaris.conf clean >>& ${LOG}
+rm -rf *.o *.c *.do *.ui cderes* ${EIAPP} *.log install_linux_dev >>& ${LOG}
 uxb uxb_solaris.conf ${OPTIONS} -destdir ${EIINSTALLDIR}/${EIAPP} install >>& ${LOG}
 cd ..
 

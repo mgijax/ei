@@ -26,7 +26,7 @@ date > ${LOG}
 
 cd ${EIAPP}
 uxb uxb_linux.conf clean >>& ${LOG}
-rm -rf *.o *.c *.do *.ui cderes* ${EIAPP} >>& ${LOG}
+rm -rf *.o *.c *.do *.ui cderes* ${EIAPP} *.log >>& ${LOG}
 uxb uxb_linux.conf >>& ${LOG}
 cd ..
 
