@@ -14,11 +14,29 @@ endif
 
 source ${MGICONFIG}/master.config.csh
 
+# DO NOT REMOVE
+# if not unset, these variables will cause strange behavior
+unsetenv OPENWINHOME
+unsetenv XKEYSYMDB
+
+switch (`uname -n`)
+    case bhmgiei01:
+        setenv EISSHSERVER   "lindon.informatics.jax.org"
+	setenv CVS_TAG	ei-5-1-8-9-linux
+        breaksw
+    case bheidev01:
+        setenv EISSHSERVER   "rohan.informatics.jax.org"
+	setenv CVS_TAG	ei-5-1-8-9-linux
+        breaksw
+    default:
+	setenv CVS_TAG	ei-5-1-8-9-solaris
+endsw
+
 # installation directory
-setenv EIINSTALLDIR ${USRLOCALMGI}/ei/prod
+setenv EIINSTALLDIR ${MGI_LIVE}/ei/prod
 
 # build directory
-setenv EIBUILDDIR ${USRLOCALMGI}/ei
+setenv EIBUILDDIR ${MGI_LIVE}/ei
 
 # data directory
 setenv EIDATADIR /data/ei
@@ -27,10 +45,10 @@ setenv EIDATADIR /data/ei
 setenv EIDEBUG	0
 
 # User log
-setenv USERLOG	${HOME}/${EI_LOGFILE}
+setenv USERLOG	${HOME}/.ei-log
 
 # User password file
-setenv EIPASSWORDFILE  ${HOME}/${EI_PASSWORDFILE}
+setenv EIPASSWORDFILE  ${HOME}/.mgd_password
 
 # EI Applications
 setenv EIAPPS	"mgd gxd mgiadmin mgi"
@@ -41,11 +59,22 @@ setenv EIARCHIVEDIR	${EIDATADIR}
 setenv EIWITHDRAWALDIR	${EIDATADIR}/withdrawals
 setenv EINLMDIR ${EIDATADIR}/nlm
 
+# TeleUSE/XRT stuff
+setenv TeleUSE /opt/teleuseXRT
+setenv XRTHOME $TeleUSE/XRT
+setenv PATH     ${PATH}:${TeleUSE}/bin:${XRTHOME}/bin:${XRTHOME}/lib-shared
+
+setenv VIPIMAGES ${TeleUSE}/pixmaps
+setenv XNLSPATH ${TeleUSE}/X11R5/lib/nls
+setenv XUSERFILESEARCHPATH %N:${TeleUSE}/appl_res/%L/%N:${TeleUSE}/appl_res/%N
+setenv XUSERFILESEARCHPATH %N:${TeleUSE}/appl_res/%L/%N:${TeleUSE}/appl_res/%N:/usr/lib/X11/app-defaults/%L/%N:/usr/lib/X11/app-defaults/%N
+setenv MANPATH ${TeleUSE}/man:${MANPATH}
+
 # X Resource file
-setenv XRES	${EIBUILDDIR}/XRes.in
+setenv XRES     ${EIBUILDDIR}/XRes.in
 
 # Make file for XRT Authorization
-setenv XRTMAKE	${EIBUILDDIR}/Makefile.xrt
+setenv XRTMAKE  ${EIBUILDDIR}/Makefile.xrt
 
 # for specific modules
 setenv ASSAY_IMAGE_LOOKUP   10000
@@ -57,15 +86,4 @@ umask 002
 # archive area for "old" log files
 setenv USERHOME /userhome
 setenv LOGEI	/logs/ei
-
-switch (`uname -n`)
-	case bhmgiei01:
-	case bheidev01:
-		# CVS tag; keep updated with current tag
-		setenv CVS_TAG	ei-5-1-8-9-linux
-		breaksw
-	default:
-		# CVS tag; keep updated with current tag
-		setenv CVS_TAG	ei-5-1-8-9-solaris
-endsw
 

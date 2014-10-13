@@ -10,6 +10,9 @@
 
 source ./Configuration
 
+setenv SYBASE /opt/sybase/12.5
+setenv LD_LIBRARY_PATH /opt/sybase/12.5/ASE-12_5/lib:/opt/sybase/12.5/OCS-12_5/lib:/usr/lib:/usr/local/lib:/usr/ucblib:/usr/openwin/lib:/usr/local/postgres/lib:/opt/teleuseXRT/lib:/opt/teleuseXRT/conf/lib
+
 setenv LOG $0.log
 rm -f $LOG
 

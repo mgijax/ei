@@ -10,6 +10,9 @@
 
 source ./Configuration
 
+setenv SYBASE /opt/sybase/15.7
+setenv LD_LIBRARY_PATH ${SYBASE}/OCS-15_0/lib:${TeleUSE}/lib:${TeleUSE}/XRT/lib-shared:${TeleUSE}/conf/lib
+
 setenv LOG $0.log
 rm -f $LOG
 
