@@ -26,6 +26,7 @@ date > ${LOG}
 
 cd ${EIAPP}
 uxb uxb_solaris.conf clean | >>& $P{LOm}
+rm -rf *.o *.c *.do *.ui cderes* ${EIAPP}
 uxb uxb_solaris.conf -destdir ${EIINSTALLDIR}/${EIAPP} install >>& ${LOG}
 cd ..
 
