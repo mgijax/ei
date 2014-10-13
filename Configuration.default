@@ -19,21 +19,23 @@ source ${MGICONFIG}/master.config.csh
 unsetenv OPENWINHOME
 unsetenv XKEYSYMDB
 
+setenv CVS_TAG  ei-5-1-9-15
+
 switch (`uname -n`)
     case bhmgiei01:
         setenv EISSHSERVER   "lindon.informatics.jax.org"
-	setenv CVS_TAG	ei-5-1-8-9-linux
+	setenv CVS_TAG	${CVS_TAG}-linux
 	setenv SYBASE /opt/sybase/15.7
 	setenv LD_LIBRARY_PATH ${SYBASE}/OCS-15_0/lib:${TeleUSE}/lib:${TeleUSE}/XRT/lib-shared:${TeleUSE}/conf/lib
         breaksw
     case bheidev01:
         setenv EISSHSERVER   "rohan.informatics.jax.org"
-	setenv CVS_TAG	ei-5-1-8-9-linux
+	setenv CVS_TAG	${CVS_TAG}-linux
 	setenv SYBASE /opt/sybase/15.7
 	setenv LD_LIBRARY_PATH ${SYBASE}/OCS-15_0/lib:${TeleUSE}/lib:${TeleUSE}/XRT/lib-shared:${TeleUSE}/conf/lib
         breaksw
     default:
-	setenv CVS_TAG	ei-5-1-8-9-solaris
+	setenv CVS_TAG	${CVS_TAG}-solaris
 	setenv SYBASE /opt/sybase/12.5
 	setenv LD_LIBRARY_PATH /opt/sybase/12.5/ASE-12_5/lib:/opt/sybase/12.5/OCS-12_5/lib:/usr/lib:/usr/local/lib:/usr/ucblib:/usr/openwin/lib:/usr/local/postgres/lib:/opt/teleuseXRT/lib:/opt/teleuseXRT/conf/lib
 

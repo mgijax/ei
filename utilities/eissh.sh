@@ -12,7 +12,9 @@
 #	$3 = ${MGD_DBNAME}
 #	$4 = global_login (see PythonLib.d)
 #	$5 = global_passwd (see PythonLib.d)
-#	$6 = object key (see PythonLib.d)
+#	$6 = object key or --mode (nlm)
+#	$7 = -j (nlm)
+#	$8 = file name
 #
 # some examples from dsrc/PythonLib.d. PythonLib.d uses
 #          getenv("ADSYSTEMLOAD") + "/adsystemload.py"
@@ -22,14 +24,21 @@
 #          getenv("ALLCACHELOAD") + "/allelecrecacheByAllele.py"
 #          getenv("ALLCACHELOAD") + "/allelecrecacheByAssay.py"
 #          getenv("MRKCACHELOAD") + "/mrkmcv.py"
-#          getenv("MRKCACHELOAD") + "/mrkhomologyByClass.py"
 #          getenv("MRKCACHELOAD") + "/mrkomimByAllele.py"
 #          getenv("MRKCACHELOAD") + "/mrkomimByMarker.py"
 #          getenv("MRKCACHELOAD") + "/mrkomimByGenotype.py"
 #          getenv("MGICACHELOAD") + "/bibcitation.py"
-#          getenv("MGICACHELOAD") + "/imgcache.py"
 #          getenv("MGICACHELOAD") + "/inferredfrom.py"
 #
+# Make sure the $MGICONFIG is run on the server
+#
 
-ssh ${EISSHSERVER} $1 $2 $3 $4 $5 $6
+echo $1
+echo $2
+echo $3
+echo $4
+echo $5
+echo $6
+
+ssh ${EISSHSERVER} $1 $2 $3 $4 $5 $6 $7 $8 $9 $10 $11 $12
 
