@@ -4,7 +4,7 @@ TAG: ei-5-1-9-16
 DATE: 10/14/2014
 STAFF: lec
 CHANGES: 
-a) merge ei (solaris) with ei_linux
+a) TR11750/merge ei (solaris) with ei_linux
 
 TAG: ei_linux-5-1-9-15
 DATE: 10/09/2014
