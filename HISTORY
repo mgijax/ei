@@ -1,5 +1,92 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-5-1-9-16
+DATE: 10/14/2014
+STAFF: lec
+CHANGES: 
+a) merge ei (solaris) with ei_linux
+
+TAG: ei_linux-5-1-9-15
+DATE: 10/09/2014
+STAFF: lec
+CHANGES: 
+a) MPVocAnnot.d/MPClipboardCopyAnnotation : close dbproc correctly!
+
+TAG: ei_linux-5-1-9-14
+DATE: 10/02/2014
+STAFF: lec
+CHANGES: 
+a) TR11786/add Allele/Marker tabs to Reference module
+
+TAG: ei_linux-5-1-9-13
+DATE: 10/01/2014
+STAFF: lec
+CHANGES: 
+a) MPVocAnnot.d/mgdsql.c/add correct sex-specificity key to query
+
+TAG: ei_linux-5-1-9-12
+DATE: 09/19/2014
+STAFF: lec
+CHANGES: 
+a) TR11652/remove hmd* tables; archived
+b) add "Delete" option to MP module
+
+TAG: ei_linux-5-1-9-11
+DATE: 09/11/2014
+STAFF: lec
+CHANGES: TR11780/fix isAnchor
+a) dsrc/Marker.d
+
+TAG: ei_linux-5-1-9-10
+DATE: 09/10/2014
+STAFF: lec
+CHANGES: TR11654
+a) dsrc/MPVocAnnot.d/defaultSexSpecificity = 8836535
+b) dsrc/NoteLib.d/IMPC Colony Notes
+
+TAG: ei_linux-5-1-9-9
+TAG: ei_linux-5-1-9-8
+DATE: 08/28/2014
+STAFF: lec
+CHANGES: TR11654
+a) add 'compiled' to Install to build as c-executable
+
+TAG: ei_linux-5-1-9-7
+TAG: ei_linux-5-1-9-6
+TAG: ei_linux-5-1-9-5
+TAG: ei_linux-5-1-9-4
+TAG: ei_linux-5-1-9-3
+TAG: ei_linux-5-1-9-2
+TAG: ei_linux-5-1-9-1
+DATE: 08/12/2014
+STAFF: lec
+CHANGES: TR11654/stored procedures
+a) NoteLib.d, Image.d : wrapping
+
+TAG: ei_linux-5-1-8-4
+DATE: 07/14/2014
+STAFF: lec
+CHANGES: TR11654/stored procedures
+a) see dsrc/Reference.d
+b) see dsrc/NoteLib.d/NoteInit : word-wrap
+
+TAG: ei_linux-5-1-8-3
+TAG: ei_linux-5-1-8-2
+TAG: ei_linux-5-1-8-1
+DATE: 06/02/2014
+STAFF: lec
+CHANGES: TR11549/TR11654 (scrum-dog)
+1) copied ei/ei-linux branch to new "ei_linux" product
+2) Note that the PythonLib.d + Python libraries can be run either from
+   bhmgiei01 (linux) from from lindon/rohan (Solaris) by commenting out the EISSH calls
+   in the PythonLib.d/Marker.d/Report.d scripts.
+
+TAG: ei-linux-BP
+DATE: 02/25/2014
+STAFF: lec
+CHANGES: TR11549
+1) branch-tag for linux testing
+
 TAG: ei-5-1-9-3
 TAG: ei-5-1-9-2
 TAG: ei-5-1-9-1
