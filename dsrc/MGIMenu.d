@@ -42,7 +42,7 @@ rules:
 
 	ForkIt does
 	  cmd_str : string_list;
-	  path : string := getenv("EIINSTALLDIR");
+	  path : string := getenv("EIBUILDDIR");
 	  cmd_str := mgi_splitfields(ForkIt.app, " ");
 	  proc_id : opaque := tu_fork_process(path + "/" + cmd_str[1], cmd_str, nil, ForkEnd);
 	  subprocs.append(proc_id);

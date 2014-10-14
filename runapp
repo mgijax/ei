@@ -13,5 +13,5 @@ cd `dirname $0`
 unsetenv MGICONFIG
 source ./Configuration
 
-cd ${EIINSTALLDIR}/${EIAPP}
+cd ${EIBUILDDIR}/${EIAPP}
 exec ${EIAPP} >>& ${USERLOG}
