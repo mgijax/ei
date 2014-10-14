@@ -18,12 +18,6 @@ foreach app ($EIAPPS)
 echo "INSTALLING $app"
 setenv EIAPP $app
 
-# create the application directory if it isn't already there
-
-if ( ! -d ${EIINSTALLDIR}/${EIAPP} ) then
-	mkdir -p ${EIINSTALLDIR}/${EIAPP}
-endif
-
 date > ${LOG}
 
 #
@@ -32,18 +26,9 @@ date > ${LOG}
 
 cd ${EIAPP}
 uxb uxb_solaris.conf clean >>& ${LOG}
-rm -rf *.o *.c *.do *.ui cderes* ${EIAPP} *.log install_linux_dev >>& ${LOG}
-uxb uxb_solaris.conf -dmode compiled -destdir ${EIINSTALLDIR}/${EIAPP} install >>& ${LOG}
+rm -rf *.o *.c *.do *.ui cderes* ${EIAPP} *.log >>& ${LOG}
+uxb uxb_solaris.conf -dmode compiled >>& ${LOG}
 cd ..
-
-#
-# Copy main files to installation directory
-#
-
-rm -rf ${EIINSTALLDIR}/Configuration
-rm -rf  ${EIINSTALLDIR}/runapp
-cp Configuration ${EIINSTALLDIR}
-cp runapp ${EIINSTALLDIR}
 
 date >> ${LOG}
 

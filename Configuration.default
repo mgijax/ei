@@ -27,6 +27,7 @@ switch (`uname -n`)
 	setenv CVS_TAG	${CVS_TAG}-linux
 	setenv SYBASE /opt/sybase/15.7
 	setenv LD_LIBRARY_PATH ${SYBASE}/OCS-15_0/lib:${TeleUSE}/lib:${TeleUSE}/XRT/lib-shared:${TeleUSE}/conf/lib
+	setenv USERLOG	${HOME}/.ei-log
         breaksw
 
     case bheidev01:
@@ -34,18 +35,21 @@ switch (`uname -n`)
 	setenv CVS_TAG	${CVS_TAG}-linux
 	setenv SYBASE /opt/sybase/15.7
 	setenv LD_LIBRARY_PATH ${SYBASE}/OCS-15_0/lib:${TeleUSE}/lib:${TeleUSE}/XRT/lib-shared:${TeleUSE}/conf/lib
+	setenv USERLOG	${HOME}/.eidev-log
         breaksw
 
     case rohan:
 	setenv CVS_TAG	${CVS_TAG}-solaris
 	setenv SYBASE /opt/sybase/12.5
 	setenv LD_LIBRARY_PATH /opt/sybase/12.5/ASE-12_5/lib:/opt/sybase/12.5/OCS-12_5/lib:/usr/lib:/usr/local/lib:/usr/ucblib:/usr/openwin/lib:/usr/local/postgres/lib:/opt/teleuseXRT/lib:/opt/teleuseXRT/conf/lib
+	setenv USERLOG	${HOME}/.eidev-log
 	breaksw
 
     case lindon:
 	setenv CVS_TAG	${CVS_TAG}-solaris
 	setenv SYBASE /opt/sybase/12.5
 	setenv LD_LIBRARY_PATH /opt/sybase/12.5/ASE-12_5/lib:/opt/sybase/12.5/OCS-12_5/lib:/usr/lib:/usr/local/lib:/usr/ucblib:/usr/openwin/lib:/usr/local/postgres/lib:/opt/teleuseXRT/lib:/opt/teleuseXRT/conf/lib
+	setenv USERLOG	${HOME}/.ei-log
 	breaksw
 
 endsw
@@ -58,9 +62,6 @@ setenv EIDATADIR /data/ei
 
 # Debug mode
 setenv EIDEBUG	0
-
-# User log
-setenv USERLOG	${HOME}/.ei-log
 
 # User password file
 setenv EIPASSWORDFILE  ${HOME}/.mgd_password
