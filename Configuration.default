@@ -19,7 +19,7 @@ source ${MGICONFIG}/master.config.csh
 unsetenv OPENWINHOME
 unsetenv XKEYSYMDB
 
-setenv CVS_TAG  ei-5-1-9-21
+setenv CVS_TAG  ei-5-1-9-22
 
 switch (`uname -n`)
     case bhmgiei01:
