@@ -113,6 +113,7 @@ rules:
            --commands.insert(getenv("EISSHCOMMAND"), commands.count + 1);
        --end if;
 
+       (void) mgi_writeLog("EIUTILS : " + getenv("EIUTILS") + "\n");
        commands.insert(getenv("EIUTILS") + "/" + which_commands[1], commands.count + 1);
 
        if (dialog->ReportList->List.row = 1 and select.length = 0) then

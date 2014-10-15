@@ -33,6 +33,7 @@
 # Make sure the $MGICONFIG is run on the server
 #
 
+echo ${EISSHSERVER}
 echo $1
 echo $2
 echo $3

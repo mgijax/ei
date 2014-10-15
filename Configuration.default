@@ -19,7 +19,7 @@ source ${MGICONFIG}/master.config.csh
 unsetenv OPENWINHOME
 unsetenv XKEYSYMDB
 
-setenv CVS_TAG  ei-5-1-9-20
+setenv CVS_TAG  ei-5-1-9-21
 
 switch (`uname -n`)
     case bhmgiei01:
@@ -56,6 +56,9 @@ endsw
 
 # build directory
 setenv EIBUILDDIR ${MGI_LIVE}/ei
+
+# EI-utilities
+setenv EIUTILS  ${MGI_DBUTILS}/bin/ei
 
 # data directory
 setenv EIDATADIR /data/ei
