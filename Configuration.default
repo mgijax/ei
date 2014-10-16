@@ -20,6 +20,7 @@ unsetenv OPENWINHOME
 unsetenv XKEYSYMDB
 
 setenv CVS_TAG  ei-5-1-9-23
+setenv TeleUSE /opt/teleuseXRT
 
 switch (`uname -n`)
     case bhmgiei01:
