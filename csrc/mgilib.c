@@ -2611,6 +2611,9 @@ char *mgi_DBdelete2(int table, char *key, char *key2)
       case VOC_ANNOT:
               sprintf(buf, "delete from %s where _Object_key = %s and _AnnotType_key = %s\n", mgi_DBtable(table), key, key2);
 	      break;
+      case MGI_EMAPS_MAPPING_PARENT:
+              sprintf(buf, "delete from %s where %s = '%s'\n", mgi_DBtable(table), mgi_DBkey(table), key);
+	      break;
       default:
               sprintf(buf, "delete from %s where %s = %s\n", mgi_DBtable(table), mgi_DBkey(table), key);
 	      break;
