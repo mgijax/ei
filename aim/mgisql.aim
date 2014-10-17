@@ -172,6 +172,7 @@ CALLS
 
 	 reftypetable_init("char *")				: "char *";
 	 reftypetable_initallele("char *")			: "char *";
+	 reftypetable_initallele2()				: "char *";
 	 reftypetable_loadorder1()				: "char *";
 	 reftypetable_loadorder2()				: "char *";
 	 reftypetable_loadorder3()				: "char *";

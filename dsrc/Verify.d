@@ -616,10 +616,12 @@ rules:
 	  alleleCount : integer;
           alleleKey : integer;
 	  alleleSymbol : integer := 0;
+	  alleleID : integer := 0;
 	  markerKey : string;
 	  markerSymbol : string;
 	  alleleKeys : string_list := create string_list();
 	  alleleSymbols : string_list := create string_list();
+	  alleleIDs : string_list := create string_list();
 	  markerKeys : string_list := create string_list();
 	  markerSymbols : string_list := create string_list();
 	  results : xm_string_list := create xm_string_list();
@@ -643,6 +645,10 @@ rules:
 	    if (isTable) then
 	      alleleSymbol := (integer) sourceWidget.alleleSymbol[i];
 	      alleleKey := (integer) sourceWidget.alleleKey[i];
+
+	      if (sourceWidget.is_defined("alleleID") != nil) then
+	        alleleID := (integer) sourceWidget.alleleID[i];
+	      end if;
 	    end if;
 
             -- Must be in an Allele column
@@ -694,8 +700,8 @@ rules:
 	            markerKeys.insert(mgi_getstr(dbproc, 2), markerKeys.count + 1);
 	            alleleSymbols.insert(mgi_getstr(dbproc, 3), alleleSymbols.count + 1);
 	            markerSymbols.insert(mgi_getstr(dbproc, 4), markerSymbols.count + 1);
-	            results.insert(mgi_getstr(dbproc, 4) + ", allele '" + 
-			mgi_getstr(dbproc, 3) + "'", results.count + 1);
+	            results.insert(mgi_getstr(dbproc, 4) + ", allele '" + mgi_getstr(dbproc, 3) + "'", results.count + 1);
+	            alleleIDs.insert(mgi_getstr(dbproc, 5), alleleIDs.count + 1);
                   end while;
                 end while;
                (void) mgi_dbclose(dbproc);
@@ -761,6 +767,9 @@ rules:
 		if (isTable) then
                   (void) mgi_tblSetCell(sourceWidget, row, alleleKey, alleleKeys[whichMarker]);
                   (void) mgi_tblSetCell(sourceWidget, row, alleleSymbol, alleleSymbols[whichMarker]);
+	          if (sourceWidget.is_defined("alleleID") != nil) then
+                    (void) mgi_tblSetCell(sourceWidget, row, alleleID, alleleIDs[whichMarker]);
+	          end if;
 		else
 		  alleleWidget->ObjectID->text.value := alleleKeys[whichMarker];
 		  alleleWidget->Allele->text.value := alleleSymbols[whichMarker];
@@ -1815,12 +1824,14 @@ rules:
 	  whichSymbol : string := "";
 	  whichStatus : string := "";
 	  whichChrom  : string := "";
+	  whichMarkerID  : string := "";
 
 	  keys : string_list := create string_list();
 	  results : xm_string_list := create xm_string_list();
 	  symbols : string_list := create string_list();
 	  names : string_list := create string_list();
 	  chromosome : string_list := create string_list();
+	  markerID : string_list := create string_list();
 	  status : string_list := create string_list();
 	  band : string_list := create string_list();
 	  organismKey : string := "1";
@@ -1867,6 +1878,7 @@ rules:
               chromosome.insert(mgi_getstr(dbproc, 4), chromosome.count + 1);
               band.insert(mgi_getstr(dbproc, 5), band.count + 1);
               names.insert(mgi_getstr(dbproc, 6), names.count + 1);
+              markerID.insert(mgi_getstr(dbproc, 7), markerID.count + 1);
               results.insert(symbols[symbols.count] + 
 		", " + names[names.count] +
 		", Chr " + chromosome[chromosome.count] + 
@@ -1929,6 +1941,7 @@ rules:
 	  whichSymbol := symbols[whichMarkerRow];
 	  whichStatus := status[whichMarkerRow];
 	  whichChrom  := chromosome[whichMarkerRow];
+	  whichMarkerID  := markerID[whichMarkerRow];
 
 	  -- If withdrawn symbols are not allowed, then display list of current symbols
 
@@ -1970,6 +1983,12 @@ rules:
 	    if (sourceWidget.is_defined("markerChr") != nil) then
 	      if (sourceWidget.markerChr >= 0) then
                 (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.markerChr, whichChrom);
+	      end if;
+	    end if;
+
+	    if (sourceWidget.is_defined("markerID") != nil) then
+	      if (sourceWidget.markerID >= 0) then
+                (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.markerID, whichMarkerID);
 	      end if;
 	    end if;
 	  else

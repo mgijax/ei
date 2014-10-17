@@ -28,6 +28,42 @@ dmodule RefAlleleTableLib is
 rules:
 
 --
+-- InitRefAlleleTable
+--
+--	Initializes ReferenceType Table
+--
+
+        InitRefAlleleTable does
+	  top : widget := InitRefAlleleTable.table.parent;
+	  table : widget := InitRefAlleleTable.table;
+
+	  cmd : string;
+	  row : integer := 0;
+
+	  ClearTable.table := table;
+	  send(ClearTable, 0);
+
+	  cmd := reftypetable_initallele2();
+	  dbproc : opaque := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	       (void) mgi_writeLog("here\n");
+	       (void) mgi_writeLog(mgi_getstr(dbproc, 1) + "\n");
+	       (void) mgi_writeLog(mgi_getstr(dbproc, 2) + "\n");
+	       (void) mgi_tblSetCell(table, row, table.refsTypeKey, mgi_getstr(dbproc, 1));
+	       (void) mgi_tblSetCell(table, row, table.refsType, mgi_getstr(dbproc, 2));
+	       (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_EMPTY);
+	       row := row + 1;
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
+
+          InitOptionMenu.option := top->RefAllele->ReferenceTypeMenu;
+	  send(InitOptionMenu, 0); 
+
+	end does;
+
+--
 -- LoadRefAlleleTable
 --
 --	Finds all Alleles from a given Reference (LoadRefAlleleTable.objectKey).
@@ -56,6 +92,7 @@ rules:
 	      (void) mgi_tblSetCell(table, row, (integer) table.alleleSymbol[1], mgi_getstr(dbproc, 5));
 	      (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 6));
 	      (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 7));
+	      (void) mgi_tblSetCell(table, row, (integer) table.alleleID[1], mgi_getstr(dbproc, 8));
 	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
               row := row + 1;
             end while;

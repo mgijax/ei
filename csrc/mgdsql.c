@@ -1615,11 +1615,15 @@ char *ref_allele_load(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select r._Assoc_key, r._RefAssocType_key, r.assocType, r._Object_key, a.symbol, m._Marker_key, m.symbol \
-  \nfrom MGI_Reference_Allele_View r, ALL_Allele a, MRK_Marker m \
+  sprintf(buf,"select r._Assoc_key, r._RefAssocType_key, r.assocType, r._Object_key, a.symbol, m._Marker_key, m.symbol, aa.accID \
+  \nfrom MGI_Reference_Allele_View r, ALL_Allele a, MRK_Marker m, ACC_Accession aa \
   \nwhere r._Object_key = a._Allele_key \
   \nand a._Marker_key = m._Marker_key \
   \nand r._Refs_key = %s \
+  \nand a._Allele_key = aa._Object_key \
+  \nand aa._MGIType_key = 11 \
+  \nand aa._LogicalDB_key = 1 \
+  \nand aa.preferred = 1 \
   \norder by a.symbol, r.assocType", key);
   return(buf);
 }
@@ -1628,10 +1632,14 @@ char *ref_marker_load(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select r._Assoc_key, r._RefAssocType_key, r.assocType, r._Object_key, m.symbol \
-  \nfrom MGI_Reference_Marker_View r, MRK_Marker m \
+  sprintf(buf,"select r._Assoc_key, r._RefAssocType_key, r.assocType, r._Object_key, m.symbol, a.accID \
+  \nfrom MGI_Reference_Marker_View r, MRK_Marker m, ACC_Accession a \
   \nwhere r._Object_key = m._Marker_key \
   \nand r._Refs_key = %s \
+  \nand m._Marker_key = a._Object_key \
+  \nand a._MGIType_key = 2 \
+  \nand a._LogicalDB_key = 1 \
+  \nand a.preferred = 1 \
   \norder by m.symbol, r.assocType", key);
   return(buf);
 }

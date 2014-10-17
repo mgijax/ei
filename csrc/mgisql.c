@@ -1021,10 +1021,14 @@ char *verify_allele(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _Allele_key, _Marker_key, symbol, markerSymbol \
-   from ALL_Allele_View \
-   where term in ('Approved', 'Autoload') \
-   and symbol like %s", key);
+  sprintf(buf,"select a._Allele_key, a._Marker_key, a.symbol, a.markerSymbol, aa.accID \
+   \nfrom ALL_Allele_View a, ACC_Accession aa \
+   \nwhere a.term in ('Approved', 'Autoload') \
+   \nand a.symbol like %s \
+   \nand a._Allele_key = aa._Object_key \
+   \nand aa._MGIType_key = 11 \
+   \nand aa._LogicalDB_key = 1 \
+   \nand aa.preferred = 1", key);
   return(buf);
 }
 
@@ -1074,10 +1078,15 @@ char *verify_marker(char *key, char *symbol)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _Marker_key, _Marker_Status_key, symbol, chromosome, \
-   \ncytogeneticOffset, substring(name,1,25) \
-   \nfrom MRK_Marker where _Organism_key = %s \
-   \nand symbol like %s", key, symbol);
+  sprintf(buf,"select m._Marker_key, m._Marker_Status_key, m.symbol, m.chromosome, \
+   \nm.cytogeneticOffset, substring(m.name,1,25), a.accID \
+   \nfrom MRK_Marker m, ACC_Accession a \
+   \nwhere m._Organism_key = %s \
+   \nand m.symbol like %s \
+   \nand m._Marker_key = a._Object_key \
+   \nand a._MGIType_key = 2 \
+   \nand a._LogicalDB_key = 1 \
+   \nand a.preferred = 1", key, symbol);
   return(buf);
 }
 
@@ -1427,6 +1436,15 @@ char *reftypetable_initallele(char *key)
   sprintf(buf,"select _RefAssocType_key, assocType, allowOnlyOne, _MGIType_key from %s \
 	\nwhere assocType in ('Original', 'Transmission', 'Molecular', 'Indexed') \
 	\norder by allowOnlyOne desc, _RefAssocType_key", key);
+  return(buf);
+}
+
+char *reftypetable_initallele2()
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _RefAssocType_key, assocType from MGI_RefType_Allele_View \
+	\nwhere assocType in ('Indexed')");
   return(buf);
 }
 

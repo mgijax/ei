@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Thu Oct  2 08:10:15 2014";
+      lastWritten = "Fri Oct 17 11:55:35 2014";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -6540,13 +6540,13 @@ Module: MGD
                                                   {
                                                     Table = mgiTable : mgiTable;
                                                     Group: Widget
-                                                      userDefinedAttributes = "markerKey:Int(Int)=\"4\"\nmarkerSymbol:Int(Int)=\"7\"\nalleleKey:StringTable(StringTable)=\"3\"\nalleleSymbol:StringTable(StringTable)=\"6\"\nassocKey:Int(Int)=\"1\"\nrefsTypeKey:Int(Int)=\"2\"\nrefsType:Int(Int)=\"5\"\nmarkerColumns:Int(Int)\n";
+                                                      userDefinedAttributes = "markerKey:Int(Int)=\"4\"\nmarkerSymbol:Int(Int)=\"8\"\nalleleKey:StringTable(StringTable)=\"3\"\nalleleSymbol:StringTable(StringTable)=\"6\"\nassocKey:Int(Int)=\"1\"\nrefsTypeKey:Int(Int)=\"2\"\nrefsType:Int(Int)=\"5\"\nmarkerColumns:Int(Int)\nalleleID:StringTable(StringTable)=\"7\"\n";
                                                       xrtTblValidateCellCallback = "D:VerifyMarker,\nD:VerifyAllele,\nD:CommitTableCellEdit";
-                                                      xrtTblNumColumns = 8;
-                                                      xrtTblColumnLabels = "Mode,Key,Key,Key,Key,Type,Allele,Marker";
-                                                      xrtTblCharWidthSeries = "(all 0 1)(all 1-4 10)(all 5 15)(all 6 50)(all 7 30)";
-                                                      xrtTblEditableSeries = "(all 0-5 False)(all 7 False)";
-                                                      xrtTblTraversableSeries = "(all 0-5 False) (all 7 False)";
+                                                      xrtTblNumColumns = 9;
+                                                      xrtTblColumnLabels = "Mode,Key,Key,Key,Key,Type,Allele,Allele ID,Marker";
+                                                      xrtTblCharWidthSeries = "(all 0 1)(all 1-4 10)(all 5 15)(all 6 40)(all 7 20)(all 8 30)";
+                                                      xrtTblEditableSeries = "(all 0-5 False)(all 8 False)";
+                                                      xrtTblTraversableSeries = "(all 0-5 False) (all 8 False)";
                                                       xrtTblPixelWidthSeries = "(all 0-4 0)";
                                                       xrtTblNumRows = 11;
                                                       xrtTblVisibleRows = 10;
@@ -6557,8 +6557,8 @@ Module: MGD
                                                       bottomAttachment = attach_none;
                                                       resizable = true;
                                                     Group: User
-                                                      saveTraversableSeries = "(all 0-5 False) (all 7 False)";
-                                                      saveEditableSeries = "(all 0-5 False) (all 7 False)";
+                                                      saveTraversableSeries = "(all 0-5 False) (all 8 False)";
+                                                      saveEditableSeries = "(all 0-5 False) (all 8 False)";
                                                   }
                                                   {
                                                     AddRow = TablePush : mgiTable;
@@ -6616,13 +6616,13 @@ Module: MGD
                                                   {
                                                     Table = mgiTable : mgiTable;
                                                     Group: Widget
-                                                      userDefinedAttributes = "markerKey:Int(Int)=\"3\"\nmarkerSymbol:Int(Int)=\"5\"\nassocKey:Int(Int)=\"1\"\nrefsTypeKey:Int(Int)=\"2\"\nrefsType:Int(Int)=\"4\"\nmarkerColumns:Int(Int)\n";
+                                                      userDefinedAttributes = "markerKey:Int(Int)=\"3\"\nmarkerSymbol:Int(Int)=\"5\"\nassocKey:Int(Int)=\"1\"\nrefsTypeKey:Int(Int)=\"2\"\nrefsType:Int(Int)=\"4\"\nmarkerColumns:Int(Int)\nmarkerID:Int(Int)=\"6\"\n";
                                                       xrtTblValidateCellCallback = "D:VerifyMarker,\nD:CommitTableCellEdit";
-                                                      xrtTblNumColumns = 6;
-                                                      xrtTblColumnLabels = "Mode,Key,Key,Key,Type,Marker";
-                                                      xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 15)(all 5 50)";
+                                                      xrtTblNumColumns = 7;
+                                                      xrtTblColumnLabels = "Mode,Key,Key,Key,Type,Marker,Marker ID";
+                                                      xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 15)(all 5 50)(all 6 20)";
                                                       xrtTblEditableSeries = "(all 0-4 False)";
-                                                      xrtTblTraversableSeries = "(all 0-4 False)";
+                                                      xrtTblTraversableSeries = "(all 0-4 False)(all 6 False)";
                                                       xrtTblPixelWidthSeries = "(all 0-3 0)";
                                                       xrtTblNumRows = 11;
                                                       xrtTblVisibleRows = 10;
@@ -6633,8 +6633,8 @@ Module: MGD
                                                       bottomAttachment = attach_none;
                                                       resizable = true;
                                                     Group: User
-                                                      saveTraversableSeries = "(all 0-4 False)";
-                                                      saveEditableSeries = "(all 0-4 False)";
+                                                      saveTraversableSeries = "(all 0-4 False) (all 6 False)";
+                                                      saveEditableSeries = "(all 0-4 False)(all 6 False)";
                                                   }
                                                   {
                                                     AddRow = TablePush : mgiTable;

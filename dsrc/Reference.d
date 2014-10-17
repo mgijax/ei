@@ -170,8 +170,10 @@ rules:
           InitOptionMenu.option := top->ReviewStatusMenu;
           send(InitOptionMenu, 0);
 
-          InitOptionMenu.option := top->RefAllele->ReferenceTypeMenu;
-	  send(InitOptionMenu, 0); 
+	  -- Initialize Reference table
+
+	  InitRefAlleleTable.table := top->RefAllele->Table;
+	  send(InitRefAlleleTable, 0);
 
           InitOptionMenu.option := top->RefMarker->ReferenceTypeMenu;
 	  send(InitOptionMenu, 0); 
@@ -218,7 +220,7 @@ rules:
           send(SetRowCount, 0);
 
 	  -- Clear form
-	  send(ClearReference, 0);
+	  --send(ClearReference, 0);
 
 	  top->DataSets->Query->OR.set := true;
 	  top->DataSets->Query->AND.set := false;

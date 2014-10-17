@@ -209,6 +209,7 @@ extern char *verify_vocabtermdag(char *, char *);
 
 extern char *reftypetable_init(char *);
 extern char *reftypetable_initallele(char *);
+extern char *reftypetable_initallele2();
 extern char *reftypetable_loadorder1();
 extern char *reftypetable_loadorder2();
 extern char *reftypetable_loadorder3();
