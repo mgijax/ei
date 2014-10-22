@@ -127,6 +127,7 @@ CALLS
 	 simple_synonym("char *", "char *")			: "char *";
 
 	 verify_allele("char *")				: "char *";
+	 verify_alleleid("char *")				: "char *";
 	 verify_allele_marker("char *")				: "char *";
 	 verify_cellline("char *")				: "char *";
 	 verify_genotype("char *")				: "char *";
@@ -173,6 +174,7 @@ CALLS
 	 reftypetable_init("char *")				: "char *";
 	 reftypetable_initallele("char *")			: "char *";
 	 reftypetable_initallele2()				: "char *";
+	 reftypetable_initmarker()				: "char *";
 	 reftypetable_loadorder1()				: "char *";
 	 reftypetable_loadorder2()				: "char *";
 	 reftypetable_loadorder3()				: "char *";

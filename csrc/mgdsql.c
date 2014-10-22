@@ -1611,6 +1611,14 @@ char *ref_allele_exists(char *key)
   return(buf);
 }
 
+char *ref_mrk_exists(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select count(*) from MGI_Reference_Marker_View where _Refs_key = %s", key);
+  return(buf);
+}
+
 char *ref_allele_load(char *key)
 {
   static char buf[TEXTBUFSIZ];
@@ -1618,7 +1626,7 @@ char *ref_allele_load(char *key)
   sprintf(buf,"select r._Assoc_key, r._RefAssocType_key, r.assocType, r._Object_key, a.symbol, m._Marker_key, m.symbol, aa.accID \
   \nfrom MGI_Reference_Allele_View r, ALL_Allele a, MRK_Marker m, ACC_Accession aa \
   \nwhere r._Object_key = a._Allele_key \
-  \nand a._Marker_key = m._Marker_key \
+  \nand a._Marker_key *= m._Marker_key \
   \nand r._Refs_key = %s \
   \nand a._Allele_key = aa._Object_key \
   \nand aa._MGIType_key = 11 \

@@ -219,6 +219,7 @@ extern char *ref_mld_exists(char *);
 extern char *ref_nom_exists(char *);
 extern char *ref_prb_exists(char *);
 extern char *ref_allele_exists(char *);
+extern char *ref_mrk_exists(char *);
 extern char *ref_allele_load(char *);
 extern char *ref_marker_load(char *);
 

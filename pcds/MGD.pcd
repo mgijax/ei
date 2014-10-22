@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Fri Oct 17 11:55:35 2014";
+      lastWritten = "Tue Oct 21 13:12:34 2014";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -6671,11 +6671,6 @@ Module: MGD
                                                       resizable = true;
                                                       leftWidget = DeleteRow;
                                                       topWidget = DeleteRow;
-                                                  {
-                                                    ReferenceTypeMenu = XmOptionMenu;
-                                                    Group: User
-                                                      defaultValue = General;
-                                                  }
                                                   Popups:
                                                   {
                                                     ReferenceTypePulldown = OptionPulldown : mgiOption;

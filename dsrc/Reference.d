@@ -175,8 +175,8 @@ rules:
 	  InitRefAlleleTable.table := top->RefAllele->Table;
 	  send(InitRefAlleleTable, 0);
 
-          InitOptionMenu.option := top->RefMarker->ReferenceTypeMenu;
-	  send(InitOptionMenu, 0); 
+	  InitRefMarkerTable.table := top->RefMarker->Table;
+	  send(InitRefMarkerTable, 0);
 
 	  -- Initialize Global Data Set widgets and string lists
 	  statusTable := top->DataSets->RefDBSStatus->Table;
@@ -220,7 +220,7 @@ rules:
           send(SetRowCount, 0);
 
 	  -- Clear form
-	  --send(ClearReference, 0);
+	  send(ClearReference, 0);
 
 	  top->DataSets->Query->OR.set := true;
 	  top->DataSets->Query->AND.set := false;
@@ -320,6 +320,10 @@ rules:
           	tables.close;
 		top->Notes->text.value := "";
 		top->Abstract->text.value := "";
+	  	InitRefAlleleTable.table := top->RefAllele->Table;
+	  	send(InitRefAlleleTable, 0);
+	  	InitRefMarkerTable.table := top->RefMarker->Table;
+	  	send(InitRefMarkerTable, 0);
 	  end if;
 
 	end does;
@@ -1210,6 +1214,8 @@ rules:
 	        cmd := ref_prb_exists(currentRecordKey);
 	      elsif (mgi_tblGetCell(statusTable, row, statusTable.existsProc) = "BIB_MLC_Exists") then
 	        cmd := ref_allele_exists(currentRecordKey);
+	      elsif (mgi_tblGetCell(statusTable, row, statusTable.existsProc) = "BIB_MRK_Exists") then
+	        cmd := ref_mrk_exists(currentRecordKey);
 	      end if;
 
 	      if (mgi_sql1(cmd) != NO) then

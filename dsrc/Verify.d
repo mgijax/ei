@@ -590,6 +590,9 @@ rules:
 	  verifyAdd : boolean := VerifyAllele.verifyAdd;
 	  isTable : boolean;
 
+	  tempAccID : string := "";
+	  accID : string := "";
+
 	  -- Relevant for Tables only
 	  row : integer := 0;
 	  column : integer := 0;
@@ -653,7 +656,7 @@ rules:
 
             -- Must be in an Allele column
  
-	    if ((isTable and column = alleleSymbol) or (not isTable)) then
+	    if ((isTable and column = alleleSymbol) or (isTable and column = alleleID) or (not isTable)) then
 
               -- If the Allele value is null, do nothing
 	      -- If a wildcard '%' appears in the allele, do nothing
@@ -680,6 +683,13 @@ rules:
 	          (void) mgi_tblSetCell(sourceWidget, row, alleleKey, "");
 	          markerKey := mgi_tblGetCell(sourceWidget, row, sourceWidget.markerKey); 
 	          markerSymbol := mgi_tblGetCell(sourceWidget, row, sourceWidget.markerSymbol);
+		  accID := "";
+                  if (sourceWidget.is_defined("alleleID") != nil) then
+		    if (column = alleleID) then
+                      tempAccID := value;
+                      accID := mgi_simplesub("MGI:", "", tempAccID);
+		    end if;
+                  end if;
 		else
 		  markerKey := top->mgiMarker->ObjectID->text.value;
 		  markerSymbol := top->mgiMarker->Marker->text.value;
@@ -689,7 +699,10 @@ rules:
  
 		select := verify_allele(mgi_DBprstr(value));
 
-	        if (markerKey.length > 0 and markerKey != "NULL") then
+                if (column = alleleID and accID.length > 0) then
+                  select := select + verify_alleleid(accID);
+
+	        elsif (markerKey.length > 0 and markerKey != "NULL") then
                   select := select + verify_allele_marker(markerKey);
 	        end if;
 

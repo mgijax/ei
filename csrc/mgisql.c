@@ -1032,6 +1032,22 @@ char *verify_allele(char *key)
   return(buf);
 }
 
+char *verify_alleleid(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select a._Allele_key, a._Marker_key, a.symbol, a.markerSymbol, aa.accID \
+   \nfrom ALL_Allele_View a, ACC_Accession aa \
+   \nwhere a.term in ('Approved', 'Autoload') \
+   \nand a._Allele_key = aa._Object_key \
+   \nand aa._MGIType_key = 11 \
+   \nand aa._LogicalDB_key = 1 \
+   \nand aa.preferred = 1 \
+   \nand aa.prefixPart = 'MGI:' \
+   \nand aa.numericPart = %s", key);
+  return(buf);
+}
+
 char *verify_allele_marker(char *key)
 {
   static char buf[TEXTBUFSIZ];
@@ -1095,7 +1111,7 @@ char *verify_marker_union(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"\nunion \
-   \nselect -1, 1, symbol, chromosome, null, substring(name, 1, 25) \
+   \nselect -1, 1, symbol, chromosome, null, substring(name, 1, 25), null \
    \nfrom NOM_Marker_Valid_View \
    \nwhere symbol like %s", key);
   return(buf);
@@ -1445,6 +1461,15 @@ char *reftypetable_initallele2()
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select _RefAssocType_key, assocType from MGI_RefType_Allele_View \
 	\nwhere assocType in ('Indexed')");
+  return(buf);
+}
+
+char *reftypetable_initmarker()
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _RefAssocType_key, assocType from MGI_RefType_Marker_View \
+	\nwhere assocType in ('General')");
   return(buf);
 }
 

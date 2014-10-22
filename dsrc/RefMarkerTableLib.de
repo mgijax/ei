@@ -11,6 +11,10 @@
 --	- TR11786/add Allele and Marker tabs
 --
 
+-- Initialize Reference Type Table
+InitRefMarkerTable [table : widget;      -- Reference Type Table
+         clearCells : boolean := true;]; -- Clear Cells flag
+
 -- Load Reference Marker Table
 LoadRefMarkerTable [table : widget;      -- Reference Marker Table
             objectKey : string;];        -- Unique identifier of Object

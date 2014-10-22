@@ -28,6 +28,41 @@ dmodule RefMarkerTableLib is
 rules:
 
 --
+-- InitRefMarkerTable
+--
+--	Initializes ReferenceType Table
+--
+
+        InitRefMarkerTable does
+	  top : widget := InitRefMarkerTable.table.parent;
+	  table : widget := InitRefMarkerTable.table;
+
+	  cmd : string;
+	  row : integer := 0;
+
+	  ClearTable.table := table;
+	  send(ClearTable, 0);
+
+	  cmd := reftypetable_initmarker();
+	  dbproc : opaque := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	       (void) mgi_tblSetCell(table, row, table.refsTypeKey, mgi_getstr(dbproc, 1));
+	       (void) mgi_tblSetCell(table, row, table.refsType, mgi_getstr(dbproc, 2));
+	       (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_EMPTY);
+	       row := row + 1;
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  if (top->RefMarker->ReferenceTypeMenu.subMenuId.numChildren = 1) then
+            InitOptionMenu.option := top->RefMarker->ReferenceTypeMenu;
+	    send(InitOptionMenu, 0); 
+	  end if;
+
+	end does;
+
+--
 -- LoadRefMarkerTable
 --
 --	Finds all Alleles from a given Reference (LoadRefMarkerTable.objectKey).
@@ -66,6 +101,11 @@ rules:
 	  ClearTable.table := table;
 	  ClearTable.clearCells := false;
 	  send(ClearTable, 0);
+
+	  -- Add default reference type
+	  AddRefTypeRow.table := table;
+	  send(AddRefTypeRow);
+
 	end does;
 
 --
@@ -88,6 +128,7 @@ rules:
 	  set : string := "";
 	  keyName : string := "refMarkerKey";
 	  keyDefined : boolean := false;
+	  defaultRefsTypeKey : string := "1018";
  
  	  tableID : integer := MGI_REFERENCE_ASSOC;
 
@@ -109,6 +150,10 @@ rules:
 	      else
 		cmd := cmd + mgi_DBincKey(keyName);
 	      end if;
+
+              if (refsTypeKey.length = 0) then
+                refsTypeKey := defaultRefsTypeKey;
+              end if;
 
 	      cmd := cmd + mgi_DBinsert(tableID, keyName) +
 		     objectKey + "," +

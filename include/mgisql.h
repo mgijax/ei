@@ -156,6 +156,7 @@ extern char *simple_synonym(char *, char *);
 /* Verify.d */
 
 extern char *verify_allele(char *);
+extern char *verify_alleleid(char *);
 extern char *verify_allele_marker(char *);
 extern char *verify_cellline(char *);
 extern char *verify_genotype(char *);
@@ -210,6 +211,7 @@ extern char *verify_vocabtermdag(char *, char *);
 extern char *reftypetable_init(char *);
 extern char *reftypetable_initallele(char *);
 extern char *reftypetable_initallele2();
+extern char *reftypetable_initmarker();
 extern char *reftypetable_loadorder1();
 extern char *reftypetable_loadorder2();
 extern char *reftypetable_loadorder3();

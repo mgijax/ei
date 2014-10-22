@@ -47,9 +47,6 @@ rules:
 	  dbproc : opaque := mgi_dbexec(cmd);
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	       (void) mgi_writeLog("here\n");
-	       (void) mgi_writeLog(mgi_getstr(dbproc, 1) + "\n");
-	       (void) mgi_writeLog(mgi_getstr(dbproc, 2) + "\n");
 	       (void) mgi_tblSetCell(table, row, table.refsTypeKey, mgi_getstr(dbproc, 1));
 	       (void) mgi_tblSetCell(table, row, table.refsType, mgi_getstr(dbproc, 2));
 	       (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_EMPTY);
@@ -58,8 +55,10 @@ rules:
 	  end while;
 	  (void) mgi_dbclose(dbproc);
 
-          InitOptionMenu.option := top->RefAllele->ReferenceTypeMenu;
-	  send(InitOptionMenu, 0); 
+	  if (top->RefAllele->ReferenceTypeMenu.subMenuId.numChildren = 1) then
+            InitOptionMenu.option := top->RefAllele->ReferenceTypeMenu;
+	    send(InitOptionMenu, 0); 
+	  end if;
 
 	end does;
 
@@ -104,6 +103,11 @@ rules:
 	  ClearTable.table := table;
 	  ClearTable.clearCells := false;
 	  send(ClearTable, 0);
+
+	  -- Add default reference type
+	  AddRefTypeRow.table := table;
+	  send(AddRefTypeRow);
+
 	end does;
 
 --
@@ -126,6 +130,8 @@ rules:
 	  set : string := "";
 	  keyName : string := "refAlleleKey";
 	  keyDefined : boolean := false;
+
+	  defaultRefsTypeKey : string := "1013";
  
 	  tableID : integer := MGI_REFERENCE_ASSOC;
 
@@ -148,6 +154,10 @@ rules:
 		cmd := cmd + mgi_DBincKey(keyName);
 	      end if;
 
+	      if (refsTypeKey.length = 0) then
+	        refsTypeKey := defaultRefsTypeKey;
+	      end if;
+
 	      cmd := cmd + mgi_DBinsert(tableID, keyName) +
 		     objectKey + "," +
 		     alleleKey + "," +
@@ -168,6 +178,7 @@ rules:
           end while;
 
 	  table.sqlCmd := cmd;
+
 	end does;
 
 --
@@ -230,6 +241,7 @@ rules:
 	  if (table.sqlWhere.length > 0) then
 	    table.sqlWhere := table.sqlWhere + "\nand " + tableTag + "._Refs_key = " + join;
 	  end if;
+
 	end does;
 
  end dmodule;

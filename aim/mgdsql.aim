@@ -178,6 +178,7 @@ CALLS
 	 ref_nom_exists("char *")			: "char *";
 	 ref_prb_exists("char *")			: "char *";
 	 ref_allele_exists("char *")			: "char *";
+	 ref_mrk_exists("char *")			: "char *";
 	 ref_allele_load("char *")		: "char *";
 	 ref_marker_load("char *")		: "char *";
 
