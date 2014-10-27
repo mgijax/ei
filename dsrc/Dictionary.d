@@ -101,7 +101,7 @@ dmodule Dictionary is
 
 -- standard includes
 #include <mgilib.h>
-#include <syblib.h>
+#include <dblib.h>
 #include <tables.h>
 #include <gxdsql.h>
 
@@ -822,7 +822,7 @@ rules:
           -- read the form and construct a query
           send(PrepareSearch, 0);
 
-	  -- see syblib.c/mgi_citation for translation of stage/printName
+	  -- see dblib.c/mgi_citation for translation of stage/printName
           Query.source_widget := top;
           Query.select := "select distinct s._Structure_key, t.stage, s.printName "  +
                         from + where + "\norder by s.printName asc, t.stage";

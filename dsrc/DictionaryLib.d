@@ -45,7 +45,7 @@
 dmodule DictionaryLib is
 
 #include <mgilib.h>
-#include <syblib.h>
+#include <dblib.h>
 #include <dictionary.h>
 
 locals:

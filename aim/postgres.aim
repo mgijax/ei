@@ -1,0 +1,40 @@
+CALLS
+  LANGUAGE C 
+        INCLUDE
+             <pglib.h>
+	TYPE 
+	     "int"           <--> integer;
+	     "char *"        <--> string;
+	     "Widget"        <--> widget;
+             "char **"       <--> string_list;
+
+	     "PGconn *"      <--> opaque;
+             
+	ENTRY 
+
+	 mgi_dbinit("char *", "char *")                  : "int";
+	 mgi_dbcancel("PGconn *");
+	 mgi_dbclose("PGconn *");
+	 mgi_dbexit();
+	 mgi_dbexec("char *")                            : "PGconn *";
+	 mgi_dbresults("PGconn *")			 : "int";
+	 mgi_dbnextrow("PGconn *")			 : "int";
+	 mgi_execute_search("Widget", "Widget", "char *", "int", "char *");
+	 mgi_getstr("PGconn *", "int")                   : "char *";
+	 mgi_citation("PGconn *", "int")                 : "char *";
+	 mgi_key("PGconn *", "int")                      : "char *";
+	 mgi_sql1("char *")                              : "char *";
+	 mgi_sp("char *")                                : "char *";
+
+	 global_login					 : "char *";
+	 global_loginKey				 : "char *";
+	 global_passwd_file				 : "char *";
+	 global_passwd					 : "char *";
+	 global_reportdir				 : "char *";
+	 global_database				 : "char *";
+	 global_server  				 : "char *";
+	 global_radar  				 	 : "char *";
+
+  ENDL
+ENDC
+

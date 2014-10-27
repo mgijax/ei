@@ -32,7 +32,7 @@
 dmodule Organism is
 
 #include <mgilib.h>
-#include <syblib.h>
+#include <dblib.h>
 #include <tables.h>
 #include <mgisql.h>
 

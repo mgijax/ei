@@ -24,7 +24,7 @@
 dmodule RISet is
 
 #include <mgilib.h>
-#include <syblib.h>
+#include <dblib.h>
 #include <mgdsql.h>
 
 devents:

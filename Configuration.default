@@ -111,3 +111,10 @@ umask 002
 setenv USERHOME /userhome
 setenv LOGEI	/logs/ei
 
+# link to the proper include file
+setenv EIINCLUDE syblib.h
+cd ${EIBUILDDIR}/include
+rm -rf dblib.h
+ln -s ${EIINCLUDE} dblib.h
+cd ${EIBUILDDIR}
+

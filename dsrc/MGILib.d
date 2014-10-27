@@ -49,7 +49,7 @@
 dmodule MGILib is
 
 #include <mgilib.h>
-#include <syblib.h>
+#include <dblib.h>
 #include <mgisql.h>
 
 locals:

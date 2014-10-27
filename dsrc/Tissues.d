@@ -36,7 +36,7 @@
 dmodule Tissues is
 
 #include <mgilib.h>
-#include <syblib.h>
+#include <dblib.h>
 
 devents:
 

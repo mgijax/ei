@@ -18,7 +18,7 @@
 
 dmodule Report is
 
-#include <syblib.h>
+#include <dblib.h>
 #include <teleuse/tu_file.h>
 
 devents:

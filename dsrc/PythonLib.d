@@ -36,7 +36,7 @@
 
 dmodule PythonLib is
 
-#include <syblib.h>
+#include <dblib.h>
 #include <mgilib.h>
 #include <teleuse/tu_file.h>
 

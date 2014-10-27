@@ -20,7 +20,7 @@
 dmodule RefMarkerTableLib is
 
 #include <mgilib.h>
-#include <syblib.h>
+#include <dblib.h>
 #include <tables.h>
 
 -- See RefMarkerTableLib.de for D event declarations

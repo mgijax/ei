@@ -119,7 +119,7 @@
 dmodule GOVocAnnot is
 
 #include <mgilib.h>
-#include <syblib.h>
+#include <dblib.h>
 #include <tables.h>
 #include <mgdsql.h>
 
