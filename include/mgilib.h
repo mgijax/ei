@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <syblib.h>
+#include <dblib.h>
 
 extern char *mgi_setDBkey(int, int, char *);
 extern char *mgi_DBprstr(char *);
