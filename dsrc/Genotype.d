@@ -948,12 +948,10 @@ rules:
 	  end if;
 
 	  -- 'from' where allele pair does exist
-	  from := from + ",GXD_AllelePair ap,ALL_Allele a1 LEFT OUTER JOIN ALL_Allele a2 on (ap._Allele_key_2 = a2._Allele_key)";
+	  from := from + ",GXD_AllelePair ap INNER JOIN ALL_Allele a1 on (ap._Allele_key_1 = a1._Allele_key) LEFT OUTER JOIN ALL_Allele a2 on (ap._Allele_key_2 = a2._Allele_key)";
 
 	  -- 'where' where allele pair does exist
-	  where := "\nwhere g._Genotype_key = ap._Genotype_key" + \
-		"\nand ap._Allele_key_1 = a1._Allele_key" +
-		where;
+	  where := "\nwhere g._Genotype_key = ap._Genotype_key" + where;
 
 	  if (from_cellline) then
 	      from := from + "," + mgi_DBtable(ALL_CELLLINE) + " ac";
