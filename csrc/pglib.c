@@ -253,7 +253,13 @@ PGconn *mgi_dbexec(char *cmd)
   ns = mgi_simplesub("str(offset,10,2)", "to_char(cmOffset, '9999.99')", newstr);
   strcpy(newstr, ns);
 
-  printf("new cmd: %s\n", ns);
+  ns = mgi_simplesub("str_replace(n.note,char(13)||char(10),'')", "regexp_replace(n.note, E'[\\n\\r]+', '', 'g')", newstr);
+  strcpy(newstr, ns);
+
+  ns = mgi_simplesub("convert(varchar(10), x) || ',' || convert(varchar(10), y) || ',' || convert(varchar(10), width) || ',' || convert(varchar(10), height)", "x || ',' || y || ',' || width || ',' || height", newstr);
+  strcpy(newstr, ns);
+
+  printf("pg cmd: %s\n", ns);
 
   /* execute search */
   res = PQexec(conn, ns);

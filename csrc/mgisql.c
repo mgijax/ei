@@ -645,6 +645,7 @@ char *image_caption(char *key)
   memset(buf, '\0', sizeof(buf));
   /*
   sprintf(buf,"select n._Note_key, n.note \
+  sprintf(buf,"select n._Note_key, regexp_replace(n.note, E'[\\n\\r]+', '', 'g') as note \
   */
   sprintf(buf,"select n._Note_key, str_replace(n.note,char(13)||char(10),'') as note \
   	\nfrom MGI_Note_Image_View n \
@@ -669,6 +670,7 @@ char *image_copyright(char *key)
   memset(buf, '\0', sizeof(buf));
   /*
   sprintf(buf,"select n._Note_key, n.note \
+  sprintf(buf,"select n._Note_key, regexp_replace(n.note, E'[\\n\\r]+', '', 'g') as note \
   */
   sprintf(buf,"select n._Note_key, str_replace(n.note,char(13)||char(10),'') as note \
   	\nfrom MGI_Note_Image_View n \

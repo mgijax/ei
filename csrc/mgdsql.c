@@ -493,7 +493,7 @@ char *govoc_select2(char *key, char *dbView)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select _Object_key, accID, description, short_description from %s \
-   \nwhere prefixPart = 'mgi:' and preferred = 1 and _Object_key = %s \
+   \nwhere prefixPart = 'MGI:' and preferred = 1 and _Object_key = %s \
    \norder by description", dbView, key);
   return(buf);
 }
@@ -1190,7 +1190,7 @@ char *mpvoc_select2(char *key, char *dbView)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select _Object_key, accID, description, short_description from %s \
-   \nwhere prefixPart = 'mgi:' and preferred = 1 and _Object_key = %s \
+   \nwhere prefixPart = 'MGI:' and preferred = 1 and _Object_key = %s \
    \norder by description", dbView, key);
   return(buf);
 }
@@ -1420,7 +1420,7 @@ char *omimvoc_select1(char *key, char *dbView)
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select _Object_key, accID, description, short_description from %s \
    \nwhere _Object_key = %s \
-   \nand prefixPart = 'mgi:' and preferred = 1 \
+   \nand prefixPart = 'MGI:' and preferred = 1 \
    \norder by description", dbView, key);
   return(buf);
 }
