@@ -55,7 +55,6 @@ extern char *cross_search(char *, char *);
 /* Genotype.d */
 
 extern char *genotype_orderby();
-extern char *genotype_assaywhere(char *);
 extern char *genotype_search1(char *, char *);
 extern char *genotype_search2(char *);
 extern char *genotype_select(char *);

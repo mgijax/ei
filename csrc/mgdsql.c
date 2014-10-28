@@ -327,16 +327,6 @@ char *genotype_orderby()
   return(buf);
 }
 
-char *genotype_assaywhere(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"where g._Genotype_key = a._Genotype_key \
-    \nand a._Assay_key = %s \
-    \nand g._Genotype_key *= ap._Genotype_key", key);
-  return(buf);
-}
-
 char *genotype_search1(char *from, char *where)
 {
   static char buf[TEXTBUFSIZ];
