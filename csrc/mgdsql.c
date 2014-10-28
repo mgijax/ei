@@ -353,23 +353,23 @@ char *genotype_search2(char *key)
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"(select distinct v._Genotype_key, \
    \ng.strain + ',' + a1.symbol + ',' + a2.symbol as strain \
-   \nfrom GXD_Expression v, GXD_Genotype_View g, GXD_AllelePair ap, ALL_Allele a1, ALL_Allele a2 \
+   \nfrom GXD_Expression v, GXD_Genotype_View g, GXD_AllelePair ap, \
+   \n	ALL_Allele a1 LEFT OUT JOIN ALL_Allele a2 on (ap._Allele_key_2 = a2._Allele_key) \
    \nwhere v._Refs_key = %s \
    \nand v._Genotype_key = g._Genotype_key \
    \nand g._Genotype_key = ap._Genotype_key \
    \nand ap._Allele_key_1 = a1._Allele_key \
-   \nand ap._Allele_key_2 *= a2._Allele_key \
    \nunion \
    \nselect distinct t._Object_key, \
    \ng.strain + ',' + a1.symbol + ',' + a2.symbol as strain \
-   \nfrom VOC_Evidence v, VOC_Annot_View t, GXD_Genotype_View g, GXD_AllelePair ap, ALL_Allele a1, ALL_Allele a2 \
+   \nfrom VOC_Evidence v, VOC_Annot_View t, GXD_Genotype_View g, GXD_AllelePair ap \
+   \n	ALL_Allele a1 LEFT OUT JOIN ALL_Allele a2 on (ap._Allele_key_2 = a2._Allele_key) \
    \nwhere v._Refs_key = %s \
    \nand v._Annot_key = t._Annot_key \
    \nand t._MGIType_key = 12 \
    \nand t._Object_key = g._Genotype_key \
    \nand g._Genotype_key = ap._Genotype_key \
    \nand ap._Allele_key_1 = a1._Allele_key \
-   \nand ap._Allele_key_2 *= a2._Allele_key \
    \nunion \
    \nselect distinct v._Genotype_key, g.strain as strain \
    \nfrom GXD_Expression v, GXD_Genotype_View g \
@@ -1624,9 +1624,9 @@ char *ref_allele_load(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select r._Assoc_key, r._RefAssocType_key, r.assocType, r._Object_key, a.symbol, m._Marker_key, m.symbol, aa.accID \
-  \nfrom MGI_Reference_Allele_View r, ALL_Allele a, MRK_Marker m, ACC_Accession aa \
+  \nfrom MGI_Reference_Allele_View r, ACC_Accession aa, \
+  \n	ALL_Allele a LEFT OUTER JOIN MRK_Marker m on (a._Marker_key = m._Marker_key) \
   \nwhere r._Object_key = a._Allele_key \
-  \nand a._Marker_key *= m._Marker_key \
   \nand r._Refs_key = %s \
   \nand a._Allele_key = aa._Object_key \
   \nand aa._MGIType_key = 11 \

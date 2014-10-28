@@ -118,3 +118,11 @@ rm -rf dblib.h
 ln -s ${EIINCLUDE} dblib.h
 cd ${EIBUILDDIR}
 
+#link to the proper dsrc/SQL.d file
+setenv EIDSQL SQL_syb.d
+#setenv EIDSQL SQL_pg.d
+cd ${EIBUILDDIR}/dsrc
+rm -rf SQL.d
+ln -s ${EIDSQL} SQL.d
+cd ${EIBUILDDIR}
+

@@ -1,5 +1,12 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-5-1-9-?
+DATE: 10/27/2014
+STAFF: lec
+CHANGES: TR11750/postgres
+a) aim/postgres.aim, csrc/pglib.c, include/pglib.h
+   mgd/uxb_pg.conf, Configuration.default, install_pg_dev
+
 TAG: ei-5-1-9-28
 DATE: 10/22/2014
 STAFF: lec

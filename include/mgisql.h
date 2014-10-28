@@ -59,6 +59,11 @@ extern char *exec_gxd_removeBadGelBand(char *);
 
 /* SQL.d */
 
+/* SQL.d */
+
+#define sql_sql_1 "select @@error"
+#define sql_sql_2 "select @@transtate"
+
 extern char *sql_error();
 extern char *sql_transtate();
 
