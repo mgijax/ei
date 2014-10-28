@@ -13,7 +13,7 @@
 -- History
 --
 -- 10/28/2014	lec
---	- changed "*=" to INNER/LEFT OUTER JOIN
+--	- TR11750/changed "*=" to INNER/LEFT OUTER JOIN
 --
 -- 09/03/2013	lec
 --	- TR11417/remove VerifyAlleleCombination
