@@ -14,7 +14,7 @@ setenv LOG $0.log
 rm -f $LOG
 
 #foreach app ($EIAPPS)
-foreach app ("mgd")
+foreach app ("gxd")
 
 echo "INSTALLING $app"
 setenv EIAPP $app

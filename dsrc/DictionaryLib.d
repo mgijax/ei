@@ -87,7 +87,7 @@ rules:
           cmd := mgi_DBdelete(primaryID, key);
 
           -- Add each Structure selected
- 
+
 	  structures := mgi_splitfields(mgi_tblGetCell(table, row, table.structureKeys), ",");
 	  structures.rewind;
 	  while (structures.more) do

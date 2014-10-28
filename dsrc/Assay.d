@@ -1825,12 +1825,12 @@ rules:
 
               -- Process Gel Lane Structures
 
-              ModifyStructure.source_widget := table;
-              ModifyStructure.primaryID := GXD_GELLANESTRUCTURE;
-              ModifyStructure.key := "@" + keyName;
-              ModifyStructure.row := row;
-              send(ModifyStructure, 0);
-              cmd := cmd + top->CVGel->ADClipboard.updateCmd;
+              --ModifyStructure.source_widget := table;
+              --ModifyStructure.primaryID := GXD_GELLANESTRUCTURE;
+              --ModifyStructure.key := "@" + keyName;
+              --ModifyStructure.row := row;
+              --send(ModifyStructure, 0);
+              --cmd := cmd + top->CVGel->ADClipboard.updateCmd;
  
             elsif (editMode = TBL_ROW_MODIFY and key.length > 0) then
 
@@ -1849,12 +1849,12 @@ rules:
 
               -- Process Gel Lane Structures
   
-              ModifyStructure.source_widget := table;
-              ModifyStructure.primaryID := GXD_GELLANESTRUCTURE;
-              ModifyStructure.key := key;
-              ModifyStructure.row := row;
-              send(ModifyStructure, 0);
-              cmd := cmd + top->CVGel->ADClipboard.updateCmd;
+              --ModifyStructure.source_widget := table;
+              --ModifyStructure.primaryID := GXD_GELLANESTRUCTURE;
+              --ModifyStructure.key := key;
+              --ModifyStructure.row := row;
+              --send(ModifyStructure, 0);
+              --cmd := cmd + top->CVGel->ADClipboard.updateCmd;
 
             elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
               cmd := cmd + mgi_DBdelete(GXD_GELLANE, key);
