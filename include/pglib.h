@@ -2,7 +2,7 @@
 #define PGLIB_H
 
 #include <stdio.h>
-#include <libpg-fe.h>
+#include <libpq-fe.h>
 #include <ux_uims.h>
 #include <Xm/Xm.h>
 #include <Xm/SelectioB.h>
