@@ -259,6 +259,18 @@ PGconn *mgi_dbexec(char *cmd)
   ns = mgi_simplesub("convert(varchar(10), x) || ',' || convert(varchar(10), y) || ',' || convert(varchar(10), width) || ',' || convert(varchar(10), height)", "x || ',' || y || ',' || width || ',' || height", newstr);
   strcpy(newstr, ns);
 
+  ns = mgi_simplesub("creation_date", "to_char(creation_date, 'MM/DD/YYYY')", newstr);
+  strcpy(newstr, ns);
+
+  ns = mgi_simplesub("modification_date", "to_char(modification_date, 'MM/DD/YYYY')", newstr);
+  strcpy(newstr, ns);
+
+  ns = mgi_simplesub("approval_date", "to_char(approval_date, 'MM/DD/YYYY')", newstr);
+  strcpy(newstr, ns);
+
+  ns = mgi_simplesub("completion_date", "to_char(completion_date, 'MM/DD/YYYY')", newstr);
+  strcpy(newstr, ns);
+
   printf("pg cmd: %s\n", ns);
 
   /* execute search */
