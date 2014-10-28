@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- 10/28/2014	lec
+--	- changed "*=" to INNER/LEFT OUTER JOIN
+--
 -- 09/03/2013	lec
 --	- TR11417/remove VerifyAlleleCombination
 --
@@ -945,12 +948,11 @@ rules:
 	  end if;
 
 	  -- 'from' where allele pair does exist
-	  from := from + ",GXD_AllelePair ap,ALL_Allele a1,ALL_Allele a2";
+	  from := from + ",GXD_AllelePair ap,ALL_Allele a1 LEFT OUTER JOIN ALL_Allele a2 on (ap._Allele_key_2 = a2._Allele_key)";
 
 	  -- 'where' where allele pair does exist
 	  where := "\nwhere g._Genotype_key = ap._Genotype_key" + \
 		"\nand ap._Allele_key_1 = a1._Allele_key" +
-		"\nand ap._Allele_key_2 *= a2._Allele_key" +
 		where;
 
 	  if (from_cellline) then
