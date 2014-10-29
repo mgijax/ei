@@ -13,8 +13,7 @@ source ./Configuration
 setenv LOG $0.log
 rm -f $LOG
 
-#foreach app ($EIAPPS)
-foreach app ("gxd")
+foreach app ($EIAPPS)
 
 echo "INSTALLING $app"
 setenv EIAPP $app

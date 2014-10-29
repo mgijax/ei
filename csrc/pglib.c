@@ -3,7 +3,7 @@
 *
 * Purpose:
 *
-* this library provides wrappers around libpg
+* this library provides wrappers around libpg ($POSTGRES_HOME/lib)
 * (C applications programmer's interface to PostgreSQL)
 *
 * the wrappers are called by the TeleUSE/D modules
@@ -12,17 +12,7 @@
 * as the sybase library wrappers and will enable
 * the EI to talk to a PostgreSQL database.
 *
-* make these changes and run build to make an EI version
-* that will talk to a PostgreSQL database.
-*
-* include/mgilib.h/include <syblib.h>          ==> include <pglib.h>
-* dsrc/*.d/include <syblib.h>                  ==> include <pglib.h>
-* uxb.conf (mgd, gxd, mgi, mgiadmin)
-*	AIM sybase.aim                         ==> AIM postgres.aim
-*	INCLUDEDIR $SYBASE/OCS-12_5/include    ==> $POSTGRES_HOME/include
-*	DINCLUDEDIR $SYBASE/OCS-12_5/include   ==> $POSTGRES_HOME/include
-*	CSOURCE ../csrc/syblib.c               ==> ../csrc/pglib.c
-*	APPLLIB -L$SYBASE/OCS-12_5/lib -lsybdb ==> -L$POSTGRES_HOME/lib -lpq
+* see install_pg_dev, uxb_pg.conf
 * 
 * mgi_dbinit 		done
 * mgi_dbopen		not needed
@@ -259,16 +249,16 @@ PGconn *mgi_dbexec(char *cmd)
   ns = mgi_simplesub("convert(varchar(10), x) || ',' || convert(varchar(10), y) || ',' || convert(varchar(10), width) || ',' || convert(varchar(10), height)", "x || ',' || y || ',' || width || ',' || height", newstr);
   strcpy(newstr, ns);
 
-  ns = mgi_simplesub("creation_date", "to_char(creation_date, 'MM/DD/YYYY')", newstr);
+  ns = mgi_simplesub("creation_date", "creation_date::DATE", newstr);
   strcpy(newstr, ns);
 
-  ns = mgi_simplesub("modification_date", "to_char(modification_date, 'MM/DD/YYYY')", newstr);
+  ns = mgi_simplesub("modification_date", "creation_date::DATE", newstr);
   strcpy(newstr, ns);
 
-  ns = mgi_simplesub("approval_date", "to_char(approval_date, 'MM/DD/YYYY')", newstr);
+  ns = mgi_simplesub("approval_date", "creation_date::DATE", newstr);
   strcpy(newstr, ns);
 
-  ns = mgi_simplesub("completion_date", "to_char(completion_date, 'MM/DD/YYYY')", newstr);
+  ns = mgi_simplesub("completion_date", "creation_date::DATE", newstr);
   strcpy(newstr, ns);
 
   printf("pg cmd: %s\n", ns);
@@ -396,7 +386,7 @@ char *mgi_getstr(PGconn *conn, int column)
   /* EI starts columns at 1; PostgreSQL starts columns at 0 */
   column = column - 1;
 
-  /* if the column number does not exist in the results, tnen return a empty buffer */
+  /* if the column number does not exist in the results, then return a empty buffer */
   if (column >= PQnfields(res))
     return(buf);
 
