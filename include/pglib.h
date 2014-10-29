@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <libpq-fe.h>
+#include <server/catalog/pg_type.h>
 #include <ux_uims.h>
 #include <Xm/Xm.h>
 #include <Xm/SelectioB.h>

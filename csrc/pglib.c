@@ -32,6 +32,8 @@
 *
 * PostgreSQL online documentation 9.0
 *
+* www.postgresql.org/docs/9.1/static/libpg.html
+*
 * IV. Client Interfaces
 *
 * 31.3 Command Execution Functions
@@ -380,6 +382,7 @@ int mgi_dbnextrow(PGconn *conn)
 char *mgi_getstr(PGconn *conn, int column)
 {
   static char buf[TEXTBUFSIZ];
+  int coltype; 
 
   memset(buf, '\0', sizeof(buf));
 
@@ -394,6 +397,8 @@ char *mgi_getstr(PGconn *conn, int column)
   strcpy(buf, PQgetvalue(res, currentRow, column));
   /*printf("mgi_getstr: %s\n", buf);*/
 
+  coltype = PQftype(res, column);
+
   /* 
   *
   * add translations:
@@ -407,6 +412,17 @@ char *mgi_getstr(PGconn *conn, int column)
     strcpy(buf, "1");
   else if (strcmp(buf, "f") == 0)
     strcpy(buf, "0");
+
+  switch (coltype)
+  {
+    case TIMESTAMPOID:
+      printf("mgi_getstr: %s\n", buf);
+      printf("data type: %d\n", coltype);
+      break;
+
+    default:
+      break;
+  }
 
   return(buf);
 }
