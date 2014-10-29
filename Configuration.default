@@ -113,6 +113,7 @@ setenv LOGEI	/logs/ei
 
 # link to the proper include file
 setenv EIINCLUDE syblib.h
+#setenv EIINCLUDE pglib.h
 cd ${EIBUILDDIR}/include
 rm -rf dblib.h
 ln -s ${EIINCLUDE} dblib.h
@@ -120,6 +121,7 @@ cd ${EIBUILDDIR}
 
 #link to the proper dsrc/SQL.d file
 setenv EIDSQL SQL_syb.d
+#setenv EIDSQL SQL_pg.d
 cd ${EIBUILDDIR}/dsrc
 rm -rf SQL.d
 ln -s ${EIDSQL} SQL.d
