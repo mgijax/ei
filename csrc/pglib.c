@@ -251,17 +251,10 @@ PGconn *mgi_dbexec(char *cmd)
   ns = mgi_simplesub("convert(varchar(10), x) || ',' || convert(varchar(10), y) || ',' || convert(varchar(10), width) || ',' || convert(varchar(10), height)", "x || ',' || y || ',' || width || ',' || height", newstr);
   strcpy(newstr, ns);
 
-  ns = mgi_simplesub("creation_date", "creation_date::DATE", newstr);
+  /*
+  ns = mgi_simplesub("_date", "_date::DATE", newstr);
   strcpy(newstr, ns);
-
-  ns = mgi_simplesub("modification_date", "creation_date::DATE", newstr);
-  strcpy(newstr, ns);
-
-  ns = mgi_simplesub("approval_date", "creation_date::DATE", newstr);
-  strcpy(newstr, ns);
-
-  ns = mgi_simplesub("completion_date", "creation_date::DATE", newstr);
-  strcpy(newstr, ns);
+  */
 
   printf("pg cmd: %s\n", ns);
 
@@ -413,9 +406,11 @@ char *mgi_getstr(PGconn *conn, int column)
   else if (strcmp(buf, "f") == 0)
     strcpy(buf, "0");
 
+    /*case TIMESTAMPOID:*/
+  /*
   switch (coltype)
   {
-    case TIMESTAMPOID:
+    case 1114:
       printf("mgi_getstr: %s\n", buf);
       printf("data type: %d\n", coltype);
       break;
@@ -423,6 +418,7 @@ char *mgi_getstr(PGconn *conn, int column)
     default:
       break;
   }
+  */
 
   return(buf);
 }
