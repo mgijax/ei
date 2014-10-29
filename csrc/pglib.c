@@ -407,7 +407,7 @@ char *mgi_getstr(PGconn *conn, int column)
     strcpy(buf, "0");
 
   /* 
-   * leave date/time stamps as-is */
+   * leave date/time stamps as-is
    */
   /*
   switch (coltype)

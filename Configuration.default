@@ -28,7 +28,7 @@ switch (`uname -n`)
 	setenv CVS_TAG	${CVS_TAG}-linux
 	setenv SYBASE /opt/sybase/15.7
 	setenv SYBASE_PATH ${SYBASE}/OCS-15_0/bin
-	setenv LD_LIBRARY_PATH ${SYBASE}/OCS-15_0/lib:${POSTGRES_HOME}/lib::${TeleUSE}/lib:${TeleUSE}/XRT/lib-shared:${TeleUSE}/conf/lib
+	setenv LD_LIBRARY_PATH ${SYBASE}/OCS-15_0/lib:${POSTGRES_HOME}/lib:${TeleUSE}/lib:${TeleUSE}/XRT/lib-shared:${TeleUSE}/conf/lib
 	setenv USERLOG	${HOME}/.ei-log
         breaksw
 
@@ -37,7 +37,7 @@ switch (`uname -n`)
 	setenv CVS_TAG	${CVS_TAG}-linux
 	setenv SYBASE /opt/sybase/15.7
 	setenv SYBASE_PATH ${SYBASE}/OCS-15_0/bin
-	setenv LD_LIBRARY_PATH ${SYBASE}/OCS-15_0/lib:${POSTGRES_HOME}/lib::${TeleUSE}/lib:${TeleUSE}/XRT/lib-shared:${TeleUSE}/conf/lib
+	setenv LD_LIBRARY_PATH ${SYBASE}/OCS-15_0/lib:${POSTGRES_HOME}/lib:${TeleUSE}/lib:${TeleUSE}/XRT/lib-shared:${TeleUSE}/conf/lib
 	setenv USERLOG	${HOME}/.eidev-log
         breaksw
 
@@ -120,7 +120,6 @@ cd ${EIBUILDDIR}
 
 #link to the proper dsrc/SQL.d file
 setenv EIDSQL SQL_syb.d
-#setenv EIDSQL SQL_pg.d
 cd ${EIBUILDDIR}/dsrc
 rm -rf SQL.d
 ln -s ${EIDSQL} SQL.d
