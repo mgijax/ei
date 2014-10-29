@@ -406,10 +406,13 @@ char *mgi_getstr(PGconn *conn, int column)
   else if (strcmp(buf, "f") == 0)
     strcpy(buf, "0");
 
-    /*case TIMESTAMPOID:*/
+  /* 
+   * leave date/time stamps as-is */
+   */
   /*
   switch (coltype)
   {
+    case TIMESTAMPOID:
     case 1114:
       printf("mgi_getstr: %s\n", buf);
       printf("data type: %d\n", coltype);
