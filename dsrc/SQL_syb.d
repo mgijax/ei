@@ -8,7 +8,7 @@
 --
 -- AddSQL, ModifySQL, DeleteSQL all call ExecSQL which actually executes
 -- the SQL commands.  ExecSQL then processes any error messages returned
--- from the Sybase error handler defined in syblib.c.
+-- from the Sybase error handler defined in dblib.c.
 --
 -- The Query events handle all dynamic searching w/in the EI.
 --
