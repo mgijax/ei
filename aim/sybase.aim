@@ -37,6 +37,7 @@ CALLS
 	 global_database				 : "char *";
 	 global_server  				 : "char *";
 	 global_radar  				 	 : "char *";
+	 global_dbtype                                   : "char *";
 
   ENDL
 ENDC
