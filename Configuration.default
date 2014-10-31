@@ -88,6 +88,7 @@ setenv EINLMDIR ${EIDATADIR}/nlm
 # TeleUSE/XRT stuff
 setenv TeleUSE /opt/teleuseXRT
 setenv XRTHOME $TeleUSE/XRT
+setenv PATH ${PATH}:${TeleUSE}/bin
 
 # check for existance of POSTGRES_HOME
 
@@ -123,20 +124,23 @@ setenv LOGEI	/logs/ei
 setenv EIINCLUDE syblib.h
 #setenv EIINCLUDE pglib.h
 cd ${EIBUILDDIR}/include
-cp -f ${EIINCLUDE} dblib.h
+rm -rf dblib.h
+cp -r ${EIINCLUDE} dblib.h
 cd ${EIBUILDDIR}
 
 #link to the proper dsrc/SQL.d file
 setenv EIDSQL SQL_syb.d
 #setenv EIDSQL SQL_pg.d
 cd ${EIBUILDDIR}/dsrc
-cp -f ${EIDSQL} SQL.d
+rm -rf SQL.d
+cp -r ${EIDSQL} SQL.d
 cd ${EIBUILDDIR}
 
 #link to the proper csrc/mgisql.c
 setenv EICSQL mgisql_syb.c
 #setenv EICSQL mgisql_pg.c
 cd ${EIBUILDDIR}/csrc
-cp -f ${EICSQL} mgisql.c
+rm -rf mgisql.c
+cp -r ${EICSQL} mgisql.c
 cd ${EIBUILDDIR}
 
