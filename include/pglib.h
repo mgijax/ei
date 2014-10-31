@@ -1,11 +1,8 @@
-#ifndef SYBLIB_H
-#define SYBLIB_H
+#ifndef PGLIB_H
+#define PGLIB_H
 
 #include <stdio.h>
-/* #include <ctpublic.h> */
-#include <sybfront.h>
-#include <sybdb.h>
-#include <syberror.h>
+#include <libpq-fe.h>
 #include <ux_uims.h>
 #include <Xm/Xm.h>
 #include <Xm/SelectioB.h>
@@ -14,31 +11,27 @@
 
 extern int mgi_dbinit(char *, char *);
 
-extern void mgi_dbexit();
-extern void mgi_dbcancel(DBPROCESS *);
-extern DBPROCESS *mgi_dbopen();
-extern void mgi_dbclose(DBPROCESS *);
-extern void mgi_dbexec_bydbproc(DBPROCESS *, char *);
-extern DBPROCESS *mgi_dbexec(char *);
-extern RETCODE mgi_dbresults(DBPROCESS *);
-extern STATUS mgi_dbnextrow(DBPROCESS *);
+extern void mgi_dbexit(PGconn *);
+extern void mgi_dbcancel(PGconn *);
+extern void mgi_dbclose(PGconn *);
+extern PGconn *mgi_dbexec(char *);
+extern int mgi_dbresults(PGconn *);
+extern int mgi_dbnextrow(PGconn *);
 
-extern char *mgi_getstr(DBPROCESS *, int);
-extern char *mgi_citation(DBPROCESS *, int);
-extern char *mgi_key(DBPROCESS *, int);
+extern char *mgi_getstr(PGconn *, int);
+extern char *mgi_citation(PGconn *, int);
+extern char *mgi_key(PGconn *, int);
 extern char *mgi_sql1(char *);
 extern char *mgi_sp(char *);
+extern char *mgi_lowersub(char *);
 
-extern int mgi_process_sql(Widget);
-extern int mgi_process_results(Widget);
-
-extern XtCallbackProc mgi_cancel_search(Widget);
 extern void mgi_execute_search(Widget, Widget, char *, int, char *);
 
-extern int mgi_err_handler(DBPROCESS *, int, int, int, char *, char *);
-extern int mgi_msg_handler(DBPROCESS *, DBINT, int, int, char *, char *, char *, DBUSMALLINT);
+extern PGconn *conn;
+extern PGresult *res;
+extern int maxRow;
+extern int currentRow;
 
-extern LOGINREC *loginrec;
 extern char *global_login;
 extern char *global_loginKey;
 extern char *global_passwd_file;
@@ -48,5 +41,8 @@ extern char *global_database;
 extern char *global_server;
 extern char *global_radar;
 extern char *global_dbtype;
+
+#define	NO_MORE_RESULTS	0
+#define	NO_MORE_ROWS	0
 
 #endif
