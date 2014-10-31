@@ -268,7 +268,7 @@ rules:
         SetPermissions does
 	   top := SetPermissions.source_widget;
 	   cmd : string;
-	   permOK : integer;
+	   permOK : integer := 1;
 
 	   cmd := exec_mgi_checkUserRole(mgi_DBprstr(top.name), mgi_DBprstr(global_login));
 		

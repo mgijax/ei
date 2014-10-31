@@ -8,11 +8,14 @@
 --
 -- AddSQL, ModifySQL, DeleteSQL all call ExecSQL which actually executes
 -- the SQL commands.  ExecSQL then processes any error messages returned
--- from the Sybase error handler defined in pglib.c.
+-- from the Sybase error handler defined in syblib.c.
 --
 -- The Query events handle all dynamic searching w/in the EI.
 --
 -- History
+--
+-- lec 10/09/2012
+--	- move StatusReport into SQL.d; make 'top' a local variable
 --
 -- lec 03/30/2006
 --	- APP_JobStream: dbsnpload is okay to run 
@@ -76,10 +79,11 @@
 dmodule SQL is
 
 #include <mgilib.h>
-#include <pglib.h>
+#include <dblib.h>
 #include <mgisql.h>
 
 locals:
+	top : widget;
 	queryList : widget;
 	newID : string;
 
@@ -95,14 +99,13 @@ rules:
 --
  
         AddSQL does
-	  top : widget;
 	  cmd : string;
 	  jobStream : string;
 	  item : string := AddSQL.item;
 
 	  -- If a Job Stream has not finished, then disallow Add
 
-	  jobStream := mgi_sp("exec " + global_radar + "..APP_EIcheck");
+	  jobStream := mgi_sp(exec_app_EIcheck(global_radar));
 	  if ((getenv("EIDEBUG") = "0") and (integer) jobStream > 0) then
 	    StatusReport.source_widget := top;
 	    StatusReport.message := "\nERROR:  Add functionality is unavailable.  A data load job is running.";
@@ -114,13 +117,17 @@ rules:
 	  if (AddSQL.list != nil) then
 	    top := AddSQL.list.top;
             AddSQL.list->List.sqlSuccessful := true;
+          else
+	    top := AddSQL.source_widget.root;
 	  end if;
 
+	  --
 	  -- Enclose insert statments within a transaction
 	  -- so that upon any errors the entire transaction is aborted.
 	  -- There may be some cases where enclosing statements within
 	  -- a transaction is not desired.  If this is the case, the
 	  -- calling event can set AddSQL.transaction = false
+	  --
 
 	  if (AddSQL.transaction) then
 	    cmd := "begin transaction\n" + AddSQL.cmd + "\ncommit transaction\n";
@@ -160,9 +167,14 @@ rules:
 	      item := "*[" + AddSQL.key.value + "]:  " + item;
 	    end if;
 
+	    if (AddSQL.useItemAsKey) then
+              InsertList.key := item;
+	    else
+              InsertList.key := AddSQL.key.value;
+	    end if;
+
             InsertList.list := AddSQL.list;
             InsertList.item := item;
-            InsertList.key := AddSQL.key.value;
             send(InsertList, 0);
 	    top->RecordCount->text.value := mgi_DBrecordCount(AddSQL.tableID);
             (void) XmListSelectPos(AddSQL.list->List, AddSQL.list->List.row, AddSQL.selectNewListItem);
@@ -178,10 +190,11 @@ rules:
 --
  
         DeleteSQL does
-	  top : widget := DeleteSQL.list.top;
 	  jobStream : string;
 
-	  jobStream := mgi_sp("exec " + global_radar + "..APP_EIcheck");
+	  top := DeleteSQL.list.top;
+
+	  jobStream := mgi_sp(exec_app_EIcheck(global_radar));
 	  if ((getenv("EIDEBUG") = "0") and (integer) jobStream > 0) then
 	    StatusReport.source_widget := top;
 	    StatusReport.message := "\nERROR:  Delete functionality is unavailable.  A data load job is running.";
@@ -190,9 +203,15 @@ rules:
 	    return;
  	  end if;
 
-	  ExecSQL.cmd := mgi_DBdelete(DeleteSQL.tableID, DeleteSQL.key);
-	  ExecSQL.list := DeleteSQL.list;
-	  send(ExecSQL, 0);
+	  if (DeleteSQL.key2 != nil) then
+	     ExecSQL.cmd := mgi_DBdelete2(DeleteSQL.tableID, DeleteSQL.key, DeleteSQL.key2);
+	     ExecSQL.list := DeleteSQL.list;
+	     send(ExecSQL, 0);
+          else
+	     ExecSQL.cmd := mgi_DBdelete(DeleteSQL.tableID, DeleteSQL.key);
+	     ExecSQL.list := DeleteSQL.list;
+	     send(ExecSQL, 0);
+          end if;
 
 	  -- If delete was successful, delete row from list and re-count records
 
@@ -214,8 +233,8 @@ rules:
 --
 
 	ExecSQL does
-	  error : integer;
-	  transtate : integer;
+	  error : integer := 0;
+	  transtate : integer := 0;
 
 	  if (ExecSQL.list != nil) then
 	    ExecSQL.list->List.sqlSuccessful := true;
@@ -225,40 +244,53 @@ rules:
             return;
           end if;
  
+	  --
 	  -- Execute cmd
+	  --
+	  -- if (global_useAPI then then
+	  --   do API execution
+	  -- else (below)
+	  --   do non-API execution
+	  --
+
+	  -- use the same DBPROCESS for all of these processes
 
 	  newID := "";
-	  dbproc : opaque;
-	  
-	  dbproc := mgi_dbexec(ExecSQL.cmd);
+	  dbproc : opaque := mgi_dbopen();
+
+	  mgi_dbexec_bydbproc(dbproc, ExecSQL.cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      newID := mgi_getstr(dbproc, 1);
 	    end while;
 	  end while;
-	  mgi_dbclose(dbproc);
 
 	  -- Process @@error w/in same DBPROCESS
 
-	  dbproc := mgi_dbexec(sql_sql_1);
+	  mgi_dbexec_bydbproc(dbproc, sql_error());
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      error := (integer) mgi_getstr(dbproc, 1);
 	    end while;
 	  end while;
-	  (void) mgi_dbclose(dbproc);
 	  (void) mgi_writeLog("\n@@error:  " + (string) error + "\n");
 
 	  -- Process @@transtate w/in same DBPROCESS
 
-	  dbproc := mgi_dbexec(sql_sql_2);
+	  mgi_dbexec_bydbproc(dbproc, sql_transtate());
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	        transtate := (integer) mgi_getstr(dbproc, 1);
 	    end while;
 	  end while;
-	  (void) mgi_dbclose(dbproc);
 	  (void) mgi_writeLog("@@transtate:  " + (string) transtate + "\n");
+
+	  -- we can remove the dbproc
+	  (void) mgi_dbclose(dbproc);
+
+	  --
+	  -- done with non-AP execution
+	  --
 
 	  -- Fatal Errors
 
@@ -279,11 +311,10 @@ rules:
 --
 
 	ModifySQL does
-	  top : widget;
 	  cmd : string;
 	  jobStream : string;
 
-	  jobStream := mgi_sp("exec " + global_radar + "..APP_EIcheck");
+	  jobStream := mgi_sp(exec_app_EIcheck(global_radar));
 	  if ((getenv("EIDEBUG") = "0") and (integer) jobStream > 0) then
 	    StatusReport.source_widget := top;
 	    StatusReport.message := "\nERROR:  Modify functionality is unavailable.  A data load job is running.";
@@ -339,47 +370,82 @@ rules:
 	end does;
 
 --
--- Query - copy of QUeryNoInterrupt
+-- Query
 --
---	Perform database query w/out allowing interuption
+--	Perform database query allowing interruption
+--	Initialize Report Dialog.select attribute
 --	Store results in QueryList
 --
 
-        Query does
-          list_w : widget;
-	  top : widget;
+	Query does
+	  dialog : widget := Query.source_widget->SearchDialog;
+	  rowcount : string;
 
-          if (Query.list_w = nil) then
-            list_w := Query.source_widget->QueryList;
-          else  
-            list_w := Query.list_w;
-          end if;
+	  if (Query.rowcount.length = 0) then
+	    rowcount := ROWLIMIT;
+	  else
+	    rowcount := Query.rowcount;
+	  end if;
 
-	  -- Clear List before performing new search
+	  dialog.messageString := "Search In Progress";
 
-          ClearList.source_widget := list_w;
-          send(ClearList, 0);
+	  if (rowcount > NOROWLIMIT) then
+	    dialog.messageString := dialog.messageString +
+		"\n\nOnly the first " + rowcount + " records will be returned.";
+	  end if;
 
 	  (void) mgi_writeLog(get_time() + "QUERY:" + Query.select + "\n");
 
-	  list_w.cmd := Query.select;
-	  LoadList.list := list_w;
-	  send(LoadList, 0);
+	  -- Set Report selection; Report generation will use the last query the User executed
 
-	  top := list_w.top;
+	  Query.source_widget->ReportDialog.select := Query.select;
+	  Query.source_widget->ReportDialog.printSelect := Query.printSelect;
+
+	  if (Query.list_w = nil) then
+	    queryList := Query.source_widget->QueryList;
+	  else
+	    queryList := Query.list_w;
+	  end if;
+
+	  -- Clear List before performing new search
+
+          ClearList.source_widget := queryList;
+          send(ClearList, 0);
+
+	  (void) reset_cursor(Query.source_widget);
+
+	  -- Use a Work Procedure to enable User to interrupt the Query 
+
+	  (void) mgi_execute_search(dialog, queryList, Query.select, Query.table, rowcount);
+
+	  -- Anything to be done after the search has completed must be done in
+	  -- QueryEnd, since the main X event handler will get control back as
+	  -- soon as the SQL command is sent to the DB Server.
+	end does;
+
+--
+-- QueryEnd
+--
+-- Called from mgi_cancel_search once interruptable search is completed
+-- Select first value in list if at least one item in list
+--
+
+	QueryEnd does
+	  top := queryList.top;
+
 	  if (top.is_defined("allowSelect") != nil) then
 	    top.allowSelect := true;
 	  end if;
 
-	  if (list_w->List.itemCount > 0) then
-            list_w->List.row := 1;
+          if (queryList->List.itemCount > 0) then
+            queryList->List.row := 1;
+            (void) XmListSelectPos(queryList->List, queryList->List.row, true);
+            queryList->Label.labelString := (string) queryList->List.itemCount + " " + 
+					    queryList->Label.defaultLabel;
+          end if;
 
-	    --if (Query.selectItem) then
-            (void) XmListSelectPos(list_w->List, list_w->List.row, true);
-	    --end if;
-	  end if;
-        end does;
- 
+	end does;
+
 --
 -- QueryNoInterrupt
 --
@@ -389,7 +455,6 @@ rules:
 
         QueryNoInterrupt does
           list_w : widget;
-	  top : widget;
 
           if (QueryNoInterrupt.list_w = nil) then
             list_w := QueryNoInterrupt.source_widget->QueryList;
@@ -422,4 +487,57 @@ rules:
 	  end if;
         end does;
  
+--
+-- StatusReport
+--
+-- Display Status Report to user
+--
+
+        StatusReport does
+	  status : widget;
+
+	  if (StatusReport.source_widget != nil) then
+	    status := StatusReport.source_widget;
+	  else
+	    status := top;
+	  end if;
+
+	  -- Do not overwrite Status Dialog if already managed
+
+          if (status->StatusDialog = nil) then
+	    --(void) mgi_writeLog(get_time() + "ERROR: Could not get StatusDialog\n");
+	    return;
+	  end if;
+
+          if (not status->StatusDialog.managed) then
+            status->StatusDialog.messageString := StatusReport.message;
+            status->StatusDialog.managed := true;
+	    XmUpdateDisplay(status->StatusDialog);
+	  elsif (StatusReport.appendMessage = true) then
+            status->StatusDialog.managed := false;
+            status->StatusDialog.messageString := 
+	    	status->StatusDialog.messageString + "\n\n" + StatusReport.message;
+            status->StatusDialog.managed := true;
+	  end if;
+
+          status->StatusDialog.top.front;
+        end does;
+
+--
+-- StatusReportOK
+--
+-- Special callback for upper level Status Report dialog
+-- After unmanaging dialog, place Menu shell in back of stacking order
+--
+
+        StatusReportOK does
+--	  if (StatusReportOK.source_widget = top->StatusDialog and
+--	      top.name != "Login") then
+--	    top.back;
+--	  end if;
+
+	  StatusReportOK.source_widget.managed := false;
+          StatusReportOK.source_widget.messageString := "";
+	end does;
+
 end dmodule;

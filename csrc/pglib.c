@@ -74,6 +74,7 @@ char *global_reportdir;         /* Set in mgi_dbinit; holds user report director
 char *global_database;          /* Set in Application dModule; holds database value */
 char *global_server;            /* Set in Application dModule; holds server value */
 char *global_radar;             /* Set in Application dModule; holds radar db value */
+char *global_dbtype = "postgres";
 
 static char conninfo[TEXTBUFSIZ];
 
@@ -507,8 +508,8 @@ char *mgi_key(PGconn *conn, int table)
 char *mgi_sp(char *cmd)
 {
   /* to turn off, just return a null */
-  return("0");
-  /*return(mgi_sql1(cmd));*/
+  /*return("0");*/
+  return(mgi_sql1(cmd));
 }
 
 /* 

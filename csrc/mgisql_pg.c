@@ -46,7 +46,9 @@ char *exec_app_EIcheck(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
+  /*
   sprintf(buf,"exec %s..APP_EIcheck", key);
+  */
   return(buf);
 }
 
@@ -113,7 +115,7 @@ char *exec_mgi_checkUserRole(char *module, char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec MGI_checkUserRole %s, %s\n", module, key);
+  sprintf(buf,"select * from MGI_checkUserRole (%s, %s)\n", module, key);
   return(buf);
 }
 
@@ -145,7 +147,9 @@ char *exec_mgi_resetSequenceNum(char *key, char *table)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
+  /*
   sprintf(buf,"exec MGI_resetSequenceNum %s, %s\n", table, key);
+  */
   return(buf);
 }
 

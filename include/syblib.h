@@ -47,5 +47,6 @@ extern char *global_reportdir;
 extern char *global_database;
 extern char *global_server;
 extern char *global_radar;
+extern char *global_dbtype;
 
 #endif

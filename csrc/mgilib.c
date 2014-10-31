@@ -148,6 +148,7 @@
 char *global_application;     /* Set in Application dModule; holds main application value */
 char *global_version;         /* Set in Application dModule; holds main application version value */
 char *global_loginKey;        /* Set in Application dModule; holds login key value */
+char *global_dbtype;
 
 /*
    Compose a string SQL value for a given value.
@@ -440,14 +441,23 @@ char *mgi_setDBkey(int table, int key, char *keyName)
 
   memset(cmd, '\0', sizeof(cmd));
 
-  if (key == NEWKEY)
+  if (global_dbtype == "sybase" && key == NEWKEY)
   {
     sprintf(cmd, "declare @%s int\nselect @%s = max(%s) + 1 from %s\nif @%s is NULL or @%s = 0\nbegin\nselect @%s = %d\nend\n",
 		keyName, keyName, mgi_DBkey(table), mgi_DBtable(table), keyName, keyName, keyName, startKey);
   }
-  else
+  else if (global_dbtype == "postgres" && key == NEWKEY)
+  {
+    sprintf(cmd, "declare %s int\nselect %s = max(%s) + 1 from %s\nif %s is NULL or %s = 0\nbegin\nselect %s = %d\nend\n",
+		keyName, keyName, mgi_DBkey(table), mgi_DBtable(table), keyName, keyName, keyName, startKey);
+  }
+  else if (global_dbtype == "sybase")
   {
     sprintf(cmd, "declare @%s int\nselect @%s = %d\n", keyName, keyName, key);
+  }
+  else
+  {
+    sprintf(cmd, "declare %s int\nselect %s = %d\n", keyName, keyName, key);
   }
 
   return(cmd);
@@ -476,7 +486,16 @@ char *mgi_DBincKey(char *keyName)
   static char cmd[TEXTBUFSIZ];
 
   memset(cmd, '\0', sizeof(cmd));
-  sprintf(cmd, "select @%s = @%s + 1\n", keyName, keyName);
+
+  if (global_dbtype == "sybase")
+  {
+  	sprintf(cmd, "select @%s = @%s + 1\n", keyName, keyName);
+  }
+  else
+  {
+  	sprintf(cmd, "select %s = %s + 1\n", keyName, keyName);
+  }
+
   return(cmd);
 }
 
@@ -2391,8 +2410,19 @@ char *mgi_DBupdate(int table, char *key, char *str)
 {
   static char buf[TEXTBUFSIZ];
   char **tokens;
+  char sql_getdate[25];
 
   memset(buf, '\0', sizeof(buf));
+  memset(sql_getdate, '\0', sizeof(sql_getdate));
+
+  if (global_dbtype == "sybase")
+  {
+  	sprintf(sql_getdate,"getdate()");
+  }
+  else
+  {
+  	sprintf(sql_getdate,"current_date");
+  }
 
   /* Get rid of any trailing ',' */
 
@@ -2405,12 +2435,12 @@ char *mgi_DBupdate(int table, char *key, char *str)
     {
       case MGI_COLUMNS:
 	      tokens = (char **) mgi_splitfields(key, ":");
-              sprintf(buf, "update %s set %s, modification_date = getdate() where table_name = '%s' and column_name = '%s'\n", 
-		mgi_DBtable(table), str, tokens[0], tokens[1]);
+              sprintf(buf, "update %s set %s, modification_date = %s where table_name = '%s' and column_name = '%s'\n", 
+		mgi_DBtable(table), str, sql_getdate, tokens[0], tokens[1]);
 	      break;
       case MGI_TABLES:
-              sprintf(buf, "update %s set %s, modification_date = getdate() where %s = '%s'\n", 
-		mgi_DBtable(table), str, mgi_DBkey(table), key);
+              sprintf(buf, "update %s set %s, modification_date = %s where %s = '%s'\n", 
+		mgi_DBtable(table), str, sql_getdate, mgi_DBkey(table), key);
 	      break;
       case ALL_ALLELE:
       case ALL_ALLELE_CELLLINE:
@@ -2462,16 +2492,16 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case VOC_EVIDENCE:
       case VOC_EVIDENCE_PROPERTY:
       case VOC_TERM:
-              sprintf(buf, "update %s set %s, _ModifiedBy_key = %s, modification_date = getdate() where %s = %s\n", 
-		  mgi_DBtable(table), str, global_loginKey, mgi_DBkey(table), key);
+              sprintf(buf, "update %s set %s, _ModifiedBy_key = %s, modification_date = %s  where %s = %s\n", 
+		  mgi_DBtable(table), str, global_loginKey, sql_getdate, mgi_DBkey(table), key);
 	      break;
       case MGI_TRANSLATIONSEQNUM:
-              sprintf(buf, "update %s set %s, modification_date = getdate() where %s = %s\n", 
-		  mgi_DBtable(table), str, mgi_DBkey(table), key);
+              sprintf(buf, "update %s set %s, modification_date = %s where %s = %s\n", 
+		  mgi_DBtable(table), str, sql_getdate, mgi_DBkey(table), key);
 	      break;
       default:
-              sprintf(buf, "update %s set %s, modification_date = getdate() where %s = %s\n", 
-		  mgi_DBtable(table), str, mgi_DBkey(table), key);
+              sprintf(buf, "update %s set %s, modification_date = %s where %s = %s\n", 
+		  mgi_DBtable(table), str, sql_getdate, mgi_DBkey(table), key);
 	      break;
     }
   }
@@ -2526,12 +2556,12 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case VOC_EVIDENCE:
       case VOC_EVIDENCE_PROPERTY:
       case VOC_TERM:
-              sprintf(buf, "update %s set _ModifiedBy_key = %s, modification_date = getdate() where %s = %s\n", 
-		  mgi_DBtable(table), global_loginKey, mgi_DBkey(table), key);
+              sprintf(buf, "update %s set _ModifiedBy_key = %s, modification_date = %s where %s = %s\n", 
+		  mgi_DBtable(table), global_loginKey, sql_getdate, mgi_DBkey(table), key);
 	      break;
       default:
-              sprintf(buf, "update %s set modification_date = getdate() where %s = %s\n", 
-		  mgi_DBtable(table), mgi_DBkey(table), key);
+              sprintf(buf, "update %s set modification_date = %s where %s = %s\n", 
+		  mgi_DBtable(table), sql_getdate, mgi_DBkey(table), key);
 	      break;
     }
   }
