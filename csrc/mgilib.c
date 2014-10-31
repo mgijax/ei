@@ -441,23 +441,14 @@ char *mgi_setDBkey(int table, int key, char *keyName)
 
   memset(cmd, '\0', sizeof(cmd));
 
-  if (global_dbtype == "sybase" && key == NEWKEY)
+  if (key == NEWKEY)
   {
     sprintf(cmd, "declare @%s int\nselect @%s = max(%s) + 1 from %s\nif @%s is NULL or @%s = 0\nbegin\nselect @%s = %d\nend\n",
 		keyName, keyName, mgi_DBkey(table), mgi_DBtable(table), keyName, keyName, keyName, startKey);
   }
-  else if (global_dbtype == "postgres" && key == NEWKEY)
-  {
-    sprintf(cmd, "declare %s int\nselect %s = max(%s) + 1 from %s\nif %s is NULL or %s = 0\nbegin\nselect %s = %d\nend\n",
-		keyName, keyName, mgi_DBkey(table), mgi_DBtable(table), keyName, keyName, keyName, startKey);
-  }
-  else if (global_dbtype == "sybase")
-  {
-    sprintf(cmd, "declare @%s int\nselect @%s = %d\n", keyName, keyName, key);
-  }
   else
   {
-    sprintf(cmd, "declare %s int\nselect %s = %d\n", keyName, keyName, key);
+    sprintf(cmd, "declare @%s int\nselect @%s = %d\n", keyName, keyName, key);
   }
 
   return(cmd);
@@ -486,16 +477,7 @@ char *mgi_DBincKey(char *keyName)
   static char cmd[TEXTBUFSIZ];
 
   memset(cmd, '\0', sizeof(cmd));
-
-  if (global_dbtype == "sybase")
-  {
-  	sprintf(cmd, "select @%s = @%s + 1\n", keyName, keyName);
-  }
-  else
-  {
-  	sprintf(cmd, "select %s = %s + 1\n", keyName, keyName);
-  }
-
+  sprintf(cmd, "select @%s = @%s + 1\n", keyName, keyName);
   return(cmd);
 }
 
@@ -2415,14 +2397,7 @@ char *mgi_DBupdate(int table, char *key, char *str)
   memset(buf, '\0', sizeof(buf));
   memset(sql_getdate, '\0', sizeof(sql_getdate));
 
-  if (global_dbtype == "sybase")
-  {
-  	sprintf(sql_getdate,"getdate()");
-  }
-  else
-  {
-  	sprintf(sql_getdate,"current_date");
-  }
+  sprintf(sql_getdate,"getdate()");
 
   /* Get rid of any trailing ',' */
 
