@@ -440,12 +440,12 @@ rules:
 
 	      -- Process Structures
 
-	      --ModifyStructure.source_widget := table;
-	      --ModifyStructure.primaryID := structureID;
-	      --ModifyStructure.key := "@" + KEYNAME;
-	      --ModifyStructure.row := row;
-	      --send(ModifyStructure, 0);
-	      --cmd := cmd + top->ADClipboard.updateCmd;
+	      ModifyStructure.source_widget := table;
+	      ModifyStructure.primaryID := structureID;
+	      ModifyStructure.key := "@" + KEYNAME;
+	      ModifyStructure.row := row;
+	      send(ModifyStructure, 0);
+	      cmd := cmd + top->ADClipboard.updateCmd;
 
             elsif (editMode = TBL_ROW_MODIFY) then
 
@@ -471,12 +471,12 @@ rules:
 
 	        -- Process Structures
 
-	        --ModifyStructure.source_widget := table;
-	        --ModifyStructure.primaryID := structureID;
-	        --ModifyStructure.key := key;
-	        --ModifyStructure.row := row;
-	        --send(ModifyStructure, 0);
-	        --cmd := cmd + top->ADClipboard.updateCmd;
+	        ModifyStructure.source_widget := table;
+	        ModifyStructure.primaryID := structureID;
+	        ModifyStructure.key := key;
+	        ModifyStructure.row := row;
+	        send(ModifyStructure, 0);
+	        cmd := cmd + top->ADClipboard.updateCmd;
 	      end if;
 
             elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
