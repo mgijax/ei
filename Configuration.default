@@ -29,7 +29,9 @@ switch (`uname -n`)
 	setenv SYBASE /opt/sybase/15.7
 	setenv SYBASE_PATH ${SYBASE}/OCS-15_0/bin
 	setenv LD_LIBRARY_PATH ${SYBASE}/OCS-15_0/lib:${TeleUSE}/lib:${TeleUSE}/XRT/lib-shared:${TeleUSE}/conf/lib
+
 	setenv USERLOG	${HOME}/.ei-log
+	setenv EIDEBUG	0
         breaksw
 
     case bheidev01:
@@ -39,6 +41,7 @@ switch (`uname -n`)
 	setenv SYBASE_PATH ${SYBASE}/OCS-15_0/bin
 	setenv LD_LIBRARY_PATH ${SYBASE}/OCS-15_0/lib:${TeleUSE}/lib:${TeleUSE}/XRT/lib-shared:${TeleUSE}/conf/lib
 	setenv USERLOG	${HOME}/.eidev-log
+	setenv EIDEBUG	1
         breaksw
 
     case rohan:
@@ -47,6 +50,7 @@ switch (`uname -n`)
 	setenv SYBASE_PATH ${SYBASE}/OCS-12_5/bin
 	setenv LD_LIBRARY_PATH /opt/sybase/12.5/ASE-12_5/lib:/opt/sybase/12.5/OCS-12_5/lib:/usr/lib:/usr/local/lib:/usr/ucblib:/usr/openwin/lib:/usr/local/postgres/lib:/opt/teleuseXRT/lib:/opt/teleuseXRT/conf/lib
 	setenv USERLOG	${HOME}/.eidev-log
+	setenv EIDEBUG	1
 	breaksw
 
     case lindon:
@@ -55,6 +59,7 @@ switch (`uname -n`)
 	setenv SYBASE_PATH ${SYBASE}/OCS-12_5/bin
 	setenv LD_LIBRARY_PATH /opt/sybase/12.5/ASE-12_5/lib:/opt/sybase/12.5/OCS-12_5/lib:/usr/lib:/usr/local/lib:/usr/ucblib:/usr/openwin/lib:/usr/local/postgres/lib:/opt/teleuseXRT/lib:/opt/teleuseXRT/conf/lib
 	setenv USERLOG	${HOME}/.ei-log
+	setenv EIDEBUG	0
 	breaksw
 
 endsw
@@ -67,9 +72,6 @@ setenv EIUTILS  ${MGI_DBUTILS}/bin/ei
 
 # data directory
 setenv EIDATADIR /data/ei
-
-# Debug mode
-setenv EIDEBUG	0
 
 # User password file
 setenv EIPASSWORDFILE  ${HOME}/.mgd_password
@@ -121,15 +123,20 @@ setenv LOGEI	/logs/ei
 setenv EIINCLUDE syblib.h
 #setenv EIINCLUDE pglib.h
 cd ${EIBUILDDIR}/include
-rm -rf dblib.h
-ln -s ${EIINCLUDE} dblib.h
+cp -f ${EIINCLUDE} dblib.h
 cd ${EIBUILDDIR}
 
 #link to the proper dsrc/SQL.d file
 setenv EIDSQL SQL_syb.d
 #setenv EIDSQL SQL_pg.d
 cd ${EIBUILDDIR}/dsrc
-rm -rf SQL.d
-ln -s ${EIDSQL} SQL.d
+cp -f ${EIDSQL} SQL.d
+cd ${EIBUILDDIR}
+
+#link to the proper csrc/mgisql.c
+setenv EICSQL mgisql_syb.c
+#setenv EICSQL mgisql_pg.c
+cd ${EIBUILDDIR}/csrc
+cp -f ${EICSQL} mgisql.c
 cd ${EIBUILDDIR}
 

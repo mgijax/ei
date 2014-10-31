@@ -44,7 +44,7 @@
  */
 
 #include <mgilib.h>
-#include <syblib.h>
+#include <dblib.h>
 
 LOGINREC *loginrec = NULL;	/* Global struct needed to grab a DBPROCESS from the server */
 

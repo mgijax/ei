@@ -46,7 +46,7 @@
 */
 
 #include <mgilib.h>
-#include <pglib.h>
+#include <dblib.h>
 #include <utilities.h>
 
 /*
