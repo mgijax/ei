@@ -13,16 +13,17 @@ source ./Configuration
 setenv LOG $0.log
 rm -f $LOG
 
+# run configuration to set proper sybase/postgres symlinks
+${EIBUILDDIR}/install_config
+
+cd ${EIBUILDDIR}
+
 foreach app ($EIAPPS)
 
 echo "INSTALLING $app"
 setenv EIAPP $app
 
 date > ${LOG}
-
-#
-# uxb.conf is assumed...
-#
 
 cd ${EIAPP}
 uxb uxb_linux.conf clean >>& ${LOG}
