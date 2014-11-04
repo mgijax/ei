@@ -22,6 +22,14 @@ unsetenv XKEYSYMDB
 setenv CVS_TAG  ei-5-2-0-6
 setenv TeleUSE /opt/teleuseXRT
 
+# symlinks for sybase/postgres
+setenv EIINCLUDE syblib.h
+setenv EIDSQL SQL_syb.d
+setenv EICSQL mgisql_syb.c
+#setenv EIINCLUDE pglib.h
+#setenv EIDSQL SQL_pg.d
+#setenv EICSQL mgisql_pg.c
+
 switch (`uname -n`)
     case bhmgiei01:
         setenv EISSHSERVER   "lindon.informatics.jax.org"
