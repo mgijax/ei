@@ -26,9 +26,11 @@ setenv TeleUSE /opt/teleuseXRT
 setenv EIINCLUDE syblib.h
 setenv EIDSQL SQL_syb.d
 setenv EICSQL mgisql_syb.c
+setenv EICLIB mgilib_syb.c
 #setenv EIINCLUDE pglib.h
 #setenv EIDSQL SQL_pg.d
 #setenv EICSQL mgisql_pg.c
+#setenv EICLIB mgilib_pg.c
 
 switch (`uname -n`)
     case bhmgiei01:
