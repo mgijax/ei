@@ -1,7 +1,7 @@
 #!/bin/csh -f
 
 #
-# Create sym-links for proper sybase/postgres files
+# Create sym-links for proper sybase/postgres versions
 #
 
 # link to the proper include file
@@ -27,3 +27,4 @@ cd ${EIBUILDDIR}/csrc
 rm -rf mgisql.c
 ln -s ${EICSQL} mgisql.c
 cd ${EIBUILDDIR}
+
