@@ -123,7 +123,7 @@ rules:
 	  -- calling event can set AddSQL.transaction = false
 
 	  if (AddSQL.transaction) then
-	    cmd := "begin transaction\n" + AddSQL.cmd + "\ncommit transaction\n";
+	    cmd := "begin transaction;\n" + AddSQL.cmd + "\ncommit transaction;\n";
 	  else
 	    cmd := AddSQL.cmd;
 	  end if;
@@ -240,34 +240,35 @@ rules:
 
 	  -- Process @@error w/in same DBPROCESS
 
-	  dbproc := mgi_dbexec(sql_sql_1);
-          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      error := (integer) mgi_getstr(dbproc, 1);
-	    end while;
-	  end while;
-	  (void) mgi_dbclose(dbproc);
-	  (void) mgi_writeLog("\n@@error:  " + (string) error + "\n");
+	  --dbproc := mgi_dbexec(sql_sql_1);
+          --while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            --while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      --error := (integer) mgi_getstr(dbproc, 1);
+	    --end while;
+	  --end while;
+	  --(void) mgi_dbclose(dbproc);
+	  --(void) mgi_writeLog("\n@@error:  " + (string) error + "\n");
 
 	  -- Process @@transtate w/in same DBPROCESS
 
-	  dbproc := mgi_dbexec(sql_sql_2);
-          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	        transtate := (integer) mgi_getstr(dbproc, 1);
-	    end while;
-	  end while;
-	  (void) mgi_dbclose(dbproc);
-	  (void) mgi_writeLog("@@transtate:  " + (string) transtate + "\n");
+	  --dbproc := mgi_dbexec(sql_sql_2);
+          --while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            --while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	        --transtate := (integer) mgi_getstr(dbproc, 1);
+	    --end while;
+	  --end while;
+	  --(void) mgi_dbclose(dbproc);
+	  --(void) mgi_writeLog("@@transtate:  " + (string) transtate + "\n");
 
 	  -- Fatal Errors
 
-	  if ((error > 0 and error < 20000) or error > 90000 or transtate > 1) then
-	    newID := "";
-	    if (ExecSQL.list != nil) then
-	      ExecSQL.list->List.sqlSuccessful := false;
-	    end if;
-	  end if;
+	  --if ((error > 0 and error < 20000) or error > 90000 or transtate > 1) then
+	   -- newID := "";
+	    --if (ExecSQL.list != nil) then
+	     -- ExecSQL.list->List.sqlSuccessful := false;
+	    --end if;
+	  --end if;
+
 	end does;
 
 --
@@ -317,7 +318,7 @@ rules:
 	  -- calling event can set ModifySQL.transaction = false
 
 	  if (ModifySQL.transaction) then
-	    cmd := "begin transaction\n" + ModifySQL.cmd + "\ncommit transaction\n";
+	    cmd := "begin transaction;\n" + ModifySQL.cmd + "\ncommit transaction;\n";
 	  else
 	    cmd := ModifySQL.cmd;
 	  end if;

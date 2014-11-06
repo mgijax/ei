@@ -18,7 +18,8 @@ ${EIBUILDDIR}/install_config
 
 cd ${EIBUILDDIR}
 
-foreach app ($EIAPPS)
+#foreach app ($EIAPPS)
+foreach app ("mgd")
 
 echo "INSTALLING $app"
 setenv EIAPP $app

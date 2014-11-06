@@ -44,5 +44,8 @@ extern char *global_dbtype;
 
 #define	NO_MORE_RESULTS	0
 #define	NO_MORE_ROWS	0
+#define	END_VALUE	");\n"
+#define	MAX_KEY1	"(select * from "
+#define	MAX_KEY2	"Max)"
 
 #endif

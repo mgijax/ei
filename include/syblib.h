@@ -49,4 +49,8 @@ extern char *global_server;
 extern char *global_radar;
 extern char *global_dbtype;
 
+#define END_VALUE       ")\n"
+#define MAX_KEY1        "@"
+#define MAX_KEY2        ""
+
 #endif

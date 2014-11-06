@@ -16,7 +16,10 @@ rm -f $LOG
 # run configuration to set proper sybase/postgres symlinks
 ${EIBUILDDIR}/install_config
 
-foreach app ($EIAPPS)
+cd ${EIBUILDDIR}
+
+#foreach app ($EIAPPS)
+foreach app ("mgd")
 
 echo "INSTALLING $app"
 setenv EIAPP $app
