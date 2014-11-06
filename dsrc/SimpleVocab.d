@@ -181,14 +181,14 @@ rules:
 
           -- If adding, then @KEYNAME must be used in all Modify events
  
-          currentRecordKey := MAX_KEY1 + KEYNAME + MAX_KEY2;
+          currentRecordKey := "@" + KEYNAME;
  
           cmd := mgi_setDBkey(VOC_VOCAB, NEWKEY, KEYNAME) +
                  mgi_DBinsert(VOC_VOCAB, KEYNAME) +
 		 top->mgiCitation->ObjectID->text.value + "," +
 		 top->ACCLogicalMenu.menuHistory.defaultValue + ",1," +
 		 top->ACCPrivateMenu.menuHistory.defaultValue + "," +
-		 mgi_DBprstr(top->Name->text.value) + END_VALUE;
+		 mgi_DBprstr(top->Name->text.value) + ")\n";
 
 	  send(ModifyTerm, 0);
 
@@ -360,11 +360,11 @@ rules:
 			mgi_DBprstr(abbrev) + "," +
 			newSeqNum + "," +
 			isObsolete + "," +
-			global_loginKey + "," + global_loginKey + END_VALUE;
+			global_loginKey + "," + global_loginKey + ")\n";
 
 	      ModifyNotes.source_widget := termTable;
 	      ModifyNotes.tableID := VOC_TEXT;
-	      ModifyNotes.key := MAX_KEY1 + keyName + MAX_KEY2;
+	      ModifyNotes.key := "@" + keyName;
 	      ModifyNotes.row := row;
 	      ModifyNotes.column := termTable.definition;
 	      ModifyNotes.keyDeclared := definitionModified;
@@ -374,7 +374,7 @@ rules:
 		definitionModified := true;
 	      end if;
 
-              mgi_tblSetCell(termTable, row, termTable.termKey, MAX_KEY1 + keyName + MAX_KEY2);
+              mgi_tblSetCell(termTable, row, termTable.termKey, "@" + keyName);
 
 	      termModified := true;
 
@@ -473,7 +473,7 @@ rules:
 			synTypeKey + "," +
 			"NULL," +
 			mgi_DBprstr(synonym) + "," +
-			global_loginKey + "," + global_loginKey + END_VALUE;
+			global_loginKey + "," + global_loginKey + ")\n";
 
             elsif (editMode = TBL_ROW_MODIFY) then
  
