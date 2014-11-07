@@ -2661,6 +2661,7 @@ rules:
               (void) mgi_tblSetCell(table, row, table.assayKey, mgi_getstr(dbproc, 5));
               (void) mgi_tblSetCell(table, row, table.assay, mgi_getstr(dbproc, 7)); 
               (void) mgi_tblSetCell(table, row, table.description, mgi_getstr(dbproc, 8)); 
+              (void) mgi_tblSetCell(table, row, table.markerID, mgi_getstr(dbproc, 10)); 
 	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 
               if (mgi_getstr(dbproc, 9) = "0") then

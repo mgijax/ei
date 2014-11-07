@@ -343,8 +343,8 @@ char *genotype_search2(char *key)
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"(select distinct v._Genotype_key, \
    \ng.strain + ',' + a1.symbol + ',' + a2.symbol as strain \
-   \nfrom GXD_Expression v, GXD_Genotype_View g, GXD_AllelePair ap, \
-   \n	ALL_Allele a1 LEFT OUTER JOIN ALL_Allele a2 on (ap._Allele_key_2 = a2._Allele_key) \
+   \nfrom GXD_Expression v, GXD_Genotype_View g, ALL_Allele a1, \
+   \n	GXD_AllelePair ap LEFT OUTER JOIN ALL_Allele a2 on (ap._Allele_key_2 = a2._Allele_key) \
    \nwhere v._Refs_key = %s \
    \nand v._Genotype_key = g._Genotype_key \
    \nand g._Genotype_key = ap._Genotype_key \
@@ -352,8 +352,8 @@ char *genotype_search2(char *key)
    \nunion \
    \nselect distinct t._Object_key, \
    \ng.strain + ',' + a1.symbol + ',' + a2.symbol as strain \
-   \nfrom VOC_Evidence v, VOC_Annot_View t, GXD_Genotype_View g, GXD_AllelePair ap \
-   \n	ALL_Allele a1 LEFT OUTER JOIN ALL_Allele a2 on (ap._Allele_key_2 = a2._Allele_key) \
+   \nfrom VOC_Evidence v, VOC_Annot_View t, GXD_Genotype_View g, ALL_Allele a1, \
+   \n	GXD_AllelePair ap LEFT OUTER JOIN ALL_Allele a2 on (ap._Allele_key_2 = a2._Allele_key) \
    \nwhere v._Refs_key = %s \
    \nand v._Annot_key = t._Annot_key \
    \nand t._MGIType_key = 12 \
@@ -830,7 +830,7 @@ char *mldp_marker(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select sequenceNum, _Marker_key, symbol, _Allele_key, \
-   \n_Assay_Type_key, allele, assay, description, matrixData \
+   \n_Assay_Type_key, allele, assay, description, matrixData, accID \
    \nfrom MLD_Expt_Marker_View where _Expt_key = %s \
    \norder by sequenceNum", key);
   return(buf);

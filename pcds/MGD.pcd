@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Tue Oct 21 13:12:34 2014";
+      lastWritten = "Fri Nov  7 09:13:11 2014";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -13248,7 +13248,7 @@ Shift<Key>Tab: prev-tab-group()
                     {
                       EditForm = EditForm;
                       Group: Widget
-                        width = 700;
+                        width = 850;
                         rubberPositioning = False;
                         resizePolicy = resize_any;
                         height = 1000;
@@ -13259,6 +13259,7 @@ Shift<Key>Tab: prev-tab-group()
                             ExptDetailForm = ExptDetailForm : MGD;
                             Group: Widget
                               height = 1000;
+                              width = 850;
                             Group: Constraint
                               leftAttachment = attach_none;
                               rightAttachment = attach_none;
@@ -13282,6 +13283,21 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   Marker = OrderedTable : mgiTable;
+                                      {
+                                        Table = mgiTable;
+                                        Group: Widget
+                                          userDefinedAttributes = "markerID:Int(Int)=\"8\"\n";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 7 3)(all 8 25)(all 9 25)(all 10 15)(all 11-12 20)(all 13 7)";
+                                          xrtTblColumnLabels = "Mode,Current Order,Marker key,Current Marker key,Chr,Allele key,Assay key,#,Marker ID,Marker,Allele,Assay Type,Description,Matrix?";
+                                          xrtTblMaxLengthSeries = "(all 9 40)(all 10 20)(all 11 80)(all 12 255)";
+                                          xrtTblNumColumns = 14;
+                                        Group: User
+                                          markerSymbol = 9;
+                                          alleleSymbol = 10;
+                                          assay = 11;
+                                          description = 12;
+                                          yesno = 13;
+                                      }
                                 }
                                 {
                                   ExptTextForm = ExptTextForm;
@@ -13642,7 +13658,7 @@ Shift<Key>Tab: prev-tab-group()
                                         List = list;
                                         Group: User
                                           targetWidget = Marker;
-                                          targetText = 10;
+                                          targetText = 11;
                                           targetKey = 6;
                                       }
                                 }

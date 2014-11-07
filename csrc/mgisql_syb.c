@@ -1111,6 +1111,22 @@ char *verify_marker(char *key, char *symbol)
   return(buf);
 }
 
+char *verify_markerid(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select m._Marker_key, m._Marker_Status_key, m.symbol, m.chromosome, \
+   \nm.cytogeneticOffset, substring(m.name,1,25), a.accID \
+   \nfrom MRK_Marker m, ACC_Accession a \
+   \nwhere m._Marker_key = a._Object_key \
+   \nand a._MGIType_key = 2 \
+   \nand a._LogicalDB_key = 1 \
+   \nand a.preferred = 1 \
+   \nand a.prefixPart = 'MGI:' \
+   \nand a.numericPart = %s", key);
+  return(buf);
+}
+
 char *verify_marker_union(char *key)
 {
   static char buf[TEXTBUFSIZ];

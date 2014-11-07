@@ -133,6 +133,7 @@ CALLS
 	 verify_genotype("char *")				: "char *";
 	 verify_imagepane("char *")				: "char *";
 	 verify_marker("char *", "char *")			: "char *";
+	 verify_markerid("char *")				: "char *";
 	 verify_marker_union("char *")				: "char *";
 	 verify_marker_current("char *")			: "char *";
 	 verify_marker_which("char *")				: "char *";
