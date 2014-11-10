@@ -47,10 +47,11 @@ extern char *global_reportdir;
 extern char *global_database;
 extern char *global_server;
 extern char *global_radar;
-extern char *global_dbtype;
 
 #define END_VALUE       ")\n"
 #define MAX_KEY1        "@"
 #define MAX_KEY2        ""
+#define USE_LOWER1      "lower("
+#define USE_LOWER2      ")" 
 
 #endif
