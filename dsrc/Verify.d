@@ -1758,8 +1758,12 @@ rules:
 	  reason : integer;
 	  markerKey : integer;
 	  markerSymbol : integer;
-	  markerMGIAccID : string;
+	  markerID : integer := -1;
 	  accessionWidget : widget := nil;
+	  isColumnOK : boolean := false;
+
+          tempAccID : string := "";
+	  accID : string := "";
 
 	  isTable := mgi_tblIsTable(sourceWidget);
 
@@ -1772,6 +1776,10 @@ rules:
 	    value := VerifyMarker.value;
 	    markerKey := sourceWidget.markerKey;
 
+            if (sourceWidget.is_defined("markerID") != nil) then
+	      markerID := sourceWidget.markerID;
+	    end if;
+
 	    if (reason = TBL_REASON_VALIDATE_CELL_END) then
 	      return;
 	    end if;
@@ -1781,13 +1789,34 @@ rules:
 	    markerKey := sourceWidget.markerKey;
 	    markerSymbol := sourceWidget.markerSymbol;
 
+	    accID := "";
+            if (sourceWidget.is_defined("markerID") != nil) then
+	      if (column = markerID) then
+                tempAccID := value;
+                accID := mgi_simplesub("MGI:", "", tempAccID);
+	      end if;
+            end if;
+
             if (sourceWidget.markerColumns > 1 and 
                 column = sourceWidget.markerSymbol + (sourceWidget.markerColumns - 1)) then
               markerKey := sourceWidget.markerKey + 1;
 	      markerSymbol := sourceWidget.markerSymbol + 1;
-            elsif (column != sourceWidget.markerSymbol) then
-              return;
+	      isColumnOK := true;
+	    end if;
+
+            if (column = sourceWidget.markerSymbol) then
+	      isColumnOK := true;  
             end if;
+
+            if (sourceWidget.is_defined("markerID") != nil) then
+              if (column = sourceWidget.markerID) then
+	        isColumnOK := true;  
+	      end if;
+            end if;
+
+	    if (not isColumnOK) then
+              return;
+	    end if;
 
 	  -- Processing for Text
 
@@ -1841,10 +1870,11 @@ rules:
 
 	  keys : string_list := create string_list();
 	  results : xm_string_list := create xm_string_list();
+	  select : string;
 	  symbols : string_list := create string_list();
 	  names : string_list := create string_list();
 	  chromosome : string_list := create string_list();
-	  markerID : string_list := create string_list();
+	  markerIDs : string_list := create string_list();
 	  status : string_list := create string_list();
 	  band : string_list := create string_list();
 	  organismKey : string := "1";
@@ -1871,10 +1901,15 @@ rules:
 
 	  -- Search for Marker in the database
 
-	  select : string := verify_marker(organismKey, mgi_DBprstr(value));
+	  select := verify_marker(organismKey, mgi_DBprstr(value));
+
+	  if (isTable) then
+	    if (column = markerID and accID.length > 0) then
+	      select := verify_markerid(accID);
+	    end if;
+          end if;
 
 	  -- If searching Nomen as well....
-
 	  if (VerifyMarker.allowNomen) then
 	    select := select + verify_marker_union(mgi_DBprstr(value));
 	  end if;
@@ -1891,7 +1926,7 @@ rules:
               chromosome.insert(mgi_getstr(dbproc, 4), chromosome.count + 1);
               band.insert(mgi_getstr(dbproc, 5), band.count + 1);
               names.insert(mgi_getstr(dbproc, 6), names.count + 1);
-              markerID.insert(mgi_getstr(dbproc, 7), markerID.count + 1);
+              markerIDs.insert(mgi_getstr(dbproc, 7), markerIDs.count + 1);
               results.insert(symbols[symbols.count] + 
 		", " + names[names.count] +
 		", Chr " + chromosome[chromosome.count] + 
@@ -1954,7 +1989,7 @@ rules:
 	  whichSymbol := symbols[whichMarkerRow];
 	  whichStatus := status[whichMarkerRow];
 	  whichChrom  := chromosome[whichMarkerRow];
-	  whichMarkerID  := markerID[whichMarkerRow];
+	  whichMarkerID  := markerIDs[whichMarkerRow];
 
 	  -- If withdrawn symbols are not allowed, then display list of current symbols
 
@@ -1990,6 +2025,7 @@ rules:
 	  end if;
 
 	  if (isTable) then
+	    (void) mgi_writeLog("print marker symbol\n");
             (void) mgi_tblSetCell(sourceWidget, row, markerKey, whichMarker);
             (void) mgi_tblSetCell(sourceWidget, row, markerSymbol, whichSymbol);
 
@@ -2010,8 +2046,8 @@ rules:
 
 	    -- Get MGI Acc ID if Mouse and Accession Widget defined
 	    if (organismKey = "1" and accessionWidget != nil) then
-	      markerMGIAccID := mgi_sql1(verify_marker_mgiid(whichMarker));
-	      accessionWidget->AccessionID->text.value := markerMGIAccID;
+	      accID := mgi_sql1(verify_marker_mgiid(whichMarker));
+	      accessionWidget->AccessionID->text.value := accID;
 	    end if;
 
             (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);

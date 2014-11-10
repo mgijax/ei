@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Tue Oct 21 13:12:34 2014";
+      lastWritten = "Mon Nov 10 10:27:43 2014";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -13282,6 +13282,20 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   Marker = OrderedTable : mgiTable;
+                                      {
+                                        Table = mgiTable;
+                                        Group: Widget
+                                          userDefinedAttributes = "markerID:Int(Int)=\"8\"\n";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 7 3)(all 8-9 25)(all 10 15)(all 11-12 20)(all 13 7)";
+                                          xrtTblNumColumns = 14;
+                                          xrtTblMaxLengthSeries = "(all 9 40)(all 10 20)(all 11 80)(all 12 255)";
+                                          xrtTblColumnLabels = "Mode,Current Order,Marker key,Current Marker key,Chr,Allele key,Assay key,#,Marker ID,Marker,Allele,Assay Type,Description,Matrix?";
+                                        Group: User
+                                          alleleSymbol = 10;
+                                          assay = 11;
+                                          description = 12;
+                                          markerSymbol = 9;
+                                      }
                                 }
                                 {
                                   ExptTextForm = ExptTextForm;
@@ -13642,7 +13656,7 @@ Shift<Key>Tab: prev-tab-group()
                                         List = list;
                                         Group: User
                                           targetWidget = Marker;
-                                          targetText = 10;
+                                          targetText = 11;
                                           targetKey = 6;
                                       }
                                 }
