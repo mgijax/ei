@@ -122,7 +122,7 @@ rules:
 		 mgi_DBprstr(top->Designation->text.value) + "," +
 		 mgi_DBprstr(top->Abbrev1->text.value) + "," +
 		 mgi_DBprstr(top->Abbrev2->text.value) + "," +
-		 mgi_DBprstr(top->Labels->text.value) + ")\n";
+		 mgi_DBprstr(top->Labels->text.value) + END_VALUE;
 
 	  AddSQL.tableID := RISET;
           AddSQL.cmd := cmd;
