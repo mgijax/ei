@@ -40,7 +40,6 @@ extern char *global_reportdir;
 extern char *global_database;
 extern char *global_server;
 extern char *global_radar;
-extern char *global_dbtype;
 
 #define	NO_MORE_RESULTS	0
 #define	NO_MORE_ROWS	0

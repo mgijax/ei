@@ -66,6 +66,8 @@ int maxRow;
 int currentRow;
 int maxResults;
 
+static void send_status();
+
 char *global_login;             /* Set in Application dModule; holds user login value */
 char *global_loginKey;          /* Set in Application dModule; holds user login key value */
 char *global_passwd_file;       /* Set in mgi_dbinit; holds user password file name */
@@ -335,29 +337,17 @@ int mgi_dbresults(PGconn *conn)
     return(1);
   }
 
-  /* PGRES_FATAL_ERROR (7) */
   else if (PQresultStatus(res) == PGRES_FATAL_ERROR)
   {
-    printf("PGRES_FATAL_ERROR: %s\n", PQerrorMessage(conn));
-
-    rescancel = PQgetCancel(conn);
-    if (PQcancel(rescancel, errbuf, sizeof(errbuf)) == 1)
-    {
-      printf("PQcancel: successful\n");
-    }
-    else
-    {
-      printf("PQcancel: failed : %s\n", errbuf);
-    }
-    PQfreeCancel(rescancel);
-
+    sprintf(errbuf, "PGRES_FATAL_ERROR (7):\n\n%s\n", PQerrorMessage(conn));
+    send_status(errbuf, 0);
     return(NO_MORE_RESULTS);
   }
 
   else
   {
-    printf("PGresultStatus: %d\n", PQresultStatus(res));
-    printf("mgi_dbresults (conn): %s\n", PQerrorMessage(conn));
+    sprintf(errbuf, "PGresultStatus:\n\n%s\n", PQerrorMessage(conn));
+    send_status(errbuf, 0);
     return(NO_MORE_RESULTS);
   }
 }
@@ -702,3 +692,30 @@ char *mgi_lowersub(char *str)
 
   return ns;
 }
+
+/* 
+*
+* Send event StatusReport
+*
+*/
+
+static void send_status(char *msg, int appendMsg)
+{
+  tu_status_t status;
+  tu_event_instance dei;
+
+  dei = tu_create_named_event ("StatusReport", &status);
+
+  if (status.all == tu_status_ok)
+  {
+    tu_assign_event_field(dei, "message", XtRString, (tu_pointer) msg, &status);
+    tu_assign_event_field(dei, "appendMessage", XtRInt, appendMsg, &status);
+    tu_dispatch_event(dei);
+    tu_free_event(dei);
+  }
+  else
+  {
+    (void) fprintf(stderr, "Could not create \"StatusReport\" event.\n");
+  }
+}
+
