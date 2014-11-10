@@ -51,7 +51,7 @@ extern char *global_radar;
 #define END_VALUE       ")\n"
 #define MAX_KEY1        "@"
 #define MAX_KEY2        ""
-#define USE_LOWER1      "lower("
-#define USE_LOWER2      ")" 
+#define SQL_LOWER1      "lower("
+#define SQL_LOWER2      ")" 
 
 #endif
