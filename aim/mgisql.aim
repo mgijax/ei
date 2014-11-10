@@ -120,11 +120,9 @@ CALLS
 	 organism_chr("char *")					: "char *";
 	 organism_anchor()					: "char *";
 
-	 simple_synonymtype()					: "char *";
 	 simple_select1("char *")				: "char *";
 	 simple_select2("char *")				: "char *";
 	 simple_select3("char *")				: "char *";
-	 simple_synonym("char *", "char *")			: "char *";
 
 	 verify_allele("char *")				: "char *";
 	 verify_alleleid("char *")				: "char *";

@@ -973,15 +973,6 @@ char *organism_anchor()
  * SimpleVocab.d
 */
 
-char *simple_synonymtype()
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _SynonymType_key from MGI_SynonymType \
-   where _MGIType_key = 13 and synonymType = 'exact'");
-  return(buf);
-}
-
 char *simple_select1(char *key)
 {
   static char buf[TEXTBUFSIZ];
@@ -1005,17 +996,6 @@ char *simple_select3(char *key)
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select * from VOC_Text_View where _Vocab_key = %s \
    order by termsequenceNum", key);
-  return(buf);
-}
-
-char *simple_synonym(char *key, char *objectKey)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _Synonym_key, synonym from MGI_Synonym \
-   where _SynonymType_key = %s \
-   and _Object_key = %s \
-   order by synonym", key, objectKey);
   return(buf);
 }
 

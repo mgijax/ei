@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Fri Sep 19 10:24:59 2014";
+      lastWritten = "Mon Nov 10 11:49:46 2014";
       copy = false;
       inCreateMenu = true;
         {
@@ -1846,9 +1846,10 @@ Module: MGI
                                     topAttachment = attach_widget;
                                     topWidget = mgiCitation;
                                     topOffset = 10;
-                                    bottomAttachment = attach_none;
+                                    bottomAttachment = attach_form;
                                     resizable = true;
                                     rightOffset = 5;
+                                    bottomOffset = 5;
                                       {
                                         Table = mgiTable;
                                         Group: Widget
@@ -1867,35 +1868,6 @@ Module: MGI
                                           saveEditableSeries = "(all 0-5 False)";
                                           saveTraversableSeries = "(all 0-5 False)";
                                           requiredColumns = 6;
-                                      }
-                                }
-                                {
-                                  Synonym = TableLabel : mgiTable;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = Term;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = Term;
-                                    topOffset = 5;
-                                    bottomAttachment = attach_form;
-                                    resizable = true;
-                                    bottomOffset = 5;
-                                      {
-                                        Table = mgiTable : mgiTable;
-                                        Group: Widget
-                                          xrtTblNumColumns = 3;
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1 10)(all 2 70)";
-                                          xrtTblEditableSeries = "(all 0-1 False)";
-                                          xrtTblTraversableSeries = "(all 0-1 False)";
-                                          xrtTblPixelWidthSeries = "(all 0-1 0)";
-                                          xrtTblColumnLabels = "Mode,Syn Key,Synonym";
-                                          userDefinedAttributes = "synKey:Int=\"1\"\nsynonym:Int=\"2\"\n";
-                                            {
-                                              label = XtXrtLabel;
-                                              Group: Widget
-                                                labelString = Synonyms;
-                                            }
                                       }
                                 }
                           }

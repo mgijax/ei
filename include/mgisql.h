@@ -152,11 +152,9 @@ extern char *organism_anchor();
 
 /* SimpleVocab.d */
 
-extern char *simple_synonymtype();
 extern char *simple_select1(char *);
 extern char *simple_select2(char *);
 extern char *simple_select3(char *);
-extern char *simple_synonym(char *, char *);
 
 /* Verify.d */
 

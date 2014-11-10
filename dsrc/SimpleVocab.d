@@ -4,7 +4,7 @@
 -- SimpleVocab.d 12/27/2001
 --
 -- TopLevelShell:		SimpleVocab
--- Database Tables Affected:	VOC_Vocab, VOC_Term, VOC_Text, MGI_Synonym
+-- Database Tables Affected:	VOC_Vocab, VOC_Term, VOC_Text
 -- Actions Allowed:		Add, Modify, Delete
 --
 -- Module to process edits for (table).
@@ -38,11 +38,9 @@ devents:
 	Init :local [];					-- Initialize globals, etc.
 	Modify :local [];				-- Modify record
 	ModifyTerm :local[];				-- Modify Term record(s)
-	ModifySynonym :local[];				-- Modify Synonym record(s)
 	PrepareSearch :local [];			-- Construct SQL search clause
 	Search :local [];				-- Execute SQL search clause
 	Select :local [item_position : integer;];	-- Select record
-	SelectSynonym :local [];			-- Select Synonym Records for specific Term
 	SetOptions :local [source_widget : widget;	-- Set Option Pulldown Toggle
 			   row : integer;
 			   reason : integer;];
@@ -61,8 +59,6 @@ locals:
  
 	tables : list;
 	termTable : widget;
-
-	synTypeKey : string;		-- Synonym Type Key for Vocabulary Synonyms
 
 rules:
 
@@ -143,7 +139,6 @@ rules:
 	  -- List of all Table widgets used in form
 
 	  tables.append(top->Term->Table);
-	  tables.append(top->Synonym->Table);
 
           -- Set Row Count
           SetRowCount.source_widget := top;
@@ -153,9 +148,6 @@ rules:
           -- Clear form
           Clear.source_widget := top;
           send(Clear, 0);
-
-	  -- set synonym type
-	  synTypeKey := mgi_sql1(simple_synonymtype());
 
 	  -- Perform initial search
 	  send(Search, 0);
@@ -179,16 +171,16 @@ rules:
 
           (void) busy_cursor(top);
 
-          -- If adding, then @KEYNAME must be used in all Modify events
+          -- If adding, then KEYNAME must be used in all Modify events
  
-          currentRecordKey := "@" + KEYNAME;
+          currentRecordKey := MAX_KEY1 + KEYNAME + MAX_KEY2;
  
           cmd := mgi_setDBkey(VOC_VOCAB, NEWKEY, KEYNAME) +
                  mgi_DBinsert(VOC_VOCAB, KEYNAME) +
 		 top->mgiCitation->ObjectID->text.value + "," +
 		 top->ACCLogicalMenu.menuHistory.defaultValue + ",1," +
 		 top->ACCPrivateMenu.menuHistory.defaultValue + "," +
-		 mgi_DBprstr(top->Name->text.value) + ")\n";
+		 mgi_DBprstr(top->Name->text.value) + END_VALUE;
 
 	  send(ModifyTerm, 0);
 
@@ -276,7 +268,6 @@ rules:
 	  end if;
 
 	  send(ModifyTerm, 0);
-	  send(ModifySynonym, 0);
 
 	  if (cmd.length > 0 or set.length > 0) then
 	    cmd := mgi_DBupdate(VOC_VOCAB, currentRecordKey, set) + cmd;
@@ -360,11 +351,11 @@ rules:
 			mgi_DBprstr(abbrev) + "," +
 			newSeqNum + "," +
 			isObsolete + "," +
-			global_loginKey + "," + global_loginKey + ")\n";
+			global_loginKey + "," + global_loginKey + END_VALUE;
 
 	      ModifyNotes.source_widget := termTable;
 	      ModifyNotes.tableID := VOC_TEXT;
-	      ModifyNotes.key := "@" + keyName;
+	      ModifyNotes.key := MAX_KEY1 + keyName + MAX_KEY2;
 	      ModifyNotes.row := row;
 	      ModifyNotes.column := termTable.definition;
 	      ModifyNotes.keyDeclared := definitionModified;
@@ -374,7 +365,7 @@ rules:
 		definitionModified := true;
 	      end if;
 
-              mgi_tblSetCell(termTable, row, termTable.termKey, "@" + keyName);
+              mgi_tblSetCell(termTable, row, termTable.termKey, MAX_KEY1 + keyName + MAX_KEY2);
 
 	      termModified := true;
 
@@ -417,75 +408,6 @@ rules:
 	  if (termModified) then
 	    cmd := cmd + exec_mgi_resetSequenceNum(currentRecordKey, mgi_DBprstr(mgi_DBtable(VOC_TERM)));
 	  end if;
-	end does;
-
---
--- ModifySynonym
---
--- Activated from:	top->Control->Modify
---			top->MainMenu->Commands->Modify
---
--- Construct command for Synonym record modifcation
---
-
-	ModifySynonym does
-          table : widget := top->Synonym->Table;
-          row : integer;
-          editMode : string;
-          set : string := "";
-	  keyName : string := "synKey";
-	  keyDeclared : boolean := false;
-
-	  termKey : string;
-	  synKey : string;
-	  synonym : string;
-
-	  termKey := mgi_tblGetCell(termTable, mgi_tblGetCurrentRow(termTable), termTable.termKey);
-
-	  if (termKey = "") then
-	    return;
-	  end if;
-
-          -- Process while non-empty rows are found
- 
-          row := 0;
-          while (row < mgi_tblNumRows(table)) do
-            editMode := mgi_tblGetCell(table, row, table.editMode);
- 
-            if (editMode = TBL_ROW_EMPTY) then
-              break;
-            end if;
- 
-            synKey := mgi_tblGetCell(table, row, table.synKey);
-            synonym := mgi_tblGetCell(table, row, table.synonym);
- 
-            if (editMode = TBL_ROW_ADD) then
-              if (not keyDeclared) then
-                cmd := cmd + mgi_setDBkey(MGI_SYNONYM, NEWKEY, keyName);
-                keyDeclared := true;
-              else
-                cmd := cmd + mgi_DBincKey(keyName);
-              end if;
-
-              cmd := cmd + mgi_DBinsert(MGI_SYNONYM, keyName) + 
-			termKey + "," +
-			"13," +
-			synTypeKey + "," +
-			"NULL," +
-			mgi_DBprstr(synonym) + "," +
-			global_loginKey + "," + global_loginKey + ")\n";
-
-            elsif (editMode = TBL_ROW_MODIFY) then
- 
-              set := "synonym = " + mgi_DBprstr(synonym);
-              cmd := cmd + mgi_DBupdate(MGI_SYNONYM, synKey, set);
-
-            elsif (editMode = TBL_ROW_DELETE) then
-              cmd := cmd + mgi_DBdelete(MGI_SYNONYM, synKey);
-            end if;
- 
-            row := row + 1;
-          end while;
 	end does;
 
 --
@@ -621,8 +543,6 @@ rules:
 	  SetOptions.reason := TBL_REASON_ENTER_CELL_END;
 	  send(SetOptions, 0);
 
-	  send(SelectSynonym, 0);
-
           top->QueryList->List.row := Select.item_position;
 
 	  Clear.source_widget := top;
@@ -630,41 +550,6 @@ rules:
           send(Clear, 0);
 
 	  (void) reset_cursor(top);
-	end does;
-
---
--- SelectSynonym
---
--- Selects Synonym records for current Term
---
-
-	SelectSynonym does
-	  synTable : widget := top->Synonym->Table;
-	  row : integer := mgi_tblGetCurrentRow(termTable);
-	  termKey : string := mgi_tblGetCell(termTable, row, termTable.termKey);
-
-          ClearTable.table := synTable;
-          send(ClearTable, 0);
-
-	  if (termKey.length = 0) then
-	    return;
-	  end if;
-
-	  cmd := simple_synonym(synTypeKey, termKey);
-
-          dbproc : opaque := mgi_dbexec(cmd);
- 
-	  row := 0;
-          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	     (void) mgi_tblSetCell(synTable, row, synTable.synKey, mgi_getstr(dbproc, 1));
-	     (void) mgi_tblSetCell(synTable, row, synTable.synonym, mgi_getstr(dbproc, 2));
-	     (void) mgi_tblSetCell(synTable, row, synTable.editMode, TBL_ROW_NOCHG);
-	     row := row + 1;
-	    end while;
-	  end while;
-	  (void) mgi_dbclose(dbproc);
-
 	end does;
 
 --
