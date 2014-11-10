@@ -129,7 +129,7 @@ int mgi_dbinit(char *user, char *pwd)
 void mgi_dbexit(PGconn *conn)
 {
   PQfinish(conn);
-  exit(1);
+  /*exit(1);*/
 }
 
 /*
@@ -171,6 +171,9 @@ void mgi_dbclose(PGconn *conn)
     /*printf("mgi_dbclose: clear result\n");*/
     PQclear(res);
   }
+
+  /* exit */
+  mgi_dbexit(conn);
 
   return;
 }
@@ -259,6 +262,9 @@ PGconn *mgi_dbexec(char *cmd)
 
   printf("pg cmd: %s\n", ns);
 
+  /* connect */
+  mgi_dbinit(global_login, global_passwd);
+
   /* execute search */
   res = PQexec(conn, ns);
 
@@ -299,6 +305,11 @@ int mgi_dbresults(PGconn *conn)
   *
   */
 
+  PGcancel *rescancel;
+  static char errbuf[TEXTBUFSIZ];
+
+  memset(errbuf, '\0', sizeof(errbuf));
+
   if (maxResults == 1)
   {
     return(NO_MORE_RESULTS);
@@ -324,8 +335,28 @@ int mgi_dbresults(PGconn *conn)
     return(1);
   }
 
+  /* PGRES_FATAL_ERROR (7) */
+  else if (PQresultStatus(res) == PGRES_FATAL_ERROR)
+  {
+    printf("PGRES_FATAL_ERROR: %s\n", PQerrorMessage(conn));
+
+    rescancel = PQgetCancel(conn);
+    if (PQcancel(rescancel, errbuf, sizeof(errbuf)) == 1)
+    {
+      printf("PQcancel: successful\n");
+    }
+    else
+    {
+      printf("PQcancel: failed : %s\n", errbuf);
+    }
+    PQfreeCancel(rescancel);
+
+    return(NO_MORE_RESULTS);
+  }
+
   else
   {
+    printf("PGresultStatus: %d\n", PQresultStatus(res));
     printf("mgi_dbresults (conn): %s\n", PQerrorMessage(conn));
     return(NO_MORE_RESULTS);
   }
@@ -526,6 +557,9 @@ char *mgi_sql1(char *cmd)
 
   memset(buf, '\0', sizeof(buf));
 
+  /* connect */
+  mgi_dbinit(global_login, global_passwd);
+
   /* execute search */
   res = PQexec(conn, cmd);
  
@@ -539,6 +573,9 @@ char *mgi_sql1(char *cmd)
 
   /* close the portal....to avoid memory leaks */
   PQclear(res);
+
+  /* exit */
+  mgi_dbexit(conn);
 
   return(buf);
 }
