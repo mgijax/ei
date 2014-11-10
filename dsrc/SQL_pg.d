@@ -80,6 +80,7 @@ dmodule SQL is
 #include <mgisql.h>
 
 locals:
+	top : widget;
 	queryList : widget;
 	newID : string;
 
@@ -95,7 +96,6 @@ rules:
 --
  
         AddSQL does
-	  top : widget;
 	  cmd : string;
 	  jobStream : string;
 	  item : string := AddSQL.item;
@@ -178,8 +178,9 @@ rules:
 --
  
         DeleteSQL does
-	  top : widget := DeleteSQL.list.top;
 	  jobStream : string;
+
+	  top := DeleteSQL.list.top;
 
 	  jobStream := mgi_sp("exec " + global_radar + "..APP_EIcheck");
 	  if ((getenv("EIDEBUG") = "0") and (integer) jobStream > 0) then
@@ -280,7 +281,6 @@ rules:
 --
 
 	ModifySQL does
-	  top : widget;
 	  cmd : string;
 	  jobStream : string;
 
@@ -348,7 +348,6 @@ rules:
 
         Query does
           list_w : widget;
-	  top : widget;
 
           if (Query.list_w = nil) then
             list_w := Query.source_widget->QueryList;
@@ -390,7 +389,6 @@ rules:
 
         QueryNoInterrupt does
           list_w : widget;
-	  top : widget;
 
           if (QueryNoInterrupt.list_w = nil) then
             list_w := QueryNoInterrupt.source_widget->QueryList;
@@ -423,4 +421,57 @@ rules:
 	  end if;
         end does;
  
+--
+-- StatusReport
+--
+-- Display Status Report to user
+--
+
+        StatusReport does
+	  status : widget;
+
+	  if (StatusReport.source_widget != nil) then
+	    status := StatusReport.source_widget;
+	  else
+	    status := top;
+	  end if;
+
+	  -- Do not overwrite Status Dialog if already managed
+
+          if (status->StatusDialog = nil) then
+	    --(void) mgi_writeLog(get_time() + "ERROR: Could not get StatusDialog\n");
+	    return;
+	  end if;
+
+          if (not status->StatusDialog.managed) then
+            status->StatusDialog.messageString := StatusReport.message;
+            status->StatusDialog.managed := true;
+	    XmUpdateDisplay(status->StatusDialog);
+	  elsif (StatusReport.appendMessage = true) then
+            status->StatusDialog.managed := false;
+            status->StatusDialog.messageString := 
+	    	status->StatusDialog.messageString + "\n\n" + StatusReport.message;
+            status->StatusDialog.managed := true;
+	  end if;
+
+          status->StatusDialog.top.front;
+        end does;
+
+--
+-- StatusReportOK
+--
+-- Special callback for upper level Status Report dialog
+-- After unmanaging dialog, place Menu shell in back of stacking order
+--
+
+        StatusReportOK does
+--	  if (StatusReportOK.source_widget = top->StatusDialog and
+--	      top.name != "Login") then
+--	    top.back;
+--	  end if;
+
+	  StatusReportOK.source_widget.managed := false;
+          StatusReportOK.source_widget.messageString := "";
+	end does;
+
 end dmodule;
