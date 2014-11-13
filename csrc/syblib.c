@@ -65,7 +65,6 @@ char *global_reportdir;		/* Set in mgi_dbinit; holds user report directory name 
 char *global_database;  	/* Set in Application dModule; holds database value */
 char *global_server;    	/* Set in Application dModule; holds server value */
 char *global_radar;    		/* Set in Application dModule; holds radar db value */
-char *global_dbtype = "sybase";
 
 /* 
 *

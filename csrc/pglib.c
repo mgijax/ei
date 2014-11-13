@@ -76,7 +76,6 @@ char *global_reportdir;         /* Set in mgi_dbinit; holds user report director
 char *global_database;          /* Set in Application dModule; holds database value */
 char *global_server;            /* Set in Application dModule; holds server value */
 char *global_radar;             /* Set in Application dModule; holds radar db value */
-char *global_dbtype = "postgres";
 
 static char conninfo[TEXTBUFSIZ];
 
@@ -101,7 +100,7 @@ int mgi_dbinit(char *user, char *pwd)
   sprintf(global_login, "%s", getenv("PG_DBUSER"));
   sprintf(global_server, "%s", getenv("PG_DBSERVER"));
   sprintf(conninfo, "host = %s dbname = %s user = %s password = db0dev", global_server, global_database, global_login);
-  printf("mgi_dbinit: %s\n", conninfo);
+  /*printf("mgi_dbinit: %s\n", conninfo);*/
 
   conn = PQconnectdb(conninfo);
 

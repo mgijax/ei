@@ -148,7 +148,6 @@
 char *global_application;     /* Set in Application dModule; holds main application value */
 char *global_version;         /* Set in Application dModule; holds main application version value */
 char *global_loginKey;        /* Set in Application dModule; holds login key value */
-char *global_dbtype;
 
 /*
    Compose a string SQL value for a given value.
