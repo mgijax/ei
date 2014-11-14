@@ -1500,7 +1500,7 @@ rules:
 	  defaultStrainType : string;
 
 	  select := "select count(*) from " + table + " where ";
-          where := name + " = " + mgi_DBprstr(item.value);
+          where := SQL_LOWER1 + name + SQL_LOWER2 + " = " + SQL_LOWER1 + mgi_DBprstr(item.value) + SQL_LOWER2;
 
 	  if ((integer) mgi_sql1(verify_item_count(item.value, table, name)) > 0) then
 	    found := true;
@@ -1524,16 +1524,17 @@ rules:
             -- Use exact match if verifyChars is -1
  
             elsif (verifyChars < 0) then
-              where := name + " = " + mgi_DBprstr(item.value);
+              where := SQL_LOWER1 + name + SQL_LOWER2 + " = " + SQL_LOWER1 + mgi_DBprstr(item.value) + SQL_LOWER2;
  
             -- Use like if verifyChars is 0
  
             elsif (verifyChars = 0) then
-              where := name + " like " + mgi_DBprstr(item.value + "%");
+              where := SQL_LOWER1 + name + SQL_LOWER2 + " like " + SQL_LOWER1 + mgi_DBprstr(item.value) + "%" + SQL_LOWER2;
+              --where := name + " like " + mgi_DBprstr(item.value + "%");
  
             -- Use like w/ substring if verifyChars > 0
             else
-              where := name + " like " + mgi_DBprstr(item.value->substr(1, verifyChars) + "%");
+              where := SQL_LOWER1 + name + SQL_LOWER2 + " like " + SQL_LOWER1 + mgi_DBprstr(item.value->substr(1, verifyChars) + "%") + SQL_LOWER2;
             end if;
 	  end if;
 

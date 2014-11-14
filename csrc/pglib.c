@@ -313,26 +313,30 @@ int mgi_dbresults(PGconn *conn)
 
   if (maxResults == 1)
   {
-    return(NO_MORE_RESULTS);
-  }
-
-  else if (PQresultStatus(res) == PGRES_COMMAND_OK)
-  {
+    /*
+    sprintf(errbuf, "maxResults == 1\n");
+    send_status(errbuf, 0);
+    */
     return(NO_MORE_RESULTS);
   }
 
   /*
   *
+  * PGRES_COMMAND_OK: successful completion of a command returning data
   * PGRES_TUPLES_OK: successful completion of a command returning data
   * set global maxRow
   * set global currentRow
   *
   */
 
-  else if (PQresultStatus(res) == PGRES_TUPLES_OK)
+  else if (PQresultStatus(res) == PGRES_TUPLES_OK || PQresultStatus(res) == PGRES_COMMAND_OK)
   {
     maxRow = PQntuples(res);
     currentRow = -1;
+    /*
+    sprintf(errbuf, "PGresultStatus: OK : maxRow(%d)\n", maxRow);
+    send_status(errbuf, 0);
+    */
     return(1);
   }
 

@@ -123,7 +123,7 @@ rules:
 	  -- calling event can set AddSQL.transaction = false
 
 	  if (AddSQL.transaction) then
-	    cmd := "begin transaction;\n" + AddSQL.cmd + "\ncommit transaction;\n";
+	    cmd := AddSQL.cmd + "select * from keyMax;\n";
 	  else
 	    cmd := AddSQL.cmd;
 	  end if;
@@ -156,17 +156,22 @@ rules:
 	  --   Re-count records
 
           if (AddSQL.list->List.sqlSuccessful) then
-	    if (AddSQL.appendKeyToItem) then
-	      item := "*[" + AddSQL.key.value + "]:  " + item;
-	    end if;
+            if (AddSQL.appendKeyToItem) then
+              item := "*[" + AddSQL.key.value + "]:  " + item;
+            end if; 
+
+            if (AddSQL.useItemAsKey) then
+              InsertList.key := item;
+            else
+              InsertList.key := AddSQL.key.value;
+            end if; 
 
             InsertList.list := AddSQL.list;
             InsertList.item := item;
-            InsertList.key := AddSQL.key.value;
-            send(InsertList, 0);
-	    top->RecordCount->text.value := mgi_DBrecordCount(AddSQL.tableID);
+            send(InsertList, 0); 
+            top->RecordCount->text.value := mgi_DBrecordCount(AddSQL.tableID);
             (void) XmListSelectPos(AddSQL.list->List, AddSQL.list->List.row, AddSQL.selectNewListItem);
-          end if;
+          end if; 
         end does;
  
 --
@@ -234,6 +239,7 @@ rules:
 	  dbproc := mgi_dbexec(ExecSQL.cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      (void) mgi_writeLog("\nmgi_exec : " + mgi_getstr(dbproc, 1) + "\n");
 	      newID := mgi_getstr(dbproc, 1);
 	    end while;
 	  end while;

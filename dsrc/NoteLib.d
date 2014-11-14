@@ -635,6 +635,7 @@ rules:
 	  key : string := ModifyNotes.key;
 	  row : integer := ModifyNotes.row;
 	  column : integer := ModifyNotes.column;
+	  allowDelete : boolean := ModifyNotes.allowDelete;
 	  keyDeclared : boolean := ModifyNotes.keyDeclared;
 	  keyName : string := "noteKey";
           note : string;
@@ -665,9 +666,6 @@ rules:
 	    return;
 	  end if;
 
-	  if (not keyDeclared) then
-	    keyCmd := mgi_setDBkey(tableID, NEWKEY, keyName);
-	  end if;
 
 	  -- If the noteWidget has a valid noteTypeKey, use it
 	  -- Else if the noteWidget has a valid noteType (string), use it
@@ -705,12 +703,12 @@ rules:
 	      noteKey := (string) noteWidget.noteKey;
 	    end if;
 
-	    if (noteKey.length > 0) then
+	    if (allowDelete and noteKey.length > 0) then
               deleteCmd := mgi_DBdelete(tableID, noteKey);
 	    end if;
 	  end if;
 
-	  if (tableID != MGI_NOTE) then
+	  if (allowDelete and tableID != MGI_NOTE) then
             deleteCmd := mgi_DBdelete(tableID, key);
 
 	    if (isTable and noteType.length > 0) then
@@ -731,7 +729,7 @@ rules:
 	           key + "," +
 		   mgiType + "," +
 		   noteType + "," +
-		   global_loginKey + "," + global_loginKey + ")\n";
+		   global_loginKey + "," + global_loginKey + END_VALUE;
 	  end if;
 
           -- Break notes up into segments of 255
@@ -739,27 +737,27 @@ rules:
           while (note.length > 255) do
 	    if (tableID = MGI_NOTE) then
 	      cmd := cmd +
-		     mgi_DBinsert(MGI_NOTECHUNK, NOKEY) + "@" + keyName + "," +
+		     mgi_DBinsert(MGI_NOTECHUNK, NOKEY) + MAX_KEY1 + keyName + MAX_KEY2 + "," +
 		     (string) i + "," + 
                      mgi_DBprnotestr(note->substr(1, 255)) + "," +
-		     global_loginKey + "," + global_loginKey + ")\n";
+		     global_loginKey + "," + global_loginKey + END_VALUE;
 	    elsif (isTable and noteType.length > 0) then
 	        cmd := cmd + 
 		     mgi_DBinsert(tableID, NOKEY) + key + "," + 
 		     (string) i + "," + 
 		     mgi_DBprstr(noteType) + "," +
-                     mgi_DBprnotestr(note->substr(1, 255)) + ")\n";
+                     mgi_DBprnotestr(note->substr(1, 255)) + END_VALUE;
 	    elsif (noteType.length > 0) then
 	        cmd := cmd + 
 		     mgi_DBinsert(tableID, NOKEY) + key + "," + 
 		     (string) i + "," + 
 		     noteType + "," +
-                     mgi_DBprnotestr(note->substr(1, 255)) + ")\n";
+                     mgi_DBprnotestr(note->substr(1, 255)) + END_VALUE;
             else
 	      cmd := cmd + 
 		   mgi_DBinsert(tableID, NOKEY) + key + "," + 
 		   (string) i + "," + 
-                   mgi_DBprnotestr(note->substr(1, 255)) + ")\n";
+                   mgi_DBprnotestr(note->substr(1, 255)) + END_VALUE;
 	    end if;
             note := note->substr(256, note.length);
             i := i + 1;
@@ -770,48 +768,52 @@ rules:
 	  if (mgi_DBprnotestr(note) != "NULL" or ModifyNotes.allowBlank) then
 	    if (tableID = MGI_NOTE) then
 	      cmd := cmd +
-		     mgi_DBinsert(MGI_NOTECHUNK, NOKEY) + "@" + keyName + "," +
+		     mgi_DBinsert(MGI_NOTECHUNK, NOKEY) + MAX_KEY1 + keyName + MAX_KEY2 + "," +
 		     (string) i + "," + 
                      mgi_DBprnotestr(note) + "," +
-		     global_loginKey + "," + global_loginKey + ")\n";
+		     global_loginKey + "," + global_loginKey + END_VALUE;
 	    elsif (isTable and noteType.length > 0 and not ModifyNotes.allowBlank) then
 	        cmd := cmd + 
 		     mgi_DBinsert(tableID, NOKEY) + key + "," + 
 		     (string) i + "," + 
 		     mgi_DBprstr(noteType) + "," +
-                     mgi_DBprnotestr(note) + ")\n";
+                     mgi_DBprnotestr(note) + END_VALUE;
 	    elsif (isTable and noteType.length > 0 and ModifyNotes.allowBlank) then
 		if (mgi_DBprnotestr(note) != "NULL") then
 	          cmd := cmd + 
 		       mgi_DBinsert(tableID, NOKEY) + key + "," + 
 		       (string) i + "," + 
 		       mgi_DBprstr(noteType) + "," +
-                       mgi_DBprnotestr(note) + ")\n";
+                       mgi_DBprnotestr(note) + END_VALUE;
 		else
 	          cmd := cmd + 
 		       mgi_DBinsert(tableID, NOKEY) + key + "," + 
 		       (string) i + "," + 
-		       mgi_DBprstr(noteType) + ",' ')\n";
+		       mgi_DBprstr(noteType) + ",' '" + END_VALUE;
 		end if;
 	    elsif (noteType.length > 0) then
               cmd := cmd + 
 		   mgi_DBinsert(tableID, NOKEY) + key + "," + 
 		   (string) i + "," + 
 		   noteType + "," +
-                   mgi_DBprnotestr(note) + ")\n";
+                   mgi_DBprnotestr(note) + END_VALUE;
             else
               cmd := cmd + 
 		   mgi_DBinsert(tableID, NOKEY) + key + "," + 
 		   (string) i + "," + 
-                   mgi_DBprnotestr(note) + ")\n";
+                   mgi_DBprnotestr(note) + END_VALUE;
 	    end if;
 	  end if;
 
 	  -- if notes are being added, then include 'masterCmd'
 	  -- else just include the 'deleteCmd'
 
+	  if (not keyDeclared) then
+	    keyCmd := mgi_setDBkey(tableID, NEWKEY, keyName);
+	  end if;
+
 	  if (cmd.length > 0) then
-	    cmd := keyCmd + deleteCmd + masterCmd + cmd + mgi_DBincKey(keyName);;
+	    cmd := keyCmd + deleteCmd + masterCmd + cmd + mgi_DBincKey(keyName);
 	  else
 	    cmd := keyCmd + deleteCmd + cmd;
 	  end if;

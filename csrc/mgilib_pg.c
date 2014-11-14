@@ -1829,9 +1829,6 @@ char *mgi_DBinsert(int table, char *keyName)
   memset(buf2, '\0', sizeof(buf));
   memset(buf3, '\0', sizeof(buf));
 
-  /* next max key value */
-  sprintf(buf2, "(select * from %sMax)", keyName);
-
   /* Only select the KEYNAME in Primary or Master tables */
 
   switch (table)
@@ -1917,6 +1914,13 @@ char *mgi_DBinsert(int table, char *keyName)
     default:
 	selectKey = 1;
 	break;
+  }
+
+  /* retrieve most recent new key */
+  if (selectKey)
+  {
+    sprintf(buf2, "select * from %sMax;", keyName);
+    strcat(buf, buf2);
   }
 
   switch (table)
@@ -2308,16 +2312,28 @@ char *mgi_DBinsert(int table, char *keyName)
 	    break;
   }
 
+  /* set values() */
+
   if (strcmp(keyName, NOKEY) == 0)
   {
     sprintf(buf3, "\nvalues(");
   }
   else
   {
-    sprintf(buf3, "\nvalues(%s,", buf2);
+    sprintf(buf3, "\nvalues((select * from %sMax),", keyName);
   }
-
   strcat(buf, buf3);
+
+  /* select next Max key */
+  /*
+  if (selectKey)
+  {
+    sprintf(buf2, "select * from %sMax;\n", keyName);
+    strcat(buf2, buf);
+    strcpy(buf, buf2);
+  }
+  */
+
   return(buf);
 }
 
