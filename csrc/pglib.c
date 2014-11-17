@@ -76,6 +76,7 @@ char *global_reportdir;         /* Set in mgi_dbinit; holds user report director
 char *global_database;          /* Set in Application dModule; holds database value */
 char *global_server;            /* Set in Application dModule; holds server value */
 char *global_radar;             /* Set in Application dModule; holds radar db value */
+int global_error;             /* PG error */
 
 static char conninfo[TEXTBUFSIZ];
 
@@ -310,6 +311,7 @@ int mgi_dbresults(PGconn *conn)
   static char errbuf[TEXTBUFSIZ];
 
   memset(errbuf, '\0', sizeof(errbuf));
+  global_error = 0;
 
   if (maxResults == 1)
   {
@@ -344,6 +346,7 @@ int mgi_dbresults(PGconn *conn)
   {
     sprintf(errbuf, "PGRES_FATAL_ERROR (7):\n\n%s\n", PQerrorMessage(conn));
     send_status(errbuf, 0);
+    global_error = 1;
     return(NO_MORE_RESULTS);
   }
 

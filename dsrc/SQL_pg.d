@@ -202,6 +202,8 @@ rules:
 
 	  -- If delete was successful, delete row from list and re-count records
 
+	  (void) mgi_writeLog("\nDeleteSQL.list->List.sqlSuccessful : " + (string) DeleteSQL.list->List.sqlSuccessful + "\n");
+
 	  if (DeleteSQL.list->List.sqlSuccessful) then
             DeleteList.list := DeleteSQL.list;
             send(DeleteList, 0);
@@ -245,36 +247,16 @@ rules:
 	  end while;
 	  mgi_dbclose(dbproc);
 
-	  -- Process @@error w/in same DBPROCESS
-
-	  --dbproc := mgi_dbexec(sql_sql_1);
-          --while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
-            --while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      --error := (integer) mgi_getstr(dbproc, 1);
-	    --end while;
-	  --end while;
-	  --(void) mgi_dbclose(dbproc);
-	  --(void) mgi_writeLog("\n@@error:  " + (string) error + "\n");
-
-	  -- Process @@transtate w/in same DBPROCESS
-
-	  --dbproc := mgi_dbexec(sql_sql_2);
-          --while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
-            --while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	        --transtate := (integer) mgi_getstr(dbproc, 1);
-	    --end while;
-	  --end while;
-	  --(void) mgi_dbclose(dbproc);
-	  --(void) mgi_writeLog("@@transtate:  " + (string) transtate + "\n");
-
 	  -- Fatal Errors
 
-	  --if ((error > 0 and error < 20000) or error > 90000 or transtate > 1) then
-	   -- newID := "";
-	    --if (ExecSQL.list != nil) then
-	     -- ExecSQL.list->List.sqlSuccessful := false;
-	    --end if;
-	  --end if;
+	  (void) mgi_writeLog("fatal error : " + (string) global_error + "\n");
+
+	  if (global_error = 1) then
+	    newID := "";
+	    if (ExecSQL.list != nil) then
+	      ExecSQL.list->List.sqlSuccessful := false;
+	    end if;
+	  end if;
 
 	end does;
 

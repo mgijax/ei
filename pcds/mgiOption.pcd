@@ -2223,6 +2223,24 @@ Module: mgiOption
                         form = ExptTextForm;
                     }
                     {
+                      Text7 = ExptToggle : mgiOption;
+                      Group: Widget
+                        labelString = "Text-Congenic";
+                      Group: User
+                        searchValue = "TEXT-Congenic";
+                        defaultValue = "TEXT-Congenic";
+                        form = ExptTextForm;
+                    }
+                    {
+                      Text8 = ExptToggle : mgiOption;
+                      Group: Widget
+                        labelString = "Text-Meta Analysis";
+                      Group: User
+                        searchValue = "TEXT-Meta Analysis";
+                        defaultValue = "TEXT-Meta Analysis";
+                        form = ExptTextForm;
+                    }
+                    {
                       Text4 = ExptToggle : mgiOption;
                       Group: Widget
                         labelString = "Text-Genetic Cross";
