@@ -2159,6 +2159,13 @@ Module: mgiOption
                         form = ExptCrossForm;
                     }
                     {
+                      FISH = ExptToggle : mgiOption;
+                      Group: User
+                        searchValue = FISH;
+                        defaultValue = FISH;
+                        form = ExptFISHForm;
+                    }
+                    {
                       Hybrid = ExptToggle : mgiOption;
                       Group: User
                         searchValue = HYBRID;
@@ -2173,13 +2180,6 @@ Module: mgiOption
                         form = ExptInSituForm;
                     }
                     {
-                      FISH = ExptToggle : mgiOption;
-                      Group: User
-                        searchValue = FISH;
-                        defaultValue = FISH;
-                        form = ExptFISHForm;
-                    }
-                    {
                       Text = ExptToggle : mgiOption;
                       Group: User
                         searchValue = TEXT;
@@ -2187,12 +2187,12 @@ Module: mgiOption
                         form = ExptTextForm;
                     }
                     {
-                      Text1 = ExptToggle : mgiOption;
+                      Text7 = ExptToggle : mgiOption;
                       Group: Widget
-                        labelString = "Text-Physical Mapping";
+                        labelString = "Text-Congenic";
                       Group: User
-                        searchValue = "TEXT-Physical Mapping";
-                        defaultValue = "TEXT-Physical Mapping";
+                        searchValue = "TEXT-Congenic";
+                        defaultValue = "TEXT-Congenic";
                         form = ExptTextForm;
                     }
                     {
@@ -2202,6 +2202,24 @@ Module: mgiOption
                       Group: User
                         searchValue = "TEXT-Cytogenetic Localization";
                         defaultValue = "TEXT-Cytogenetic Localization";
+                        form = ExptTextForm;
+                    }
+                    {
+                      Text4 = ExptToggle : mgiOption;
+                      Group: Widget
+                        labelString = "Text-Genetic Cross";
+                      Group: User
+                        searchValue = "TEXT-Genetic Cross";
+                        defaultValue = "TEXT-Genetic Cross";
+                        form = ExptTextForm;
+		    }
+                    {
+                      Text8 = ExptToggle : mgiOption;
+                      Group: Widget
+                        labelString = "Text-Meta Analysis";
+                      Group: User
+                        searchValue = "TEXT-Meta Analysis";
+                        defaultValue = "TEXT-Meta Analysis";
                         form = ExptTextForm;
                     }
                     {
@@ -2223,33 +2241,6 @@ Module: mgiOption
                         form = ExptTextForm;
                     }
                     {
-                      Text7 = ExptToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Text-Congenic";
-                      Group: User
-                        searchValue = "TEXT-Congenic";
-                        defaultValue = "TEXT-Congenic";
-                        form = ExptTextForm;
-                    }
-                    {
-                      Text8 = ExptToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Text-Meta Analysis";
-                      Group: User
-                        searchValue = "TEXT-Meta Analysis";
-                        defaultValue = "TEXT-Meta Analysis";
-                        form = ExptTextForm;
-                    }
-                    {
-                      Text4 = ExptToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Text-Genetic Cross";
-                      Group: User
-                        searchValue = "TEXT-Genetic Cross";
-                        defaultValue = "TEXT-Genetic Cross";
-                        form = ExptTextForm;
-                    }
-                    {
                       Text5 = ExptToggle : mgiOption;
                       Group: Widget
                         labelString = "Text-Radiation Hybrid";
@@ -2264,6 +2255,15 @@ Module: mgiOption
                         searchValue = RI;
                         defaultValue = RI;
                         form = ExptRIForm;
+                    }
+                    {
+                      Text1 = ExptToggle : mgiOption;
+                      Group: Widget
+                        labelString = "Text-Physical Mapping";
+                      Group: User
+                        searchValue = "TEXT-Physical Mapping";
+                        defaultValue = "TEXT-Physical Mapping";
+                        form = ExptTextForm;
                     }
               }
         }
