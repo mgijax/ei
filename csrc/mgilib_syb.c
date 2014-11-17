@@ -2134,7 +2134,7 @@ char *mgi_DBinsert(int table, char *keyName)
             sprintf(buf, "insert %s (%s, _Object_key, _MGIType_key, _SynonymType_key, _Refs_key, synonym, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MGI_SYNONYMTYPE:
-            sprintf(buf, "insert %s (%s, _MGIType_key, _Organism_key, synonymType, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
+            sprintf(buf, "insert %s (%s, _MGIType_key, _Organism_key, synonymType, allowOnlyOne, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MGI_TRANSLATION:
             sprintf(buf, "insert %s (%s, _TranslationType_key, _Object_key, badName, sequenceNum, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));

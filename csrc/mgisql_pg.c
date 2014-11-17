@@ -589,7 +589,7 @@ char *controlledvocab_synonym()
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _SynonymType_key, synonymType, _MGIType_key, creation_date, modification_date");
+  sprintf(buf,"select _SynonymType_key, synonymType, _MGIType_key, allowOnlyOne, creation_date, modification_date");
   return(buf);
 }
 

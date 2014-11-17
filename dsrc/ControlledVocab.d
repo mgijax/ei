@@ -160,15 +160,17 @@ rules:
 	  if (tableID = MGI_NOTETYPE) then
 	    cmd := cmd + top->MGITypeMenu.menuHistory.defaultValue + "," +
 		   mgi_DBprstr(top->Name->text.value) + "," +
-		   top->PrivateMenu.menuHistory.defaultValue;
+		   top->PrivateMenu.menuHistory.defaultValue + "," +
+		   global_loginKey + "," + global_loginKey;
 	  elsif (tableID = MGI_REFASSOCTYPE) then
 	    cmd := cmd + top->MGITypeMenu.menuHistory.defaultValue + "," +
 		   mgi_DBprstr(top->Name->text.value) + "," +
 	           top->AllowOnlyOneMenu.menuHistory.defaultValue + "," +
 		   global_loginKey + "," + global_loginKey;
 	  elsif (tableID = MGI_SYNONYMTYPE) then
-	    cmd := cmd + top->MGITypeMenu.menuHistory.defaultValue + "," +
+	    cmd := cmd + top->MGITypeMenu.menuHistory.defaultValue + ",1," +
 		   mgi_DBprstr(top->Name->text.value) + "," +
+	           top->AllowOnlyOneMenu.menuHistory.defaultValue + "," +
 		   global_loginKey + "," + global_loginKey;
 	  else
 	    cmd := cmd + mgi_DBprstr(top->Name->text.value);
@@ -179,7 +181,7 @@ rules:
             cmd := cmd + "," + top->GelAssayMenu.menuHistory.defaultValue;
 	  end if;
 
-	  cmd := cmd + ")\n";
+	  cmd := cmd + END_VALUE;
 
 	  AddSQL.tableID := tableID;
           AddSQL.cmd := cmd;
@@ -294,7 +296,7 @@ rules:
 	    end if;
 	  end if;
 
-	  if (tableID = MGI_REFASSOCTYPE) then
+	  if (tableID = MGI_REFASSOCTYPE or tableID = MGI_SYNONYMTYPE) then
 	    if (top->AllowOnlyOneMenu.menuHistory.modified and
 		top->AllowOnlyOneMenu.menuHistory.searchValue != "%")
 		then
@@ -348,7 +350,7 @@ rules:
 	    end if;
 	  end if;
 
-	  if (tableID = MGI_REFASSOCTYPE) then
+	  if (tableID = MGI_REFASSOCTYPE or tableID = MGI_SYNONYMTYPE) then
 	    if (top->AllowOnlyOneMenu.menuHistory.searchValue != "%") then
 	      where := where + "\nand allowOnlyOne = " + top->AllowOnlyOneMenu.menuHistory.defaultValue;
 	    end if;
@@ -447,23 +449,16 @@ rules:
                 SetOption.source_widget := top->PrivateMenu;
                 SetOption.value := mgi_getstr(dbproc, 4);
                 send(SetOption, 0);
-	      elsif (tableID = MGI_REFASSOCTYPE) then
+	      elsif (tableID = MGI_REFASSOCTYPE or tableID = MGI_SYNONYMTYPE) then
                 SetOption.source_widget := top->AllowOnlyOneMenu;
                 SetOption.value := mgi_getstr(dbproc, 4);
                 send(SetOption, 0);
-	      elsif (tableID = MGI_SYNONYMTYPE) then
-                SetOption.source_widget := top->MGITypeMenu;
-                SetOption.value := mgi_getstr(dbproc, 3);
-		SetOption.setDefault := true;
-                send(SetOption, 0);
-	        top->CreationDate->text.value := mgi_getstr(dbproc, 4);
-	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 5);
 	      else
 	        top->CreationDate->text.value := mgi_getstr(dbproc, 3);
 	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 4);
 	      end if;
 
-	      if (tableID = MGI_NOTETYPE or tableID = MGI_REFASSOCTYPE) then
+	      if (tableID = MGI_NOTETYPE or tableID = MGI_REFASSOCTYPE or tableID = MGI_SYNONYMTYPE) then
                 SetOption.source_widget := top->MGITypeMenu;
                 SetOption.value := mgi_getstr(dbproc, 3);
 		SetOption.setDefault := true;
@@ -525,7 +520,7 @@ rules:
 	    top->PrivateMenu.required := false;
 	  end if;
 
-	  if (tableID = MGI_REFASSOCTYPE) then
+	  if (tableID = MGI_REFASSOCTYPE or tableID = MGI_SYNONYMTYPE) then
 	    top->AllowOnlyOneMenu.sensitive := true;
 	    top->AllowOnlyOneMenu.required := true;
 	  else
