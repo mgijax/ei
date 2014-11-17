@@ -135,7 +135,7 @@ rules:
 	    cmd := cmd + "NULL,";
 	  end if;
 
-	  cmd := cmd + (string)((integer) top->Displayed.set) + ")\n";
+	  cmd := cmd + (string)((integer) top->Displayed.set) + END_VALUE;
 
           AddSQL.tableID := CROSS;
           AddSQL.cmd := cmd;
