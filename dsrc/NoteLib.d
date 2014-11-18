@@ -635,7 +635,6 @@ rules:
 	  key : string := ModifyNotes.key;
 	  row : integer := ModifyNotes.row;
 	  column : integer := ModifyNotes.column;
-	  allowDelete : boolean := ModifyNotes.allowDelete;
 	  keyDeclared : boolean := ModifyNotes.keyDeclared;
 	  keyName : string := "noteKey";
           note : string;
@@ -703,12 +702,11 @@ rules:
 	      noteKey := (string) noteWidget.noteKey;
 	    end if;
 
-	    if (allowDelete and noteKey.length > 0) then
+	    if (noteKey.length > 0) then
               deleteCmd := mgi_DBdelete(tableID, noteKey);
 	    end if;
 	  end if;
 
-	  --if (allowDelete and tableID != MGI_NOTE) then
 	  if (tableID != MGI_NOTE) then
             deleteCmd := mgi_DBdelete(tableID, key);
 

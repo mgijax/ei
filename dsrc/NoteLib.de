@@ -59,7 +59,6 @@ ModifyNotes [source_widget : widget;         -- Notes widget
              key : string;                   -- primary key of record to modify
 	     row : integer;                  -- Note Row (if Notes Widget is a table)
 	     column : integer;               -- Note Column (if Notes Widget is a table)
-	     allowDelete : boolean := false;       -- Do we try to delete a non-existant row?
 	     allowBlank : boolean := false;  -- Allow Blank Note?
 	     keyDeclared : boolean := false; -- Has Primary Key Already Been Declared?
 	     noteType : string := "";];      -- Note Type (if Notes Widget is a table)

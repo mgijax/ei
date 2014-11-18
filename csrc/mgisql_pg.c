@@ -147,9 +147,7 @@ char *exec_mgi_resetSequenceNum(char *key, char *table)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  /*
-  sprintf(buf,"exec MGI_resetSequenceNum %s, %s\n", table, key);
-  */
+  sprintf(buf,"select MGI_resetSequenceNum (%s, %s);\n", table, key);
   return(buf);
 }
 
