@@ -11,12 +11,26 @@
 --
 -- Module controls edits of Controlled Vocabulary tables:
 --
--- Mapping Assays, 
--- Marker Types, Molecuar Segment Vector Types,
--- Antibody Classes, Antibody Types, Assay Types, Expression Patterns,
--- Expression Strengths, Gel RNA Types, Gel Units, Image Field Types,
--- Labels, Probe Sense, Probe Visualization,
--- Secondary Labelling, Embedding Methods, Fixation Methods.
+-- MLD_Assay_Types     : Mapping Assays
+-- MRK_EventReason     : Marker Event Reason
+-- BIB_ReviewStatus    : Reference Review Status
+-- MGI_NoteType        : MGI Note Type
+-- MGI_RefAssocType    : MGI Reference Association Type
+-- MGI_SynonymType     : MGI Synonym Type
+-- GXD_AntibodyClass   : Antibody Classes
+-- GXD_AntibodyType    : Antibody Types
+-- GXD_AssayType       : Assay Types
+-- GXD_Pattern         : Expression Pattern
+-- GXD_Strength        : Expression Strengts
+-- GXD_GelRNAType      : Gel RNA Types
+-- GXD_GelUnits        : Gel Units
+-- GXD_GelControl      : Gel Control
+-- GXD_Label           : Antibody/Probe Labels
+-- GXD_ProbeSense      : Probe Sense Values
+-- GXD_VisualizationMethod : Probe Visualization Methods
+-- GXD_Secondary       : Secondary Antibody Preps
+-- GXD_EmbeddingMethod : Specimen Embedding Methods
+-- GXD_FixationMethod  : Specimen Fixation Methods
 --
 -- History
 --
