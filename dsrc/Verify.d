@@ -1793,8 +1793,8 @@ rules:
 	    accID := "";
             if (sourceWidget.is_defined("markerID") != nil) then
 	      if (column = markerID) then
-                tempAccID := value;
-                accID := mgi_simplesub("MGI:", "", tempAccID);
+                tempAccID := value.lower_case;
+                accID := mgi_simplesub("mgi:", "", tempAccID);
 	      end if;
             end if;
 

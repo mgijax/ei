@@ -708,7 +708,8 @@ rules:
 	    end if;
 	  end if;
 
-	  if (allowDelete and tableID != MGI_NOTE) then
+	  --if (allowDelete and tableID != MGI_NOTE) then
+	  if (tableID != MGI_NOTE) then
             deleteCmd := mgi_DBdelete(tableID, key);
 
 	    if (isTable and noteType.length > 0) then
