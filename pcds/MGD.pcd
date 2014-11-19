@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Wed Nov 19 14:03:01 2014";
+      lastWritten = "Wed Nov 19 14:04:10 2014";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -1358,7 +1358,7 @@ Module: MGD
                                     leftWidget = Search;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = Next;
+                                    topWidget = Search;
                                     topOffset = 2;
                                     bottomAttachment = attach_none;
                                     resizable = true;
