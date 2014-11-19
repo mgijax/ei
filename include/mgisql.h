@@ -40,7 +40,6 @@ extern char *exec_prb_insertReference(char *, char *);
 extern char *exec_prb_getStrainByReference(char *);
 extern char *exec_prb_getStrainReferences(char *);
 extern char *exec_prb_getStrainDataSets(char *);
-extern char *exec_prb_getTissueDataSets(char *, char *);
 extern char *exec_prb_mergeStrain(char *, char *);
 extern char *exec_prb_processAntigenAnonSource(char *, char *, char *, char *, char *, char *, char *, char *, char *, char *);
 extern char *exec_prb_processProbeSource(char *, char *, char *, char *, char *, char *, char *, char *, char *, char *, char *);

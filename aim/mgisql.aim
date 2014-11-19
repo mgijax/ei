@@ -37,7 +37,6 @@ CALLS
 	 exec_prb_getStrainByReference("char *")		: "char *";
 	 exec_prb_getStrainReferences("char *")			: "char *";
 	 exec_prb_getStrainDataSets("char *")			: "char *";
-	 exec_prb_getTissueDataSets("char *", "char *")		: "char *";
 	 exec_prb_mergeStrain("char *", "char *")		: "char *";
 	 exec_prb_processAntigenAnonSource("char *", "char *", "char *", "char *", "char *", "char *", "char *", "char *", "char *", "char *")			: "char *";
 	 exec_prb_processProbeSource("char *", "char *", "char *", "char *", "char *", "char *", "char *", "char *", "char *", "char *", "char *")		: "char *";
