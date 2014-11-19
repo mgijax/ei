@@ -50,7 +50,6 @@ devents:
 
 	PrepareSearch :local [];
 	Search :local [];
-	SearchDuplicates :local [];
 	Select :local [item_position : integer;];
 
 locals:
@@ -248,23 +247,6 @@ rules:
 	Search does
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
-	  Query.source_widget := top;
-	  Query.select := "select distinct *\n" + from + "\n" + where + "\norder by tissue\n";
-	  Query.table := TISSUE;
-	  send(Query, 0);
-	  (void) reset_cursor(top);
-	end does;
-
---
--- SearchDuplicates
---
--- Search for Duplicate records
---
-
-	SearchDuplicates does
-          (void) busy_cursor(top);
-	  from := "from " + mgi_DBtable(TISSUE) + " ";
-	  where := "group by tissue having count(*) > 1";
 	  Query.source_widget := top;
 	  Query.select := "select distinct *\n" + from + "\n" + where + "\norder by tissue\n";
 	  Query.table := TISSUE;

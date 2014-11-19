@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Wed Nov 19 08:51:56 2014";
+      lastWritten = "Wed Nov 19 14:03:01 2014";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -1355,31 +1355,10 @@ Module: MGD
                                   RecordCount = RecordCount;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = Duplicates;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = Duplicates;
-                                    topOffset = 2;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                }
-                                {
-                                  CreationDate = CreationDate : mgiDataTypes;
-                                }
-                                {
-                                  ModifiedDate = ModifiedDate : mgiDataTypes;
-                                }
-                                {
-                                  Duplicates = ControlPush : mgiControl;
-                                  Group: Widget
-                                    activateCallback = "D:SearchDuplicates,\nD:GoHome";
-                                    labelString = "Find Duplicates";
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
                                     leftWidget = Search;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = Search;
+                                    topWidget = Next;
                                     topOffset = 2;
                                     bottomAttachment = attach_none;
                                     resizable = true;
