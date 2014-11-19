@@ -158,7 +158,7 @@ rules:
 		 mgi_DBinsert(MGI_ORGANISM, KEYNAME) +
                  mgi_DBprstr(top->Common->text.value) + "," +
                  mgi_DBprstr(top->Latin->text.value) + "," +
-		 global_loginKey + "," + global_loginKey + ")\n";
+		 global_loginKey + "," + global_loginKey + END_VALUE;
 
 	  send(ModifyAnchor, 0);
 	  send(ModifyChromosome, 0);
@@ -175,7 +175,7 @@ rules:
 	  AddSQL.tableID := MGI_ORGANISM;
           AddSQL.cmd := cmd;
 	  AddSQL.list := top->QueryList;
-          AddSQL.item := top->Common->text.value + " (" + top->Latin->text.value + ")";
+          AddSQL.item := top->Common->text.value + " (" + top->Latin->text.value + END_VALUE;
           AddSQL.key := top->ID->text;
           send(AddSQL, 0);
 
@@ -319,7 +319,7 @@ rules:
 
             if (editMode = TBL_ROW_ADD) then
               tmpCmd := tmpCmd + mgi_DBinsert(MRK_CHROMOSOME, keyName) + currentRecordKey + "," + 
-		        mgi_DBprstr(chr) + "," + newSeqNum + ")\n";
+		        mgi_DBprstr(chr) + "," + newSeqNum + END_VALUE;
             elsif (editMode = TBL_ROW_MODIFY) then
 
 	      -- If current Seq # not equal to new Seq #, then re-ordering is taking place
@@ -332,7 +332,7 @@ rules:
 		-- Insert new record
 
                 tmpCmd := tmpCmd + mgi_DBinsert(MRK_CHROMOSOME, keyName) + currentRecordKey + "," + 
-		       mgi_DBprstr(chr) + "," + newSeqNum + ")\n";
+		       mgi_DBprstr(chr) + "," + newSeqNum + END_VALUE;
 
 	      -- Else, a simple update
 
@@ -384,7 +384,7 @@ rules:
             chr := mgi_tblGetCell(table, row, table.markerChr);
  
             if (editMode = TBL_ROW_ADD) then
-              cmd := cmd + mgi_DBinsert(MRK_ANCHOR, NOKEY) + mgi_DBprstr(chr) + "," + newKey + ")\n";
+              cmd := cmd + mgi_DBinsert(MRK_ANCHOR, NOKEY) + mgi_DBprstr(chr) + "," + newKey + END_VALUE;
             elsif (editMode = TBL_ROW_MODIFY) then
               set := "chromosome = " + mgi_DBprstr(chr) + "," +
 		     "_Marker_key = " + newKey;
@@ -427,7 +427,7 @@ rules:
               cmd := cmd + mgi_DBinsert(MGI_ORGANISMTYPE, NOKEY) + 
 		currentRecordKey + "," +
 		newKey + "," +
-		global_loginKey + "," + global_loginKey + ")\n";
+		global_loginKey + "," + global_loginKey + END_VALUE;
             elsif (editMode = TBL_ROW_MODIFY) then
               set := "_MGIType_key = " + newKey;
               cmd := cmd + mgi_DBupdate(MGI_ORGANISMTYPE, currentRecordKey, set) +

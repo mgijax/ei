@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Mon Nov 10 10:27:43 2014";
+      lastWritten = "Wed Nov 19 08:51:56 2014";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -1313,18 +1313,6 @@ Module: MGD
                                     topWidget = Name;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    topOffset = 5;
-                                }
-                                {
-                                  DataSets = DataSetForm : mgiTable;
-                                  Group: Constraint
-                                    leftAttachment = attach_form;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    leftOffset = 10;
-                                    topWidget = StandardFrame;
                                     topOffset = 5;
                                 }
                           }
