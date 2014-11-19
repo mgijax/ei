@@ -227,7 +227,7 @@ char *exec_prb_getTissueDataSets(char *key, char *countOnly)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec prb_getTissueDataSets %s, %s\n", key, countOnly);
+  sprintf(buf,"select PRB_getTissueDataSets (%s, %s)\n", key, countOnly);
   return(buf);
 }
 

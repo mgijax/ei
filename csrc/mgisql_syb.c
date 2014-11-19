@@ -224,14 +224,6 @@ char *exec_prb_getStrainDataSets(char *key)
   return(buf);
 }
 
-char *exec_prb_getTissueDataSets(char *key, char *countOnly)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec prb_getTissueDataSets %s, %s\n", key, countOnly);
-  return(buf);
-}
-
 char *exec_prb_mergeStrain(char *key1, char *key2)
 {
   static char buf[TEXTBUFSIZ];

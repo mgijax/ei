@@ -52,7 +52,6 @@ devents:
 	Search :local [];
 	SearchDuplicates :local [];
 	Select :local [item_position : integer;];
-	SelectDataSets :local [doCount : boolean := false;];
 
 locals:
 	mgi : widget;
@@ -133,7 +132,7 @@ rules:
           cmd : string := mgi_setDBkey(TISSUE, NEWKEY, KEYNAME) +
                           mgi_DBinsert(TISSUE, KEYNAME) +
                           mgi_DBprstr(top->Name->text.value) + "," +
-		          top->StandardMenu.menuHistory.defaultValue + ")\n";
+		          top->StandardMenu.menuHistory.defaultValue + END_VALUE;
 
 	  AddSQL.tableID := TISSUE;
           AddSQL.cmd := cmd;
@@ -284,11 +283,6 @@ rules:
 
           (void) busy_cursor(top);
 
-          ClearTable.table := top->DataSets->Table;
-          send(ClearTable, 0);
-
-	  top->DataSets->Records.labelString := "0 Records";
- 
           if (top->QueryList->List.selectedItemCount = 0) then
 	    currentRecordKey := "";
             top->QueryList->List.row := 0;
@@ -324,59 +318,6 @@ rules:
           Clear.reset := true;
           send(Clear, 0);
 
-	  (void) reset_cursor(top);
-	end does;
-
---
--- SelectDataSets
---
--- Activated from:  top->DataSets->Retrieve
---
--- Retrieves DataSets which contain cross-references to selected Tissue
---
- 
-        SelectDataSets does
-	  table : widget := top->DataSets->Table;
- 
-          (void) busy_cursor(top);
- 
-          ClearTable.table := table;
-          send(ClearTable, 0);
- 
-          if (top->QueryList->List.selectedItemCount = 0) then
-	    currentRecordKey := "";
-            top->QueryList->List.row := 0;
-            top->ID->text.value := "";
-            (void) reset_cursor(top);
-            return;
-          end if;
-
-	  cmd : string;
-          row : integer := 0;
- 
-	  if (SelectDataSets.doCount) then
-	    cmd := exec_prb_getTissueDataSets(currentRecordKey, "1");
-	  else
-	    cmd := exec_prb_getTissueDataSets(currentRecordKey, "0");
-	  end if;
-
-          dbproc : opaque := mgi_dbexec(cmd);
- 
-          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (SelectDataSets.doCount) then
-		row := (integer) mgi_getstr(dbproc, 1);
-              else
-                (void) mgi_tblSetCell(table, row, table.accID, mgi_getstr(dbproc, 1));
-                (void) mgi_tblSetCell(table, row, table.dataSet, mgi_getstr(dbproc, 2));
-                row := row + 1;
-	      end if;
-            end while;
-          end while;
-
-	  (void) mgi_dbclose(dbproc);
-
-	  top->DataSets->Records.labelString := (string) row + " Records";
 	  (void) reset_cursor(top);
 	end does;
 
