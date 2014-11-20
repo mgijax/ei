@@ -19,18 +19,20 @@ source ${MGICONFIG}/master.config.csh
 unsetenv OPENWINHOME
 unsetenv XKEYSYMDB
 
-setenv CVS_TAG  ei-5-2-0-10
+setenv CVS_TAG  ei-5-2-0-7
 setenv TeleUSE /opt/teleuseXRT
 
 # symlinks for sybase/postgres
 setenv EIINCLUDE syblib.h
-setenv EIDSQL SQL_syb.d
 setenv EICSQL mgisql_syb.c
 setenv EICLIB mgilib_syb.c
+setenv EIDSQL SQL_syb.d
+setenv EIDDATELIB DateLib_syb.d
 #setenv EIINCLUDE pglib.h
-#setenv EIDSQL SQL_pg.d
 #setenv EICSQL mgisql_pg.c
 #setenv EICLIB mgilib_pg.c
+#setenv EIDSQL SQL_pg.d
+#setenv EIDDATELIB DateLib_pg.d
 
 switch (`uname -n`)
     case bhmgiei01:
