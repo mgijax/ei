@@ -77,6 +77,7 @@ extern char *acclib_orderA();
 extern char *acclib_orderB();
 extern char *acclib_orderC();
 extern char *acclib_orderD();
+extern char *acclib_orderE();
 extern char *acclib_seqacc(char *, char *);
 
 /* ActualLogical.d */

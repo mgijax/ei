@@ -448,7 +448,7 @@ char *acclib_assoc()
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _LogicalDB_Key, _Assoc_key, accID, prefixPart, numericPart, preferred");
+  sprintf(buf,"select _LogicalDB_Key, _Assoc_key, accID, prefixPart, numericPart, preferred, LogicalDB");
   return(buf);
 }
 
@@ -456,7 +456,7 @@ char *acclib_acc()
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _LogicalDB_Key, _Accession_key, accID, prefixPart, numericPart, preferred");
+  sprintf(buf,"select _LogicalDB_Key, _Accession_key, accID, prefixPart, numericPart, preferred, LogicalDB");
   return(buf);
 }
 
@@ -513,6 +513,14 @@ char *acclib_orderD()
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf," order by _LogicalDB_key, preferred desc, prefixPart, numericPart");
+  return(buf);
+}
+
+char *acclib_orderE()
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf," order by LogicalDB, preferred desc, prefixPart, numericPart");
   return(buf);
 }
 

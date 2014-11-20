@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Fri Sep 19 10:24:57 2014";
+      lastWritten = "Thu Nov 20 08:47:32 2014";
       copy = false;
       inCreateMenu = true;
         {
@@ -2180,6 +2180,13 @@ Module: mgiOption
                         form = ExptInSituForm;
                     }
                     {
+                      RI = ExptToggle : mgiOption;
+                      Group: User
+                        searchValue = RI;
+                        defaultValue = RI;
+                        form = ExptRIForm;
+                    }
+                    {
                       Text = ExptToggle : mgiOption;
                       Group: User
                         searchValue = TEXT;
@@ -2212,7 +2219,7 @@ Module: mgiOption
                         searchValue = "TEXT-Genetic Cross";
                         defaultValue = "TEXT-Genetic Cross";
                         form = ExptTextForm;
-		    }
+                    }
                     {
                       Text8 = ExptToggle : mgiOption;
                       Group: Widget
@@ -2220,6 +2227,15 @@ Module: mgiOption
                       Group: User
                         searchValue = "TEXT-Meta Analysis";
                         defaultValue = "TEXT-Meta Analysis";
+                        form = ExptTextForm;
+                    }
+                    {
+                      Text1 = ExptToggle : mgiOption;
+                      Group: Widget
+                        labelString = "Text-Physical Mapping";
+                      Group: User
+                        searchValue = "TEXT-Physical Mapping";
+                        defaultValue = "TEXT-Physical Mapping";
                         form = ExptTextForm;
                     }
                     {
@@ -2247,22 +2263,6 @@ Module: mgiOption
                       Group: User
                         searchValue = "TEXT-Radiation Hybrid";
                         defaultValue = "TEXT-Radiation Hybrid";
-                        form = ExptTextForm;
-                    }
-                    {
-                      RI = ExptToggle : mgiOption;
-                      Group: User
-                        searchValue = RI;
-                        defaultValue = RI;
-                        form = ExptRIForm;
-                    }
-                    {
-                      Text1 = ExptToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Text-Physical Mapping";
-                      Group: User
-                        searchValue = "TEXT-Physical Mapping";
-                        defaultValue = "TEXT-Physical Mapping";
                         form = ExptTextForm;
                     }
               }

@@ -214,11 +214,13 @@ rules:
 	  source : widget := table.parent.child_by_class("XmRowColumn");
 	  tableID : integer := LoadAcc.tableID;
 	  sortColumn : integer := LoadAcc.sortColumn;
+	  displayLDB : boolean := LoadAcc.displayLDB;
 	  cmd : string;
 	  logicalDBkey : string;
 	  prefix : string;
 	  accID : string;
 	  preferred : string;
+	  accName : string;
 	  orderBy : string;
 
 	  --(void) mgi_writeLog("begin : LoadAcc\n");
@@ -233,6 +235,8 @@ rules:
 	    orderBy := acclib_orderB();
 	  elsif (tableID = SEQ_ALLELE_ASSOC_VIEW) then
 	    orderBy := acclib_orderC();
+	  elsif (tableID = STRAIN) then
+	    orderBy := acclib_orderE();
 	  else
 	    orderBy := acclib_orderD();
 	  end if;
@@ -274,7 +278,7 @@ rules:
 	      -- Find the LogicalDB in AccSourcePulldown which
 	      -- matches the LogicalDB for the returned Accession ID
 
-	      if (source.managed) then
+	      if (source.managed and displayLDB) then
                 while (i <= source.subMenuId.num_children) do
                   if (logicalDBkey = source.subMenuId.child(i).defaultValue) then
                     if (((integer) logicalDBkey = 1 and 
@@ -320,7 +324,11 @@ rules:
 	      (void) mgi_tblSetCell(table, row, table.accKey, mgi_getstr(dbproc, 2));
 
 	      if (source.managed) then
-	        (void) mgi_tblSetCell(table, row, table.accName, source.menuHistory.labelString);
+	        if (displayLDB) then
+	          (void) mgi_tblSetCell(table, row, table.accName, source.menuHistory.labelString);
+	        else
+	          (void) mgi_tblSetCell(table, row, table.accName, mgi_getstr(dbproc, 7));
+	        end if;
 	      end if;
 
 	      if (table.is_defined("refsKey") != nil) then
@@ -363,6 +371,17 @@ rules:
             end while;
           end while;
           (void) mgi_dbclose(dbproc);
+
+	  if (not displayLDB) then
+	    while (row < mgi_tblNumRows(table)) do
+	      (void) mgi_tblSetCell(table, row, table.logicalKey, "");
+	      (void) mgi_tblSetCell(table, row, table.accKey, "");
+	      (void) mgi_tblSetCell(table, row, table.accID, "");
+	      (void) mgi_tblSetCell(table, row, table.accName, "");
+	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_EMPTY);
+	      row := row + 1;
+	    end while;
+	  end if;
 
 	  -- If sort column is specified, sort it
 

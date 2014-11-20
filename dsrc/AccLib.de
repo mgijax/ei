@@ -20,7 +20,8 @@ LoadAcc [table : widget;		-- Accession Table
          tableID : integer;	        -- ID of table
          objectKey : string;  		-- Unique identifier of Accessionable Object
 	 sortColumn : integer := -1;    -- Sort column
-	 reportError : boolean := true;]; -- Report if no MGI Accession numbers found
+	 reportError : boolean := true; -- Report if no MGI Accession numbers found
+	 displayLDB : boolean := true;]; -- Display LogicalDB names on screen
 
 -- Process Accession Table
 ProcessAcc [table : widget;		-- Accession Table

@@ -1095,6 +1095,7 @@ rules:
 	  LoadAcc.objectKey := currentRecordKey;
 	  LoadAcc.tableID := STRAIN;
 	  LoadAcc.reportError := false;
+	  LoadAcc.displayLDB := false;
 	  send(LoadAcc, 0);
 
           top->QueryList->List.row := Select.item_position;

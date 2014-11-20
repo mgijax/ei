@@ -65,6 +65,7 @@ CALLS
 	 acclib_orderB()					: "char *";
 	 acclib_orderC()					: "char *";
 	 acclib_orderD()					: "char *";
+	 acclib_orderE()					: "char *";
 	 acclib_seqacc("char *", "char *")			: "char *";
 
 	 actuallogical_search("char *", "char *")		: "char *";
