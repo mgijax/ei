@@ -1027,7 +1027,7 @@ char *mgi_DBtype(int table)
 	buf = mgi_DBaccTable(BIB_REFS)
 
 	buf contains:
-		BIB_Summary_View
+		BIB_Acc_View
 */
  
 char *mgi_DBaccTable(int table)
@@ -1046,13 +1046,13 @@ char *mgi_DBaccTable(int table)
             strcpy(buf, "ALL_CellLine_Acc_View");
             break;
     case BIB_REFS:
-            strcpy(buf, "BIB_Summary_All_View");
+            strcpy(buf, "BIB_Acc_View");
             break;
     case GXD_ANTIGEN:
-            strcpy(buf, "GXD_Antigen_Summary_View");
+            strcpy(buf, "GXD_Antigen_Acc_View");
             break;
     case GXD_ANTIBODY:
-            strcpy(buf, "GXD_Antibody_Summary_View");
+            strcpy(buf, "GXD_Antibody_Acc_View");
             break;
     case GXD_ASSAY:
             strcpy(buf, "GXD_Assay_Acc_View");
@@ -1070,7 +1070,7 @@ char *mgi_DBaccTable(int table)
             strcpy(buf, "MGI_Organism_Acc_View");
             break;
     case MLD_EXPTS:
-            strcpy(buf, "MLD_Summary_View");
+            strcpy(buf, "MLD_Acc_View");
             break;
     case MRK_MARKER:
     case MRK_MOUSE:
