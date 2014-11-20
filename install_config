@@ -30,7 +30,7 @@ cd ${EIBUILDDIR}
 
 #link to the proper dsrc/DateLib.d file
 cd ${EIBUILDDIR}/dsrc
-rm -rf SQL.d
+rm -rf DateLib.d
 ln -s ${EIDDATELIB} DateLib.d
 cd ${EIBUILDDIR}
 
