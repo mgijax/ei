@@ -404,6 +404,7 @@ char *mgi_getstr(PGconn *conn, int column)
 {
   static char buf[TEXTBUFSIZ];
   int coltype; 
+  char **tokens;
 
   memset(buf, '\0', sizeof(buf));
 
@@ -416,7 +417,6 @@ char *mgi_getstr(PGconn *conn, int column)
 
   /* copy data into other storage */
   strcpy(buf, PQgetvalue(res, currentRow, column));
-  /*printf("mgi_getstr: %s\n", buf);*/
 
   coltype = PQftype(res, column);
 
@@ -434,22 +434,19 @@ char *mgi_getstr(PGconn *conn, int column)
   else if (strcmp(buf, "f") == 0)
     strcpy(buf, "0");
 
-  /* 
-   * leave date/time stamps as-is
-   */
-  /*
+  /* to return datetime correctly */
+
   switch (coltype)
   {
-    case TIMESTAMPOID:
+    /*case TIMESTAMPOID:*/
     case 1114:
-      printf("mgi_getstr: %s\n", buf);
-      printf("data type: %d\n", coltype);
+      tokens = (char **) mgi_splitfields(buf, " ");
+      sprintf(buf, "%s", tokens[0]);
       break;
 
     default:
       break;
   }
-  */
 
   return(buf);
 }
