@@ -2,7 +2,7 @@ Module: mgiDataTypes
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Thu Jul 10 09:57:00 2014";
+      lastWritten = "Fri Nov 21 08:33:24 2014";
         {
           toggle = XmToggleButton;
           Group: Widget
@@ -246,7 +246,7 @@ Shift<Key>Tab: prev-tab-group()
               {
                 label = XmLabel;
                 Group: Widget
-                  labelString = "Created\n(MM/DD/YYYY)";
+                  labelString = Created;
               }
               {
                 text = text;
@@ -264,7 +264,7 @@ Shift<Key>Tab: prev-tab-group()
               {
                 label = XmLabel;
                 Group: Widget
-                  labelString = "Modified\n(MM/DD/YYYY)";
+                  labelString = Modified;
               }
               {
                 text = text;
