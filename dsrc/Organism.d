@@ -175,7 +175,7 @@ rules:
 	  AddSQL.tableID := MGI_ORGANISM;
           AddSQL.cmd := cmd;
 	  AddSQL.list := top->QueryList;
-          AddSQL.item := top->Common->text.value + " (" + top->Latin->text.value + END_VALUE;
+          AddSQL.item := top->Common->text.value + " (" + top->Latin->text.value + ")";
           AddSQL.key := top->ID->text;
           send(AddSQL, 0);
 
@@ -494,7 +494,6 @@ rules:
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
-	  --Query.select := "select distinct *\n" + from + "\n" + where + "\norder by commonName\n";
 	  Query.select := "select distinct s._Organism_key, s.commonName || ' (' || s.latinName || ')' as commonName\n" + from + "\n" + where + "\norder by commonName\n";
 	  Query.table := MGI_ORGANISM;
 	  send(Query, 0);
