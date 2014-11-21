@@ -7,6 +7,10 @@
 #
 # Purpose: To install the EI
 #
+# unsetenv MGICONFIG
+# source ./Configuration
+# run appropriate install wrapper
+#
 # Modification History:
 #
 # 10/13/2014	lec

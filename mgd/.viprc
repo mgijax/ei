@@ -26,101 +26,101 @@ pcds
     show_names  = false
     height      = 209
 
-  load "/usr/local/mgi/scrum-dog/ei/pcds/MGI.pcd"
+  load "/usr/local/mgi/lec/ei/pcds/MGI.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 561
 
-  load "/usr/local/mgi/scrum-dog/ei/pcds/GXD.pcd"
+  load "/usr/local/mgi/lec/ei/pcds/GXD.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 396
 
-  load "/usr/local/mgi/scrum-dog/ei/pcds/MGD.pcd"
+  load "/usr/local/mgi/lec/ei/pcds/MGD.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 836
 
-  load "/usr/local/mgi/scrum-dog/ei/pcds/mgiDialog.pcd"
+  load "/usr/local/mgi/lec/ei/pcds/mgiDialog.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 561
     vsb_pos     = 1430
 
-  load "/usr/local/mgi/scrum-dog/ei/pcds/mgiLookup.pcd"
+  load "/usr/local/mgi/lec/ei/pcds/mgiLookup.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 231
     vsb_pos     = 608
 
-  load "/usr/local/mgi/scrum-dog/ei/pcds/mgiOption.pcd"
+  load "/usr/local/mgi/lec/ei/pcds/mgiOption.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 3861
 
-  load "/usr/local/mgi/scrum-dog/ei/pcds/mgiControl.pcd"
+  load "/usr/local/mgi/lec/ei/pcds/mgiControl.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 121
 
-  load "/usr/local/mgi/scrum-dog/ei/pcds/mgiMenu.pcd"
+  load "/usr/local/mgi/lec/ei/pcds/mgiMenu.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 396
 
-  load "/usr/local/mgi/scrum-dog/ei/pcds/mgiTable.pcd"
+  load "/usr/local/mgi/lec/ei/pcds/mgiTable.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 176
     vsb_pos     = 74
 
-  load "/usr/local/mgi/scrum-dog/ei/pcds/mgiDataTypes.pcd"
+  load "/usr/local/mgi/lec/ei/pcds/mgiDataTypes.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 1166
 
-  load "/usr/local/mgi/scrum-dog/ei/pcds/mgiAnatDictionary.pcd"
+  load "/usr/local/mgi/lec/ei/pcds/mgiAnatDictionary.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 671
 
-  load "/usr/local/mgi/scrum-dog/ei/pcds/MGIAdmin.pcd"
+  load "/usr/local/mgi/lec/ei/pcds/MGIAdmin.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 66
     vsb_pos     = 55
 
-  load "/usr/local/mgi/scrum-dog/ei/pcds/MGINomen.pcd"
+  load "/usr/local/mgi/lec/ei/pcds/MGINomen.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 120
 
-  load "/usr/local/mgi/scrum-dog/ei/pcds/MGIMenu.pcd"
+  load "/usr/local/mgi/lec/ei/pcds/MGIMenu.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 120
 
-  load "/usr/local/mgi/scrum-dog/ei/pcds/mgiCV.pcd"
+  load "/usr/local/mgi/lec/ei/pcds/mgiCV.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 231
 
-  load "/usr/local/mgi/scrum-dog/ei/pcds/mgiNoteBook.pcd"
+  load "/usr/local/mgi/lec/ei/pcds/mgiNoteBook.pcd"
     floating    = false
     opened      = false
     show_names  = false
