@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Thu Nov 20 08:47:33 2014";
+      lastWritten = "Mon Nov 24 07:23:06 2014";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -1246,7 +1246,7 @@ Module: MGD
           TissueModule = Module : MGI;
           Group: Control
             vip_x = 90;
-            vip_y = 1185;
+            vip_y = 1130;
           Group: User
             homeWidget = Name;
             activateButtonName = Tissue;
@@ -2167,7 +2167,7 @@ Module: MGD
             width = 600;
           Group: Control
             vip_x = 90;
-            vip_y = 1900;
+            vip_y = 1845;
               {
                 ID = ID;
               }
@@ -2335,7 +2335,7 @@ Module: MGD
             width = 600;
           Group: Control
             vip_x = 90;
-            vip_y = 1845;
+            vip_y = 1790;
               {
                 Marker = ReferenceTable : mgiTable;
                 Group: Constraint
@@ -2541,7 +2541,7 @@ Module: MGD
             managed = False;
           Group: Control
             vip_x = 90;
-            vip_y = 2010;
+            vip_y = 1955;
           Group: User
             homeWidget = Jnum;
             queryList = ReferenceList;
@@ -2969,7 +2969,7 @@ Module: MGD
             width = 600;
           Group: Control
             vip_x = 90;
-            vip_y = 1955;
+            vip_y = 1900;
               {
                 Sequence1 = CharText : mgiDataTypes;
                 Group: Constraint
@@ -3656,7 +3656,7 @@ Module: MGD
             resizePolicy = resize_any;
           Group: Control
             vip_x = 90;
-            vip_y = 1680;
+            vip_y = 1625;
               {
                 ID = ID;
               }
@@ -3691,7 +3691,7 @@ Module: MGD
             resizePolicy = resize_any;
           Group: Control
             vip_x = 90;
-            vip_y = 1405;
+            vip_y = 1350;
               {
                 ID = ID;
               }
@@ -3728,7 +3728,7 @@ Module: MGD
             height = 700;
           Group: Control
             vip_x = 90;
-            vip_y = 1515;
+            vip_y = 1460;
               {
                 ID = ID;
               }
@@ -3812,7 +3812,7 @@ Module: MGD
             height = 700;
           Group: Control
             vip_x = 90;
-            vip_y = 1570;
+            vip_y = 1515;
               {
                 ID = ID;
               }
@@ -4089,7 +4089,7 @@ Module: MGD
             height = 700;
           Group: Control
             vip_x = 90;
-            vip_y = 1460;
+            vip_y = 1405;
               {
                 ID = ID;
               }
@@ -4349,7 +4349,7 @@ Module: MGD
             height = 700;
           Group: Control
             vip_x = 90;
-            vip_y = 1625;
+            vip_y = 1570;
               {
                 ID = ID;
               }
@@ -4520,7 +4520,7 @@ Module: MGD
             height = 700;
           Group: Control
             vip_x = 90;
-            vip_y = 1240;
+            vip_y = 1185;
               {
                 ID = ID;
               }
@@ -4903,7 +4903,7 @@ Module: MGD
             height = 775;
           Group: Control
             vip_x = 90;
-            vip_y = 1735;
+            vip_y = 1680;
           Group: User
             homeWidget = Jnum;
               {
@@ -5014,7 +5014,7 @@ Module: MGD
             height = 1000;
           Group: Control
             vip_x = 90;
-            vip_y = 1350;
+            vip_y = 1295;
           Group: User
             homeWidget = Chromosome;
             queryList = ExperimentList;
@@ -7058,7 +7058,7 @@ Module: MGD
             width = 600;
           Group: Control
             vip_x = 90;
-            vip_y = 1790;
+            vip_y = 1735;
               {
                 ParentClone = mgiAccession : mgiDataTypes;
                 Group: Widget
@@ -9069,7 +9069,7 @@ Shift<Key>Tab: prev-tab-group()
           StrainModule = Module : MGI;
           Group: Control
             vip_x = 90;
-            vip_y = 1130;
+            vip_y = 1075;
           Group: User
             homeWidget = Name;
             activateButtonName = Strain;
@@ -10209,857 +10209,6 @@ Shift<Key>Tab: prev-tab-group()
                       VerifyValueChange = VerifyValueChange : mgiDialog;
                       Group: Widget
                         messageString = "Are you sure you want to change the Private flag?";
-                    }
-              }
-        }
-        {
-          SequenceModule = Module1 : MGI;
-          Group: Control
-            vip_x = 90;
-            vip_y = 1075;
-          Group: User
-            homeWidget = Description;
-              {
-                MainForm = XmForm;
-                    {
-                      MainMenu = MainMenu : mgiMenu;
-                    }
-                    {
-                      EditForm = EditForm : MGI;
-                      Group: Widget
-                        width = 875;
-                        rubberPositioning = False;
-                        resizePolicy = resize_any;
-                      Group: User
-                        homeWidget = Description;
-                          {
-                            ID = ID : mgiDataTypes;
-                          }
-                          {
-                            SequenceTypeFrame = SequenceTypeFrame : mgiOption;
-                            Group: Constraint
-                              leftAttachment = attach_form;
-                              leftOffset = 5;
-                              rightAttachment = attach_none;
-                              topAttachment = attach_form;
-                              topOffset = 5;
-                              bottomAttachment = attach_none;
-                              resizable = true;
-                          }
-                          {
-                            SequenceQualityFrame = SequenceQualityFrame : mgiOption;
-                            Group: Constraint
-                              leftAttachment = attach_widget;
-                              leftWidget = SequenceTypeFrame;
-                              leftOffset = 10;
-                              rightAttachment = attach_none;
-                              topAttachment = attach_opposite_widget;
-                              topWidget = SequenceTypeFrame;
-                              bottomAttachment = attach_none;
-                              resizable = true;
-                          }
-                          {
-                            SequenceStatusFrame = SequenceStatusFrame : mgiOption;
-                            Group: Widget
-                              foreground = Red;
-                            Group: Constraint
-                              leftAttachment = attach_widget;
-                              leftWidget = SequenceQualityFrame;
-                              leftOffset = 10;
-                              rightAttachment = attach_none;
-                              topAttachment = attach_opposite_widget;
-                              topWidget = SequenceQualityFrame;
-                              bottomAttachment = attach_none;
-                              resizable = true;
-                          }
-                          {
-                            SequenceProviderFrame = SequenceProviderFrame : mgiOption;
-                            Group: Widget
-                              foreground = Red;
-                            Group: Constraint
-                              leftAttachment = attach_widget;
-                              leftWidget = SequenceStatusFrame;
-                              rightAttachment = attach_none;
-                              topAttachment = attach_opposite_widget;
-                              topWidget = SequenceStatusFrame;
-                              bottomAttachment = attach_none;
-                              resizable = true;
-                              leftOffset = 10;
-                          }
-                          {
-                            VirtualFrame = YesNoFrame : mgiOption;
-                            Group: Widget
-                              foreground = Red;
-                            Group: Constraint
-                              leftAttachment = attach_widget;
-                              leftOffset = 5;
-                              rightAttachment = attach_none;
-                              topAttachment = attach_opposite_widget;
-                              bottomAttachment = attach_none;
-                              resizable = true;
-                              topWidget = SequenceProviderFrame;
-                              leftWidget = SequenceProviderFrame;
-                                {
-                                  VirtualMenu : YesNoMenu = XmOptionMenu;
-                                  Group: Widget
-                                    foreground = Red;
-                                    labelString = "Virtual?";
-                                    subMenuId = VirtualPulldown;
-                                }
-                                Popups:
-                                {
-                                  VirtualPulldown : YesNoPulldown = OptionPulldown;
-                                }
-                          }
-                          {
-                            Description = CharText : mgiDataTypes;
-                            Group: Constraint
-                              leftAttachment = attach_opposite_widget;
-                              leftWidget = SequenceTypeFrame;
-                              rightAttachment = attach_none;
-                              topAttachment = attach_widget;
-                              topWidget = SequenceTypeFrame;
-                              topOffset = 5;
-                              bottomAttachment = attach_none;
-                              resizable = true;
-                                {
-                                  label = XmLabel;
-                                  Group: Widget
-                                    labelString = Description;
-                                    foreground = Red;
-                                }
-                                {
-                                  text = text : mgiDataTypes;
-                                  Group: Widget
-                                    columns = 125;
-                                }
-                          }
-                          {
-                            Length = IntText : mgiDataTypes;
-                            Group: Constraint
-                              leftAttachment = attach_opposite_widget;
-                              leftWidget = Description;
-                              rightAttachment = attach_none;
-                              topAttachment = attach_widget;
-                              topWidget = Description;
-                              bottomAttachment = attach_none;
-                              resizable = true;
-                              topOffset = 5;
-                                {
-                                  label = XmLabel;
-                                  Group: Widget
-                                    labelString = Length;
-                                    foreground = Red;
-                                }
-                          }
-                          {
-                            genbankLabel = label : mgiDataTypes;
-                            Group: Widget
-                              labelString = "GenBank only:";
-                            Group: Constraint
-                              leftAttachment = attach_widget;
-                              leftWidget = Length;
-                              leftOffset = 50;
-                              rightAttachment = attach_none;
-                              topAttachment = attach_opposite_widget;
-                              topWidget = Length;
-                              bottomAttachment = attach_none;
-                              resizable = true;
-                              topOffset = 10;
-                          }
-                          {
-                            RawType = CharText : mgiDataTypes;
-                            Group: Constraint
-                              leftAttachment = attach_widget;
-                              leftWidget = genbankLabel;
-                              leftOffset = 5;
-                              rightAttachment = attach_none;
-                              topAttachment = attach_opposite_widget;
-                              topWidget = Length;
-                              bottomAttachment = attach_none;
-                              resizable = true;
-                                {
-                                  label = XmLabel;
-                                  Group: Widget
-                                    labelString = "Raw Type";
-                                    foreground = Red;
-                                }
-                                {
-                                  text = text : mgiDataTypes;
-                                  Group: Widget
-                                    columns = 15;
-                                    maxLength = 15;
-                                }
-                          }
-                          {
-                            Version = CharText : mgiDataTypes;
-                            Group: Constraint
-                              leftAttachment = attach_widget;
-                              leftWidget = RawType;
-                              leftOffset = 5;
-                              rightAttachment = attach_none;
-                              topAttachment = attach_opposite_widget;
-                              topWidget = RawType;
-                              bottomAttachment = attach_none;
-                              resizable = true;
-                                {
-                                  label = XmLabel;
-                                  Group: Widget
-                                    labelString = Version;
-                                    foreground = Red;
-                                }
-                                {
-                                  text = text : mgiDataTypes;
-                                  Group: Widget
-                                    maxLength = 15;
-                                    columns = 15;
-                                }
-                          }
-                          {
-                            Division = CharText : mgiDataTypes;
-                            Group: Constraint
-                              leftAttachment = attach_widget;
-                              leftWidget = Version;
-                              leftOffset = 5;
-                              rightAttachment = attach_none;
-                              topAttachment = attach_opposite_widget;
-                              topWidget = Version;
-                              bottomAttachment = attach_none;
-                              resizable = true;
-                                {
-                                  label = XmLabel;
-                                  Group: Widget
-                                    labelString = Division;
-                                    foreground = Red;
-                                }
-                                {
-                                  text = text : mgiDataTypes;
-                                  Group: Widget
-                                    columns = 3;
-                                    maxLength = 3;
-                                }
-                          }
-                          {
-                            separatorGadget = XmSeparatorGadget;
-                            Group: Constraint
-                              leftAttachment = attach_form;
-                              rightAttachment = attach_form;
-                              topAttachment = attach_widget;
-                              topWidget = Length;
-                              topOffset = 5;
-                              bottomAttachment = attach_none;
-                              resizable = true;
-                          }
-                          {
-                            Accession = Accession : mgiTable;
-                            Group: Constraint
-                              leftAttachment = attach_form;
-                              rightAttachment = attach_none;
-                              topAttachment = attach_widget;
-                              topWidget = separatorGadget;
-                              bottomAttachment = attach_none;
-                              resizable = true;
-                              topOffset = 5;
-                              leftOffset = 250;
-                                {
-                                  Table = mgiTable;
-                                  Group: Widget
-                                    userDefinedAttributes = "accStatus:Int=\"5\"\n";
-                                    xrtTblNumColumns = 6;
-                                    xrtTblColumnLabels = "Mode,Logical Key,Acc Key,Acc Name,Acc ID,Primary/Secondary";
-                                    xrtTblCharWidthSeries = "(all 0 1) (all 3 30) (all 4 30) (all 5 20)";
-                                    xrtTblEditableSeries = "(all 0 False) (all 3 False) (all 5 False)";
-                                    xrtTblTraversableSeries = "(all 0 False) (all 3 False) (all 5 False)";
-                                    xrtTblVisibleRows = 5;
-                                    xrtTblNumRows = 10;
-                                    xrtTblPixelWidthSeries = "(all 0-3 0)";
-                                  Group: User
-                                    showMGI = False;
-                                      {
-                                        label = XtXrtLabel;
-                                        Group: Widget
-                                          labelString = "Accession IDs Associated with this Sequence";
-                                          foreground = Red;
-                                      }
-                                }
-                                {
-                                  Add = TablePush;
-                                  Group: Widget
-                                    labelString = Select;
-                                }
-                                {
-                                  Delete = TablePush;
-                                  Group: Widget
-                                    managed = False;
-                                }
-                                {
-                                  AccSourceFrame = AccSourceFrame : mgiOption;
-                                      {
-                                        AccSourceMenu = XmOptionMenu;
-                                        Group: User
-                                          defaultOption = NSequence;
-                                      }
-                                      Popups:
-                                      {
-                                        AccSourcePulldown = OptionPulldown;
-                                            {
-                                              MGI = AccToggle : mgiOption;
-                                            }
-                                            {
-                                              MRK = AccToggle : mgiOption;
-                                            }
-                                            {
-                                              J = AccToggle : mgiOption;
-                                            }
-                                            {
-                                              PubMed = AccToggle : mgiOption;
-                                            }
-                                            {
-                                              DXDOI = AccToggle : mgiOption;
-                                            }
-                                            {
-                                              NSequence = AccToggle : mgiOption;
-                                              Group: Widget
-                                                managed = True;
-                                            }
-                                            {
-                                              EnsemblGeneModel = AccToggle : mgiOption;
-                                            }
-                                            {
-                                              EnsemblProtein = AccToggle : mgiOption;
-                                            }
-                                            {
-                                              EnsemblTranscript = AccToggle : mgiOption;
-                                            }
-                                            {
-                                              EntrezGene = AccToggle : mgiOption;
-                                            }
-                                            {
-                                              NCBIGeneModel = AccToggle : mgiOption;
-                                            }
-                                            {
-                                              NCBIGeneModelEvidence = AccToggle : mgiOption;
-                                            }
-                                            {
-                                              RefSeq = AccToggle : mgiOption;
-                                              Group: Widget
-                                                managed = True;
-                                            }
-                                            {
-                                              SWISSPROT = AccToggle : mgiOption;
-                                              Group: Widget
-                                                managed = True;
-                                            }
-                                            {
-                                              TrEMBL = AccToggle : mgiOption;
-                                              Group: Widget
-                                                managed = True;
-                                            }
-                                            {
-                                              VEGAGeneModel = AccToggle : mgiOption;
-                                            }
-                                            {
-                                              VEGAProtein = AccToggle : mgiOption;
-                                            }
-                                            {
-                                              VEGATranscript = AccToggle : mgiOption;
-                                            }
-                                            {
-                                              AllenBrainAtlas = AccToggle : mgiOption;
-                                            }
-                                            {
-                                              Affy1 = AccToggle : mgiOption;
-                                            }
-                                            {
-                                              Affy430 = AccToggle : mgiOption;
-                                            }
-                                            {
-                                              AffyU74 = AccToggle : mgiOption;
-                                            }
-                                            {
-                                              ArrayExpress = AccToggle : mgiOption;
-                                            }
-                                            {
-                                              CCDS = AccToggle : mgiOption;
-                                            }
-                                            {
-                                              DFCI = AccToggle : mgiOption;
-                                              Group: Widget
-                                                managed = True;
-                                            }
-                                            {
-                                              DOTS = AccToggle : mgiOption;
-                                              Group: Widget
-                                                managed = True;
-                                            }
-                                            {
-                                              EC = AccToggle : mgiOption;
-                                            }
-                                            {
-                                              FuncBase = AccToggle : mgiOption;
-                                            }
-                                            {
-                                              HomoloGene = AccToggle : mgiOption;
-                                            }
-                                            {
-                                              miRBase = AccToggle : mgiOption;
-                                            }
-                                            {
-                                              NIAGeneIndex = AccToggle : mgiOption;
-                                              Group: Widget
-                                                managed = True;
-                                            }
-                                      }
-                                }
-                          }
-                          {
-                            SequenceNote = Notes : mgiDataTypes;
-                            Group: Widget
-                              managed = False;
-                            Group: Constraint
-                              leftAttachment = attach_widget;
-                              rightAttachment = attach_none;
-                              topAttachment = attach_opposite_widget;
-                              bottomAttachment = attach_none;
-                              resizable = true;
-                              topWidget = Accession;
-                              leftOffset = 10;
-                              leftWidget = Accession;
-                                {
-                                  label = XmLabel;
-                                }
-                                {
-                                  text = scrolledText;
-                                  Group: Widget
-                                    columns = 75;
-                                    rows = 7;
-                                }
-                          }
-                          {
-                            SeqNoteMenu = NoteFrame : mgiOption;
-                            Group: Widget
-                              managed = False;
-                            Group: Constraint
-                              leftAttachment = attach_opposite_widget;
-                              leftWidget = SequenceNote;
-                              rightAttachment = attach_none;
-                              topAttachment = attach_widget;
-                              topWidget = SequenceNote;
-                              topOffset = 5;
-                              bottomAttachment = attach_none;
-                              resizable = true;
-                                Popups:
-                                {
-                                  SeqNotePulldown : NotePulldown = OptionPulldown : mgiOption;
-                                      {
-                                        Chimeric = AppendNotePush : mgiDataTypes;
-                                        Group: Widget
-                                          labelString = Chimeric;
-                                        Group: User
-                                          note = "Chimeric:  This sequence appears to be chimeric.";
-                                          noteWidget = SequenceNote;
-                                      }
-                                      {
-                                        Intronic = AppendNotePush : mgiDataTypes;
-                                        Group: Widget
-                                          labelString = Intronic;
-                                        Group: User
-                                          noteWidget = SequenceNote;
-                                          note = "Intronic: This cDNA sequence appears to be intronic region of a gene.";
-                                      }
-                                      {
-                                        IntronContaining = AppendNotePush : mgiDataTypes;
-                                        Group: Widget
-                                          labelString = "Intron-Containing";
-                                        Group: User
-                                          noteWidget = SequenceNote;
-                                          note = "Intron-Containing:  This cDNA sequence appears to contain intronic sequence.";
-                                      }
-                                      {
-                                        FrameShift = AppendNotePush : mgiDataTypes;
-                                        Group: Widget
-                                          labelString = "Frame-Shift";
-                                        Group: User
-                                          noteWidget = SequenceNote;
-                                          note = "Frame-Shift:  Conceptual translation of this sequence reveals framerrors in the presumed coding region.e shift ";
-                                      }
-                                      {
-                                        ReverseC = AppendNotePush : mgiDataTypes;
-                                        Group: Widget
-                                          labelString = "Reverse complement";
-                                        Group: User
-                                          noteWidget = SequenceNote;
-                                          note = "Reverse complement:  This cDNA sequence appears to be reverse complement of another transcript.";
-                                      }
-                                      {
-                                        Same5 = AppendNotePush : mgiDataTypes;
-                                        Group: Widget
-                                          labelString = "5'-overlap same strand";
-                                        Group: User
-                                          noteWidget = SequenceNote;
-                                          note = "5'-overlap same strand:  This sequence is derived from a transcript for a gene that initiates at a site within a upstream gene, where the upstream gene is transcribed in the same direction.";
-                                      }
-                                      {
-                                        Same3 = AppendNotePush : mgiDataTypes;
-                                        Group: Widget
-                                          labelString = "3'-overlap same strand";
-                                        Group: User
-                                          noteWidget = SequenceNote;
-                                          note = "3'-overlap same strand:  This sequence is derived from a transcript for a gene that extends (reads-through) into a downstream gene, where the downstream gene is transcribed in the same direction.";
-                                      }
-                                      {
-                                        Opposite5 = AppendNotePush : mgiDataTypes;
-                                        Group: Widget
-                                          labelString = "5'-overlap opposite strand";
-                                        Group: User
-                                          noteWidget = SequenceNote;
-                                          note = "5'-overlap opposite strand:  This sequence is derived from a transcript for a gene that initiates at a site within a upstream gene, where the upstream gene is transcribed in the opposite direction.";
-                                      }
-                                      {
-                                        Opposite3 = AppendNotePush : mgiDataTypes;
-                                        Group: Widget
-                                          labelString = "3'-overlap opposite strand";
-                                        Group: User
-                                          noteWidget = SequenceNote;
-                                          note = "3'-overlap opposite strand:  This sequence is derived from a transcript for a gene that extends (reads-through) into a downstream gene, where thedownstream gene is transcribed in the opposite direction. ";
-                                      }
-                                      {
-                                        Low = AppendNotePush : mgiDataTypes;
-                                        Group: Widget
-                                          labelString = "Low-quality";
-                                        Group: User
-                                          noteWidget = SequenceNote;
-                                          note = "Low-quality:  The sequence quality is low.";
-                                      }
-                                }
-                          }
-                          {
-                            separatorGadget1 = XmSeparatorGadget;
-                            Group: Constraint
-                              leftAttachment = attach_form;
-                              rightAttachment = attach_form;
-                              topAttachment = attach_widget;
-                              topWidget = Accession;
-                              bottomAttachment = attach_none;
-                              resizable = true;
-                              topOffset = 5;
-                          }
-                          {
-                            NumberOrganisms = IntText : mgiDataTypes;
-                            Group: Constraint
-                              leftAttachment = attach_form;
-                              rightAttachment = attach_none;
-                              topAttachment = attach_widget;
-                              topWidget = separatorGadget1;
-                              topOffset = 5;
-                              bottomAttachment = attach_none;
-                              resizable = true;
-                              leftOffset = 5;
-                                {
-                                  label = XmLabel;
-                                  Group: Widget
-                                    labelString = "Number of non-mouse, non-human, non-rat organisms";
-                                    foreground = Red;
-                                }
-                          }
-                          {
-                            SourceInfo = TableLabel : mgiTable;
-                            Group: Constraint
-                              leftAttachment = attach_form;
-                              rightAttachment = attach_form;
-                              topAttachment = attach_widget;
-                              topWidget = NumberOrganisms;
-                              bottomAttachment = attach_none;
-                              resizable = true;
-                              leftOffset = 5;
-                              rightOffset = 5;
-                                {
-                                  Table = mgiTable : mgiTable;
-                                  Group: Widget
-                                    xrtTblNumColumns = 19;
-                                    xrtTblDisplayHorizScrollBar = dispsb_always;
-                                    xrtTblColumnLabels = "Mode,Assoc key,Source key,Org key,Strain key,Tissue key,CellLine key,Age key,Age Min,Age Max,Gender key,Library,Organism,Strain,Tissue,Cell Line,Age Prefix,Age Range,Gender";
-                                    xrtTblRowLabels = "Raw,Source 1,Source 2,Source 3,Source 4";
-                                    xrtTblCharWidthSeries = "(all 0 1)(all 1-10 10)(all 11-15 30)(all 16-18 20)";
-                                    userDefinedAttributes = "assocKey:Int(Int)=\"1\"\nsourceKey:Int(Int)=\"2\"\norganismKey:Int(Int)=\"3\"\nstrainKeys:Int(Int)=\"4\"\ntissueKey:Int(Int)=\"5\"\ncellLineKey:Int(Int)=\"6\"\nageKey:Int(Int)=\"7\"\nageMin:Int(Int)=\"8\"\nageMax:Int(Int)=\"9\"\nlibrary:Int(Int)=\"11\"\norganism:Int(Int)=\"12\"\nstrains:Int(Int)=\"13\"\ntissue:Int(Int)=\"14\"\ncellLine:Int(Int)=\"15\"\nagePrefix:Int(Int)=\"16\"\nageRange:Int(Int)=\"17\"\ngenderKey:Int(Int)=\"10\"\ngender:Int(Int)=\"18\"\n";
-                                    xrtTblNumRows = 4;
-                                    xrtTblVisibleRows = 4;
-                                    xrtTblBackgroundSeries = "(all all Wheat) (label all Thistle)(all label Thistle)(0 label Red)";
-                                    xrtTblEnterCellCallback = "D:SetOptions";
-                                    xrtTblValidateCellCallback = "D:VerifyOrganism (ignoreRow = 0),\nD:VerifyStrains (ignoreRow = 0),\nD:VerifyTissue (ignoreRow = 0),\nD:VerifyCellLine (ignoreRow = 0),\nD:CommitTableCellEdit";
-                                    xrtTblPixelWidthSeries = "(all 0-10 0)";
-                                    xrtTblAllowCellResize = resize_all;
-                                    xrtTblFrozenColumns = 12;
-                                  Group: User
-                                    saveBackgroundSeries = "(all all Wheat) (label all Thistle)(all label Thistle)(0 label Red)";
-                                      {
-                                        label = XtXrtLabel;
-                                        Group: Widget
-                                          labelString = "Source Information";
-                                      }
-                                }
-                                {
-                                  AddRow = TablePush : mgiTable;
-                                  Group: Widget
-                                    managed = False;
-                                }
-                                {
-                                  DeleteRow = TablePush : mgiTable;
-                                  Group: Widget
-                                    managed = False;
-                                }
-                          }
-                          {
-                            separatorGadget2 = XmSeparatorGadget;
-                            Group: Constraint
-                              leftAttachment = attach_form;
-                              rightAttachment = attach_form;
-                              topAttachment = attach_widget;
-                              topWidget = SourceInfo;
-                              bottomAttachment = attach_none;
-                              resizable = true;
-                              topOffset = 5;
-                          }
-                          {
-                            Reference = ReferenceTypeTable : mgiTable;
-                            Group: Constraint
-                              leftAttachment = attach_form;
-                              rightAttachment = attach_none;
-                              topAttachment = attach_widget;
-                              topWidget = separatorGadget2;
-                              bottomAttachment = attach_none;
-                              resizable = true;
-                              topOffset = 5;
-                              leftOffset = 5;
-                                {
-                                  Table = mgiTable;
-                                  Group: Widget
-                                    xrtTblNumRows = 15;
-                                    xrtTblVisibleRows = 15;
-                                    xrtTblCharWidthSeries = "(all 0 1)(all 1-6 10)(all 7 15)(all 8 35)";
-                                    xrtTblDisplayVertScrollBar = dispsb_always;
-                                      {
-                                        label = XtXrtLabel;
-                                        Group: Widget
-                                          xrtLblBorderType = border_none;
-                                          marginHeight = 0;
-                                          labelString = "References Associated with this Sequence";
-                                        Group: Constraint
-                                          xrtTblLocation = location_top;
-                                      }
-                                }
-                                {
-                                  AddRow = TablePush : mgiTable;
-                                }
-                                {
-                                  DeleteRow = TablePush : mgiTable;
-                                }
-                                {
-                                  ReferenceTypeFrame = ReferenceTypeFrame : mgiOption;
-                                      Popups:
-                                      {
-                                        ReferenceTypePulldown = OptionPulldown : mgiOption;
-                                        Group: User
-                                          sql = "select _RefAssocType_key, assocType, allowOnlyOne from MGI_RefType_Sequence_View where allowOnlyOne = 0 order by assocType";
-                                          tableForm = Reference;
-                                      }
-                                }
-                                {
-                                  ReviewFrame = YesNoFrame : mgiOption;
-                                      Popups:
-                                      {
-                                        ReviewPulldown : YesNoPulldown = OptionPulldown : mgiOption;
-                                        Group: User
-                                          tableForm = Reference;
-                                          tableOptionKey = 3;
-                                          tableOption = 6;
-                                            {
-                                              SearchAll = SearchAll : mgiOption;
-                                              Group: Widget
-                                                managed = False;
-                                            }
-                                            {
-                                              Yes = Yes : mgiOption;
-                                            }
-                                            {
-                                              No = No : mgiOption;
-                                            }
-                                      }
-                                }
-                          }
-                          {
-                            ObjectAssociation = ObjectAssociationTable : mgiTable;
-                            Group: Constraint
-                              leftAttachment = attach_widget;
-                              leftWidget = Reference;
-                              leftOffset = 10;
-                              rightAttachment = attach_form;
-                              rightOffset = 5;
-                              topAttachment = attach_opposite_widget;
-                              topWidget = Reference;
-                              bottomAttachment = attach_none;
-                              resizable = true;
-                                {
-                                  Table = mgiTable : mgiTable;
-                                  Group: Widget
-                                    xrtTblNumRows = 15;
-                                    xrtTblVisibleRows = 15;
-                                    xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 10)(all 4 15)(all 5 25)(all 6 10)";
-                                    xrtTblValidateCellCallback = "D:VerifyReference,\nD:CommitTableCellEdit";
-                                    xrtTblColumnLabels = "Mode,Object key,Refs key,Type,MGI ID,Symbol or Name,J#";
-                                      {
-                                        label = XtXrtLabel;
-                                        Group: Widget
-                                          labelString = "Markers, Alleles & Molecular Segments Associated with this Sequence";
-                                          foreground = Red;
-                                      }
-                                }
-                          }
-                    }
-                    {
-                      Control = Control : mgiControl;
-                          {
-                            ControlForm = XmForm;
-                                {
-                                  Search = ControlPush;
-                                }
-                                {
-                                  Clear = ControlPush;
-                                }
-                                {
-                                  Modify = ControlPush;
-                                }
-                                {
-                                  Add = ControlPush;
-                                  Group: Widget
-                                    sensitive = False;
-                                }
-                                {
-                                  Delete = ControlPush;
-                                  Group: Widget
-                                    sensitive = False;
-                                }
-                                {
-                                  Previous = ControlArrow;
-                                }
-                                {
-                                  Next = ControlArrow;
-                                }
-                                {
-                                  Bottom = ControlArrow : mgiControl;
-                                }
-                                {
-                                  Clear1 = XmMenuBar;
-                                }
-                                {
-                                  RecordCount = RecordCount : mgiDataTypes;
-                                }
-                                {
-                                  CreationDate = CreationDate : mgiDataTypes;
-                                  Group: Widget
-                                    managed = False;
-                                }
-                                {
-                                  ModifiedDate = ModifiedDate : mgiDataTypes;
-                                  Group: Widget
-                                    managed = False;
-                                }
-                                {
-                                  ModificationHistory = ModificationHistory : mgiTable;
-                                  Group: Widget
-                                    managed = True;
-                                      {
-                                        Table = mgiTable : mgiTable;
-                                        Group: Widget
-                                          xrtTblRowLabels = "Created,Modified,Provider Record,Sequence Itself";
-                                          xrtTblNumRows = 4;
-                                          xrtTblVisibleRows = 4;
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1 15)(all 2 10)(all label 15)";
-                                          userDefinedAttributes = "seqRecordDate:Int(Int)=\"2\"\nsequenceDate:Int(Int)=\"3\"\nseqRecordFieldName:String=\"seqrecord_date\"\nsequenceFieldName:String=\"sequence_date\"\n";
-                                      }
-                                }
-                          }
-                    }
-                    {
-                      Lookup = Lookup : mgiLookup;
-                          {
-                            panedWindow = XmPanedWindow;
-                                {
-                                  QueryList = QueryList : mgiLookup;
-                                }
-                                {
-                                  mgiNoteForm = mgiNoteForm : mgiDataTypes;
-                                }
-                                {
-                                  CVSequence = CVSequence : mgiCV;
-                                }
-                                {
-                                  LibraryList = LibraryList : mgiLookup;
-                                      {
-                                        Label = LookupLabel;
-                                      }
-                                      {
-                                        List = list;
-                                        Group: Widget
-                                          singleSelectionCallback = "D:SelectLookupListItem";
-                                        Group: User
-                                          targetWidget = SourceInfo;
-                                          targetKey = 2;
-                                          targetText = 11;
-                                      }
-                                }
-                                {
-                                  OrganismSequenceList = OrganismSequenceList : mgiLookup;
-                                      {
-                                        Label = LookupLabel : mgiLookup;
-                                      }
-                                      {
-                                        List = list : mgiDataTypes;
-                                        Group: User
-                                          targetKey = 3;
-                                          targetWidget = SourceInfo;
-                                          targetText = 12;
-                                      }
-                                }
-                                {
-                                  CellLineList = CellLineList : mgiLookup;
-                                      {
-                                        Label = LookupLabel : mgiLookup;
-                                      }
-                                      {
-                                        List = list : mgiDataTypes;
-                                        Group: User
-                                          targetWidget = SourceInfo;
-                                          targetKey = 6;
-                                          targetText = 15;
-                                      }
-                                }
-                          }
-                    }
-                    Popups:
-                    {
-                      StatusDialog = StatusDialog : mgiDialog;
-                    }
-                    {
-                      DeleteDialog = DeleteDialog : mgiDialog;
-                    }
-                    {
-                      ReportDialog = ReportDialog : mgiDialog;
-                    }
-                    {
-                      SearchDialog = SearchDialog : mgiDialog;
-                    }
-                    {
-                      WhichItem = WhichItem : mgiDialog;
-                    }
-                    {
-                      VerifyItemAdd = VerifyItemAdd : mgiDialog;
-                    }
-                    {
-                      WorkingDialog = WorkingDialog : mgiDialog;
-                    }
-                    {
-                      NoteDialog = NoteDialog : mgiDialog;
                     }
               }
         }
@@ -12861,7 +12010,7 @@ Shift<Key>Tab: prev-tab-group()
             height = 900;
           Group: Control
             vip_x = 90;
-            vip_y = 1295;
+            vip_y = 1240;
           Group: User
             homeWidget = Jnum;
               {

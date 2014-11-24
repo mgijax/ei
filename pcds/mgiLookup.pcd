@@ -3,7 +3,7 @@ Module: mgiLookup
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Fri Sep 19 10:23:23 2014";
+      lastWritten = "Mon Nov 24 07:23:40 2014";
         {
           LookupLabel = XmPushButton;
           Group: Widget
@@ -231,7 +231,7 @@ Module: mgiLookup
           StrainAttributeList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1570;
+            vip_y = 1515;
           Group: User
             cmd = "(\nselect _Term_key, term, i = 1 from VOC_Term where _Vocab_key = 27 and term like '[a-z]%'\nunion\nselect _Term_key, term, i = 2 from VOC_Term where _Vocab_key = 27 and term like '*%'\n)\norder by i, term\n";
               {
@@ -252,7 +252,7 @@ Module: mgiLookup
           StemCellLineList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1515;
+            vip_y = 1460;
           Group: User
             cmd = "select c._CellLine_key, c.cellLine || ';' || s.strain as cellLine\nfrom ALL_CellLine c, PRB_Strain s\nwhere c.isMutant = 0 and c._CellLine_Type_key = 3982968\nand c._Strain_key = s._Strain_key\nunion\nselect c._CellLine_key, c.cellLine || ';' || s.strain || ';' || vt.term as cellLine\nfrom ALL_CellLine c, PRB_Strain s, VOC_Term vt\nwhere c.isMutant = 0 and c._CellLine_Type_key != 3982968\nand c._Strain_key = s._Strain_key\nand c._CellLine_Type_key = vt._Term_key\norder by cellLine\n";
               {
@@ -519,26 +519,6 @@ Module: mgiLookup
               }
         }
         {
-          OrganismSequenceList = LookupList;
-          Group: Control
-            vip_x = 90;
-            vip_y = 1460;
-          Group: User
-            cmd = "select _Organism_key, commonName from MGI_Organism_Sequence_View order by commonName";
-              {
-                Label = LookupLabel : mgiLookup;
-                Group: Widget
-                  labelString = Organisms;
-                Group: User
-                  defaultLabel = Organisms;
-              }
-              {
-                List = list : mgiDataTypes;
-                Group: Widget
-                  singleSelectionCallback = "D:SelectLookupListItem";
-              }
-        }
-        {
           MPAnnotClipboard = ClipboardEditList;
           Group: Widget
             rubberPositioning = False;
@@ -625,7 +605,7 @@ Module: mgiLookup
           StrainTypeList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1625;
+            vip_y = 1570;
           Group: User
             cmd = "select _Term_key, term from VOC_Term where _Vocab_key = 55 order by term";
               {
@@ -706,7 +686,7 @@ Module: mgiLookup
           TDCList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1735;
+            vip_y = 1680;
           Group: User
             cmd = "select _Term_key, term, accID\nfrom VOC_Term_MCV_View\norder by term\n";
               {
@@ -726,7 +706,7 @@ Module: mgiLookup
           StrainAttributeList1 = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1680;
+            vip_y = 1625;
           Group: User
             cmd = "(\nselect _Term_key, term, i = 1 from VOC_Term where _Vocab_key = 27 and term like '[a-z]%'\nunion\nselect _Term_key, term, i = 2 from VOC_Term where _Vocab_key = 27 and term like '*%'\n)\norder by i, term\n";
               {

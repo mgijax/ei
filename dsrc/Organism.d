@@ -152,7 +152,7 @@ rules:
 
           -- If adding, then @KEYNAME must be used in all Modify events
  
-          currentRecordKey := "@" + KEYNAME;
+	  currentRecordKey := MAX_KEY1 + KEYNAME + MAX_KEY2;
 
           cmd := mgi_setDBkey(MGI_ORGANISM, NEWKEY, KEYNAME) +
 		 mgi_DBinsert(MGI_ORGANISM, KEYNAME) +
@@ -319,7 +319,8 @@ rules:
 
             if (editMode = TBL_ROW_ADD) then
               tmpCmd := tmpCmd + mgi_DBinsert(MRK_CHROMOSOME, keyName) + currentRecordKey + "," + 
-		        mgi_DBprstr(chr) + "," + newSeqNum + END_VALUE;
+		        mgi_DBprstr(chr) + "," + newSeqNum + "," +
+		        global_loginKey + "," + global_loginKey + END_VALUE;
             elsif (editMode = TBL_ROW_MODIFY) then
 
 	      -- If current Seq # not equal to new Seq #, then re-ordering is taking place
