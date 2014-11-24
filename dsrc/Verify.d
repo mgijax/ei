@@ -1494,6 +1494,7 @@ rules:
 	  cmd : string;
 	  select : string;
 	  where : string;
+	  orderby : string := "";
 	  selectedItem : integer;
 	  found : boolean := false;
 	  defaultSpecies : string;
@@ -1542,6 +1543,7 @@ rules:
 	    select := verify_item_strain(table);
 	    defaultSpecies := mgi_sql1(verify_strainspeciesmouse());
 	    defaultStrainType := mgi_sql1(verify_straintype());
+	    orderby := verify_item_order(name);
 	  elsif (tableID = TISSUE) then
 	    select := verify_item_tissue(table);
 	  elsif (tableID = BIB_REFS) then
@@ -1554,13 +1556,16 @@ rules:
 	    select := verify_item_term(table);
 	  end if;
 
-	  dbproc : opaque := mgi_dbexec(select + where + verify_item_order(name));
+	  dbproc : opaque := mgi_dbexec(select + where + orderby);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      keys.insert(mgi_getstr(dbproc, 1), keys.count + 1);
 	      results.insert(mgi_getstr(dbproc, 2), results.count + 1);
-	      std.insert(mgi_getstr(dbproc, 3), std.count + 1);
-	      private.insert(mgi_getstr(dbproc, 4), private.count + 1);
+
+	      if (tableID = STRAIN) then
+	        std.insert(mgi_getstr(dbproc, 3), std.count + 1);
+	        private.insert(mgi_getstr(dbproc, 4), private.count + 1);
+	       end if;
 	    end while;
 	  end while;
 	  (void) mgi_dbclose(dbproc);
@@ -1660,7 +1665,7 @@ rules:
 		       mgi_DBinsert(tableID, KEYNAME) +
                        defaultSpecies + "," + defaultStrainType + "," + 
 		       mgi_DBprstr(item.value) + ",0,0,0," +
-		       global_loginKey + "," + global_loginKey + ")\n";
+		       global_loginKey + "," + global_loginKey + END_VALUE;
 	      elsif (tableID = VOC_CELLLINE_VIEW) then
 		nextSeqNum := mgi_sql1(verify_item_nextseqnum((string) verify.vocabKey));
 	        cmd := mgi_setDBkey(VOC_TERM, NEWKEY, KEYNAME) +
@@ -1668,11 +1673,11 @@ rules:
 		       (string) verify.vocabKey + "," +
 		       mgi_DBprstr(item.value) + ",NULL," +
 		       nextSeqNum + ",0," +
-		       global_loginKey + "," + global_loginKey + ")\n";
+		       global_loginKey + "," + global_loginKey + END_VALUE;
 	      else
 	        cmd := mgi_setDBkey(tableID, NEWKEY, KEYNAME) +
 		       mgi_DBinsert(tableID, KEYNAME) +
-		       mgi_DBprstr(item.value) + ",0)\n";
+		       mgi_DBprstr(item.value) + ",0" + END_VALUE;
 	      end if;
 
 	      -- Set key.value to blank so that new key value gets copied
@@ -3144,7 +3149,7 @@ rules:
                                mgi_DBinsert(STRAIN, KEYNAME) +
                                defaultSpecies + "," + defaultStrainType + "," + 
 			       mgi_DBprstr(s) + ",0,0,0," +
-			       global_loginKey + "," + global_loginKey + ")\n";
+			       global_loginKey + "," + global_loginKey + END_VALUE;
                 send(ExecSQL, 0);
                 added := added + s + "\n";
                 strainKeys := strainKeys + mgi_sql1(verify_strains4(mgi_DBprstr(s)));
@@ -3365,7 +3370,7 @@ rules:
             if (top->VerifyItemAdd.doAdd) then
               ExecSQL.cmd := mgi_setDBkey(TISSUE, NEWKEY, KEYNAME) +
                              mgi_DBinsert(TISSUE, KEYNAME) +
-                             mgi_DBprstr(value) + ",0)\n";
+                             mgi_DBprstr(value) + ",0" + END_VALUE;
               send(ExecSQL, 0);
               added := true;
               tissueKey := mgi_sql1(verify_tissue2(mgi_DBprstr(value)));

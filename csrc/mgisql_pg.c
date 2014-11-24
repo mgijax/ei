@@ -1369,7 +1369,7 @@ char *verify_item_tissue(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _Tissue_key, tissue, standard, private = 0 from %s where ", key);
+  sprintf(buf,"select _Tissue_key, tissue from %s where ", key);
   return(buf);
 }
 
@@ -1401,7 +1401,7 @@ char *verify_item_term(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _Term_key, term, standard = 1, private = 0 from %s where ", key);
+  sprintf(buf,"select _Term_key, term from %s where ", key);
   return(buf);
 }
 
