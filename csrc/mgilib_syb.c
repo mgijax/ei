@@ -2224,7 +2224,7 @@ char *mgi_DBinsert(int table, char *keyName)
             sprintf(buf, "insert %s (chromosome, _Marker_key)", mgi_DBtable(table));
 	    break;
     case MRK_CHROMOSOME:
-            sprintf(buf, "insert %s (%s, _Organism_key, chromosome, sequenceNum)", mgi_DBtable(table), mgi_DBkey(table));
+            sprintf(buf, "insert %s (%s, _Organism_key, chromosome, sequenceNum, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MRK_CLASSES:
 	    sprintf(buf, "insert %s (_Class_key, %s)",
