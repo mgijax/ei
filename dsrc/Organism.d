@@ -431,11 +431,9 @@ rules:
 		global_loginKey + "," + global_loginKey + END_VALUE;
             elsif (editMode = TBL_ROW_MODIFY) then
               set := "_MGIType_key = " + newKey;
-              cmd := cmd + mgi_DBupdate(MGI_ORGANISMTYPE, currentRecordKey, set) +
-		"and _MGIType_key = " + key + "\n";
+              cmd := cmd + mgi_DBupdate(MGI_ORGANISMTYPE, currentRecordKey + " and _MGIType_key = " + key, set) + "\n";
             elsif (editMode = TBL_ROW_DELETE) then
-               cmd := cmd + mgi_DBdelete(MGI_ORGANISMTYPE, currentRecordKey) +
-		"and _MGIType_key = " + key + "\n";
+               cmd := cmd + mgi_DBdelete(MGI_ORGANISMTYPE, currentRecordKey + " and _MGIType_key = " + key + "\n");
             end if;
  
             row := row + 1;

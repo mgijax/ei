@@ -359,7 +359,7 @@ rules:
                  top->StandardMenu.menuHistory.defaultValue + "," +
                  top->PrivateMenu.menuHistory.defaultValue + "," +
                  top->GeneticBackgroundMenu.menuHistory.defaultValue + "," +
-		 global_loginKey + "," + global_loginKey + ")\n";
+		 global_loginKey + "," + global_loginKey + END_VALUE;
  
 	  send(ModifyAttribute, 0);
 	  send(ModifyNeedsReview, 0);
@@ -588,7 +588,7 @@ rules:
 		     attributeAnnotTypeKey + "," +
                      currentRecordKey + "," + 
 		     newKey + "," +
-		     genericQualifierKey + ")\n";
+		     genericQualifierKey + END_VALUE;
 
 	    elsif (editMode = TBL_ROW_MODIFY) then
 	      set := "_Term_key = " + newKey;
@@ -644,7 +644,7 @@ rules:
 		     reviewAnnotTypeKey + "," +
                      currentRecordKey + "," + 
 		     newKey + "," +
-		     genericQualifierKey + ")\n";
+		     genericQualifierKey + END_VALUE;
 
 	    elsif (editMode = TBL_ROW_MODIFY) then
 	      set := "_Term_key = " + newKey;
@@ -736,7 +736,7 @@ rules:
 
               cmd := cmd + mgi_DBinsert(PRB_STRAIN_GENOTYPE, keyName) + 
 		     currentRecordKey + "," + genotypeKey + "," + qualifierKey + "," +
-		     global_loginKey + "," + global_loginKey + ")\n";
+		     global_loginKey + "," + global_loginKey + END_VALUE;
 
 	    elsif (editMode = TBL_ROW_MODIFY) then
 	      set := "_Genotype_key = " + genotypeKey + "," +
