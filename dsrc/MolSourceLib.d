@@ -197,7 +197,7 @@ rules:
 
           add := add + mgi_DBprstr(age) + ",-1,-1," +
             	       isCuratorEdited + "," +
-		       global_loginKey + "," + global_loginKey + ")\n" +
+		       global_loginKey + "," + global_loginKey + END_VALUE +
 		       exec_mgi_resetAgeMinMax("@" + keyLabel, mgi_DBprstr(mgi_DBtable(PRB_SOURCE))) +
 		       "select @" + keyLabel + "\n";
  
