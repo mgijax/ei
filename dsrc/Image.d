@@ -757,12 +757,12 @@ rules:
 	Search does
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
-	  Query.source_widget := top;
-	  Query.select := "select distinct i._Image_key, " + 
+	  QueryNoInterrupt.source_widget := top;
+	  QueryNoInterrupt.select := "select distinct i._Image_key, " + 
 			"i.jnumID || '; ' || i.imageType || '; ' || i.figureLabel, i.jnum, i.imageType\n" +
 			from + "\n" + where + orderBy;
-	  Query.table := IMG_IMAGE;
-	  send(Query, 0);
+	  QueryNoInterrupt.table := IMG_IMAGE;
+	  send(QueryNoInterrupt, 0);
 	  (void) reset_cursor(top);
 	end does;
 
