@@ -383,11 +383,11 @@ rules:
 	Search does
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
-	  Query.source_widget := top;
-	  Query.select := "select distinct g._Antigen_key, g.antigenName\n" + from + "\n" + 
+	  QueryNoInterrupt.source_widget := top;
+	  QueryNoInterrupt.select := "select distinct g._Antigen_key, g.antigenName\n" + from + "\n" + 
 			where + "\norder by g.antigenName\n";
-	  Query.table := GXD_ANTIGEN;
-	  send(Query, 0);
+	  QueryNoInterrupt.table := GXD_ANTIGEN;
+	  send(QueryNoInterrupt, 0);
 	  (void) reset_cursor(top);
 	end does;
 

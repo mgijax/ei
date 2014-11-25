@@ -724,7 +724,7 @@ rules:
 	Search does
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
-          Query.source_widget := top;
+          QueryNoInterrupt.source_widget := top;
 
 	  -- If inferred requested, get class key from user query
 	  -- Then search all homologies for that class
@@ -732,14 +732,14 @@ rules:
 	  if (top->Inferred.set) then
 	    cmd := "select distinct h._Class_key\n" + from + "\n" + where + "\n";
 	    classKey := mgi_sql1(cmd);
-	    Query.select := orthology_searchByClass(classKey);
+	    QueryNoInterrupt.select := orthology_searchByClass(classKey);
 	  else
-	    Query.select := "select distinct h.classRef, h.short_citation, h.jnum\n" + 
+	    QueryNoInterrupt.select := "select distinct h.classRef, h.short_citation, h.jnum\n" + 
 			    from + "\n" + where + "\norder by h.short_citation\n";
 	  end if;
 
-          Query.table := HMD_CLASS;
-          send(Query, 0);
+          QueryNoInterrupt.table := HMD_CLASS;
+          send(QueryNoInterrupt, 0);
           (void) reset_cursor(top);
         end
 

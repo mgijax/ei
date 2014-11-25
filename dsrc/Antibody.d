@@ -753,10 +753,10 @@ rules:
 	  
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
-	  Query.source_widget := top;
-	  Query.select := "(" + select + from + "\n" + where + unionalias + ")\norder by g.antibodyName\n";
-	  Query.table := GXD_ANTIBODY;
-	  send(Query, 0);
+	  QueryNoInterrupt.source_widget := top;
+	  QueryNoInterrupt.select := "(" + select + from + "\n" + where + unionalias + ")\norder by g.antibodyName\n";
+	  QueryNoInterrupt.table := GXD_ANTIBODY;
+	  send(QueryNoInterrupt, 0);
 	  (void) reset_cursor(top);
 	end does;
 

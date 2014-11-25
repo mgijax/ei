@@ -643,10 +643,10 @@ rules:
 	Search does
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
-	  Query.source_widget := top;
-	  Query.select := "(" + select + from + "\n" + where + "\n" + union + ")\norder by v1.term, ac.preferred desc, ac.accID\n";
-	  Query.table := SEQ_SEQUENCE;
-	  send(Query, 0);
+	  QueryNoInterrupt.source_widget := top;
+	  QueryNoInterrupt.select := "(" + select + from + "\n" + where + "\n" + union + ")\norder by v1.term, ac.preferred desc, ac.accID\n";
+	  QueryNoInterrupt.table := SEQ_SEQUENCE;
+	  send(QueryNoInterrupt, 0);
 	  (void) reset_cursor(top);
 	end does;
 

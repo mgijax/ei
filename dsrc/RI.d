@@ -271,10 +271,10 @@ rules:
 	Search does
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
-	  Query.source_widget := top;
-	  Query.select := "select distinct _RISet_key, designation\n" + from + "\n" + where + "\norder by designation\n";
-	  Query.table := RISET;
-	  send(Query, 0);
+	  QueryNoInterrupt.source_widget := top;
+	  QueryNoInterrupt.select := "select distinct _RISet_key, designation\n" + from + "\n" + where + "\norder by designation\n";
+	  QueryNoInterrupt.table := RISET;
+	  send(QueryNoInterrupt, 0);
 	  (void) reset_cursor(top);
 	end does;
 

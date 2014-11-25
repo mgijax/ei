@@ -435,11 +435,11 @@ rules:
 	  end if;
 
 	  if (not abortSearch) then
-	    Query.source_widget := top;
-	    Query.select := "select distinct t._TranslationType_key, t.translationType\n" + 
+	    QueryNoInterrupt.source_widget := top;
+	    QueryNoInterrupt.select := "select distinct t._TranslationType_key, t.translationType\n" + 
 	  	  from + "\n" + where + "\norder by translationType\n";
-	    Query.table := MGI_TRANSLATIONTYPE;
-	    send(Query, 0);
+	    QueryNoInterrupt.table := MGI_TRANSLATIONTYPE;
+	    send(QueryNoInterrupt, 0);
 	  end if;
 
 	  (void) reset_cursor(top);

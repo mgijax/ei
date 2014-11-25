@@ -311,11 +311,11 @@ rules:
 	Search does
 	  (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
-	  Query.source_widget := top;
-	  Query.select := "select distinct id = table_name, table_name\n" + 
+	  QueryNoInterrupt.source_widget := top;
+	  QueryNoInterrupt.select := "select distinct id = table_name, table_name\n" + 
 		from + "\n" + where + "\norder by table_name\n";
-	  Query.table := MGI_TABLES;
-	  send(Query, 0);
+	  QueryNoInterrupt.table := MGI_TABLES;
+	  send(QueryNoInterrupt, 0);
           (void) reset_cursor(top);
         end does;
 
