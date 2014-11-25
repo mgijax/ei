@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Mon Nov 24 07:23:06 2014";
+      lastWritten = "Tue Nov 25 14:01:49 2014";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -5687,52 +5687,13 @@ Module: MGD
                                       }
                                 }
                                 {
-                                  Notes = Notes : mgiDataTypes;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    rightAttachment = attach_form;
-                                    rightOffset = 2;
-                                    topAttachment = attach_widget;
-                                    topWidget = Name;
-                                    topOffset = 5;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    leftWidget = Name;
-                                      {
-                                        label = XmLabel;
-                                      }
-                                      {
-                                        text = scrolledText;
-                                        Group: Widget
-                                          columns = 100;
-                                          rows = 5;
-                                      }
-                                }
-                                {
-                                  J58000Note = AppendNotePush : mgiDataTypes;
-                                  Group: Widget
-                                    labelString = "J:58000 Note";
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = Notes;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = Notes;
-                                    topOffset = 5;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                  Group: User
-                                    noteWidget = Notes;
-                                    note = "J:58000. Sequence homology based on a comparison of mouse sequence:";
-                                }
-                                {
                                   AccessionReference = AccessionReference : mgiTable;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = J58000Note;
+                                    leftWidget = Name;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = J58000Note;
+                                    topWidget = Name;
                                     topOffset = 5;
                                     bottomAttachment = attach_form;
                                     resizable = true;
@@ -5741,6 +5702,8 @@ Module: MGD
                                         Table = mgiTable;
                                         Group: Widget
                                           xrtTblPixelWidthSeries = "(all 0-4 0) (all 9-10 0)";
+                                          xrtTblNumRows = 11;
+                                          xrtTblVisibleRows = 10;
                                       }
                                       {
                                         Add = TablePush;
@@ -5834,7 +5797,7 @@ Module: MGD
                                       {
                                         Table = mgiTable;
                                         Group: Widget
-                                          xrtTblVisibleRows = 3;
+                                          xrtTblVisibleRows = 5;
                                         Group: User
                                           showMGI = False;
                                       }
@@ -5887,6 +5850,8 @@ Module: MGD
                                                   }
                                                   {
                                                     EntrezGene = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
                                                   }
                                                   {
                                                     NCBIGeneModel = AccToggle : mgiOption;
@@ -6052,6 +6017,8 @@ Module: MGD
                                       }
                                       {
                                         List = list;
+                                        Group: Widget
+                                          visibleItemCount = 10;
                                         Group: User
                                           targetWidget = mgiOrganism;
                                           targetText = Organism;
