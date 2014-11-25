@@ -392,7 +392,7 @@ rules:
 
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
-	  Query.source_widget := top;
+	  QueryNoInterrupt.source_widget := top;
 
 	  if (tableID = MGI_NOTETYPE) then
 	    qry := controlledvocab_note();
@@ -404,9 +404,9 @@ rules:
 	    qry := controlledvocab_selectdistinct();
 	  end if;
 
-	  Query.select := qry + " " + from + " " + where + "\norder by " + tableName;
-	  Query.table := 0;
-	  send(Query, 0);
+	  QueryNoInterrupt.select := qry + " " + from + " " + where + "\norder by " + tableName;
+	  QueryNoInterrupt.table := 0;
+	  send(QueryNoInterrupt, 0);
 	  (void) reset_cursor(top);
 	end does;
 

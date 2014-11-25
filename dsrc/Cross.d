@@ -397,10 +397,10 @@ rules:
 	Search does
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
-	  Query.source_widget := top;
-	  Query.select := cross_search(from, where);
-	  Query.table := CROSS;
-	  send(Query, 0);
+	  QueryNoInterrupt.source_widget := top;
+	  QueryNoInterrupt.select := cross_search(from, where);
+	  QueryNoInterrupt.table := CROSS;
+	  send(QueryNoInterrupt, 0);
 	  (void) reset_cursor(top);
 	end does;
 
