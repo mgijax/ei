@@ -202,7 +202,7 @@ rules:
                  mgi_DBprstr(top->Chromosome->text.value) + "," +
 	         mgi_DBprstr(top->Cyto->text.value) + "," +
 		 global_loginKey + "," +
-		 global_loginKey + ")\n";
+		 global_loginKey + END_VALUE;
 
 	  ModifyNotes.source_widget := top->Notes;
 	  ModifyNotes.tableID := MRK_NOTES;
