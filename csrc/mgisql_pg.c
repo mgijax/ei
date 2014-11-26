@@ -98,7 +98,7 @@ char *exec_accref_process(char *key, char *refsKey, char *accid, char *logicalKe
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"exec ACCRef_process %s,%s,%s,%s,%s,%s,%s\n", \
+  sprintf(buf,"select ACCRef_process (%s,%s,%s,%s,%s,%s,%s)\n", \
 	key, refsKey, accid, logicalKey, table, isPreferred, isPrivate);
   return(buf);
 }
@@ -220,14 +220,6 @@ char *exec_prb_getStrainDataSets(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"exec PRB_getStrainDataSets %s\n", key);
-  return(buf);
-}
-
-char *exec_prb_getTissueDataSets(char *key, char *countOnly)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select PRB_getTissueDataSets (%s, %s)\n", key, countOnly);
   return(buf);
 }
 

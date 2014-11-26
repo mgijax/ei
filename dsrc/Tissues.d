@@ -24,7 +24,7 @@
 --	- convert to XRT/API
 --
 -- lec	06/10/98
---	- SelectDataSets uses 'exec_prb_getTissueDataSets'
+--	- SelectDataSets uses 'exec_prb_getTissueDataSets' (obsolete)
 --
 -- lec	06/09/98
 --	- implement Merge functionality

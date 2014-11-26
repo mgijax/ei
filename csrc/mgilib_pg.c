@@ -2188,7 +2188,7 @@ char *mgi_DBinsert(int table, char *keyName)
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MRK_MARKER:
-	    sprintf(buf, "insert into %s (%s, _Organism_key, _Marker_Status_key, _Marker_Type_key, _CurationState_key, symbol, name, chromosome, cytogeneticOffset, _CreatedBy_key, _ModifiedBy_key)",
+	    sprintf(buf, "insert into %s (%s, _Organism_key, _Marker_Status_key, _Marker_Type_key, symbol, name, chromosome, cytogeneticOffset, _CreatedBy_key, _ModifiedBy_key)",
 	      mgi_DBtable(table), mgi_DBkey(table));
  	    break;
     case MRK_ALIAS:

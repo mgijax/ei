@@ -175,7 +175,6 @@ rules:
 --
 
 	Add does
-	  curationState : string := mgi_sql1(nonmouse_term());
 
 	  if (not top.allowEdit) then
 	    return;
@@ -196,19 +195,12 @@ rules:
 	         top->mgiOrganism->ObjectID->text.value + "," +
                  markerStatusKey + "," +
                  markerTypeKey + "," +
-		 curationState + "," +
 	         mgi_DBprstr(top->Symbol->text.value) + "," +
 	         mgi_DBprstr(top->Name->text.value) + "," +
                  mgi_DBprstr(top->Chromosome->text.value) + "," +
 	         mgi_DBprstr(top->Cyto->text.value) + "," +
 		 global_loginKey + "," +
 		 global_loginKey + END_VALUE;
-
-	  ModifyNotes.source_widget := top->Notes;
-	  ModifyNotes.tableID := MRK_NOTES;
-	  ModifyNotes.key := currentRecordKey;
-	  send(ModifyNotes, 0);
-	  cmd := cmd + top->Notes.sql;
 
 	  --  Process Accession numbers
 
@@ -310,12 +302,6 @@ rules:
 	    set := set + "cytogeneticOffset = " + mgi_DBprstr(top->Cyto->text.value) + ",";
 	  end if;
 
-	  ModifyNotes.source_widget := top->Notes;
-	  ModifyNotes.tableID := MRK_NOTES;
-	  ModifyNotes.key := currentRecordKey;
-	  send(ModifyNotes, 0);
-	  cmd := cmd + top->Notes.sql;
-
           ProcessAcc.table := accTable;
           ProcessAcc.objectKey := currentRecordKey;
           ProcessAcc.tableID := MRK_MARKER;
@@ -349,7 +335,6 @@ rules:
 --
 
 	PrepareSearch does
-	  from_notes    : boolean := false;
 
 	  from := " from " + mgi_DBtable(MRK_MARKER) + " m";
 	  where := "where m._Organism_key != 1";
@@ -403,15 +388,6 @@ rules:
 	    where := where + "\nand m.cytogeneticOffset like " + mgi_DBprstr(top->Cyto->text.value);
 	  end if;
 
-          if (top->Notes->text.value.length > 0) then
-	    where := where + "\nand mt.note like " + mgi_DBprstr(top->Notes->text.value);
-	    from_notes := true;
-	  end if;
-	    
-	  if (from_notes) then
-	    from := from + ",MRK_Notes mt";
-	    where := where + "\nand m._Marker_key = mt._Marker_key";
-	  end if;
 	end does;
 
 --
