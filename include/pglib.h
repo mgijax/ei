@@ -42,6 +42,8 @@ extern char *global_server;
 extern char *global_radar;
 extern int global_error;
 
+#define GLOBAL_DBTYPE	"postgres"
+
 #define	NO_MORE_RESULTS	0
 #define	NO_MORE_ROWS	0
 #define	END_VALUE	");\n"
