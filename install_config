@@ -10,12 +10,6 @@ rm -rf dblib.h
 ln -s ${EIINCLUDE} dblib.h
 cd ${EIBUILDDIR}
 
-#link to the proper csrc/mgisql.c
-cd ${EIBUILDDIR}/csrc
-rm -rf mgisql.c
-ln -s ${EICSQL} mgisql.c
-cd ${EIBUILDDIR}
-
 #link to the proper csrc/mgilib.c
 cd ${EIBUILDDIR}/csrc
 rm -rf mgilib.c
