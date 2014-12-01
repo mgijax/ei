@@ -102,7 +102,6 @@ extern char *marker_eventreason();
 
 extern char *nonmouse_term();
 extern char *nonmouse_select(char *);
-extern char *nonmouse_notes(char *);
 
 /* MLDP.d */
 

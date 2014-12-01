@@ -85,7 +85,6 @@ CALLS
 
 	 nonmouse_term()				: "char *";
 	 nonmouse_select("char *")			: "char *";
-	 nonmouse_notes("char *")			: "char *";
 
 	 mldp_assaynull()				: "char *";
 	 mldp_tag("char *", "char *")			: "char *";

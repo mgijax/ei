@@ -444,8 +444,6 @@ rules:
 
           (void) busy_cursor(top);
 
-	  top->Notes->text.value := "";
-
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
 	  dbproc : opaque;
@@ -463,15 +461,6 @@ rules:
 	      top->ModifiedDate->text.value := mgi_getstr(dbproc, 9);
 	      top->mgiOrganism->ObjectID->text.value := mgi_getstr(dbproc, 2);
 	      top->mgiOrganism->Organism->text.value := mgi_getstr(dbproc, 7);
-	    end while;
-	  end while;
-	  (void) mgi_dbclose(dbproc);
-
-	  cmd := nonmouse_notes(currentRecordKey);
-	  dbproc := mgi_dbexec(cmd);
-	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      top->Notes->text.value := top->Notes->text.value + mgi_getstr(dbproc, 1);
 	    end while;
 	  end while;
 	  (void) mgi_dbclose(dbproc);

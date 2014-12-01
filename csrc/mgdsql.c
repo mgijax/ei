@@ -767,15 +767,6 @@ char *nonmouse_select(char *key)
   return(buf);
 }
 
-char *nonmouse_notes(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select rtrim(note) from MRK_Notes where _Marker_key = %s \
-   \norder by sequenceNum", key);
-  return(buf);
-}
-
 /*
  * MLDP.d
 */
