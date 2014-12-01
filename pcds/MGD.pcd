@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Tue Nov 25 14:01:49 2014";
+      lastWritten = "Wed Nov 26 12:09:24 2014";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -5351,13 +5351,6 @@ Module: MGD
                                     traversalOn = False;
                                 }
                                 {
-                                  NonMouseMarkers = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"MarkerNonMouse\")";
-                                    labelString = "Markers (non-mouse)";
-                                    traversalOn = False;
-                                }
-                                {
                                   Mapping = XmPushButton;
                                   Group: Widget
                                     activateCallback = "D:CreateMGIModule(name = \"MLDP\")";
@@ -5415,17 +5408,17 @@ Module: MGD
                                     traversalOn = False;
                                 }
                                 {
+                                  Strain = XmPushButton;
+                                  Group: Widget
+                                    activateCallback = "D:CreateMGIModule(name = \"Strains\")";
+                                    traversalOn = False;
+                                    labelString = Strains;
+                                }
+                                {
                                   separator = XmSeparator;
                                   Group: Widget
                                     separatorType = shadow_etched_out;
                                     shadowThickness = 5;
-                                }
-                                {
-                                  MolecularSource = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"MolecularSource\")";
-                                    labelString = "Clone Libraries";
-                                    traversalOn = False;
                                 }
                                 {
                                   SimpleVocab = XmPushButton;
@@ -5442,24 +5435,24 @@ Module: MGD
                                     traversalOn = False;
                                 }
                                 {
+                                  NonMouseMarkers = XmPushButton;
+                                  Group: Widget
+                                    activateCallback = "D:CreateMGIModule(name = \"MarkerNonMouse\")";
+                                    labelString = "Markers (non-mouse)";
+                                    traversalOn = False;
+                                }
+                                {
+                                  MolecularSource = XmPushButton;
+                                  Group: Widget
+                                    activateCallback = "D:CreateMGIModule(name = \"MolecularSource\")";
+                                    labelString = "Clone Libraries";
+                                    traversalOn = False;
+                                }
+                                {
                                   Organism = XmPushButton;
                                   Group: Widget
                                     activateCallback = "D:CreateMGIModule(name = \"Organism\")";
                                     traversalOn = False;
-                                }
-                                {
-                                  Strain = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"Strains\")";
-                                    traversalOn = False;
-                                    labelString = Strains;
-                                }
-                                {
-                                  Tissue = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"Tissues\")";
-                                    traversalOn = False;
-                                    labelString = Tissues;
                                 }
                                 {
                                   Cross = XmPushButton;
@@ -5474,6 +5467,13 @@ Module: MGD
                                     labelString = "RI Sets";
                                     activateCallback = "D:CreateMGIModule(name = \"RISet\")";
                                     traversalOn = False;
+                                }
+                                {
+                                  Tissue = XmPushButton;
+                                  Group: Widget
+                                    activateCallback = "D:CreateMGIModule(name = \"Tissues\")";
+                                    traversalOn = False;
+                                    labelString = Tissues;
                                 }
                                 {
                                   Translation = XmPushButton;

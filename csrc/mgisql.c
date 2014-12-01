@@ -103,12 +103,12 @@ char *exec_acc_insert(char *key, char *accid, char *logicalKey, char *table, cha
   memset(buf, '\0', sizeof(buf));
   if (GLOBAL_DBTYPE == "sybase")
   {
-      sprintf(buf,"exec ACC_insert %s,%s,%s,%s,%s,%s,%s\n", \
+      sprintf(buf,"exec ACC_insertNoChecks %s,%s,%s,%s,%s,%s,%s\n", \
 	    key, accid, logicalKey, table, refsKey, isPreferred, isPrivate);
   }
   else
   {
-      sprintf(buf,"select * from ACC_insert (%s,%s,%s,%s,%s,%s,%s);\n", \
+      sprintf(buf,"select * from ACC_insertNoChecks (%s,%s,%s,%s,%s,%s,%s);\n", \
 	    key, accid, logicalKey, table, refsKey, isPreferred, isPrivate);
   }
   return(buf);
