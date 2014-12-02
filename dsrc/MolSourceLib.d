@@ -199,7 +199,10 @@ rules:
             	       isCuratorEdited + "," +
 		       global_loginKey + "," + global_loginKey + END_VALUE +
 		       exec_mgi_resetAgeMinMax(MAX_KEY1 + keyLabel + MAX_KEY2, mgi_DBprstr(mgi_DBtable(PRB_SOURCE)));
-		       --"select @" + keyLabel + "\n";
+
+	  if (GLOBAL_DBTYPE = "sybase") then
+		add := add + "select @" + keyLabel + "\n";
+	  end if;
  
 	  top.sql := add;
  
