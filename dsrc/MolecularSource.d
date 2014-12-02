@@ -282,7 +282,7 @@ rules:
 		     setKey + "," + 
 		     currentRecordKey + "," + 
 		     (string) (row + 1) + "," +
-		     global_loginKey + "," + global_loginKey + ")\n";
+		     global_loginKey + "," + global_loginKey + END_VALUE;
 
             elsif (editMode = TBL_ROW_MODIFY) then
               set := "_Set_key = " + setKey;

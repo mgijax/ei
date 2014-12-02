@@ -233,7 +233,7 @@ char *exec_mgi_resetAgeMinMax(char *key, char *table)
   }
   else
   {
-      sprintf(buf,"exec MGI_resetAgeMinMax %s, %s\n", table, key);
+      sprintf(buf,"select MGI_resetAgeMinMax (%s, %s);\n", table, key);
   }
   return(buf);
 }
