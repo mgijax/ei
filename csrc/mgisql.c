@@ -141,7 +141,7 @@ char *exec_acc_deleteByAccKey(char *key, char *refsKey)
   }
   else
   {
-      sprintf(buf,"exec ACC_delete_byAccKey %s,%s\n", key, refsKey);
+      sprintf(buf,"select ACC_delete_byAccKey (%s,%s);\n", key, refsKey);
   }
   return(buf);
 }

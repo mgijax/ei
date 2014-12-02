@@ -332,10 +332,10 @@ rules:
 	      end if;
 
 	      if (table.is_defined("refsKey") != nil) then
-	        (void) mgi_tblSetCell(table, row, table.refsCurrentKey, mgi_getstr(dbproc, 7));
-	        (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 7));
-	        (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 8));
-	        (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 9));
+	        (void) mgi_tblSetCell(table, row, table.refsCurrentKey, mgi_getstr(dbproc, 8));
+	        (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 8));
+	        (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 9));
+	        (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 10));
 	      end if;
 
 	      if (table.is_defined("modifiedBy") != nil) then
