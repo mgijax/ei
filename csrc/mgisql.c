@@ -125,7 +125,7 @@ char *exec_acc_update(char *key, char *accid, char *origRefsKey, char *refsKey)
   }
   else
   {
-     sprintf(buf,"exec ACC_update %s,%s,%s,%s\n", \
+     sprintf(buf,"select * from ACC_update (%s,%s,%s,%s);\n", \
            key, accid, origRefsKey, refsKey);
   }
   return(buf);
