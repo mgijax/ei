@@ -124,7 +124,6 @@ rules:
           key : string;
 	  refsTypeKey : string;
 	  markerKey : string;
-	  mgiTypeKey : string;
 	  set : string := "";
 	  keyName : string := "refMarkerKey";
 	  keyDefined : boolean := false;
@@ -140,7 +139,6 @@ rules:
             key := mgi_tblGetCell(table, row, table.assocKey);
 	    refsTypeKey := mgi_tblGetCell(table, row, (integer) table.refsTypeKey);
 	    markerKey := mgi_tblGetCell(table, row, (integer) table.markerKey);
-	    mgiTypeKey := mgi_tblGetCell(table, row, (integer) table.mgiTypeKey);
 
             if (editMode = TBL_ROW_ADD and markerKey.length > 0) then
 

@@ -1671,15 +1671,11 @@ rules:
 	Search does
 	  (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
-	  QueryNoInterrupt.source_widget := top;
-	  QueryNoInterrupt.select := "select distinct m._Marker_key, m.symbol, m._Marker_Type_key\n" + from + "\n" + 
+	  Query.source_widget := top;
+	  Query.select := "select distinct m._Marker_key, m.symbol, m._Marker_Type_key\n" + from + "\n" + 
 			  where + "\norder by m._Marker_Type_key, m.symbol\n";
-	  QueryNoInterrupt.table := MRK_MARKER;
-	  (void) mgi_writeLog("start query\n");
-	  (void) mgi_writeLog(get_time());
-	  send(QueryNoInterrupt, 0);
-	  (void) mgi_writeLog("end query\n");
-	  (void) mgi_writeLog(get_time());
+	  Query.table := MRK_MARKER;
+	  send(Query, 0);
           (void) reset_cursor(top);
         end does;
 

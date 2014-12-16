@@ -923,10 +923,10 @@ rules:
 	Search does
 	  (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
-	  QueryNoInterrupt.source_widget := top;
-	  QueryNoInterrupt.select := "select distinct r._Refs_key, r.short_citation\n" + from + "\n" + where + "\norder by r.short_citation\n";
-	  QueryNoInterrupt.table := BIB_REFS;
-	  send(QueryNoInterrupt, 0);
+	  Query.source_widget := top;
+	  Query.select := "select distinct r._Refs_key, r.short_citation\n" + from + "\n" + where + "\norder by r.short_citation\n";
+	  Query.table := BIB_REFS;
+	  send(Query, 0);
 	  (void) reset_cursor(top);
         end does;
 

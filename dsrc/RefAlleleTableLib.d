@@ -126,7 +126,6 @@ rules:
           key : string;
 	  refsTypeKey : string;
 	  alleleKey : string;
-	  mgiTypeKey : string;
 	  set : string := "";
 	  keyName : string := "refAlleleKey";
 	  keyDefined : boolean := false;
@@ -143,7 +142,6 @@ rules:
             key := mgi_tblGetCell(table, row, table.assocKey);
 	    refsTypeKey := mgi_tblGetCell(table, row, (integer) table.refsTypeKey);
 	    alleleKey := mgi_tblGetCell(table, row, (integer) table.alleleKey[1]);
-	    mgiTypeKey := mgi_tblGetCell(table, row, (integer) table.mgiTypeKey);
 
             if (editMode = TBL_ROW_ADD and alleleKey.length > 0) then
 

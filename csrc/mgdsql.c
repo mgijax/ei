@@ -323,7 +323,8 @@ char *genotype_orderby()
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   /*sprintf(buf,"\norder by g.strain, ap.allele1");*/
-  sprintf(buf,"\norder by g.strain, a1.symbol");
+  /*sprintf(buf,"\norder by g.strain, a1.symbol");*/
+  sprintf(buf,"\norder by strain, symbol");
   return(buf);
 }
 

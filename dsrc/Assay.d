@@ -2366,12 +2366,12 @@ rules:
 	Search does
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
-	  QueryNoInterrupt.source_widget := top;
-	  QueryNoInterrupt.select := "select distinct g._Assay_key, " + 
+	  Query.source_widget := top;
+	  Query.select := "select distinct g._Assay_key, " + 
 			"g.jnumID || ';' || g.assayType || ';' || g.symbol, g.jnumID, g.assayType, g.symbol\n" + 
 			from + "\n" + where + "\norder by g.jnumID, g.assayType, g.symbol\n";
-	  QueryNoInterrupt.table := GXD_ASSAY;
-	  send(QueryNoInterrupt, 0);
+	  Query.table := GXD_ASSAY;
+	  send(Query, 0);
 	  (void) reset_cursor(top);
 	end does;
 
