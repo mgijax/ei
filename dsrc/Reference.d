@@ -348,7 +348,7 @@ rules:
 
           -- If adding, then @KEYNAME must be used in all Modify events
  
-          currentRecordKey := "@" + KEYNAME;
+          currentRecordKey := MAX_KEY1 + KEYNAME + MAX_KEY2;
  
 	  send(SetReviewStatus, 0);
 
@@ -394,7 +394,7 @@ rules:
  
 	  cmd := cmd + top->IsReviewMenu.menuHistory.defaultValue + ",";
 	  cmd := cmd + mgi_DBprstr2(top->Abstract->text.value) + ",";
-	  cmd := cmd + global_loginKey + "," + global_loginKey + ")\n";
+	  cmd := cmd + global_loginKey + "," + global_loginKey + END_VALUE;
 
 	  -- System will assign the J: unless it is overridden by the user
 	  -- J: is in second row of Accession table
@@ -497,7 +497,7 @@ rules:
 	         mgi_DBprstr(top->BookForm->Title->text.value) + "," +
 	         mgi_DBprstr(top->BookForm->Place->text.value) + "," +
 	         mgi_DBprstr(top->BookForm->Publisher->text.value) + "," +
-	         mgi_DBprstr(top->BookForm->Series->text.value) + ")\n";
+	         mgi_DBprstr(top->BookForm->Series->text.value) + END_VALUE;
 	end does;
 
 --
@@ -1115,7 +1115,7 @@ rules:
 		     currentRecordKey + "," +
 		     dataSetKey + "," +
 		     neverUsed + "," +
-		     global_loginKey + "," + global_loginKey + ")\n";
+		     global_loginKey + "," + global_loginKey + END_VALUE;
 
 	    -- update
 

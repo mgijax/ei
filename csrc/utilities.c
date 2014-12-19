@@ -145,7 +145,15 @@ char *mgi_year(char *date)
   memset(buf, '\0', sizeof(buf));
   memset(cmd, '\0', sizeof(buf));
 
-  sprintf(cmd, "select convert(int, substring('%s', patindex('%[0-9][0-9][0-9][0-9]%', '%s'), 4))", date, date);
+  if (GLOBAL_DBTYPE == "sybase")
+  {
+    sprintf(cmd, "select convert(int, substring('%s', patindex('%[0-9][0-9][0-9][0-9]%', '%s'), 4))", date, date);
+  }
+  else
+  {
+    sprintf(cmd, "select (regexp_matches('%s', E'^[0-9]*', 'g'))[1]", date);
+  }
+
   strcpy(buf, (char *) mgi_sql1(cmd));
   return(buf);
 }

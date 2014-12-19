@@ -92,15 +92,16 @@ int mgi_dbinit(char *user, char *pwd)
    * Make a connection to the database
    */
 
-  /*
-   * hard coding this for now 
-   * but want to use the env variable PG_DBNAME and the user-entered user/password
-   */
+  static char passwdfile[TEXTBUFSIZ];
+
+  memset(passwdfile, '\0', sizeof(passwdfile));
+  sprintf(passwdfile, "%s", getenv("PG_1LINE_PASSFILE"));
+  global_passwd_file = passwdfile;
 
   sprintf(global_database, "%s", getenv("PG_DBNAME"));
   sprintf(global_login, "%s", getenv("PG_DBUSER"));
   sprintf(global_server, "%s", getenv("PG_DBSERVER"));
-  sprintf(conninfo, "host = %s dbname = %s user = %s password = db0dev", global_server, global_database, global_login);
+  sprintf(conninfo, "host = %s dbname = %s user = %s", global_server, global_database, global_login);
   /*printf("mgi_dbinit: %s\n", conninfo);*/
 
   conn = PQconnectdb(conninfo);

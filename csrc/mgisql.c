@@ -1670,7 +1670,7 @@ char *verify_item_ref(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select distinct id = 0, journal, standard = 1, private = 0 from %s where ", key);
+  sprintf(buf,"select distinct 0 as id, journal, 1 as standard, 0 as private from %s where ", key);
   return(buf);
 }
 
@@ -1678,7 +1678,7 @@ char *verify_item_cross(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _Cross_key, display, standard = 1, private = 0 from %s where ", key);
+  sprintf(buf,"select _Cross_key, display, 1 as standard, 0 as private from %s where ", key);
   return(buf);
 }
 
@@ -1686,7 +1686,7 @@ char *verify_item_riset(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _RISet_key, designation, standard = 1, private = 0 from %s where ", key);
+  sprintf(buf,"select _RISet_key, designation, 1 as standard, 0 as private from %s where ", key);
   return(buf);
 }
 

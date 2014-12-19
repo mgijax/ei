@@ -161,7 +161,7 @@ rules:
 		     alleleKey + "," +
 		     "11," +
 		     refsTypeKey + "," +
-		     global_loginKey + "," + global_loginKey + ")\n";
+		     global_loginKey + "," + global_loginKey + END_VALUE;
 
             elsif (editMode = TBL_ROW_MODIFY and alleleKey.length > 0) then
 	      set := "_Object_key = " + alleleKey + "," +

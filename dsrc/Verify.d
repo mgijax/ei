@@ -734,10 +734,9 @@ rules:
                 if (alleleKeys.count = 0) then
 
                   if (markerKey.length > 0 and markerKey != "NULL") then
-                    message := "The allele... \n\n'" + value + 
-                               "'\n\ndoes not exist for symbol '" + markerSymbol + "'.\n";
+                    message := "The allele... \n\n'" + value + "'\n\nis Reserved OR does not exist for symbol '" + markerSymbol + "'.\n";
                   else
-                    message := "The allele... \n\n'" + VerifyAllele.value +  "'\n\ndoes not exist.\n";
+                    message := "The allele... \n\n'" + VerifyAllele.value +  "'\n\nis Reserved OR does not exist.\n";
                   end if;
 
                   StatusReport.source_widget := root;
@@ -2031,7 +2030,6 @@ rules:
 	  end if;
 
 	  if (isTable) then
-	    (void) mgi_writeLog("print marker symbol\n");
             (void) mgi_tblSetCell(sourceWidget, row, markerKey, whichMarker);
             (void) mgi_tblSetCell(sourceWidget, row, markerSymbol, whichSymbol);
 

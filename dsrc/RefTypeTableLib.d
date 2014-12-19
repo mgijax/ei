@@ -284,7 +284,7 @@ rules:
 		     objectKey + "," +
 		     mgiTypeKey + "," +
 		     refsTypeKey + "," +
-		     global_loginKey + "," + global_loginKey + ")\n";
+		     global_loginKey + "," + global_loginKey + END_VALUE;
 
 	      if (isReviewArticle.length > 0) then
                 set := "isReviewArticle = " + isReviewArticle;
