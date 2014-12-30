@@ -430,10 +430,23 @@ char *mgi_getstr(PGconn *conn, int column)
   *
   */
 
-  if (strcmp(buf, "t") == 0)
-    strcpy(buf, "1");
-  else if (strcmp(buf, "f") == 0)
-    strcpy(buf, "0");
+  switch (coltype)
+  {
+    /*case 1043: varchar) */
+    case 1560:
+      if (strcmp(buf, "t") == 0)
+      {
+        strcpy(buf, "1");
+      }
+      else if (strcmp(buf, "f") == 0)
+      {
+        strcpy(buf, "0");
+      }
+      break;
+
+    default:
+      break;
+  }
 
   /* to return datetime correctly */
 
