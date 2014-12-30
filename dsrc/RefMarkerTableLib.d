@@ -80,7 +80,7 @@ rules:
 	  send(ClearTable, 0);
 
           -- if marker count > configuration limit, then do not display any markers
-          refMarkerMax := getenv("REFALLELE_LOOKUP");
+          refMarkerMax := getenv("REFMARKER_LOOKUP");
           refMarkerCount := mgi_sql1(ref_marker_count(objectKey));
           if ((integer) refMarkerCount > (integer) refMarkerMax) then
              return;
