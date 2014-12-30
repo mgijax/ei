@@ -73,9 +73,18 @@ rules:
 	  table : widget := LoadRefMarkerTable.table;
 	  objectKey : string := LoadRefMarkerTable.objectKey;
 	  cmd : string;
+	  refMarkerMax : string;
+	  refMarkerCount : string;
 
 	  ClearTable.table := table;
 	  send(ClearTable, 0);
+
+          -- if marker count > configuration limit, then do not display any markers
+          refMarkerMax := getenv("REFALLELE_LOOKUP");
+          refMarkerCount := mgi_sql1(ref_marker_count(objectKey));
+          if ((integer) refMarkerCount > (integer) refMarkerMax) then
+             return;
+          end if;
 
           cmd := ref_marker_load(objectKey);
 

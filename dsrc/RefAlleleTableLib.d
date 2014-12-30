@@ -73,9 +73,18 @@ rules:
 	  table : widget := LoadRefAlleleTable.table;
 	  objectKey : string := LoadRefAlleleTable.objectKey;
 	  cmd : string;
+          refAlleleCount : string;
+	  refAlleleMax : string;
 
 	  ClearTable.table := table;
 	  send(ClearTable, 0);
+
+	  -- if allele count > configuration limit, then do not display any alleles
+	  refAlleleMax := getenv("REFALLELE_LOOKUP");
+          refAlleleCount := mgi_sql1(ref_allele_count(objectKey));
+          if ((integer) refAlleleCount > (integer) refAlleleMax) then
+	     return;
+	  end if;
 
           cmd := ref_allele_load(objectKey);
 

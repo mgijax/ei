@@ -1601,6 +1601,14 @@ char *ref_mrk_exists(char *key)
   return(buf);
 }
 
+char *ref_allele_count(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select count(_Assoc_key) from MGI_Reference_Allele_View where _Refs_key = %s", key);
+  return(buf);
+}
+
 char *ref_allele_load(char *key)
 {
   static char buf[TEXTBUFSIZ];
@@ -1615,6 +1623,14 @@ char *ref_allele_load(char *key)
   \nand aa._LogicalDB_key = 1 \
   \nand aa.preferred = 1 \
   \norder by a.symbol, r.assocType", key);
+  return(buf);
+}
+
+char *ref_marker_count(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select count(_Assoc_key) from MGI_Reference_Marker_View where _Refs_key = %s", key);
   return(buf);
 }
 
