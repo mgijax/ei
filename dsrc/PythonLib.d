@@ -59,8 +59,8 @@ rules:
 	  --end if;
 
 	  cmds.insert(getenv("ADSYSTEMLOAD") + "/adsystemload.py", cmds.count + 1);
-	  cmds.insert("-S" + getenv("MGD_DBSERVER"), cmds.count + 1);
-	  cmds.insert("-D" + getenv("MGD_DBNAME"), cmds.count + 1);
+	  cmds.insert("-S" + global_server, cmds.count + 1);
+	  cmds.insert("-D" + global_database, cmds.count + 1);
 	  cmds.insert("-U" + global_login, cmds.count + 1);
 	  cmds.insert("-P" + global_passwd_file, cmds.count + 1);
 
@@ -116,8 +116,8 @@ rules:
 	    cmds.insert(getenv("ALLCACHELOAD") + "/allelecombinationByGenotype.py", cmds.count + 1);
 	  end if;
 
-	  cmds.insert("-S" + getenv("MGD_DBSERVER"), cmds.count + 1);
-	  cmds.insert("-D" + getenv("MGD_DBNAME"), cmds.count + 1);
+	  cmds.insert("-S" + global_server, cmds.count + 1);
+	  cmds.insert("-D" + global_database, cmds.count + 1);
 	  cmds.insert("-U" + global_login, cmds.count + 1);
 	  cmds.insert("-P" + global_passwd_file, cmds.count + 1);
 	  cmds.insert("-K" + objectKey, cmds.count + 1);
@@ -171,8 +171,8 @@ rules:
 	    cmds.insert(getenv("ALLCACHELOAD") + "/allelecrecacheByAssay.py", cmds.count + 1);
 	  end if;
 
-	  cmds.insert("-S" + getenv("MGD_DBSERVER"), cmds.count + 1);
-	  cmds.insert("-D" + getenv("MGD_DBNAME"), cmds.count + 1);
+	  cmds.insert("-S" + global_server, cmds.count + 1);
+	  cmds.insert("-D" + global_database, cmds.count + 1);
 	  cmds.insert("-U" + global_login, cmds.count + 1);
 	  cmds.insert("-P" + global_passwd_file, cmds.count + 1);
 	  cmds.insert("-K" + objectKey, cmds.count + 1);
@@ -218,8 +218,8 @@ rules:
 	  --end if;
 
 	  cmds.insert(getenv("MRKCACHELOAD") + "/mrkmcv.py", cmds.count + 1);
-	  cmds.insert("-S" + getenv("MGD_DBSERVER"), cmds.count + 1);
-	  cmds.insert("-D" + getenv("MGD_DBNAME"), cmds.count + 1);
+	  cmds.insert("-S" + global_server, cmds.count + 1);
+	  cmds.insert("-D" + global_database, cmds.count + 1);
 	  cmds.insert("-U" + global_login, cmds.count + 1);
 	  cmds.insert("-P" + global_passwd_file, cmds.count + 1);
 	  cmds.insert("-K" + objectKey, cmds.count + 1);
@@ -269,8 +269,8 @@ rules:
 	    cmds.insert(getenv("MRKCACHELOAD") + "/mrkomimByGenotype.py", cmds.count + 1);
 	  end if;
 
-	  cmds.insert("-S" + getenv("MGD_DBSERVER"), cmds.count + 1);
-	  cmds.insert("-D" + getenv("MGD_DBNAME"), cmds.count + 1);
+	  cmds.insert("-S" + global_server, cmds.count + 1);
+	  cmds.insert("-D" + global_database, cmds.count + 1);
 	  cmds.insert("-U" + global_login, cmds.count + 1);
 	  cmds.insert("-P" + global_passwd_file, cmds.count + 1);
 	  cmds.insert("-K" + objectKey, cmds.count + 1);

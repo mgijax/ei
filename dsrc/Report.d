@@ -81,8 +81,8 @@ rules:
          return;
        end if;
  
-       commands.insert("-S" + getenv("MGD_DBSERVER"), commands.count + 1); 
-       commands.insert("-D" + getenv("MGD_DBNAME"), commands.count + 1); 
+       commands.insert("-S" + global_server, commands.count + 1);
+       commands.insert("-D" + global_database, commands.count + 1);
        commands.insert("-U" + global_login, commands.count + 1);
        commands.insert("-P" + global_passwd_file, commands.count + 1);
  
@@ -132,13 +132,13 @@ rules:
 
      --
      -- c-shell scripts expect 5 parameters:
-     -- 	MGD_DBSERVER, DATABASE, LOGIN, PASSWORDFILE  and FILE TO PROCESS
+     -- 	DBSERVER, DATABASE, LOGIN, PASSWORDFILE  and FILE TO PROCESS
      --
 
      elsif (strstr(which_commands[1], ".csh") != nil) then
        commands.insert(which_commands[1], commands.count + 1);
-       commands.insert(getenv("MGD_DBSERVER"), commands.count + 1);
-       commands.insert(getenv("MGD_DBNAME"), commands.count + 1);
+       commands.insert(global_server, commands.count + 1);
+       commands.insert(global_database, commands.count + 1);
        commands.insert(global_login, commands.count + 1);
        commands.insert(global_passwd_file, commands.count + 1);
        commands.insert(dialog->FileSelection.textString, commands.count + 1);
