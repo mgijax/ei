@@ -563,7 +563,7 @@ rules:
  
 	  if (top->RefTypeMenu.menuHistory.modified and
               top->RefTypeMenu.menuHistory.searchValue != "%") then
-	    set := set + "r.refType = " + mgi_DBprstr(top->RefTypeMenu.menuHistory.defaultValue) + ",";
+	    set := set + "refType = " + mgi_DBprstr(top->RefTypeMenu.menuHistory.defaultValue) + ",";
 	  end if;
 
           if (top->NLMStatusMenu.menuHistory.modified and
@@ -573,7 +573,7 @@ rules:
  
 	  if (top->IsReviewMenu.menuHistory.modified and
               top->IsReviewMenu.menuHistory.searchValue != "%") then
-	    set := set + "r.isReviewArticle = " + top->IsReviewMenu.menuHistory.defaultValue + ",";
+	    set := set + "isReviewArticle = " + top->IsReviewMenu.menuHistory.defaultValue + ",";
 	  end if;
 
 	  if (top->Authors->text.modified) then
