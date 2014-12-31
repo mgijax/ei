@@ -124,8 +124,8 @@ setenv XRTMAKE  ${EIBUILDDIR}/Makefile.xrt
 # for specific modules
 setenv ASSAY_IMAGE_LOOKUP	10000
 setenv PYTHON_IMAGE_CACHE	10000
-setenv REFALLELE_LOOKUP 100
-setenv REFMARKER_LOOKUP 100
+setenv REFALLELE_LOOKUP 200
+setenv REFMARKER_LOOKUP 200
 
 # Set umask for permissions on files created
 umask 002
