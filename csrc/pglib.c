@@ -93,15 +93,28 @@ int mgi_dbinit(char *user, char *pwd)
    */
 
   static char passwdfile[TEXTBUFSIZ];
+  static char passwdfile_name[TEXTBUFSIZ];
 
   memset(passwdfile, '\0', sizeof(passwdfile));
+  memset(passwdfile, '\0', sizeof(passwdfile_name));
   sprintf(passwdfile, "%s", getenv("PG_1LINE_PASSFILE"));
   global_passwd_file = passwdfile;
+
+  FILE *p_file = fopen(getenv("PG_1LINE_PASSFILE"), "r");
+
+  if (!p_file)
+  {
+  	fprintf(stderr, "fatal error : could not ready global_passwd_file\n");
+	return(0);
+  }
+
+  fgets(passwdfile_name, sizeof(passwdfile_name), p_file);
+  fclose(p_file);
 
   sprintf(global_database, "%s", getenv("PG_DBNAME"));
   sprintf(global_login, "%s", getenv("PG_DBUSER"));
   sprintf(global_server, "%s", getenv("PG_DBSERVER"));
-  sprintf(conninfo, "host = %s dbname = %s user = %s", global_server, global_database, global_login);
+  sprintf(conninfo, "host = %s dbname = %s user = %s password = %s", global_server, global_database, global_login, passwdfile_name);
   /*printf("mgi_dbinit: %s\n", conninfo);*/
 
   conn = PQconnectdb(conninfo);
