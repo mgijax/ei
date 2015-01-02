@@ -81,6 +81,7 @@ devents:
 	AddBook :local [];
 	BuildDynamicComponents :local[];
         ClearReference :local [clearKeys : boolean := true;
+			    clearLists : integer := 1;
                             reset : boolean := false;];
 	Delete :local [];
 	Exit :local [];
@@ -470,7 +471,6 @@ rules:
 	    send(SetReportSelect, 0);
 
 	    ClearReference.clearKeys := false;
-	    ClearReference.clearLists := clearLists;
 	    send(ClearReference, 0);
 
 	    NextJnum.source_widget := top;
@@ -518,7 +518,6 @@ rules:
 
 	  if (top->QueryList->List.row = 0) then
 	    ClearReference.clearKeys := false;
-	    ClearReference.clearLists := clearLists;
 	    send(ClearReference, 0);
 	  end if;
 
