@@ -241,7 +241,7 @@ rules:
 	  dbproc := mgi_dbexec(ExecSQL.cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      (void) mgi_writeLog("\nmgi_exec : " + mgi_getstr(dbproc, 1) + "\n");
+	      --(void) mgi_writeLog("\nmgi_exec : " + mgi_getstr(dbproc, 1) + "\n");
 	      newID := mgi_getstr(dbproc, 1);
 	    end while;
 	  end while;
@@ -305,11 +305,13 @@ rules:
 	  -- a transaction is not desired.  If this is the case, the
 	  -- calling event can set ModifySQL.transaction = false
 
-	  if (ModifySQL.transaction) then
-	    cmd := "begin transaction;\n" + ModifySQL.cmd + "\ncommit transaction;\n";
-	  else
-	    cmd := ModifySQL.cmd;
-	  end if;
+	  cmd := ModifySQL.cmd;
+
+	  --if (ModifySQL.transaction) then
+	    --cmd := "begin transaction;\n" + ModifySQL.cmd + "\ncommit transaction;\n";
+	  --else
+	    --cmd := ModifySQL.cmd;
+	  --end if;
 
 	  ExecSQL.cmd := cmd;
 	  ExecSQL.list := ModifySQL.list;
