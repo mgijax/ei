@@ -92,7 +92,7 @@ char *exec_acc_assignJNext(char *key, char *nextMGI)
   }
   else
   {
-    sprintf(buf,"exec ACC_assignJ %s,%s\n", key, nextMGI);
+    sprintf(buf,"select * from ACC_assignJ (%s,%s);\n", key, nextMGI);
   }
   return(buf);
 }
