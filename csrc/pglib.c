@@ -464,8 +464,11 @@ char *mgi_getstr(PGconn *conn, int column)
   {
     /*case TIMESTAMPOID:*/
     case 1114:
-      tokens = (char **) mgi_splitfields(buf, " ");
-      sprintf(buf, "%s", tokens[0]);
+      if (strlen(buf) > 0)
+      {
+        tokens = (char **) mgi_splitfields(buf, " ");
+        sprintf(buf, "%s", tokens[0]);
+      }
       break;
 
     default:
@@ -486,7 +489,6 @@ char *mgi_getstr(PGconn *conn, int column)
 char *mgi_citation(PGconn *conn, int table)
 {
   static char buf[TEXTBUFSIZ];
-  int len;
  
   memset(buf, '\0', sizeof(buf));
  
