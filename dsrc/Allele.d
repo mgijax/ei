@@ -2076,13 +2076,13 @@ rules:
 	      top->Name->text.value         := mgi_getstr(dbproc, 10);
 	      origAlleleSymbol := top->Symbol->text.value;
 
-	      --(void) mgi_tblSetCell(table, table.approvedBy, table.byDate, mgi_getstr(dbproc, 18));
+	      (void) mgi_tblSetCell(table, table.approvedBy, table.byDate, mgi_getstr(dbproc, 18));
 	      (void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 19));
 	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 20));
 
 	      (void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 26));
 	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 27));
-	      --(void) mgi_tblSetCell(table, table.approvedBy, table.byUser, mgi_getstr(dbproc, 28));
+	      (void) mgi_tblSetCell(table, table.approvedBy, table.byUser, mgi_getstr(dbproc, 28));
 
 	      -- If the Marker key is null, then use the Nomen Symbol field
 	      if (mgi_getstr(dbproc, 2) = "") then
