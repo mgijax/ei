@@ -2352,14 +2352,6 @@ Shift<Key>Tab: prev-tab-group()
                                                 note = "The antibody/probe specificity was not detailed and may recognize a related gene; (MGI:) has also been annotated.";
                                             }
                                             {
-                                              gRTPCR = AppendNotePush : mgiDataTypes;
-                                              Group: Widget
-                                                labelString = "qRT-PCR";
-                                              Group: User
-                                                noteWidget = Note;
-                                                note = "The RT-PCR data was obtained using quantitative RT-PCR.";
-                                            }
-                                            {
                                               microRNA = AppendNotePush : mgiDataTypes;
                                               Group: Widget
                                                 labelString = microRNA;
