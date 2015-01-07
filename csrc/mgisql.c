@@ -1144,7 +1144,7 @@ char *notelib_1(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _NoteType_key, noteType, private = -1, _MGIType_key \
+  sprintf(buf,"select _NoteType_key, noteType, -1 as private, _MGIType_key \
    from %s \
    order by _NoteType_key", key);
   return(buf);
