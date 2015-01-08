@@ -173,9 +173,6 @@ rules:
 	  -- Login to Server; Set MGD_DBSERVER and MGD_DBNAME env variables
 	  -- If successful, destroy Login window and create main menu window
 
-	  --(void) mgi_writeLog(global_login + "\n");
-	  --(void) mgi_writeLog(global_passwd + "\n");
-
 	  if (mgi_dbinit(global_login, global_passwd) = 1) then
 	    title := global_server + ":" + global_database;
 	    mgi := top;
@@ -228,6 +225,10 @@ rules:
 
 	    destroy mgi;
 	    top.show;
+	    (void) mgi_writeLog("server : " + global_server + "\n");
+	    (void) mgi_writeLog("database : " + global_database + "\n");
+	    (void) mgi_writeLog("user : " + global_login + "\n");
+	    (void) mgi_writeLog("db-type : " + GLOBAL_DBTYPE + "\n");
 	    (void) mgi_writeLog(get_time() + "Logged in to Application.\n\n");
 	  end if;
 

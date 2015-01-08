@@ -153,9 +153,7 @@ CALLS
 	 omimvoc_evidencecode("char *")			: "char *";
 	 omimvoc_qualifier("char *")			: "char *";
 
-	 nomen_event()					: "char *";
 	 nomen_status()					: "char *";
-	 nomen_internal()				: "char *";
 	 nomen_select("char *")				: "char *";
 	 nomen_verifyMarker("char *")			: "char *";
 

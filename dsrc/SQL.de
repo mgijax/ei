@@ -26,13 +26,15 @@ DeleteSQL [tableID : integer := 0;		-- Execute a Delete
            list : widget;];
  
 ExecSQL [cmd : string;				-- Execute an SQL command
-	 list : widget;];
+	 list : widget;
+	 logOnly : boolean := false;];
 
 ModifySQL [source_widget : widget;		-- Execute a Modification
 	   cmd : string;
 	   list : widget;
 	   transaction : boolean := true;
-	   reselect : boolean := true;];
+	   reselect : boolean := true;
+	   logOnly : boolean := false;];
 
 Query [source_widget : widget;			-- Query Database Allowing Interruption
        list_w : widget;

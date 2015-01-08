@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Tue May 20 14:18:57 2014";
+      lastWritten = "Thu Jan  8 10:08:18 2015";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -109,28 +109,17 @@ Module: MGINomen
                                       }
                                 }
                                 {
-                                  MarkerEventFrame = MarkerEventFrame : mgiOption;
+                                  MarkerStatusFrame = MarkerStatusFrame : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
+                                    leftWidget = SymbolName;
+                                    leftOffset = 5;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
+                                    topWidget = SymbolName;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     topOffset = 10;
-                                    leftWidget = SymbolName;
-                                    topWidget = SymbolName;
-                                }
-                                {
-                                  MarkerStatusFrame = MarkerStatusFrame : mgiOption;
-                                  Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    leftWidget = MarkerEventFrame;
-                                    leftOffset = 5;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_opposite_widget;
-                                    topWidget = MarkerEventFrame;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
                                 }
                                 {
                                   MarkerTypeFrame = MarkerTypeFrame : mgiOption;
@@ -167,10 +156,10 @@ Module: MGINomen
                                   Symbol = CharText : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = MarkerEventFrame;
+                                    leftWidget = MarkerStatusFrame;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = MarkerEventFrame;
+                                    topWidget = MarkerStatusFrame;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     topOffset = 5;
@@ -216,29 +205,6 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  HumanSymbol = CharText : mgiDataTypes;
-                                  Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    leftWidget = Symbol;
-                                    leftOffset = 5;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_opposite_widget;
-                                    topWidget = Symbol;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                      {
-                                        label = XmLabel;
-                                        Group: Widget
-                                          labelString = "Human Symbol";
-                                      }
-                                      {
-                                        text = text;
-                                        Group: Widget
-                                          columns = 40;
-                                          maxLength = 40;
-                                      }
-                                }
-                                {
                                   Reference = ReferenceTypeTable : mgiTable;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
@@ -252,7 +218,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         Table = mgiTable;
                                         Group: Widget
-                                          xrtTblPixelWidthSeries = "(all 0-4 0)";
+                                          xrtTblPixelWidthSeries = "(all 0-4 0)(all 8 0)";
                                         Group: User
                                           mgiTypeKey = 21;
                                       }
@@ -274,7 +240,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         ReviewFrame = YesNoFrame : mgiOption;
                                         Group: Widget
-                                          managed = True;
+                                          managed = False;
                                       }
                                 }
                                 {
@@ -618,13 +584,13 @@ Shift<Key>Tab: prev-tab-group()
                                 {
                                   AddBroadcastOfficial = ControlPush : mgiControl;
                                   Group: Widget
-                                    labelString = "Add and Broadcast Official to MGD";
+                                    labelString = "Add and Broadcast to MGD";
                                     activateCallback = "D:VerifyEdit(mode = 2),\nD:Broadcast (type = 1),\nD:GoHome";
                                 }
                                 {
                                   BroadcastOfficial = ControlPush : mgiControl;
                                   Group: Widget
-                                    labelString = "Broadcast Official Symbol to MGD";
+                                    labelString = "Broadcast Symbol to MGD";
                                     activateCallback = "D:Broadcast(type = 3),\nD:GoHome";
                                 }
                           }

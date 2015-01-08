@@ -177,9 +177,7 @@ extern char *mutant_derivationVerify(char *, char *, char *, char *, char *, cha
 
 /* Nomen.d */
 
-extern char *nomen_event();
 extern char *nomen_status();
-extern char *nomen_internal();
 extern char *nomen_select(char *);
 extern char *nomen_verifyMarker(char *);
 

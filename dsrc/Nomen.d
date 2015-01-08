@@ -198,9 +198,11 @@ locals:
         accTable : widget;		-- Accession Table
         accRefTable : widget;		-- Accession Reference Table
 
+	markerEvent : string := "1";    -- assigned
+
 	-- this column is always set to the default
 	-- this column can be removed (see TR10841)
-	curationState : string := "";	-- Default Curation State
+	curationState : string := "166894";	-- Default Curation State
 
 rules:
 
@@ -257,11 +259,6 @@ rules:
 	  -- Dynamically create Marker Event, Event Reason, Status, 
 	  -- Type and Chromosome Menus
 
-	  top->MarkerEventMenu.subMenuId.sql := nomen_event();
-	  top->MarkerEventMenu.defaultChild := 2;
-	  InitOptionMenu.option := top->MarkerEventMenu;
-	  send(InitOptionMenu, 0);
-
 	  top->MarkerStatusMenu.subMenuId.sql := nomen_status(); 
 	  top->MarkerStatusMenu.defaultChild := 2;
 	  InitOptionMenu.option := top->MarkerStatusMenu;
@@ -272,9 +269,6 @@ rules:
 
 	  InitOptionMenu.option := top->ChromosomeMenu;
 	  send(InitOptionMenu, 0);
-
---	  InitOptionMenu.option := top->CurationStateMenu;
---	  send(InitOptionMenu, 0);
 
 	  -- Initialize Reference table
 
@@ -322,8 +316,6 @@ rules:
 	  -- List of all Table widgets used in Reset
 
 	  resettables.append(top->AccessionReference->Table);
-
-	  curationState := mgi_sql1(nomen_internal());
 
           -- Set Row Count
           SetRowCount.source_widget := top;
@@ -380,8 +372,7 @@ rules:
 	  -- Set Status to In Progress if set to Broadcast...this can happen
 	  -- if they user is duplicating a broadcast record
 
-	  if (top->MarkerStatusMenu.menuHistory.labelString = STATUS_BROADCASTOFF or
-	      top->MarkerStatusMenu.menuHistory.labelString = STATUS_BROADCASTINT) then
+	  if (top->MarkerStatusMenu.menuHistory.labelString = STATUS_BROADCASTOFF) then
             SetOption.source_widget := top->MarkerStatusMenu;
             SetOption.value := STATUS_PENDING;
             send(SetOption, 0);
@@ -422,13 +413,13 @@ rules:
                  mgi_DBinsert(NOM_MARKER, KEYNAME) +
                  top->MarkerTypeMenu.menuHistory.defaultValue + "," +
                  top->MarkerStatusMenu.menuHistory.defaultValue + "," +
-                 top->MarkerEventMenu.menuHistory.defaultValue + "," +
+                 markerEvent + "," +
                  NOTSPECIFIED + "," +
                  curationState + "," +
 	         mgi_DBprstr(top->Symbol->text.value) + "," +
 	         mgi_DBprstr(top->Name->text.value) + "," +
                  mgi_DBprstr(top->ChromosomeMenu.menuHistory.defaultValue) + "," +
-	         mgi_DBprstr(top->HumanSymbol->text.value) + "," +
+	         "NULL," +
 	         mgi_DBprstr(top->StatusNotes->text.value) + "," + 
 		 global_loginKey + "," + global_loginKey + ")\n";
 
@@ -554,8 +545,7 @@ rules:
 	  end if;
 
           if (top->MarkerStatusMenu.menuHistory.modified and
-	      (top->MarkerStatusMenu.menuHistory.labelString = STATUS_BROADCASTOFF or
-	       top->MarkerStatusMenu.menuHistory.labelString = STATUS_BROADCASTINT)) then
+	      (top->MarkerStatusMenu.menuHistory.labelString = STATUS_BROADCASTOFF)) then
             StatusReport.source_widget := top;
             StatusReport.message := "You cannot change the status to Broadcast.";
             send(StatusReport);
@@ -572,11 +562,6 @@ rules:
 	  cmd := "";
 	  set : string := "";
 
-          if (top->MarkerEventMenu.menuHistory.modified and
-	      top->MarkerEventMenu.menuHistory.searchValue != "%") then
-            set := set + "_Marker_Event_key = "  + top->MarkerEventMenu.menuHistory.defaultValue + ",";
-          end if;
-
           if (top->MarkerStatusMenu.menuHistory.modified and
 	      top->MarkerStatusMenu.menuHistory.searchValue != "%") then
             set := set + "_NomenStatus_key = "  + top->MarkerStatusMenu.menuHistory.defaultValue + ",";
@@ -586,11 +571,6 @@ rules:
 	      top->MarkerTypeMenu.menuHistory.searchValue != "%") then
             set := set + "_Marker_Type_key = "  + top->MarkerTypeMenu.menuHistory.defaultValue + ",";
           end if;
-
---          if (top->CurationStateMenu.menuHistory.modified and
---	      top->CurationStateMenu.menuHistory.searchValue != "%") then
---            set := set + "_CurationState_key = "  + top->CurationStateMenu.menuHistory.defaultValue + ",";
---          end if;
 
           if (top->ChromosomeMenu.menuHistory.modified and
 	      top->ChromosomeMenu.menuHistory.searchValue != "%") then
@@ -603,10 +583,6 @@ rules:
 
 	  if (top->Name->text.modified) then
 	    set := set + "name = " + mgi_DBprstr(top->Name->text.value) + ",";
-	  end if;
-
-	  if (top->HumanSymbol->text.modified) then
-	    set := set + "humanSymbol = " + mgi_DBprstr(top->HumanSymbol->text.value) + ",";
 	  end if;
 
 	  if (top->StatusNotes->text.modified) then
@@ -748,11 +724,6 @@ rules:
 	    i := i + 1;
 	  end while;
 
-          if (top->MarkerEventMenu.menuHistory.searchValue != "%") then
-            where := where + "\nand m._Marker_Event_key = " + top->MarkerEventMenu.menuHistory.searchValue;
-	    printSelect := printSelect + "\nMarker Event = " + top->MarkerEventMenu.menuHistory.labelString;
-          end if;
-
           if (top->MarkerStatusMenu.menuHistory.searchValue != "%") then
             where := where + "\nand m._NomenStatus_key = " + top->MarkerStatusMenu.menuHistory.searchValue;
 	    printSelect := printSelect + "\nMarker Status = " + top->MarkerStatusMenu.menuHistory.labelString;
@@ -762,11 +733,6 @@ rules:
             where := where + "\nand m._Marker_Type_key = " + top->MarkerTypeMenu.menuHistory.searchValue;
 	    printSelect := printSelect + "\nMarker Type = " + top->MarkerTypeMenu.menuHistory.labelString;
           end if;
-
---          if (top->CurationStateMenu.menuHistory.searchValue != "%") then
---            where := where + "\nand m._CurationState_key = " + mgi_DBprstr(top->CurationStateMenu.menuHistory.searchValue);
---	    printSelect := printSelect + "\nMarker Curation State = " + top->CurationStateMenu.menuHistory.labelString;
---          end if;
 
           if (top->ChromosomeMenu.menuHistory.searchValue != "%") then
             where := where + "\nand m.chromosome = " + mgi_DBprstr(top->ChromosomeMenu.menuHistory.searchValue);
@@ -781,11 +747,6 @@ rules:
           if (top->Name->text.value.length > 0) then
 	    where := where + "\nand m.name like " + mgi_DBprstr(top->Name->text.value);
 	    printSelect := printSelect + "\nName = " + top->Name->text.value;
-	  end if;
-	    
-          if (top->HumanSymbol->text.value.length > 0) then
-	    where := where + "\nand m.humanSymbol like " + mgi_DBprstr(top->HumanSymbol->text.value);
-	    printSelect := printSelect + "\nHuman Symbol = " + top->HumanSymbol->text.value;
 	  end if;
 	    
           if (top->StatusNotes->text.value.length > 0) then
@@ -819,12 +780,12 @@ rules:
 	Search does
 	  (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
-	  QueryNoInterrupt.source_widget := top;
-	  QueryNoInterrupt.select := "select distinct m._Nomen_key, m.symbol\n" + from + "\n" + 
+	  Query.source_widget := top;
+	  Query.select := "select distinct m._Nomen_key, m.symbol\n" + from + "\n" + 
 			  where + "\norder by m.symbol\n";
-	  QueryNoInterrupt.printSelect := printSelect;
-	  QueryNoInterrupt.table := NOM_MARKER;
-	  send(QueryNoInterrupt, 0);
+	  Query.printSelect := printSelect;
+	  Query.table := NOM_MARKER;
+	  send(Query, 0);
           (void) reset_cursor(top);
         end does;
 
@@ -916,7 +877,6 @@ rules:
 	      top->ID->text.value             := mgi_getstr(dbproc, 1);
 	      top->Symbol->text.value         := mgi_getstr(dbproc, 7);
 	      top->Name->text.value           := mgi_getstr(dbproc, 8);
-	      top->HumanSymbol->text.value    := mgi_getstr(dbproc, 10);
 	      top->StatusNotes->text.value    := mgi_getstr(dbproc, 11);
 
 	      table := top->ModificationHistory->Table;
@@ -934,14 +894,6 @@ rules:
               SetOption.source_widget := top->MarkerStatusMenu;
               SetOption.value := mgi_getstr(dbproc, 3);
               send(SetOption, 0);
-
-              SetOption.source_widget := top->MarkerEventMenu;
-              SetOption.value := mgi_getstr(dbproc, 4);
-              send(SetOption, 0);
-
---              SetOption.source_widget := top->CurationStateMenu;
---              SetOption.value := mgi_getstr(dbproc, 6);
---              send(SetOption, 0);
 
               SetOption.source_widget := top->ChromosomeMenu;
               SetOption.value := mgi_getstr(dbproc, 9);

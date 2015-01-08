@@ -1333,27 +1333,11 @@ char *mutant_derivationVerify(
  * Nomen.d
 */
 
-char *nomen_event()
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select * from MRK_Event where _Marker_Event_key in (1,2) order by event");
-  return(buf);
-}
-
 char *nomen_status()
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select _Term_key, term from VOC_Term where _Vocab_key = 16 order by _Term_key");
-  return(buf);
-}
-
-char *nomen_internal()
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _Term_key from VOC_Term where _Vocab_key = 15 and term = 'Internal'");
   return(buf);
 }
 

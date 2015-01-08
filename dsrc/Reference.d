@@ -87,7 +87,7 @@ devents:
 	Exit :local [];
 	Init :local [];
 	InitDataSets [];
-	Modify :local [];
+	Modify :local [logOnly : boolean := false;];
 	ModifyBook :local [];
 	ModifyDataSets :local [table : widget;];
 	PrepareSearch :local [];
@@ -675,10 +675,16 @@ rules:
 
           ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
+	  ModifySQL.logOnly := Modify.logOnly;
           send(ModifySQL, 0);
 
 	  PythonReferenceCache.objectKey := currentRecordKey;
 	  send(PythonReferenceCache, 0);
+
+	  if (not Modify.logOnly) then
+	  	Modify.logOnly := true;
+	  	send(Modify, 0);
+	  end if;
 
 	  (void) reset_cursor(top);
 	end does;

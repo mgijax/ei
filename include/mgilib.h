@@ -46,9 +46,6 @@ extern char *global_version;
 #define YES		"1"
 #define NO 		"0"
 
-#define BROADCASTOFFICIAL       "official"
-#define BROADCASTINTERIM        "interim"
-
 /* Table Definitions must be unique */
 
 /* MGD Tables */
@@ -370,7 +367,7 @@ extern char *global_version;
 #define STATUS_RESERVED         "Reserved"
 #define STATUS_NAPPROVED        "Approved"
 #define STATUS_BROADCASTOFF     "Broadcast - Official"
-#define STATUS_BROADCASTINT     "Broadcast - Interim"
+#define BROADCASTOFFICIAL       "official"
 
 /* Allele Nomen */
 

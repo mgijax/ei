@@ -356,6 +356,7 @@ int mgi_writeFile(const char *file, const char *buf)
 void mgi_writeLog(const char *buf)
 {
   printf("%s", buf);
+  fflush(stdout);
 }
  
 /* mgi_simplesub

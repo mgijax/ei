@@ -233,6 +233,11 @@ rules:
             return;
           end if;
  
+	  if (ExecSQL.logOnly) then
+	    (void) mgi_writeLog("\nturn logOnly = true\n\n");
+	    return;
+ 	  end if;
+
 	  -- Execute cmd
 
 	  newID := "";
@@ -241,7 +246,6 @@ rules:
 	  dbproc := mgi_dbexec(ExecSQL.cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      --(void) mgi_writeLog("\nmgi_exec : " + mgi_getstr(dbproc, 1) + "\n");
 	      newID := mgi_getstr(dbproc, 1);
 	    end while;
 	  end while;
@@ -315,6 +319,7 @@ rules:
 
 	  ExecSQL.cmd := cmd;
 	  ExecSQL.list := ModifySQL.list;
+	  ExecSQL.logOnly := ModifySQL.logOnly;
 	  send(ExecSQL, 0);
  
 	  if (top.is_defined("allowSelect") != nil) then
