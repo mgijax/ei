@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Thu Jan  8 10:08:18 2015";
+      lastWritten = "Tue Jan 13 07:36:16 2015";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -274,7 +274,7 @@ Shift<Key>Tab: prev-tab-group()
                                             {
                                               SynonymTypePulldown = OptionPulldown : mgiOption;
                                               Group: User
-                                                sql = "select _SynonymType_key, synonymType from MGI_SynonymType_Nomen_View where allowOnlyOne = 0 order by _SynonymType_key";
+                                                sql = "select _SynonymType_key, synonymType from MGI_SynonymType_Nomen_View where allowOnlyOne = 0 ";
                                             }
                                       }
                                 }
@@ -344,6 +344,11 @@ Shift<Key>Tab: prev-tab-group()
                                         AccSourceFrame = AccSourceFrame;
                                         Group: User
                                           defaultOption = NSequence;
+                                            {
+                                              AccSourceMenu = XmOptionMenu;
+                                              Group: User
+                                                defaultOption = NSequence;
+                                            }
                                             Popups:
                                             {
                                               AccSourcePulldown = OptionPulldown;

@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Thu Jan  8 07:32:45 2015";
+      lastWritten = "Thu Jan  8 12:47:06 2015";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -13714,7 +13714,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         List = list : mgiDataTypes;
                                         Group: Widget
-                                          visibleItemCount = 30;
+                                          visibleItemCount = 20;
                                         Group: User
                                           targetWidget = Annotation;
                                           targetKey = 3;
