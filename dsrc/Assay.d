@@ -2520,7 +2520,6 @@ rules:
 
 	  if (antibodyPrep or probePrep) then
 	    dbproc := mgi_dbexec(select);
- 
             while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
               while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	        if (antibodyPrep) then
@@ -2562,8 +2561,8 @@ rules:
 	        end if;
 	      end while;
             end while;
+	    (void) mgi_dbclose(dbproc);
 	  end if;
-	  (void) mgi_dbclose(dbproc);
 
 	  -- Select InSitu information
 
