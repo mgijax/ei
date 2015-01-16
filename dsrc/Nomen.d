@@ -405,7 +405,7 @@ rules:
 
           -- If adding, then @KEYNAME must be used in all Modify events
  
-          currentNomenKey := "@" + KEYNAME;
+	  currentNomenKey := MAX_KEY1 + KEYNAME + MAX_KEY2;
  
 	  -- Insert master Nomen Record
 
@@ -421,7 +421,7 @@ rules:
                  mgi_DBprstr(top->ChromosomeMenu.menuHistory.defaultValue) + "," +
 	         "NULL," +
 	         mgi_DBprstr(top->StatusNotes->text.value) + "," + 
-		 global_loginKey + "," + global_loginKey + ")\n";
+		 global_loginKey + "," + global_loginKey + END_VALUE;
 
 	  send(ModifyNomenNotes, 0);
 
@@ -757,8 +757,9 @@ rules:
 	  -- If SymbolName filled in, then ignore all other search criteria
 
           if (top->SymbolName->text.value.length > 0) then
-	    where := "\nand (m.symbol like " + mgi_DBprstr(top->SymbolName->text.value) +
-	             "\nor m.name like " + mgi_DBprstr(top->SymbolName->text.value) + ")";
+	    where := "\nand m.symbol like " + mgi_DBprstr(top->SymbolName->text.value);
+	    --where := "\nand (m.symbol like " + mgi_DBprstr(top->SymbolName->text.value) +
+	             --"\nor m.name like " + mgi_DBprstr(top->SymbolName->text.value) + ")";
 	    printSelect := printSelect + "\nSymbol/Name = \n" + top->SymbolName->text.value;
 	  end if;
 	    
