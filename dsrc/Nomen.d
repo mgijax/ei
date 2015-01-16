@@ -185,6 +185,7 @@ locals:
 	cmd : string;
 	from : string;
 	where : string;
+	whereName : string;
 	printSelect : string;
 
 	tables : list;
@@ -653,12 +654,12 @@ rules:
 --
 
 	PrepareSearch does
-
 	  printSelect := "";
 	  i : integer;
 
 	  from := " from " + mgi_DBtable(NOM_MARKER) + " m";
 	  where := "";
+	  whereName := "";
 
           -- Cannot search both Accession tables at once
       
@@ -758,13 +759,13 @@ rules:
 
           if (top->SymbolName->text.value.length > 0) then
 	    where := "\nand m.symbol like " + mgi_DBprstr(top->SymbolName->text.value);
-	    --where := "\nand (m.symbol like " + mgi_DBprstr(top->SymbolName->text.value) +
-	             --"\nor m.name like " + mgi_DBprstr(top->SymbolName->text.value) + ")";
+	    whereName := "\nand m.name like " + mgi_DBprstr(top->SymbolName->text.value);
 	    printSelect := printSelect + "\nSymbol/Name = \n" + top->SymbolName->text.value;
 	  end if;
 	    
           if (where.length > 0) then
             where := "where" + where->substr(5, where.length);
+            whereName := "where" + whereName->substr(5, whereName.length);
           end if;
 
 	end does;
@@ -779,11 +780,20 @@ rules:
 --
 
 	Search does
+	  selectSQL : string;
+
 	  (void) busy_cursor(top);
+
 	  send(PrepareSearch, 0);
+
+	  selectSQL := "(select distinct m._Nomen_key, m.symbol\n" + from + "\n" + where;
+	  if (whereName.length > 0) then
+	    selectSQL := selectSQL + "\nunion\nselect distinct m._Nomen_key, m.symbol\n" + from + "\n" + whereName;
+	  end if;
+	  selectSQL := selectSQL + "\n)order by symbol\n";
+
 	  Query.source_widget := top;
-	  Query.select := "select distinct m._Nomen_key, m.symbol\n" + from + "\n" + 
-			  where + "\norder by m.symbol\n";
+	  Query.select := selectSQL;
 	  Query.printSelect := printSelect;
 	  Query.table := NOM_MARKER;
 	  send(Query, 0);
