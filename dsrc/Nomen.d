@@ -185,7 +185,7 @@ locals:
 	cmd : string;
 	from : string;
 	where : string;
-	whereName : string;
+	whereName : string := "";
 	printSelect : string;
 
 	tables : list;
@@ -765,7 +765,9 @@ rules:
 	    
           if (where.length > 0) then
             where := "where" + where->substr(5, where.length);
-            whereName := "where" + whereName->substr(5, whereName.length);
+	    if (whereName.length > 0) then
+              whereName := "where" + whereName->substr(5, whereName.length);
+	    end if;
           end if;
 
 	end does;
