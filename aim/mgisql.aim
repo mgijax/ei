@@ -22,13 +22,12 @@ CALLS
 	 exec_acc_update("char *", "char *", "char *", "char *") : "char *";
 	 exec_acc_deleteByAccKey("char *", "char *") 		: "char *";
 	 exec_accref_process("char *", "char *", "char *", "char *", "char *", "char *", "char *") : "char *";
-	 exec_all_reloadLabel("char *")				: "char *";
+	 exec_all_reloadLabel("char *")			: "char *";
 	 exec_mgi_checkUserRole("char *", "char *")		: "char *";
 	 exec_mgi_insertReferenceAssoc_antibody("char *", "char *", "char *", "char *"): "char *";
 	 exec_mgi_insertReferenceAssoc_usedFC("char *", "char *"): "char *";
 	 exec_mgi_resetAgeMinMax("char *", "char *")		: "char *";
 	 exec_mgi_resetSequenceNum("char *", "char *")		: "char *";
-	 exec_mrk_reloadLabel("char *")				: "char *";
 	 exec_mrk_reloadReference("char *")			: "char *";
 	 exec_mrk_reloadLocation("char *")			: "char *";
 	 exec_nom_transferToMGD("char *", "char *")		: "char *";
