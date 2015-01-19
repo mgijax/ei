@@ -253,9 +253,13 @@ PGconn *mgi_dbexec(char *cmd)
   *
   */
 
+  /*
   cmd = mgi_lowersub(cmd);
+  */
 
-  strcpy(newstr, cmd);
+  ns = mgi_simplesub(" like ", " ilike ", cmd);
+  strcpy(newstr, ns);
+
   ns = mgi_simplesub("convert(varchar(5), e.tag)", "e.tag", newstr);
   strcpy(newstr, ns);
 

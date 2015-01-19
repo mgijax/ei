@@ -432,7 +432,6 @@ rules:
 	    end if;
 
           end while;
- 
           (void) mgi_dbclose(dbproc);
  
 	  -- If keys does not exist already, create it

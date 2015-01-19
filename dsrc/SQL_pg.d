@@ -355,7 +355,7 @@ rules:
           ClearList.source_widget := list_w;
           send(ClearList, 0);
 
-	  (void) mgi_writeLog(get_time() + "QUERY:" + Query.select + "\n");
+	  --(void) mgi_writeLog(get_time() + "QUERY:" + Query.select + "\n");
 
 	  list_w.cmd := Query.select;
 	  LoadList.list := list_w;
@@ -396,7 +396,7 @@ rules:
           ClearList.source_widget := list_w;
           send(ClearList, 0);
 
-	  (void) mgi_writeLog(get_time() + "QUERY:" + QueryNoInterrupt.select + "\n");
+	  --(void) mgi_writeLog(get_time() + "QUERY:" + QueryNoInterrupt.select + "\n");
 
 	  list_w.cmd := QueryNoInterrupt.select;
 	  LoadList.list := list_w;

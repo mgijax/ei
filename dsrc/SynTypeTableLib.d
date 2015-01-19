@@ -244,7 +244,7 @@ rules:
 		     synTypeKey + "," +
 		     refsKey + "," +
 		     mgi_DBprstr(synName) + "," +
-		     global_loginKey + "," + global_loginKey + ")\n";
+		     global_loginKey + "," + global_loginKey + END_VALUE;
 
             elsif (editMode = TBL_ROW_MODIFY) then
               set := "_SynonymType_key = " + synTypeKey +

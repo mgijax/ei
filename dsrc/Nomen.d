@@ -790,7 +790,7 @@ rules:
 	  if (whereName.length > 0) then
 	    selectSQL := selectSQL + "\nunion\nselect distinct m._Nomen_key, m.symbol\n" + from + "\n" + whereName;
 	  end if;
-	  selectSQL := selectSQL + "\n)order by symbol\n";
+	  selectSQL := selectSQL + ")\norder by symbol\n";
 
 	  Query.source_widget := top;
 	  Query.select := selectSQL;

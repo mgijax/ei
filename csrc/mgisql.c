@@ -323,7 +323,7 @@ char *exec_nom_transferToMGD(char *key, char *status)
   }
   else
   {
-      sprintf(buf,"exec NOM_transferToMGD %s, %s", key, status);
+      sprintf(buf,"select * from NOM_transferToMGD (%s)", key);
   }
   return(buf);
 }
