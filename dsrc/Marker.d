@@ -963,7 +963,6 @@ rules:
 	Modify does
 	  modifyName : boolean := false;
 	  modifySymbol : boolean := false;
-	  modifySequenceCache : boolean := false;
 
 	  if (not top.allowEdit) then
 	    return;
@@ -1043,27 +1042,18 @@ rules:
           ProcessAcc.tableID := MRK_ACC_REFERENCE1;
           send(ProcessAcc, 0);
           cmd := cmd + accRefTable1.sqlCmd;
-	  if (accRefTable1.sqlCmd.length > 0) then
-	    modifySequenceCache := true;
-	  end if;
 
           ProcessAcc.table := accRefTable2;
           ProcessAcc.objectKey := currentRecordKey;
           ProcessAcc.tableID := MRK_ACC_REFERENCE2;
           send(ProcessAcc, 0);
           cmd := cmd + accRefTable2.sqlCmd;
-	  if (accRefTable2.sqlCmd.length > 0) then
-	    modifySequenceCache := true;
-	  end if;
 
           ProcessAcc.table := accRefTable3;
           ProcessAcc.objectKey := currentRecordKey;
           ProcessAcc.tableID := MRK_ACC_REFERENCE3;
           send(ProcessAcc, 0);
           cmd := cmd + accRefTable3.sqlCmd;
-	  if (accRefTable3.sqlCmd.length > 0) then
-	    modifySequenceCache := true;
-	  end if;
 
 	  --
 	  -- If modifying name, then also modify all corresponding History records
@@ -1094,13 +1084,8 @@ rules:
 
 	  if (cmd.length > 0) then
 	    cmd := exec_mrk_reloadLabel(currentRecordKey) +
-	           exec_mrk_reloadReference(currentRecordKey);
-
-            if (modifySequenceCache) then
-	      cmd := cmd + exec_mrk_reloadSequence(currentRecordKey);
-	    end if;
-
-	    cmd := cmd + exec_mrk_reloadLocation(currentRecordKey);
+	           exec_mrk_reloadReference(currentRecordKey) +
+	           exec_mrk_reloadLocation(currentRecordKey);
 
 	    ModifySQL.cmd := cmd;
 	    ModifySQL.list := top->QueryList;

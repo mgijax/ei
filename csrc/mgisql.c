@@ -283,21 +283,6 @@ char *exec_mrk_reloadReference(char *key)
   return(buf);
 }
 
-char *exec_mrk_reloadSequence(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-      sprintf(buf,"exec MRK_reloadSequence %s\n", key);
-  }
-  else
-  {
-      sprintf(buf,"exec MRK_reloadSequence %s\n", key);
-  }
-  return(buf);
-}
-
 char *exec_mrk_reloadLocation(char *key)
 {
   static char buf[TEXTBUFSIZ];
@@ -540,21 +525,6 @@ char *exec_prb_processSequenceSource(\
               cellLineKey,\
               age,\
               modifiedByKey);
-  }
-  return(buf);
-}
-
-char *exec_prb_reloadSequence(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-      sprintf(buf,"exec PRB_reloadSequence %s\n", key);
-  }
-  else
-  {
-      sprintf(buf,"exec PRB_reloadSequence %s\n", key);
   }
   return(buf);
 }

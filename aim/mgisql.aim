@@ -30,7 +30,6 @@ CALLS
 	 exec_mgi_resetSequenceNum("char *", "char *")		: "char *";
 	 exec_mrk_reloadLabel("char *")				: "char *";
 	 exec_mrk_reloadReference("char *")			: "char *";
-	 exec_mrk_reloadSequence("char *")			: "char *";
 	 exec_mrk_reloadLocation("char *")			: "char *";
 	 exec_nom_transferToMGD("char *", "char *")		: "char *";
 	 exec_prb_insertReference("char *", "char *")		: "char *";
@@ -41,7 +40,6 @@ CALLS
 	 exec_prb_processAntigenAnonSource("char *", "char *", "char *", "char *", "char *", "char *", "char *", "char *", "char *", "char *")			: "char *";
 	 exec_prb_processProbeSource("char *", "char *", "char *", "char *", "char *", "char *", "char *", "char *", "char *", "char *", "char *")		: "char *";
 	 exec_prb_processSequenceSource("char *", "char *", "char *", "char *", "char *", "char *", "char *", "char *", "char *", "char *", "char *")		: "char *";
-	 exec_prb_reloadSequence("char *")			: "char *";
 	 exec_voc_copyAnnotEvidenceNotes("char *", "char *")	: "char *";
 	 exec_voc_processAnnotHeader("char *", "char *")	: "char *";
 	 exec_gxd_checkDuplicateGenotype("char *")		: "char *";
