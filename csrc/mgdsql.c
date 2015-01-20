@@ -194,7 +194,7 @@ char *allele_search(char *from, char *where, char *addUnion)
    \n%s \
    \n%s \
    \n%s \
-   \n)\norder by a.statusNum, a.symbol", from, where, addUnion);
+   \n)\norder by statusNum, symbol", from, where, addUnion);
   return(buf);
 }
 
