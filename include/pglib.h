@@ -52,5 +52,6 @@ extern int global_error;
 #define	MAX_KEY2	"Max)"
 #define SQL_LOWER1	"lower("
 #define SQL_LOWER2	")"
+#define END_VALUE_C	";\n"
 
 #endif

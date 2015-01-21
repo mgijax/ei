@@ -263,7 +263,7 @@ char *exec_mrk_reloadLocation(char *key)
   }
   else
   {
-      sprintf(buf,"exec MRK_reloadLocation %s\n", key);
+      sprintf(buf,"select MRK_reloadLocation (%s);\n", key);
   }
   return(buf);
 }

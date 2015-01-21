@@ -427,9 +427,27 @@ char *mgi_DBprkey(char *value)
 char *mgi_setDBkey(int table, int key, char *keyName)
 {
   static char cmd[TEXTBUFSIZ];
+  int startKey = 1000;
 
   memset(cmd, '\0', sizeof(cmd));
-  sprintf(cmd, "select max(%s) + 1 as %s into temporary table %sMax from %s;\n", mgi_DBkey(table), keyName, keyName, mgi_DBtable(table));
+
+  if (GLOBAL_DBTYPE == "sybase")
+  {
+    if (key == NEWKEY)
+    {
+      sprintf(cmd, "declare @%s int\nselect @%s = max(%s) + 1 from %s\nif @%s is NULL or @%s = 0\nbegin\nselect @%s = %d\nend\n", 
+        keyName, keyName, mgi_DBkey(table), mgi_DBtable(table), keyName, keyName, keyName, startKey);
+    }
+    else 
+    {
+      sprintf(cmd, "declare @%s int\nselect @%s = %d\n", keyName, keyName, key);
+    }
+  }
+  else
+  {
+    sprintf(cmd, "select max(%s) + 1 as %s into temporary table %sMax from %s;\n", mgi_DBkey(table), keyName, keyName, mgi_DBtable(table));
+  }
+
   return(cmd);
 }
 
@@ -456,7 +474,16 @@ char *mgi_DBincKey(char *keyName)
   static char cmd[TEXTBUFSIZ];
 
   memset(cmd, '\0', sizeof(cmd));
-  sprintf(cmd, "update %sMax set %s = %s + 1;\n", keyName, keyName, keyName);
+
+  if (GLOBAL_DBTYPE == "sybase")
+  {
+    sprintf(cmd, "select @%s = @%s + 1\n", keyName, keyName);
+  }
+  else
+  {
+    sprintf(cmd, "update %sMax set %s = %s + 1;\n", keyName, keyName, keyName);
+  }
+
   return(cmd);
 }
 
@@ -2312,27 +2339,50 @@ char *mgi_DBinsert(int table, char *keyName)
 	    break;
   }
 
-  /* set values() */
-
-  if (strcmp(keyName, NOKEY) == 0)
+  if (GLOBAL_DBTYPE == "sybase")
   {
-    sprintf(buf3, "\nvalues(");
+    if (selectKey)
+    {
+      if (isalpha(keyName[0]))
+        sprintf(buf2, "select @%s\n", keyName);
+      else
+        sprintf(buf2, "select %s\n", keyName);
+      strcat(buf2, buf);
+      strcpy(buf, buf2);
+    }
+
+    if (strcmp(keyName, NOKEY) == 0)
+    {
+      sprintf(buf3, "\nvalues(");
+    }
+    else
+    {
+      /* Some tables only have one field and don't require the trailing comma */
+      switch(table)
+      {
+        default:
+                if (isalpha(keyName[0]))
+                  sprintf(buf3, "\nvalues(@%s,", keyName);
+                else
+                  sprintf(buf3, "\nvalues(%s,", keyName);
+                break;
+      }
+    }
+
+    strcat(buf, buf3);
   }
   else
   {
-    sprintf(buf3, "\nvalues((select * from %sMax),", keyName);
+    if (strcmp(keyName, NOKEY) == 0)
+    {
+      sprintf(buf3, "\nvalues(");
+    }
+    else
+    {
+      sprintf(buf3, "\nvalues((select * from %sMax),", keyName);
+    }
+    strcat(buf, buf3);
   }
-  strcat(buf, buf3);
-
-  /* select next Max key */
-  /*
-  if (selectKey)
-  {
-    sprintf(buf2, "select * from %sMax;\n", keyName);
-    strcat(buf2, buf);
-    strcpy(buf, buf2);
-  }
-  */
 
   return(buf);
 }
@@ -2381,12 +2431,12 @@ char *mgi_DBupdate(int table, char *key, char *str)
     {
       case MGI_COLUMNS:
 	      tokens = (char **) mgi_splitfields(key, ":");
-              sprintf(buf, "update %s set %s, modification_date = %s where table_name = '%s' and column_name = '%s';\n", 
-		mgi_DBtable(table), str, sql_getdate, tokens[0], tokens[1]);
+              sprintf(buf, "update %s set %s, modification_date = %s where table_name = '%s' and column_name = '%s' %s", 
+		mgi_DBtable(table), str, sql_getdate, tokens[0], tokens[1], END_VALUE_C);
 	      break;
       case MGI_TABLES:
-              sprintf(buf, "update %s set %s, modification_date = %s where %s = '%s';\n", 
-		mgi_DBtable(table), str, sql_getdate, mgi_DBkey(table), key);
+              sprintf(buf, "update %s set %s, modification_date = %s where %s = '%s' %s", 
+		mgi_DBtable(table), str, sql_getdate, mgi_DBkey(table), key, END_VALUE_C);
 	      break;
       case ALL_ALLELE:
       case ALL_ALLELE_CELLLINE:
@@ -2438,16 +2488,16 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case VOC_EVIDENCE:
       case VOC_EVIDENCE_PROPERTY:
       case VOC_TERM:
-              sprintf(buf, "update %s set %s, _ModifiedBy_key = %s, modification_date = %s  where %s = %s;\n", 
-		  mgi_DBtable(table), str, global_loginKey, sql_getdate, mgi_DBkey(table), key);
+              sprintf(buf, "update %s set %s, _ModifiedBy_key = %s, modification_date = %s  where %s = %s %s", 
+		  mgi_DBtable(table), str, global_loginKey, sql_getdate, mgi_DBkey(table), key, END_VALUE_C);
 	      break;
       case MGI_TRANSLATIONSEQNUM:
-              sprintf(buf, "update %s set %s, modification_date = %s where %s = %s;\n", 
-		  mgi_DBtable(table), str, sql_getdate, mgi_DBkey(table), key);
+              sprintf(buf, "update %s set %s, modification_date = %s where %s = %s %s", 
+		  mgi_DBtable(table), str, sql_getdate, mgi_DBkey(table), key, END_VALUE_C);
 	      break;
       default:
-              sprintf(buf, "update %s set %s, modification_date = %s where %s = %s;\n", 
-		  mgi_DBtable(table), str, sql_getdate, mgi_DBkey(table), key);
+              sprintf(buf, "update %s set %s, modification_date = %s where %s = %s %s", 
+		  mgi_DBtable(table), str, sql_getdate, mgi_DBkey(table), key, END_VALUE_C);
 	      break;
     }
   }
@@ -2502,12 +2552,12 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case VOC_EVIDENCE:
       case VOC_EVIDENCE_PROPERTY:
       case VOC_TERM:
-              sprintf(buf, "update %s set _ModifiedBy_key = %s, modification_date = %s where %s = %s;\n", 
-		  mgi_DBtable(table), global_loginKey, sql_getdate, mgi_DBkey(table), key);
+              sprintf(buf, "update %s set _ModifiedBy_key = %s, modification_date = %s where %s = %s %s", 
+		  mgi_DBtable(table), global_loginKey, sql_getdate, mgi_DBkey(table), key, END_VALUE_C);
 	      break;
       default:
-              sprintf(buf, "update %s set modification_date = %s where %s = %s;\n", 
-		  mgi_DBtable(table), sql_getdate, mgi_DBkey(table), key);
+              sprintf(buf, "update %s set modification_date = %s where %s = %s %s", 
+		  mgi_DBtable(table), sql_getdate, mgi_DBkey(table), key, END_VALUE_C);
 	      break;
     }
   }
@@ -2552,14 +2602,14 @@ char *mgi_DBdelete(int table, char *key)
     {
       case MGI_COLUMNS:
 	      tokens = (char **) mgi_splitfields(key, ":");
-              sprintf(buf, "delete from %s where table_name = '%s' and column_name = '%s';\n", 
-		mgi_DBtable(table), tokens[0], tokens[1]);
+              sprintf(buf, "delete from %s where table_name = '%s' and column_name = '%s' %s", 
+		mgi_DBtable(table), tokens[0], tokens[1], END_VALUE_C);
 	      break;
       case MGI_EMAPS_MAPPING_PARENT:
-              sprintf(buf, "delete from %s where %s = '%s';\n", mgi_DBtable(table), mgi_DBkey(table), key);
+              sprintf(buf, "delete from %s where %s = '%s' %s", mgi_DBtable(table), mgi_DBkey(table), key, END_VALUE_C);
 	      break;
       default:
-              sprintf(buf, "delete from %s where %s = %s;\n", mgi_DBtable(table), mgi_DBkey(table), key);
+              sprintf(buf, "delete from %s where %s = %s %s", mgi_DBtable(table), mgi_DBkey(table), key, END_VALUE_C);
 	      break;
     }
   }
@@ -2585,13 +2635,14 @@ char *mgi_DBdelete2(int table, char *key, char *key2)
     switch (table)
     {
       case VOC_ANNOT:
-              sprintf(buf, "delete from %s where _Object_key = %s and _AnnotType_key = %s;\n", mgi_DBtable(table), key, key2);
+              sprintf(buf, "delete from %s where _Object_key = %s and _AnnotType_key = %s %s", 
+	      	mgi_DBtable(table), key, key2, END_VALUE_C);
 	      break;
       case MGI_EMAPS_MAPPING_PARENT:
-              sprintf(buf, "delete from %s where %s = '%s';\n", mgi_DBtable(table), mgi_DBkey(table), key);
+              sprintf(buf, "delete from %s where %s = '%s' %s", mgi_DBtable(table), mgi_DBkey(table), key, END_VALUE_C);
 	      break;
       default:
-              sprintf(buf, "delete from %s where %s = %s;\n", mgi_DBtable(table), mgi_DBkey(table), key);
+              sprintf(buf, "delete from %s where %s = %s %s", mgi_DBtable(table), mgi_DBkey(table), key, END_VALUE_C);
 	      break;
     }
   }
@@ -2626,7 +2677,7 @@ char *mgi_DBreport(int table, char *key)
   switch (table)
   {
     default:
-            sprintf(buf, "select * from %s where %s = %s;\n", mgi_DBtable(table), mgi_DBkey(table), key);
+            sprintf(buf, "select * from %s where %s = %s %s", mgi_DBtable(table), mgi_DBkey(table), key, END_VALUE_C);
 	    break;
   }
 
@@ -2666,15 +2717,16 @@ char *mgi_DBaccSelect(int table, int mgiTypeKey, int key)
   	switch (table)
   	{
     	  default:
-            	sprintf(buf, "select _Object_key, accID, description from %s where preferred = 1 and prefixPart = 'MGI:' and numericPart = %d;\n", mgi_DBaccTable(table), key);
+            	sprintf(buf, "select _Object_key, accID, description from %s where preferred = 1 and prefixPart = 'MGI:' and numericPart = %d %s", 
+			mgi_DBaccTable(table), key, END_VALUE_C);
 	    	break;
   	}
   }
   else if (mgiTypeKey > 0)
   {
-    sprintf(buf, "select dbView from ACC_MGIType where _MGIType_key = %d;", mgiTypeKey);
+    sprintf(buf, "select dbView from ACC_MGIType where _MGIType_key = %d %s", mgiTypeKey, END_VALUE_C);
     strcpy(dbView, mgi_sql1(buf));
-    sprintf(buf, "select _Object_key, accID, description, short_description from %s where preferred = 1 and prefixPart = 'MGI:' and numericPart = %d;\n", dbView, key);
+    sprintf(buf, "select _Object_key, accID, description, short_description from %s where preferred = 1 and prefixPart = 'MGI:' and numericPart = %d %s", dbView, key, END_VALUE_C);
   }
 
   return(buf);

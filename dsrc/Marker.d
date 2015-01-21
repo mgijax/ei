@@ -822,15 +822,15 @@ rules:
 	    send(PythonAlleleCombination, 0);
 	  end if;
 
-	  PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYMARKER;
-	  PythonMarkerOMIMCache.objectKey := currentRecordKey;
-	  send(PythonMarkerOMIMCache, 0);
+	  --PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYMARKER;
+	  --PythonMarkerOMIMCache.objectKey := currentRecordKey;
+	  --send(PythonMarkerOMIMCache, 0);
 
-	  if (dialog->mgiMarker->ObjectID->text.value.length > 0) then
-	    PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYMARKER;
-	    PythonMarkerOMIMCache.objectKey := dialog->mgiMarker->ObjectID->text.value;
-	    send(PythonMarkerOMIMCache, 0);
-	  end if;
+	  --if (dialog->mgiMarker->ObjectID->text.value.length > 0) then
+	    --PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYMARKER;
+	    --PythonMarkerOMIMCache.objectKey := dialog->mgiMarker->ObjectID->text.value;
+	    --send(PythonMarkerOMIMCache, 0);
+	  --end if;
 
 	  -- Query for records
 
@@ -1058,6 +1058,8 @@ rules:
 	  --
 	  -- If modifying name, then also modify all corresponding History records
 	  --
+	  -- how to attach extras to the updates...??? for PG
+	  --
 
 	  if (modifyName) then
 	    cmd := cmd + mgi_DBupdate(MRK_HISTORY, currentRecordKey, 
@@ -1097,9 +1099,9 @@ rules:
 	    PythonAlleleCombination.objectKey := currentRecordKey;
 	    send(PythonAlleleCombination, 0);
 
-	    PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYMARKER;
-	    PythonMarkerOMIMCache.objectKey := currentRecordKey;
-	    send(PythonMarkerOMIMCache, 0);
+	    --PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYMARKER;
+	    --PythonMarkerOMIMCache.objectKey := currentRecordKey;
+	    --send(PythonMarkerOMIMCache, 0);
 	  end if;
 
 	  (void) reset_cursor(top);
@@ -1175,7 +1177,7 @@ rules:
             newKey := mgi_tblGetCell(table, row, table.markerKey);
  
             if (editMode = TBL_ROW_ADD) then
-              cmd := cmd + mgi_DBinsert(MRK_CURRENT, NOKEY) + newKey + "," + currentRecordKey + ")\n";
+              cmd := cmd + mgi_DBinsert(MRK_CURRENT, NOKEY) + newKey + "," + currentRecordKey + END_VALUE;
             elsif (editMode = TBL_ROW_MODIFY) then
               set := "_Current_key = " + newKey;
               cmd := cmd + mgi_DBupdate(MRK_CURRENT, currentRecordKey, set) + "and _Current_key = " + key + "\n";

@@ -56,5 +56,6 @@ extern char *global_dbtype;
 #define MAX_KEY2        ""
 #define SQL_LOWER1      "lower("
 #define SQL_LOWER2      ")" 
+#define END_VALUE_C	"\n"
 
 #endif
