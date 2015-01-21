@@ -24,12 +24,10 @@ setenv TeleUSE /opt/teleuseXRT
 
 # symlinks for sybase/postgres
 setenv EIINCLUDE syblib.h
-setenv EICLIB mgilib_syb.c
 setenv EIDSQL SQL_syb.d
 setenv EIDDATELIB DateLib_syb.d
 setenv DB_TYPE  "sybase"
 #setenv EIINCLUDE pglib.h
-#setenv EICLIB mgilib_pg.c
 #setenv EIDSQL SQL_pg.d
 #setenv EIDDATELIB DateLib_pg.d
 #setenv DB_TYPE  "postgres"
