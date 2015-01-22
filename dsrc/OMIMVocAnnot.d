@@ -420,10 +420,6 @@ rules:
 	  ModifySQL.list := top->QueryList;
           send(ModifySQL, 0);
 
-	  PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYGENOTYPE;
-	  PythonMarkerOMIMCache.objectKey := currentRecordKey;
-	  send(PythonMarkerOMIMCache, 0);
-
 	  (void) reset_cursor(top);
 	end does;
 

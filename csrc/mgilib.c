@@ -2407,6 +2407,7 @@ char *mgi_DBinsert(int table, char *keyName)
             update GXD_Antigen set name = 'antigen' where _Antigen_key = 1000
 
    NOTE:  If the length of str is 0, then still update the modification_date.
+char *mgi_DBupdate(int table, char *key, char *str, char *endValue = END_VALUE_C)
 */
 
 char *mgi_DBupdate(int table, char *key, char *str)

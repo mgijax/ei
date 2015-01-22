@@ -245,57 +245,6 @@ rules:
 	end does;
 
 --
--- PythonMarkerOMIMCache
---
--- Activated from:  Genotype module, Allele module, Marker module
--- after an update or Marker withdrawal
---
-
-	PythonMarkerOMIMCache does
-	  pythonevent : string := PythonMarkerOMIMCache.pythonevent;
-	  objectKey : string := PythonMarkerOMIMCache.objectKey;
-	  cmds : string_list := create string_list();
-	  buf : string;
-
-	  --if (getenv("EISSHCOMMAND") != "") then
-	  	--cmds.insert(getenv("EISSHCOMMAND"), cmds.count + 1);
-	  --end if;
-
-	  if (pythonevent = EVENT_OMIM_BYALLELE) then
-	    cmds.insert(getenv("MRKCACHELOAD") + "/mrkomimByAllele.py", cmds.count + 1);
-	  elsif (pythonevent = EVENT_OMIM_BYMARKER) then
-	    cmds.insert(getenv("MRKCACHELOAD") + "/mrkomimByMarker.py", cmds.count + 1);
-	  elsif (pythonevent = EVENT_OMIM_BYGENOTYPE) then
-	    cmds.insert(getenv("MRKCACHELOAD") + "/mrkomimByGenotype.py", cmds.count + 1);
-	  end if;
-
-	  cmds.insert("-S" + global_server, cmds.count + 1);
-	  cmds.insert("-D" + global_database, cmds.count + 1);
-	  cmds.insert("-U" + global_login, cmds.count + 1);
-	  cmds.insert("-P" + global_passwd_file, cmds.count + 1);
-	  cmds.insert("-K" + objectKey, cmds.count + 1);
-
-	  -- Write cmds to user log
-	  buf := "";
-	  cmds.rewind;
-	  while (cmds.more) do
-	    buf := buf + cmds.next + " ";
-	  end while;
-	  buf := buf + "\n\n";
-	  (void) mgi_writeLog(buf);
-
-	  -- Execute
-          proc_id : opaque := tu_fork_process(cmds[1], cmds, nil, PythonMarkerOMIMCacheEnd);
-
-	  while (tu_fork_ok(proc_id)) do
-	    (void) keep_busy();
-	  end while;
-
-	  tu_fork_free(proc_id);
-
-	end does;
-
---
 -- PythonReferenceCache
 --
 -- Activated from:  Reference module
@@ -417,15 +366,6 @@ rules:
 	  (void) mgi_writeLog("Marker Category Vocabulary Cache done.\n\n");
 	end does;
 
---
--- PythonMarkerOMIMCacheEnd
---
-
-	PythonMarkerOMIMCacheEnd does
-	  (void) mgi_writeLog("OMIM Cache done.\n\n");
-	end does;
-
---
 -- PythonReferenceCacheEnd
 --
 

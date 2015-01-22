@@ -1,5 +1,12 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-5-2-0-
+DATE: 1/22/2015
+STAFF: lec
+CHANGES:
+removed PythonMarkerHomologyCache
+removed PythonMarkerOMIMCache
+
 TAG: ei-5-2-0-15
 TAG: ei-5-2-0-14
 TAG: ei-5-2-0-13

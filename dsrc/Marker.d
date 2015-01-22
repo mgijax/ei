@@ -822,16 +822,6 @@ rules:
 	    send(PythonAlleleCombination, 0);
 	  end if;
 
-	  --PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYMARKER;
-	  --PythonMarkerOMIMCache.objectKey := currentRecordKey;
-	  --send(PythonMarkerOMIMCache, 0);
-
-	  --if (dialog->mgiMarker->ObjectID->text.value.length > 0) then
-	    --PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYMARKER;
-	    --PythonMarkerOMIMCache.objectKey := dialog->mgiMarker->ObjectID->text.value;
-	    --send(PythonMarkerOMIMCache, 0);
-	  --end if;
-
 	  -- Query for records
 
 	  from := " from " + mgi_DBtable(MRK_MARKER) + " m";
@@ -1098,10 +1088,6 @@ rules:
 	    PythonAlleleCombination.pythonevent := EVENT_ALLELECOMB_BYMARKER;
 	    PythonAlleleCombination.objectKey := currentRecordKey;
 	    send(PythonAlleleCombination, 0);
-
-	    --PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYMARKER;
-	    --PythonMarkerOMIMCache.objectKey := currentRecordKey;
-	    --send(PythonMarkerOMIMCache, 0);
 	  end if;
 
 	  (void) reset_cursor(top);

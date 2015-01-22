@@ -292,14 +292,6 @@ rules:
 	  AddSQL.key := top->ID->text;
 	  send(AddSQL, 0);
 
-	  -- Assume that first row holds the mouse marker key
-	  PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYMARKER;
-	  PythonMarkerOMIMCache.objectKey := mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
-	  send(PythonMarkerOMIMCache, 0);
-
-	  PythonMarkerHomologyCache.objectKey := top->ID->text.value;
-	  send(PythonMarkerHomologyCache, 0);
-
 	  (void) reset_cursor(top);
 	end
 
@@ -319,14 +311,6 @@ rules:
 	  DeleteSQL.key := currentRecordKey;
 	  DeleteSQL.list := top->QueryList;
 	  send(DeleteSQL, 0);
-
-	  -- Assume that first row holds the mouse marker key
-	  PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYMARKER;
-	  PythonMarkerOMIMCache.objectKey := mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
-	  send(PythonMarkerOMIMCache, 0);
-
-	  PythonMarkerHomologyCache.objectKey := top->ID->text.value;
-	  send(PythonMarkerHomologyCache, 0);
 
 	  if (top->QueryList->List.row = 0) then
 	    ClearOrthology.source_widget := top;
@@ -372,14 +356,6 @@ rules:
 	    SplitKey.key := mgi_sp(exec_hmd_updateClass(classKey, refKey, "0"));
 	    send(SplitKey, 0);
 	  end if;
-
-	  -- Assume that first row holds the mouse marker key
-	  PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYMARKER;
-	  PythonMarkerOMIMCache.objectKey := mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
-	  send(PythonMarkerOMIMCache, 0);
-
-	  PythonMarkerHomologyCache.objectKey := classKey;
-	  send(PythonMarkerHomologyCache, 0);
 
 	  (void) reset_cursor(top);
 	end

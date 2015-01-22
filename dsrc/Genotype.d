@@ -750,10 +750,6 @@ rules:
 	  PythonAlleleCombination.objectKey := currentRecordKey;
 	  send(PythonAlleleCombination, 0);
 
-	  PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYGENOTYPE;
-	  PythonMarkerOMIMCache.objectKey := currentRecordKey;
-	  send(PythonMarkerOMIMCache, 0);
-
 	  (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
 	end does;
 
