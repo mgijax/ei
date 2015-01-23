@@ -1,5 +1,6 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-5-2-1-2
 TAG: ei-5-2-1-1
 TAG: ei-5-2-0-16
 DATE: 1/22/2015
@@ -7,9 +8,6 @@ STAFF: lec
 CHANGES:
 removed PythonMarkerHomologyCache
 removed PythonMarkerOMIMCache
-removed "exec_mrk_reloadLabel"
-removed "exec_mrk_reloadReference"
-removed "exec_mrk_reloadSequence"
 
 TAG: ei-5-2-0-15
 TAG: ei-5-2-0-14
