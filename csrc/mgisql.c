@@ -253,6 +253,36 @@ char *exec_mgi_resetSequenceNum(char *key, char *table)
   return(buf);
 }
 
+char *exec_mrk_reloadLabel(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  if (GLOBAL_DBTYPE == "sybase")
+  {
+      sprintf(buf,"exec MRK_reloadLabel %s\n", key);
+  }
+  else
+  {
+      sprintf(buf,"exec MRK_reloadLabel %s\n", key);
+  }
+  return(buf);
+}
+
+char *exec_mrk_reloadReference(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  if (GLOBAL_DBTYPE == "sybase")
+  {
+      sprintf(buf,"exec MRK_reloadReference %s\n", key);
+  }
+  else
+  {
+      sprintf(buf,"exec MRK_reloadReference %s\n", key);
+  }
+  return(buf);
+}
+
 char *exec_mrk_reloadLocation(char *key)
 {
   static char buf[TEXTBUFSIZ];

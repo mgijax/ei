@@ -104,7 +104,7 @@ int mgi_dbinit(char *user, char *pwd)
 
   if (!p_file)
   {
-  	fprintf(stderr, "fatal error : could not ready global_passwd_file\n");
+  	fprintf(stderr, "fatal error : could not read global_passwd_file\n");
 	fflush(stderr);
 	return(0);
   }

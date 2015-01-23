@@ -28,6 +28,8 @@ CALLS
 	 exec_mgi_insertReferenceAssoc_usedFC("char *", "char *"): "char *";
 	 exec_mgi_resetAgeMinMax("char *", "char *")		: "char *";
 	 exec_mgi_resetSequenceNum("char *", "char *")		: "char *";
+         exec_mrk_reloadLabel("char *")                         : "char *"; 
+         exec_mrk_reloadReference("char *")                     : "char *"; 
 	 exec_mrk_reloadLocation("char *")			: "char *";
 	 exec_nom_transferToMGD("char *", "char *")		: "char *";
 	 exec_prb_insertReference("char *", "char *")		: "char *";

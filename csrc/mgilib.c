@@ -2496,7 +2496,7 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case VOC_EVIDENCE:
       case VOC_EVIDENCE_PROPERTY:
       case VOC_TERM:
-              sprintf(buf, "update %s set %s, _ModifiedBy_key = %s, modification_date = %s  where %s = %s %s", 
+              sprintf(buf, "update %s set %s, _ModifiedBy_key = %s, modification_date = %s where %s = %s %s", 
 		  mgi_DBtable(table), str, global_loginKey, sql_getdate, mgi_DBkey(table), key, END_VALUE_C);
 	      break;
       case MGI_TRANSLATIONSEQNUM:

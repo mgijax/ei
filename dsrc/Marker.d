@@ -1075,7 +1075,11 @@ rules:
 	  send(ModifySQL, 0);
 
 	  if (cmd.length > 0) then
-	    cmd := exec_mrk_reloadLocation(currentRecordKey);
+
+            cmd := exec_mrk_reloadLabel(currentRecordKey) +
+                   exec_mrk_reloadReference(currentRecordKey) +
+            	   exec_mrk_reloadLocation(currentRecordKey);
+
 	    ModifySQL.cmd := cmd;
 	    ModifySQL.list := top->QueryList;
 	    ModifySQL.reselect := true;

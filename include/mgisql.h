@@ -31,6 +31,8 @@ extern char *exec_mgi_insertReferenceAssoc_antibody(char *, char *, char *, char
 extern char *exec_mgi_insertReferenceAssoc_usedFC(char *, char *);
 extern char *exec_mgi_resetAgeMinMax(char *, char *);
 extern char *exec_mgi_resetSequenceNum(char *, char *);
+extern char *exec_mrk_reloadLabel(char *); 
+extern char *exec_mrk_reloadReference(char *); 
 extern char *exec_mrk_reloadLocation(char *);
 extern char *exec_nom_transferToMGD(char *, char *);
 extern char *exec_prb_insertReference(char *, char *);
