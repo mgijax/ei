@@ -237,11 +237,6 @@ rules:
 --
 
 	INITIALLY does
-	  (void) mgi_writeLog("starting initialization...\n");
-	  (void) mgi_writeLog(get_time());
-
-	  (void) mgi_writeLog("initially/parent\n");
-	  (void) mgi_writeLog(get_time());
 	  mgi := INITIALLY.parent;
 
 	  (void) busy_cursor(mgi);
@@ -1048,14 +1043,15 @@ rules:
 	  --
 	  -- If modifying name, then also modify all corresponding History records
 	  --
-	  -- how to attach extras to the updates...??? for PG
+	  -- this needs to be in a trigger.  removing for now.
 	  --
-
-	  if (modifyName) then
-	    cmd := cmd + mgi_DBupdate(MRK_HISTORY, currentRecordKey, 
-			"name = " +  mgi_DBprstr(top->Name->text.value) + ",") +
-                        "and name = " + mgi_DBprstr(currentName) + "\n";
-	  end if;
+          --
+	  --if (modifyName) then
+	  --  cmd := cmd + mgi_DBupdate(MRK_HISTORY, currentRecordKey, 
+          --		"name = " +  mgi_DBprstr(top->Name->text.value) + ",") +
+	  -- 	        "and name = " + mgi_DBprstr(currentName) + "\n";
+	  --end if;
+	  --
 
 	  if ((cmd.length > 0 and 
 	       cmd != accRefTable1.sqlCmd and 
@@ -1126,12 +1122,12 @@ rules:
             end if;
  
             if (editMode = TBL_ROW_ADD) then
-              cmd := cmd + mgi_DBinsert(MRK_ALIAS, NOKEY) + newKey + "," + currentRecordKey + ")\n";
+              cmd := cmd + mgi_DBinsert(MRK_ALIAS, NOKEY) + newKey + "," + currentRecordKey + END_VALUE;
             elsif (editMode = TBL_ROW_MODIFY) then
-              set := "_Alias_key = " + newKey;
-              cmd := cmd + mgi_DBupdate(MRK_ALIAS, currentRecordKey, set) + "and _Alias_key = " + key + "\n";
+              set := "_Marker_key = " + currentRecordKey;
+              cmd := cmd + mgi_DBupdate(MRK_ALIAS, key, set);
             elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
-               cmd := cmd + mgi_DBdelete(MRK_ALIAS, currentRecordKey) + "and _Alias_key = " + key + "\n";
+               cmd := cmd + mgi_DBdelete(MRK_ALIAS, key);
             end if;
  
             row := row + 1;
@@ -1168,11 +1164,12 @@ rules:
  
             if (editMode = TBL_ROW_ADD) then
               cmd := cmd + mgi_DBinsert(MRK_CURRENT, NOKEY) + newKey + "," + currentRecordKey + END_VALUE;
-            elsif (editMode = TBL_ROW_MODIFY) then
-              set := "_Current_key = " + newKey;
-              cmd := cmd + mgi_DBupdate(MRK_CURRENT, currentRecordKey, set) + "and _Current_key = " + key + "\n";
+	    -- must delete and re-add
+            --elsif (editMode = TBL_ROW_MODIFY) then
+            --  set := "_Marker_key = " + currentRecordKey;
+            --  cmd := cmd + mgi_DBupdate(MRK_CURRENT, key, set);
             elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
-               cmd := cmd + mgi_DBdelete(MRK_CURRENT, currentRecordKey) + "and _Current_key = " + key + "\n";
+               cmd := cmd + mgi_DBdelete(MRK_CURRENT, key);
             end if;
  
             row := row + 1;
@@ -1244,7 +1241,7 @@ rules:
 			mgi_DBprstr(name) + "," +
 			mgi_DBprstr(eventDate) + "," +
 			global_loginKey + "," +
-			global_loginKey + ")\n";
+			global_loginKey + END_VALUE;
 
 	      historyModified := true;
 
@@ -1255,8 +1252,7 @@ rules:
               if (currentSeqNum != newSeqNum) then
                 -- Delete records with current Seq # (cannot have duplicate Seq #)
  
-                deleteCmd := deleteCmd + mgi_DBdelete(MRK_HISTORY, currentRecordKey) +
-                             "and sequenceNum = " + currentSeqNum + "\n";
+                deleteCmd := deleteCmd + mgi_DBdelete(MRK_HISTORY, currentRecordKey + " and sequenceNum = " + currentSeqNum);
 
                 -- Insert new record
  
@@ -1270,7 +1266,7 @@ rules:
 			  mgi_DBprstr(name) + "," +
 			  mgi_DBprstr(eventDate) + "," +
 			  global_loginKey + "," +
-			  global_loginKey + ")\n";
+			  global_loginKey + END_VALUE;
 
               -- Else, a simple update
  
@@ -1281,15 +1277,13 @@ rules:
 		       "_Marker_EventReason_key = " + mgi_DBprkey(eventReasonKey) + "," +
 		       "name = " + mgi_DBprstr(name) + "," +
 		       "event_date = " + mgi_DBprstr(eventDate);
-                tmpCmd := tmpCmd + mgi_DBupdate(MRK_HISTORY, currentRecordKey, set) +
-                          "and sequenceNum = " + currentSeqNum + "\n";
+                tmpCmd := tmpCmd + mgi_DBupdate2(MRK_HISTORY, currentRecordKey, currentSeqNum, set);
               end if;
 
 	      historyModified := true;
 
             elsif (editMode = TBL_ROW_DELETE) then
-              tmpCmd := tmpCmd + mgi_DBdelete(MRK_HISTORY, currentRecordKey) +
-                        "and sequenceNum = " + currentSeqNum + "\n";
+              tmpCmd := tmpCmd + mgi_DBdelete(MRK_HISTORY, currentRecordKey + " and sequenceNum = " + currentSeqNum);
 	      historyModified := true;
             end if;
  
@@ -1346,12 +1340,12 @@ rules:
               cmd := cmd + mgi_DBinsert(MRK_OFFSET, NOKEY) +
 			   currentRecordKey + "," +
 			   "0," +
-			   offset + ")\n";
+			   offset + END_VALUE;
             elsif (editMode = TBL_ROW_ADD) then
               cmd := cmd + mgi_DBinsert(MRK_OFFSET, NOKEY) +
 			   currentRecordKey + "," +
 			   key + "," +
-			   offset + ")\n";
+			   offset + END_VALUE;
             elsif (editMode = TBL_ROW_MODIFY) then
 	      if (mgi_DBprstr(offset) = "NULL") then
                 StatusReport.source_widget := top;
@@ -1359,14 +1353,14 @@ rules:
 	        send(StatusReport);
               else
                 set := "offset = " + offset;
-                cmd := cmd + mgi_DBupdate(MRK_OFFSET, currentRecordKey, set) + "and source = " + key + "\n";
+                cmd := cmd + mgi_DBupdate2(MRK_OFFSET, currentRecordKey, key, set);
 	      end if;
             elsif (editMode = TBL_ROW_DELETE and key = "0") then
               StatusReport.source_widget := top;
 	      StatusReport.message := "Cannot delete the MGD offset.";
 	      send(StatusReport);
             elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
-              cmd := cmd + mgi_DBdelete(MRK_OFFSET, currentRecordKey) + "and source = " + key + "\n";
+              cmd := cmd + mgi_DBdelete(MRK_OFFSET, currentRecordKey + " and source = " + key);
             end if;
  
             row := row + 1;

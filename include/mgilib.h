@@ -22,6 +22,7 @@ extern char *mgi_DBinsert(int, char *);
 extern char *mgi_DBdelete(int, char *);
 extern char *mgi_DBdelete2(int, char *, char *);
 extern char *mgi_DBupdate(int, char *, char *);
+extern char *mgi_DBupdate2(int, char *, char *, char*);
 extern char *mgi_DBreport(int, char *);
 extern char *mgi_DBaccSelect(int, int, int);
 extern char *mgi_DBcvname(int);

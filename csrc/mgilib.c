@@ -840,14 +840,15 @@ char *mgi_DBkey(int table)
 	    break;
     case MRK_MARKER:
     case MRK_MOUSE:
-    case MRK_ALIAS:
     case MRK_ANCHOR:
     case MRK_CLASSES:
-    case MRK_CURRENT:
     case MRK_HISTORY:
     case MRK_NOTES:
     case MRK_OFFSET:
             strcpy(buf, "_Marker_key");
+	    break;
+    case MRK_ALIAS:
+            strcpy(buf, "_Alias_key");
 	    break;
     case MRK_ALLELE:
             strcpy(buf, "_Allele_key");
@@ -857,6 +858,9 @@ char *mgi_DBkey(int table)
 	    break;
     case MRK_CLASS:
             strcpy(buf, "_Class_key");
+	    break;
+    case MRK_CURRENT:
+            strcpy(buf, "_Current_key");
 	    break;
     case MRK_TYPE:
             strcpy(buf, "_Marker_Type_key");
@@ -1913,7 +1917,6 @@ char *mgi_DBinsert(int table, char *keyName)
     case MLD_RI2POINT:
     case MLD_STATISTICS:
     case MRK_ANCHOR:
-    case MRK_ALIAS:
     case MRK_CHROMOSOME:
     case MRK_CLASSES:
     case MRK_CURRENT:
@@ -2219,7 +2222,7 @@ char *mgi_DBinsert(int table, char *keyName)
 	      mgi_DBtable(table), mgi_DBkey(table));
  	    break;
     case MRK_ALIAS:
-	    sprintf(buf, "insert into %s (_Alias_key, %s)",
+	    sprintf(buf, "insert into %s (%s, _Marker_key)",
 	      mgi_DBtable(table), mgi_DBkey(table));
  	    break;
     case MRK_ALLELE:
@@ -2237,7 +2240,7 @@ char *mgi_DBinsert(int table, char *keyName)
 	      mgi_DBtable(table), mgi_DBkey(table));
  	    break;
     case MRK_CURRENT:
-	    sprintf(buf, "insert into %s (_Current_key, %s)",
+	    sprintf(buf, "insert into %s (%s, _Marker_key)",
 	      mgi_DBtable(table), mgi_DBkey(table));
  	    break;
     case MRK_HISTORY:
@@ -2407,7 +2410,6 @@ char *mgi_DBinsert(int table, char *keyName)
             update GXD_Antigen set name = 'antigen' where _Antigen_key = 1000
 
    NOTE:  If the length of str is 0, then still update the modification_date.
-char *mgi_DBupdate(int table, char *key, char *str, char *endValue = END_VALUE_C)
 */
 
 char *mgi_DBupdate(int table, char *key, char *str)
@@ -2568,6 +2570,45 @@ char *mgi_DBupdate(int table, char *key, char *str)
 		  mgi_DBtable(table), sql_getdate, mgi_DBkey(table), key, END_VALUE_C);
 	      break;
     }
+  }
+
+  return(buf);
+}
+
+/* version with second key parameter */
+
+char *mgi_DBupdate2(int table, char *key, char *key2, char *str)
+{
+  static char buf[TEXTBUFSIZ];
+  char **tokens;
+  char sql_getdate[25];
+
+  memset(buf, '\0', sizeof(buf));
+  memset(sql_getdate, '\0', sizeof(sql_getdate));
+
+  if (GLOBAL_DBTYPE == "sybase")
+  {
+    sprintf(sql_getdate,"getdate()");
+  }
+  else
+  {
+    sprintf(sql_getdate,"current_date");
+  }
+
+  switch (table)
+  {
+    case MRK_HISTORY:
+            sprintf(buf, "update %s set %s, _ModifiedBy_key = %s, modification_date = %s where %s = %s and sequenceNum = %s %s", 
+		mgi_DBtable(table), str, global_loginKey, sql_getdate, mgi_DBkey(table), key, key2, END_VALUE_C);
+     	    break;
+    case MRK_OFFSET:
+            sprintf(buf, "update %s set %s, modification_date = %s where %s = %s and source = %s %s", 
+		mgi_DBtable(table), str, sql_getdate, mgi_DBkey(table), key, key2, END_VALUE_C);
+     	    break;
+    default:
+            sprintf(buf, "update %s set modification_date = %s where %s = %s %s", 
+	        mgi_DBtable(table), sql_getdate, mgi_DBkey(table), key, END_VALUE_C);
+	    break;
   }
 
   return(buf);

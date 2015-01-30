@@ -261,10 +261,13 @@ char *exec_mrk_reloadLabel(char *key)
   {
       sprintf(buf,"exec MRK_reloadLabel %s\n", key);
   }
+  /*
+  not used in PG
   else
   {
       sprintf(buf,"exec MRK_reloadLabel %s\n", key);
   }
+  */
   return(buf);
 }
 
@@ -276,10 +279,13 @@ char *exec_mrk_reloadReference(char *key)
   {
       sprintf(buf,"exec MRK_reloadReference %s\n", key);
   }
+  /*
+  not used in PG
   else
   {
       sprintf(buf,"exec MRK_reloadReference %s\n", key);
   }
+  */
   return(buf);
 }
 
