@@ -1916,6 +1916,7 @@ char *mgi_DBinsert(int table, char *keyName)
     case MLD_RIHAPLOTYPE:
     case MLD_RI2POINT:
     case MLD_STATISTICS:
+    case MRK_ALIAS:
     case MRK_ANCHOR:
     case MRK_CHROMOSOME:
     case MRK_CLASSES:
