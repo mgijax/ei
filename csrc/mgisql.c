@@ -1824,19 +1824,39 @@ char *strainalleletype_load(char *key, char *from, char *where)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"(select _StrainMarker_key, _Marker_key, _Allele_key, _Qualifier_key, \
-	\nsymbol, chromosome, alleleSymbol, qualifier, \
-	\nconvert(integer, chromosome) as chrorder \
-	\nfrom %s \
-	\nwhere %s = %s \
-	\nand chromosome not in ('X', 'Y', 'MT', 'UN', 'XY') \
-	\nunion \
-	\nselect _StrainMarker_key, _Marker_key, _Allele_key, _Qualifier_key, \
-	\nsymbol, chromosome, alleleSymbol, qualifier, 99 as chrorder \
-	\nfrom %s \
-	\nwhere %s = %s \
-	\nand chromosome in ('X', 'Y', 'MT', 'UN', 'XY')) \
-	\norder by _Qualifier_key, chrorder, symbol", from, where, key, from, where, key);
+
+  if (GLOBAL_DBTYPE == "sybase")
+  {
+  	sprintf(buf,"(select _StrainMarker_key, _Marker_key, _Allele_key, _Qualifier_key, \
+		\nsymbol, chromosome, alleleSymbol, qualifier, \
+		\nconvert(integer, chromosome) as chrorder \
+		\nfrom %s \
+		\nwhere %s = %s \
+		\nand chromosome not in ('X', 'Y', 'MT', 'UN', 'XY') \
+		\nunion \
+		\nselect _StrainMarker_key, _Marker_key, _Allele_key, _Qualifier_key, \
+		\nsymbol, chromosome, alleleSymbol, qualifier, 99 as chrorder \
+		\nfrom %s \
+		\nwhere %s = %s \
+		\nand chromosome in ('X', 'Y', 'MT', 'UN', 'XY')) \
+		\norder by _Qualifier_key, chrorder, symbol", from, where, key, from, where, key);
+  }
+  else
+  {
+  	sprintf(buf,"(select _StrainMarker_key, _Marker_key, _Allele_key, _Qualifier_key, \
+		\nsymbol, chromosome, alleleSymbol, qualifier, \
+		\ncast(chromosome as int) as chrorder \
+		\nfrom %s \
+		\nwhere %s = %s \
+		\nand chromosome not in ('X', 'Y', 'MT', 'UN', 'XY') \
+		\nunion \
+		\nselect _StrainMarker_key, _Marker_key, _Allele_key, _Qualifier_key, \
+		\nsymbol, chromosome, alleleSymbol, qualifier, 99 as chrorder \
+		\nfrom %s \
+		\nwhere %s = %s \
+		\nand chromosome in ('X', 'Y', 'MT', 'UN', 'XY')) \
+		\norder by _Qualifier_key, chrorder, symbol", from, where, key, from, where, key);
+  }
   return(buf);
 }
 
