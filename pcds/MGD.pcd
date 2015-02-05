@@ -5095,7 +5095,7 @@ Module: MGD
                         xrtTblValidateCellCallback = "D:VerifyMarker,\nD:VerifyExptChromosome,\nD:VerifyAllele,\nD:VerifyExptAssay,\nD:CommitTableCellEdit";
                         xrtTblVisibleRows = 10;
                         xrtTblMaxLengthSeries = "(all 7 40)(all 8 20)(all 9 80)(all 10 255)";
-                        userDefinedAttributes = "markerKey:Int(Int)=\"2\"\nalleleKey:StringTable=\"5\"\nassayKey:Int(Int)=\"6\"\nmarkerSymbol:Int(Int)=\"8\"\nmarkerChr:Int(Int)=\"4\"\nmarkerColumns:Int(Int)=\"1\"\nalleleSymbol:StringTable=\"9\"\nassay:Int(Int)=\"10\"\ndescription:Int(Int)=\"11\"\nyesno:Int(Int)=\"12\"\n";
+                        userDefinedAttributes = "markerKey:Int(Int)=\"2\"\nalleleKey:StringTable=\"4\"\nassayKey:Int(Int)=\"5\"\nmarkerSymbol:Int(Int)=\"7\"\nmarkerChr:Int(Int)=\"3\"\nmarkerColumns:Int(Int)=\"1\"\nalleleSymbol:StringTable=\"8\"\nassay:Int(Int)=\"9\"\ndescription:Int(Int)=\"10\"\nyesno:Int(Int)=\"11\"\n";
                         xrtTblNumRows = 20;
                         xrtTblDisplayHorizScrollBar = dispsb_always;
                       Group: User
@@ -12374,10 +12374,11 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblMaxLengthSeries = "(all 9 40)(all 10 20)(all 11 80)(all 12 255)";
                                           xrtTblColumnLabels = "Mode,Current Order,Marker key,Current Marker key,Chr,Allele key,Assay key,#,Marker ID,Marker,Allele,Assay Type,Description,Matrix?";
                                         Group: User
+                                          markerSymbol = 9;
                                           alleleSymbol = 10;
                                           assay = 11;
                                           description = 12;
-                                          markerSymbol = 9;
+					  yesno = 13;
                                       }
                                 }
                                 {
