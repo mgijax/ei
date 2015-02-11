@@ -28,6 +28,9 @@
 --
 -- History
 --
+-- lec	02/09/2015
+--	- PythonExpressionCache added to replace trigger
+--
 -- lec	04/14/2014
 --	- TR11549/PythonImageCache obsolete
 --
@@ -711,6 +714,9 @@ rules:
           PythonAlleleCreCache.objectKey := currentAssay;
           send(PythonAlleleCreCache, 0);
 
+	  PythonExpressionCache.objectKey := currentAssay;
+          send(PythonExpressionCache, 0);
+
           (void) reset_cursor(top);
 	end does;
 
@@ -1227,6 +1233,9 @@ rules:
             PythonAlleleCreCache.objectKey := currentAssay;
             send(PythonAlleleCreCache, 0);
 
+	    PythonExpressionCache.objectKey := currentAssay;
+            send(PythonExpressionCache, 0);
+
 	  end if;
 
           if (top->QueryList->List.row = 0) then
@@ -1326,6 +1335,9 @@ rules:
 	  (void) busy_cursor(top);
 	  newAssayKey := mgi_sp(exec_gxd_duplicateAssay(currentAssay, (string) duplicate));
 	  (void) reset_cursor(top);
+
+	  PythonExpressionCache.objectKey := newAssayKey;
+          send(PythonExpressionCache, 0);
 
           InsertList.list := top->QueryList;
           InsertList.item := "J:" + top->Jnum->text.value + ";" + 
@@ -1467,6 +1479,9 @@ rules:
             PythonAlleleCreCache.objectKey := currentAssay;
             send(PythonAlleleCreCache, 0);
           end if;
+
+	  PythonExpressionCache.objectKey := currentAssay;
+          send(PythonExpressionCache, 0);
 
 	  (void) reset_cursor(top);
 	end does;

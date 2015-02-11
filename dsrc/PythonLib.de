@@ -45,6 +45,8 @@ PythonReferenceCache [objectKey : string;];
 PythonInferredFromCache [source_widget : widget;
 			 objectKey : string;];
 
+PythonExpressionCache [objectKey : string;];
+
 PythonADSystemLoadEnd [];
 
 PythonAlleleCombinationEnd [];
@@ -57,3 +59,4 @@ PythonReferenceCacheEnd [];
 
 PythonInferredFromCacheEnd [];
 
+PythonExpressionCacheEnd [];

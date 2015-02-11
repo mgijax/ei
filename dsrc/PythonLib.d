@@ -335,6 +335,50 @@ rules:
 	end does;
 
 --
+-- PythonExpressionCache
+--
+-- Activated from:  Assay module
+-- after an insert, update or delete
+--
+
+	PythonExpressionCache does
+	  objectKey : string := PythonExpressionCache.objectKey;
+	  cmds : string_list := create string_list();
+	  buf : string;
+
+	  --if (getenv("EISSHCOMMAND") != "") then
+	  	--cmds.insert(getenv("EISSHCOMMAND"), cmds.count + 1);
+	  --end if;
+
+	  cmds.insert(getenv("MGICACHELOAD") + "/gxdexpression.py", cmds.count + 1);
+	  cmds.insert("-S" + global_server, cmds.count + 1);
+	  cmds.insert("-D" + global_database, cmds.count + 1);
+	  cmds.insert("-U" + global_login, cmds.count + 1);
+	  cmds.insert("-P" + global_passwd_file, cmds.count + 1);
+	  cmds.insert("-K" + objectKey, cmds.count + 1);
+
+	  -- Write cmds to user log
+	  buf := "";
+	  cmds.rewind;
+	  while (cmds.more) do
+	    buf := buf + cmds.next + " ";
+	  end while;
+	  buf := buf + "\n\n";
+	  (void) mgi_writeLog(buf);
+
+	  -- Execute
+          proc_id : opaque := tu_fork_process(cmds[1], cmds, nil, PythonExpressionCacheEnd);
+
+	  while (tu_fork_ok(proc_id)) do
+	    (void) keep_busy();
+	  end while;
+
+	  tu_fork_free(proc_id);
+
+	end does;
+
+
+--
 -- PythonADSystemLoadEnd
 --
 
@@ -379,6 +423,14 @@ rules:
 
 	PythonInferredFromCacheEnd does
 	  (void) mgi_writeLog("Inferred From Cache done.\n\n");
+	end does;
+
+--
+-- PythonExpressionCacheEnd
+--
+
+	PythonExpressionCacheEnd does
+	  (void) mgi_writeLog("Expression Cache done.\n\n");
 	end does;
 
 end dmodule;
