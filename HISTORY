@@ -1,5 +1,12 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-5-2-1-4
+DATE: 2/12/2015
+STAFF: lec
+CHANGES:
+a) TR11896/EI/Merge
+b) TR11750/Assay.d/PythonLib.d/PythonExpressionCache
+
 TAG: ei-5-2-1-3
 DATE: 2/5/2015
 STAFF: lec
