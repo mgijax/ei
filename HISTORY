@@ -1,5 +1,11 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-5-2-1-5
+DATE: 02/19/2015
+STAFF: lec
+CHANGES:
+a) RefMarkerTableLib.d : add call to exec_mrk_reloadReference
+
 TAG: ei-5-2-1-4
 DATE: 2/12/2015
 STAFF: lec

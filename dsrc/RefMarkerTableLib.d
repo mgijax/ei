@@ -175,9 +175,11 @@ rules:
 	      set := "_Object_key = " + markerKey + "," +
                      "_RefAssocType_key = " + refsTypeKey;
               cmd := cmd + mgi_DBupdate(tableID, key, set);
+	      cmd := cmd + exec_mrk_reloadReference(markerKey);
 
             elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
               cmd := cmd + mgi_DBdelete(tableID, key);
+	      cmd := cmd + exec_mrk_reloadReference(markerKey);
             end if;
  
             row := row + 1;
