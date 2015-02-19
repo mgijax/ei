@@ -271,6 +271,7 @@ rules:
 	  (void) mgi_tblSort(annotTable, annotTable.annotKey);
 	  (void) mgi_tblSort(annotTable, annotTable.term);
 
+	  cmd := "";
 	  editTerm := top->Annotation->EditTerm.set;
 
           -- Process while non-empty rows are found
@@ -304,7 +305,7 @@ rules:
 	      -- _Annot_key value, else generate a new one.
 
   	      dupAnnot := false;
-	      annotKey := "@" + KEYNAME;
+	      annotKey := MAX_KEY1 + KEYNAME + MAX_KEY2;
 
 	      if (row > 0) then
 	        if (termKey = mgi_tblGetCell(annotTable, row - 1, annotTable.termKey) and
@@ -346,7 +347,7 @@ rules:
 		       annotTypeKey + "," +
 		       top->mgiAccession->ObjectID->text.value + "," +
 		       termKey + "," +
-		       qualifierKey + ")\n";
+		       qualifierKey + END_VALUE;
 	      end if;
 
               cmd := cmd +
@@ -355,11 +356,11 @@ rules:
 		       evidenceKey + "," +
 		       refsKey + "," +
 		       "NULL," +
-		       global_loginKey + "," + global_loginKey + ")\n";
+		       global_loginKey + "," + global_loginKey + END_VALUE;
 
 	      ModifyNotes.source_widget := annotTable;
 	      ModifyNotes.tableID := MGI_NOTE;
-	      ModifyNotes.key := "@" + keyName;
+	      ModifyNotes.key := MAX_KEY1 + keyName + MAX_KEY2;
 	      ModifyNotes.row := row;
 	      ModifyNotes.column := annotTable.notes;
 	      ModifyNotes.keyDeclared := notesModified;
