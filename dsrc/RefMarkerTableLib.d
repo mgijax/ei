@@ -169,6 +169,8 @@ rules:
 		     refsTypeKey + "," +
 		     global_loginKey + "," + global_loginKey + END_VALUE;
 
+	      cmd := cmd + exec_mrk_reloadReference(markerKey);
+
             elsif (editMode = TBL_ROW_MODIFY and markerKey.length > 0) then
 	      set := "_Object_key = " + markerKey + "," +
                      "_RefAssocType_key = " + refsTypeKey;
