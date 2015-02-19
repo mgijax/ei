@@ -278,7 +278,7 @@ rules:
 		mgi_sql1(image_getCopyright(top->mgiCitation->ObjectID->text.value));
           end if;
 
-	  currentRecordKey := "@" + KEYNAME;
+	  currentRecordKey := MAX_KEY1 + KEYNAME + MAX_KEY2;
 	  panekeyDeclared := false;
 	  refsKey := top->mgiCitation->ObjectID->text.value;
 
@@ -305,7 +305,7 @@ rules:
 		   xydim +
 	           mgi_DBprstr(top->FigureLabel->text.value) + "," +
 		   global_loginKey + "," +
-		   global_loginKey + ")\n";
+		   global_loginKey + END_VALUE;
 
 	    -- Thumbnails get one placeholder Image Pane record
 
@@ -334,7 +334,7 @@ rules:
 		 xydim +
 	         mgi_DBprstr(top->FigureLabel->text.value) + "," +
 		 global_loginKey + "," +
-		 global_loginKey + ")\n";
+		 global_loginKey + END_VALUE;
 
 	  send(ModifyImagePane, 0);
 
@@ -608,7 +608,7 @@ rules:
               cmd := cmd + 
 		     mgi_DBinsert(IMG_IMAGEPANE, panekeyName) +
                      currentRecordKey + "," + 
-		     mgi_DBprstr2(paneLabel) + ")\n";
+		     mgi_DBprstr2(paneLabel) + END_VALUE;
 
             elsif (editMode = TBL_ROW_MODIFY) then
               update := "paneLabel = " + mgi_DBprstr2(paneLabel);

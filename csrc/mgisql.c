@@ -941,9 +941,17 @@ char *image_getCopyright(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"declare @copyright varchar(255) \
-	\nexec BIB_getCopyright %s, @copyright output \
-	\nselect @copyright", key);
+
+  if (GLOBAL_DBTYPE == "sybase")
+  {
+  	sprintf(buf,"declare @copyright varchar(255) \
+		\nexec BIB_getCopyright %s, @copyright output \
+		\nselect @copyright", key);
+  }
+  else
+  {
+  	sprintf(buf,"select * from BIB_getCopyright (%s);\n", key);
+  }
   return(buf);
 }
 
