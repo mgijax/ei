@@ -83,13 +83,6 @@ select * from MRK_Reference where _Marker_key = KEY
 go
 
 print ""
-print "MLC Reference"
-print ""
-
-select * from MLC_Reference where _Marker_key = KEY
-go
-
-print ""
 print "Marker Homology"
 print ""
 
@@ -151,16 +144,3 @@ print ""
 select * from GXD_Expression where _Marker_key = KEY
 go
 
-print ""
-print "Marker MLC Text"
-print ""
-
-select * from MLC_Text where _Marker_key = KEY
-go
-
-print ""
-print "Marker MLC"
-print ""
-
-select * from MLC_Marker where _Marker_key = KEY
-go

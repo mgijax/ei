@@ -2276,52 +2276,6 @@ Module: mgiOption
             vip_y = 965;
         }
         {
-          MLCModeFrame = OptionFrame : mgiOption;
-          Group: Control
-            vip_x = 110;
-            vip_y = 4705;
-            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
-              {
-                MLCModeMenu : OptionMenu = XmOptionMenu;
-                Group: Widget
-                  subMenuId = MLCModePulldown;
-                  labelString = Mode;
-                Group: User
-                  defaultOption = NotSpecified;
-              }
-              Popups:
-              {
-                MLCModePulldown : OptionPulldown = OptionPulldown;
-                    {
-                      SearchAll = SearchAll : mgiOption;
-                    }
-                    {
-                      NotSpecified = NotSpecified : mgiOption;
-                      Group: User
-                        searchValue = NULL;
-                        defaultValue = NULL;
-                    }
-                    {
-                      Dominant = OptionToggle : mgiOption;
-                      Group: User
-                        searchValue = dominant;
-                        defaultValue = dominant;
-                    }
-                    {
-                      Recessive = OptionToggle : mgiOption;
-                      Group: User
-                        searchValue = recessive;
-                        defaultValue = recessive;
-                    }
-                    {
-                      SemiDominant = OptionToggle : mgiOption;
-                      Group: User
-                        searchValue = semidominant;
-                        defaultValue = semidominant;
-                    }
-              }
-        }
-        {
           MarkerStatusFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 110;
