@@ -6,6 +6,7 @@ STAFF: lec
 CHANGES:
 a) remove MLC calls
 b) for PG: Marker, TDC, Images
+c) dsrc/Assay.d : remove calls to Python scripts from Delete
 
 TAG: ei-5-2-1-5
 DATE: 02/19/2015
