@@ -714,6 +714,7 @@ rules:
           PythonAlleleCreCache.objectKey := currentAssay;
           send(PythonAlleleCreCache, 0);
 
+          PythonExpressionCache.source_widget := top;
 	  PythonExpressionCache.objectKey := currentAssay;
           send(PythonExpressionCache, 0);
 
@@ -1226,18 +1227,6 @@ rules:
 	  DeleteSQL.list := top->QueryList;
           send(DeleteSQL, 0);
 
-	  if top->Control->Delete.deleteReturn then
-
-            PythonAlleleCreCache.source_widget := top;
-            PythonAlleleCreCache.pythonevent := EVENT_ALLELECRE_BYASSAY;
-            PythonAlleleCreCache.objectKey := currentAssay;
-            send(PythonAlleleCreCache, 0);
-
-	    PythonExpressionCache.objectKey := currentAssay;
-            send(PythonExpressionCache, 0);
-
-	  end if;
-
           if (top->QueryList->List.row = 0) then
             ClearAssay.clearKeys := false;
             send(ClearAssay, 0);
@@ -1336,6 +1325,7 @@ rules:
 	  newAssayKey := mgi_sp(exec_gxd_duplicateAssay(currentAssay, (string) duplicate));
 	  (void) reset_cursor(top);
 
+          PythonExpressionCache.source_widget := top;
 	  PythonExpressionCache.objectKey := newAssayKey;
           send(PythonExpressionCache, 0);
 
@@ -1480,6 +1470,7 @@ rules:
             send(PythonAlleleCreCache, 0);
           end if;
 
+          PythonExpressionCache.source_widget := top;
 	  PythonExpressionCache.objectKey := currentAssay;
           send(PythonExpressionCache, 0);
 
