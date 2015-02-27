@@ -150,7 +150,7 @@ rules:
 
           (void) busy_cursor(top);
 
-	  currentRecordKey := "@" + KEYNAME;
+	  currentRecordKey := MAX_KEY1 + KEYNAME + MAX_KEY2;
 	  sourceKeyLabel : string := "maxSource";
 
 	  -- Construct insert for Source; SQL placed in SoureForm.sql UDA
@@ -166,11 +166,11 @@ rules:
           cmd := top->SourceForm.sql +
 		 mgi_setDBkey(GXD_ANTIGEN, NEWKEY, KEYNAME) + 
 		 mgi_DBinsert(GXD_ANTIGEN, KEYNAME) +
-                 "@" + sourceKeyLabel + "," +
+                 MAX_KEY1 + sourceKeyLabel + MAX_KEY2 + "," +
 		 mgi_DBprstr(top->Name->text.value) + "," +
 		 mgi_DBprstr(top->Region->text.value) + "," +
 		 mgi_DBprstr(top->Note->text.value) + "," +
-		 global_loginKey + "," + global_loginKey + ")\n";
+		 global_loginKey + "," + global_loginKey + END_VALUE;
 
 	  -- Process any Accession numbers
 
