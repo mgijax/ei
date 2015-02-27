@@ -426,7 +426,7 @@ char *exec_prb_processAntigenAnonSource(\
   }
   else
   {
-      sprintf(buf,"exec PRB_processAntigenAnonSource %s, %s, %s, %s, %s, %s, %s, %s, %s, %s\n",
+      sprintf(buf,"select * from PRB_processAntigenAnonSource (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);\n",
               objectKey,\
               msoKey,\
               organismKey,\
