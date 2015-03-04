@@ -136,7 +136,8 @@ rules:
 
 	  if (tableID = MGI_SYNONYM_ALLELE_VIEW or 
 	      tableID = MGI_SYNONYM_NOMEN_VIEW or 
-	      tableID = MGI_SYNONYM_MUSMARKER_VIEW) then
+	      tableID = MGI_SYNONYM_MUSMARKER_VIEW or
+	      tableID = MGI_SYNONYM_STRAIN_VIEW) then
 	      cmd := syntypetable_loadref(objectKey, mgi_DBtable(tableID), mgi_DBkey(tableID));
 	  else
 	      cmd := syntypetable_load(objectKey, mgi_DBtable(tableID), mgi_DBkey(tableID));
@@ -157,7 +158,8 @@ rules:
 
 	      if (tableID = MGI_SYNONYM_ALLELE_VIEW or 
 	          tableID = MGI_SYNONYM_NOMEN_VIEW or
-	          tableID = MGI_SYNONYM_MUSMARKER_VIEW) then
+	          tableID = MGI_SYNONYM_MUSMARKER_VIEW or
+		  tableID = MGI_SYNONYM_STRAIN_VIEW) then
 	        (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 8));
 	        (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 9));
 	        (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 10));

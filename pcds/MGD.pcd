@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Thu Jan  8 12:47:06 2015";
+      lastWritten = "Wed Mar  4 08:58:46 2015";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -9335,7 +9335,8 @@ Shift<Key>Tab: prev-tab-group()
                                         Table = mgiTable : mgiTable;
                                         Group: Widget
                                           xrtTblVisibleRows = 3;
-                                          xrtTblPixelWidthSeries = "(all 0-3 0)(all 6-9 0)";
+                                          xrtTblPixelWidthSeries = "(all 0-3 0)(all 8-9 0)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 20)(all 5 30)(all 6 10)(all 7 30)(all 8 12)(all 9 10)";
                                         Group: User
                                           requiredColumns = 5;
                                       }
@@ -12378,7 +12379,7 @@ Shift<Key>Tab: prev-tab-group()
                                           alleleSymbol = 10;
                                           assay = 11;
                                           description = 12;
-					  yesno = 13;
+                                          yesno = 13;
                                       }
                                 }
                                 {
