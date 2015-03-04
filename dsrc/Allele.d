@@ -1973,7 +1973,8 @@ rules:
 
 	  if (from_image) then
 	    from := from + "," + mgi_DBtable(IMG_IMAGEPANE_ASSOC_VIEW) + " i";
-	    where := where + "\nand a." + mgi_DBkey(ALL_ALLELE) + " = i._Object_key";
+	    where := where + "\nand a." + mgi_DBkey(ALL_ALLELE) + " = i._Object_key" +
+	    	"\nand i._MGIType_key = 11";
 	  end if;
 
 	  if (where.length > 0) then
