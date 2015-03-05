@@ -209,7 +209,6 @@ extern char *ref_books(char *);
 extern char *ref_notes(char *);
 extern char *ref_go_exists(char *);
 extern char *ref_gxd_exists(char *);
-extern char *ref_hmd_exists(char *);
 extern char *ref_mlc_exists(char *);
 extern char *ref_mld_exists(char *);
 extern char *ref_nom_exists(char *);
