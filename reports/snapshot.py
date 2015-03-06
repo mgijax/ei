@@ -166,27 +166,6 @@ def history():
         fp.write(string.ljust(mgi_utils.prvalue(r['edate']),15) + TAB)
         fp.write(string.ljust(r['cdate'],15) + CRT)
 
-def orthology():
-
-    #
-    # orthology
-    #
-
-    fp.write('#\n# Orthology\n#\n')
-
-    results = db.sql('''
-    	    select distinct a2.symbol, a2.name, a2.organism, a2.jnumID
-	    from HMD_Homology_View a1, HMD_Homology_View a2
-	    where a1._Marker_key = %s
-	    and a1._Class_key = a2._Class_key
-	    ''' % (markerKey), 'auto')
-
-    for r in results:
-        fp.write(string.ljust(r['symbol'],30) + TAB)
-        fp.write(string.ljust(r['name'],50) + TAB)
-	fp.write(string.ljust(r['organism'], 50) + TAB)
-        fp.write(string.ljust(r['jnumID'],30) + CRT)
-
 def mapping():
 
     #
@@ -313,7 +292,6 @@ miscellaneous()
 allele()
 goAnnotations()
 history()
-orthology()
 mapping()
 probes()
 gxd()
