@@ -323,7 +323,7 @@ rules:
 
           -- If adding, then @KEYNAME must be used in all Modify events
  
-          currentRecordKey := "@" + KEYNAME;
+          currentRecordKey := MAX_KEY1 + KEYNAME + MAX_KEY2;
  
           cmd := mgi_setDBkey(GXD_GENOTYPE, NEWKEY, KEYNAME) +
                  mgi_DBinsert(GXD_GENOTYPE, KEYNAME);
@@ -337,7 +337,7 @@ rules:
 	  cmd := cmd + top->EditForm->ConditionalMenu.menuHistory.defaultValue + "," +
 		 "NULL," + 
 		 top->EditForm->GenotypeExistsAsMenu.menuHistory.defaultValue + "," +
-		 global_loginKey + "," + global_loginKey + ")\n";
+		 global_loginKey + "," + global_loginKey + END_VALUE;
 
 	  send(ModifyAllelePair, 0);
 	  send(ModifyImagePaneAssociation, 0);
@@ -616,7 +616,7 @@ rules:
 		     stateKey + "," +
 		     compoundKey + "," +
 		     newSeqNum + "," +
-		     global_loginKey + "," + global_loginKey + ")\n";
+		     global_loginKey + "," + global_loginKey + END_VALUE;
 
 	      ordergenotypes := true;
 	      reorderingAlleles := false;
@@ -706,7 +706,7 @@ rules:
 		     mgiTypeKey + "," +
 		     currentRecordKey + "," +
 		     isPrimaryKey + "," +
-		     global_loginKey + "," + global_loginKey + ")\n";
+		     global_loginKey + "," + global_loginKey + END_VALUE;
 
             elsif (editMode = TBL_ROW_MODIFY) then
               set := "_ImagePane_key = " + paneKey +

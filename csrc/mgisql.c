@@ -577,7 +577,7 @@ char *exec_gxd_checkDuplicateGenotype(char *key)
   }
   else
   {
-      sprintf(buf,"exec GXD_checkDuplicateGenotype %s\n", key);
+      sprintf(buf,"select * from GXD_checkDuplicateGenotype (%s);\n", key);
   }
   return(buf);
 }
@@ -622,7 +622,7 @@ char *exec_gxd_getGenotypesDataSets(char *key)
   }
   else
   {
-      sprintf(buf,"exec GXD_getGenotypesDataSets %s\n", key);
+      sprintf(buf,"select * from GXD_getGenotypesDataSets (%s);\n", key);
   }
   return(buf);
 }
@@ -637,7 +637,7 @@ char *exec_gxd_orderAllelePairs(char *key)
   }
   else
   {
-      sprintf(buf,"exec GXD_orderAllelePairs %s\n", key);
+      sprintf(buf,"select * from GXD_orderAllelePairs (%s);\n", key);
   }
   return(buf);
 }
@@ -667,7 +667,7 @@ char *exec_gxd_orderGenotypesAll(char *key)
   }
   else
   {
-      sprintf(buf,"exec GXD_orderGenotypesAll %s\n", key);
+      sprintf(buf,"select * from GXD_orderGenotypesAll (%s);\n", key);
   }
   return(buf);
 }
