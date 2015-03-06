@@ -714,9 +714,17 @@ rules:
           PythonAlleleCreCache.objectKey := currentAssay;
           send(PythonAlleleCreCache, 0);
 
+	  (void) mgi_writeLog("ASSAY1:begin:PythonExpressionCache\n");
           PythonExpressionCache.source_widget := top;
 	  PythonExpressionCache.objectKey := currentAssay;
           send(PythonExpressionCache, 0);
+	  (void) mgi_writeLog("ASSAY1:end:PythonExpressionCache\n");
+
+	  (void) mgi_writeLog("ASSAY2:begin:PythonExpressionCache\n");
+          PythonExpressionCache.source_widget := top;
+	  PythonExpressionCache.objectKey := currentAssay;
+          send(PythonExpressionCache, 0);
+	  (void) mgi_writeLog("ASSAY2:end:PythonExpressionCache\n");
 
           (void) reset_cursor(top);
 	end does;
@@ -1474,11 +1482,17 @@ rules:
 	    (void) mgi_writeLog("ASSAY:end:PythonAlleleCreCache\n");
           end if;
 
-	  (void) mgi_writeLog("ASSAY:begin:PythonExpressionCache\n");
+	  (void) mgi_writeLog("ASSAY1:begin:PythonExpressionCache\n");
           PythonExpressionCache.source_widget := top;
 	  PythonExpressionCache.objectKey := currentAssay;
           send(PythonExpressionCache, 0);
-	  (void) mgi_writeLog("ASSAY:end:PythonExpressionCache\n");
+	  (void) mgi_writeLog("ASSAY1:end:PythonExpressionCache\n");
+
+	  (void) mgi_writeLog("ASSAY2:begin:PythonExpressionCache\n");
+          PythonExpressionCache.source_widget := top;
+	  PythonExpressionCache.objectKey := currentAssay;
+          send(PythonExpressionCache, 0);
+	  (void) mgi_writeLog("ASSAY2:end:PythonExpressionCache\n");
 
 	  (void) reset_cursor(top);
 	end does;
