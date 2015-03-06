@@ -1,5 +1,11 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-5-2-1-9
+DATE: 03/06/2015
+STAFF: lec
+CHANGES:
+a) call PythonExpression twice in Assay/Add/Modify
+
 TAG: ei-5-2-1-8
 DATE: 3/4/2015
 STAFF: lec
