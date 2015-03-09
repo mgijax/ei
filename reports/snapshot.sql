@@ -83,13 +83,6 @@ select * from MRK_Reference where _Marker_key = KEY
 go
 
 print ""
-print "Marker Homology"
-print ""
-
-select * from HMD_Homology_View where _Marker_key = KEY
-go
-
-print ""
 print "Marker Mapping"
 print ""
 
