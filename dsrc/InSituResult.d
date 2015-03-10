@@ -498,6 +498,10 @@ rules:
           ModifySQL.list := nil;
           send(ModifySQL, 0);
  
+          PythonExpressionCache.source_widget := top; 
+          PythonExpressionCache.objectKey := assayKey;
+          send(PythonExpressionCache, 0);
+
 	  send(Select, 0);
 
           (void) reset_cursor(top);

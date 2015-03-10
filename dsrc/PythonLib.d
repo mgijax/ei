@@ -327,8 +327,6 @@ rules:
 	  cmds : string_list := create string_list();
 	  buf : string;
 
-	  (void) mgi_writeLog("PYTHON:begin:PythonExpressionCache\n");
-
 	  cmds.insert(getenv("MGICACHELOAD") + "/gxdexpression.py", cmds.count + 1);
 	  cmds.insert("-S" + global_server, cmds.count + 1);
 	  cmds.insert("-D" + global_database, cmds.count + 1);
@@ -359,8 +357,6 @@ rules:
 	  end if;
 
 	  tu_fork_free(proc_id);
-
-	  (void) mgi_writeLog("PYTHON:end:PythonExpressionCache\n");
 
 	end does;
 
