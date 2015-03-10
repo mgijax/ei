@@ -17,7 +17,6 @@
 extern char *mgilib_count(char *);
 extern char *mgilib_isAnchor(char *);
 extern char *mgilib_user(char *);
-extern char *exec_app_EIcheck(char *);
 extern char *exec_acc_assignJ(char *);
 extern char *exec_acc_assignJNext(char *, char *);
 extern char *exec_acc_insert(char *, char *, char *, char *, char *, char *, char *);

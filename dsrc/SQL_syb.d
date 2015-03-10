@@ -100,19 +100,7 @@ rules:
  
         AddSQL does
 	  cmd : string;
-	  jobStream : string;
 	  item : string := AddSQL.item;
-
-	  -- If a Job Stream has not finished, then disallow Add
-
-	  jobStream := mgi_sp(exec_app_EIcheck(global_radar));
-	  if ((getenv("EIDEBUG") = "0") and (integer) jobStream > 0) then
-	    StatusReport.source_widget := top;
-	    StatusReport.message := "\nERROR:  Add functionality is unavailable.  A data load job is running.";
-	    send(StatusReport, 0);
-            AddSQL.list->List.sqlSuccessful := false;
-	    return;
- 	  end if;
 
 	  if (AddSQL.list != nil) then
 	    top := AddSQL.list.top;
@@ -190,18 +178,7 @@ rules:
 --
  
         DeleteSQL does
-	  jobStream : string;
-
 	  top := DeleteSQL.list.top;
-
-	  jobStream := mgi_sp(exec_app_EIcheck(global_radar));
-	  if ((getenv("EIDEBUG") = "0") and (integer) jobStream > 0) then
-	    StatusReport.source_widget := top;
-	    StatusReport.message := "\nERROR:  Delete functionality is unavailable.  A data load job is running.";
-	    send(StatusReport, 0);
-            DeleteSQL.list->List.sqlSuccessful := false;
-	    return;
- 	  end if;
 
 	  if (DeleteSQL.key2 != nil) then
 	     ExecSQL.cmd := mgi_DBdelete2(DeleteSQL.tableID, DeleteSQL.key, DeleteSQL.key2);
@@ -312,16 +289,6 @@ rules:
 
 	ModifySQL does
 	  cmd : string;
-	  jobStream : string;
-
-	  jobStream := mgi_sp(exec_app_EIcheck(global_radar));
-	  if ((getenv("EIDEBUG") = "0") and (integer) jobStream > 0) then
-	    StatusReport.source_widget := top;
-	    StatusReport.message := "\nERROR:  Modify functionality is unavailable.  A data load job is running.";
-	    send(StatusReport, 0);
-            ModifySQL.list->List.sqlSuccessful := false;
-	    return;
- 	  end if;
 
 	  if (ModifySQL.list != nil) then
 	    ModifySQL.list->List.sqlSuccessful := true;

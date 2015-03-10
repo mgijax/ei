@@ -15,7 +15,6 @@ CALLS
 	 mgilib_isAnchor("char *")				: "char *";
 	 mgilib_user("char *")					: "char *";
 
-	 exec_app_EIcheck("char *")				: "char *";
 	 exec_acc_assignJ("char *") 				: "char *";
 	 exec_acc_assignJNext("char *", "char *")		: "char *";
 	 exec_acc_insert("char *", "char *", "char *", "char *", "char *", "char *", "char *") : "char *";

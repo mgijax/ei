@@ -52,21 +52,6 @@ char *mgilib_isAnchor(char *key)
  * exec stored procedures
 */
 
-char *exec_app_EIcheck(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-    sprintf(buf,"exec %s..APP_EIcheck", key);
-  }
-  else
-  {
-    sprintf(buf,"", key);
-  }
-  return(buf);
-}
-
 char *exec_acc_assignJ(char *key)
 {
   static char buf[TEXTBUFSIZ];

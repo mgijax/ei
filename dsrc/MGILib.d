@@ -140,7 +140,6 @@ rules:
 	Login does
 	  mgi : widget;
 	  title : string;
-	  jobStream : string;
 	  i : integer := 1;
 
 	  (void) mgi_writeLog("\n" + get_time() + "Logging in to Application...\n");
@@ -182,18 +181,6 @@ rules:
             if (global_loginKey.length = 0) then
 	      StatusReport.source_widget := top;
 	      StatusReport.message := "\nERROR:  Login " + global_login + " is not defined in the MGI User Table.";
-	      send(StatusReport, 0);
-	      (void) reset_cursor(top);
-	      return;
-	    end if;
-
-	    -- If a Job Stream has not finished, then disallow Login
-	    -- If debugging is on, then allow the Login
-
-	    jobStream := mgi_sp(exec_app_EIcheck(global_radar));
-	    if ((getenv("EIDEBUG") = "0") and ((integer) jobStream > 0)) then
-	      StatusReport.source_widget := top;
-	      StatusReport.message := "\nERROR:  EI is unavailable.  A data load job is running.";
 	      send(StatusReport, 0);
 	      (void) reset_cursor(top);
 	      return;

@@ -720,12 +720,6 @@ rules:
           send(PythonExpressionCache, 0);
 	  (void) mgi_writeLog("ASSAY1:end:PythonExpressionCache\n");
 
-	  (void) mgi_writeLog("ASSAY2:begin:PythonExpressionCache\n");
-          PythonExpressionCache.source_widget := top;
-	  PythonExpressionCache.objectKey := currentAssay;
-          send(PythonExpressionCache, 0);
-	  (void) mgi_writeLog("ASSAY2:end:PythonExpressionCache\n");
-
           (void) reset_cursor(top);
 	end does;
 
@@ -1487,12 +1481,6 @@ rules:
 	  PythonExpressionCache.objectKey := currentAssay;
           send(PythonExpressionCache, 0);
 	  (void) mgi_writeLog("ASSAY1:end:PythonExpressionCache\n");
-
-	  (void) mgi_writeLog("ASSAY2:begin:PythonExpressionCache\n");
-          PythonExpressionCache.source_widget := top;
-	  PythonExpressionCache.objectKey := currentAssay;
-          send(PythonExpressionCache, 0);
-	  (void) mgi_writeLog("ASSAY2:end:PythonExpressionCache\n");
 
 	  (void) reset_cursor(top);
 	end does;
