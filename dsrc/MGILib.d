@@ -116,7 +116,6 @@ rules:
 	  envList.append("MGD_DBSERVER");
 	  envList.append("SYBASE");
 	  envList.append("MGD_DBNAME");
-	  envList.append("EIDEBUG");
 	  envList.append("RADAR_DBNAME");
 
 	  envList.open;
@@ -193,22 +192,6 @@ rules:
 	    top.realized := true;
 
 	    -- Initializations
-
---	    dialog : widget;
---	    if (getenv("EIDEBUG") = "0") then
---	      XmUpdateDisplay(mgi);
---	      mgi->WorkingDialog.managed := true;
---	      XmUpdateDisplay(mgi->WorkingDialog);
---
---	      while (i <= top.initDialog.count) do
---	        dialog := top->(top.initDialog[i]);
---	        LoadList.list := dialog->ItemList;
---	        send(LoadList, 0);
---	        i := i + 1;
---	      end while;
---
---	      mgi->WorkingDialog.managed := false;
---	    end if;
 
 	    destroy mgi;
 	    top.show;

@@ -41,7 +41,6 @@ switch (`uname -n`)
 	setenv LD_LIBRARY_PATH ${SYBASE}/OCS-15_0/lib:${TeleUSE}/lib:${TeleUSE}/XRT/lib-shared:${TeleUSE}/conf/lib
 
 	setenv USERLOG	${HOME}/.ei-log
-	setenv EIDEBUG	0
         breaksw
 
     case bheidev01:
@@ -51,7 +50,6 @@ switch (`uname -n`)
 	setenv SYBASE_PATH ${SYBASE}/OCS-15_0/bin
 	setenv LD_LIBRARY_PATH ${SYBASE}/OCS-15_0/lib:${TeleUSE}/lib:${TeleUSE}/XRT/lib-shared:${TeleUSE}/conf/lib
 	setenv USERLOG	${HOME}/.eidev-log
-	setenv EIDEBUG	1
         breaksw
 
     case rohan:
@@ -60,7 +58,6 @@ switch (`uname -n`)
 	setenv SYBASE_PATH ${SYBASE}/OCS-12_5/bin
 	setenv LD_LIBRARY_PATH /opt/sybase/12.5/ASE-12_5/lib:/opt/sybase/12.5/OCS-12_5/lib:/usr/lib:/usr/local/lib:/usr/ucblib:/usr/openwin/lib:/usr/local/postgres/lib:/opt/teleuseXRT/lib:/opt/teleuseXRT/conf/lib
 	setenv USERLOG	${HOME}/.eidev-log
-	setenv EIDEBUG	1
 	breaksw
 
     case lindon:
@@ -69,7 +66,6 @@ switch (`uname -n`)
 	setenv SYBASE_PATH ${SYBASE}/OCS-12_5/bin
 	setenv LD_LIBRARY_PATH /opt/sybase/12.5/ASE-12_5/lib:/opt/sybase/12.5/OCS-12_5/lib:/usr/lib:/usr/local/lib:/usr/ucblib:/usr/openwin/lib:/usr/local/postgres/lib:/opt/teleuseXRT/lib:/opt/teleuseXRT/conf/lib
 	setenv USERLOG	${HOME}/.ei-log
-	setenv EIDEBUG	0
 	breaksw
 
 endsw
