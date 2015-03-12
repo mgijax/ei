@@ -506,7 +506,7 @@ rules:
 		       global_loginKey + "," + global_loginKey + END_VALUE;
 
               cmd := cmd + mgi_DBinsert(VOC_EVIDENCE_PROPERTY, keyNameProperty) + 
-                        "@" + keyName + "," +
+                        MAX_KEY1 + keyName + MAX_KEY2 + "," +
                         defaultSexSpecificKey + ",1,1," +
                         mgi_DBprstr(sex) + "," +
                         global_loginKey + "," +

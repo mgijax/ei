@@ -381,7 +381,7 @@ rules:
 	    -- So, if no key, then get max Source key
 
             if (top->MolDetailForm->SourceForm.sql.length > 0) then
-	      cmd := cmd + "@" + sourceKeyName + ",";
+	      cmd := cmd + MAX_KEY1 + sourceKeyName + MAX_KEY2 + ",";
 	    else
 	      cmd := cmd + detailForm->SourceForm->SourceID->text.value + ",";
 	    end if;
@@ -641,7 +641,7 @@ rules:
 	        end if;
                 cmd := cmd + detailForm->SourceForm.sql;
 	        set := set + "derivedFrom = NULL,";
-	        set := set + "_Source_key = @" + sourceKeyName + ",";
+	        set := set + "_Source_key = " + MAX_KEY1 + sourceKeyName + MAX_KEY2 + ",";
 	      end if;
 
 	    -- Parent Clone has not been modified, so process any Source modifications
@@ -1005,7 +1005,7 @@ rules:
 	      -- If no RFLV key, then a new RFLV is being added
 
 	      if (rflvKey.length = 0) then
-		cmd := cmd + "@" + rflvKeyName + ",";
+		cmd := cmd + MAX_KEY1 + rflvKeyName + MAX_KEY2 + ",";
 	      else
 		cmd := cmd + rflvKey + ",";
 	      end if;

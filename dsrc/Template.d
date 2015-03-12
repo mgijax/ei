@@ -152,7 +152,7 @@ rules:
 
           -- If adding, then @KEYNAME must be used in all Modify events
  
-          currentRecordKey := "@" + KEYNAME;
+          currentRecordKey := MAX_KEY1 + KEYNAME + MAX_KEY2;
  
           cmd : string := mgi_setDBkey(TABLE, NEWKEY, KEYNAME) +
                           mgi_DBinsert(TABLE, KEYNAME);

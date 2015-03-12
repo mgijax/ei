@@ -396,9 +396,9 @@ rules:
           cmd := cmd + mgi_setDBkey(GXD_STRUCTURE, NEWKEY, skeyName);
           cmd := cmd + mgi_setDBkey(GXD_STRUCTURENAME, NEWKEY, snkeyName);
 
-          cmd := cmd + mgi_DBinsert(GXD_STRUCTURE, "@" + skeyName) + 
+          cmd := cmd + mgi_DBinsert(GXD_STRUCTURE, MAX_KEY1 + skeyName + MAX_KEY2) + 
                             parentKey + "," +
-                            "@" + snkeyName + "," +
+                            MAX_KEY1 + snkeyName + MAX_KEY2 + "," +
 			    defaultStageKey + "," +
 			    addDialog->ADSystemMenu.menuHistory.defaultValue + "," +
                             nullval + "," +   /* edinburgh key */
@@ -409,8 +409,8 @@ rules:
 			    addDialog->inheritSystemMenu.menuHistory.defaultValue + "," +
 			    mgi_DBprstr(addDialog->structureNote->text.value) + END_VALUE;
 
-          cmd := cmd + mgi_DBinsert(GXD_STRUCTURENAME, "@" + snkeyName) + 
-                            "@" + skeyName + "," +
+          cmd := cmd + mgi_DBinsert(GXD_STRUCTURENAME, MAX_KEY1 + snkeyName + MAX_KEY2) + 
+                            MAX_KEY1 + skeyName + MAX_KEY2 + "," +
 			    mgi_DBprstr(addDialog->structureText->text.value) + ",1" + END_VALUE;
 
 	  cmd := cmd + exec_gxd_computePrintNamesFrom("@_Structure_key");
@@ -547,14 +547,14 @@ rules:
                   end if;
 
                   if not ModifyAliases.addStructureMode then
-                     cmd := cmd + mgi_DBinsert(GXD_STRUCTURENAME, "@" + keyName) +
+                     cmd := cmd + mgi_DBinsert(GXD_STRUCTURENAME, MAX_KEY1 + keyName + MAX_KEY2) +
                          top->ID->text.value + "," +
                          mgi_DBprstr(structure) + "," +
 			 isMGIAdded +
                          END_VALUE;
                   else -- modify is against the newly-added structure
-                     cmd := cmd + mgi_DBinsert(GXD_STRUCTURENAME, "@" + keyName) +
-                         "@" + mgi_DBkey(GXD_STRUCTURE) + "," +
+                     cmd := cmd + mgi_DBinsert(GXD_STRUCTURENAME, MAX_KEY1 + keyName + MAX_KEY2) +
+                         MAX_KEY1 + mgi_DBkey(GXD_STRUCTURE) + MAX_KEY2 + "," +
                          mgi_DBprstr(structure) + "," +
 			 isMGIAdded +
                          END_VALUE;

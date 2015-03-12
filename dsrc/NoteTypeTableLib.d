@@ -282,7 +282,7 @@ rules:
               while (note.length > 255) do
 
                 if (editMode = TBL_ROW_ADD) then
-	          cmd := cmd + mgi_DBinsert(MGI_NOTECHUNK, NOKEY) + "@" + keyName + ",";
+	          cmd := cmd + mgi_DBinsert(MGI_NOTECHUNK, NOKEY) + MAX_KEY1 + keyName + MAX_KEY2 + ",";
 		else
 	          cmd := cmd + mgi_DBinsert(MGI_NOTECHUNK, NOKEY) + key + ",";
 		end if;
@@ -299,7 +299,7 @@ rules:
     
 	      if (mgi_DBprnotestr(note) != "NULL") then
                 if (editMode = TBL_ROW_ADD) then
-	          cmd := cmd + mgi_DBinsert(MGI_NOTECHUNK, NOKEY) + "@" + keyName + ",";
+	          cmd := cmd + mgi_DBinsert(MGI_NOTECHUNK, NOKEY) + MAX_KEY1 + keyName + MAX_KEY2 + ",";
 		else
 	          cmd := cmd + mgi_DBinsert(MGI_NOTECHUNK, NOKEY) + key + ",";
 		end if;

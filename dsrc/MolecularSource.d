@@ -127,7 +127,7 @@ rules:
 
           (void) busy_cursor(top);
 
-	  currentRecordKey := "@" + KEYNAME;
+	  currentRecordKey := MAX_KEY1 + KEYNAME + MAX_KEY2;
 
 	  -- Use Molecular Source library
 
@@ -147,7 +147,7 @@ rules:
 	  --  Process Accession numbers
 
           ProcessAcc.table := accTable;
-          ProcessAcc.objectKey := "@" + KEYNAME;
+          ProcessAcc.objectKey := MAX_KEY1 + KEYNAME + MAX_KEY2;
           ProcessAcc.tableID := PRB_SOURCE_MASTER;
           send(ProcessAcc, 0);
 
