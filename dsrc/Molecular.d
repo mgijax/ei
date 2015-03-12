@@ -339,7 +339,7 @@ rules:
 
           -- If adding, then @KEYNAME must be used in all Modify events
  
-          currentMasterKey := "@" + KEYNAME;
+          currentMasterKey := MAX_KEY1 + KEYNAME + MAX_KEY2;
           top->MolDetailForm->SourceForm.sql := "";
  
 	  -- If non-Primer Molecular Segment
@@ -462,7 +462,7 @@ rules:
 
           (void) busy_cursor(top);
 
-          currentReferenceKey := "@" + KEYNAME;
+          currentReferenceKey := MAX_KEY1 + KEYNAME + MAX_KEY2;
 
 	  -- A Reference is not added at the same time as the master record
 

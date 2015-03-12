@@ -513,7 +513,7 @@ rules:
 
 	  (void) busy_cursor(top);
 
-          currentRecordKey := "@" + KEYNAME;
+          currentRecordKey := MAX_KEY1 + KEYNAME + MAX_KEY2;
  
 	  if (markerKey.length = 0) then
 	    markerKey := "NULL";
@@ -1560,7 +1560,7 @@ rules:
 		     derivationKey + ",1," +
 		     global_loginKey + "," + global_loginKey + END_VALUE;
 
-	      mutantCellLineKey := "@" + cellLineKey;
+	      mutantCellLineKey := MAX_KEY1 + cellLineKey + MAX_KEY2;
 
 	    end if;
 

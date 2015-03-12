@@ -334,7 +334,7 @@ rules:
 
           -- If adding, then @KEYNAME must be used in all Modify events
  
-          currentExptKey := "@" + KEYNAME;
+          currentExptKey := MAX_KEY1 + KEYNAME + MAX_KEY2;
  
 	  tag : string;
 	  tag := mgi_sql1(mldp_tag(top->ExptDetailForm->mgiCitation->ObjectID->text.value,
@@ -462,7 +462,7 @@ rules:
 	AddCrossLookup does
 	  keyName : string := "maxCross";
 
-	  currentCrossKey := "@" + keyName;
+	  currentCrossKey := MAX_KEY1 + keyName + MAX_KEY2;
 
 	  if (ExptForm->mgiCross->Verify->text.value = "Anonymous") then
 	    ExptForm->mgiCross->Verify->text.value := "";

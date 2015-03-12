@@ -602,7 +602,7 @@ rules:
 
           (void) busy_cursor(top);
 
-	  currentAssay := "@" + KEYNAME;
+	  currentAssay := MAX_KEY1 + KEYNAME + MAX_KEY2;
 
 	  if (antibodyPrep) then
 	    send(AddAntibodyPrep, 0);

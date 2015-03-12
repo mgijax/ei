@@ -120,7 +120,7 @@ rules:
 	  accID := mgi_tblGetCell(table, 0, table.accID);
 	  emapsID := top->EMAPSid->text.value;
 
-          currentRecordKey := "@" + KEYNAME;
+          currentRecordKey := MAX_KEY1 + KEYNAME + MAX_KEY2;
  
           cmd := mgi_setDBkey(MGI_EMAPS_MAPPING, NEWKEY, KEYNAME) +
                  mgi_DBinsert(MGI_EMAPS_MAPPING, KEYNAME) +

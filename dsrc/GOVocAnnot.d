@@ -469,7 +469,7 @@ rules:
 	      -- _Annot_key value, else generate a new one.
 
   	      dupAnnot := false;
-	      annotKey := "@" + KEYNAME;
+	      annotKey := MAX_KEY1 + KEYNAME + MAX_KEY2;
 
 	      if (row > 0) then
 	        if (termKey = mgi_tblGetCell(annotTable, row - 1, annotTable.termKey) and

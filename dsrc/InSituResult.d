@@ -434,7 +434,7 @@ rules:
 	      paneList.rewind;
 	      while paneList.more do
 		cmd := cmd + mgi_DBinsert(imageID, NOKEY) +
-		       "@" + KEYNAME + "," +
+		       MAX_KEY1 + KEYNAME + MAX_KEY2 + "," +
 		       paneList.next + END_VALUE;
 	      end while;
 
@@ -442,7 +442,7 @@ rules:
 
 	      ModifyStructure.source_widget := table;
 	      ModifyStructure.primaryID := structureID;
-	      ModifyStructure.key := "@" + KEYNAME;
+	      ModifyStructure.key := MAX_KEY1 + KEYNAME + MAX_KEY2;
 	      ModifyStructure.row := row;
 	      send(ModifyStructure, 0);
 	      cmd := cmd + top->ADClipboard.updateCmd;
