@@ -407,11 +407,11 @@ rules:
                             addDialog->printStopMenu.menuHistory.defaultValue + "," +
 			    "0," +	     /* topoSort */
 			    addDialog->inheritSystemMenu.menuHistory.defaultValue + "," +
-			    mgi_DBprstr(addDialog->structureNote->text.value) + ")\n";
+			    mgi_DBprstr(addDialog->structureNote->text.value) + END_VALUE;
 
           cmd := cmd + mgi_DBinsert(GXD_STRUCTURENAME, "@" + snkeyName) + 
                             "@" + skeyName + "," +
-			    mgi_DBprstr(addDialog->structureText->text.value) + ",1)\n";
+			    mgi_DBprstr(addDialog->structureText->text.value) + ",1" + END_VALUE;
 
 	  cmd := cmd + exec_gxd_computePrintNamesFrom("@_Structure_key");
 
@@ -551,13 +551,13 @@ rules:
                          top->ID->text.value + "," +
                          mgi_DBprstr(structure) + "," +
 			 isMGIAdded +
-                         ")\n";
+                         END_VALUE;
                   else -- modify is against the newly-added structure
                      cmd := cmd + mgi_DBinsert(GXD_STRUCTURENAME, "@" + keyName) +
                          "@" + mgi_DBkey(GXD_STRUCTURE) + "," +
                          mgi_DBprstr(structure) + "," +
 			 isMGIAdded +
-                         ")\n";
+                         END_VALUE;
                   end if;
 
               elsif (editMode = TBL_ROW_MODIFY and key.length > 0) then

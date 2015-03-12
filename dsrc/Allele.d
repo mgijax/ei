@@ -525,11 +525,11 @@ rules:
 
           if (top->AlleleStatusMenu.menuHistory.labelString = ALL_STATUS_APPROVED) then
 	    statusKey := top->AlleleStatusMenu.menuHistory.defaultValue;
-	    approvalLoginDate := global_loginKey + ",getdate())\n";
+	    approvalLoginDate := global_loginKey + ",getdate()" + END_VALUE;
 	  else
 	    --statusKey := defaultStatus1Key;
 	    statusKey := top->AlleleStatusMenu.menuHistory.defaultValue;
-	    approvalLoginDate := "NULL,NULL)\n";
+	    approvalLoginDate := "NULL,NULL" + END_VALUE;
 	  end if;
 
 	  if (top->InheritanceModeMenu.menuHistory.defaultValue = "%") then
@@ -1162,7 +1162,7 @@ rules:
 		     qualifierKey + "," +
 		     refsKey + "," +
 		     statusKey + "," +
-		     global_loginKey + "," + global_loginKey + ")\n";
+		     global_loginKey + "," + global_loginKey + END_VALUE;
 
 	    elsif (editMode = TBL_ROW_MODIFY) then
 	      set := "_Marker_key = " + markerKey +
@@ -1229,7 +1229,7 @@ rules:
 		     attributeAnnotTypeKey + "," +
                      currentRecordKey + "," + 
 		     newKey + "," +
-		     genericQualifierKey + ")\n";
+		     genericQualifierKey + END_VALUE;
 
 	    elsif (editMode = TBL_ROW_MODIFY) then
 	      set := "_Term_key = " + newKey;
@@ -1275,7 +1275,7 @@ rules:
 
 	    if (editMode = TBL_ROW_ADD) then
 	      cmd := cmd + mgi_DBinsert(ALL_ALLELE_MUTATION, NOKEY) + 
-		     currentRecordKey + "," + newKey + ")\n";
+		     currentRecordKey + "," + newKey + END_VALUE;
 	    elsif (editMode = TBL_ROW_MODIFY) then
 	      set := "_Mutation_key = " + newKey;
 	      cmd := cmd + 
@@ -1558,7 +1558,7 @@ rules:
 		     cellLineTypeKey + "," +
 		     strainKey + "," +
 		     derivationKey + ",1," +
-		     global_loginKey + "," + global_loginKey + ")\n";
+		     global_loginKey + "," + global_loginKey + END_VALUE;
 
 	      mutantCellLineKey := "@" + cellLineKey;
 
@@ -1583,7 +1583,7 @@ rules:
 	        cmd := cmd + mgi_DBinsert(ALL_ALLELE_CELLLINE, cellAssocKey) +
 		       currentRecordKey + "," +
 		       mutantCellLineKey + "," +
-		       global_loginKey + "," + global_loginKey + ")\n";
+		       global_loginKey + "," + global_loginKey + END_VALUE;
 
 	      elsif (editMode = TBL_ROW_MODIFY) then
 	        set := "_MutantCellLine_key = " + mutantCellLineKey;
@@ -1655,7 +1655,7 @@ rules:
 		     mgiTypeKey + "," +
 		     currentRecordKey + "," +
 		     isPrimaryKey + "," +
-		     global_loginKey + "," + global_loginKey + ")\n";
+		     global_loginKey + "," + global_loginKey + END_VALUE;
 
             elsif (editMode = TBL_ROW_MODIFY) then
               set := "_ImagePane_key = " + paneKey +

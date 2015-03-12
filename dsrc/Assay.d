@@ -652,7 +652,7 @@ rules:
 	    cmd := cmd + top->GXDReporterGeneMenu.menuHistory.defaultValue + ",";
 	  end if;
 
-	  cmd := cmd + global_loginKey + "," + global_loginKey + ")\n";
+	  cmd := cmd + global_loginKey + "," + global_loginKey + END_VALUE;
 
 	  -- Antibody Reference
 
@@ -736,7 +736,7 @@ rules:
 	         mgi_DBinsert(GXD_ANTIBODYPREP, antibodyPrepLabel) +
 	         prepDetailForm->AntibodyAccession->ObjectID->text.value + "," +
 	         prepDetailForm->SecondaryMenu.menuHistory.defaultValue + "," +
-	         prepDetailForm->LabelTypeMenu.menuHistory.defaultValue + ")\n";
+	         prepDetailForm->LabelTypeMenu.menuHistory.defaultValue + END_VALUE;
 
 	  prepDetailForm.sql := add;
 	end
@@ -777,7 +777,7 @@ rules:
 	         prepDetailForm->SenseMenu.menuHistory.defaultValue + "," +
 	         prepDetailForm->LabelTypeMenu.menuHistory.defaultValue + "," +
 	         prepDetailForm->VisualizationMenu.menuHistory.defaultValue + "," +
-		 mgi_DBprstr(prepDetailForm->PrepTypeMenu.menuHistory.defaultValue) + ")\n";
+		 mgi_DBprstr(prepDetailForm->PrepTypeMenu.menuHistory.defaultValue) + END_VALUE;
 
 	  prepDetailForm.sql := add;
 	end
@@ -1678,7 +1678,7 @@ rules:
 		     ageMax + "," +
 		     mgi_DBprstr(ageNote) + "," +
 		     mgi_DBprstr(hybridizationKey) + "," +
-		     mgi_DBprstr(specimenNote) + ")\n" +
+		     mgi_DBprstr(specimenNote) + END_VALUE +
 	             exec_mgi_resetAgeMinMax("@" + keyName, mgi_DBprstr(mgi_DBtable(GXD_SPECIMEN)));
 
             elsif (editMode = TBL_ROW_MODIFY and key.length > 0) then
@@ -1830,7 +1830,7 @@ rules:
 		     ageMin + "," +
 		     ageMax + "," +
 	    	     mgi_DBprstr(mgi_tblGetCell(table, row, table.ageNote)) + "," +
-	    	     mgi_DBprstr(mgi_tblGetCell(table, row, table.laneNote)) + ")\n" +
+	    	     mgi_DBprstr(mgi_tblGetCell(table, row, table.laneNote)) + END_VALUE +
 	             exec_mgi_resetAgeMinMax("@" + keyName, mgi_DBprstr(mgi_DBtable(GXD_GELLANE)));
 
               -- Process Gel Lane Structures
@@ -1946,7 +1946,7 @@ rules:
 		     unitsKey + "," +
 	             mgi_tblGetCell(table, row, table.seqNum) + "," +
 	             size + "," +
-	    	     mgi_DBprstr(mgi_tblGetCell(table, row, table.rowNotes)) + ")\n";
+	    	     mgi_DBprstr(mgi_tblGetCell(table, row, table.rowNotes)) + END_VALUE;
 
 	      -- If Row has been modified, then modify Band as well
 
@@ -2045,7 +2045,7 @@ rules:
 		     laneKey + "," +
 		     rowKey + "," +
 		     strengthKey + "," +
-	    	     mgi_DBprstr(mgi_tblGetCell(table, row, table.bandNotes + x)) + ")\n" +
+	    	     mgi_DBprstr(mgi_tblGetCell(table, row, table.bandNotes + x)) + END_VALUE +
 		     mgi_DBincKey(keyName);
 
             else

@@ -292,7 +292,7 @@ rules:
 		 top->GXDIndexPriorityMenu.menuHistory.defaultValue + "," +
 		 top->GXDIndexConditionalMutantsMenu.menuHistory.defaultValue + "," +
 		 mgi_DBprstr(top->Note->text.value) + "," +
-		 global_loginKey + "," + global_loginKey + ")\n";
+		 global_loginKey + "," + global_loginKey + END_VALUE;
 
 	  send(ModifyStage, 0);
 
@@ -457,7 +457,7 @@ rules:
 			currentRecordKey + "," +
 			assayKey + "," +
 			stageKeys[column] + "," +
-			global_loginKey + "," + global_loginKey + ")\n";
+			global_loginKey + "," + global_loginKey + END_VALUE;
 		dpcsExist := true;
 	      end if;
 

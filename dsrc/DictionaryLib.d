@@ -91,7 +91,7 @@ rules:
 	  structures := mgi_splitfields(mgi_tblGetCell(table, row, table.structureKeys), ",");
 	  structures.rewind;
 	  while (structures.more) do
-            cmd := cmd + mgi_DBinsert(primaryID, NOKEY) + key + "," + structures.next + ")\n";
+            cmd := cmd + mgi_DBinsert(primaryID, NOKEY) + key + "," + structures.next + END_VALUE;
           end while;
  
 	  clipboard.updateCmd := cmd;

@@ -156,7 +156,7 @@ rules:
 		 top->EditForm->mgiParentCellLine->AlleleCellLineTypeMenu.menuHistory.defaultValue + "," +
                  top->EditForm->mgiParentCellLine->Strain->StrainID->text.value + "," +
                  "NULL,0," +
-                 global_loginKey + "," + global_loginKey + ")\n";
+                 global_loginKey + "," + global_loginKey + END_VALUE;
 
 	  -- Execute the add
 

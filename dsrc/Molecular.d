@@ -408,7 +408,7 @@ rules:
 	                 mgi_DBprstr(top->MolPrimerForm->ProductSize->text.value) + ",";
 	  end if;
 
-	  cmd := cmd + global_loginKey + "," + global_loginKey + ")\n";
+	  cmd := cmd + global_loginKey + "," + global_loginKey + END_VALUE;
 
 	  send(ModifyMarker, 0);
 
@@ -472,7 +472,7 @@ rules:
 	         top->MolReferenceForm->mgiCitation->ObjectID->text.value + "," +
 	         (string)((integer) top->MolReferenceForm->RMAP.set) + "," +
                  (string)((integer) top->MolReferenceForm->HasSequence.set) + "," +
-		 global_loginKey + "," + global_loginKey + ")\n";
+		 global_loginKey + "," + global_loginKey + END_VALUE;
 
 	  send(ModifyReferenceAlias, 0);
 	  send(ModifyReferenceRFLV, 0);
@@ -780,7 +780,7 @@ rules:
 			   newKey + "," +
 			   refsKey + "," +
 			   mgi_DBprstr(relationship) + "," +
-			   global_loginKey + "," + global_loginKey + ")\n";
+			   global_loginKey + "," + global_loginKey + END_VALUE;
             elsif (editMode = TBL_ROW_MODIFY and newKey.length > 0 and newKey != "NULL") then
               set := "_Marker_key = " + newKey +
 		     ",_Refs_key = " + refsKey +
@@ -909,7 +909,7 @@ rules:
                      mgi_DBinsert(PRB_ALIAS, keyName) +
                      currentReferenceKey + "," +
                      mgi_DBprstr(alias) + "," +
-		     global_loginKey + "," + global_loginKey + ")\n";
+		     global_loginKey + "," + global_loginKey + END_VALUE;
  
             elsif (editMode = TBL_ROW_MODIFY) then
               set := "alias = " + mgi_DBprstr(alias);
@@ -995,7 +995,7 @@ rules:
 			     currentReferenceKey + "," +
                              markerKey + "," + 
 			     mgi_DBprstr(endo) + "," +
-			     global_loginKey + "," + global_loginKey + ")\n";
+			     global_loginKey + "," + global_loginKey + END_VALUE;
 	      end if;
 
 	      -- Add Allele
@@ -1011,14 +1011,14 @@ rules:
 	      end if;
  
               cmd := cmd + mgi_DBprstr(allele) + "," + mgi_DBprstr(fragments) + "," +
-	             global_loginKey + "," + global_loginKey + ")\n";
+	             global_loginKey + "," + global_loginKey + END_VALUE;
 
 	      -- Add Strains
 
               strainKeys.rewind;
               while (strainKeys.more) do
                 cmd := cmd + mgi_DBinsert(PRB_ALLELE_STRAIN, alleleKeyName) + strainKeys.next + "," +
-		       global_loginKey + "," + global_loginKey + ")\n";
+		       global_loginKey + "," + global_loginKey + END_VALUE;
               end while;
 
 	    elsif (editMode = TBL_ROW_MODIFY and strainKeys.count > 0) then
@@ -1040,13 +1040,13 @@ rules:
               while (strainKeys.more) do
                 cmd := cmd + mgi_DBinsert(PRB_ALLELE_STRAIN, NOKEY) +
                        alleleKey + "," + strainKeys.next + "," +
-		       global_loginKey + "," + global_loginKey + ")\n";
+		       global_loginKey + "," + global_loginKey + END_VALUE;
               end while;
 
 	    elsif (editMode = TBL_ROW_DELETE and rflvKey.length > 0 and alleleKey.length > 0) then
 	      cmd := cmd + mgi_DBdelete(PRB_ALLELE, alleleKey) +
 		     mgi_DBdelete(PRB_RFLV, rflvKey) +
-                     " and not exists (select * from PRB_Allele where PRB_Allele._RFLV_key = " + rflvKey + ")\n";
+                     " and not exists (select * from PRB_Allele where PRB_Allele._RFLV_key = " + rflvKey + END_VALUE;
             end if;
 
 	    prevEndo := endo;

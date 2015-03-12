@@ -575,7 +575,7 @@ rules:
                          objectKey + "," +
                          qualifierKey + "," +
                          refsKey + "," +
-                         global_loginKey + "," + global_loginKey + ")\n";
+                         global_loginKey + "," + global_loginKey + END_VALUE;
 
 	        -- If refsKey is not given, then just insert into Accession table
 	        -- If refsKey is given, then use a different process

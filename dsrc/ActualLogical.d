@@ -140,7 +140,7 @@ rules:
 		 mgi_DBinsert(ACC_LOGICALDB, KEYNAME) +
                  mgi_DBprstr(top->Name->text.value) + "," +
                  mgi_DBprstr(top->Description->text.value) + "," +
-                 mgi_DBprkey(top->mgiOrganism->ObjectID->text.value) + ")\n";
+                 mgi_DBprkey(top->mgiOrganism->ObjectID->text.value) + END_VALUE;
 
 	  send(ModifyActual, 0);
 
@@ -286,7 +286,7 @@ rules:
 		     active + "," +
 		     mgi_DBprstr(url) + "," +
 		     multiple + "," +
-		     mgi_DBprstr(delimiter) + ")\n";
+		     mgi_DBprstr(delimiter) + END_VALUE;
 
             elsif (editMode = TBL_ROW_MODIFY) then
               set := "name = " + mgi_DBprstr(name) + "," +

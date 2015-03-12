@@ -338,7 +338,7 @@ rules:
 		       annotTypeKey + "," +
 		       top->mgiAccession->ObjectID->text.value + "," +
 		       termKey + "," +
-		       qualifierKey + ")\n";
+		       qualifierKey + END_VALUE;
 	      end if;
 
               cmd := cmd +
@@ -347,7 +347,7 @@ rules:
 		       evidenceKey + "," +
 		       refsKey + "," +
 		       "NULL," +
-		       global_loginKey + "," + global_loginKey + ")\n";
+		       global_loginKey + "," + global_loginKey + END_VALUE;
 
 	      ModifyNotes.source_widget := annotTable;
 	      ModifyNotes.tableID := MGI_NOTE;

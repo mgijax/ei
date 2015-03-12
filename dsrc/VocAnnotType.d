@@ -159,7 +159,7 @@ rules:
 			  top->MGITypeMenu.menuHistory.defaultValue + "," +
 			  top->VocabMenu.menuHistory.defaultValue + "," +
 			  top->EvidenceVocabMenu.menuHistory.defaultValue + "," +
-			  mgi_DBprstr(top->Name->text.value) + ")\n";
+			  mgi_DBprstr(top->Name->text.value) + END_VALUE;
 
 	  AddSQL.tableID := VOC_ANNOTTYPE;
           AddSQL.cmd := cmd;

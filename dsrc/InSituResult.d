@@ -428,14 +428,14 @@ rules:
 		     strengthKey + "," +
 		     patternKey + "," +
 		     newSeqNum + "," +
-		     mgi_DBprstr(resultNote) + ")\n";
+		     mgi_DBprstr(resultNote) + END_VALUE;
 
 	      -- Add Image Panes
 	      paneList.rewind;
 	      while paneList.more do
 		cmd := cmd + mgi_DBinsert(imageID, NOKEY) +
 		       "@" + KEYNAME + "," +
-		       paneList.next + ")\n";
+		       paneList.next + END_VALUE;
 	      end while;
 
 	      -- Process Structures
@@ -466,7 +466,7 @@ rules:
 	        while paneList.more do
 		  cmd := cmd + mgi_DBinsert(imageID, NOKEY) +
 		         key + "," +
-		         paneList.next + ")\n";
+		         paneList.next + END_VALUE;
 	        end while;
 
 	        -- Process Structures

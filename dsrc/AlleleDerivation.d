@@ -268,7 +268,7 @@ rules:
 	    cmd := cmd + top->mgiCitation->ObjectID->text.value + ",";
 	  end if;
 
-	  cmd := cmd + global_loginKey + "," + global_loginKey + ")\n";
+	  cmd := cmd + global_loginKey + "," + global_loginKey + END_VALUE;
 
           ProcessNoteForm.notew := top->mgiNoteForm;
           ProcessNoteForm.tableID := MGI_NOTE;

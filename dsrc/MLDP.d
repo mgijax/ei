@@ -348,7 +348,7 @@ rules:
 		 top->ExptDetailForm->mgiCitation->ObjectID->text.value + "," +
 		 mgi_DBprstr(top->ExptDetailForm->ExptTypeMenu.menuHistory.defaultValue) + "," + 
 		 tag + "," +
-                 mgi_DBprstr(top->ExptDetailForm->ChromosomeMenu.menuHistory.defaultValue) +  ")\n";
+                 mgi_DBprstr(top->ExptDetailForm->ChromosomeMenu.menuHistory.defaultValue) +  END_VALUE;
 
 	  -- Process Reference Note
 
@@ -447,7 +447,7 @@ rules:
 	           mgi_DBprstr(ExptForm->Male->text.value->substr(256, ExptForm->Male->text.value.length));
 	  end if;
 
-	  cmd := cmd + ")\n";
+	  cmd := cmd + END_VALUE;
 
 	  send(ModifyCrossHaplotype, 0);
 	  send(ModifyCrossTwoPt, 0);
@@ -481,7 +481,7 @@ rules:
 		 mgi_DBprkey(ExptForm->Strain2->StrainID->text.value) + "," +
 		 mgi_DBprstr(ExptForm->mgiCross->Verify->text.value) + "," +
 	         (string)((integer) ExptForm->Allele.set) + "," +
-	         (string)((integer) ExptForm->F1.set) + ",0,0)\n";
+	         (string)((integer) ExptForm->F1.set) + ",0,0" + END_VALUE;
 	end does;
 
 --
@@ -503,7 +503,7 @@ rules:
 	               mgi_DBprstr(ExptForm->Label->text.value) + "," +
 	               mgi_DBprkey(ExptForm->Meta->text.value) + "," +
 	               mgi_DBprkey(ExptForm->Single->text.value) + "," +
-	               mgi_DBprkey(ExptForm->Double->text.value) + ")\n";
+	               mgi_DBprkey(ExptForm->Double->text.value) + END_VALUE;
 
 	  send(ModifyFISHRegion, 0);
 	end does;
@@ -520,7 +520,7 @@ rules:
           cmd := cmd + mgi_DBinsert(MLD_HYBRID, NOKEY) +
 		       currentExptKey + "," +
 		       (string)((integer) ExptForm->ChrOrMarker.set) + "," +
-	               mgi_DBprstr(ExptForm->Band->text.value) + ")\n";
+	               mgi_DBprstr(ExptForm->Band->text.value) + END_VALUE;
 
 	  send(ModifyHybridConcordance, 0);
 	end does;
@@ -544,7 +544,7 @@ rules:
 	               mgi_DBprkey(ExptForm->Meta->text.value) + "," +
 	               mgi_DBprkey(ExptForm->Total->text.value) + "," +
 	               mgi_DBprkey(ExptForm->Grains->text.value) + "," +
-	               mgi_DBprkey(ExptForm->Other->text.value) + ")\n";
+	               mgi_DBprkey(ExptForm->Other->text.value) + END_VALUE;
 
 	  send(ModifyInSituRegion, 0);
 	end does;
@@ -565,7 +565,7 @@ rules:
           cmd := cmd + mgi_DBinsert(MLD_RI, NOKEY) +
 		       currentExptKey + "," +
 		       mgi_DBprstr(ExptForm->Animal->text.value) + "," +
-		       mgi_DBprkey(ExptForm->mgiRISet->RIID->text.value) + ")\n";
+		       mgi_DBprkey(ExptForm->mgiRISet->RIID->text.value) + END_VALUE;
 
 	  send(ModifyRIHaplotype, 0);
 	  send(ModifyRITwoPt, 0);
@@ -756,7 +756,7 @@ rules:
                         newSeqNum + "," +
 			mgi_DBprstr(markerSymbol) + "," +
 			mgi_DBprstr(descr) + "," +
-			yesno + ")\n";
+			yesno + END_VALUE;
  
             elsif (editMode = TBL_ROW_MODIFY) then
  
@@ -778,7 +778,7 @@ rules:
                           newSeqNum + "," +
 			  mgi_DBprstr(markerSymbol) + "," +
 			  mgi_DBprstr(descr) + "," +
-			  yesno + ")\n";
+			  yesno + END_VALUE;
  
               -- Else, a simple update
  
@@ -986,7 +986,7 @@ rules:
                         currentExptKey + "," +
                         newSeqNum + "," +
 			mgi_DBprstr(haplotype) + "," +
-			mice + ")\n";
+			mice + END_VALUE;
  
             elsif (editMode = TBL_ROW_MODIFY) then
  
@@ -1004,7 +1004,7 @@ rules:
                           currentExptKey + "," +
                           newSeqNum + "," +
 			  mgi_DBprstr(haplotype) + "," +
-			  mice + ")\n";
+			  mice + END_VALUE;
  
               -- Else, a simple update
  
@@ -1085,7 +1085,7 @@ rules:
 			mgi_DBprkey(markerKey2) + "," +
                         newSeqNum + "," +
 			recomb + "," +
-			parental + ")\n";
+			parental + END_VALUE;
  
             elsif (editMode = TBL_ROW_MODIFY) then
  
@@ -1105,7 +1105,7 @@ rules:
 			  mgi_DBprkey(markerKey2) + "," +
                           newSeqNum + "," +
 			  recomb + "," +
-			  parental + ")\n";
+			  parental + END_VALUE;
  
               -- Else, a simple update
  
@@ -1302,7 +1302,7 @@ rules:
                         newSeqNum + "," +
 			mgi_DBprstr(region) + "," +
 			mgi_DBprkey(single) + "," +
-			mgi_DBprkey(double) + ")\n";
+			mgi_DBprkey(double) + END_VALUE;
  
             elsif (editMode = TBL_ROW_MODIFY) then
  
@@ -1321,7 +1321,7 @@ rules:
                           newSeqNum + "," +
 			  mgi_DBprstr(region) + "," +
 			  mgi_DBprkey(single) + "," +
-			  mgi_DBprkey(double) + ")\n";
+			  mgi_DBprkey(double) + END_VALUE;
  
               -- Else, a simple update
  
@@ -1443,7 +1443,7 @@ rules:
 			mgi_DBprkey(cpp) + "," +
 			mgi_DBprkey(cpn) + "," +
 			mgi_DBprkey(cnp) + "," +
-			mgi_DBprkey(cnn) + ")\n";
+			mgi_DBprkey(cnn) + END_VALUE;
  
             elsif (editMode = TBL_ROW_MODIFY) then
  
@@ -1465,7 +1465,7 @@ rules:
 			  mgi_DBprkey(cpp) + "," +
 			  mgi_DBprkey(cpn) + "," +
 			  mgi_DBprkey(cnp) + "," +
-			  mgi_DBprkey(cnn) + ")\n";
+			  mgi_DBprkey(cnn) + END_VALUE;
  
               -- Else, a simple update
  
@@ -1599,7 +1599,7 @@ rules:
                         currentExptKey + "," +
                         newSeqNum + "," +
 			mgi_DBprstr(region) + "," +
-			mgi_DBprkey(grains) + ")\n";
+			mgi_DBprkey(grains) + END_VALUE;
  
             elsif (editMode = TBL_ROW_MODIFY) then
  
@@ -1617,7 +1617,7 @@ rules:
                           currentExptKey + "," +
                           newSeqNum + "," +
 			  mgi_DBprstr(region) + "," +
-			  mgi_DBprkey(grains) + ")\n";
+			  mgi_DBprkey(grains) + END_VALUE;
  
               -- Else, a simple update
  
@@ -1720,7 +1720,7 @@ rules:
                         currentExptKey + "," +
 			mgi_DBprkey(markerKey) + "," +
                         newSeqNum + "," +
-			mgi_DBprstr(haplotype) + ")\n";
+			mgi_DBprstr(haplotype) + END_VALUE;
  
             elsif (editMode = TBL_ROW_MODIFY and haplotype != "") then
  
@@ -1738,7 +1738,7 @@ rules:
                           currentExptKey + "," +
 			  mgi_DBprkey(markerKey) + "," +
                           newSeqNum + "," +
-			  mgi_DBprstr(haplotype) + ")\n";
+			  mgi_DBprstr(haplotype) + END_VALUE;
  
               -- Else, a simple update
  
@@ -1821,7 +1821,7 @@ rules:
                         newSeqNum + "," +
 			discordant + "," +
 			strains + "," +
-			mgi_DBprstr(sets) + ")\n";
+			mgi_DBprstr(sets) + END_VALUE;
  
             elsif (editMode = TBL_ROW_MODIFY) then
  
@@ -1842,7 +1842,7 @@ rules:
                           newSeqNum + "," +
 			  discordant + "," +
 			  strains + "," +
-			  mgi_DBprstr(sets) + ")\n";
+			  mgi_DBprstr(sets) + END_VALUE;
  
               -- Else, a simple update
  
@@ -1933,7 +1933,7 @@ rules:
 			recomb + "," +
 			total + "," +
 			pcntre + "," +
-			stnderr + ")\n";
+			stnderr + END_VALUE;
  
             elsif (editMode = TBL_ROW_MODIFY) then
  
@@ -1955,7 +1955,7 @@ rules:
 			  recomb + "," +
 			  total + "," +
 			  pcntre + "," +
-			  stnderr + ")\n";
+			  stnderr + END_VALUE;
  
               -- Else, a simple update
  
@@ -3432,7 +3432,7 @@ rules:
             -- Add the new Assay
  
             ExecSQL.cmd := mgi_setDBkey(MLD_ASSAY, NEWKEY, KEYNAME) +
-                           mgi_DBinsert(MLD_ASSAY, KEYNAME) + mgi_DBprstr(value) + ")\n";
+                           mgi_DBinsert(MLD_ASSAY, KEYNAME) + mgi_DBprstr(value) + END_VALUE;
             send(ExecSQL, 0);
  
 	    -- Re-load Assay Lookup List

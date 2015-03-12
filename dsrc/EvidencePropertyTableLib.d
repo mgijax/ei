@@ -241,7 +241,7 @@ rules:
                       seqNum + "," +
                       mgi_DBprstr(propertyValue) + "," +
                       global_loginKey + "," +
-                      global_loginKey + ")\n";
+                      global_loginKey + END_VALUE;
     
             elsif (editMode = TBL_ROW_MODIFY) then
 

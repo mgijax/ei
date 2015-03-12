@@ -279,7 +279,7 @@ rules:
 
 	  cmd := cmd + mgi_DBprstr(top->Name->text.value) + "," +
                  mgi_DBprstr(top->AntibodyNote->text.value) + "," +
-		 global_loginKey + "," + global_loginKey + ")\n";
+		 global_loginKey + "," + global_loginKey + END_VALUE;
 
 	  send(ModifyAlias, 0);
 	  send(ModifyMarker, 0);
@@ -501,7 +501,7 @@ rules:
 
                 cmd := cmd + 
 		       mgi_DBinsert(GXD_ANTIBODYALIAS, keyName) +
-                       currentRecordKey + "," + refsKey + "," + mgi_DBprstr(alias) + ")\n";
+                       currentRecordKey + "," + refsKey + "," + mgi_DBprstr(alias) + END_VALUE;
 
 	      elsif (editMode = TBL_ROW_MODIFY) then
                 cmd := cmd + mgi_DBupdate(GXD_ANTIBODYALIAS, key, "_Refs_key = " + refsKey + ", alias = " + mgi_DBprstr(alias));
@@ -543,7 +543,7 @@ rules:
             newKey := mgi_tblGetCell(table, row, table.markerKey);
 
 	    if (editMode = TBL_ROW_ADD) then
-              cmd := cmd + mgi_DBinsert(GXD_ANTIBODYMARKER, "") + currentRecordKey + "," + newKey + ")\n";
+              cmd := cmd + mgi_DBinsert(GXD_ANTIBODYMARKER, "") + currentRecordKey + "," + newKey + END_VALUE;
 	    elsif (editMode = TBL_ROW_MODIFY) then
               cmd := cmd + mgi_DBupdate(GXD_ANTIBODYMARKER, currentRecordKey, mgi_DBkey(MRK_MOUSE) + " = " + newKey) +
                      " and " + mgi_DBkey(MRK_MOUSE) + " = " + key + "\n";

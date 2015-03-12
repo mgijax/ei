@@ -225,7 +225,7 @@ rules:
 		     markerKey + "," +
 		     alleleKey + "," +
 		     qualifierKey + "," +
-		     global_loginKey + "," + global_loginKey + ")\n";
+		     global_loginKey + "," + global_loginKey + END_VALUE;
 
             elsif (editMode = TBL_ROW_MODIFY) then
               set := "_Marker_key = " + markerKey + "," +

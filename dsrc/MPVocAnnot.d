@@ -494,7 +494,7 @@ rules:
 		       annotTypeKey + "," +
 		       top->mgiAccession->ObjectID->text.value + "," +
 		       termKey + "," +
-		       qualifierKey + ")\n";
+		       qualifierKey + END_VALUE;
 	      end if;
 
               cmd := cmd +
@@ -503,14 +503,14 @@ rules:
 		       evidenceKey + "," +
 		       refsKey + "," +
 		       "NULL," +
-		       global_loginKey + "," + global_loginKey + ")\n";
+		       global_loginKey + "," + global_loginKey + END_VALUE;
 
               cmd := cmd + mgi_DBinsert(VOC_EVIDENCE_PROPERTY, keyNameProperty) + 
                         "@" + keyName + "," +
                         defaultSexSpecificKey + ",1,1," +
                         mgi_DBprstr(sex) + "," +
                         global_loginKey + "," +
-                        global_loginKey + ")\n";
+                        global_loginKey + END_VALUE;
 
 	      if (clipAnnotEvidenceKey.length > 0) then
 		-- add notes
@@ -654,7 +654,7 @@ rules:
 			  "0, " +
 			  global_loginKey + "," +
 			  global_loginKey + "," +
-			  global_loginKey + ",getdate())\n";
+			  global_loginKey + ",getdate()" + END_VALUE;
 
             row := row + 1;
           end while;

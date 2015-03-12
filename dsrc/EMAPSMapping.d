@@ -126,7 +126,7 @@ rules:
                  mgi_DBinsert(MGI_EMAPS_MAPPING, KEYNAME) +
 	         mgi_DBprstr(accID) + "," +
 		 mgi_DBprstr(emapsID) + "," +
-		 global_loginKey + "," + global_loginKey + ")\n";
+		 global_loginKey + "," + global_loginKey + END_VALUE;
 
 	  AddSQL.tableID := MGI_EMAPS_MAPPING;
           AddSQL.cmd := cmd;
@@ -229,12 +229,12 @@ rules:
 		       mgi_DBinsert(MGI_EMAPS_MAPPING, keyName) +
 	               mgi_DBprstr(accID) + "," +
 		       mgi_DBprstr(emapsID) + "," +
-		       global_loginKey + "," + global_loginKey + ")\n";
+		       global_loginKey + "," + global_loginKey + END_VALUE;
 
 	    elsif (editMode = TBL_ROW_MODIFY) then
 	      set := "accID = " + mgi_DBprstr(accID) + "," +
 		     "emapsID = " + mgi_DBprstr(emapsID) + "," +
-		     global_loginKey + "," + global_loginKey + ")\n";
+		     global_loginKey + "," + global_loginKey + END_VALUE;
               cmd := cmd + mgi_DBupdate(MGI_EMAPS_MAPPING, key, set);
 	    end if;
 
