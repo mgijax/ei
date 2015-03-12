@@ -379,6 +379,9 @@ rules:
 	    return;
 	  end if;
 
+	  -- make sure cmd is reset to empty
+	  cmd := "";
+
 	  if (derivationName.length = 0) then
 	    derivationName := creator + " " + derivationType + " Library " + parentCellLine + " " + parentStrain + " " + vector;
 	    top->EditForm->DerivationName->text.value := derivationName;
