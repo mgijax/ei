@@ -1002,13 +1002,13 @@ rules:
 	  elsif (assayKey.length > 0) then
 	    QueryNoInterrupt.select := select + genotype_orderby();
 	    QueryNoInterrupt.source_widget := top;
-	    QueryNoInterrupt.table := GXD_GENOTYPE_VIEW;
+	    QueryNoInterrupt.table := GXD_GENOTYPE;
 	    QueryNoInterrupt.selectItem := false;
 	    send(QueryNoInterrupt, 0);
 	  else
 	    Query.source_widget := top;
 	    Query.select := select + genotype_orderby();
-	    Query.table := GXD_GENOTYPE_VIEW;
+	    Query.table := GXD_GENOTYPE;
 	    send(Query, 0);
 	  end if;
 
