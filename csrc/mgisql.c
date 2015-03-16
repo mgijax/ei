@@ -600,7 +600,7 @@ char *exec_gxd_getGenotypesDataSets(char *key)
   }
   else
   {
-      sprintf(buf,"select GXD_getGenotypesDataSets (%s);\n", key);
+      sprintf(buf,"select * from GXD_getGenotypesDataSets (%s);\n", key);
   }
   return(buf);
 }
