@@ -777,7 +777,8 @@ rules:
 	  -- See if the user has entered any search constraints;
 	  -- If so, then process the user-specified query
 	  --
-	  from := "from " + mgi_DBtable(GXD_GENOTYPE_VIEW) + " g";
+	  --from := "from " + mgi_DBtable(GXD_GENOTYPE_VIEW) + " g";
+	  from := "from " + mgi_DBtable(GXD_GENOTYPE) + " g, PRB_Strain s";
 	  where := "";
 	  includeUnion := "";
 	  includeNotExists := "";
@@ -820,7 +821,7 @@ rules:
 	  else
 	    value := top->EditForm->Strain->Verify->text.value;
 	    if (value .length > 0) then
-	      where := where + "\nand g.strain like " + mgi_DBprstr(value);
+	      where := where + "\nand s.strain like " + mgi_DBprstr(value);
 	    end if;
 	  end if;
 	    
@@ -938,8 +939,8 @@ rules:
 	  -- where allele pair does *not* exist
 	  if (not from_allele and not from_cellline) then
 	    includeUnion := "\nunion " + \
-	  	"select distinct g._Genotype_key, g.strain, g.strain, null\n" + from;
-	    includeNotExists := "\nwhere not exists (select 1 from GXD_AllelePair ap where g._Genotype_key = ap._Genotype_key)" + \
+	  	"select distinct g._Genotype_key, s.strain, s.strain, null\n" + from;
+	    includeNotExists := "\nwhere g._Strain_key = s._Strain_key and not exists (select 1 from GXD_AllelePair ap where g._Genotype_key = ap._Genotype_key)" + \
 		where;
 	  end if;
 
@@ -947,7 +948,7 @@ rules:
 	  from := from + ",GXD_AllelePair ap INNER JOIN ALL_Allele a1 on (ap._Allele_key_1 = a1._Allele_key) LEFT OUTER JOIN ALL_Allele a2 on (ap._Allele_key_2 = a2._Allele_key)";
 
 	  -- 'where' where allele pair does exist
-	  where := "\nwhere g._Genotype_key = ap._Genotype_key" + where;
+	  where := "\nwhere g._Strain_key = s._Strain_key\nand g._Genotype_key = ap._Genotype_key" + where;
 
 	  if (from_cellline) then
 	      from := from + "," + mgi_DBtable(ALL_CELLLINE) + " ac";
@@ -982,10 +983,10 @@ rules:
 
 	  -- select/from/where for both allele pair options
 	  if (global_dbtype = "sybase") then
-	  	select := "(select distinct g._Genotype_key, g.strain || ',' || a1.symbol || ',' || a2.symbol, g.strain, a1.symbol\n" +
+	  	select := "(select distinct g._Genotype_key, s.strain || ',' || a1.symbol || ',' || a2.symbol, s.strain, a1.symbol\n" +
 			from + where + includeUnion + includeNotExists + ")";
 	  else
-	  	select := "(select distinct g._Genotype_key, CONCAT(g.strain,',',a1.symbol,',',a2.symbol), g.strain, a1.symbol\n" +
+	  	select := "(select distinct g._Genotype_key, CONCAT(s.strain,',',a1.symbol,',',a2.symbol), s.strain, a1.symbol\n" +
 			from + where + includeUnion + includeNotExists + ")";
 	  end if;
 
