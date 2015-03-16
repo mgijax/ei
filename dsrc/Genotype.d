@@ -995,10 +995,10 @@ rules:
 
           value := mgi_tblGetCell(top->Reference->Table, 0, top->Reference->Table.refsKey);
           if (value.length > 0) then
-	    Query.source_widget := top;
-	    Query.select := genotype_search2(value);
-	    Query.table := (integer) NOTSPECIFIED;
-	    send(Query, 0);
+	    QueryNoInterrupt.source_widget := top;
+	    QueryNoInterrupt.select := genotype_search2(value);
+	    QueryNoInterrupt.table := (integer) NOTSPECIFIED;
+	    send(QueryNoInterrupt, 0);
 	  elsif (assayKey.length > 0) then
 	    QueryNoInterrupt.select := select + genotype_orderby();
 	    QueryNoInterrupt.source_widget := top;
@@ -1006,10 +1006,10 @@ rules:
 	    QueryNoInterrupt.selectItem := false;
 	    send(QueryNoInterrupt, 0);
 	  else
-	    Query.source_widget := top;
-	    Query.select := select + genotype_orderby();
-	    Query.table := GXD_GENOTYPE;
-	    send(Query, 0);
+	    QueryNoInterrupt.source_widget := top;
+	    QueryNoInterrupt.select := select + genotype_orderby();
+	    QueryNoInterrupt.table := GXD_GENOTYPE;
+	    send(QueryNoInterrupt, 0);
 	  end if;
 
 	  (void) reset_cursor(top);
