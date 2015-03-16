@@ -229,7 +229,7 @@ char *derivation_checkdup(
    \nand _VectorType_key = %s \
    \nand _ParentCellLine_key =  %s \
    \nand _DerivationType_key =  %s \
-   \nand _Creator_key = %s", vectorKey, vectorTypeKey, parentCellLineKey, derivationTypeKey, creatorKey);
+   \nand _Creator_key = %s\n", vectorKey, vectorTypeKey, parentCellLineKey, derivationTypeKey, creatorKey);
   return(buf);
 }
 
@@ -332,9 +332,19 @@ char *genotype_search1(char *from, char *where)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select distinct g._Genotype_key, \
-    \ng.strain || ',' || ap.allele1 || ',' || ap.allele2, g.strain, ap.allele1 \
-    \n%s %s", from, where);
+
+  if (GLOBAL_DBTYPE == "sybase")
+  {
+	sprintf(buf,"select distinct g._Genotype_key, \
+    		\ng.strain || ',' || ap.allele1 || ',' || ap.allele2, g.strain, ap.allele1 \
+    		\n%s %s", from, where);
+  }
+  else
+  {
+	sprintf(buf,"select distinct g._Genotype_key, \
+    		\nCONCAT(g.strain,',',ap.allele1,',',ap.allele2), g.strain, ap.allele1 \
+    		\n%s %s", from, where);
+  }
   return(buf);
 }
 
@@ -1390,14 +1400,15 @@ char *nonmutant_count(char *key)
  * OMIMVocAnnot.d
 */
 
-char *omimvoc_select1(char *key, char *dbView)
+char *omimvoc_select1(char *key, char *key2, char *dbView)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select _Object_key, accID, description, short_description from %s \
    \nwhere _Object_key = %s \
+   \nand _MGIType_key = %s \
    \nand prefixPart = 'MGI:' and preferred = 1 \
-   \norder by description", dbView, key);
+   \norder by description", dbView, key, key2);
   return(buf);
 }
 

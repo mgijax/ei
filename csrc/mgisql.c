@@ -190,7 +190,7 @@ char *exec_mgi_insertReferenceAssoc_antibody(char *key, char *mgiTypeKey, char *
   }
   else
   {
-      sprintf(buf,"exec MGI_insertReferenceAssoc %s, %s, %s, %s\n", mgiTypeKey, key, refKey, refType);
+      sprintf(buf,"select MGI_insertReferenceAssoc (%s, %s, %s, %s);\n", mgiTypeKey, key, refKey, refType);
   }
   return(buf);
 }
@@ -205,7 +205,7 @@ char *exec_mgi_insertReferenceAssoc_usedFC(char *key, char *refKey)
   }
   else
   {
-      sprintf(buf,"exec MGI_insertReferenceAssoc 11, %s, %s, 'Used-FC'\n", key, refKey);
+      sprintf(buf,"select MGI_insertReferenceAssoc (11, %s, %s, 'Used-FC');\n", key, refKey);
   }
   return(buf);
 }
@@ -249,11 +249,7 @@ char *exec_mrk_reloadLabel(char *key)
       sprintf(buf,"exec MRK_reloadLabel %s\n", key);
   }
   /*
-  not used in PG
-  else
-  {
-      sprintf(buf,"exec MRK_reloadLabel %s\n", key);
-  }
+  not used in PG/PWI : 03/12/2015
   */
   return(buf);
 }
@@ -266,13 +262,10 @@ char *exec_mrk_reloadReference(char *key)
   {
       sprintf(buf,"exec MRK_reloadReference %s\n", key);
   }
-  /*
-  not used in PG
   else
   {
-      sprintf(buf,"exec MRK_reloadReference %s\n", key);
+      sprintf(buf,"select MRK_reloadReference (%s);\n", key);
   }
-  */
   return(buf);
 }
 
@@ -532,7 +525,7 @@ char *exec_voc_copyAnnotEvidenceNotes(char *key, char *keyName)
   }
   else
   {
-      sprintf(buf,"exec VOC_copyAnnotEvidenceNotes %s, @%s\n", key, keyName);
+      sprintf(buf,"select * from VOC_copyAnnotEvidenceNotes (%s, @%s);\n", key, keyName);
   }
   return(buf);
 }
@@ -547,7 +540,7 @@ char *exec_voc_processAnnotHeader(char *key, char *annotTypeKey)
   }
   else
   {
-      sprintf(buf,"exec VOC_processAnnotHeader %s,%s\n", annotTypeKey, key);
+      sprintf(buf,"select VOC_processAnnotHeader (%s,%s);\n", annotTypeKey, key);
   }
   return(buf);
 }
@@ -562,7 +555,7 @@ char *exec_gxd_checkDuplicateGenotype(char *key)
   }
   else
   {
-      sprintf(buf,"select * from GXD_checkDuplicateGenotype (%s);\n", key);
+      sprintf(buf,"select GXD_checkDuplicateGenotype (%s);\n", key);
   }
   return(buf);
 }
@@ -607,7 +600,7 @@ char *exec_gxd_getGenotypesDataSets(char *key)
   }
   else
   {
-      sprintf(buf,"select * from GXD_getGenotypesDataSets (%s);\n", key);
+      sprintf(buf,"select GXD_getGenotypesDataSets (%s);\n", key);
   }
   return(buf);
 }
@@ -622,7 +615,7 @@ char *exec_gxd_orderAllelePairs(char *key)
   }
   else
   {
-      sprintf(buf,"select * from GXD_orderAllelePairs (%s);\n", key);
+      sprintf(buf,"select GXD_orderAllelePairs (%s);\n", key);
   }
   return(buf);
 }
@@ -637,7 +630,7 @@ char *exec_gxd_orderGenotypes(char *key)
   }
   else
   {
-      sprintf(buf,"exec GXD_orderGenotypes %s\n", key);
+      sprintf(buf,"select GXD_orderGenotypes (%s);\n", key);
   }
   return(buf);
 }
@@ -652,7 +645,7 @@ char *exec_gxd_orderGenotypesAll(char *key)
   }
   else
   {
-      sprintf(buf,"select * from GXD_orderGenotypesAll (%s);\n", key);
+      sprintf(buf,"select GXD_orderGenotypesAll (%s);\n", key);
   }
   return(buf);
 }
@@ -667,7 +660,7 @@ char *exec_gxd_removeBadGelBand(char *key)
   }
   else
   {
-      sprintf(buf,"exec GXD_removeBadGelBand %s\n", key);
+      sprintf(buf,"select GXD_removeBadGelBand (%s);\n", key);
   }
   return(buf);
 }

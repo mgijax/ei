@@ -76,6 +76,7 @@ char *global_reportdir;         /* Set in mgi_dbinit; holds user report director
 char *global_database;          /* Set in Application dModule; holds database value */
 char *global_server;            /* Set in Application dModule; holds server value */
 char *global_radar;             /* Set in Application dModule; holds radar db value */
+char *global_dbtype;             /* Set in Application dModule; holds db-type value */
 int global_error;             /* PG error */
 
 static char conninfo[TEXTBUFSIZ];
@@ -92,13 +93,28 @@ int mgi_dbinit(char *user, char *pwd)
    * Make a connection to the database
    */
 
+  static char database[TEXTBUFSIZ];
+  static char login[TEXTBUFSIZ];
+  static char server[TEXTBUFSIZ];
   static char passwdfile[TEXTBUFSIZ];
   static char passwdfile_name[TEXTBUFSIZ];
+  static char dbtype[TEXTBUFSIZ];
 
   memset(passwdfile, '\0', sizeof(passwdfile));
   memset(passwdfile, '\0', sizeof(passwdfile_name));
+  memset(dbtype, '\0', sizeof(dbtype));
+
   sprintf(passwdfile, "%s", getenv("PG_1LINE_PASSFILE"));
   global_passwd_file = passwdfile;
+
+  sprintf(database, "%s", getenv("PG_DBNAME"));
+  sprintf(login, "%s", getenv("PG_DBUSER"));
+  sprintf(server, "%s", getenv("PG_DBSERVER"));
+  sprintf(dbtype, "%s", getenv("DB_TYPE"));
+  global_database = database;
+  global_login = login;
+  global_server = server;
+  global_dbtype = dbtype;
 
   FILE *p_file = fopen(getenv("PG_1LINE_PASSFILE"), "r");
 
@@ -112,9 +128,6 @@ int mgi_dbinit(char *user, char *pwd)
   fgets(passwdfile_name, sizeof(passwdfile_name), p_file);
   fclose(p_file);
 
-  sprintf(global_database, "%s", getenv("PG_DBNAME"));
-  sprintf(global_login, "%s", getenv("PG_DBUSER"));
-  sprintf(global_server, "%s", getenv("PG_DBSERVER"));
   sprintf(conninfo, "host = %s dbname = %s user = %s password = %s", global_server, global_database, global_login, passwdfile_name);
   /*printf("mgi_dbinit: %s\n", conninfo);*/
 

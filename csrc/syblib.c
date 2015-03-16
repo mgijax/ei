@@ -65,6 +65,7 @@ char *global_reportdir;		/* Set in mgi_dbinit; holds user report directory name 
 char *global_database;  	/* Set in Application dModule; holds database value */
 char *global_server;    	/* Set in Application dModule; holds server value */
 char *global_radar;    		/* Set in Application dModule; holds radar db value */
+char *global_dbtype;		/* Set in Application dModule; holds db type */
 
 /* 
 *
@@ -80,6 +81,7 @@ int mgi_dbinit(char *user, char *pwd)
   static char database2[TEXTBUFSIZ];
   static char passwdfile[TEXTBUFSIZ];
   static char reportdir[TEXTBUFSIZ];
+  static char dbtype[TEXTBUFSIZ];
 
   FILE *pf;
 
@@ -150,11 +152,13 @@ int mgi_dbinit(char *user, char *pwd)
   memset(database, '\0', sizeof(database));
   memset(server2, '\0', sizeof(server2));
   memset(database2, '\0', sizeof(database2));
+  memset(dbtype, '\0', sizeof(dbtype));
 
   sprintf(server, "MGD_DBSERVER=%s", global_server);
   sprintf(database, "MGD_DBNAME=%s", global_database);
   sprintf(server2, "DSQUERY=%s", global_server);
   sprintf(database2, "MGD=%s", global_database);
+  sprintf(dbtype, "%s", global_dbtype);
 
   if (putenv(server) != 0)
   {
