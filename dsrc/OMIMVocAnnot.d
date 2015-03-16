@@ -636,7 +636,7 @@ rules:
           dbproc : opaque;
 	  objectLoaded : boolean := false;
 
-	  cmd := omimvoc_select1(currentRecordKey, dbView);
+	  cmd := omimvoc_select1(currentRecordKey, mgiTypeKey, dbView);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do

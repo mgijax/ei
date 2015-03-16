@@ -981,8 +981,13 @@ rules:
 	  -- end: Attach statements for Assay
 
 	  -- select/from/where for both allele pair options
-	  select := "(select distinct g._Genotype_key, g.strain || ',' || a1.symbol || ',' || a2.symbol, g.strain, a1.symbol\n" +
-		from + where + includeUnion + includeNotExists + ")";
+	  if (global_dbtype = "sybase") then
+	  	select := "(select distinct g._Genotype_key, g.strain || ',' || a1.symbol || ',' || a2.symbol, g.strain, a1.symbol\n" +
+			from + where + includeUnion + includeNotExists + ")";
+	  else
+	  	select := "(select distinct g._Genotype_key, CONCAT(g.strain,',',a1.symbol,',',a2.symbol), g.strain, a1.symbol\n" +
+			from + where + includeUnion + includeNotExists + ")";
+	  end if;
 
 	  -- Reference search
 	  -- if searching by reference, then ignore other search criteria

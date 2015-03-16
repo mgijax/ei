@@ -146,7 +146,7 @@ CALLS
 	 mutant_derivationDisplay("char *") 		: "char *";
 	 mutant_derivationVerify("char *", "char *", "char *", "char *", "char *", "char *", "char *") : "char *";
 
-	 omimvoc_select1("char *", "char *")		: "char *";
+	 omimvoc_select1("char *", "char *", "char *")	: "char *";
 	 omimvoc_select2("char *", "char *")		: "char *";
 	 omimvoc_notes("char *")			: "char *";
 	 omimvoc_dbview("char *")			: "char *";

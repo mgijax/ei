@@ -158,7 +158,8 @@ int mgi_dbinit(char *user, char *pwd)
   sprintf(database, "MGD_DBNAME=%s", global_database);
   sprintf(server2, "DSQUERY=%s", global_server);
   sprintf(database2, "MGD=%s", global_database);
-  sprintf(dbtype, "%s", global_dbtype);
+  sprintf(dbtype, "%s", getenv("DB_TYPE"));
+  global_dbtype = dbtype;
 
   if (putenv(server) != 0)
   {

@@ -188,7 +188,7 @@ extern char *nonmutant_count(char *);
 
 /* OMIMVocAnnot.d */
 
-extern char *omimvoc_select1(char *, char *);
+extern char *omimvoc_select1(char *, char *, char *);
 extern char *omimvoc_select2(char *, char *);
 extern char *omimvoc_notes(char *);
 extern char *omimvoc_dbview(char *);
