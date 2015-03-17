@@ -566,7 +566,7 @@ rules:
 	  -- else leave date alone
 
 	  if (completeAnnotation = YES and completeDate.length = 0) then
-	    set := set + "_CompletedBy_key = " + global_loginKey + ",completion_date = getdate()";
+	    set := set + "_CompletedBy_key = " + global_loginKey + ",completion_date = " + CURRENT_DATE;
 	  elsif (completeAnnotation = NO) then
 	    set := set + "_CompletedBy_key = null,completion_date = null";
 	  end if;

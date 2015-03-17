@@ -525,7 +525,7 @@ rules:
 
           if (top->AlleleStatusMenu.menuHistory.labelString = ALL_STATUS_APPROVED) then
 	    statusKey := top->AlleleStatusMenu.menuHistory.defaultValue;
-	    approvalLoginDate := global_loginKey + ",getdate()" + END_VALUE;
+	    approvalLoginDate := global_loginKey + "," + CURRENT_DATE + END_VALUE;
 	  else
 	    --statusKey := defaultStatus1Key;
 	    statusKey := top->AlleleStatusMenu.menuHistory.defaultValue;
@@ -858,7 +858,7 @@ rules:
 	      top->AlleleStatusMenu.menuHistory.searchValue != "%") then
             set := set + "_Allele_Status_key = "  + top->AlleleStatusMenu.menuHistory.defaultValue + ",";
 	    if (top->AlleleStatusMenu.menuHistory.labelString = ALL_STATUS_APPROVED) then
-	      set := set + "_ApprovedBy_key = " + global_loginKey + ",approval_date = getdate(),";
+	      set := set + "_ApprovedBy_key = " + global_loginKey + ",approval_date = " + CURRENT_DATE + ",";
 	    else
 	      set := set + "_ApprovedBy_key = null,approval_date = null,";
 	    end if;

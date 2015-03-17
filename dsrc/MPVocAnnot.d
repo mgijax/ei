@@ -654,7 +654,7 @@ rules:
 			  "0, " +
 			  global_loginKey + "," +
 			  global_loginKey + "," +
-			  global_loginKey + ",getdate()" + END_VALUE;
+			  global_loginKey + "," + CURRENT_DATE + END_VALUE;
 
             row := row + 1;
           end while;

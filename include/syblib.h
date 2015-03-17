@@ -57,5 +57,6 @@ extern char *global_dbtype;
 #define SQL_LOWER1      "lower("
 #define SQL_LOWER2      ")" 
 #define END_VALUE_C	"\n"
+#define CURRENT_DATE	"getdate()"
 
 #endif
