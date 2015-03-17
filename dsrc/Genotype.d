@@ -778,6 +778,7 @@ rules:
 	  -- If so, then process the user-specified query
 	  --
 	  --from := "from " + mgi_DBtable(GXD_GENOTYPE_VIEW) + " g";
+	  select := "";
 	  from := "from " + mgi_DBtable(GXD_GENOTYPE) + " g, PRB_Strain s";
 	  where := "";
 	  includeUnion := "";
@@ -1006,10 +1007,10 @@ rules:
 	    QueryNoInterrupt.selectItem := false;
 	    send(QueryNoInterrupt, 0);
 	  else
-	    QueryNoInterrupt.source_widget := top;
-	    QueryNoInterrupt.select := select + genotype_orderby();
-	    QueryNoInterrupt.table := GXD_GENOTYPE;
-	    send(QueryNoInterrupt, 0);
+	    Query.source_widget := top;
+	    Query.select := select + genotype_orderby();
+	    Query.table := GXD_GENOTYPE;
+	    send(Query, 0);
 	  end if;
 
 	  (void) reset_cursor(top);
