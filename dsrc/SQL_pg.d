@@ -302,7 +302,7 @@ rules:
 	end does;
 
 --
--- Query - copy of QUeryNoInterrupt
+-- Query - copy of QueryNoInterrupt
 --
 --	Perform database query w/out allowing interuption
 --	Store results in QueryList
