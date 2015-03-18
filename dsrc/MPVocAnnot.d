@@ -988,10 +988,10 @@ rules:
 	    send(PrepareSearch, 0);
 	  end if;
 
-	  Query.source_widget := top;
-	  Query.select := mpvoc_search(from, where);
-	  Query.table := VOC_ANNOT_VIEW;
-	  send(Query, 0);
+	  QueryNoInterrupt.source_widget := top;
+	  QueryNoInterrupt.select := mpvoc_search(from, where);
+	  QueryNoInterrupt.table := VOC_ANNOT_VIEW;
+	  send(QueryNoInterrupt, 0);
 	  (void) reset_cursor(top);
 	end does;
 
