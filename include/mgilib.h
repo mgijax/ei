@@ -32,7 +32,7 @@ extern char *global_application;
 extern char *global_version;
 
 #define TEXTBUFSIZ      200000
-#define ROWLIMIT        "2000"
+#define ROWLIMIT        "10000"
 #define NOROWLIMIT      "0"
 
 #define NEWKEY		-1
