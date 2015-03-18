@@ -521,7 +521,7 @@ char *exec_voc_copyAnnotEvidenceNotes(char *key, char *keyName)
   memset(buf, '\0', sizeof(buf));
   if (GLOBAL_DBTYPE == "sybase")
   {
-      sprintf(buf,"exec VOC_copyAnnotEvidenceNotes %s, @%s\n", key, keyName);
+      sprintf(buf,"exec VOC_copyAnnotEvidenceNotes %s, %s\n", key, keyName);
   }
   else
   {

@@ -514,7 +514,7 @@ rules:
 
 	      if (clipAnnotEvidenceKey.length > 0) then
 		-- add notes
-		cmd := cmd + exec_voc_copyAnnotEvidenceNotes(clipAnnotEvidenceKey, keyName);
+		cmd := cmd + exec_voc_copyAnnotEvidenceNotes(clipAnnotEvidenceKey, MAX_KEY1 + keyName + MAX_KEY2);
 		isUsingCopyAnnotEvidenceNotes := true;
 	      end if;
 
