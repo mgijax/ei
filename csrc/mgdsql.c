@@ -322,8 +322,8 @@ char *genotype_orderby()
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  /*sprintf(buf,"\norder by g.strain, ap.allele1");*/
-  /*sprintf(buf,"\norder by g.strain, a1.symbol");*/
+  /*sprintf(buf,"\norder by s.strain, ap.allele1");*/
+  /*sprintf(buf,"\norder by s.strain, a1.symbol");*/
   sprintf(buf,"\norder by strain, symbol");
   return(buf);
 }
@@ -336,13 +336,13 @@ char *genotype_search1(char *from, char *where)
   if (GLOBAL_DBTYPE == "sybase")
   {
 	sprintf(buf,"select distinct g._Genotype_key, \
-    		\ng.strain || ',' || ap.allele1 || ',' || ap.allele2, g.strain, ap.allele1 \
+    		\ns.strain || ',' || ap.allele1 || ',' || ap.allele2, s.strain, ap.allele1 \
     		\n%s %s", from, where);
   }
   else
   {
 	sprintf(buf,"select distinct g._Genotype_key, \
-    		\nCONCAT(g.strain,',',ap.allele1,',',ap.allele2), g.strain, ap.allele1 \
+    		\nCONCAT(s.strain,',',ap.allele1,',',ap.allele2), s.strain, ap.allele1 \
     		\n%s %s", from, where);
   }
   return(buf);

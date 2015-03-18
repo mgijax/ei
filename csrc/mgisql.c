@@ -525,7 +525,7 @@ char *exec_voc_copyAnnotEvidenceNotes(char *key, char *keyName)
   }
   else
   {
-      sprintf(buf,"select * from VOC_copyAnnotEvidenceNotes (%s, @%s);\n", key, keyName);
+      sprintf(buf,"select * from VOC_copyAnnotEvidenceNotes (%s, %s);\n", key, keyName);
   }
   return(buf);
 }

@@ -398,6 +398,7 @@ rules:
 	      -- If not allowing dups, then if key already exists, skip the row
 
 	      if (not allowDups) then
+		--(void) mgi_writeLog(mgi_getstr(dbproc, 1) + "\n");
 		if (keys.find(mgi_getstr(dbproc, 1)) = -1) then
                   keys.insert(mgi_getstr(dbproc, 1), keys.count + 1);
                   results.insert(mgi_getstr(dbproc, 2), results.count + 1);
@@ -406,6 +407,8 @@ rules:
 		-- else, add an ellipsis to the result w/ the same key 
 		-- to indicate there are more records
 		else
+		  --(void) mgi_writeLog("\nadding ellipsis...\n");
+		  --(void) mgi_writeLog(item + "\n");
 		  item := results[results.count];
 		  results.remove(item);
 		  results.insert(item + "...", results.count + 1);
