@@ -7,6 +7,13 @@ STAFF: lec
 CHANGES:
 a) remove exec_app_eicheck()
 
+TAG: ei-5-2-1-10
+DATE: 03/18/2015
+STAFF: lec
+CHANGES:
+a) see mgidbmigration/TR11750/tr11750.csh
+b) assorted Sybase/PG cleanup
+
 TAG: ei-5-2-1-9
 DATE: 03/06/2015
 STAFF: lec
