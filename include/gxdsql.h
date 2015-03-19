@@ -48,6 +48,7 @@ extern char *index_stages(char *);
 extern char *index_hasAssay(char *);
 extern char *index_priority(char *);
 extern char *index_conditional(char *);
+extern char *index_set2(char *, char *);
 
 /* InSituResult.d */
 

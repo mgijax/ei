@@ -382,6 +382,7 @@ rules:
 --
 
 	Modify does
+	  set2 : string;
 
           if (not top.allowEdit) then 
             return; 
@@ -391,13 +392,16 @@ rules:
 
 	  cmd := "";
 	  set := "";
+	  set2 := "";
 
           if (top->GXDIndexPriorityMenu.menuHistory.modified) then
             set := set + "_Priority_key = " + top->GXDIndexPriorityMenu.menuHistory.defaultValue + ",";
+            set2 := set2 + "_Priority_key = " + top->GXDIndexPriorityMenu.menuHistory.defaultValue + ",";
 	  end if;
 
           if (top->GXDIndexConditionalMutantsMenu.menuHistory.modified) then
             set := set + "_ConditionalMutants_key = " + top->GXDIndexConditionalMutantsMenu.menuHistory.defaultValue + ",";
+            set2 := set2 + "_ConditionalMutants_key = " + top->GXDIndexConditionalMutantsMenu.menuHistory.defaultValue;
 	  end if;
 
           if (top->mgiMarker->ObjectID->text.modified) then
@@ -416,6 +420,10 @@ rules:
 
 	  if (set.length > 0 or cmd.length > 0) then
 	    cmd := cmd + mgi_DBupdate(GXD_INDEX, currentRecordKey, set);
+	    -- this will update the other indexes with the same reference
+	    if (set2.length > 0) then
+		cmd := cmd + index_set2(top->mgiCitation->ObjectID->text.value, set2);
+	    end if;
 	  end if;
 
           ModifySQL.cmd := cmd;

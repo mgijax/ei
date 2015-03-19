@@ -306,6 +306,14 @@ char *index_conditional(char *key)
   return(buf);
 }
 
+char *index_set2(char *key, char *set2)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"update GXD_Index set %s where _Refs_key = %s", set2, key);
+  return(buf);
+}
+
 /* 
  * InSituResult.d
 */

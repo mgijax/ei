@@ -46,6 +46,7 @@ CALLS
 	index_hasAssay("char *")	: "char *";
 	index_priority("char *")	: "char *";
 	index_conditional("char *")	: "char *";
+	index_set2("char *", "char *")	: "char *";
 
         insitu_specimen_count("char *")	: "char *";
         insitu_imageref_count("char *")	: "char *";
