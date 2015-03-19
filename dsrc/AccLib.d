@@ -934,6 +934,8 @@ rules:
 	    accNumeric := (integer) accID;
 	  end if;
 
+	  (void) mgi_writeLog("begin : here A\n");
+
 	  -- If the Acc ID equals the Acc ID of the current object, then return
 
 	  if (accTable != nil) then
@@ -954,13 +956,16 @@ rules:
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (not objectLoaded) then
-                top->ObjectID->text.value      := mgi_getstr(dbproc, 1);
+		--memory leak somewhere...happens on Antigen only
+	        --(void) mgi_writeLog(top.name + "\n");
+	        --(void) mgi_writeLog(mgi_getstr(dbproc, 1) + "\n");
+	        --(void) mgi_writeLog(top->ObjectID->text.value + "\n");
+                top->ObjectID->text.value      := mgi_getstr(dbproc, 0);
                 top->AccessionID->text.value   := mgi_getstr(dbproc, 2);
                 top->AccessionName->text.value := mgi_getstr(dbproc, 3);
 		objectLoaded := true;
 	      else
-		top->AccessionName->text.value :=
-		  top->AccessionName->text.value + ";" + mgi_getstr(dbproc, 4);
+		top->AccessionName->text.value := top->AccessionName->text.value + ";" + mgi_getstr(dbproc, 4);
 	      end if;
             end while;
           end while;
