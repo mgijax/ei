@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- 03/19/2015	lec
+--	TR11750/postgres
+--
 -- lec	10/06/2005
 --	TR 5188/new GO Qualifier
 --

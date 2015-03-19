@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- 03/19/2015	lec
+--	TR11750/postgres
+--
 -- lec	02/01/2012
 --	TR10971/new Allele/Disease annotations
 --
