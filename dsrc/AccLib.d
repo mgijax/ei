@@ -957,10 +957,6 @@ rules:
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (not objectLoaded) then
-		--memory leak somewhere...happens on Antigen only
-	        --(void) mgi_writeLog(top.name + "\n");
-	        --(void) mgi_writeLog(mgi_getstr(dbproc, 1) + "\n");
-	        --(void) mgi_writeLog(top->ObjectID->text.value + "\n");
                 top->ObjectID->text.value      := mgi_getstr(dbproc, 1);
                 top->AccessionID->text.value   := mgi_getstr(dbproc, 2);
                 top->AccessionName->text.value := mgi_getstr(dbproc, 3);

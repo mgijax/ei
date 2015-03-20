@@ -754,7 +754,7 @@ rules:
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  QueryNoInterrupt.source_widget := top;
-	  QueryNoInterrupt.select := "(" + select + from + "\n" + where + unionalias + ")\norder by g.antibodyName\n";
+	  QueryNoInterrupt.select := "(" + select + from + "\n" + where + unionalias + ")\norder by antibodyName\n";
 	  QueryNoInterrupt.table := GXD_ANTIBODY;
 	  send(QueryNoInterrupt, 0);
 	  (void) reset_cursor(top);
@@ -849,6 +849,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  cmd := antibody_antigen(currentRecordKey);
+	  (void) mgi_writeLog(cmd);
 	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -858,7 +859,7 @@ rules:
 	      top->AntigenAccession->AccessionID->text.value := mgi_getstr(dbproc, 4);
 	      top->Region->text.value := mgi_getstr(dbproc, 5);
 	      top->AntigenNote->text.value := mgi_getstr(dbproc, 6);
-	      top->SourceForm->SourceID->text.value := mgi_getstr(dbproc, 2);
+	      --top->SourceForm->SourceID->text.value := mgi_getstr(dbproc, 2);
 	    end while;
           end while;
 	  (void) mgi_dbclose(dbproc);
