@@ -1057,8 +1057,8 @@ char *molsource_strain(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select p._Strain_key, s.strain from PRB_Source p, PRB_Strain s \
-   where p._Strain_key = s._Strain_key and p._Source_key = %s", key);
+  sprintf(buf,"select p._Strain_key, ps.strain from PRB_Source p, PRB_Strain ps \
+   where p._Strain_key = ps._Strain_key and p._Source_key = %s", key);
   return(buf);
 }
 
