@@ -312,7 +312,7 @@ rules:
 	  (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  QueryNoInterrupt.source_widget := top;
-	  QueryNoInterrupt.select := "select distinct id = table_name, table_name\n" + 
+	  QueryNoInterrupt.select := "select distinct table_name as id, table_name\n" + 
 		from + "\n" + where + "\norder by table_name\n";
 	  QueryNoInterrupt.table := MGI_TABLES;
 	  send(QueryNoInterrupt, 0);

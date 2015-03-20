@@ -915,6 +915,8 @@ rules:
 	  accID : string := top->AccessionID->text.value;
 	  accNumeric : integer;
 	  accTable : widget := top.root->mgiAccessionTable->Table;
+	  cmd : string;
+	  objectLoaded : boolean;
  
           top->ObjectID->text.value := "NULL";
           top->AccessionName->text.value := "";
@@ -934,8 +936,6 @@ rules:
 	    accNumeric := (integer) accID;
 	  end if;
 
-	  (void) mgi_writeLog("begin : here A\n");
-
 	  -- If the Acc ID equals the Acc ID of the current object, then return
 
 	  if (accTable != nil) then
@@ -949,10 +949,11 @@ rules:
 
           (void) busy_cursor(top);
  
-	  cmd : string := mgi_DBaccSelect(tableID, mgiTypeKey, accNumeric);
-	  objectLoaded : boolean := false;
+          cmd := mgi_DBaccSelect(tableID, mgiTypeKey, accNumeric);
+          objectLoaded := false;
 
           dbproc : opaque := mgi_dbexec(cmd);
+
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (not objectLoaded) then
@@ -960,7 +961,7 @@ rules:
 	        --(void) mgi_writeLog(top.name + "\n");
 	        --(void) mgi_writeLog(mgi_getstr(dbproc, 1) + "\n");
 	        --(void) mgi_writeLog(top->ObjectID->text.value + "\n");
-                top->ObjectID->text.value      := mgi_getstr(dbproc, 0);
+                top->ObjectID->text.value      := mgi_getstr(dbproc, 1);
                 top->AccessionID->text.value   := mgi_getstr(dbproc, 2);
                 top->AccessionName->text.value := mgi_getstr(dbproc, 3);
 		objectLoaded := true;
