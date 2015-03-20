@@ -197,7 +197,7 @@ Module: GXD
                                             {
                                               ProbeOrganismPulldown = OptionPulldown;
                                               Group: User
-                                                sql = "select s.*\nfrom MGI_Organism s, MGI_Organism_MGIType t\nwhere s._Organism_key = t._Organism_key\nand t._MGIType_key = 7\norder by s.commonName";
+                                                sql = "select s.*\nfrom MGI_Organism s, MGI_Organism_MGIType t\nwhere s._Organism_key = t._Organism_key\nand t._MGIType_key = 7\norder by commonName";
                                             }
                                       }
                                       {
@@ -1050,7 +1050,7 @@ Shift<Key>Tab: prev-tab-group()
                                             {
                                               ProbeOrganismPulldown = OptionPulldown;
                                               Group: User
-                                                sql = "select s.*\nfrom MGI_Organism s, MGI_Organism_MGIType t\nwhere s._Organism_key = t._Organism_key\nand t._MGIType_key = 7\norder by s.commonName";
+                                                sql = "select s.*\nfrom MGI_Organism s, MGI_Organism_MGIType t\nwhere s._Organism_key = t._Organism_key\nand t._MGIType_key = 7\norder by commonName";
                                             }
                                       }
                                       {

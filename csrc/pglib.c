@@ -447,13 +447,15 @@ char *mgi_getstr(PGconn *conn, int column)
   /* EI starts columns at 1; PostgreSQL starts columns at 0 */
   column = column - 1;
 
+  /*
+  printf("column: %d\n", column);
+  printf("currentRow: %d\n", currentRow);
+  printf("PGnfields: %d\n", PQnfields(res));
+  */
+
   /* if the column number does not exist in the results, then return a empty buffer */
   if (column >= PQnfields(res))
     return(buf);
-
-  /*
-  (void) mgi_writeLog("mgi_getstr():begin\n");
-  */
 
   /* copy data into other storage */
   strcpy(buf, PQgetvalue(res, currentRow, column));
@@ -503,10 +505,6 @@ char *mgi_getstr(PGconn *conn, int column)
     default:
       break;
   }
-
-  /*
-  (void) mgi_writeLog("mgi_getstr():end\n");
-  */
 
   return(buf);
 }
