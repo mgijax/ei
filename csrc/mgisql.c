@@ -1584,9 +1584,19 @@ char *verify_vocabterm(char *key, char *abbreviation)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _Term_key, abbreviation from VOC_Term \
-	\nwhere abbreviation = %s \
-	\nand _Vocab_key = %s", abbreviation, key);
+
+  if (strcmp(abbreviation,"NULL") == 0)
+  {
+  	sprintf(buf,"select _Term_key, abbreviation from VOC_Term \
+		\nwhere abbreviation is %s \
+		\nand _Vocab_key = %s", abbreviation, key);
+  }
+  else
+  {
+  	sprintf(buf,"select _Term_key, abbreviation from VOC_Term \
+		\nwhere abbreviation = %s \
+		\nand _Vocab_key = %s", abbreviation, key);
+  }
   return(buf);
 }
 

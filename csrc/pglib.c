@@ -63,7 +63,7 @@
 PGconn *conn;
 PGresult *res;
 int maxRow;
-int currentRow;
+int currentRow = 0;
 int maxResults;
 
 static void send_status();
@@ -273,11 +273,13 @@ PGconn *mgi_dbexec(char *cmd)
   ns = mgi_simplesub(" like ", " ilike ", cmd);
   strcpy(newstr, ns);
 
+  /*
   ns = mgi_simplesub("= NULL", "is NULL", newstr);
   strcpy(newstr, ns);
 
   ns = mgi_simplesub("= null", "is null", newstr);
   strcpy(newstr, ns);
+  */
 
   ns = mgi_simplesub("convert(varchar(5), e.tag)", "e.tag", newstr);
   strcpy(newstr, ns);
@@ -449,6 +451,10 @@ char *mgi_getstr(PGconn *conn, int column)
   if (column >= PQnfields(res))
     return(buf);
 
+  /*
+  (void) mgi_writeLog("mgi_getstr():begin\n");
+  */
+
   /* copy data into other storage */
   strcpy(buf, PQgetvalue(res, currentRow, column));
 
@@ -497,6 +503,10 @@ char *mgi_getstr(PGconn *conn, int column)
     default:
       break;
   }
+
+  /*
+  (void) mgi_writeLog("mgi_getstr():end\n");
+  */
 
   return(buf);
 }
