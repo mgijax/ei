@@ -859,7 +859,7 @@ rules:
 	      top->AntigenAccession->AccessionID->text.value := mgi_getstr(dbproc, 4);
 	      top->Region->text.value := mgi_getstr(dbproc, 5);
 	      top->AntigenNote->text.value := mgi_getstr(dbproc, 6);
-	      --top->SourceForm->SourceID->text.value := mgi_getstr(dbproc, 2);
+	      top->SourceForm->SourceID->text.value := mgi_getstr(dbproc, 2);
 	    end while;
           end while;
 	  (void) mgi_dbclose(dbproc);
