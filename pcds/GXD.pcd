@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Thu Aug 21 13:46:33 2014";
+      lastWritten = "Mon Mar 23 11:24:14 2015";
       copy = false;
       inCreateMenu = true;
         {
@@ -158,91 +158,6 @@ Module: GXD
                                     resizable = true;
                                 }
                                 {
-                                  SourceForm = SourceForm : MGI;
-                                  Group: Constraint
-                                    leftAttachment = attach_form;
-                                    rightAttachment = attach_form;
-                                    topAttachment = attach_widget;
-                                    topWidget = separatorGadget;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                      {
-                                        SourceID : ID = ID : mgiDataTypes;
-                                      }
-                                      {
-                                        Library = CharText : mgiDataTypes;
-                                      }
-                                      {
-                                        mgiCitation = mgiCitation : mgiDataTypes;
-                                      }
-                                      {
-                                        SourceSegmentTypeFrame = SegmentTypeFrame : mgiOption;
-                                            {
-                                              SourceSegmentTypeMenu = XmOptionMenu;
-                                              Group: User
-                                                required = False;
-                                            }
-                                      }
-                                      {
-                                        SourceVectorTypeFrame = VectorTypeFrame : mgiOption;
-                                            {
-                                              SourceVectorTypeMenu = XmOptionMenu;
-                                              Group: User
-                                                required = False;
-                                            }
-                                      }
-                                      {
-                                        ProbeOrganismFrame = ProbeOrganismFrame : mgiOption;
-                                            Popups:
-                                            {
-                                              ProbeOrganismPulldown = OptionPulldown;
-                                              Group: User
-                                                sql = "select s.*\nfrom MGI_Organism s, MGI_Organism_MGIType t\nwhere s._Organism_key = t._Organism_key\nand t._MGIType_key = 7\norder by commonName";
-                                            }
-                                      }
-                                      {
-                                        Strain = Strain : mgiDataTypes;
-                                        Group: Constraint
-                                          leftWidget = ProbeOrganismFrame;
-                                          topWidget = ProbeOrganismFrame;
-                                      }
-                                      {
-                                        Tissue = Tissue : mgiDataTypes;
-                                      }
-                                      {
-                                        Description = CharText : mgiDataTypes;
-                                      }
-                                      {
-                                        CellLine = mgiVerify : mgiDataTypes;
-                                      }
-                                      {
-                                        AgeFrame = AgeFrame : mgiOption;
-                                      }
-                                      {
-                                        Age = CharText : mgiDataTypes;
-                                      }
-                                      {
-                                        GenderFrame = GenderFrame : mgiOption;
-                                      }
-                                      {
-                                        mgiNoteForm = mgiNoteForm : mgiDataTypes;
-                                      }
-                                      {
-                                        CloneLibrarySet = Table : mgiTable;
-                                            {
-                                              Table = mgiTable : mgiTable;
-                                              Group: Widget
-                                                xrtTblColumnLabels = "Mode,Current Key,Key,Strain Type";
-                                                xrtTblNumColumns = 4;
-                                                xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 50)";
-                                                xrtTblEditableSeries = "(all 0-2 False)";
-                                                xrtTblPixelWidthSeries = "(all 0-2 0)";
-                                                userDefinedAttributes = "strainTypeCurrentKey:Int=\"1\"\nstrainTypeKey:Int=\"2\"\nstrainType:Int=\"3\"\n";
-                                                xrtTblVisibleRows = 3;
-                                            }
-                                      }
-                                }
-                                {
                                   separatorGadget1 = XmSeparatorGadget;
                                   Group: Constraint
                                     leftAttachment = attach_form;
@@ -281,6 +196,30 @@ Module: GXD
                                         DeleteRow = TablePush : mgiTable;
                                         Group: Widget
                                           managed = False;
+                                      }
+                                }
+                                {
+                                  SourceForm = SourceForm : MGI;
+                                  Group: Widget
+                                    rubberPositioning = False;
+                                    resizePolicy = resize_any;
+                                  Group: Constraint
+                                    leftAttachment = attach_form;
+                                    rightAttachment = attach_form;
+                                    topAttachment = attach_widget;
+                                    topWidget = separatorGadget;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                      {
+                                        SourceID = ID : mgiDataTypes;
+                                        Group: Constraint
+                                          leftAttachment = attach_form;
+                                          rightAttachment = attach_form;
+                                          rightOffset = 5;
+                                          topAttachment = attach_form;
+                                          topOffset = 5;
+                                          bottomAttachment = attach_none;
+                                          resizable = true;
                                       }
                                 }
                           }
@@ -912,31 +851,21 @@ Module: GXD
                                 {
                                   AntigenAccession = mgiAccession : mgiDataTypes;
                                   Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = Name;
+                                    leftAttachment = attach_none;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = AntibodyTypeFrame;
-                                    topOffset = 5;
+                                    topWidget = separator;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                    topOffset = 5;
                                   Group: User
                                     tableID = 200;
+                                    mgiTypeKey = 7;
                                       {
-                                        ObjectID = ID;
-                                            {
-                                              label = XmLabel;
-                                            }
-                                            {
-                                              text = text;
-                                              Group: Widget
-                                                valueChangedCallback = "D:SetModify\nD:DisplayMolecularSource";
-                                              Group: User
-                                                required = True;
-                                            }
+                                        ObjectID = ID : mgiDataTypes;
                                       }
                                       {
-                                        AccessionID = CharText;
+                                        AccessionID = CharText : mgiDataTypes;
                                             {
                                               label = XmLabel;
                                               Group: Widget
@@ -948,8 +877,6 @@ Module: GXD
                                                 translations = "#override
 Shift<Key>Tab: prev-tab-group()
 <Key>Tab: VerifyMGIAcc() DisplayAntigenSource()";
-                                              Group: User
-                                                required = True;
                                             }
                                       }
                                       {
@@ -963,8 +890,6 @@ Shift<Key>Tab: prev-tab-group()
                                               text = scrolledText : mgiDataTypes;
                                               Group: Widget
                                                 columns = 40;
-                                              Group: User
-                                                required = True;
                                             }
                                       }
                                 }
@@ -976,7 +901,7 @@ Shift<Key>Tab: prev-tab-group()
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = AntigenAccession;
-                                    topOffset = 2;
+                                    topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                       {
@@ -988,6 +913,32 @@ Shift<Key>Tab: prev-tab-group()
                                         text = text;
                                         Group: Widget
                                           columns = 65;
+                                      }
+                                }
+                                {
+                                  SourceForm = SourceForm : MGI;
+                                  Group: Widget
+                                    rubberPositioning = False;
+                                    resizePolicy = resize_any;
+                                  Group: Constraint
+                                    leftAttachment = attach_form;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = AntigenNote;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    topOffset = 2;
+                                      {
+                                        SourceID = ID : mgiDataTypes;
+                                        Group: Constraint
+                                          leftAttachment = attach_form;
+                                          rightAttachment = attach_form;
+                                          rightOffset = 5;
+                                          topAttachment = attach_form;
+                                          topOffset = 5;
+                                          bottomAttachment = attach_none;
+                                          resizable = true;
+                                          leftOffset = 2;
                                       }
                                 }
                                 {
@@ -1014,85 +965,6 @@ Shift<Key>Tab: prev-tab-group()
                                           columns = 65;
                                           editMode = single_line_edit;
                                           rows = 1;
-                                      }
-                                }
-                                {
-                                  SourceForm = SourceForm : MGI;
-                                  Group: Widget
-                                    rubberPositioning = False;
-                                    resizePolicy = resize_any;
-                                  Group: Constraint
-                                    leftAttachment = attach_form;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = AntigenNote;
-                                    topOffset = 2;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                      {
-                                        SourceID = ID : mgiDataTypes;
-                                      }
-                                      {
-                                        Library = CharText : mgiDataTypes;
-                                      }
-                                      {
-                                        mgiCitation = mgiCitation : mgiDataTypes;
-                                      }
-                                      {
-                                        SourceSegmentTypeFrame = SegmentTypeFrame : mgiOption;
-                                      }
-                                      {
-                                        SourceVectorTypeFrame = VectorTypeFrame : mgiOption;
-                                      }
-                                      {
-                                        ProbeOrganismFrame = ProbeOrganismFrame : mgiOption;
-                                            Popups:
-                                            {
-                                              ProbeOrganismPulldown = OptionPulldown;
-                                              Group: User
-                                                sql = "select s.*\nfrom MGI_Organism s, MGI_Organism_MGIType t\nwhere s._Organism_key = t._Organism_key\nand t._MGIType_key = 7\norder by commonName";
-                                            }
-                                      }
-                                      {
-                                        Strain = Strain : mgiDataTypes;
-                                        Group: Constraint
-                                          leftWidget = ProbeOrganismFrame;
-                                          topWidget = ProbeOrganismFrame;
-                                      }
-                                      {
-                                        Tissue = Tissue : mgiDataTypes;
-                                      }
-                                      {
-                                        Description = CharText : mgiDataTypes;
-                                      }
-                                      {
-                                        CellLine = mgiVerify : mgiDataTypes;
-                                      }
-                                      {
-                                        AgeFrame = AgeFrame : mgiOption;
-                                      }
-                                      {
-                                        Age = CharText : mgiDataTypes;
-                                      }
-                                      {
-                                        GenderFrame = GenderFrame : mgiOption;
-                                      }
-                                      {
-                                        mgiNoteForm = mgiNoteForm : mgiDataTypes;
-                                      }
-                                      {
-                                        CloneLibrarySet = Table : mgiTable;
-                                            {
-                                              Table = mgiTable : mgiTable;
-                                              Group: Widget
-                                                xrtTblColumnLabels = "Mode,Current Key,Key,Strain Type";
-                                                xrtTblNumColumns = 4;
-                                                xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 50)";
-                                                xrtTblEditableSeries = "(all 0-2 False)";
-                                                xrtTblPixelWidthSeries = "(all 0-2 0)";
-                                                userDefinedAttributes = "strainTypeCurrentKey:Int=\"1\"\nstrainTypeKey:Int=\"2\"\nstrainType:Int=\"3\"\n";
-                                                xrtTblVisibleRows = 3;
-                                            }
                                       }
                                 }
                                 {
