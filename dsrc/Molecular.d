@@ -785,11 +785,9 @@ rules:
               set := "_Marker_key = " + newKey +
 		     ",_Refs_key = " + refsKey +
 		     ",relationship = " + mgi_DBprstr(relationship);
-              modifyCmd := modifyCmd + mgi_DBupdate(PRB_MARKER, currentMasterKey, set) +
-			" and _Marker_key = " + key + "\n";
+              modifyCmd := modifyCmd + mgi_DBupdate(PRB_MARKER, currentMasterKey + " and _Marker_key = " + key, set);
             elsif (editMode = TBL_ROW_DELETE and key.length > 0 and key != "NULL") then
-               modifyCmd := modifyCmd + mgi_DBdelete(PRB_MARKER, currentMasterKey) +
-			" and _Marker_key = " + key + "\n";
+               modifyCmd := modifyCmd + mgi_DBdelete(PRB_MARKER, currentMasterKey + " and _Marker_key = " + key);
             end if;
  
             row := row + 1;
