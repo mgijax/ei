@@ -802,7 +802,7 @@ rules:
 	  top->AntigenAccession->AccessionID->text.value := "";
 	  top->SourceForm->SourceID->text.value := "";
 	  DisplayMolecularSource.source_widget := top;
-	  send(DisplayMolecularSource, 0);
+	  send(DisplayMolecularSource, -1);
 
 	  -- Initialize global currentRecordKey key
 
@@ -849,11 +849,10 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  cmd := antibody_antigen(currentRecordKey);
-	  (void) mgi_writeLog(cmd);
 	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      -- Optional Antibody Antigen
+	      ---- Optional Antibody Antigen
 	      top->AntigenAccession->ObjectID->text.value := mgi_getstr(dbproc, 1);
 	      top->AntigenAccession->AccessionName->text.value := mgi_getstr(dbproc, 3);
 	      top->AntigenAccession->AccessionID->text.value := mgi_getstr(dbproc, 4);
@@ -960,6 +959,8 @@ rules:
 --
  
         DisplayAntigenSource does
+	  dbproc : opaque;
+	  vvalue : string := "";
  
           (void) busy_cursor(top);
  

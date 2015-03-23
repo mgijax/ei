@@ -174,9 +174,11 @@ void mgi_dbexit(PGconn *conn)
 
 void mgi_dbcancel(PGconn *conn)
 {
+  PQflush(conn);
+  /*
   if (PQflush(conn) == 0)
-    /*printf("mgi_dbcancel: %s\n", PQerrorMessage(conn));*/
-
+    printf("mgi_dbcancel: %s\n", PQerrorMessage(conn));
+  */
   return;
 }
 
@@ -601,7 +603,7 @@ char *mgi_sp(char *cmd)
 char *mgi_sql1(char *cmd)
 {
   static char buf[TEXTBUFSIZ];
-  PGresult *res;
+  PGresult *res2;
   int row = 0;
   int column = 0;
 
@@ -611,18 +613,18 @@ char *mgi_sql1(char *cmd)
   mgi_dbinit(global_login, global_passwd);
 
   /* execute search */
-  res = PQexec(conn, cmd);
+  res2 = PQexec(conn, cmd);
  
   /* if number of rows > 0... */
 
-  if (PQntuples(res) > 0)
+  if (PQntuples(res2) > 0)
   {
     /* returns data from row = 0, column = 0 */
-    strcpy(buf, PQgetvalue(res, row, column));
+    strcpy(buf, PQgetvalue(res2, row, column));
   }
 
   /* close the portal....to avoid memory leaks */
-  PQclear(res);
+  PQclear(res2);
 
   /* exit */
   mgi_dbexit(conn);

@@ -343,7 +343,7 @@ rules:
  
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	        top->Name->text.value := mgi_getstr(dbproc, 5);
+	        top->Name->text.value := mgi_getstr(dbproc, 6);
 
                 SetOption.source_widget := top->MGITypeMenu;
                 SetOption.value := mgi_getstr(dbproc, 2);
