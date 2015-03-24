@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Tue Mar 24 12:37:35 2015";
+      lastWritten = "Tue Mar 24 13:14:05 2015";
       copy = false;
       inCreateMenu = true;
         {
@@ -630,6 +630,8 @@ Module: MGI
                       SourceSegmentTypeMenu : SegmentTypeMenu = XmOptionMenu;
                       Group: Widget
                         subMenuId = SourceSegmentTypePulldown;
+                      Group: User
+                        required = False;
                     }
                     Popups:
                     {
@@ -653,6 +655,8 @@ Module: MGI
                       SourceVectorTypeMenu : VectorTypeMenu = XmOptionMenu;
                       Group: Widget
                         subMenuId = SourceVectorTypePulldown;
+                      Group: User
+                        required = False;
                     }
                     Popups:
                     {
