@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Mon Mar 23 11:24:14 2015";
+      lastWritten = "Tue Mar 24 12:37:36 2015";
       copy = false;
       inCreateMenu = true;
         {
@@ -220,6 +220,164 @@ Module: GXD
                                           topOffset = 5;
                                           bottomAttachment = attach_none;
                                           resizable = true;
+                                      }
+                                      {
+                                        Library = CharText : mgiDataTypes;
+                                            {
+                                              label = XmLabel;
+                                              Group: Widget
+                                                labelString = Library;
+                                            }
+                                            {
+                                              text = text;
+                                              Group: Widget
+                                                columns = 75;
+                                            }
+                                      }
+                                      {
+                                        mgiCitation = mgiCitation : mgiDataTypes;
+                                            {
+                                              ObjectID = ID;
+                                            }
+                                            {
+                                              Jnum = Jnum;
+                                                  {
+                                                    label = XmLabel;
+                                                  }
+                                                  {
+                                                    text = text;
+                                                    Group: User
+                                                      required = False;
+                                                  }
+                                            }
+                                            {
+                                              Citation = Citation;
+                                                  {
+                                                    label = XmLabel;
+                                                  }
+                                                  {
+                                                    text = text;
+                                                    Group: User
+                                                      required = False;
+                                                  }
+                                            }
+                                      }
+                                      {
+                                        SourceSegmentTypeFrame = SegmentTypeFrame : mgiOption;
+                                            {
+                                              SourceSegmentTypeMenu : SegmentTypeMenu = XmOptionMenu;
+                                              Group: Widget
+                                                subMenuId = SourceSegmentTypePulldown;
+                                            }
+                                            Popups:
+                                            {
+                                              SourceSegmentTypePulldown : SegmentTypePulldown = OptionPulldown;
+                                                  {
+                                                    SearchAll = SearchAll : mgiOption;
+                                                  }
+                                            }
+                                      }
+                                      {
+                                        SourceVectorTypeFrame = VectorTypeFrame : mgiOption;
+                                            {
+                                              SourceVectorTypeMenu : VectorTypeMenu = XmOptionMenu;
+                                              Group: Widget
+                                                subMenuId = SourceVectorTypePulldown;
+                                            }
+                                            Popups:
+                                            {
+                                              SourceVectorTypePulldown : VectorTypePulldown = OptionPulldown;
+                                                  {
+                                                    SearchAll = SearchAll : mgiOption;
+                                                  }
+                                            }
+                                      }
+                                      {
+                                        ProbeOrganismFrame = ProbeOrganismFrame : mgiOption;
+                                      }
+                                      {
+                                        Strain = Strain : mgiDataTypes;
+                                      }
+                                      {
+                                        Tissue = Tissue : mgiDataTypes;
+                                      }
+                                      {
+                                        Description = CharText : mgiDataTypes;
+                                            {
+                                              label = XmLabel;
+                                              Group: Widget
+                                                labelString = "Tissue\nDescription";
+                                            }
+                                            {
+                                              text = text;
+                                              Group: Widget
+                                                columns = 50;
+                                                maxLength = 255;
+                                            }
+                                      }
+                                      {
+                                        CellLine = mgiVerify : mgiDataTypes;
+                                            {
+                                              Verify = CharText : mgiDataTypes;
+                                                  {
+                                                    label = XmLabel;
+                                                    Group: Widget
+                                                      labelString = "Cell Line";
+                                                  }
+                                                  {
+                                                    text = text;
+                                                    Group: Widget
+                                                      columns = 50;
+                                                  }
+                                            }
+                                            {
+                                              CellLineID : VerifyID = ID : mgiDataTypes;
+                                                  {
+                                                    label = XmLabel;
+                                                  }
+                                                  {
+                                                    text = text;
+                                                    Group: User
+                                                      defaultValue = 316335;
+                                                  }
+                                            }
+                                      }
+                                      {
+                                        AgeFrame = AgeFrame : mgiOption;
+                                      }
+                                      {
+                                        Age = CharText : mgiDataTypes;
+                                            {
+                                              label = XmLabel;
+                                              Group: Widget
+                                                managed = False;
+                                            }
+                                            {
+                                              text = text;
+                                              Group: Widget
+                                                columns = 20;
+                                                maxLength = 50;
+                                            }
+                                      }
+                                      {
+                                        GenderFrame = GenderFrame : mgiOption;
+                                      }
+                                      {
+                                        mgiNoteForm = mgiNoteForm : mgiDataTypes;
+                                      }
+                                      {
+                                        CloneLibrarySet = Table : mgiTable;
+                                            {
+                                              Table = mgiTable : mgiTable;
+                                              Group: Widget
+                                                xrtTblColumnLabels = "Mode,Member key,Set key,Clone Library Set";
+                                                xrtTblNumColumns = 4;
+                                                xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 50)";
+                                                xrtTblEditableSeries = "(all 0-2 0)";
+                                                xrtTblPixelWidthSeries = "(all 0-2 0)";
+                                                userDefinedAttributes = "memberKey:Int(Int)=\"1\"\nsetKey:Int(Int)=\"2\"\ncloneLibrary:Int(Int)=\"3\"\n";
+                                                xrtTblVisibleRows = 3;
+                                            }
                                       }
                                 }
                           }
@@ -939,6 +1097,164 @@ Shift<Key>Tab: prev-tab-group()
                                           bottomAttachment = attach_none;
                                           resizable = true;
                                           leftOffset = 2;
+                                      }
+                                      {
+                                        Library = CharText : mgiDataTypes;
+                                            {
+                                              label = XmLabel;
+                                              Group: Widget
+                                                labelString = Library;
+                                            }
+                                            {
+                                              text = text;
+                                              Group: Widget
+                                                columns = 75;
+                                            }
+                                      }
+                                      {
+                                        mgiCitation = mgiCitation : mgiDataTypes;
+                                            {
+                                              ObjectID = ID;
+                                            }
+                                            {
+                                              Jnum = Jnum;
+                                                  {
+                                                    label = XmLabel;
+                                                  }
+                                                  {
+                                                    text = text;
+                                                    Group: User
+                                                      required = False;
+                                                  }
+                                            }
+                                            {
+                                              Citation = Citation;
+                                                  {
+                                                    label = XmLabel;
+                                                  }
+                                                  {
+                                                    text = text;
+                                                    Group: User
+                                                      required = False;
+                                                  }
+                                            }
+                                      }
+                                      {
+                                        SourceSegmentTypeFrame = SegmentTypeFrame : mgiOption;
+                                            {
+                                              SourceSegmentTypeMenu : SegmentTypeMenu = XmOptionMenu;
+                                              Group: Widget
+                                                subMenuId = SourceSegmentTypePulldown;
+                                            }
+                                            Popups:
+                                            {
+                                              SourceSegmentTypePulldown : SegmentTypePulldown = OptionPulldown;
+                                                  {
+                                                    SearchAll = SearchAll : mgiOption;
+                                                  }
+                                            }
+                                      }
+                                      {
+                                        SourceVectorTypeFrame = VectorTypeFrame : mgiOption;
+                                            {
+                                              SourceVectorTypeMenu : VectorTypeMenu = XmOptionMenu;
+                                              Group: Widget
+                                                subMenuId = SourceVectorTypePulldown;
+                                            }
+                                            Popups:
+                                            {
+                                              SourceVectorTypePulldown : VectorTypePulldown = OptionPulldown;
+                                                  {
+                                                    SearchAll = SearchAll : mgiOption;
+                                                  }
+                                            }
+                                      }
+                                      {
+                                        ProbeOrganismFrame = ProbeOrganismFrame : mgiOption;
+                                      }
+                                      {
+                                        Strain = Strain : mgiDataTypes;
+                                      }
+                                      {
+                                        Tissue = Tissue : mgiDataTypes;
+                                      }
+                                      {
+                                        Description = CharText : mgiDataTypes;
+                                            {
+                                              label = XmLabel;
+                                              Group: Widget
+                                                labelString = "Tissue\nDescription";
+                                            }
+                                            {
+                                              text = text;
+                                              Group: Widget
+                                                columns = 50;
+                                                maxLength = 255;
+                                            }
+                                      }
+                                      {
+                                        CellLine = mgiVerify : mgiDataTypes;
+                                            {
+                                              Verify = CharText : mgiDataTypes;
+                                                  {
+                                                    label = XmLabel;
+                                                    Group: Widget
+                                                      labelString = "Cell Line";
+                                                  }
+                                                  {
+                                                    text = text;
+                                                    Group: Widget
+                                                      columns = 50;
+                                                  }
+                                            }
+                                            {
+                                              CellLineID : VerifyID = ID : mgiDataTypes;
+                                                  {
+                                                    label = XmLabel;
+                                                  }
+                                                  {
+                                                    text = text;
+                                                    Group: User
+                                                      defaultValue = 316335;
+                                                  }
+                                            }
+                                      }
+                                      {
+                                        AgeFrame = AgeFrame : mgiOption;
+                                      }
+                                      {
+                                        Age = CharText : mgiDataTypes;
+                                            {
+                                              label = XmLabel;
+                                              Group: Widget
+                                                managed = False;
+                                            }
+                                            {
+                                              text = text;
+                                              Group: Widget
+                                                columns = 20;
+                                                maxLength = 50;
+                                            }
+                                      }
+                                      {
+                                        GenderFrame = GenderFrame : mgiOption;
+                                      }
+                                      {
+                                        mgiNoteForm = mgiNoteForm : mgiDataTypes;
+                                      }
+                                      {
+                                        CloneLibrarySet = Table : mgiTable;
+                                            {
+                                              Table = mgiTable : mgiTable;
+                                              Group: Widget
+                                                xrtTblColumnLabels = "Mode,Member key,Set key,Clone Library Set";
+                                                xrtTblNumColumns = 4;
+                                                xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 50)";
+                                                xrtTblEditableSeries = "(all 0-2 0)";
+                                                xrtTblPixelWidthSeries = "(all 0-2 0)";
+                                                userDefinedAttributes = "memberKey:Int(Int)=\"1\"\nsetKey:Int(Int)=\"2\"\ncloneLibrary:Int(Int)=\"3\"\n";
+                                                xrtTblVisibleRows = 3;
+                                            }
                                       }
                                 }
                                 {
@@ -3830,7 +4146,7 @@ Shift<Key>Tab: prev-tab-group()
                                           userDefinedAttributes = "mappingKey:Int(Int)=\"1\"\naccID:Int(Int)=\"2\"\nstructure:Int(Int)=\"3\"\nstage:Int=\"4\"\n";
                                           xrtTblEditableSeries = "(all 0-1 False)(all 3-4 False)";
                                           xrtTblTraversableSeries = "(all 0-1 False)(all 3-4 False)";
-                                          xrtTblPixelWidthSeries = "(all 0-1 0";
+                                          xrtTblPixelWidthSeries = "(all 0-1 0)";
                                           xrtTblValidateCellCallback = "D:VerifyStructure,\nD:CommitTableCellEdit";
                                         Group: User
                                           saveEditableSeries = "(all 0-1 False)(all 3-4 False)";

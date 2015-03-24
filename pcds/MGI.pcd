@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Mon Nov 10 11:49:46 2014";
+      lastWritten = "Tue Mar 24 12:37:35 2015";
       copy = false;
       inCreateMenu = true;
         {
@@ -558,12 +558,11 @@ Module: MGI
                 Group: Constraint
                   leftAttachment = attach_form;
                   rightAttachment = attach_none;
-                  topAttachment = attach_widget;
+                  topAttachment = attach_form;
                   topOffset = 5;
                   bottomAttachment = attach_none;
                   resizable = true;
                   leftOffset = 5;
-                  topWidget = SourceID;
                     {
                       label = XmLabel;
                       Group: Widget
@@ -838,7 +837,7 @@ Module: MGI
                         xrtTblColumnLabels = "Mode,Member key,Set key,Clone Library Set";
                         xrtTblNumColumns = 4;
                         xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 50)";
-                        xrtTblEditableSeries = "(all 0-2 False)";
+                        xrtTblEditableSeries = "(all 0-2 0)";
                         xrtTblPixelWidthSeries = "(all 0-2 0)";
                         userDefinedAttributes = "memberKey:Int(Int)=\"1\"\nsetKey:Int(Int)=\"2\"\ncloneLibrary:Int(Int)=\"3\"\n";
                         xrtTblVisibleRows = 3;
@@ -1043,7 +1042,9 @@ Module: MGI
                                               SearchAll = SearchAll : mgiOption;
                                             }
                                             {
-                                              NotSpecified = NotSpecified : mgiOption;
+                                              NotSpecified = SearchAll : mgiOption;
+                                              Group: Widget
+                                                labelString = "Not Specified";
                                               Group: User
                                                 defaultValue = NULL;
                                                 searchValue = NULL;
@@ -1302,9 +1303,9 @@ Module: MGI
                                           xrtTblNumColumns = 19;
                                           xrtTblColumnLabels = "Mode,Current Order,#,Key,M Key, A1 Key,A2 Key,State Key,Comp Key,Mutant1 Key,Mutant2 Key,Chr,Marker,Allele1,Allele 2,State,Compound,Mutant 1,Mutant 2";
                                           xrtTblCharWidthSeries = "(all 0 1)(all 1-2 3)(all 11 3)(all 12 30)(all 13-14 30)(all 15 20)(all 16 15)(all 17-18 15)";
-                                          xrtTblEditableSeries = "(all 0-10 False)";
+                                          xrtTblEditableSeries = "(all 0-10 0)";
                                           xrtTblPixelWidthSeries = "(all 0-1 0)(all 3-10 0)";
-                                          xrtTblTraversableSeries = "(all 0-11 False)";
+                                          xrtTblTraversableSeries = "(all 0-11 0)";
                                           xrtTblValidateCellCallback = "D:VerifyMarker,\nD:VerifyAllele,\nD:VerifyAlleleMutantCellLine,\nD:CommitTableCellEdit";
                                           userDefinedAttributes = "markerKey:Int(Int)=\"4\"\nmarkerSymbol:Int(Int)=\"12\"\nmarkerChr:Int(Int)=\"11\"\nalleleSymbol:StringTable(StringTable)\nalleleKey:StringTable(StringTable)\npairKey:Int(Int)=\"3\"\nstate:Int(Int)=\"15\"\nmarkerColumns:Int(Int)=\"1\"\nstateKey:Int(Int)=\"7\"\ncompoundKey:Int(Int)=\"8\"\ncompound:Int(Int)=\"16\"\nmutantCellLine:StringTable(StringTable)\nmutantCellLineKey:StringTable(StringTable)\n";
                                           inTabGroup = True;
@@ -1312,8 +1313,8 @@ Module: MGI
                                           alleleSymbol = "13\n14";
                                           alleleKey = "5\n6";
                                           requiredColumns = 7;
-                                          saveEditableSeries = "(all 0-10 False)";
-                                          saveTraversableSeries = "(all 0-11 False)";
+                                          saveEditableSeries = "(all 0-10 0)";
+                                          saveTraversableSeries = "(all 0-11 0)";
                                           mutantCellLine = "17\n18";
                                           mutantCellLineKey = "9\n10";
                                             {
@@ -1855,18 +1856,18 @@ Module: MGI
                                         Group: Widget
                                           xrtTblNumColumns = 10;
                                           xrtTblColumnLabels = "Mode,Current Order,#,Term Key,Obsolete Key,Acc ID,Term,Abbreviation,Definition,Obsolete";
-                                          xrtTblEditableSeries = "(all 0-5 False)";
+                                          xrtTblEditableSeries = "(all 0-5 0)";
                                           xrtTblNumRows = 25;
                                           xrtTblVisibleRows = 20;
                                           xrtTblPixelWidthSeries = "(all 0-1 0)(all 3-4 0)";
                                           xrtTblCharWidthSeries = "(all 0 1)(all 1-2 3)(all 3 10)(all 4 1)(all 5 20)(all 6 50)(all 7 50)(all 8 10)(all 9 8)";
                                           userDefinedAttributes = "termKey:Int(Int)=\"3\"\nterm:Int(Int)=\"6\"\nabbreviation:Int(Int)=\"7\"\ndefinition:Int(Int)=\"8\"\nmgiID:Int(Int)=\"5\"\nisObsolete:Int(Int)=\"9\"\nobsoleteKey:Int=\"4\"\n";
-                                          xrtTblTraversableSeries = "(all 0-5 False)";
+                                          xrtTblTraversableSeries = "(all 0-5 0)";
                                           xrtTblEnterCellCallback = "D:SetOptions,\nD:SelectSynonym";
                                           xrtTblAllowCellResize = resize_all;
                                         Group: User
-                                          saveEditableSeries = "(all 0-5 False)";
-                                          saveTraversableSeries = "(all 0-5 False)";
+                                          saveEditableSeries = "(all 0-5 0)";
+                                          saveTraversableSeries = "(all 0-5 0)";
                                           requiredColumns = 6;
                                       }
                                 }
@@ -2085,14 +2086,14 @@ Module: MGI
                                           xrtTblColumnLabels = "Mode,Current Order,#,Key,Object Key,Non-MGI Term,MGI Term,Acc ID,Modified By,Modified Date";
                                           xrtTblCharWidthSeries = "(all 0 1)(all 1 3)(all 2 4)(all 5-6 50)(all 7 15)(all 8 11)";
                                           xrtTblPixelWidthSeries = "(all 0-2 0)(all 3-4 0)";
-                                          xrtTblEditableSeries = "(all 0-4 False)";
-                                          xrtTblTraversableSeries = "(all 0-4 False)";
+                                          xrtTblEditableSeries = "(all 0-4 0)";
+                                          xrtTblTraversableSeries = "(all 0-4 0)";
                                           xrtTblVisibleRows = 30;
                                           userDefinedAttributes = "transKey:Int(Int)=\"3\"\nobjectKey:Int(Int)=\"4\"\nnonmgiTerm:Int(Int)=\"5\"\nmgiTerm:Int(Int)=\"6\"\nmodifiedBy:Int(Int)=\"8\"\nmodifiedDate:Int(Int)=\"9\"\naccID:Int(Int)=\"7\"\n";
                                           xrtTblValidateCellCallback = "D:VerifyTransMGITermAccID,\nD:CommitTableCellEdit";
                                         Group: User
-                                          saveEditableSeries = "(all 0-4 False)";
-                                          saveTraversableSeries = "(all 0-4 False)";
+                                          saveEditableSeries = "(all 0-4 0)";
+                                          saveTraversableSeries = "(all 0-4 0)";
                                       }
                                       {
                                         AddRow = TablePush;
@@ -2379,12 +2380,12 @@ Module: MGI
                                           xrtTblColumnLabels = "Mode,Key,Key,User";
                                           xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 30)";
                                           xrtTblPixelWidthSeries = "(all 0-2 0)";
-                                          xrtTblTraversableSeries = "(all 0-2 False)";
+                                          xrtTblTraversableSeries = "(all 0-2 0)";
                                           userDefinedAttributes = "userRoleKey:Int(Int)=\"1\"\nuserKey:Int(Int)=\"2\"\nuserLogin:Int(Int)=\"3\"\n";
                                           xrtTblValidateCellCallback = "D:VerifyUser\nD:CommitTableCellEdit";
                                           xrtTblNumRows = 11;
                                           xrtTblVisibleRows = 10;
-                                          xrtTblEditableSeries = "(all 0-2 False)";
+                                          xrtTblEditableSeries = "(all 0-2 0)";
                                       }
                                 }
                           }
@@ -2796,12 +2797,11 @@ Module: MGI
                                           xrtTblMaxLengthSeries = "(all 3 255)";
                                           xrtTblColumnLabels = "Mode,IP Key,Label,X-Y-Width-Height";
                                           userDefinedAttributes = "imagePaneKey:Int(Int)=\"1\"\npaneLabel:Int(Int)=\"2\"\nxywidthheight:Int(Int)=\"3\"\n";
-                                          xrtTblAlignmentSeries = "(all all alignment_middlebegin)";
-                                          xrtTblEditableSeries = "(all 0 False)";
+                                          xrtTblEditableSeries = "(all 0 0)";
                                           xrtTblNumColumns = 4;
                                           xrtTblNumRows = 16;
                                           xrtTblVisibleRows = 7;
-                                          xrtTblTraversableSeries = "(all 0 False) (all 3 False)";
+                                          xrtTblTraversableSeries = "(all 0 0) (all 3 0)";
                                             {
                                               label = XtXrtLabel;
                                               Group: Widget
