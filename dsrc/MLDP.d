@@ -171,6 +171,7 @@ locals:
 	currentRIKey : string;
 
         clearLists : integer := 3;
+	clearForms : integer := 127;
 	assayNull : string;	-- key for default Mapping Assay of "None"
 	origExptType : string;
 
@@ -295,6 +296,7 @@ rules:
 
 	  Clear.source_widget := top;
 	  Clear.clearLists := clearLists;
+	  Clear.clearForms := clearForms;
 	  Clear.clearKeys := ClearMLDP.clearKeys;
 	  Clear.reset := ClearMLDP.reset;
 	  send(Clear, 0);
