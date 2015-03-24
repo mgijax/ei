@@ -767,8 +767,7 @@ rules:
               if (currentSeqNum != newSeqNum) then
                 -- Delete records with current Seq # (cannot have duplicate Seq #)
  
-                deleteCmd := deleteCmd + mgi_DBdelete(MLD_EXPT_MARKER, currentExptKey) +
-                             "and sequenceNum = " + currentSeqNum + "\n";
+                deleteCmd := deleteCmd + mgi_DBdelete(MLD_EXPT_MARKER, currentExptKey + " and sequenceNum = " + currentSeqNum);
  
                 -- Insert new record
  
@@ -791,14 +790,12 @@ rules:
 		       ",description = " + mgi_DBprstr(descr) +
 		       ",matrixData = " + yesno;
 
-                tmpCmd := tmpCmd + mgi_DBupdate(MLD_EXPT_MARKER, currentExptKey, set) +
-                          "and sequenceNum = " + currentSeqNum + "\n";
+                tmpCmd := tmpCmd + mgi_DBupdate(MLD_EXPT_MARKER, currentExptKey + " and sequenceNum = " + currentSeqNum, set);
 
               end if;
  
             elsif (editMode = TBL_ROW_DELETE and currentSeqNum.length > 0) then
-              tmpCmd := tmpCmd + mgi_DBdelete(MLD_EXPT_MARKER, currentExptKey) +
-                        "and sequenceNum = " + currentSeqNum + "\n";
+              tmpCmd := tmpCmd + mgi_DBdelete(MLD_EXPT_MARKER, currentExptKey + " and sequenceNum = " + currentSeqNum);
 
 	      if ((integer) currentSeqNum > 100) then
 	        resetSequenceNum := false;
@@ -997,8 +994,7 @@ rules:
               if (currentSeqNum != newSeqNum) then
                 -- Delete records with current Seq # (cannot have duplicate Seq #)
  
-                deleteCmd := deleteCmd + mgi_DBdelete(MLD_MCHAPLOTYPE, currentExptKey) +
-                             "and sequenceNum = " + currentSeqNum + "\n";
+                deleteCmd := deleteCmd + mgi_DBdelete(MLD_MCHAPLOTYPE, currentExptKey + " and sequenceNum = " + currentSeqNum);
  
                 -- Insert new record
  
@@ -1013,13 +1009,11 @@ rules:
               else
                 set := "alleleLine = " + mgi_DBprstr(haplotype) + "," +
 		       "offspringNmbr = " + mice;
-                tmpCmd := tmpCmd + mgi_DBupdate(MLD_MCHAPLOTYPE, currentExptKey, set) +
-                          "and sequenceNum = " + currentSeqNum + "\n";
+                tmpCmd := tmpCmd + mgi_DBupdate(MLD_MCHAPLOTYPE, currentExptKey + " and sequenceNum = " + currentSeqNum, set);
               end if;
  
             elsif (editMode = TBL_ROW_DELETE and currentSeqNum.length > 0) then
-              tmpCmd := tmpCmd + mgi_DBdelete(MLD_MCHAPLOTYPE, currentExptKey) +
-                        "and sequenceNum = " + currentSeqNum + "\n";
+              tmpCmd := tmpCmd + mgi_DBdelete(MLD_MCHAPLOTYPE, currentExptKey + " and sequenceNum = " + currentSeqNum);
             end if;
  
             row := row + 1;
@@ -1096,8 +1090,7 @@ rules:
               if (currentSeqNum != newSeqNum) then
                 -- Delete records with current Seq # (cannot have duplicate Seq #)
  
-                deleteCmd := deleteCmd + mgi_DBdelete(MLD_MC2POINT, currentExptKey) +
-                             "and sequenceNum = " + currentSeqNum + "\n";
+                deleteCmd := deleteCmd + mgi_DBdelete(MLD_MC2POINT, currentExptKey + " and sequenceNum = " + currentSeqNum);
  
                 -- Insert new record
  
@@ -1116,13 +1109,11 @@ rules:
                        "_Marker_key_2 = " + mgi_DBprkey(markerKey2) + "," +
 		       "numRecombinants = " + recomb + "," +
 		       "numParentals = " + parental;
-                tmpCmd := tmpCmd + mgi_DBupdate(MLD_MC2POINT, currentExptKey, set) +
-                          "and sequenceNum = " + currentSeqNum + "\n";
+                tmpCmd := tmpCmd + mgi_DBupdate(MLD_MC2POINT, currentExptKey + " and sequenceNum = " + currentSeqNum, set);
               end if;
  
             elsif (editMode = TBL_ROW_DELETE and currentSeqNum.length > 0) then
-              tmpCmd := tmpCmd + mgi_DBdelete(MLD_MC2POINT, currentExptKey) +
-                        "and sequenceNum = " + currentSeqNum + "\n";
+              tmpCmd := tmpCmd + mgi_DBdelete(MLD_MC2POINT, currentExptKey + " and sequenceNum = " + currentSeqNum);
             end if;
  
             row := row + 1;
@@ -1313,8 +1304,7 @@ rules:
               if (currentSeqNum != newSeqNum) then
                 -- Delete records with current Seq # (cannot have duplicate Seq #)
  
-                deleteCmd := deleteCmd + mgi_DBdelete(MLD_FISH_REGION, currentExptKey) +
-                             "and sequenceNum = " + currentSeqNum + "\n";
+                deleteCmd := deleteCmd + mgi_DBdelete(MLD_FISH_REGION, currentExptKey + " and sequenceNum = " + currentSeqNum);
  
                 -- Insert new record
  
@@ -1331,13 +1321,11 @@ rules:
                 set := "region = " + mgi_DBprstr(region) + "," +
 		       "totalSingle = " + mgi_DBprkey(single) + "," +
 		       "totalDouble = " + mgi_DBprkey(double) + ",";
-                tmpCmd := tmpCmd + mgi_DBupdate(MLD_FISH_REGION, currentExptKey, set) +
-                          "and sequenceNum = " + currentSeqNum + "\n";
+                tmpCmd := tmpCmd + mgi_DBupdate(MLD_FISH_REGION, currentExptKey + " and sequenceNum = " + currentSeqNum, set);
               end if;
  
             elsif (editMode = TBL_ROW_DELETE and currentSeqNum.length > 0) then
-              tmpCmd := tmpCmd + mgi_DBdelete(MLD_FISH_REGION, currentExptKey) +
-                        "and sequenceNum = " + currentSeqNum + "\n";
+              tmpCmd := tmpCmd + mgi_DBdelete(MLD_FISH_REGION, currentExptKey + " and sequenceNum = " + currentSeqNum);
             end if;
  
             row := row + 1;
@@ -1454,8 +1442,7 @@ rules:
               if (currentSeqNum != newSeqNum) then
                 -- Delete records with current Seq # (cannot have duplicate Seq #)
  
-                deleteCmd := deleteCmd + mgi_DBdelete(MLD_CONCORDANCE, currentExptKey) +
-                             "and sequenceNum = " + currentSeqNum + "\n";
+                deleteCmd := deleteCmd + mgi_DBdelete(MLD_CONCORDANCE, currentExptKey + " and sequenceNum = " + currentSeqNum);
  
                 -- Insert new record
  
@@ -1478,13 +1465,11 @@ rules:
                        "cpn = " + mgi_DBprkey(cpn) + "," +
                        "cnp = " + mgi_DBprkey(cnp) + "," +
                        "cnn = " + mgi_DBprkey(cnn) + ",";
-                tmpCmd := tmpCmd + mgi_DBupdate(MLD_CONCORDANCE, currentExptKey, set) +
-                          "and sequenceNum = " + currentSeqNum + "\n";
+                tmpCmd := tmpCmd + mgi_DBupdate(MLD_CONCORDANCE, currentExptKey + " and sequenceNum = " + currentSeqNum, set);
               end if;
  
             elsif (editMode = TBL_ROW_DELETE and currentSeqNum.length > 0) then
-              tmpCmd := tmpCmd + mgi_DBdelete(MLD_CONCORDANCE, currentExptKey) +
-                        "and sequenceNum = " + currentSeqNum + "\n";
+              tmpCmd := tmpCmd + mgi_DBdelete(MLD_CONCORDANCE, currentExptKey + " and sequenceNum = " + currentSeqNum);
             end if;
  
             row := row + 1;
@@ -1610,8 +1595,7 @@ rules:
               if (currentSeqNum != newSeqNum) then
                 -- Delete records with current Seq # (cannot have duplicate Seq #)
  
-                deleteCmd := deleteCmd + mgi_DBdelete(MLD_INSITU_REGION, currentExptKey) +
-                             "and sequenceNum = " + currentSeqNum + "\n";
+                deleteCmd := deleteCmd + mgi_DBdelete(MLD_INSITU_REGION, currentExptKey + " and sequenceNum = " + currentSeqNum);
  
                 -- Insert new record
  
@@ -1626,13 +1610,11 @@ rules:
               else
                 set := "region = " + mgi_DBprstr(region) + "," +
 		       "grainCount = " + mgi_DBprkey(grains) + ",";
-                tmpCmd := tmpCmd + mgi_DBupdate(MLD_INSITU_REGION, currentExptKey, set) +
-                          "and sequenceNum = " + currentSeqNum + "\n";
+                tmpCmd := tmpCmd + mgi_DBupdate(MLD_INSITU_REGION, currentExptKey + " and sequenceNum = " + currentSeqNum, set);
               end if;
  
             elsif (editMode = TBL_ROW_DELETE and currentSeqNum.length > 0) then
-              tmpCmd := tmpCmd + mgi_DBdelete(MLD_INSITU_REGION, currentExptKey) +
-                        "and sequenceNum = " + currentSeqNum + "\n";
+              tmpCmd := tmpCmd + mgi_DBdelete(MLD_INSITU_REGION, currentExptKey + " and sequenceNum = " + currentSeqNum);
             end if;
  
             row := row + 1;
@@ -1731,8 +1713,7 @@ rules:
               if (currentSeqNum != newSeqNum) then
                 -- Delete records with current Seq # (cannot have duplicate Seq #)
  
-                deleteCmd := deleteCmd + mgi_DBdelete(MLD_RIHAPLOTYPE, currentExptKey) +
-                             "and sequenceNum = " + currentSeqNum + "\n";
+                deleteCmd := deleteCmd + mgi_DBdelete(MLD_RIHAPLOTYPE, currentExptKey + " and sequenceNum = " + currentSeqNum);
  
                 -- Insert new record
  
@@ -1747,13 +1728,11 @@ rules:
               else
                 set := "_Marker_key = " + mgi_DBprkey(markerKey) + "," +
                        "alleleLine = " + mgi_DBprstr(haplotype);
-                tmpCmd := tmpCmd + mgi_DBupdate(MLD_RIHAPLOTYPE, currentExptKey, set) +
-                          "and sequenceNum = " + currentSeqNum + "\n";
+                tmpCmd := tmpCmd + mgi_DBupdate(MLD_RIHAPLOTYPE, currentExptKey + " and sequenceNum = " + currentSeqNum, set);
               end if;
  
             elsif (editMode = TBL_ROW_DELETE and currentSeqNum.length > 0) then
-              tmpCmd := tmpCmd + mgi_DBdelete(MLD_RIHAPLOTYPE, currentExptKey) +
-                        "and sequenceNum = " + currentSeqNum + "\n";
+              tmpCmd := tmpCmd + mgi_DBdelete(MLD_RIHAPLOTYPE, currentExptKey + " and sequenceNum = " + currentSeqNum);
             end if;
  
             row := row + 1;
@@ -1832,8 +1811,7 @@ rules:
               if (currentSeqNum != newSeqNum) then
                 -- Delete records with current Seq # (cannot have duplicate Seq #)
  
-                deleteCmd := deleteCmd + mgi_DBdelete(MLD_RI2POINT, currentExptKey) +
-                             "and sequenceNum = " + currentSeqNum + "\n";
+                deleteCmd := deleteCmd + mgi_DBdelete(MLD_RI2POINT, currentExptKey + " and sequenceNum = " + currentSeqNum);
  
                 -- Insert new record
  
@@ -1854,13 +1832,11 @@ rules:
 		       "numRecombinants = " + discordant + "," +
 		       "numTotal = " + strains + "," +
 		       "RI_Lines = " + mgi_DBprstr(sets);
-                tmpCmd := tmpCmd + mgi_DBupdate(MLD_RI2POINT, currentExptKey, set) +
-                          "and sequenceNum = " + currentSeqNum + "\n";
+                tmpCmd := tmpCmd + mgi_DBupdate(MLD_RI2POINT, currentExptKey + " and sequenceNum = " + currentSeqNum, set);
               end if;
  
             elsif (editMode = TBL_ROW_DELETE and currentSeqNum.length > 0) then
-              tmpCmd := tmpCmd + mgi_DBdelete(MLD_RI2POINT, currentExptKey) +
-                        "and sequenceNum = " + currentSeqNum + "\n";
+              tmpCmd := tmpCmd + mgi_DBdelete(MLD_RI2POINT, currentExptKey + " and sequenceNum = " + currentSeqNum);
             end if;
  
             row := row + 1;
@@ -1944,8 +1920,7 @@ rules:
               if (currentSeqNum != newSeqNum) then
                 -- Delete records with current Seq # (cannot have duplicate Seq #)
  
-                deleteCmd := deleteCmd + mgi_DBdelete(MLD_STATISTICS, currentExptKey) +
-                             "and sequenceNum = " + currentSeqNum + "\n";
+                deleteCmd := deleteCmd + mgi_DBdelete(MLD_STATISTICS, currentExptKey + " and sequenceNum = " + currentSeqNum);
  
                 -- Insert new record
  
@@ -1968,13 +1943,11 @@ rules:
 		       "total = " + total + "," +
 		       "pcntrecomb = " + pcntre + "," +
 		       "stderr = " + stnderr;
-                tmpCmd := tmpCmd + mgi_DBupdate(MLD_STATISTICS, currentExptKey, set) +
-                          "and sequenceNum = " + currentSeqNum + "\n";
+                tmpCmd := tmpCmd + mgi_DBupdate(MLD_STATISTICS, currentExptKey + " and sequenceNum = " + currentSeqNum, set);
               end if;
  
             elsif (editMode = TBL_ROW_DELETE and currentSeqNum.length > 0) then
-              tmpCmd := tmpCmd + mgi_DBdelete(MLD_STATISTICS, currentExptKey) +
-                        "and sequenceNum = " + currentSeqNum + "\n";
+              tmpCmd := tmpCmd + mgi_DBdelete(MLD_STATISTICS, currentExptKey + " and sequenceNum = " + currentSeqNum);
             end if;
  
             row := row + 1;
