@@ -928,7 +928,7 @@ Module: mgiTable
                   xrtTblNumColumns = 10;
                   xrtTblPixelWidthSeries = "(all 0-4 0)";
                   xrtTblVisibleRows = 3;
-                  xrtTblCharWidthSeries = "(all 0 1)\n(all 5 15)\n(all 6 10)\n(all 7 10)\n(all 9 12)\n(all 8 8)";
+                  xrtTblCharWidthSeries = "(all 0 1)(all 5 15)(all 6 10)(all 7 10)(all 9 12)(all 8 8)";
                   xrtTblEditableSeries = "(all 0-4 False)";
                   userDefinedAttributes = "assocKey:Int(Int)=\"1\"\npaneKey:Int(Int)=\"2\"\nmgiID:Int(Int)=\"5\"\nfigureLabel:Int(Int)=\"7\"\nisPrimary:Int(Int)=\"8\"\nisPrimaryKey:Int(Int)=\"3\"\nmgiTypeKey:String(String)\npixID:Int(Int)=\"6\"\nimageClassKey:Int(Int)=\"4\"\nimageClass:Int(Int)=\"9\"\n";
                   xrtTblValidateCellCallback = "D:VerifyImagePane\nD:CommitTableCellEdit";
