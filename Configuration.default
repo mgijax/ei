@@ -19,7 +19,7 @@ source ${MGICONFIG}/master.config.csh
 unsetenv OPENWINHOME
 unsetenv XKEYSYMDB
 
-setenv CVS_TAG  ei-5-2-1-15
+setenv CVS_TAG  ei-5-2-1-16
 setenv TeleUSE /opt/teleuseXRT
 
 # symlinks for sybase/postgres
@@ -41,6 +41,7 @@ switch (`uname -n`)
 	setenv LD_LIBRARY_PATH ${SYBASE}/OCS-15_0/lib:${TeleUSE}/lib:${TeleUSE}/XRT/lib-shared:${TeleUSE}/conf/lib
 
 	setenv USERLOG	${HOME}/.ei-log
+	setenv EIPASSWORDFILE  ${HOME}/.mgd_password
         breaksw
 
     case bheidev01:
@@ -50,6 +51,7 @@ switch (`uname -n`)
 	setenv SYBASE_PATH ${SYBASE}/OCS-15_0/bin
 	setenv LD_LIBRARY_PATH ${SYBASE}/OCS-15_0/lib:${TeleUSE}/lib:${TeleUSE}/XRT/lib-shared:${TeleUSE}/conf/lib
 	setenv USERLOG	${HOME}/.eidev-log
+	setenv EIPASSWORDFILE  ${HOME}/.mgd_dev_password
         breaksw
 
     case rohan:
@@ -58,6 +60,7 @@ switch (`uname -n`)
 	setenv SYBASE_PATH ${SYBASE}/OCS-12_5/bin
 	setenv LD_LIBRARY_PATH /opt/sybase/12.5/ASE-12_5/lib:/opt/sybase/12.5/OCS-12_5/lib:/usr/lib:/usr/local/lib:/usr/ucblib:/usr/openwin/lib:/usr/local/postgres/lib:/opt/teleuseXRT/lib:/opt/teleuseXRT/conf/lib
 	setenv USERLOG	${HOME}/.eidev-log
+	setenv EIPASSWORDFILE  ${HOME}/.mgd_dev_password
 	breaksw
 
     case lindon:
@@ -66,6 +69,7 @@ switch (`uname -n`)
 	setenv SYBASE_PATH ${SYBASE}/OCS-12_5/bin
 	setenv LD_LIBRARY_PATH /opt/sybase/12.5/ASE-12_5/lib:/opt/sybase/12.5/OCS-12_5/lib:/usr/lib:/usr/local/lib:/usr/ucblib:/usr/openwin/lib:/usr/local/postgres/lib:/opt/teleuseXRT/lib:/opt/teleuseXRT/conf/lib
 	setenv USERLOG	${HOME}/.ei-log
+	setenv EIPASSWORDFILE  ${HOME}/.mgd_password
 	breaksw
 
 endsw
@@ -78,9 +82,6 @@ setenv EIUTILS  ${MGI_DBUTILS}/bin/ei
 
 # data directory
 setenv EIDATADIR /data/ei
-
-# User password file
-setenv EIPASSWORDFILE  ${HOME}/.mgd_password
 
 # EI Applications
 setenv EIAPPS	"mgd gxd mgiadmin mgi"
