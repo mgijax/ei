@@ -686,6 +686,13 @@ rules:
 	Delete does
 	  (void) busy_cursor(top);
 
+	  if (mgi_sql1("exec MGI_checkUserTask_Delete " + global_login) = 0) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "You do not have permission to delete this Allele record.";
+            send(StatusReport);
+            return;
+	  end if;
+
 	  DeleteSQL.tableID := ALL_ALLELE;
 	  DeleteSQL.key := currentRecordKey;
 	  DeleteSQL.list := top->QueryList;
