@@ -458,7 +458,7 @@ rules:
 	      and top->AlleleTypeMenu.menuHistory.labelString != ""Gene trapped""
 	      and (markerKey.length = 0 or markerKey.length = -1)) then
             StatusReport.source_widget := top;
-            StatusReport.message := "You do not have permission to add an 'Autoload' Allele.";
+            StatusReport.message := "Approved Allele Symbol must have an Approved Marker.";
             send(StatusReport);
             return;
 	  end if;
