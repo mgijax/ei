@@ -430,7 +430,7 @@ Module: mgiCV
                         managed = False;
                       Group: User
                         cmd = "select distinct i._Structure_key, i.dbName, i.sequenceNum from GXD_ISResultStructure_View i, GXD_Specimen s where s._Specimen_key = i._Specimen_key and s._Assay_key = ";
-                        orderBy = "i.sequenceNum";
+                        orderBy = "sequenceNum";
                           {
                             Label = LookupLabel;
                           }

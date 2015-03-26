@@ -376,7 +376,7 @@ Module: mgiLookup
           Group: User
             clipboardModule = GenotypeModule;
             editClipboard = GenotypeEditClipboard;
-            orderBy = "g._Genotype_key";
+            orderBy = "_Genotype_key";
               {
                 Label = LookupLabel : mgiLookup;
                 Group: Widget
