@@ -456,7 +456,7 @@ rules:
 
 	  if (top->AlleleStatusMenu.menuHistory.labelString = ALL_STATUS_APPROVED
 	      and top->AlleleTypeMenu.menuHistory.labelString != ""Gene trapped""
-	      and (markerKey.length = 0 or markerKey.length = -1) then
+	      and (markerKey.length = 0 or markerKey.length = -1)) then
             StatusReport.source_widget := top;
             StatusReport.message := "You do not have permission to add an 'Autoload' Allele.";
             send(StatusReport);
