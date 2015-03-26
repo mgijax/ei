@@ -169,8 +169,10 @@ locals:
 	modifyCache : boolean;
 	modifyCacheCre : boolean;
 
-	--defaultStatus1Key : string := "847113";
+	autoloadStatusKey : string := 3983021;
+	approvedStatusKey : string := 847114;
 	pendingStatusKey : string;
+
 	defaultQualifierKey : string;
 	defaultStatus2Key : string;
 
@@ -530,7 +532,6 @@ rules:
 	    statusKey := top->AlleleStatusMenu.menuHistory.defaultValue;
 	    approvalLoginDate := global_loginKey + "," + CURRENT_DATE + END_VALUE;
 	  else
-	    --statusKey := defaultStatus1Key;
 	    statusKey := top->AlleleStatusMenu.menuHistory.defaultValue;
 	    approvalLoginDate := "NULL,NULL" + END_VALUE;
 	  end if;
@@ -545,6 +546,15 @@ rules:
 	    collectionKey := defaultCollectionKeyNS;
 	  else
 	    collectionKey := top->AlleleCollectionMenu.menuHistory.defaultValue;
+	  end if;
+
+	  -- cannot use the Autoload status
+
+	  if (statusKey = autoloadStatusKey) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "You do not have permission to add an 'Autoload' Allele.";
+            send(StatusReport);
+            return;
 	  end if;
 
 	  -- set defaults based on allele type
