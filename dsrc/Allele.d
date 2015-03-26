@@ -169,8 +169,8 @@ locals:
 	modifyCache : boolean;
 	modifyCacheCre : boolean;
 
-	autoloadStatusKey : string := '3983021';
-	approvedStatusKey : string := '847114';
+	autoloadStatusKey : string := "3983021";
+	approvedStatusKey : string := "847114'";
 	pendingStatusKey : string;
 
 	defaultQualifierKey : string;
