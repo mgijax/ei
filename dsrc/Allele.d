@@ -451,6 +451,18 @@ rules:
             return;
 	  end if;
 
+	  -- Approved Alleles must have a valid MGD Marker
+	  -- unless they are gene trap alleles (which can have no marker)
+
+	  if (top->AlleleStatusMenu.menuHistory.labelString = ALL_STATUS_APPROVED
+	      and top->AlleleTypeMenu.menuHistory.labelString != ""Gene trapped""
+	      and (markerKey.length = 0 or markerKey.length = -1) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "You do not have permission to add an 'Autoload' Allele.";
+            send(StatusReport);
+            return;
+	  end if;
+
 	  -- Verify References
 
 	  row := 0;
