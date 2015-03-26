@@ -1,5 +1,12 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-5-2-1-19
+DATE: 03/26/2015
+STAFF: lec
+CHANGES:
+a) see TR11750
+b) removed PythonAlleleCreCache; re-freshed daily/weekly by load
+
 TAG: ei-5-2-1-18
 TAG: ei-5-2-1-17
 TAG: ei-5-2-1-16

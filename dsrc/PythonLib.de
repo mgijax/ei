@@ -1,6 +1,9 @@
 --
 -- Name: PythonLib.de
 --
+-- 03/26/2015   lec
+--      removed PythonAlleleCreCache
+--
 -- lec	04/14/2014
 --	- TR11549/PythonImageCache obsolete
 --	- TR11549/PythonMarkerHomologyCache obsolete
@@ -34,10 +37,6 @@ PythonAlleleCombination [source_widget : widget;
 			 pythonevent : string;
 		         objectKey : string;];
 
-PythonAlleleCreCache [source_widget : widget;
-		      pythonevent : string;
-		      objectKey : string;];
-
 PythonMarkerCVCache [objectKey : string;];
 
 PythonReferenceCache [objectKey : string;];
@@ -51,8 +50,6 @@ PythonExpressionCache [source_widget : widget;
 PythonADSystemLoadEnd [];
 
 PythonAlleleCombinationEnd [];
-
-PythonAlleleCreCacheEnd [];
 
 PythonMarkerCVCacheEnd [];
 

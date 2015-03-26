@@ -531,20 +531,6 @@ rules:
 	    error := true;
 	  end if;
 
-	  if (not (global_login = "mgd_dbo" or
-	           global_login = "mmh" or 
-	           global_login = "lmm" or 
-		   global_login = "cml" or 
-		   global_login = "rjc" or
-		   global_login = "tier4") and
-              top->MarkerStatusMenu.menuHistory.modified and
-	      top->MarkerStatusMenu.menuHistory.labelString != STATUS_PENDING) then
-            StatusReport.source_widget := top;
-            StatusReport.message := "You do not have permission to modify the Status field.";
-            send(StatusReport);
-	    error := true;
-	  end if;
-
           if (top->MarkerStatusMenu.menuHistory.modified and
 	      (top->MarkerStatusMenu.menuHistory.labelString = STATUS_BROADCASTOFF)) then
             StatusReport.source_widget := top;

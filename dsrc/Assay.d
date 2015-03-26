@@ -28,6 +28,9 @@
 --
 -- History
 --
+-- 03/26/2015   lec
+--      removed PythonAlleleCreCache
+--
 -- lec	02/09/2015
 --	- PythonExpressionCache added to replace trigger
 --
@@ -709,11 +712,6 @@ rules:
           AddSQL.key := top->ID->text;
           send(AddSQL, 0);
 
-          PythonAlleleCreCache.source_widget := top;
-          PythonAlleleCreCache.pythonevent := EVENT_ALLELECRE_BYASSAY;
-          PythonAlleleCreCache.objectKey := currentAssay;
-          send(PythonAlleleCreCache, 0);
-
           PythonExpressionCache.source_widget := top;
 	  PythonExpressionCache.objectKey := currentAssay;
           send(PythonExpressionCache, 0);
@@ -1366,7 +1364,6 @@ rules:
 --
 
 	Modify does
-	  modifyCache : boolean := true;
 
           if (not top.allowEdit) then 
             return; 
@@ -1456,25 +1453,15 @@ rules:
 	    cmd := cmd + mgi_DBupdate(GXD_ASSAY, currentAssay, set);
 	  end if;
 
-	  (void) mgi_writeLog("ASSAY:begin:Modify\n");
           ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
           send(ModifySQL, 0);
-	  (void) mgi_writeLog("ASSAY:end:Modify\n");
 
-          if (modifyCache) then
-	    -- do not show a working dialog...it drives the GXD folks crazy!
-	    (void) mgi_writeLog("ASSAY:begin:PythonAlleleCreCache\n");
-            PythonAlleleCreCache.source_widget := top;
-            PythonAlleleCreCache.pythonevent := EVENT_ALLELECRE_BYASSAY;
-            PythonAlleleCreCache.objectKey := currentAssay;
-            send(PythonAlleleCreCache, 0);
-	    (void) mgi_writeLog("ASSAY:end:PythonAlleleCreCache\n");
-          end if;
-
+	  (void) mgi_writeLog("ASSAY:begin:gxdexpression\n");
           PythonExpressionCache.source_widget := top;
 	  PythonExpressionCache.objectKey := currentAssay;
           send(PythonExpressionCache, 0);
+	  (void) mgi_writeLog("ASSAY:end:gxdexpression\n");
 
 	  (void) reset_cursor(top);
 	end does;

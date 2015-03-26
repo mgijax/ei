@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- 03/26/2015	lec
+--	removed PythonAlleleCreCache
+--
 -- 12/2013	lec
 --	TR11515/allele generation type (allele type), allele subtype, allele collection
 --
@@ -981,18 +984,6 @@ rules:
 	    PythonAlleleCombination.pythonevent := EVENT_ALLELECOMB_BYALLELE;
 	    PythonAlleleCombination.objectKey := currentRecordKey;
 	    send(PythonAlleleCombination, 0);
-
-	  end if;
-
-	  if (modifyCacheCre) then
-
-	    top->WorkingDialog.messageString := "Re-loading Cache Tables....";
-	    XmUpdateDisplay(top->WorkingDialog);
-
-            PythonAlleleCreCache.source_widget := top;
-            PythonAlleleCreCache.pythonevent := EVENT_ALLELECRE_BYALLELE;
-            PythonAlleleCreCache.objectKey := currentRecordKey;
-            send(PythonAlleleCreCache, 0);
 
 	  end if;
 
