@@ -2491,9 +2491,6 @@ rules:
 	      end if;
 
 	      send(ViewPrepDetail, 0);
-
-	      ViewAssayDetail.source_widget := top->AssayTypeMenu.menuHistory;
-	      send(ViewAssayDetail, 0);
 	    end while;
           end while;
 	  (void) mgi_dbclose(dbproc);
@@ -2558,6 +2555,10 @@ rules:
             end while;
 	    (void) mgi_dbclose(dbproc);
 	  end if;
+
+	  -- Load Clipboard
+	  ViewAssayDetail.source_widget := top->AssayTypeMenu.menuHistory;
+	  send(ViewAssayDetail, 0);
 
 	  -- Select InSitu information
 
