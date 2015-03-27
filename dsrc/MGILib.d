@@ -266,6 +266,12 @@ rules:
 
 	   end if;
 
+	   if (top.name = "MarkerModule" and 
+	      	    global_login != "mgd_dbo" and global_login != "dbo" and
+	       	    global_login != "mmh" and global_login != "djr") then
+	       top->Control->Delete.sensitive := false;
+	   end if;
+
         end does;
  
 --

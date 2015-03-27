@@ -413,7 +413,6 @@ rules:
 --
 
 	Add does
-
 	  isWildType : integer := 0;
 	  nomenSymbol : string := "NULL";
 	  markerKey : string := mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
@@ -684,14 +683,16 @@ rules:
 --
 
 	Delete does
-	  (void) busy_cursor(top);
 
-	  if (mgi_sql1("exec MGI_checkUserTask_Delete " + global_login) = 0) then
+	  task :string := mgi_sql1(exec_mgi_checkUserTask("delete", global_login));
+	  if (task != "pass") then
             StatusReport.source_widget := top;
-            StatusReport.message := "You do not have permission to delete this Allele record.";
+            StatusReport.message := task;
             send(StatusReport);
             return;
 	  end if;
+
+	  (void) busy_cursor(top);
 
 	  DeleteSQL.tableID := ALL_ALLELE;
 	  DeleteSQL.key := currentRecordKey;
@@ -735,6 +736,14 @@ rules:
 	  if (not top.allowEdit) then
 	    return;
 	  end if;
+
+	  --task :string := mgi_sql1(exec_mgi_checkUserTask("update", global_login));
+	  --if (task != "pass") then
+            --StatusReport.source_widget := top;
+            --StatusReport.message := task;
+            --send(StatusReport);
+            --return;
+	  --end if;
 
 	  -- Verify at most one Original Reference
 
