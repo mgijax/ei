@@ -266,6 +266,7 @@ rules:
 
 	   end if;
 
+	   -- only certain users have permission to turn 'Delete' on in this module
 	   if (top.name = "MarkerModule" and 
 	      	    global_login != "mgd_dbo" and global_login != "dbo" and
 	       	    global_login != "mmh" and global_login != "djr") then
