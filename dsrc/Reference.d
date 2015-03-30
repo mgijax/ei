@@ -402,9 +402,9 @@ rules:
 
 	  jnum := mgi_tblGetCell(accTable, jnumRow, accTable.accID);
 	  if (jnum.length > 0) then
-	    cmd := cmd + exec_acc_assignJNext(currentRecordKey,jnum);
+	    cmd := cmd + exec_acc_assignJNext(global_loginKey, currentRecordKey,jnum);
 	  else
-	    cmd := cmd + exec_acc_assignJ(currentRecordKey);
+	    cmd := cmd + exec_acc_assignJ(global_loginKey, currentRecordKey);
 	  end if;
 
 	  -- If Reference is of type "BOOK", then additional info is required

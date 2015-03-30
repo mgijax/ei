@@ -52,98 +52,98 @@ char *mgilib_isAnchor(char *key)
  * exec stored procedures
 */
 
-char *exec_acc_assignJ(char *key)
+char *exec_acc_assignJ(char *userKey, char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   if (GLOBAL_DBTYPE == "sybase")
   {
-    sprintf(buf,"exec ACC_assignJ %s\n", key);
+    sprintf(buf,"exec ACC_assignJ %s,%s\n", userKey, key);
   }
   else
   {
-    sprintf(buf,"select * from ACC_assignJ (%s);\n", key);
+    sprintf(buf,"select * from ACC_assignJ (%s,%s);\n", userKey, key);
   }
   return(buf);
 }
 
-char *exec_acc_assignJNext(char *key, char *nextMGI)
+char *exec_acc_assignJNext(char *userKey, char *key, char *nextMGI)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   if (GLOBAL_DBTYPE == "sybase")
   {
-    sprintf(buf,"exec ACC_assignJ %s,%s\n", key, nextMGI);
+    sprintf(buf,"exec ACC_assignJ %s,%s,%s\n", userKey, key, nextMGI);
   }
   else
   {
-    sprintf(buf,"select * from ACC_assignJ (%s,%s);\n", key, nextMGI);
+    sprintf(buf,"select * from ACC_assignJ (%s,%s,%s);\n", userKey, key, nextMGI);
   }
   return(buf);
 }
 
-char *exec_acc_insert(char *key, char *accid, char *logicalKey, char *table, char *refsKey, char *isPreferred, char *isPrivate)
+char *exec_acc_insert(char *userKey, char *key, char *accid, char *logicalKey, char *table, char *refsKey, char *isPreferred, char *isPrivate)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   if (GLOBAL_DBTYPE == "sybase")
   {
-      sprintf(buf,"exec ACC_insertNoChecks %s,%s,%s,%s,%s,%s,%s\n", \
-	    key, accid, logicalKey, table, refsKey, isPreferred, isPrivate);
+      sprintf(buf,"exec ACC_insertNoChecks %s,%s,%s,%s,%s,%s,%s,%s\n", \
+	    userKey, key, accid, logicalKey, table, refsKey, isPreferred, isPrivate);
   }
   else
   {
-      sprintf(buf,"select * from ACC_insertNoChecks (%s,%s,%s,%s,%s,%s,%s);\n", \
-	    key, accid, logicalKey, table, refsKey, isPreferred, isPrivate);
+      sprintf(buf,"select * from ACC_insertNoChecks (%s,%s,%s,%s,%s,%s,%s,%s);\n", \
+	    userKey, key, accid, logicalKey, table, refsKey, isPreferred, isPrivate);
   }
   return(buf);
 }
 
-char *exec_acc_update(char *key, char *accid, char *origRefsKey, char *refsKey)
+char *exec_acc_update(char *userKey, char *key, char *accid, char *origRefsKey, char *refsKey)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   if (GLOBAL_DBTYPE == "sybase")
   {
-     sprintf(buf,"exec ACC_update %s,%s,%s,%s\n", \
-           key, accid, origRefsKey, refsKey);
+     sprintf(buf,"exec ACC_update %s,%s,%s,%s,%s\n", \
+           userKey, key, accid, origRefsKey, refsKey);
   }
   else
   {
-     sprintf(buf,"select * from ACC_update (%s,%s,%s,%s);\n", \
-           key, accid, origRefsKey, refsKey);
+     sprintf(buf,"select * from ACC_update (%s, %s,%s,%s,%s);\n", \
+           userKey, key, accid, origRefsKey, refsKey);
   }
   return(buf);
 }
 
-char *exec_acc_deleteByAccKey(char *key, char *refsKey)
+char *exec_acc_deleteByAccKey(char *userKey, char *key, char *refsKey)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   if (GLOBAL_DBTYPE == "sybase")
   {
-      sprintf(buf,"exec ACC_delete_byAccKey %s,%s\n", key, refsKey);
+      sprintf(buf,"exec ACC_delete_byAccKey %s,%s,%s\n", userKey, key, refsKey);
   }
   else
   {
-      sprintf(buf,"select ACC_delete_byAccKey (%s,%s);\n", key, refsKey);
+      sprintf(buf,"select ACC_delete_byAccKey (%s,%s,%s);\n", userKey, key, refsKey);
   }
   return(buf);
 }
 
-char *exec_accref_process(char *key, char *refsKey, char *accid, char *logicalKey, char *table, char *isPreferred, char *isPrivate)
+char *exec_accref_process(char *userKey, char *key, char *refsKey, char *accid, char *logicalKey, char *table, char *isPreferred, char *isPrivate)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   if (GLOBAL_DBTYPE == "sybase")
   {
-      sprintf(buf,"exec ACCRef_process %s,%s,%s,%s,%s,%s,%s\n", \
-	    key, refsKey, accid, logicalKey, table, isPreferred, isPrivate);
+      sprintf(buf,"exec ACCRef_process %s, %s,%s,%s,%s,%s,%s,%s\n", \
+	    userKey, key, refsKey, accid, logicalKey, table, isPreferred, isPrivate);
   }
   else
   {
-      sprintf(buf,"select ACCRef_process (%s,%s,%s,%s,%s,%s,%s);\n", \
-	    key, refsKey, accid, logicalKey, table, isPreferred, isPrivate);
+      sprintf(buf,"select ACCRef_process (%s, %s,%s,%s,%s,%s,%s,%s);\n", \
+	    userKey, key, refsKey, accid, logicalKey, table, isPreferred, isPrivate);
   }
   return(buf);
 }
@@ -176,6 +176,21 @@ char *exec_mgi_checkUserRole(char *module, char *key)
   else
   {
       sprintf(buf,"select * from MGI_checkUserRole (%s, %s);\n", module, key);
+  }
+  return(buf);
+}
+
+char *exec_mgi_checkUserTask(char *taskType, char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  if (GLOBAL_DBTYPE == "sybase")
+  {
+      sprintf(buf,"exec MGI_checkUserTask '%s', %s\n", taskType, key);
+  }
+  else
+  {
+      sprintf(buf,"select * from MGI_checkUserTask ('%s', %s);\n", taskType, key);
   }
   return(buf);
 }

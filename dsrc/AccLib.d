@@ -582,10 +582,10 @@ rules:
 
                 elsif (accName != "J:" and refsKey = "-1") then
                   cmd := cmd + 
-		    exec_acc_insert(objectKey, accID, logicalKey, mgi_DBprstr(mgi_DBtype(tableID)), refsKey, preferred, private);
+		    exec_acc_insert(global_loginKey, objectKey, accID, logicalKey, mgi_DBprstr(mgi_DBtype(tableID)), refsKey, preferred, private);
 	        elsif (accName != "J:") then
                   cmd := cmd + 
-		    exec_accref_process(objectKey, refsKey, accID, logicalKey, mgi_DBprstr(mgi_DBtype(tableID)), preferred, private);
+		    exec_accref_process(global_loginKey, objectKey, refsKey, accID, logicalKey, mgi_DBprstr(mgi_DBtype(tableID)), preferred, private);
 		end if;
 
 	      elsif (source.menuHistory.allowModify and 
@@ -597,7 +597,7 @@ rules:
 		               ",_Refs_key = " + refsKey;
 		  cmd := cmd + mgi_DBupdate(tableID, accKey, set);
                 else
-		  cmd := cmd + exec_acc_update(accKey, accID, origRefsKey, refsKey);
+		  cmd := cmd + exec_acc_update(global_loginKey, accKey, accID, origRefsKey, refsKey);
 		end if;
 
 	      elsif (source.menuHistory.allowDelete and 
@@ -607,7 +607,7 @@ rules:
 		if (tableID = SEQ_ALLELE_ASSOC) then
 		  cmd := cmd + mgi_DBdelete(tableID, accKey);
 		else
-                  cmd := cmd + exec_acc_deleteByAccKey(accKey, refsKey);
+                  cmd := cmd + exec_acc_deleteByAccKey(global_loginKey, accKey, refsKey);
 		end if;
 
 	      elsif (not source.menuHistory.allowAdd and 

@@ -15,14 +15,15 @@ CALLS
 	 mgilib_isAnchor("char *")				: "char *";
 	 mgilib_user("char *")					: "char *";
 
-	 exec_acc_assignJ("char *") 				: "char *";
-	 exec_acc_assignJNext("char *", "char *")		: "char *";
-	 exec_acc_insert("char *", "char *", "char *", "char *", "char *", "char *", "char *") : "char *";
-	 exec_acc_update("char *", "char *", "char *", "char *") : "char *";
-	 exec_acc_deleteByAccKey("char *", "char *") 		: "char *";
-	 exec_accref_process("char *", "char *", "char *", "char *", "char *", "char *", "char *") : "char *";
+	 exec_acc_assignJ("char *", "char *") 			: "char *";
+	 exec_acc_assignJNext("char *", "char *", "char *")	: "char *";
+	 exec_acc_insert("char *", "char *", "char *", "char *", "char *", "char *", "char *", "char *") : "char *";
+	 exec_acc_update("char *", "char *", "char *", "char *", "char *") : "char *";
+	 exec_acc_deleteByAccKey("char *", "char *", "char *") 		: "char *";
+	 exec_accref_process("char *", "char *", "char *", "char *", "char *", "char *", "char *", "char *") : "char *";
 	 exec_all_reloadLabel("char *")			: "char *";
 	 exec_mgi_checkUserRole("char *", "char *")		: "char *";
+	 exec_mgi_checkUserTask("char *", "char *")		: "char *";
 	 exec_mgi_insertReferenceAssoc_antibody("char *", "char *", "char *", "char *"): "char *";
 	 exec_mgi_insertReferenceAssoc_usedFC("char *", "char *"): "char *";
 	 exec_mgi_resetAgeMinMax("char *", "char *")		: "char *";
