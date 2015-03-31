@@ -44,6 +44,7 @@ import string
 import re
 import db
 import mgi_utils
+import loadlib
 
 def error(msg = None):
 	'''
@@ -270,6 +271,7 @@ if eventKey not in [WITHDRAWAL, MERGED, ALLELEOF, SPLIT, DELETED]:
 # Initialize DBMS parameters
 db.set_sqlLogin(user, password, server, database)
 db.useOneConnection(1)
+userKey = loadlib.verifyUser(user, 0, None)
 
 # Log all SQL commands
 db.set_sqlLogFunction(db.sqlLogAll)
@@ -298,20 +300,20 @@ if eventKey == WITHDRAWAL:
 # remove the check for multiple new symbols because commas can be part of the a symbol
 #	newSymbolsList = string.split(newSymbols, ',')
 #	newSymbol = newSymbolsList[0]
-	cmd = 'execute MRK_simpleWithdrawal %d,%d,%d,%s,%s,%d' \
-		% (oldKey, refKey, eventReasonKey, newSymbols, newName, addAsSynonym)
+	cmd = 'execute MRK_simpleWithdrawal %d,%d,%d,%d,%s,%s,%d' \
+		% (userKey, oldKey, refKey, eventReasonKey, newSymbols, newName, addAsSynonym)
 elif eventKey == MERGED:
-	cmd = 'execute MRK_mergeWithdrawal %d,%d,%d,%d,%d,%d' \
-		% (oldKey, newKey, refKey, eventKey, eventReasonKey, addAsSynonym)
+	cmd = 'execute MRK_mergeWithdrawal %d,%d,%d,%d,%d,%d,%d' \
+		% (userKey, oldKey, newKey, refKey, eventKey, eventReasonKey, addAsSynonym)
 elif eventKey == ALLELEOF:
-	cmd = 'execute MRK_alleleWithdrawal %d,%d,%d,%d,%d' \
-		% (oldKey, newKey, refKey, eventReasonKey, addAsSynonym)
+	cmd = 'execute MRK_alleleWithdrawal %d,%d,%d,%d,%d,%d' \
+		% (userKey, oldKey, newKey, refKey, eventReasonKey, addAsSynonym)
 elif eventKey == SPLIT:
-	cmd = 'execute MRK_splitWithdrawal %d,%d,%d,%s' \
-		% (oldKey, refKey, eventReasonKey, newSymbols)
+	cmd = 'execute MRK_splitWithdrawal %d,%d,%d,%d,%s' \
+		% (userKey, oldKey, refKey, eventReasonKey, newSymbols)
 elif eventKey == DELETED:
-	cmd = 'execute MRK_deleteWithdrawal %d,%d,%d' \
-		% (oldKey, refKey, eventReasonKey)
+	cmd = 'execute MRK_deleteWithdrawal %d,%d,%d,%d' \
+		% (userKey, oldKey, refKey, eventReasonKey)
 
 try:
 	db.sql(cmd, None)

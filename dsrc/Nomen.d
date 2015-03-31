@@ -1092,7 +1092,7 @@ rules:
 	  -- if Add was successful, broadcast to Nomen
 	  if (top->QueryList->List.sqlSuccessful) then
 	    (void) busy_cursor(top);
-	    ExecSQL.cmd := exec_nom_transferToMGD(currentNomenKey, mgi_DBprstr(BROADCASTOFFICIAL));
+	    ExecSQL.cmd := exec_nom_transferToMGD(global_loginKey, currentNomenKey, mgi_DBprstr(BROADCASTOFFICIAL));
 	    send(ExecSQL, 0);
 	    (void) reset_cursor(top);
 	  end if;
@@ -1107,7 +1107,7 @@ rules:
 
 	BroadcastSymbolOfficial does
 	  (void) busy_cursor(top);
-	  ExecSQL.cmd := exec_nom_transferToMGD(currentNomenKey, mgi_DBprstr(BROADCASTOFFICIAL));
+	  ExecSQL.cmd := exec_nom_transferToMGD(global_loginKey, currentNomenKey, mgi_DBprstr(BROADCASTOFFICIAL));
 	  send(ExecSQL, 0);
 	  (void) reset_cursor(top);
 	end does;

@@ -195,32 +195,32 @@ char *exec_mgi_checkUserTask(char *taskType, char *key)
   return(buf);
 }
 
-char *exec_mgi_insertReferenceAssoc_antibody(char *key, char *mgiTypeKey, char *refKey, char *refType)
+char *exec_mgi_insertReferenceAssoc_antibody(char *userKey, char *key, char *mgiTypeKey, char *refKey, char *refType)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   if (GLOBAL_DBTYPE == "sybase")
   {
-      sprintf(buf,"exec MGI_insertReferenceAssoc %s, %s, %s, %s\n", mgiTypeKey, key, refKey, refType);
+      sprintf(buf,"exec MGI_insertReferenceAssoc %s, %s, %s, %s, %s\n", userKey, mgiTypeKey, key, refKey, refType);
   }
   else
   {
-      sprintf(buf,"select MGI_insertReferenceAssoc (%s, %s, %s, %s);\n", mgiTypeKey, key, refKey, refType);
+      sprintf(buf,"select MGI_insertReferenceAssoc (%s, %s, %s, %s, %s);\n", userKey, mgiTypeKey, key, refKey, refType);
   }
   return(buf);
 }
 
-char *exec_mgi_insertReferenceAssoc_usedFC(char *key, char *refKey)
+char *exec_mgi_insertReferenceAssoc_usedFC(char *userKey, char *key, char *refKey)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   if (GLOBAL_DBTYPE == "sybase")
   {
-      sprintf(buf,"exec MGI_insertReferenceAssoc 11, %s, %s, 'Used-FC'\n", key, refKey);
+      sprintf(buf,"exec MGI_insertReferenceAssoc %s, 11, %s, %s, 'Used-FC'\n", userKey, key, refKey);
   }
   else
   {
-      sprintf(buf,"select MGI_insertReferenceAssoc (11, %s, %s, 'Used-FC');\n", key, refKey);
+      sprintf(buf,"select MGI_insertReferenceAssoc (%s, 11, %s, %s, 'Used-FC');\n", userKey, key, refKey);
   }
   return(buf);
 }
@@ -299,32 +299,32 @@ char *exec_mrk_reloadLocation(char *key)
   return(buf);
 }
 
-char *exec_nom_transferToMGD(char *key, char *status)
+char *exec_nom_transferToMGD(char *userKey, char *key, char *status)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   if (GLOBAL_DBTYPE == "sybase")
   {
-      sprintf(buf,"exec NOM_transferToMGD %s, %s", key, status);
+      sprintf(buf,"exec NOM_transferToMGD %s, %s, %s", userKey, key, status);
   }
   else
   {
-      sprintf(buf,"select * from NOM_transferToMGD (%s)", key);
+      sprintf(buf,"select * from NOM_transferToMGD (%s, %s);\n", userKey, key);
   }
   return(buf);
 }
 
-char *exec_prb_insertReference(char *refKey, char *probeKey)
+char *exec_prb_insertReference(char *userKey, char *refKey, char *probeKey)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   if (GLOBAL_DBTYPE == "sybase")
   {
-      sprintf(buf,"exec PRB_insertReference %s, %s\n", refKey, probeKey);
+      sprintf(buf,"exec PRB_insertReference %s, %s, %s\n", userKey, refKey, probeKey);
   }
   else
   {
-      sprintf(buf,"exec PRB_insertReference %s, %s\n", refKey, probeKey);
+      sprintf(buf,"select * from PRB_insertReference (%s, %s, %s);\n", userKey, refKey, probeKey);
   }
   return(buf);
 }
@@ -530,17 +530,17 @@ char *exec_prb_processSequenceSource(\
   return(buf);
 }
 
-char *exec_voc_copyAnnotEvidenceNotes(char *key, char *keyName)
+char *exec_voc_copyAnnotEvidenceNotes(char *userKey, char *key, char *keyName)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   if (GLOBAL_DBTYPE == "sybase")
   {
-      sprintf(buf,"exec VOC_copyAnnotEvidenceNotes %s, %s\n", key, keyName);
+      sprintf(buf,"exec VOC_copyAnnotEvidenceNotes %s, %s, %s\n", userKey, key, keyName);
   }
   else
   {
-      sprintf(buf,"select * from VOC_copyAnnotEvidenceNotes (%s, %s);\n", key, keyName);
+      sprintf(buf,"select * from VOC_copyAnnotEvidenceNotes (%s, %s, %s);\n", userKey, key, keyName);
   }
   return(buf);
 }
@@ -590,17 +590,17 @@ char *exec_gxd_computePrintNamesFrom(char *key)
   return(buf);
 }
 
-char *exec_gxd_duplicateAssay(char *key, char *duplicateDetails)
+char *exec_gxd_duplicateAssay(char *userKey, char *key, char *duplicateDetails)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   if (GLOBAL_DBTYPE == "sybase")
   {
-      sprintf(buf,"exec GXD_duplicateAssay %s, %s\n", key, duplicateDetails);
+      sprintf(buf,"exec GXD_duplicateAssay %s, %s, %s\n", userKey, key, duplicateDetails);
   }
   else
   {
-      sprintf(buf,"exec GXD_duplicateAssay %s, %s\n", key, duplicateDetails);
+      sprintf(buf,"select * from GXD_duplicateAssay (%s, %s, %s);\n", userKey, key, duplicateDetails);
   }
   return(buf);
 }

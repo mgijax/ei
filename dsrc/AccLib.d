@@ -606,8 +606,17 @@ rules:
 
 		if (tableID = SEQ_ALLELE_ASSOC) then
 		  cmd := cmd + mgi_DBdelete(tableID, accKey);
+
+		-- Disallow edits if:
+		-- NCBI Gene Model (59), Ensembl Gene Model (60), VEGA Gene Model (85)
 		else
-                  cmd := cmd + exec_acc_deleteByAccKey(global_loginKey, accKey, refsKey);
+		  if (logicalKey = "59" or logicalKey = "60" or logicalKey = "85") then
+                    StatusReport.source_widget := table.top;
+                    StatusReport.message := "You cannot delete an Accession id for a gene model (NCBI, Ensembl, VEGA).\n";
+                    send(StatusReport);
+		  else
+                    cmd := cmd + exec_acc_deleteByAccKey(global_loginKey, accKey, refsKey);
+		  end if;
 		end if;
 
 	      elsif (not source.menuHistory.allowAdd and 

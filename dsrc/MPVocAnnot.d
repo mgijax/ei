@@ -517,7 +517,7 @@ rules:
 
 	      if (clipAnnotEvidenceKey.length > 0) then
 		-- add notes
-		cmd := cmd + exec_voc_copyAnnotEvidenceNotes(clipAnnotEvidenceKey, MAX_KEY1 + keyName + MAX_KEY2);
+		cmd := cmd + exec_voc_copyAnnotEvidenceNotes(global_loginKey, clipAnnotEvidenceKey, MAX_KEY1 + keyName + MAX_KEY2);
 		isUsingCopyAnnotEvidenceNotes := true;
 	      end if;
 
@@ -1515,7 +1515,7 @@ rules:
 	      alleles.open;
 	      while (alleles.more) do
 	        s := alleles.next;
-	        (void) mgi_sp(exec_mgi_insertReferenceAssoc_usedFC(s, refsKey));
+	        (void) mgi_sp(exec_mgi_insertReferenceAssoc_usedFC(global_loginKey, s, refsKey));
 	      end while;
 	      alleles.close;
 	    end if;

@@ -750,6 +750,7 @@ rules:
 	  -- TR 8156; new
 
 	  cmd := cmd + exec_mgi_insertReferenceAssoc_antibody(\
+		global_loginKey,
 		prepDetailForm->AntibodyAccession->ObjectID->text.value, \
 		mgiTypeKey, \
 	        top->mgiCitation->ObjectID->text.value, \
@@ -788,7 +789,7 @@ rules:
 
         AddProbeReference does
 
-	  cmd := cmd + exec_prb_insertReference(top->mgiCitation->ObjectID->text.value, \
+	  cmd := cmd + exec_prb_insertReference(global_loginKey, top->mgiCitation->ObjectID->text.value, \
 	         prepDetailForm->ProbeAccession->ObjectID->text.value);
 
 	end
@@ -1320,7 +1321,7 @@ rules:
 	  duplicate : integer := DuplicateAssay.duplicate;
 
 	  (void) busy_cursor(top);
-	  newAssayKey := mgi_sp(exec_gxd_duplicateAssay(currentAssay, (string) duplicate));
+	  newAssayKey := mgi_sp(exec_gxd_duplicateAssay(global_loginKey, currentAssay, (string) duplicate));
 	  (void) reset_cursor(top);
 
           PythonExpressionCache.source_widget := top;
