@@ -148,6 +148,21 @@ char *exec_accref_process(char *userKey, char *key, char *refsKey, char *accid, 
   return(buf);
 }
 
+char *exec_all_convert(char *userKey, char *key, char *oldSymbol, char *newSymbol)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  if (GLOBAL_DBTYPE == "sybase")
+  {
+      sprintf(buf,"exec ALL_convertAllele %s,%s,'%s','%s'\n", userKey, key, oldSymbol, newSymbol);
+  }
+  else
+  {
+      sprintf(buf,"select * from ALL_convertAllele (%s,%s,'%s','%s');\n", userKey, key, oldSymbol, newSymbol);
+  }
+  return(buf);
+}
+
 char *exec_all_reloadLabel(char *key)
 {
   static char buf[TEXTBUFSIZ];

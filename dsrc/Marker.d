@@ -219,6 +219,7 @@ locals:
 
 	currentChr : string;		-- current Chromosome of selected record
 	currentName : string;		-- current Name of selected record
+	currentSymbol : string;		-- current Name of selected record
 
         currentRecordKey : string;      -- Primary Key value of currently selected record
                                         -- Initialized in Select[] and Add[] events
@@ -948,6 +949,7 @@ rules:
 	Modify does
 	  modifyName : boolean := false;
 	  modifySymbol : boolean := false;
+	  newSymbol : string := "";
 
 	  if (not top.allowEdit) then
 	    return;
@@ -970,6 +972,7 @@ rules:
 
 	  if (top->Symbol->text.modified) then
 	    set := set + "symbol = " + mgi_DBprstr(top->Symbol->text.value) + ",";
+	    newSymbol := top->Symbol->text.value;
 	    modifySymbol := true;
 	  end if;
 
@@ -1065,17 +1068,21 @@ rules:
 	  -- Split up the modification because the SP may contain 'select into'
 	  -- statements and these cannot be wrapped up within a transaction
 
+	  if (modifySymbol) then
+	    cmd := cmd + exec_all_convert(global_loginKey, currentRecordKey, currentSymbol, newSymbol);
+	  end if;
+
 	  ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
 	  ModifySQL.reselect := false;
 	  send(ModifySQL, 0);
 
-	  if (cmd.length > 0) then
+	  -- now update cache
 
+	  if (cmd.length > 0) then
             cmd := exec_mrk_reloadLabel(currentRecordKey) +
                    exec_mrk_reloadReference(currentRecordKey) +
             	   exec_mrk_reloadLocation(currentRecordKey);
-
 	    ModifySQL.cmd := cmd;
 	    ModifySQL.list := top->QueryList;
 	    ModifySQL.reselect := true;
@@ -1876,6 +1883,7 @@ rules:
 
 	  currentChr := top->ChromosomeMenu.menuHistory.defaultValue;
 	  currentName := top->Name->text.value;
+	  currentSymbol := top->Symbol->text.value;
 
 	  -- Withdrawn markers will not have MGI accession IDs
 
