@@ -180,17 +180,17 @@ char *exec_mgi_checkUserRole(char *module, char *key)
   return(buf);
 }
 
-char *exec_mgi_checkUserTask(char *taskType, char *key)
+char *exec_mgi_checkUserTask(char *taskType, char *userKey)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   if (GLOBAL_DBTYPE == "sybase")
   {
-      sprintf(buf,"exec MGI_checkUserTask '%s', %s\n", taskType, key);
+      sprintf(buf,"exec MGI_checkUserTask '%s',%s\n", taskType, userKey);
   }
   else
   {
-      sprintf(buf,"select * from MGI_checkUserTask ('%s', %s);\n", taskType, key);
+      sprintf(buf,"select * from MGI_checkUserTask ('%s', %s);\n", taskType, userKey);
   }
   return(buf);
 }
@@ -545,17 +545,17 @@ char *exec_voc_copyAnnotEvidenceNotes(char *userKey, char *key, char *keyName)
   return(buf);
 }
 
-char *exec_voc_processAnnotHeader(char *key, char *annotTypeKey)
+char *exec_voc_processAnnotHeader(char *userKey, char *key, char *annotTypeKey)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   if (GLOBAL_DBTYPE == "sybase")
   {
-      sprintf(buf,"exec VOC_processAnnotHeader %s,%s\n", annotTypeKey, key);
+      sprintf(buf,"exec VOC_processAnnotHeader %s,%s,%s\n", userKey, annotTypeKey, key);
   }
   else
   {
-      sprintf(buf,"select VOC_processAnnotHeader (%s,%s);\n", annotTypeKey, key);
+      sprintf(buf,"select VOC_processAnnotHeader (%s,%s,%s);\n", userKey, annotTypeKey, key);
   }
   return(buf);
 }

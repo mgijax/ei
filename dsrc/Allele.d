@@ -684,7 +684,7 @@ rules:
 
 	Delete does
 
-	  task :string := mgi_sql1(exec_mgi_checkUserTask("delete", global_login));
+	  task :string := mgi_sql1(exec_mgi_checkUserTask("delete", global_loginKey));
 	  if (task != "pass") then
             StatusReport.source_widget := top;
             StatusReport.message := task;
@@ -737,7 +737,7 @@ rules:
 	    return;
 	  end if;
 
-	  task :string := mgi_sql1(exec_mgi_checkUserTask("update", global_login));
+	  task :string := mgi_sql1(exec_mgi_checkUserTask("update", global_loginKey));
 	  if (task != "pass") then
             StatusReport.source_widget := top;
             StatusReport.message := task;

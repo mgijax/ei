@@ -43,7 +43,7 @@ extern char *exec_prb_processAntigenAnonSource(char *, char *, char *, char *, c
 extern char *exec_prb_processProbeSource(char *, char *, char *, char *, char *, char *, char *, char *, char *, char *, char *);
 extern char *exec_prb_processSequenceSource(char *, char *, char *, char *, char *, char *, char *, char *, char *, char *, char *);
 extern char *exec_voc_copyAnnotEvidenceNotes(char *, char *, char *);
-extern char *exec_voc_processAnnotHeader(char *, char *);
+extern char *exec_voc_processAnnotHeader(char *, char *, char *);
 extern char *exec_gxd_checkDuplicateGenotype(char *);
 extern char *exec_gxd_computePrintNamesFrom(char *);
 extern char *exec_gxd_duplicateAssay(char *, char *, char *);

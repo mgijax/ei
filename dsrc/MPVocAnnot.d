@@ -563,7 +563,7 @@ rules:
 	  ModifySQL.reselect := false;
           send(ModifySQL, 0);
 
-	  cmd := exec_voc_processAnnotHeader(currentRecordKey, annotTypeKey);
+	  cmd := exec_voc_processAnnotHeader(global_loginKey, currentRecordKey, annotTypeKey);
           ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
 	  ModifySQL.reselect := true;
@@ -675,7 +675,7 @@ rules:
 	  -- lose their 'isNormal' bit.  We use a stored procedure to
 	  -- recompute these.
 
-	  cmd := exec_voc_processAnnotHeader(currentRecordKey, annotTypeKey);
+	  cmd := exec_voc_processAnnotHeader(global_loginKey, currentRecordKey, annotTypeKey);
 	  ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
 	  ModifySQL.reselect := true;
