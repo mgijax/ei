@@ -615,7 +615,7 @@ rules:
                     StatusReport.message := "You cannot delete an Accession id for a gene model (NCBI, Ensembl, VEGA).\n";
                     send(StatusReport);
 		  else
-                    cmd := cmd + exec_acc_deleteByAccKey(global_loginKey, accKey, refsKey);
+                    cmd := cmd + exec_acc_deleteByAccKey(accKey, refsKey);
 		  end if;
 		end if;
 

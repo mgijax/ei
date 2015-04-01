@@ -116,17 +116,17 @@ char *exec_acc_update(char *userKey, char *key, char *accid, char *origRefsKey, 
   return(buf);
 }
 
-char *exec_acc_deleteByAccKey(char *userKey, char *key, char *refsKey)
+char *exec_acc_deleteByAccKey(char *key, char *refsKey)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   if (GLOBAL_DBTYPE == "sybase")
   {
-      sprintf(buf,"exec ACC_delete_byAccKey %s,%s,%s\n", userKey, key, refsKey);
+      sprintf(buf,"exec ACC_delete_byAccKey %s,%s\n", key, refsKey);
   }
   else
   {
-      sprintf(buf,"select ACC_delete_byAccKey (%s,%s,%s);\n", userKey, key, refsKey);
+      sprintf(buf,"select ACC_delete_byAccKey (%s,%s);\n", key, refsKey);
   }
   return(buf);
 }

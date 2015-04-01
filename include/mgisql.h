@@ -21,7 +21,7 @@ extern char *exec_acc_assignJ(char *, char *);
 extern char *exec_acc_assignJNext(char *, char *, char *);
 extern char *exec_acc_insert(char *, char *, char *, char *, char *, char *, char *, char *);
 extern char *exec_acc_update(char *, char *, char *, char *, char *);
-extern char *exec_acc_deleteByAccKey(char *, char *, char *);
+extern char *exec_acc_deleteByAccKey(char *, char *);
 extern char *exec_accref_process(char *, char *, char *, char *, char *, char *, char *, char *);
 extern char *exec_all_convert(char *, char *, char *, char *);
 extern char *exec_all_reloadLabel(char *);
