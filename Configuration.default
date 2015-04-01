@@ -19,7 +19,7 @@ source ${MGICONFIG}/master.config.csh
 unsetenv OPENWINHOME
 unsetenv XKEYSYMDB
 
-setenv CVS_TAG  ei-5-2-1-22
+setenv CVS_TAG  ei-5-2-1-23
 setenv TeleUSE /opt/teleuseXRT
 
 # symlinks for sybase/postgres
