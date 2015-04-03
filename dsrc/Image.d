@@ -527,7 +527,6 @@ rules:
           ModifyNotes.key := currentRecordKey;
 	  ModifyNotes.keyDeclared := noteKeyDeclared;
           send(ModifyNotes, 0);
-	  send(ProcessNoteForm, 0);
 	  if (top->Copyright.sql.length > 0) then
 	  	noteKeyDeclared := true;
 	  end if;
