@@ -1080,8 +1080,7 @@ rules:
 	  -- now update cache
 
 	  if (cmd.length > 0) then
-            cmd := exec_mrk_reloadLabel(currentRecordKey) +
-                   exec_mrk_reloadReference(currentRecordKey) +
+            cmd := exec_mrk_reloadReference(currentRecordKey) +
             	   exec_mrk_reloadLocation(currentRecordKey);
 	    ModifySQL.cmd := cmd;
 	    ModifySQL.list := top->QueryList;
