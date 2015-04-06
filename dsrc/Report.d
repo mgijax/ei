@@ -2,9 +2,6 @@
 -- Name: Report.d
 -- Report.d 06/11/99
 --
--- lec	04/04/2014
---   - TR11549/EISSHCOMMAND/EIUTIL
---
 -- lec   04/09/1999
 --   - ReportInit; set default printer value based on env variable PRINTER
 --   - ReportInit; set default printer as first item in printer list
@@ -62,10 +59,6 @@ rules:
 
      if (which_commands[1] = "nlm.csh") then      -- NLM program
 
-       --if (getenv("EISSHCOMMAND") != "") then
-           --commands.insert(getenv("EISSHCOMMAND"), commands.count + 1);
-       --end if;
-
        commands.insert(getenv("EIUTILS") + "/" + which_commands[1], commands.count + 1);
 
        -- NLM Mode = 1 is the NLM Update
@@ -108,10 +101,6 @@ rules:
      -- These programs rely on the last search the User performed from within the form
 
      elsif (strstr(which_commands[1], ".py") != nil) then
-
-       --if (getenv("EISSHCOMMAND") != "") then
-           --commands.insert(getenv("EISSHCOMMAND"), commands.count + 1);
-       --end if;
 
        (void) mgi_writeLog("EIUTILS : " + getenv("EIUTILS") + "\n");
        commands.insert(getenv("EIUTILS") + "/" + which_commands[1], commands.count + 1);
