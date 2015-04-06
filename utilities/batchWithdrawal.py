@@ -222,7 +222,7 @@ for line in inputFile.readlines():
 			'--eventKey=%s --eventReasonKey=%s ' % (eventKey, eventReasonKey) + \
 			'--oldKey=%s --newKey=%s ' % (oldKey, newKey) + \
 			'--refKey=%s ' % (refKey) + \
-			'--newName="\\"%s\\"" --newSymbol="\\"%s\\"" ' % (newName, newSymbol) + \
+			'--newName=\'%s\' --newSymbol=\'%s\' ' % (newName, newSymbol) + \
 			'--addAsSynonym=%d ' % (addAsSynonym)
 
 		diagFile.write(cmd + '\n')
