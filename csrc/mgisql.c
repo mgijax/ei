@@ -467,7 +467,7 @@ char *exec_prb_processProbeSource(\
   }
   else
   {
-      sprintf(buf,"exec PRB_processProbeSource %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s\n",
+      sprintf(buf,"select * from PRB_processProbeSource (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);\n",
               objectKey,\
               msoKey,\
 	      isAnon,\
@@ -515,7 +515,7 @@ char *exec_prb_processSequenceSource(\
   }
   else
   {
-      sprintf(buf,"exec PRB_processSequenceSource %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s\n",
+      sprintf(buf,"select * from PRB_processSequenceSource (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);\n",
               isAnon,\
               assocKey,\
               objectKey,\
