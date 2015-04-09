@@ -1,5 +1,16 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-5-2-1-?
+DATE: ?
+STAFF: lec
+CHANGES:
+a) see TR11750
+b) GXD
+printName : always = _StrcutureName_key -> GXD_StructureName.structure
+printStop : obsolete ; all are set to 1
+treeDepth : updated in trigger
+topoSort  : updated in toposortload
+
 TAG: ei-5-2-1-27
 TAG: ei-5-2-1-26
 DATE: 04/06/2015

@@ -43,7 +43,6 @@ CALLS
 	 exec_voc_copyAnnotEvidenceNotes("char *", "char *", "char *")	: "char *";
 	 exec_voc_processAnnotHeader("char *", "char *", "char *")	: "char *";
 	 exec_gxd_checkDuplicateGenotype("char *")		: "char *";
-	 exec_gxd_computePrintNamesFrom("char *")		: "char *";
 	 exec_gxd_duplicateAssay("char *", "char *", "char *")	: "char *";
 	 exec_gxd_getGenotypesDataSets("char *")		: "char *";
 	 exec_gxd_orderAllelePairs("char *")			: "char *";

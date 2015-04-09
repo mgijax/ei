@@ -318,11 +318,6 @@ rules:
            ClearTable.table := addDialog->mgiAliasTable->Table;
            send(ClearTable, 0);
     
-           SetOption.source_widget := addDialog->printStopMenu; 
-           SetOption.value := YES;
-           send(SetOption, 0);  
-           addDialog->printStopPulldown->Yes.modified := true;
-
            SetOption.source_widget := addDialog->inheritSystemMenu; 
            SetOption.value := YES;
            send(SetOption, 0);  
@@ -402,10 +397,8 @@ rules:
 			    defaultStageKey + "," +
 			    addDialog->ADSystemMenu.menuHistory.defaultValue + "," +
                             nullval + "," +   /* edinburgh key */
-                            nullval + "," +   /* printName */
-                            "0, " +           /* treeDepth - set by trg */
-                            addDialog->printStopMenu.menuHistory.defaultValue + "," +
-			    "0," +	     /* topoSort */
+                            mgi_DBprstr(addDialog->structureText->text.value) + "," +   /* printName */
+                            "0,1,0, " +       /* treeDepth - set by trigger, printStop, topSort */
 			    addDialog->inheritSystemMenu.menuHistory.defaultValue + "," +
 			    mgi_DBprstr(addDialog->structureNote->text.value) + END_VALUE;
 
@@ -413,7 +406,6 @@ rules:
                             MAX_KEY1 + skeyName + MAX_KEY2 + "," +
 			    mgi_DBprstr(addDialog->structureText->text.value) + ",1" + END_VALUE;
 
-	  cmd := cmd + exec_gxd_computePrintNamesFrom("@_Structure_key");
 
           ModifyAliases.table := addDialog->mgiAliasTable->Table; 
           ModifyAliases.keyName := mgi_DBkey(GXD_STRUCTURENAME) + "_Aliases";
@@ -616,11 +608,6 @@ rules:
             set := set + "_System_key = "  + top->ADSystemMenu.menuHistory.defaultValue + ",";
           end if;
 
-          if (top->printStopMenu.menuHistory.modified and
-	      top->printStopMenu.menuHistory.searchValue != "%") then
-            set := set + "printStop = "  + top->printStopMenu.menuHistory.defaultValue + ",";
-          end if;
-
 	  -- inherit system (if yes, then this is NOT a rollup term)
 	  -- inherit system (if no, then this IS a rollup term)
           if (top->inheritSystemMenu.menuHistory.modified and
@@ -635,9 +622,9 @@ rules:
           -- Structure Name
 
           if (top->structureText->text.modified) then
+	      set := set + "printName = " + mgi_DBprstr(top->structureText->text.value) + ",";
 	      cmd := cmd + mgi_DBupdate(GXD_STRUCTURENAME, top->structureTextKey->text.value, 
 		    "structure = " +  mgi_DBprstr(top->structureText->text.value) + "\n");
-	      cmd := cmd + exec_gxd_computePrintNamesFrom(top->ID->text.value);
           end if;
 
           -- now deal with the MGI aliases table
@@ -752,10 +739,6 @@ rules:
 
           if (stages_query != "") then
             where := where + "\nand t.stage in (" + stages_query + ")";
-          end if;
-
-          if (top->printStopMenu.menuHistory.searchValue != "%" and top->printStopMenu.sensitive) then
-            where := where + "\nand s.printStop = "  + top->printStopMenu.menuHistory.searchValue;
           end if;
 
           if (top->MGIAddedMenu.menuHistory.searchValue != "%" and top->MGIAddedMenu.sensitive) then
@@ -929,11 +912,6 @@ rules:
 	    top->stagesText->text.value := mgi_getstr(dbproc, 15);
 
             top->structureNote->text.value := mgi_getstr(dbproc, 12);
-
-	    -- set the print stop
-            SetOption.source_widget := top->printStopMenu;
-            SetOption.value := mgi_getstr(dbproc, 9);
-            send(SetOption, 0);
 
             -- set the Anatomical System
             SetOption.source_widget := top->ADSystemMenu;
@@ -1162,7 +1140,6 @@ rules:
      top->CreationDate.sensitive := false;
      top->ModifiedDate.sensitive := false;
      top->mgiAccessionTable.sensitive := false;
-     top->printStopFrame.sensitive := false;
      top->ADSystemFrame.sensitive := false;
      top->inheritSystemFrame.sensitive := false;
      top->MGIAddedFrame.sensitive := false;
@@ -1181,7 +1158,6 @@ rules:
      top->CreationDate.sensitive := true;
      top->ModifiedDate.sensitive := true;
      top->mgiAccessionTable.sensitive := true;
-     top->printStopFrame.sensitive := true;
      top->ADSystemFrame.sensitive := true;
      top->inheritSystemFrame.sensitive := true;
      top->MGIAddedFrame.sensitive := true;

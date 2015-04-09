@@ -340,7 +340,7 @@ char *exec_prb_getStrainByReference(char *key)
   }
   else
   {
-      sprintf(buf,"exec PRB_getStrainByReference %s\n", key);
+      sprintf(buf,"select * from PRB_getStrainByReference (%s);\n", key);
   }
   return(buf);
 }
@@ -355,7 +355,7 @@ char *exec_prb_getStrainReferences(char *key)
   }
   else
   {
-      sprintf(buf,"exec PRB_getStrainReferences %s\n", key);
+      sprintf(buf,"select * from PRB_getStrainReferences (%s);\n", key);
   }
   return(buf);
 }
@@ -370,7 +370,7 @@ char *exec_prb_getStrainDataSets(char *key)
   }
   else
   {
-      sprintf(buf,"exec PRB_getStrainDataSets %s\n", key);
+      sprintf(buf,"select * from PRB_getStrainDataSets (%s);\n", key);
   }
   return(buf);
 }
@@ -385,7 +385,7 @@ char *exec_prb_mergeStrain(char *key1, char *key2)
   }
   else
   {
-      sprintf(buf,"exec PRB_mergeStrain %s, %s\n", key1, key2);
+      sprintf(buf,"select * from PRB_mergeStrain (%s,%s);\n", key1, key2);
   }
   return(buf);
 }
@@ -572,21 +572,6 @@ char *exec_gxd_checkDuplicateGenotype(char *key)
   else
   {
       sprintf(buf,"select GXD_checkDuplicateGenotype (%s);\n", key);
-  }
-  return(buf);
-}
-
-char *exec_gxd_computePrintNamesFrom(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-      sprintf(buf,"exec GXD_ComputePrintNamesFrom %s\n", key);
-  }
-  else
-  {
-      sprintf(buf,"exec GXD_ComputePrintNamesFrom %s\n", key);
   }
   return(buf);
 }

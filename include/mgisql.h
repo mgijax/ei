@@ -45,7 +45,6 @@ extern char *exec_prb_processSequenceSource(char *, char *, char *, char *, char
 extern char *exec_voc_copyAnnotEvidenceNotes(char *, char *, char *);
 extern char *exec_voc_processAnnotHeader(char *, char *, char *);
 extern char *exec_gxd_checkDuplicateGenotype(char *);
-extern char *exec_gxd_computePrintNamesFrom(char *);
 extern char *exec_gxd_duplicateAssay(char *, char *, char *);
 extern char *exec_gxd_getGenotypesDataSets(char *);
 extern char *exec_gxd_orderAllelePairs(char *);

@@ -2,13 +2,13 @@ Module: mgiAnatDictionary
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Thu Aug 21 06:37:22 2014";
+      lastWritten = "Thu Apr  9 12:14:54 2015";
         {
           DictionaryModule = Module : MGI;
           Group: Widget
             title = "Anatomical Dictionary";
           Group: Control
-            vip_x = 60;
+            vip_x = 65;
             vip_y = 30;
           Group: User
             homeWidget = structureText;
@@ -298,31 +298,17 @@ Module: mgiAnatDictionary
                                       }
                                 }
                                 {
-                                  printStopFrame = printStopFrame : mgiAnatDictionary;
-                                  Group: Widget
-                                    sensitive = False;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    topWidget = MGIAddedFrame;
-                                    topOffset = 5;
-                                    leftWidget = MGIAddedFrame;
-                                }
-                                {
                                   ADSystemFrame = ADSystemFrame : mgiOption;
                                   Group: Widget
                                     sensitive = False;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = printStopFrame;
+                                    leftWidget = MGIAddedFrame;
                                     rightAttachment = attach_form;
                                     topAttachment = attach_widget;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    topWidget = printStopFrame;
+                                    topWidget = MGIAddedFrame;
                                     topOffset = 5;
                                     rightOffset = 5;
                                 }
@@ -1047,7 +1033,7 @@ Module: mgiAnatDictionary
             horizontalSpacing = 5;
             width = 290;
           Group: Control
-            vip_x = 60;
+            vip_x = 190;
             vip_y = 85;
             vipComment = "XmForm is a container widget with no input semantics. Constraints are placed on its children to define attachments for each of the child's four sides. These attachments can be to the XmForm, to another child, to a relative position or to the initial position of the child. The attachments determine the layout behavior of XmForm when resizing occurs.";
               {
@@ -1096,7 +1082,7 @@ Module: mgiAnatDictionary
         {
           treeDisplay = XmXrtOutliner;
           Group: Control
-            vip_x = 175;
+            vip_x = 65;
             vip_y = 85;
         }
         {
@@ -1111,7 +1097,7 @@ Module: mgiAnatDictionary
             bottomAttachment = attach_none;
             resizable = true;
           Group: Control
-            vip_x = 60;
+            vip_x = 65;
             vip_y = 140;
               {
                 Table = mgiTable;
@@ -1137,7 +1123,7 @@ Module: mgiAnatDictionary
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 175;
+            vip_x = 190;
             vip_y = 30;
               {
                 theForm = XmForm;
@@ -1214,28 +1200,16 @@ Module: mgiAnatDictionary
                           }
                     }
                     {
-                      printStopFrame = printStopFrame : mgiAnatDictionary;
-                      Group: Constraint
-                        leftAttachment = attach_widget;
-                        leftWidget = mgiAliasTable;
-                        rightAttachment = attach_form;
-                        topAttachment = attach_opposite_widget;
-                        topWidget = mgiAliasTable;
-                        bottomAttachment = attach_none;
-                        resizable = true;
-                        rightOffset = 5;
-                    }
-                    {
                       inheritSystemFrame = inheritSystemFrame : mgiAnatDictionary;
                       Group: Constraint
                         leftAttachment = attach_widget;
                         rightAttachment = attach_form;
                         rightOffset = 5;
-                        topAttachment = attach_widget;
+                        topAttachment = attach_opposite_widget;
                         bottomAttachment = attach_none;
                         resizable = true;
                         leftWidget = mgiAliasTable;
-                        topWidget = printStopFrame;
+                        topWidget = mgiAliasTable;
                     }
                     {
                       ADDSystemFrame = ADSystemFrame : mgiOption;
@@ -1292,30 +1266,12 @@ Module: mgiAnatDictionary
               }
         }
         {
-          printStopFrame = YesNoFrame : mgiOption;
-          Group: Control
-            vip_x = 175;
-            vip_y = 140;
-              {
-                printStopMenu : YesNoMenu = XmOptionMenu;
-                Group: Widget
-                  subMenuId = printStopPulldown;
-                  labelString = "PrintStop Set?";
-                Group: User
-                  defaultOption = Yes;
-              }
-              Popups:
-              {
-                printStopPulldown : YesNoPulldown = OptionPulldown;
-              }
-        }
-        {
           inheritSystemFrame = YesNoFrame : mgiOption;
           Group: Widget
             sensitive = False;
           Group: Control
-            vip_x = 177;
-            vip_y = 208;
+            vip_x = 190;
+            vip_y = 140;
               {
                 inheritSystemMenu : YesNoMenu = XmOptionMenu;
                 Group: Widget
