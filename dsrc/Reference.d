@@ -347,7 +347,7 @@ rules:
 
 	  send(InitDataSets, 0);
 
-          -- If adding, then @KEYNAME must be used in all Modify events
+          -- If adding, then KEYNAME must be used in all Modify events
  
           currentRecordKey := MAX_KEY1 + KEYNAME + MAX_KEY2;
  

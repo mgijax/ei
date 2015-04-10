@@ -115,7 +115,7 @@ rules:
 
           (void) busy_cursor(top);
 
-          -- If adding, then @KEYNAME must be used in all Modify events
+          -- If adding, then KEYNAME must be used in all Modify events
  
 	  accID := mgi_tblGetCell(table, 0, table.accID);
 	  emapsID := top->EMAPSid->text.value;

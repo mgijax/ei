@@ -337,7 +337,7 @@ rules:
 
           (void) busy_cursor(top);
 
-          -- If adding, then @KEYNAME must be used in all Modify events
+          -- If adding, then KEYNAME must be used in all Modify events
  
           currentMasterKey := MAX_KEY1 + KEYNAME + MAX_KEY2;
           top->MolDetailForm->SourceForm.sql := "";
