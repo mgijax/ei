@@ -625,9 +625,9 @@ rules:
                  top->mgiMarker->ObjectID->text.value + ",";
 
 	  if (antibodyPrep) then
-	    cmd := cmd + "NULL,@" + antibodyPrepLabel + ",";
+	    cmd := cmd + "NULL," + MAX_KEY1 + antibodyPrepLabel + ",";
 	  elsif (probePrep) then
-	    cmd := cmd + "@" + probePrepLabel + ",NULL,";
+	    cmd := cmd + MAX_KEY1 + probePrepLabel + ",NULL,";
 	  else
 	    cmd := cmd + "NULL,NULL,";
 	  end if;
@@ -1665,7 +1665,7 @@ rules:
 		     mgi_DBprstr(ageNote) + "," +
 		     mgi_DBprstr(hybridizationKey) + "," +
 		     mgi_DBprstr(specimenNote) + END_VALUE +
-	             exec_mgi_resetAgeMinMax("@" + keyName, mgi_DBprstr(mgi_DBtable(GXD_SPECIMEN)));
+	             exec_mgi_resetAgeMinMax(MAX_KEY1 + keyName, mgi_DBprstr(mgi_DBtable(GXD_SPECIMEN)));
 
             elsif (editMode = TBL_ROW_MODIFY and key.length > 0) then
 
@@ -1817,13 +1817,13 @@ rules:
 		     ageMax + "," +
 	    	     mgi_DBprstr(mgi_tblGetCell(table, row, table.ageNote)) + "," +
 	    	     mgi_DBprstr(mgi_tblGetCell(table, row, table.laneNote)) + END_VALUE +
-	             exec_mgi_resetAgeMinMax("@" + keyName, mgi_DBprstr(mgi_DBtable(GXD_GELLANE)));
+	             exec_mgi_resetAgeMinMax(MAX_KEY1 + keyName, mgi_DBprstr(mgi_DBtable(GXD_GELLANE)));
 
               -- Process Gel Lane Structures
 
               ModifyStructure.source_widget := table;
               ModifyStructure.primaryID := GXD_GELLANESTRUCTURE;
-              ModifyStructure.key := "@" + keyName;
+              ModifyStructure.key := MAX_KEY1;
               ModifyStructure.row := row;
               send(ModifyStructure, 0);
               cmd := cmd + top->CVGel->ADClipboard.updateCmd;
@@ -1885,8 +1885,8 @@ rules:
           key : string;
 	  unitsKey : string;
 	  size : string;
-	  rowKeyName : string := "gelRowKey";
-	  gelKeyName : string := "gelBandKey";
+	  rowKeyName : string := "v_gelRowKey";
+	  gelKeyName : string := "v_gelBandKey";
 	  keysDeclared : boolean := false;
 	  bandKeysDeclared : boolean := false;
 	  update : string := "";
@@ -1937,7 +1937,7 @@ rules:
 	      -- If Row has been modified, then modify Band as well
 
 	      ModifyGelBand.row := row;
-	      ModifyGelBand.key := "@" + rowKeyName;
+	      ModifyGelBand.key := MAX_KEY1 + rowKeyName;
 	      send(ModifyGelBand, 0);
 
             elsif (editMode = TBL_ROW_MODIFY) then
