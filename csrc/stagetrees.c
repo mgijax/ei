@@ -1162,25 +1162,10 @@ StructureName *structure_getPreferredStructureName(Structure *structure)
     return preferred;
 }
 
-char *structure_getNotes(Structure *structure)
-{
-    return structure->structureNote; 
-}
-
-Boolean structure_getPrintStop(Structure *structure)
-{
-   if (structure->printStop)
-      return True;
-
-   return False;
-}
-
-
 int structure_getStage(Structure *structure)
 {
     return structure->stage;
 }
-
 
 int structure_getStructureKey(Structure *structure)
 {

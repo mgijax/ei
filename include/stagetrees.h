@@ -179,14 +179,6 @@ char *structure_getPrintName(Structure *structure);
    /* returns printName attribute for structure */ 
 
 
-char *structure_getNotes(Structure *structure);
-   /* returns the notes associated with this structure */
-
-
-Boolean structure_getPrintStop(Structure *structure);
-   /* returns the printStop attribute */ 
-
-
 int structure_getStage(Structure *structure);
    /* returns the stage number to which this structure belongs */ 
 
