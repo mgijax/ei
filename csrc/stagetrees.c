@@ -985,16 +985,7 @@ void stagetree_AddStructures(StageTree *stagetree)
        dbbind(dbproc, 2, INTBIND, (int) 0, (BYTE *) &(tmpst._Parent_key));
        dbbind(dbproc, 3, INTBIND, (int) 0, (BYTE *) &(tmpst._StructureName_key));
        dbbind(dbproc, 4, INTBIND, (int) 0, (BYTE *) &(tmpst._Stage_key));
-       dbbind(dbproc, 5, INTBIND, (int) 0, (BYTE *) &(tmpst._System_key));
-       dbbind(dbproc, 6, INTBIND, (int) 0, (BYTE *) &(tmpst.edinburghKey));
        dbbind(dbproc, 7, STRINGBIND, (int) 0, tmpst.printName);
-       dbbind(dbproc, 8, INTBIND, (int) 0, (BYTE *) &(tmpst.treeDepth));
-       dbbind(dbproc, 9, BITBIND, (int) 0, (BYTE *) &(tmpst.printStop));
-       dbbind(dbproc, 10, INTBIND, (int) 0, (BYTE *) &(tmpst.topoSort));
-       dbbind(dbproc, 11, INTBIND, (int) 0, (BYTE *) &(tmpst.inheritSystem));
-       dbbind(dbproc, 12, STRINGBIND, (int) 0, tmpst.structureNote);
-       dbbind(dbproc, 13, DATETIMEBIND, (int) 0, (BYTE *) &(tmpst.creation_date));
-       dbbind(dbproc, 14, DATETIMEBIND, (int) 0, (BYTE *) &(tmpst.modification_date));
        dbbind(dbproc, 15, INTBIND, (int) 0, (BYTE *) &(tmpst.stage)); 
 
        /* iterate through the Structure results. */

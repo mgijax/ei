@@ -52,16 +52,11 @@
 /* the maximum length of a string (+1 over DB's definition, to hold null) */
 #define PRINTNAMELEN 256
 
-enum progresstype {PROGRESS_LOADING, PROGRESS_UNLOADING};
+/* max length of a structure note */
+#define STRUCTURENOTELEN 256
 
-typedef XrtGearObject xrtlist;
-
-/* 
- *  #### Structure Object ####
- */
-
-#define STRUCTURENOTELEN 256  /* max length of a structure note */
-#define STRUCTURENAMELEN 81   /* max length of a structure name */ 
+/* max length of a structure name */ 
+#define STRUCTURENAMELEN 81   
 
 /* maximum number of stages held in a StageTrees object */
 #define MAXSTAGE 28
@@ -70,6 +65,14 @@ typedef XrtGearObject xrtlist;
 #define STAGENODEPREFIX "Stage"
 #define MAXNAMEPREFIX sizeof(STAGENODEPREFIX)+4
 
+enum progresstype {PROGRESS_LOADING, PROGRESS_UNLOADING};
+
+typedef XrtGearObject xrtlist;
+
+/* 
+ *  #### Structure Object ####
+ */
+
 typedef struct structure 
 {
    /* schema-derived stuff */
@@ -77,16 +80,7 @@ typedef struct structure
    int _Parent_key;
    int _StructureName_key;
    int _Stage_key;
-   int _System_key;
-   int edinburghKey;
    char printName[PRINTNAMELEN];
-   int treeDepth;
-   DBBIT printStop;
-   int topoSort;
-   int inheritSystem;
-   char structureNote[STRUCTURENOTELEN];
-   DBDATETIME creation_date;
-   DBDATETIME modification_date;
    
    /* extra attributes we need to link StructureNames to this node,
       and to associate a presentation element with this node */  
