@@ -63,6 +63,13 @@ typedef XrtGearObject xrtlist;
 #define STRUCTURENOTELEN 256  /* max length of a structure note */
 #define STRUCTURENAMELEN 81   /* max length of a structure name */ 
 
+/* maximum number of stages held in a StageTrees object */
+#define MAXSTAGE 28
+
+/* for now, we use "Stagenn;" as a prefix  (+1) */
+#define STAGENODEPREFIX "Stage"
+#define MAXNAMEPREFIX sizeof(STAGENODEPREFIX)+4
+
 typedef struct structure 
 {
    /* schema-derived stuff */
@@ -248,9 +255,6 @@ int structurename_getStructureNameKey(StructureName *stn);
  *  #### StageTree Object ####
  */
 
-/* maximum number of stages held in a StageTrees object */
-#define MAXSTAGE 28
-
 
 typedef struct stagetree 
 {
@@ -260,15 +264,6 @@ typedef struct stagetree
                         "Stages" node */
 } StageTree;
 
-
-#define STAGENODEPREFIX "Stage"  /* prefix of stage nodes */
-#define MAXNAMEPREFIX sizeof(STAGENODEPREFIX)+4
-/* for now, we use "Stagenn;" as a prefix  (+1) */
-#define TEXTBUFSIZ      200000
-
-#define MAXDATELEN 40 /* the maximum length for a character rep of a date */
-#define IGNORELEN 4   /* arbitrary.  Used where data length is ignored by 
-                         Sybase */ 
 
 void stagetree_init(StageTree *stagetree, int stgnum);
    /* 
@@ -404,9 +399,7 @@ typedef struct stagetrees
    Widget stagesroot;  /* Parent node of all stage trees. */
 } StageTrees;
 
-
 #define stagetrees_getdbproc(sts) sts.dbproc
-
 
 void stagetrees_error(char *msg);
   /*
