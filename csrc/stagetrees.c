@@ -1218,20 +1218,3 @@ int structurename_getStructureNameKey(StructureName *stn)
     return stn->_StructureName_key;
 }
 
-xrtlist createStructureNameList()
-{
-    xrtlist list = XrtGearListCreate(sizeof(StructureName *));
-    return list;
-}
- 
-void StructureNameList_append(xrtlist list, StructureName *sn)
-{
-    XrtGearListAppend(list, &sn);
-}
- 
-StructureName *StructureNameList_getitem(xrtlist list, int i)
-{
-    StructureName *sn = *(StructureName **)XrtGearListGetItem(list, i);
-    return sn;
-}
-

@@ -584,29 +584,6 @@ void stagetrees_deleteStructureByKey(int sk);
       returns: nothing.
     */
 
-
-xrtlist createStructureNameList();
-   /* 
-       requires: nothing.
-       effects: creates a new StructureName object list.
-       returns: the list.
-    */
-
-void StructureNameList_append(xrtlist list, StructureName *sn);
-   /* 
-       requires: list is a valid StructureNameList. 
-       effects: appends sn to list. 
-       returns: nothing. 
-    */
-
-StructureName *StructureNameList_getitem(xrtlist list, int i);
-   /* 
-       requires: list is a valid StructureNameList. 
-                 'i' is an integer from 0 to length(list)-1
-       effects: returns the ith element on the list. 
-       returns: the ith StructureName pointer. 
-    */
-
 /* 
  *  #### XRT utility functions ####
  */
