@@ -94,7 +94,7 @@ char *parseStages(char *stages_spec)
    return buf;
 }
 
-void send_SelectNode_event(DBINT sk)
+void send_SelectNode_event(int sk)
 {
     ux_devent_instance dei;
     tu_status_t status;
@@ -123,7 +123,7 @@ void nodeSelectionCB(Widget widget, XtPointer client_data,
    XrtGearSelectCallbackStruct *cbs =
      (XrtGearSelectCallbackStruct *)call_data;
    XrtGearObject nf, nodes;
-   DBINT *sk;
+   int *sk;
 
    if (cbs->reason == XRTGEAR_REASON_SELECT_END)
    {

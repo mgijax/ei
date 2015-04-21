@@ -59,7 +59,7 @@ char *parseStages(char *stages_spec);
     */
 
 
-void send_SelectNode_event(DBINT sk);
+void send_SelectNode_event(int sk);
    /*
       requires: 
          sk: structure key. 

@@ -19,13 +19,11 @@
  */
 
 #include <Xm/XrtList.h> /* for our chain implementation */
-#include <sybfront.h>   /* for the DBINT definition */
-
 
 /* the number of separate chains */
 #define HASHTBL_NUMCHAINS 100 
 
-typedef DBINT hashtbl_key;  /* keys used to store objects */
+typedef int hashtbl_key;  /* keys used to store objects */
 typedef hashtbl_key hashtbl_hashedkey;   /* hash derived from the object's key */
 
 
