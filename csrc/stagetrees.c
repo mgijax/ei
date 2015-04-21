@@ -1205,14 +1205,6 @@ char *structurename_getName(StructureName *stn)
     return stn->structure;
 }
 
-Boolean structurename_getMgiAdded(StructureName *stn)
-{
-    if (stn->mgiAdded == 1)
-       return True;
-
-    return False;
-}
-
 int structurename_getStructureNameKey(StructureName *stn)
 {
     return stn->_StructureName_key;

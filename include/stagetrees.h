@@ -1,7 +1,6 @@
 #ifndef STAGETREES_H
 #define STAGETREES_H
 
-
 /*
  * stagetrees.h
  *
@@ -42,7 +41,6 @@
 /* X includes */
 #include <X11/Intrinsic.h>
 /* Boolean type is defined in X11R5/Intrinsic.h */
-
 
 /* Our includes */
 
@@ -229,9 +227,6 @@ void structurename_destroy(StructureName *stn);
    /* macro to return _Structure_key attribute */ 
 
 
-#define structurename_getModificationDate(stn) stn->modification_date
-   /* macro to return a static pointer to mod. date variable */ 
-
 int structurename_cmp_proc(XtPointer sn1, XtPointer sn2);
    /* comparison proc for StructureNames stored in XrtLists
      requires:
@@ -248,10 +243,6 @@ char *structurename_getName(StructureName *stn);
 
 int structurename_getStructureNameKey(StructureName *stn);
    /* returns StructureName's _StructureName_key attribute */ 
-
-Boolean structurename_getMgiAdded(StructureName *stn);
-   /* returns StructureName's mgiAdded attribute */ 
-   
 
 /* 
  *  #### StageTree Object ####
