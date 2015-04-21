@@ -175,31 +175,9 @@ int structure_getStage(Structure *structure);
    /* returns the stage number to which this structure belongs */ 
 
 
-xrtlist structure_getAliases(Structure *structure, Boolean mgi, xrtlist alist);
-   /* returns aliases (StructureNames) associated with this structure */ 
-
-
-void structure_deleteNameByKey(Structure *structure, int namekey);
-   /* deletes the StructureName object from structure with _StructureName_key
-      == namekey.  If namekey doesn't exist in the list of StructureNames
-      then prints message to stdout. */ 
-
 /* forward reference to structureName */
 struct structurename;
 typedef struct structurename StructureName; 
-
-StructureName *structure_getPreferredStructureName(Structure *structure);
-   /*
-     requires: 
-         structure: A pointer to a valid, initialized Structure object.
-     effects: Looks up the StructureName in the names list associated with
-              this structure, and finds the one with the _StructureName_Key
-              matching that stored in this structure. 
-     modifies: nothing.
-     returns: a pointer to the preferred StructureName, or NULL if an 
-              error occurs. 
-    */
-
 
 /* 
  *  #### StructureName Object ####

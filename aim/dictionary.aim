@@ -25,7 +25,6 @@ CALLS
      stagetrees_deleteStructureByKey("int");
      stagetrees_isStageNodeKey("int") : "Boolean";
      
-     structure_deleteNameByKey("Structure *", "int");
      structure_getStructureKey("Structure *") : "int";
      structure_getStage("Structure *") : "int";
      structure_getPrintName("Structure *") : "char *";

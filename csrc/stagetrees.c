@@ -1140,28 +1140,6 @@ void structurename_xrt_destroyproc(XrtGearObject object,
     structurename_destroy(stn);
 }
 
-
-StructureName *structure_getPreferredStructureName(Structure *structure)
-{
-    /* search the list of names for the one referenced by structure */
-    int i, itemcnt;
-    StructureName *preferred=NULL;
-    XrtGearObject list = structure_getnames(structure);
-
-    itemcnt = XrtGearListGetItemCount(list);
-
-    for (i=0; i<itemcnt; i++)
-    {
-       StructureName *stn = *(StructureName **)XrtGearListGetItem(list, i);
-       if (structure_getStructureNameKey(structure) == structurename_getStructureNameKey(stn))
-       {   /* then we've found the preferred name */
-           preferred=stn;
-       }
-    }
-
-    return preferred;
-}
-
 int structure_getStage(Structure *structure)
 {
     return structure->stage;
@@ -1182,30 +1160,6 @@ char *structure_getPrintName(Structure *structure)
     return structure->printName;
 }
 
-void structure_deleteNameByKey(Structure *structure, int namekey)
-{
-    XrtGearObject names;
-    StructureName stn, *stnp;
-    int namepos;
-
-    /* set up the search record */
-    stn._StructureName_key = namekey;
-    stnp = &stn;
-
-    names = structure_getnames(structure);
-
-    namepos = XrtGearListFind(names, &stnp);
-
-    if (namepos == XRTGEAR_LIST_ITEM_NOT_FOUND)
-    {
-       printf("Cannot delete non-existent name/alias");
-    }
-    else  /* delete the name */
-    {
-       XrtGearListDelete(names,namepos);
-    }
-}
- 
 /* 
  * #### StructureName methods ####
  */ 
@@ -1281,36 +1235,3 @@ StructureName *StructureNameList_getitem(xrtlist list, int i)
     return sn;
 }
 
-xrtlist structure_getAliases(Structure *structure, Boolean mgi, xrtlist alist)
-{
-    int i, itemcnt;
-    XrtGearObject list = structure_getnames(structure);
-    int pnkey;
-    StructureName *stn;
-
-    /* find the preferred name key, so we don't include it in the aliases */
-    stn = structure_getPreferredStructureName(structure);
-
-    pnkey = structure_getStructureNameKey(stn);
-
-    itemcnt = XrtGearListGetItemCount(list);
-
-    for (i=0; i<itemcnt; i++)
-    {
-        StructureName *stn = *(StructureName **)XrtGearListGetItem(list, i);
-        if (structurename_getStructureNameKey(stn) != pnkey)
-        {
-           if( mgi && structurename_getMgiAdded(stn) )
-           {
-               StructureNameList_append(alist, stn);
-           }
-           else if( !mgi && !structurename_getMgiAdded(stn) )
-           {
-               StructureNameList_append(alist, stn);
-           }
-        }
-    }
-
-    return alist;
-}
- 
