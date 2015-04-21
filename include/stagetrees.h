@@ -159,14 +159,6 @@ void structurename_xrt_destroyproc(XrtGearObject object,
    /* macro to return list of StructureNames assoc. w/this structure */ 
 
 
-#define structure_getModificationDate(st) st->modification_date
-   /* macro to return modification_date attribute */ 
-
-
-#define structure_getCreationDate(st) st->creation_date
-   /* macro to return creation_date attribute */ 
-
-
 int structure_getStructureKey(Structure *structure);
    /* returns _Structure_key attribute for structure */ 
 
