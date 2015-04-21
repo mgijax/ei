@@ -124,7 +124,7 @@ int node_compare_proc(XtPointer item1, XtPointer item2)
    return strncasecmp(buffer1, buffer2, STRUCTURENAMELEN);
 }
 
-Boolean stagetrees_isStageNodeKey(DBINT sk)
+Boolean stagetrees_isStageNodeKey(int sk)
 {
    int i;
    for (i=0;i<MAXSTAGE; i++)  
@@ -328,7 +328,7 @@ void stagetrees_unloadStages( Boolean resetrepaint )
    stagetrees_setProgressLabel(False, PROGRESS_UNLOADING, 28);
 }
 
-void stagetrees_deleteStructureByKey(DBINT sk)
+void stagetrees_deleteStructureByKey(int sk)
 {
    Structure *s = stagetrees_getStructureByKey(sk);
 
@@ -352,7 +352,7 @@ StageTree *stagetrees_getStageTree(int stage)
 }
 
 
-Structure *stagetrees_getStructureByKey(DBINT sk)
+Structure *stagetrees_getStructureByKey(int sk)
 {
     StageTree *stagetree;
     Structure *structure;
@@ -370,7 +370,7 @@ Structure *stagetrees_getStructureByKey(DBINT sk)
     return NULL;
 }
 
-Structure *stagetrees_select(DBINT sk)
+Structure *stagetrees_select(int sk)
 {
     /* we don't know the stage (well, we do, but...), so let's find it */
     StageTree *stagetree;
@@ -645,7 +645,7 @@ void stagetree_deleteStructures(StageTree *stagetree, Widget node)
      int i, child_count;
      XrtGearObject child_list = NULL;
      Widget *children;
-     DBINT *sk;  /* structure key */
+     int *sk;  /* structure key */
 
      XtVaGetValues(node,
                    XmNxrtGearNodeChildList, &child_list,
@@ -680,7 +680,7 @@ void stagetree_deleteStructures(StageTree *stagetree, Widget node)
         stagetree_deleteStructureByKey(stagetree, *sk);
 }
 
-void stagetree_deleteStructureByKey(StageTree *stagetree, DBINT sk)
+void stagetree_deleteStructureByKey(StageTree *stagetree, int sk)
 {
    Structure *st;
 
@@ -844,12 +844,12 @@ void stagetree_AddStructureNames(StageTree *stagetree)
     dbproc = mgi_dbexec(buf);
     while (mgi_dbresults(dbproc) != NO_MORE_RESULTS)
     {
-       dbbind(dbproc, 1, INTBIND, (DBINT) 0, (BYTE *) &(tmpstn._StructureName_key)); 
-       dbbind(dbproc, 2, INTBIND, (DBINT) 0, (BYTE *) &(tmpstn._Structure_key)); 
-       dbbind(dbproc, 3, STRINGBIND, (DBINT) 0, tmpstn.structure); 
-       dbbind(dbproc, 4, BITBIND, (DBINT) 0, (BYTE *) &(tmpstn.mgiAdded)); 
-       dbbind(dbproc, 5, DATETIMEBIND, (DBINT) 0, (BYTE *) &(tmpstn.creation_date));
-       dbbind(dbproc, 6, DATETIMEBIND, (DBINT) 0, (BYTE *) &(tmpstn.modification_date));
+       dbbind(dbproc, 1, INTBIND, (int) 0, (BYTE *) &(tmpstn._StructureName_key)); 
+       dbbind(dbproc, 2, INTBIND, (int) 0, (BYTE *) &(tmpstn._Structure_key)); 
+       dbbind(dbproc, 3, STRINGBIND, (int) 0, tmpstn.structure); 
+       dbbind(dbproc, 4, BITBIND, (int) 0, (BYTE *) &(tmpstn.mgiAdded)); 
+       dbbind(dbproc, 5, DATETIMEBIND, (int) 0, (BYTE *) &(tmpstn.creation_date));
+       dbbind(dbproc, 6, DATETIMEBIND, (int) 0, (BYTE *) &(tmpstn.modification_date));
 
        while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS)
        {
@@ -981,21 +981,21 @@ void stagetree_AddStructures(StageTree *stagetree)
     dbproc = mgi_dbexec(buf);
     while (mgi_dbresults(dbproc) != NO_MORE_RESULTS)
     {
-       dbbind(dbproc, 1, INTBIND, (DBINT) 0, (BYTE *) &(tmpst._Structure_key));
-       dbbind(dbproc, 2, INTBIND, (DBINT) 0, (BYTE *) &(tmpst._Parent_key));
-       dbbind(dbproc, 3, INTBIND, (DBINT) 0, (BYTE *) &(tmpst._StructureName_key));
-       dbbind(dbproc, 4, INTBIND, (DBINT) 0, (BYTE *) &(tmpst._Stage_key));
-       dbbind(dbproc, 5, INTBIND, (DBINT) 0, (BYTE *) &(tmpst._System_key));
-       dbbind(dbproc, 6, INTBIND, (DBINT) 0, (BYTE *) &(tmpst.edinburghKey));
-       dbbind(dbproc, 7, STRINGBIND, (DBINT) 0, tmpst.printName);
-       dbbind(dbproc, 8, INTBIND, (DBINT) 0, (BYTE *) &(tmpst.treeDepth));
-       dbbind(dbproc, 9, BITBIND, (DBINT) 0, (BYTE *) &(tmpst.printStop));
-       dbbind(dbproc, 10, INTBIND, (DBINT) 0, (BYTE *) &(tmpst.topoSort));
-       dbbind(dbproc, 11, INTBIND, (DBINT) 0, (BYTE *) &(tmpst.inheritSystem));
-       dbbind(dbproc, 12, STRINGBIND, (DBINT) 0, tmpst.structureNote);
-       dbbind(dbproc, 13, DATETIMEBIND, (DBINT) 0, (BYTE *) &(tmpst.creation_date));
-       dbbind(dbproc, 14, DATETIMEBIND, (DBINT) 0, (BYTE *) &(tmpst.modification_date));
-       dbbind(dbproc, 15, INTBIND, (DBINT) 0, (BYTE *) &(tmpst.stage)); 
+       dbbind(dbproc, 1, INTBIND, (int) 0, (BYTE *) &(tmpst._Structure_key));
+       dbbind(dbproc, 2, INTBIND, (int) 0, (BYTE *) &(tmpst._Parent_key));
+       dbbind(dbproc, 3, INTBIND, (int) 0, (BYTE *) &(tmpst._StructureName_key));
+       dbbind(dbproc, 4, INTBIND, (int) 0, (BYTE *) &(tmpst._Stage_key));
+       dbbind(dbproc, 5, INTBIND, (int) 0, (BYTE *) &(tmpst._System_key));
+       dbbind(dbproc, 6, INTBIND, (int) 0, (BYTE *) &(tmpst.edinburghKey));
+       dbbind(dbproc, 7, STRINGBIND, (int) 0, tmpst.printName);
+       dbbind(dbproc, 8, INTBIND, (int) 0, (BYTE *) &(tmpst.treeDepth));
+       dbbind(dbproc, 9, BITBIND, (int) 0, (BYTE *) &(tmpst.printStop));
+       dbbind(dbproc, 10, INTBIND, (int) 0, (BYTE *) &(tmpst.topoSort));
+       dbbind(dbproc, 11, INTBIND, (int) 0, (BYTE *) &(tmpst.inheritSystem));
+       dbbind(dbproc, 12, STRINGBIND, (int) 0, tmpst.structureNote);
+       dbbind(dbproc, 13, DATETIMEBIND, (int) 0, (BYTE *) &(tmpst.creation_date));
+       dbbind(dbproc, 14, DATETIMEBIND, (int) 0, (BYTE *) &(tmpst.modification_date));
+       dbbind(dbproc, 15, INTBIND, (int) 0, (BYTE *) &(tmpst.stage)); 
 
        /* iterate through the Structure results. */
        while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS)
@@ -1007,7 +1007,7 @@ void stagetree_AddStructures(StageTree *stagetree)
     (void) mgi_dbclose(dbproc);
 }
 
-Structure *stagetree_getStructureByKey(StageTree *stagetree, DBINT sk)
+Structure *stagetree_getStructureByKey(StageTree *stagetree, int sk)
 {
    HashTable *ht = stagetree->Structures;
    Structure *hst;    /* a hashed structure */
@@ -1032,13 +1032,13 @@ Boolean stagetree_isEmpty(StageTree *stagetree)
  * #### XRT Utility functions ####
  */ 
 
-Widget createNodeFolder(Widget parent, char *widgetName, char *folderLabel, DBINT structure_key)
+Widget createNodeFolder(Widget parent, char *widgetName, char *folderLabel, int structure_key)
 {
    Widget folder;
-   DBINT *stk;
+   int *stk;
 
 
-   stk = (DBINT *)malloc(sizeof(DBINT));
+   stk = (int *)malloc(sizeof(int));
 
    if(!stk)
        stagetrees_error("Could not allocate memory for node folder sk");
@@ -1113,7 +1113,7 @@ void structure_destroy(Structure *st)
        
     if (st->node)
     {
-       DBINT *sk;  /* structure key */
+       int *sk;  /* structure key */
        if(!XmIsXrtNode(st->node))
           stagetrees_error("Attempt to free a non-node object");
 
@@ -1182,29 +1182,14 @@ int structure_getStage(Structure *structure)
 }
 
 
-DBINT structure_getStructureKey(Structure *structure)
+int structure_getStructureKey(Structure *structure)
 {
     return structure->_Structure_key;
 }
 
-DBINT structure_getStageKey(Structure *structure)
+int structure_getStageKey(Structure *structure)
 {
     return structure->_Stage_key;
-}
-
-DBINT structure_getSystemKey(Structure *structure)
-{
-    return structure->_System_key;
-}
-
-DBINT structure_getInheritSystem(Structure *structure)
-{
-    return structure->inheritSystem;
-}
-
-DBINT structure_getEdinburghKey(Structure *structure)
-{
-    return structure->edinburghKey; 
 }
 
 char *structure_getPrintName(Structure *structure)
@@ -1212,22 +1197,7 @@ char *structure_getPrintName(Structure *structure)
     return structure->printName;
 }
 
-
-/* defined for TeleUSE's sake.  TeleUSE doesn't like to 
-   accept non-opaque types... */
-
-DBDATETIME *structure_getModificationDatePtr(Structure *structure)
-{
-   return &(structure_getModificationDate(structure));
-}
-
-DBDATETIME *structure_getCreationDatePtr(Structure *structure)
-{
-   return &(structure_getCreationDate(structure));
-}
-
-
-void structure_deleteNameByKey(Structure *structure, DBINT namekey)
+void structure_deleteNameByKey(Structure *structure, int namekey)
 {
     XrtGearObject names;
     StructureName stn, *stnp;
@@ -1304,7 +1274,7 @@ Boolean structurename_getMgiAdded(StructureName *stn)
     return False;
 }
 
-DBINT structurename_getStructureNameKey(StructureName *stn)
+int structurename_getStructureNameKey(StructureName *stn)
 {
     return stn->_StructureName_key;
 }
@@ -1330,7 +1300,7 @@ xrtlist structure_getAliases(Structure *structure, Boolean mgi, xrtlist alist)
 {
     int i, itemcnt;
     XrtGearObject list = structure_getnames(structure);
-    DBINT pnkey;
+    int pnkey;
     StructureName *stn;
 
     /* find the preferred name key, so we don't include it in the aliases */

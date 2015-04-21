@@ -68,17 +68,17 @@ typedef XrtGearObject xrtlist;
 typedef struct structure 
 {
    /* schema-derived stuff */
-   DBINT _Structure_key;
-   DBINT _Parent_key;
-   DBINT _StructureName_key;
-   DBINT _Stage_key;
-   DBINT _System_key;
-   DBINT edinburghKey;
+   int _Structure_key;
+   int _Parent_key;
+   int _StructureName_key;
+   int _Stage_key;
+   int _System_key;
+   int edinburghKey;
    char printName[PRINTNAMELEN];
-   DBINT treeDepth;
+   int treeDepth;
    DBBIT printStop;
-   DBINT topoSort;
-   DBINT inheritSystem;
+   int topoSort;
+   int inheritSystem;
    char structureNote[STRUCTURENOTELEN];
    DBDATETIME creation_date;
    DBDATETIME modification_date;
@@ -167,42 +167,12 @@ void structurename_xrt_destroyproc(XrtGearObject object,
    /* macro to return creation_date attribute */ 
 
 
-DBDATETIME *structure_getModificationDatePtr(Structure *structure); 
-   /* requires:
-         structure: A Structure object. 
-      effects: returns a static pointer to modification date variable.
-      modifies: local static DBDATETIME variable. 
-      returns: pointer to static DBDATETIME variable.
-    */
-
-
-DBDATETIME *structure_getCreationDatePtr(Structure *structure); 
-   /* requires:
-         structure: A Structure object. 
-      effects: returns a static pointer to creation date variable.
-      modifies: local static DBDATETIME variable. 
-      returns: pointer to static DBDATETIME variable.
-    */
-
-
-DBINT structure_getStructureKey(Structure *structure);
+int structure_getStructureKey(Structure *structure);
    /* returns _Structure_key attribute for structure */ 
 
 
-DBINT structure_getStageKey(Structure *structure);
+int structure_getStageKey(Structure *structure);
    /* returns _Stage_key attribute for structure */ 
-
-
-DBINT structure_getSystemKey(Structure *structure);
-   /* returns _System_key attribute for structure */ 
-
-
-DBINT structure_getInheritSystem(Structure *structure);
-   /* returns inheritSystem attribute for structure */ 
-
-
-DBINT structure_getEdinburghKey(Structure *structure);
-   /* returns edinburghKey attribute for structure */ 
 
 
 char *structure_getPrintName(Structure *structure);
@@ -225,7 +195,7 @@ xrtlist structure_getAliases(Structure *structure, Boolean mgi, xrtlist alist);
    /* returns aliases (StructureNames) associated with this structure */ 
 
 
-void structure_deleteNameByKey(Structure *structure, DBINT namekey);
+void structure_deleteNameByKey(Structure *structure, int namekey);
    /* deletes the StructureName object from structure with _StructureName_key
       == namekey.  If namekey doesn't exist in the list of StructureNames
       then prints message to stdout. */ 
@@ -254,8 +224,8 @@ StructureName *structure_getPreferredStructureName(Structure *structure);
 
 struct structurename 
 {
-   DBINT _StructureName_key;
-   DBINT _Structure_key;
+   int _StructureName_key;
+   int _Structure_key;
    char structure[STRUCTURENAMELEN];
    DBBIT mgiAdded;
    DBDATETIME creation_date;
@@ -314,7 +284,7 @@ char *structurename_getName(StructureName *stn);
    /* returns StructureName's name attribute */ 
    
 
-DBINT structurename_getStructureNameKey(StructureName *stn);
+int structurename_getStructureNameKey(StructureName *stn);
    /* returns StructureName's _StructureName_key attribute */ 
 
 Boolean structurename_getMgiAdded(StructureName *stn);
@@ -421,7 +391,7 @@ void stagetree_AddStructure(StageTree *stagetree, Structure *st);
    */
 
 
-void stagetree_deleteStructureByKey(StageTree *stagetree, DBINT sk);
+void stagetree_deleteStructureByKey(StageTree *stagetree, int sk);
   /* 
      requires: 
          stagetree: pointer to a stagetree.
@@ -433,7 +403,7 @@ void stagetree_deleteStructureByKey(StageTree *stagetree, DBINT sk);
    */
 
 
-Structure *stagetree_getStructureByKey(StageTree *stagetree, DBINT sk);
+Structure *stagetree_getStructureByKey(StageTree *stagetree, int sk);
   /* 
      requires:
          stagetree: pointer to a stagetree.
@@ -519,7 +489,7 @@ void stagetrees_destroy(void);
    */
 
 
-Boolean stagetrees_isStageNodeKey(DBINT sk);
+Boolean stagetrees_isStageNodeKey(int sk);
    /*
       requires:
          sk: A _Structure_key.
@@ -609,7 +579,7 @@ void stagetrees_unloadStages(Boolean resetrepaint);
    */
 
 
-Structure *stagetrees_getStructureByKey(DBINT sk);
+Structure *stagetrees_getStructureByKey(int sk);
    /* requires:
         sk: _Structure_key
       effects: returns a Structure object from whatever StageTree contains it
@@ -619,7 +589,7 @@ Structure *stagetrees_getStructureByKey(DBINT sk);
     */
 
 
-Structure *stagetrees_select(DBINT sk);
+Structure *stagetrees_select(int sk);
    /* requires:
         sk: _Structure_key
       effects: Selects the current structure in whatever stagetree it occurs,
@@ -642,7 +612,7 @@ void stagetrees_refresh(void);
     */
 
 
-void stagetrees_deleteStructureByKey(DBINT sk);
+void stagetrees_deleteStructureByKey(int sk);
    /* 
       requires: 
         sk: _Structure_key of structure to remove from whatever stagetree
@@ -680,7 +650,7 @@ StructureName *StructureNameList_getitem(xrtlist list, int i);
  */
 
 Widget createNodeFolder(Widget parent, char *widgetName,
-                        char *folderLabel, DBINT sk);
+                        char *folderLabel, int sk);
    /*
       requires:
            parent: an XmXrtOutliner, XmXrtNode, or XmXrtNodeFolder.
