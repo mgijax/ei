@@ -250,12 +250,19 @@ int structurename_getStructureNameKey(StructureName *stn);
  */
 
 
+#define stagetree_getStage(st) st->stage
+   /* macro to return the stage number associated with this tree */
+
+
+#define stagetree_getstageroot(st) st->stageroot
+   /* macro to return the presentation element for this stagetree */
+
+
 typedef struct stagetree 
 {
    HashTable *Structures;
    int stage;    /* stage number associated with this tree */
-   Widget stageroot; /* Stage nodes for this stage tree, parent is 
-                        "Stages" node */
+   Widget stageroot; /* Stage nodes for this stage tree, parent is "Stages" node */
 } StageTree;
 
 
@@ -279,14 +286,6 @@ void stagetree_destroy(StageTree *stagetree);
      modifies: stagetree. 
      returns: nothing.
     */
-
-
-#define stagetree_getStage(st) st->stage
-   /* macro to return the stage number associated with this tree */
-
-
-#define stagetree_getstageroot(st) st->stageroot
-   /* macro to return the presentation element for this stagetree */
 
 
 void stagetree_AddStructureNames(StageTree *stagetree);
