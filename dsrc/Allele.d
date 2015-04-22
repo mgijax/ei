@@ -659,7 +659,6 @@ rules:
           AddSQL.list := top->QueryList;
           AddSQL.item := top->Symbol->text.value;
           AddSQL.key := top->ID->text;
-	  --AddSQL.transaction := false;
           send(AddSQL, 0);
 
 	  -- If add was sucessful, re-initialize the form
@@ -1004,7 +1003,7 @@ rules:
 	    ModifySQL.cmd := cmd;
 	    ModifySQL.list := top->QueryList;
 	    ModifySQL.reselect := true;
-	    ModifySQL.transaction := false;
+	    --ModifySQL.transaction := false;
 	    send(ModifySQL, 0);
           end if;
 
