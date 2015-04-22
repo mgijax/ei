@@ -167,7 +167,7 @@ locals:
 
 	molecularNotesRequired : boolean;  -- Are Molecular Notes a required field for the edit?
 	modifyCache : boolean;
-	modifyCacheCre : boolean;
+	--modifyCacheCre : boolean;
 
 	pendingStatusKey : string;
 
@@ -435,7 +435,7 @@ rules:
 	  isMixed : integer := 0;
 
 	  modifyCache := false;
-	  modifyCacheCre := false;
+	  --modifyCacheCre := false;
 
 	  if (not top.allowEdit) then
 	    return;
@@ -601,7 +601,6 @@ rules:
 	  send(ModifyAlleleSubType, 0);
 	  send(ModifyMolecularMutation, 0);
 	  send(ModifyImagePaneAssociation, 0);
-
 	  send(ModifyMutantCellLine, 0);
 
 	  -- TR 5672
@@ -660,7 +659,7 @@ rules:
           AddSQL.list := top->QueryList;
           AddSQL.item := top->Symbol->text.value;
           AddSQL.key := top->ID->text;
-	  AddSQL.transaction := false;
+	  --AddSQL.transaction := false;
           send(AddSQL, 0);
 
 	  -- If add was sucessful, re-initialize the form
@@ -731,7 +730,7 @@ rules:
 	  transRefs : integer := 0;
 
 	  modifyCache := false;
-	  modifyCacheCre := false;
+	  --modifyCacheCre := false;
 
 	  if (not top.allowEdit) then
 	    return;
@@ -1078,10 +1077,10 @@ rules:
 	  ProcessNoteForm.objectKey := currentRecordKey;
 	  ProcessNoteForm.keyDeclared := noteKeyDeclared;
 	  send(ProcessNoteForm, 0);
-	  if (top->mgiNoteDriverForm.sql.length > 0) then
-	    modifyCacheCre := true;
-	    noteKeyDeclared := true;
-	  end if;
+	  --if (top->mgiNoteDriverForm.sql.length > 0) then
+	    --modifyCacheCre := true;
+	    --noteKeyDeclared := true;
+	  --end if;
 	  cmd := cmd + top->mgiNoteDriverForm.sql;
 
 	  -- Modify Marker Description
