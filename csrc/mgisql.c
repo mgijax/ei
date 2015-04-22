@@ -171,12 +171,10 @@ char *exec_all_reloadLabel(char *key)
   {
       sprintf(buf,"exec ALL_reloadLabel %s\n", key);
   }
-  /*
   else
   {
-      sprintf(buf,"exec ALL_reloadLabel %s\n", key);
+      sprintf(buf,"select * from ALL_reloadLabel (%s);\n", key);
   }
-  */
   return(buf);
 }
 

@@ -30,6 +30,9 @@ static StageTrees stagetrees;
 /* Node styles used to set appearance of folders */
 static Widget defaultnodestyle, leafnodestyle;
 
+/* dbprocess */
+static DBPROCESS *dbproc;
+
 /* end globals */
 
 /* local protos */
@@ -592,7 +595,6 @@ void stagetrees_loadStages(char *from, char *where)
     /* do query to obtain affected stages */
     /* assume we have no affected stages */
 
-    DBPROCESS *dbproc;
     dbproc = mgi_dbexec(buf);
     while (mgi_dbresults(dbproc) != NO_MORE_RESULTS)
     {
@@ -840,7 +842,6 @@ void stagetree_AddStructureNames(StageTree *stagetree)
                 "and s._Structure_key = sn._Structure_key ",
                 stage);
 
-    DBPROCESS *dbproc;
     dbproc = mgi_dbexec(buf);
     while (mgi_dbresults(dbproc) != NO_MORE_RESULTS)
     {
@@ -977,7 +978,6 @@ void stagetree_AddStructures(StageTree *stagetree)
                 "order by s.treeDepth asc ",
                  stage);
 
-    DBPROCESS *dbproc;
     dbproc = mgi_dbexec(buf);
     while (mgi_dbresults(dbproc) != NO_MORE_RESULTS)
     {
