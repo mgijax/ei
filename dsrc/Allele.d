@@ -1003,7 +1003,7 @@ rules:
 	    ModifySQL.cmd := cmd;
 	    ModifySQL.list := top->QueryList;
 	    ModifySQL.reselect := true;
-	    --ModifySQL.transaction := false;
+	    ModifySQL.transaction := false;
 	    send(ModifySQL, 0);
           end if;
 
