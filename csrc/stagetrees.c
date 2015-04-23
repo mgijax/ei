@@ -197,7 +197,6 @@ void stagetrees_init(Widget outliner, Widget progressMeter)
    stagetrees.progress = progressMeter;
    /* initially, no progress label */
    stagetrees_setProgressLabel(False, PROGRESS_LOADING, 28); 
-   stagetrees.dbproc = (DBPROCESS *) mgi_dbopen();
    stagetrees.outliner = outliner;
 
    /* set the selection policy and other features of the outliner */
@@ -250,7 +249,6 @@ void stagetrees_init(Widget outliner, Widget progressMeter)
 void stagetrees_destroy()
 {
    stagetrees_unloadStages(False);   /* get rid of all non-stages nodes and structures */
-   (void) mgi_dbclose(stagetrees.dbproc);  /* close our connection to the DB */
 
    /* finally, get rid of the stagesroot widget */
    /* XtDestroyWidget(stagetrees.stagesroot); */
@@ -848,9 +846,6 @@ void stagetree_AddStructureNames(StageTree *stagetree)
        dbbind(dbproc, 1, INTBIND, (int) 0, (BYTE *) &(tmpstn._StructureName_key)); 
        dbbind(dbproc, 2, INTBIND, (int) 0, (BYTE *) &(tmpstn._Structure_key)); 
        dbbind(dbproc, 3, STRINGBIND, (int) 0, tmpstn.structure); 
-       dbbind(dbproc, 4, BITBIND, (int) 0, (BYTE *) &(tmpstn.mgiAdded)); 
-       dbbind(dbproc, 5, DATETIMEBIND, (int) 0, (BYTE *) &(tmpstn.creation_date));
-       dbbind(dbproc, 6, DATETIMEBIND, (int) 0, (BYTE *) &(tmpstn.modification_date));
 
        while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS)
        {

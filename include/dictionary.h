@@ -19,10 +19,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-/* Sybase includes */
-#include <sybfront.h>
-#include <sybdb.h>
-
 /* teleuse includes */
 #include <teleuse/tu_list.h>
 #include <teleuse/tu_runtime.h>

@@ -190,9 +190,6 @@ struct structurename
    int _StructureName_key;
    int _Structure_key;
    char structure[STRUCTURENAMELEN];
-   DBBIT mgiAdded;
-   DBDATETIME creation_date;
-   DBDATETIME modification_date;
 }; /* StructureName is previously-defined typedef for this struct */
 
 
@@ -388,13 +385,10 @@ Boolean stagetree_isEmpty(StageTree *stagetree);
 typedef struct stagetrees 
 { 
    StageTree st[MAXSTAGE];  /* stage trees (statically allocated objs) */
-   DBPROCESS *dbproc;  /* process used to obtain stage tree info from DB */
    Widget outliner;    /* manager for all stage trees */
    Widget progress;    /* Progress meter used by GUI. (XmXrtProgress) */
    Widget stagesroot;  /* Parent node of all stage trees. */
 } StageTrees;
-
-#define stagetrees_getdbproc(sts) sts.dbproc
 
 void stagetrees_error(char *msg);
   /*
