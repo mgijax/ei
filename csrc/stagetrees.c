@@ -30,9 +30,6 @@ static StageTrees stagetrees;
 /* Node styles used to set appearance of folders */
 static Widget defaultnodestyle, leafnodestyle;
 
-/* dbprocess */
-static DBPROCESS *dbproc;
-
 /* end globals */
 
 /* local protos */
@@ -43,24 +40,6 @@ void turnOnRepaint (XtPointer client_data, XtIntervalId *ID);
       for a description of this function's arguments. client_data
       and ID are not used. */
 
-static void stagetrees_internalLoadStages(int countdstages, int *distinctstages);
-   /* 
-      The second phase of loading stage trees, called only from within this 
-      module after a list of distinct stages affected has been created.
-
-      requires:
-         countdstages: count of the number of distinct stages.
-         distictstages: an array of countdstages integers, each one
-             a number of a stage. 
-      effects: 
-         Updates the stagetrees indicated in distinct stages by reading
-         all data in the Structure tables that are newer than the last-loaded
-         timestamps for the specific stages. 
-
-      modifies: nothing.
-      returns: nothing.
-    */
-  
 int node_compare_proc(XtPointer item1, XtPointer item2);
    /* 
       requires:
@@ -103,121 +82,6 @@ void setFolderOpen(Widget child);
       modifies: state and presentation of the child in its stagetree. 
       returns: nothing.
     */
-
-/* 
- * ####  Sybase-specific: StageTrees module functions ####
- */
-
-void stagetrees_loadStages(char *from, char *where)
-{
-    char buf[BUFSIZ];
-
-    int distinctstages[MAXSTAGE];
-    /* a count of the number of distinct stages we are processing */
-    int countdstages = 0;
-
-    /*tu_printf("DEBUG: stagetrees_loadStages\n");*/
-
-    /* determine what stages are affected by the current query.  It would
-       be nice to read them from the results already obtained, but the
-       XmList doesn't support iteration and the generic query routines
-       used by the editing interface cannot save the stage attribute */
-
-    sprintf(buf,"select distinct(t.stage) %s %s", from, where); 
-
-    /* do query to obtain affected stages */
-    /* assume we have no affected stages */
-
-    dbproc = mgi_dbexec(buf);
-    while (mgi_dbresults(dbproc) != NO_MORE_RESULTS)
-    {
-       while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS)
-       {
-           if (countdstages < MAXSTAGE)
-              distinctstages[countdstages++] = atoi(mgi_getstr(dbproc, 1));
-       }
-    }
-    (void) mgi_dbclose(dbproc);
-
- /* cut here, provide countdstages and distinctstages as load args */
-
-    stagetrees_internalLoadStages(countdstages, distinctstages);
-}
-
-void stagetree_AddStructureNames(StageTree *stagetree)
-{
-    /* iterate through the StructureName results. Save each result
-       in the tree's Structure hash table by _Structure_key, appending
-       or replacing names/aliases according to their _StructureName_key. */
-
-    char buf[BUFSIZ];
-    int stage = stagetree_getStage(stagetree);
-    static StructureName tmpstn;
-
-    /*tu_printf("DEBUG: stagetree_AddStructureNames\n");*/
-
-    sprintf(buf,"select sn.* "
-                "from GXD_Structure s, GXD_StructureName sn, "
-                "     GXD_TheilerStage t "
-                "where t.stage = %d "
-                "and t._Stage_key = s._Stage_key "
-                "and s._Structure_key = sn._Structure_key ",
-                stage);
-
-    dbproc = mgi_dbexec(buf);
-    while (mgi_dbresults(dbproc) != NO_MORE_RESULTS)
-    {
-       dbbind(dbproc, 1, INTBIND, (int) 0, (BYTE *) &(tmpstn._StructureName_key)); 
-       dbbind(dbproc, 2, INTBIND, (int) 0, (BYTE *) &(tmpstn._Structure_key)); 
-       dbbind(dbproc, 3, STRINGBIND, (int) 0, tmpstn.structure); 
-
-       while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS)
-       {
-          /*tu_printf("DEBUG: stagetree_AddStructureNames: Adding a structure name\n");*/
-          stagetree_AddStructureName(stagetree, &tmpstn);
-       }
-    }
-    (void) mgi_dbclose(dbproc);
-    /*tu_printf("DEBUG: end stagetree_AddStructureNames\n");*/
-}
-
-void stagetree_AddStructures(StageTree *stagetree)
-{
-    /* make sure we get results in ascending order of tree depth,
-       since it is important that new parents are created before
-       we attempt to link in their children */
-
-
-    char buf[BUFSIZ];
-    int stage = stagetree_getStage(stagetree);
-    static Structure tmpst; /* a temporary structure used for reading DB results */
-
-    sprintf(buf,"select s.*, t.stage "
-                "from GXD_Structure s, GXD_TheilerStage t "
-                "where t.stage = %d "
-                "and s._Stage_key = t._Stage_key "
-                "order by s.treeDepth asc ",
-                 stage);
-
-    dbproc = mgi_dbexec(buf);
-    while (mgi_dbresults(dbproc) != NO_MORE_RESULTS)
-    {
-       dbbind(dbproc, 1, INTBIND, (int) 0, (BYTE *) &(tmpst._Structure_key));
-       dbbind(dbproc, 2, INTBIND, (int) 0, (BYTE *) &(tmpst._Parent_key));
-       dbbind(dbproc, 3, INTBIND, (int) 0, (BYTE *) &(tmpst._StructureName_key));
-       dbbind(dbproc, 4, INTBIND, (int) 0, (BYTE *) &(tmpst._Stage_key));
-       dbbind(dbproc, 7, STRINGBIND, (int) 0, tmpst.printName);
-       dbbind(dbproc, 15, INTBIND, (int) 0, (BYTE *) &(tmpst.stage)); 
-
-       /* iterate through the Structure results. */
-       while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS)
-       {
-          /*tu_printf("DEBUG: stagetree_AddStructures: Adding a structure\n");*/
-          stagetree_AddStructure(stagetree, &tmpst);
-       }
-    }
-    (void) mgi_dbclose(dbproc);
-}
 
 /* 
  * ####  StageTrees module functions ####
@@ -634,7 +498,7 @@ void open_folders(StageTree *stagetree)
    setFolderOpen(sroot); 
 } 
 
-static void stagetrees_internalLoadStages(int countdstages, int *distinctstages)
+void stagetrees_internalLoadStages(int countdstages, int *distinctstages)
 {
     StageTree *stagetree;
     int i, rc;
