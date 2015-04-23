@@ -21,15 +21,7 @@
  *     - created
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-/* teleuse includes */
-
-/* Sybase includes */
-#include <sybfront.h>
-#include <sybdb.h>
+#include <dblib.h>
 
 /* XRT includes */
 #include <Xm/XrtGear.h>
@@ -69,6 +61,24 @@ enum progresstype {PROGRESS_LOADING, PROGRESS_UNLOADING};
 
 typedef XrtGearObject xrtlist;
 
+extern void stagetrees_internalLoadStages(int, int *);
+   /*   
+      The second phase of loading stage trees, called only from within this 
+      module after a list of distinct stages affected has been created.
+
+      requires:
+         countdstages: count of the number of distinct stages.
+         distictstages: an array of countdstages integers, each one
+             a number of a stage. 
+      effects: 
+         Updates the stagetrees indicated in distinct stages by reading
+         all data in the Structure tables that are newer than the last-loaded
+         timestamps for the specific stages. 
+
+      modifies: nothing.
+      returns: nothing.
+    */   
+  
 /* 
  *  #### Structure Object ####
  */

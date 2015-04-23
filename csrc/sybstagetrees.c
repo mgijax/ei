@@ -18,7 +18,6 @@
 
 #include <dblib.h>
 #include <stagetrees.h>
-#include <dictionary.h>
 
 /* 
  * ####  Sybase-specific: StageTrees module functions ####
