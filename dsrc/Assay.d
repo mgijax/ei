@@ -1885,8 +1885,8 @@ rules:
           key : string;
 	  unitsKey : string;
 	  size : string;
-	  rowKeyName : string := "v_gelRowKey";
-	  gelKeyName : string := "v_gelBandKey";
+	  rowKeyName : string := "gelRowKey";
+	  gelKeyName : string := "gelBandKey";
 	  keysDeclared : boolean := false;
 	  bandKeysDeclared : boolean := false;
 	  update : string := "";

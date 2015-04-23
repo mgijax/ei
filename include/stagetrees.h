@@ -49,8 +49,6 @@
 
 /* DEFINES */
 
-#define GLOBAL_DBTYPE   "sybase"
-
 /* the maximum length of a string (+1 over DB's definition, to hold null) */
 #define PRINTNAMELEN 256
 
