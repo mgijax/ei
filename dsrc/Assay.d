@@ -1823,7 +1823,7 @@ rules:
 
               ModifyStructure.source_widget := table;
               ModifyStructure.primaryID := GXD_GELLANESTRUCTURE;
-              ModifyStructure.key := MAX_KEY1;
+              ModifyStructure.key := MAX_KEY1 + keyName;
               ModifyStructure.row := row;
               send(ModifyStructure, 0);
               cmd := cmd + top->CVGel->ADClipboard.updateCmd;
