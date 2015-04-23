@@ -285,16 +285,6 @@ void stagetree_destroy(StageTree *stagetree);
     */
 
 
-void stagetree_AddStructureNames(StageTree *stagetree);
-   /* 
-     requires: 
-         stagetree: pointer to a stagetree.
-     effects: Does an incremental update of StructuresNames.
-     modifies: stagetree. 
-     returns: nothing.
-    */
-
-
 void stagetree_AddStructureName(StageTree *stagetree, StructureName *stn);
   /*
      requires:
@@ -305,16 +295,6 @@ void stagetree_AddStructureName(StageTree *stagetree, StructureName *stn);
      modifies: stagetree.
      returns: nothing.
    */
-
-
-void stagetree_AddStructures(StageTree *stagetree);
-   /* 
-     requires: 
-         stagetree: pointer to a stagetree.
-     effects: Does an incremental update of Structures.
-     modifies: stagetree. 
-     returns: nothing.
-    */
 
 
 void stagetree_AddStructure(StageTree *stagetree, Structure *st);
@@ -374,6 +354,46 @@ Boolean stagetree_isEmpty(StageTree *stagetree);
      returns: True if stagetree has no structures within it, false
               otherwise. 
    */
+
+
+/* 
+ *  #### Sybase-specific : StageTrees Object ####
+ */
+
+void stagetrees_loadStages(char *from, char *where);
+  /* 
+     requires:
+       from: null-terminated "from" clause that was used to query 
+             Structure results.
+       where: null-terminated "where" clause that was used to query 
+             Structure results.
+     effects: Called to "refresh"/load stage trees from the DB.  The
+              from/where is used to determine what stage trees
+              contain structure results that are returned by the query.
+              That is, if all structure results from the query belong to 
+              2 distinct stages, then only those 2 stage trees are refreshed. 
+     modifies: nothing.
+     returns: nothing.
+   */
+
+void stagetree_AddStructureNames(StageTree *stagetree);
+   /* 
+     requires: 
+         stagetree: pointer to a stagetree.
+     effects: Does an incremental update of StructuresNames.
+     modifies: stagetree. 
+     returns: nothing.
+    */
+
+
+void stagetree_AddStructures(StageTree *stagetree);
+   /* 
+     requires: 
+         stagetree: pointer to a stagetree.
+     effects: Does an incremental update of Structures.
+     modifies: stagetree. 
+     returns: nothing.
+    */
 
 
 /* 
@@ -477,23 +497,6 @@ StageTree *stagetrees_getStageTree(int stage);
      effects: returns the StageTree for stage from global stagetrees.
      modifies: nothing.
      returns: pointer to StageTree with stagenumber = stage.
-   */
-
-
-void stagetrees_loadStages(char *from, char *where);
-  /* 
-     requires:
-       from: null-terminated "from" clause that was used to query 
-             Structure results.
-       where: null-terminated "where" clause that was used to query 
-             Structure results.
-     effects: Called to "refresh"/load stage trees from the DB.  The
-              from/where is used to determine what stage trees
-              contain structure results that are returned by the query.
-              That is, if all structure results from the query belong to 
-              2 distinct stages, then only those 2 stage trees are refreshed. 
-     modifies: nothing.
-     returns: nothing.
    */
 
 
