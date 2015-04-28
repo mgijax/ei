@@ -64,7 +64,6 @@ extern char *dictionary_stage(char *);
 extern char *dictionary_system(char *);
 extern char *dictionary_select(char *);
 extern char *dictionary_mgiAlias(char *);
-extern char *dictionary_edinburghAlias(char *);
 extern char *dictionary_emaps(char *);
 
 /* DictionaryLib.d : no sql */

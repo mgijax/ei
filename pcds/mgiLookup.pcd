@@ -233,7 +233,7 @@ Module: mgiLookup
             vip_x = 90;
             vip_y = 1515;
           Group: User
-            cmd = "(\nselect _Term_key, term, 1 as i from VOC_Term where _Vocab_key = 27 and term like '[a-z]%'\nunion\nselect _Term_key, term, 2 as i from VOC_Term where _Vocab_key = 27 and term like '*%'\n)\norder by i, term\n";
+            cmd = "(\nselect _Term_key, term, 1 as i from VOC_Term where _Vocab_key = 27 and term not like '*%'\nunion\nselect _Term_key, term, 2 as i from VOC_Term where _Vocab_key = 27 and term like '*%'\n)\norder by i, term\n";
               {
                 Label = LookupLabel;
                 Group: Widget

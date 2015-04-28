@@ -410,19 +410,6 @@ char *dictionary_mgiAlias(char *key)
   return(buf);
 }
 
-char *dictionary_edinburghAlias(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select sn._StructureName_key, sn.structure \
-  	\nfrom GXD_StructureName sn, GXD_Structure s \
-  	\nwhere s._StructureName_key != sn._StructureName_key \
-  	\nand s._Structure_key = sn._Structure_key \
-  	\nand sn.mgiAdded = 0 \
-  	\nand sn._Structure_key = %s", key);
-  return(buf);
-}
-
 char *dictionary_emaps(char *key)
 {
   static char buf[TEXTBUFSIZ];

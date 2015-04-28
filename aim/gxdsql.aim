@@ -58,7 +58,6 @@ CALLS
         dictionary_system("char *")	: "char *";
         dictionary_select("char *")	: "char *";
         dictionary_mgiAlias("char *")	: "char *";
-        dictionary_edinburghAlias("char *")	: "char *";
         dictionary_emaps("char *")	: "char *";
 
         emaps_query1("char *")	        : "char *";

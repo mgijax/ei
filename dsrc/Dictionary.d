@@ -230,7 +230,6 @@ rules:
             -- list of tables in edit form
             tables := create list("widget");
             tables.append(top->mgiAliasTable->Table);
-            tables.append(top->edinburghAliasTable->Table);
 
             accTable := top->mgiAccessionTable->Table;
 
@@ -634,12 +633,6 @@ rules:
           ModifyAliases.addStructureMode := false;
           send(ModifyAliases, 0);
 
-          ModifyAliases.table := top->edinburghAliasTable->Table;
-          ModifyAliases.keyName := mgi_DBkey(GXD_STRUCTURENAME) + "_Edinburgh";
-          ModifyAliases.isMGIAdded := "0"; 
-          ModifyAliases.addStructureMode := false;
-          send(ModifyAliases, 0);
-
           --  Process Accession IDs
 
           ProcessAcc.table := accTable;
@@ -953,23 +946,6 @@ rules:
 	row := 0;
 	table := top->mgiAliasTable->Table;
 	cmd := dictionary_mgiAlias(current_structurekey);
-        dbproc := mgi_dbexec(cmd);
-        while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
-          while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-            (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-            (void) mgi_tblSetCell(table, row, table.structureNameKeyIndex, mgi_getstr(dbproc, 1));
-            (void) mgi_tblSetCell(table, row, table.structureIndex, mgi_getstr(dbproc, 2));
-            row := row + 1;    
-          end while;
-        end while;
-        (void) mgi_dbclose(dbproc);
-
-	--
-	-- Edinburgh Alias
-	--
-	row := 0;
-	table := top->edinburghAliasTable->Table;
-	cmd := dictionary_edinburghAlias(current_structurekey);
         dbproc := mgi_dbexec(cmd);
         while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
           while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do

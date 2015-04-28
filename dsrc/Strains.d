@@ -126,7 +126,6 @@ devents:
 	SetPermissionsJAX :local [];
 
 	ResetModificationFlags :local [];
-	VerifyStrainMarker :local [];
 	VerifyDuplicateStrain :translation [];
 
 locals:
@@ -1285,45 +1284,6 @@ rules:
 	ResetModificationFlags does
           top->PrivateMenu.menuHistory.modified := false;
 	  top->VerifyValueChange.managed := false;
-	end does;
-
---
--- VerifyStrainMarker
---
--- Verify that the symbol exists as a substring in the strain name
---
-
-	VerifyStrainMarker does
-	  name : string := top->Name->text.value;
-	  table : widget := top->Marker->Table;
-	  symbol : string;
-	  row : integer;
-
-	  row := mgi_tblGetCurrentRow(table);
-	  symbol := mgi_tblGetCell(table, row, table.markerSymbol);
-
-	  -- If symbol contains a wildcard, then do nothing
-
-	  if (strstr(symbol, "%") != nil) then
-	    return;
-	  end if;
-
-	  -- If name is blank, then do nothing
-	  -- If name contains a wildcard, then do nothing
-
-	  if (name.length = 0) then
-	    return;
-	  elsif (strstr(name, "%") != nil) then
-	    return;
-	  end if;
-
-	  if (strstr(name, symbol) = nil) then
-            StatusReport.source_widget := top;
-            StatusReport.message := "Marker Symbol must appear in Strain Name.";
-            send(StatusReport);
-	    (void) mgi_tblSetCell(table, row, table.markerKey, "NULL");
-	    VerifyStrainMarker.doit := (integer) false;
-	  end if;
 	end does;
 
 --
