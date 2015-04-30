@@ -84,13 +84,12 @@ void stagetree_AddStructureNames(StageTree *stagetree)
     dbproc = mgi_dbexec(buf);
     while (mgi_dbresults(dbproc) != NO_MORE_RESULTS)
     {
-       dbbind(dbproc, 1, INTBIND, (int) 0, (BYTE *) &(tmpstn._StructureName_key)); 
-       dbbind(dbproc, 2, INTBIND, (int) 0, (BYTE *) &(tmpstn._Structure_key)); 
-       dbbind(dbproc, 3, STRINGBIND, (int) 0, tmpstn.structure); 
-
+       /*tu_printf("DEBUG: stagetree_AddStructureNames: Adding a structure name\n");*/
        while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS)
        {
-          /*tu_printf("DEBUG: stagetree_AddStructureNames: Adding a structure name\n");*/
+          tmpstn._StructureName_key = atoi(mgi_getstr(dbproc, 1));
+          tmpstn._Structure_key = atoi(mgi_getstr(dbproc, 2));
+          strcpy(tmpstn.structure, mgi_getstr(dbproc, 3));
           stagetree_AddStructureName(stagetree, &tmpstn);
        }
     }
@@ -119,17 +118,14 @@ void stagetree_AddStructures(StageTree *stagetree)
     dbproc = mgi_dbexec(buf);
     while (mgi_dbresults(dbproc) != NO_MORE_RESULTS)
     {
-       dbbind(dbproc, 1, INTBIND, (int) 0, (BYTE *) &(tmpst._Structure_key));
-       dbbind(dbproc, 2, INTBIND, (int) 0, (BYTE *) &(tmpst._Parent_key));
-       dbbind(dbproc, 3, INTBIND, (int) 0, (BYTE *) &(tmpst._StructureName_key));
-       dbbind(dbproc, 4, INTBIND, (int) 0, (BYTE *) &(tmpst._Stage_key));
-       dbbind(dbproc, 7, STRINGBIND, (int) 0, tmpst.printName);
-       dbbind(dbproc, 15, INTBIND, (int) 0, (BYTE *) &(tmpst.stage)); 
-
-       /* iterate through the Structure results. */
        while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS)
        {
-          /*tu_printf("DEBUG: stagetree_AddStructures: Adding a structure\n");*/
+          tmpst._Structure_key = atoi(mgi_getstr(dbproc, 1));
+          tmpst._Parent_key = atoi(mgi_getstr(dbproc, 2));
+          tmpst._StructureName_key = atoi(mgi_getstr(dbproc, 3));
+          tmpst._Stage_key = atoi(mgi_getstr(dbproc, 4));
+          tmpst.stage = atoi(mgi_getstr(dbproc, 15));
+          strcpy(tmpst.printName, mgi_getstr(dbproc, 7));
           stagetree_AddStructure(stagetree, &tmpst);
        }
     }
