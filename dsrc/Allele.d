@@ -722,6 +722,7 @@ rules:
 	  panePrimaryKey : string;
 	  primaryPane : integer := 0;
 	  row : integer := 0;
+	  markerKey : string := mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
 
 	  refsKey : string;
 	  refsType : string;
@@ -739,6 +740,18 @@ rules:
 	  if (task != "pass") then
             StatusReport.source_widget := top;
             StatusReport.message := task;
+            send(StatusReport);
+            return;
+	  end if;
+
+	  -- Approved Alleles must have a valid MGD Marker
+	  -- unless they are gene trap alleles (which can have no marker)
+
+	  if (top->AlleleStatusMenu.menuHistory.labelString = ALL_STATUS_APPROVED
+	      and top->AlleleTypeMenu.menuHistory.labelString != "Gene trapped"
+	      and (markerKey = "-1" or markerKey = "" or markerKey = "NULL")) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "Approved Allele Symbol must have an Approved Marker.";
             send(StatusReport);
             return;
 	  end if;

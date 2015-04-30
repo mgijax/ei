@@ -596,9 +596,9 @@ rules:
 	  --
 	  -- _Parent_key
           -- _Stage_key
-	  -- edingburghKey
+	  -- edingburghKey (obsolete)
 	  -- treeDepth
-	  -- topoSort
+	  -- topoSort (obsolete)
 	  --
           
 	  -- anatomical system
