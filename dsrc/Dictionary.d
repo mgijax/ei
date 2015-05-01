@@ -800,8 +800,19 @@ rules:
 
 	  -- see dblib.c/mgi_citation for translation of stage/printName
           Query.source_widget := top;
-          Query.select := "select distinct s._Structure_key, t.stage, s.printName "  +
-                        from + where + "\norder by s.printName asc, t.stage";
+          --Query.select := "select distinct s._Structure_key, t.stage, s.printName, "  +
+
+--			"t.stage, s.printName " +
+	  if (global_dbtype = "sybase") then
+          	Query.select := "select distinct s._Structure_key, " +
+	  		"'Stage' || convert(varchar(5), t.stage) || ';' || s.printName as printNamee " +
+                        	from + where + "\norder by s.printName asc, t.stage";
+	  else
+          	Query.select := "select distinct s._Structure_key, " +
+	  		"'Stage' || cast(t.stage as varchar(5)) || ';' || s.printName " +
+                        	from + where + "\norder by s.printName asc, t.stage";
+	  end if;
+
           Query.table := GXD_STRUCTURE;
           send(Query, 0);
 
@@ -815,7 +826,6 @@ rules:
 
           (void) reset_cursor(top);
         end does;
-
 
 --
 -- Select
@@ -865,9 +875,9 @@ rules:
         InitAcc.table := accTable;
         send(InitAcc, 0);
 
-        if (treesLoaded != true) then
-           return;
-        end if;
+        --if (not treesLoaded) then
+           --return;
+        --end if;
 
 	DictionaryClear.clearLists := 0;
 	send(DictionaryClear, 0);
