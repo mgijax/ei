@@ -159,7 +159,7 @@ locals:
         current_structure : opaque;   -- the current Structure pointer
         current_stagenum : integer;   -- current stage number
 
-        treesLoaded : boolean;       -- indicator that >= 1 tree is loaded
+        --treesLoaded : boolean;       -- indicator that >= 1 tree is loaded
                                      -- (just a sanity check)
 
         clipboard : widget;      -- the clipboard list.
@@ -183,7 +183,7 @@ rules:
 
         INITIALLY does
           current_structure := nil;
-          treesLoaded := false;  -- no trees are loaded initially 
+          --treesLoaded := false;  -- no trees are loaded initially 
 
           -- register callbacks
           init_callbacks();
@@ -274,7 +274,7 @@ rules:
                               
        if (DictionaryClear.clearStages) then
         current_structure := nil;
-        treesLoaded := false;
+        --treesLoaded := false;
         stagetrees_unloadStages(true);
        end if;
 
@@ -800,7 +800,6 @@ rules:
 
 	  -- see dblib.c/mgi_citation for translation of stage/printName
           Query.source_widget := top;
-          --Query.select := "select distinct s._Structure_key, t.stage, s.printName, "  +
 
 	  if (global_dbtype = "sybase") then
           	Query.select := "select distinct s._Structure_key, " +
@@ -821,7 +820,7 @@ rules:
 
           -- load/refresh stages as necessary.
           (void) stagetrees_loadStages(from,where);
-          treesLoaded := true;
+          --treesLoaded := true;
 
           (void) reset_cursor(top);
         end does;

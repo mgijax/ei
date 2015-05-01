@@ -35,7 +35,7 @@ char *mgilib_count(char *key)
   }
   else
   {
-      sprintf(buf,"select count(*) from %s;", key);
+      sprintf(buf,"select 1 from %s;", key);
   }
   return(buf);
 }
@@ -586,6 +586,7 @@ char *exec_gxd_duplicateAssay(char *userKey, char *key, char *duplicateDetails)
   {
       sprintf(buf,"select * from GXD_duplicateAssay (%s, %s, %s);\n", userKey, key, duplicateDetails);
   }
+  (void) mgi_writeLog(buf);
   return(buf);
 }
 
@@ -1429,21 +1430,24 @@ char *verify_marker_intable1(char *probeKey, char *markerKey)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select count(pm._Probe_key) from PRB_Marker pm, PRB_Probe p, VOC_Term t \
-   \nwhere pm._Probe_key = p._Probe_key \
-   \nand p._SegmentType_key = t._Term_key \
-   \nand t.term != 'primer' \
-   \nand pm.relationship in ('E', 'H') \
-   \nand pm._Probe_key = %s \
-   \nand pm._Marker_key = %s \
+  sprintf(buf, "select 1 from PRB_Marker pm \
+   \nwhere exists (select 1 from PRB_Probe p, VOC_Term t \
+   \n where pm._Probe_key = p._Probe_key \
+   \n and p._SegmentType_key = t._Term_key  \
+   \n and t.term != 'primer' \
+   \n and pm.relationship in ('E', 'H') \
+   \n and pm._Probe_key = %s  \
+   \n and pm._Marker_key = %s) \
    \nunion \
-   \nselect count(pm._Probe_key) from PRB_Marker pm, PRB_Probe p, VOC_Term t  \
-   \nwhere pm._Probe_key = p._Probe_key \
-   \nand p._SegmentType_key = t._Term_key \
-   \nand t.term = 'primer' \
-   \nand pm.relationship = 'A' \
-   \nand pm._Probe_key = %s \
-   \nand pm._Marker_key = %s", probeKey, markerKey, probeKey, markerKey);
+   \nselect 1 from PRB_Marker pm \
+   \nwhere exists (select 1 from PRB_Probe p, VOC_Term t \
+   \n where pm._Probe_key = p._Probe_key \
+   \n and p._SegmentType_key = t._Term_key \
+   \n and t.term = 'primer' \
+   \n and pm.relationship = 'A' \
+   \n and pm._Probe_key = %s \
+   \n and pm._Marker_key = %s)\n", probeKey, markerKey, probeKey, markerKey);
+  (void) mgi_writeLog(buf);
   return(buf);
 }
 
@@ -1451,8 +1455,8 @@ char *verify_marker_intable2(char *key, char *tableKey, char *probeKey, char *ma
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select count(*) from %s \
-   where %s = %s and _Marker_key = %s", key, tableKey, probeKey, markerKey);
+  sprintf(buf,"select 1 from %s where %s = %s and _Marker_key = %s\n", key, tableKey, probeKey, markerKey);
+  (void) mgi_writeLog(buf);
   return(buf);
 }
 
@@ -1603,7 +1607,7 @@ char *verify_item_count(char *key, char *from, char *where)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select count(*) from %s where %s = '%s'", from, where, key);
+  sprintf(buf,"select 1 from %s where %s = '%s'", from, where, key);
   return(buf);
 }
 

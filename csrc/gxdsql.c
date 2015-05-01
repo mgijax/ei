@@ -110,7 +110,7 @@ char *assay_imagecount(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select count(*) from IMG_Image where _Refs_key = %s", key);
+  sprintf(buf,"select 1 from IMG_Image where _Refs_key = %s", key);
   return(buf);
 }
 
@@ -159,7 +159,7 @@ char *assay_specimencount(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select count(*) from GXD_Specimen where _Assay_key = %s", key);
+  sprintf(buf,"select 1 from GXD_Specimen where _Assay_key = %s", key);
   return(buf);
 }
 
@@ -176,7 +176,7 @@ char *assay_insituresult(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select count(*) from GXD_InSituResult where _Specimen_key = %s", key);
+  sprintf(buf,"select 1 from GXD_InSituResult where _Specimen_key = %s", key);
   return(buf);
 }
 
@@ -184,7 +184,7 @@ char *assay_gellanecount(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select count(*) from GXD_GelLane where _Assay_key = %s", key);
+  sprintf(buf,"select 1 from GXD_GelLane where _Assay_key = %s", key);
   return(buf);
 }
 
@@ -322,7 +322,7 @@ char *insitu_specimen_count(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select count(*) from GXD_InSituResult where _Specimen_key = %s", key);
+  sprintf(buf,"select 1 from GXD_InSituResult where _Specimen_key = %s", key);
   return(buf);
 }
 
@@ -330,7 +330,7 @@ char *insitu_imageref_count(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select count(*) from IMG_Image where _Refs_key = %s", key);
+  sprintf(buf,"select 1 from IMG_Image where _Refs_key = %s", key);
   return(buf);
 }
 

@@ -625,9 +625,9 @@ rules:
                  top->mgiMarker->ObjectID->text.value + ",";
 
 	  if (antibodyPrep) then
-	    cmd := cmd + "NULL," + MAX_KEY1 + antibodyPrepLabel + ",";
+	    cmd := cmd + "NULL," + MAX_KEY1 + antibodyPrepLabel + MAX_KEY2 + ",";
 	  elsif (probePrep) then
-	    cmd := cmd + MAX_KEY1 + probePrepLabel + ",NULL,";
+	    cmd := cmd + MAX_KEY1 + probePrepLabel + MAX_KEY2 + ",NULL,";
 	  else
 	    cmd := cmd + "NULL,NULL,";
 	  end if;
@@ -700,7 +700,11 @@ rules:
 	  -- Update the modification date of the primary table so that the
 	  -- expression cache gets updated AFTER the Assay details are added
 
-	  cmd := cmd + mgi_DBupdate(GXD_ASSAY, currentAssay, "") + "\nselect @key\n";
+	  if (global_dbtype = "sybase") then
+	    cmd := cmd + mgi_DBupdate(GXD_ASSAY, currentAssay, "") + "\nselect @key\n";
+	  else
+	    cmd := cmd + mgi_DBupdate(GXD_ASSAY, currentAssay, "");
+	  end if;
 
 	  -- Execute the insert
 
@@ -1321,7 +1325,7 @@ rules:
 	  duplicate : integer := DuplicateAssay.duplicate;
 
 	  (void) busy_cursor(top);
-	  newAssayKey := mgi_sp(exec_gxd_duplicateAssay(global_loginKey, currentAssay, (string) duplicate));
+	  newAssayKey := (string) mgi_sp(exec_gxd_duplicateAssay(global_loginKey, currentAssay, (string) duplicate));
 	  (void) reset_cursor(top);
 
           PythonExpressionCache.source_widget := top;
@@ -1334,8 +1338,10 @@ rules:
 		        top->mgiMarker->Marker->text.value;
           InsertList.key := newAssayKey;
           send(InsertList, 0);
+
 	  top->RecordCount->text.value := mgi_DBrecordCount(GXD_ASSAY);
           (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
+
 	  return;
         end does;
 
@@ -1665,7 +1671,7 @@ rules:
 		     mgi_DBprstr(ageNote) + "," +
 		     mgi_DBprstr(hybridizationKey) + "," +
 		     mgi_DBprstr(specimenNote) + END_VALUE +
-	             exec_mgi_resetAgeMinMax(MAX_KEY1 + keyName, mgi_DBprstr(mgi_DBtable(GXD_SPECIMEN)));
+	             exec_mgi_resetAgeMinMax(MAX_KEY1 + keyName + MAX_KEY2, mgi_DBprstr(mgi_DBtable(GXD_SPECIMEN)));
 
             elsif (editMode = TBL_ROW_MODIFY and key.length > 0) then
 
@@ -1817,13 +1823,13 @@ rules:
 		     ageMax + "," +
 	    	     mgi_DBprstr(mgi_tblGetCell(table, row, table.ageNote)) + "," +
 	    	     mgi_DBprstr(mgi_tblGetCell(table, row, table.laneNote)) + END_VALUE +
-	             exec_mgi_resetAgeMinMax(MAX_KEY1 + keyName, mgi_DBprstr(mgi_DBtable(GXD_GELLANE)));
+	             exec_mgi_resetAgeMinMax(MAX_KEY1 + keyName + MAX_KEY2, mgi_DBprstr(mgi_DBtable(GXD_GELLANE)));
 
               -- Process Gel Lane Structures
 
               ModifyStructure.source_widget := table;
               ModifyStructure.primaryID := GXD_GELLANESTRUCTURE;
-              ModifyStructure.key := MAX_KEY1 + keyName;
+              ModifyStructure.key := MAX_KEY1 + keyName + MAX_KEY2;
               ModifyStructure.row := row;
               send(ModifyStructure, 0);
               cmd := cmd + top->CVGel->ADClipboard.updateCmd;
@@ -1937,7 +1943,7 @@ rules:
 	      -- If Row has been modified, then modify Band as well
 
 	      ModifyGelBand.row := row;
-	      ModifyGelBand.key := MAX_KEY1 + rowKeyName;
+	      ModifyGelBand.key := MAX_KEY1 + rowKeyName + MAX_KEY2;
 	      send(ModifyGelBand, 0);
 
             elsif (editMode = TBL_ROW_MODIFY) then
