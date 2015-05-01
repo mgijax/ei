@@ -9,6 +9,10 @@
  *
  * History:
  *
+ * lec  05/01/2015
+ *      - TR11750/placed Sybase/PG-specific code into pgstagetrees.c/sybstagetrees.c
+ *	- this code contains non-database specific function
+ *
  * lec	03/29/2012
  *	- TR11005; stagetree_AddStructureNames; see isparentkey
  *

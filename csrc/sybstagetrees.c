@@ -10,7 +10,7 @@
  * History:
  *
  * lec  05/01/2015
- *	- TR11750/added pgstagetrees.c/added PG dbproc
+ *	- TR11750/added sybstagetrees.c/added Sybase dbproc
  *
  * lec	03/29/2012
  *	- TR11005; stagetree_AddStructureNames; see isparentkey
