@@ -413,6 +413,18 @@ rules:
               patternKey := top->CVInSituResult->PatternMenu.defaultOption.defaultValue;
             end if;
  
+	    if (strengthKey = "1" and patternKey != "-2") then
+	        StatusReport.source_widget := top.root;
+	        StatusReport.message := "If Strength is Absent, then Pattern must be Not Applicable.";
+	        send(StatusReport, 0);
+	    end if;
+
+	    if (strengthKey != "1" and patternKey = "-2") then
+	        StatusReport.source_widget := top.root;
+	        StatusReport.message := "If Pattern is Not Applicable, then Strength must be Absent..";
+	        send(StatusReport, 0);
+	    end if;
+
             if (editMode = TBL_ROW_ADD) then
 
 	      if (not keysDeclared) then
