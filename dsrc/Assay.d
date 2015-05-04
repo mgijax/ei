@@ -2692,6 +2692,8 @@ rules:
 	      break;
 	    end if;
 
+	    (void) mgi_tblSetCell(table, row, table.results, "0");
+
 	    select :=  assay_insituresult(key);
 	    dbproc := mgi_dbexec(select);
  
