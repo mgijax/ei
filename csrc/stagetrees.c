@@ -1117,13 +1117,11 @@ void stagetree_AddStructureNames(StageTree *stagetree)
 
     /*tu_printf("DEBUG: stagetree_AddStructureNames\n");*/
 
-    sprintf(buf,"select sn.* "
-                "from GXD_Structure s, GXD_StructureName sn, "
-                "     GXD_TheilerStage t "
-                "where t.stage = %d "
-                "and t._Stage_key = s._Stage_key "
-                "and s._Structure_key = sn._Structure_key ",
-                stage);
+    sprintf(buf,"select sn.* \
+                \nfrom GXD_Structure s, GXD_StructureName sn, GXD_TheilerStage t \
+                \nwhere t.stage = %d \
+                \nand t._Stage_key = s._Stage_key \
+                \nand s._Structure_key = sn._Structure_key ", stage);
 
     dbproc = mgi_dbexec(buf);
     while (mgi_dbresults(dbproc) != NO_MORE_RESULTS)
@@ -1151,12 +1149,11 @@ void stagetree_AddStructures(StageTree *stagetree)
     int stage = stagetree_getStage(stagetree);
     static Structure tmpst; /* a temporary structure used for reading DB results */
 
-    sprintf(buf,"select s.*, t.stage "
-                "from GXD_Structure s, GXD_TheilerStage t "
-                "where t.stage = %d "
-                "and s._Stage_key = t._Stage_key "
-                "order by s.treeDepth asc ",
-                 stage);
+    sprintf(buf,"select s.*, t.stage \
+                \nfrom GXD_Structure s, GXD_TheilerStage t \
+		\nwhere t.stage = %d \
+                \nand s._Stage_key = t._Stage_key \
+                \norder by s.treeDepth asc ", stage);
 
     dbproc = mgi_dbexec(buf);
     while (mgi_dbresults(dbproc) != NO_MORE_RESULTS)
