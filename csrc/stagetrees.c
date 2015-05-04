@@ -1069,6 +1069,9 @@ int structurename_getStructureNameKey(StructureName *stn)
     return stn->_StructureName_key;
 }
 
+/* database-queries */
+/* see: pglib.h or syblib.h for the proper 'dbproc' variable */
+
 void stagetrees_loadStages(char *from, char *where)
 {
     char buf[BUFSIZ];
