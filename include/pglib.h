@@ -9,6 +9,8 @@
 #include <X11/cursorfont.h>
 #include <X11/Intrinsic.h>
 
+PGconn *dbproc;
+
 extern int mgi_dbinit(char *, char *);
 
 extern void mgi_dbexit(PGconn *);

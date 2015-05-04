@@ -28,7 +28,7 @@
 
 void stagetrees_loadStages(char *from, char *where)
 {
-    DBPROCESS *dbproc;
+    /*DBPROCESS *dbproc;*/
     char buf[BUFSIZ];
 
     int distinctstages[MAXSTAGE];
@@ -69,7 +69,7 @@ void stagetree_AddStructureNames(StageTree *stagetree)
        in the tree's Structure hash table by _Structure_key, appending
        or replacing names/aliases according to their _StructureName_key. */
 
-    DBPROCESS *dbproc;
+    /*DBPROCESS *dbproc;*/
     char buf[BUFSIZ];
     int stage = stagetree_getStage(stagetree);
     static StructureName tmpstn;
@@ -106,7 +106,7 @@ void stagetree_AddStructures(StageTree *stagetree)
        since it is important that new parents are created before
        we attempt to link in their children */
 
-    DBPROCESS *dbproc;
+    /*DBPROCESS *dbproc;*/
     char buf[BUFSIZ];
     int stage = stagetree_getStage(stagetree);
     static Structure tmpst; /* a temporary structure used for reading DB results */
