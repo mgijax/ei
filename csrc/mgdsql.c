@@ -708,7 +708,7 @@ char *marker_count(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select 1 from ALL_Allele where _Marker_key = %s", key);
+  sprintf(buf,"select count(*) from ALL_Allele where _Marker_key = %s", key);
   return(buf);
 }
 
@@ -992,7 +992,7 @@ char *mldp_countchr(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select 1 from MRK_Chromosome where _Organism_key = 1 and chromosome = %s", key);
+  sprintf(buf,"select count(*) from MRK_Chromosome where _Organism_key = 1 and chromosome = %s", key);
   return(buf);
 }
 
@@ -1564,7 +1564,7 @@ char *ref_mld_exists(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select 1 from MLD_Expts where _Refs_key = %s", key);
+  sprintf(buf,"select count(*) from MLD_Expts where _Refs_key = %s", key);
   return(buf);
 }
 
@@ -1572,7 +1572,7 @@ char *ref_nom_exists(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select 1 from MGI_Reference_Nomen_View where _Refs_key = %s", key);
+  sprintf(buf,"select count(*) from MGI_Reference_Nomen_View where _Refs_key = %s", key);
   return(buf);
 }
 
@@ -1580,7 +1580,7 @@ char *ref_prb_exists(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select 1 from PRB_Reference where _Refs_key = %s", key);
+  sprintf(buf,"select count(*) from PRB_Reference where _Refs_key = %s", key);
   return(buf);
 }
 
@@ -1588,7 +1588,7 @@ char *ref_allele_exists(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select 1 from MGI_Reference_Allele_View where _Refs_key = %s", key);
+  sprintf(buf,"select count(*) from MGI_Reference_Allele_View where _Refs_key = %s", key);
   return(buf);
 }
 
@@ -1596,7 +1596,7 @@ char *ref_mrk_exists(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select 1 from MGI_Reference_Marker_View where _Refs_key = %s", key);
+  sprintf(buf,"select count(*) from MGI_Reference_Marker_View where _Refs_key = %s", key);
   return(buf);
 }
 
@@ -1849,7 +1849,7 @@ char *strain_count(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"\nselect 1 from PRB_Strain where strain = %s", key);
+  sprintf(buf,"\nselect count(*) from PRB_Strain where strain = %s", key);
   return(buf);
 }
 

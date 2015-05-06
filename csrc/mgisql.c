@@ -35,7 +35,7 @@ char *mgilib_count(char *key)
   }
   else
   {
-      sprintf(buf,"select 1 from %s;", key);
+      sprintf(buf,"select count(*) from %s;", key);
   }
   return(buf);
 }
@@ -1455,7 +1455,7 @@ char *verify_marker_intable2(char *key, char *tableKey, char *probeKey, char *ma
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select 1 from %s where %s = %s and _Marker_key = %s\n", key, tableKey, probeKey, markerKey);
+  sprintf(buf,"select count(*) from %s where %s = %s and _Marker_key = %s\n", key, tableKey, probeKey, markerKey);
   (void) mgi_writeLog(buf);
   return(buf);
 }
@@ -1607,7 +1607,7 @@ char *verify_item_count(char *key, char *from, char *where)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select 1 from %s where %s = '%s'", from, where, key);
+  sprintf(buf,"select count(*) from %s where %s = '%s'", from, where, key);
   return(buf);
 }
 
