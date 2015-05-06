@@ -159,7 +159,7 @@ char *assay_specimencount(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select (*) from GXD_Specimen where _Assay_key = %s", key);
+  sprintf(buf,"select count(*) from GXD_Specimen where _Assay_key = %s", key);
   return(buf);
 }
 
