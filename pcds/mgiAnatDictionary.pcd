@@ -2,7 +2,7 @@ Module: mgiAnatDictionary
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Mon Apr 27 10:41:34 2015";
+      lastWritten = "Wed May  6 09:07:20 2015";
         {
           DictionaryModule = Module : MGI;
           Group: Widget
@@ -37,8 +37,6 @@ Module: mgiAnatDictionary
                                       {
                                         Add = MenuPush : mgiMenu;
                                         Group: Widget
-                                          activateCallback = "D:VerifyEdit(mode = 2),\nD:AddDialog,\nD:GoHome";
-                                          accelerator = " ";
                                           sensitive = False;
                                       }
                                 }

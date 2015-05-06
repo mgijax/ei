@@ -110,7 +110,7 @@ rules:
 	  -- a transaction is not desired.  If this is the case, the
 	  -- calling event can set AddSQL.transaction = false
 
-	  if (AddSQL.transaction and global_dbtype = "sybase") then
+	  if (AddSQL.transaction) then
 	    cmd := AddSQL.cmd + "select * from  keyMax;\n";
 	  else
 	    cmd := AddSQL.cmd;
