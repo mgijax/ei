@@ -181,6 +181,16 @@ rules:
 	    age := age + " " + top->Age->text.value;
 	  end if;
 
+	  if (age = "postnatal day"
+              or age = "postnatal week"
+              or age = "postnatal month"
+              or age = "postnatal year"
+              or age = "embryonic day") then
+	     StatusReport.source_widget := top.root;
+             StatusReport.message := "Invalid Age Value: " + age + "\n";
+             send(StatusReport, 0);
+          end if;
+
 	  add := add +
                  segmentType + "," +
                  vectorType + "," +
@@ -610,6 +620,17 @@ rules:
 	    age := age + " " + top->Age->text.value;
 	  end if;
 
+	  if (age = "postnatal day"
+              or age = "postnatal week"
+              or age = "postnatal month"
+              or age = "postnatal year"
+              or age = "embryonic day") then
+	     StatusReport.source_widget := top.root;
+             StatusReport.message := "Invalid Age Value: " + age + "\n";
+             send(StatusReport, 0);
+	     return;
+          end if;
+
 	  top.sql := exec_prb_processAntigenAnonSource(
 	      antigenKey,\
 	      top->SourceID->text.value,\
@@ -642,6 +663,17 @@ rules:
 	  if (top->Age->text.value.length > 0) then
 	    age := age + " " + top->Age->text.value;
 	  end if;
+
+	  if (age = "postnatal day"
+              or age = "postnatal week"
+              or age = "postnatal month"
+              or age = "postnatal year"
+              or age = "embryonic day") then
+	     StatusReport.source_widget := top.root;
+             StatusReport.message := "Invalid Age Value: " + age + "\n";
+             send(StatusReport, 0);
+	     return;
+          end if;
 
 	  if (top->Library->text.value.length > 0) then
 	    isAnon := NO;
@@ -684,6 +716,7 @@ rules:
 --
  
         ModifySequenceSource does
+	  top : widget := ModifySequenceSource.source_widget->SourceForm;
 	  table : widget := ModifySequenceSource.source_widget;
 	  sequenceKey : string :=  ModifySequenceSource.sequenceKey;
 	  row : integer := ModifySequenceSource.row;
@@ -694,6 +727,17 @@ rules:
 	  if (mgi_tblGetCell(table, row, table.ageRange) != "") then
 	    age := age + " " + mgi_tblGetCell(table, row, table.ageRange);
 	  end if;
+
+	  if (age = "postnatal day"
+              or age = "postnatal week"
+              or age = "postnatal month"
+              or age = "postnatal year"
+              or age = "embryonic day") then
+	     StatusReport.source_widget := top.root;
+             StatusReport.message := "Invalid Age Value: " + age + "\n";
+             send(StatusReport, 0);
+	     return;
+          end if;
 
 	  if (mgi_tblGetCell(table, row, table.library) != "") then
 	    isAnon := NO;
