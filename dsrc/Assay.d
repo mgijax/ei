@@ -1646,6 +1646,16 @@ rules:
 	      ageKey := ageKey + " " + ageRange;
 	    end if;
 
+	    if (ageKey = "postnatal day"
+                or ageKey = "postnatal week"
+                or ageKey = "postnatal month"
+                or ageKey = "postnatal year"
+                or ageKey = "embryonic day") then
+	       StatusReport.source_widget := top;
+               StatusReport.message := "Invalid Age Value: " + ageKey + "\n";
+               send(StatusReport, 0);
+            end if;
+
             if (editMode = TBL_ROW_ADD) then
 
 	      if (not keysDeclared) then
@@ -1798,6 +1808,16 @@ rules:
 	    if (ageRange.length > 0) then
 	      ageKey := ageKey + " " + ageRange;
 	    end if;
+
+	    if (ageKey = "postnatal day"
+                or ageKey = "postnatal week"
+                or ageKey = "postnatal month"
+                or ageKey = "postnatal year"
+                or ageKey = "embryonic day") then
+	       StatusReport.source_widget := top;
+               StatusReport.message := "Invalid Age Value: " + ageKey + "\n";
+               send(StatusReport, 0);
+            end if;
 
             if (editMode = TBL_ROW_ADD) then
 
