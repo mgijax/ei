@@ -351,7 +351,7 @@ rules:
 			mgi_DBprstr(abbrev) + "," +
 			newSeqNum + "," +
 			isObsolete + "," +
-			global_loginKey + "," + global_loginKey + END_VALUE;
+			global_userKey + "," + global_userKey + END_VALUE;
 
 	      ModifyNotes.source_widget := termTable;
 	      ModifyNotes.tableID := VOC_TEXT;

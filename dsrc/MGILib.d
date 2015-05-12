@@ -159,11 +159,6 @@ rules:
 
 	  global_server := top->LoginServer->text.value;
 	  global_database := top->LoginDB->text.value;
-
-	  if (global_database = nil) then
-		global_database := getenv("MGD_DBNAME");
-	  end if;
-
 	  global_passwd := passwd;
 
 	  if (top->User->text.value.length = 0) then
@@ -188,10 +183,19 @@ rules:
 	    mgi := top;
 
 	    global_loginKey := mgi_sql1(mgilib_user(global_login));
+	    global_userKey := mgi_sql1(mgilib_user(global_user));
 
             if (global_loginKey.length = 0) then
 	      StatusReport.source_widget := top;
-	      StatusReport.message := "\nERROR:  Login " + global_login + " is not defined in the MGI User Table.";
+	      StatusReport.message := "\nERROR:  Login '" + global_login + "' is not defined in the MGI User Table.";
+	      send(StatusReport, 0);
+	      (void) reset_cursor(top);
+	      return;
+	    end if;
+
+            if (global_userKey.length = 0) then
+	      StatusReport.source_widget := top;
+	      StatusReport.message := "\nERROR:  User '" + global_user + "' is not defined in the MGI User Table.";
 	      send(StatusReport, 0);
 	      (void) reset_cursor(top);
 	      return;
@@ -209,7 +213,8 @@ rules:
 	    top.show;
 	    (void) mgi_writeLog("server : " + global_server + "\n");
 	    (void) mgi_writeLog("database : " + global_database + "\n");
-	    (void) mgi_writeLog("user : " + global_login + "\n");
+	    (void) mgi_writeLog("login : " + global_login + "\n");
+	    (void) mgi_writeLog("user : " + global_user + "\n");
 	    (void) mgi_writeLog("db-type : " + GLOBAL_DBTYPE + "\n");
 	    (void) mgi_writeLog(get_time() + "Logged in to Application.\n\n");
 	  end if;
@@ -253,7 +258,7 @@ rules:
 	   cmd : string;
 	   permOK : integer := 1;
 
-	   cmd := exec_mgi_checkUserRole(mgi_DBprstr(top.name), mgi_DBprstr(global_login));
+	   cmd := exec_mgi_checkUserRole(mgi_DBprstr(top.name), mgi_DBprstr(global_user));
 		
 	   permOK := (integer) mgi_sp(cmd);
 
@@ -281,7 +286,7 @@ rules:
 	   -- only certain users have permission to turn 'Delete' on in this module
 	   if (top.name = "MarkerModule" and 
 	      	    global_login != "mgd_dbo" and global_login != "dbo" and
-	       	    global_login != "mmh" and global_login != "djr") then
+	       	    global_user != "mmh" and global_user != "djr") then
 	       top->Control->Delete.sensitive := false;
 	   end if;
 
@@ -294,7 +299,7 @@ rules:
 --
  
         SetServer does
-          SetServer.source_widget.dbInfo := "   (" + global_login +
+          SetServer.source_widget.dbInfo := "   (" + global_user +
                                             ", " + global_server + 
                                             ", " + global_database + ")";
         end does;

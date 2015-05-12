@@ -279,7 +279,7 @@ rules:
 
 	  cmd := cmd + mgi_DBprstr(top->Name->text.value) + "," +
                  mgi_DBprstr(top->AntibodyNote->text.value) + "," +
-		 global_loginKey + "," + global_loginKey + END_VALUE;
+		 global_userKey + "," + global_userKey + END_VALUE;
 
 	  send(ModifyAlias, 0);
 	  send(ModifyMarker, 0);

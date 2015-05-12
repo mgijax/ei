@@ -1664,7 +1664,7 @@ rules:
 		       mgi_DBinsert(tableID, KEYNAME) +
                        defaultSpecies + "," + defaultStrainType + "," + 
 		       mgi_DBprstr(item.value) + ",0,0,0," +
-		       global_loginKey + "," + global_loginKey + END_VALUE;
+		       global_userKey + "," + global_userKey + END_VALUE;
 	      elsif (tableID = VOC_CELLLINE_VIEW) then
 		nextSeqNum := mgi_sql1(verify_item_nextseqnum((string) verify.vocabKey));
 	        cmd := mgi_setDBkey(VOC_TERM, NEWKEY, KEYNAME) +
@@ -1672,7 +1672,7 @@ rules:
 		       (string) verify.vocabKey + "," +
 		       mgi_DBprstr(item.value) + ",NULL," +
 		       nextSeqNum + ",0," +
-		       global_loginKey + "," + global_loginKey + END_VALUE;
+		       global_userKey + "," + global_userKey + END_VALUE;
 	      else
 	        cmd := mgi_setDBkey(tableID, NEWKEY, KEYNAME) +
 		       mgi_DBinsert(tableID, KEYNAME) +
@@ -3147,7 +3147,7 @@ rules:
                                mgi_DBinsert(STRAIN, KEYNAME) +
                                defaultSpecies + "," + defaultStrainType + "," + 
 			       mgi_DBprstr(s) + ",0,0,0," +
-			       global_loginKey + "," + global_loginKey + END_VALUE;
+			       global_userKey + "," + global_userKey + END_VALUE;
                 send(ExecSQL, 0);
                 added := added + s + "\n";
                 strainKeys := strainKeys + mgi_sql1(verify_strains4(mgi_DBprstr(s)));

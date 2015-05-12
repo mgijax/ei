@@ -207,7 +207,7 @@ rules:
 
           add := add + mgi_DBprstr(age) + ",-1,-1," +
             	       isCuratorEdited + "," +
-		       global_loginKey + "," + global_loginKey + END_VALUE +
+		       global_userKey + "," + global_userKey + END_VALUE +
 		       exec_mgi_resetAgeMinMax(MAX_KEY1 + keyLabel + MAX_KEY2, mgi_DBprstr(mgi_DBtable(PRB_SOURCE)));
 
 	  if (GLOBAL_DBTYPE = "sybase") then
@@ -641,7 +641,7 @@ rules:
 	      top->CellLine->CellLineID->text.value,\
 	      mgi_DBprstr(age),\
 	      mgi_DBprstr(top->Description->text.value),\
-	      global_loginKey);
+	      global_userKey);
 
 	end does;
 
@@ -700,7 +700,7 @@ rules:
 	          top->CellLine->CellLineID->text.value,\
 	          mgi_DBprstr(age),\
 		  mgi_DBprstr(top->Description->text.value),\
-	          global_loginKey);
+	          global_userKey);
 	  else
 	      top.sql := "";
 	  end if;
@@ -754,7 +754,7 @@ rules:
 	      mgi_tblGetCell(table, row, table.genderKey),\
 	      mgi_tblGetCell(table, row, table.cellLineKey),\
 	      mgi_DBprstr(age),\
-	      global_loginKey);
+	      global_userKey);
 
 	end does;
 

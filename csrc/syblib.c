@@ -66,6 +66,8 @@ char *global_database;  	/* Set in Application dModule; holds database value */
 char *global_server;    	/* Set in Application dModule; holds server value */
 char *global_radar;    		/* Set in Application dModule; holds radar db value */
 char *global_dbtype;		/* Set in Application dModule; holds db type */
+char *global_user;		/* Set in Application dModule; holds user login value */
+char *global_userKey;           /* Set in Application dModule; holds user login key value */
 
 /* 
 *
@@ -82,6 +84,7 @@ int mgi_dbinit(char *user, char *pwd)
   static char passwdfile[TEXTBUFSIZ];
   static char reportdir[TEXTBUFSIZ];
   static char dbtype[TEXTBUFSIZ];
+  static char guser[TEXTBUFSIZ];
 
   FILE *pf;
 
@@ -153,13 +156,16 @@ int mgi_dbinit(char *user, char *pwd)
   memset(server2, '\0', sizeof(server2));
   memset(database2, '\0', sizeof(database2));
   memset(dbtype, '\0', sizeof(dbtype));
+  memset(guser, '\0', sizeof(dbtype));
 
   sprintf(server, "MGD_DBSERVER=%s", global_server);
   sprintf(database, "MGD_DBNAME=%s", global_database);
   sprintf(server2, "DSQUERY=%s", global_server);
   sprintf(database2, "MGD=%s", global_database);
   sprintf(dbtype, "%s", getenv("DB_TYPE"));
+  sprintf(guser, "%s", getenv("GLOBAL_USER"));
   global_dbtype = dbtype;
+  global_user = guser;
 
   if (putenv(server) != 0)
   {

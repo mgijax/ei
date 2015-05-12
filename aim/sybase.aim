@@ -38,6 +38,8 @@ CALLS
 	 global_server  				 : "char *";
 	 global_radar  				 	 : "char *";
 	 global_dbtype 				 	 : "char *";
+	 global_user					 : "char *";
+	 global_userKey				 	 : "char *";
 
   ENDL
 ENDC

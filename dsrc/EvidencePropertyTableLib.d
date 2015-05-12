@@ -240,8 +240,8 @@ rules:
                       propertyStanza + "," +
                       seqNum + "," +
                       mgi_DBprstr(propertyValue) + "," +
-                      global_loginKey + "," +
-                      global_loginKey + END_VALUE;
+                      global_userKey + "," +
+                      global_userKey + END_VALUE;
     
             elsif (editMode = TBL_ROW_MODIFY) then
 

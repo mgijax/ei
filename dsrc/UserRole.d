@@ -200,7 +200,7 @@ rules:
 
               cmd := cmd + mgi_DBinsert(MGI_USERROLE, KEYNAME) + 
 		     top->UserRoleMenu.menuHistory.searchValue + "," + userKey + "," +
-		     global_loginKey + "," + global_loginKey + END_VALUE;
+		     global_userKey + "," + global_userKey + END_VALUE;
 
 	    elsif (editMode = TBL_ROW_MODIFY) then
 	      set := "_User_key = " + userKey;

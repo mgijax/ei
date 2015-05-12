@@ -72,7 +72,7 @@
 --	- TR 5673; prevent accidental changes to Stem Cell Line/Strain of Origin
 --
 -- 05/23/2003 lec
---	- replaced global_login with global_loginKey
+--	- replaced global_user with global_userKey
 --
 -- 02/14/2003 lec
 --	- TR 1892; added exec_mrk_reloadLabel()
@@ -548,7 +548,7 @@ rules:
 
           if (top->AlleleStatusMenu.menuHistory.labelString = ALL_STATUS_APPROVED) then
 	    statusKey := top->AlleleStatusMenu.menuHistory.defaultValue;
-	    approvalLoginDate := global_loginKey + "," + CURRENT_DATE + END_VALUE;
+	    approvalLoginDate := global_userKey + "," + CURRENT_DATE + END_VALUE;
 	  else
 	    statusKey := top->AlleleStatusMenu.menuHistory.defaultValue;
 	    approvalLoginDate := "NULL,NULL" + END_VALUE;
@@ -593,8 +593,8 @@ rules:
 		 (string) isWildType + "," +
 		 top->ExtinctMenu.menuHistory.defaultValue + "," +
 		 (string) isMixed + "," +
-		 global_loginKey + "," +
-		 global_loginKey + "," +
+		 global_userKey + "," +
+		 global_userKey + "," +
 		 approvalLoginDate;
 
 	  send(ModifyMarkerAssoc, 0);
@@ -682,7 +682,7 @@ rules:
 
 	Delete does
 
-	  task :string := mgi_sql1(exec_mgi_checkUserTask("delete", global_loginKey));
+	  task :string := mgi_sql1(exec_mgi_checkUserTask("delete", global_userKey));
 	  if (task != "pass") then
             StatusReport.source_widget := top;
             StatusReport.message := task;
@@ -736,7 +736,7 @@ rules:
 	    return;
 	  end if;
 
-	  task :string := mgi_sql1(exec_mgi_checkUserTask("update", global_loginKey));
+	  task :string := mgi_sql1(exec_mgi_checkUserTask("update", global_userKey));
 	  if (task != "pass") then
             StatusReport.source_widget := top;
             StatusReport.message := task;
@@ -908,7 +908,7 @@ rules:
 	      top->AlleleStatusMenu.menuHistory.searchValue != "%") then
             set := set + "_Allele_Status_key = "  + top->AlleleStatusMenu.menuHistory.defaultValue + ",";
 	    if (top->AlleleStatusMenu.menuHistory.labelString = ALL_STATUS_APPROVED) then
-	      set := set + "_ApprovedBy_key = " + global_loginKey + ",approval_date = " + CURRENT_DATE + ",";
+	      set := set + "_ApprovedBy_key = " + global_userKey + ",approval_date = " + CURRENT_DATE + ",";
 	    else
 	      set := set + "_ApprovedBy_key = null,approval_date = null,";
 	    end if;
@@ -1200,7 +1200,7 @@ rules:
 		     qualifierKey + "," +
 		     refsKey + "," +
 		     statusKey + "," +
-		     global_loginKey + "," + global_loginKey + END_VALUE;
+		     global_userKey + "," + global_userKey + END_VALUE;
 
 	    elsif (editMode = TBL_ROW_MODIFY) then
 	      set := "_Marker_key = " + markerKey +
@@ -1596,7 +1596,7 @@ rules:
 		     cellLineTypeKey + "," +
 		     strainKey + "," +
 		     derivationKey + ",1," +
-		     global_loginKey + "," + global_loginKey + END_VALUE;
+		     global_userKey + "," + global_userKey + END_VALUE;
 
 	      mutantCellLineKey := MAX_KEY1 + cellLineKey + MAX_KEY2;
 
@@ -1621,7 +1621,7 @@ rules:
 	        cmd := cmd + mgi_DBinsert(ALL_ALLELE_CELLLINE, cellAssocKey) +
 		       currentRecordKey + "," +
 		       mutantCellLineKey + "," +
-		       global_loginKey + "," + global_loginKey + END_VALUE;
+		       global_userKey + "," + global_userKey + END_VALUE;
 
 	      elsif (editMode = TBL_ROW_MODIFY) then
 	        set := "_MutantCellLine_key = " + mutantCellLineKey;
@@ -1693,7 +1693,7 @@ rules:
 		     mgiTypeKey + "," +
 		     currentRecordKey + "," +
 		     isPrimaryKey + "," +
-		     global_loginKey + "," + global_loginKey + END_VALUE;
+		     global_userKey + "," + global_userKey + END_VALUE;
 
             elsif (editMode = TBL_ROW_MODIFY) then
               set := "_ImagePane_key = " + paneKey +

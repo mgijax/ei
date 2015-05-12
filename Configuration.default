@@ -22,6 +22,8 @@ unsetenv XKEYSYMDB
 setenv CVS_TAG  ei-5-2-1-30
 setenv TeleUSE /opt/teleuseXRT
 
+setenv GLOBAL_USER `whoami`
+
 # symlinks for sybase/postgres
 setenv EIINCLUDE syblib.h
 setenv EIDSQL SQL_syb.d

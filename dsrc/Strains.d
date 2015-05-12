@@ -315,7 +315,7 @@ rules:
 	   pcmd : string;
 	   permOK : integer;
 
-	   pcmd := exec_mgi_checkUserRole(mgi_DBprstr("StrainJAXModule"), mgi_DBprstr(global_login));
+	   pcmd := exec_mgi_checkUserRole(mgi_DBprstr("StrainJAXModule"), mgi_DBprstr(global_user));
 		
 	   permOK := (integer) mgi_sql1(pcmd);
 
@@ -358,7 +358,7 @@ rules:
                  top->StandardMenu.menuHistory.defaultValue + "," +
                  top->PrivateMenu.menuHistory.defaultValue + "," +
                  top->GeneticBackgroundMenu.menuHistory.defaultValue + "," +
-		 global_loginKey + "," + global_loginKey + END_VALUE;
+		 global_userKey + "," + global_userKey + END_VALUE;
  
 	  send(ModifyAttribute, 0);
 	  send(ModifyNeedsReview, 0);
@@ -735,7 +735,7 @@ rules:
 
               cmd := cmd + mgi_DBinsert(PRB_STRAIN_GENOTYPE, keyName) + 
 		     currentRecordKey + "," + genotypeKey + "," + qualifierKey + "," +
-		     global_loginKey + "," + global_loginKey + END_VALUE;
+		     global_userKey + "," + global_userKey + END_VALUE;
 
 	    elsif (editMode = TBL_ROW_MODIFY) then
 	      set := "_Genotype_key = " + genotypeKey + "," +

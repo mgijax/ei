@@ -422,7 +422,7 @@ rules:
                  mgi_DBprstr(top->ChromosomeMenu.menuHistory.defaultValue) + "," +
 	         "NULL," +
 	         mgi_DBprstr(top->StatusNotes->text.value) + "," + 
-		 global_loginKey + "," + global_loginKey + END_VALUE;
+		 global_userKey + "," + global_userKey + END_VALUE;
 
 	  send(ModifyNomenNotes, 0);
 
@@ -1092,7 +1092,7 @@ rules:
 	  -- if Add was successful, broadcast to Nomen
 	  if (top->QueryList->List.sqlSuccessful) then
 	    (void) busy_cursor(top);
-	    ExecSQL.cmd := exec_nom_transferToMGD(global_loginKey, currentNomenKey, mgi_DBprstr(BROADCASTOFFICIAL));
+	    ExecSQL.cmd := exec_nom_transferToMGD(global_userKey, currentNomenKey, mgi_DBprstr(BROADCASTOFFICIAL));
 	    send(ExecSQL, 0);
 	    (void) reset_cursor(top);
 	  end if;
@@ -1107,7 +1107,7 @@ rules:
 
 	BroadcastSymbolOfficial does
 	  (void) busy_cursor(top);
-	  ExecSQL.cmd := exec_nom_transferToMGD(global_loginKey, currentNomenKey, mgi_DBprstr(BROADCASTOFFICIAL));
+	  ExecSQL.cmd := exec_nom_transferToMGD(global_userKey, currentNomenKey, mgi_DBprstr(BROADCASTOFFICIAL));
 	  send(ExecSQL, 0);
 	  (void) reset_cursor(top);
 	end does;

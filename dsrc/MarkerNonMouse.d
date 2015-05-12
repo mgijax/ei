@@ -199,8 +199,8 @@ rules:
 	         mgi_DBprstr(top->Name->text.value) + "," +
                  mgi_DBprstr(top->Chromosome->text.value) + "," +
 	         mgi_DBprstr(top->Cyto->text.value) + "," +
-		 global_loginKey + "," +
-		 global_loginKey + END_VALUE;
+		 global_userKey + "," +
+		 global_userKey + END_VALUE;
 
 	  --  Process Accession numbers
 

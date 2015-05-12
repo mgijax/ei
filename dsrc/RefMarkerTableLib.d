@@ -167,7 +167,7 @@ rules:
 		     markerKey + "," +
 		     "2," +
 		     refsTypeKey + "," +
-		     global_loginKey + "," + global_loginKey + END_VALUE;
+		     global_userKey + "," + global_userKey + END_VALUE;
 
 	      cmd := cmd + exec_mrk_reloadReference(markerKey);
 

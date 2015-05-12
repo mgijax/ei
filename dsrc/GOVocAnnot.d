@@ -525,7 +525,7 @@ rules:
 		       evidenceKey + "," +
 		       refsKey + "," +
 		       mgi_DBprstr(inferredFrom) + "," +
-		       global_loginKey + "," + global_loginKey + END_VALUE;
+		       global_userKey + "," + global_userKey + END_VALUE;
 
             elsif (editMode = TBL_ROW_MODIFY) then
 
@@ -569,7 +569,7 @@ rules:
 	  -- else leave date alone
 
 	  if (completeAnnotation = YES and completeDate.length = 0) then
-	    set := set + "_CompletedBy_key = " + global_loginKey + ",completion_date = " + CURRENT_DATE;
+	    set := set + "_CompletedBy_key = " + global_userKey + ",completion_date = " + CURRENT_DATE;
 	  elsif (completeAnnotation = NO) then
 	    set := set + "_CompletedBy_key = null,completion_date = null";
 	  end if;

@@ -175,17 +175,17 @@ rules:
 	    cmd := cmd + top->MGITypeMenu.menuHistory.defaultValue + "," +
 		   mgi_DBprstr(top->Name->text.value) + "," +
 		   top->PrivateMenu.menuHistory.defaultValue + "," +
-		   global_loginKey + "," + global_loginKey;
+		   global_userKey + "," + global_userKey;
 	  elsif (tableID = MGI_REFASSOCTYPE) then
 	    cmd := cmd + top->MGITypeMenu.menuHistory.defaultValue + "," +
 		   mgi_DBprstr(top->Name->text.value) + "," +
 	           top->AllowOnlyOneMenu.menuHistory.defaultValue + "," +
-		   global_loginKey + "," + global_loginKey;
+		   global_userKey + "," + global_userKey;
 	  elsif (tableID = MGI_SYNONYMTYPE) then
 	    cmd := cmd + top->MGITypeMenu.menuHistory.defaultValue + ",1," +
 		   mgi_DBprstr(top->Name->text.value) + "," +
 	           top->AllowOnlyOneMenu.menuHistory.defaultValue + "," +
-		   global_loginKey + "," + global_loginKey;
+		   global_userKey + "," + global_userKey;
 	  else
 	    cmd := cmd + mgi_DBprstr(top->Name->text.value);
 	  end if;

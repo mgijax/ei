@@ -395,16 +395,16 @@ rules:
  
 	  cmd := cmd + top->IsReviewMenu.menuHistory.defaultValue + ",";
 	  cmd := cmd + mgi_DBprstr2(top->Abstract->text.value) + ",";
-	  cmd := cmd + global_loginKey + "," + global_loginKey + END_VALUE;
+	  cmd := cmd + global_userKey + "," + global_userKey + END_VALUE;
 
 	  -- System will assign the J: unless it is overridden by the user
 	  -- J: is in second row of Accession table
 
 	  jnum := mgi_tblGetCell(accTable, jnumRow, accTable.accID);
 	  if (jnum.length > 0) then
-	    cmd := cmd + exec_acc_assignJNext(global_loginKey, currentRecordKey,jnum);
+	    cmd := cmd + exec_acc_assignJNext(global_userKey, currentRecordKey,jnum);
 	  else
-	    cmd := cmd + exec_acc_assignJ(global_loginKey, currentRecordKey);
+	    cmd := cmd + exec_acc_assignJ(global_userKey, currentRecordKey);
 	  end if;
 
 	  -- If Reference is of type "BOOK", then additional info is required
@@ -1120,7 +1120,7 @@ rules:
 		     currentRecordKey + "," +
 		     dataSetKey + "," +
 		     neverUsed + "," +
-		     global_loginKey + "," + global_loginKey + END_VALUE;
+		     global_userKey + "," + global_userKey + END_VALUE;
 
 	    -- update
 

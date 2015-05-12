@@ -734,7 +734,7 @@ rules:
           cmds.insert(getenv("EIUTILS") + "/markerWithdrawal.csh", cmds.count + 1);
 	  cmds.insert("-S" + global_server, cmds.count + 1);
 	  cmds.insert("-D" + global_database, cmds.count + 1);
-	  cmds.insert("-U" + global_login, cmds.count + 1);
+	  cmds.insert("-U" + global_user, cmds.count + 1);
 	  cmds.insert("-P" + global_passwd_file, cmds.count + 1);
 	  cmds.insert("--eventKey=" + dialog.eventKey, cmds.count + 1);
 	  cmds.insert("--eventReasonKey=" + eventReason, cmds.count + 1);
@@ -1062,7 +1062,7 @@ rules:
 	  -- statements and these cannot be wrapped up within a transaction
 
 	  if (modifySymbol) then
-	    cmd := cmd + exec_all_convert(global_loginKey, currentRecordKey, currentSymbol, newSymbol);
+	    cmd := cmd + exec_all_convert(global_userKey, currentRecordKey, currentSymbol, newSymbol);
 	  end if;
 
 	  ModifySQL.cmd := cmd;
@@ -1239,8 +1239,8 @@ rules:
 			newSeqNum + "," +
 			mgi_DBprstr(name) + "," +
 			mgi_DBprstr(eventDate) + "," +
-			global_loginKey + "," +
-			global_loginKey + END_VALUE;
+			global_userKey + "," +
+			global_userKey + END_VALUE;
 
 	      historyModified := true;
 
@@ -1264,8 +1264,8 @@ rules:
 			  newSeqNum + "," +
 			  mgi_DBprstr(name) + "," +
 			  mgi_DBprstr(eventDate) + "," +
-			  global_loginKey + "," +
-			  global_loginKey + END_VALUE;
+			  global_userKey + "," +
+			  global_userKey + END_VALUE;
 
               -- Else, a simple update
  

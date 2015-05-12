@@ -158,7 +158,7 @@ rules:
 		 mgi_DBinsert(MGI_ORGANISM, KEYNAME) +
                  mgi_DBprstr(top->Common->text.value) + "," +
                  mgi_DBprstr(top->Latin->text.value) + "," +
-		 global_loginKey + "," + global_loginKey + END_VALUE;
+		 global_userKey + "," + global_userKey + END_VALUE;
 
 	  send(ModifyAnchor, 0);
 	  send(ModifyChromosome, 0);
@@ -320,7 +320,7 @@ rules:
             if (editMode = TBL_ROW_ADD) then
               tmpCmd := tmpCmd + mgi_DBinsert(MRK_CHROMOSOME, keyName) + currentRecordKey + "," + 
 		        mgi_DBprstr(chr) + "," + newSeqNum + "," +
-		        global_loginKey + "," + global_loginKey + END_VALUE;
+		        global_userKey + "," + global_userKey + END_VALUE;
             elsif (editMode = TBL_ROW_MODIFY) then
 
 	      -- If current Seq # not equal to new Seq #, then re-ordering is taking place
@@ -428,7 +428,7 @@ rules:
               cmd := cmd + mgi_DBinsert(MGI_ORGANISMTYPE, NOKEY) + 
 		currentRecordKey + "," +
 		newKey + "," +
-		global_loginKey + "," + global_loginKey + END_VALUE;
+		global_userKey + "," + global_userKey + END_VALUE;
             elsif (editMode = TBL_ROW_MODIFY) then
               set := "_MGIType_key = " + newKey;
               cmd := cmd + mgi_DBupdate(MGI_ORGANISMTYPE, currentRecordKey + " and _MGIType_key = " + key, set);

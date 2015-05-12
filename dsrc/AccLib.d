@@ -575,17 +575,17 @@ rules:
                          objectKey + "," +
                          qualifierKey + "," +
                          refsKey + "," +
-                         global_loginKey + "," + global_loginKey + END_VALUE;
+                         global_userKey + "," + global_userKey + END_VALUE;
 
 	        -- If refsKey is not given, then just insert into Accession table
 	        -- If refsKey is given, then use a different process
 
                 elsif (accName != "J:" and refsKey = "-1") then
                   cmd := cmd + 
-		    exec_acc_insert(global_loginKey, objectKey, accID, logicalKey, mgi_DBprstr(mgi_DBtype(tableID)), refsKey, preferred, private);
+		    exec_acc_insert(global_userKey, objectKey, accID, logicalKey, mgi_DBprstr(mgi_DBtype(tableID)), refsKey, preferred, private);
 	        elsif (accName != "J:") then
                   cmd := cmd + 
-		    exec_accref_process(global_loginKey, objectKey, refsKey, accID, logicalKey, mgi_DBprstr(mgi_DBtype(tableID)), preferred, private);
+		    exec_accref_process(global_userKey, objectKey, refsKey, accID, logicalKey, mgi_DBprstr(mgi_DBtype(tableID)), preferred, private);
 		end if;
 
 	      elsif (source.menuHistory.allowModify and 
@@ -597,7 +597,7 @@ rules:
 		               ",_Refs_key = " + refsKey;
 		  cmd := cmd + mgi_DBupdate(tableID, accKey, set);
                 else
-		  cmd := cmd + exec_acc_update(global_loginKey, accKey, accID, origRefsKey, refsKey);
+		  cmd := cmd + exec_acc_update(global_userKey, accKey, accID, origRefsKey, refsKey);
 		end if;
 
 	      elsif (source.menuHistory.allowDelete and 

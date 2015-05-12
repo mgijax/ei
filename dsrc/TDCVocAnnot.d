@@ -356,7 +356,7 @@ rules:
 		       evidenceKey + "," +
 		       refsKey + "," +
 		       "NULL," +
-		       global_loginKey + "," + global_loginKey + END_VALUE;
+		       global_userKey + "," + global_userKey + END_VALUE;
 
 	      ModifyNotes.source_widget := annotTable;
 	      ModifyNotes.tableID := MGI_NOTE;

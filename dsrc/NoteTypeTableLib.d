@@ -275,7 +275,7 @@ rules:
 	      cmd := cmd + objectKey + "," +
 		     mgiType + "," +
 		     noteTypeKey + "," +
-		     global_loginKey + "," + global_loginKey + END_VALUE;
+		     global_userKey + "," + global_userKey + END_VALUE;
 
               -- Break notes up into segments of 255
  
@@ -289,7 +289,7 @@ rules:
 
 		cmd := cmd + (string) i + "," + 
                        mgi_DBprnotestr(note->substr(1, 255)) + "," +
-		       global_loginKey + "," + global_loginKey + END_VALUE;
+		       global_userKey + "," + global_userKey + END_VALUE;
 
                 note := note->substr(256, note.length);
                 i := i + 1;
@@ -306,7 +306,7 @@ rules:
 
 		cmd := cmd + (string) i + "," + 
                        mgi_DBprnotestr(note) + "," +
-		       global_loginKey + "," + global_loginKey + END_VALUE;
+		       global_userKey + "," + global_userKey + END_VALUE;
 	      end if;
 
             elsif (editMode = TBL_ROW_DELETE and key.length > 0) then

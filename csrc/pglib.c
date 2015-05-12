@@ -76,8 +76,10 @@ char *global_reportdir;         /* Set in mgi_dbinit; holds user report director
 char *global_database;          /* Set in Application dModule; holds database value */
 char *global_server;            /* Set in Application dModule; holds server value */
 char *global_radar;             /* Set in Application dModule; holds radar db value */
-char *global_dbtype;             /* Set in Application dModule; holds db-type value */
-int global_error;             /* PG error */
+char *global_dbtype;            /* Set in Application dModule; holds db-type value */
+char *global_user;              /* Set in Application dModule; holds user login value */
+char *global_userKey;           /* Set in Application dModule; holds user login key value */
+int global_error;               /* PG error */
 
 static char conninfo[TEXTBUFSIZ];
 
@@ -99,6 +101,7 @@ int mgi_dbinit(char *user, char *pwd)
   static char passwdfile[TEXTBUFSIZ];
   static char passwdfile_name[TEXTBUFSIZ];
   static char dbtype[TEXTBUFSIZ];
+  static char guser[TEXTBUFSIZ];
 
   memset(passwdfile, '\0', sizeof(passwdfile));
   memset(passwdfile, '\0', sizeof(passwdfile_name));
@@ -111,10 +114,12 @@ int mgi_dbinit(char *user, char *pwd)
   sprintf(login, "%s", getenv("PG_DBUSER"));
   sprintf(server, "%s", getenv("PG_DBSERVER"));
   sprintf(dbtype, "%s", getenv("DB_TYPE"));
+  sprintf(guser, "%s", getenv("GLOBAL_USER"));
   global_database = database;
   global_login = login;
   global_server = server;
   global_dbtype = dbtype;
+  global_user = guser;
 
   FILE *p_file = fopen(getenv("PG_1LINE_PASSFILE"), "r");
 

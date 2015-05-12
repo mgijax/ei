@@ -655,7 +655,7 @@ rules:
 	    cmd := cmd + top->GXDReporterGeneMenu.menuHistory.defaultValue + ",";
 	  end if;
 
-	  cmd := cmd + global_loginKey + "," + global_loginKey + END_VALUE;
+	  cmd := cmd + global_userKey + "," + global_userKey + END_VALUE;
 
 	  -- Antibody Reference
 
@@ -754,7 +754,7 @@ rules:
 	  -- TR 8156; new
 
 	  cmd := cmd + exec_mgi_insertReferenceAssoc_antibody(\
-		global_loginKey,
+		global_userKey,
 		prepDetailForm->AntibodyAccession->ObjectID->text.value, \
 		mgiTypeKey, \
 	        top->mgiCitation->ObjectID->text.value, \
@@ -793,7 +793,7 @@ rules:
 
         AddProbeReference does
 
-	  cmd := cmd + exec_prb_insertReference(global_loginKey, top->mgiCitation->ObjectID->text.value, \
+	  cmd := cmd + exec_prb_insertReference(global_userKey, top->mgiCitation->ObjectID->text.value, \
 	         prepDetailForm->ProbeAccession->ObjectID->text.value);
 
 	end
@@ -1325,7 +1325,7 @@ rules:
 	  duplicate : integer := DuplicateAssay.duplicate;
 
 	  (void) busy_cursor(top);
-	  newAssayKey := (string) mgi_sp(exec_gxd_duplicateAssay(global_loginKey, currentAssay, (string) duplicate));
+	  newAssayKey := (string) mgi_sp(exec_gxd_duplicateAssay(global_userKey, currentAssay, (string) duplicate));
 	  (void) reset_cursor(top);
 
           PythonExpressionCache.source_widget := top;

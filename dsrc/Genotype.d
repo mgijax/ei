@@ -337,7 +337,7 @@ rules:
 	  cmd := cmd + top->EditForm->ConditionalMenu.menuHistory.defaultValue + "," +
 		 "NULL," + 
 		 top->EditForm->GenotypeExistsAsMenu.menuHistory.defaultValue + "," +
-		 global_loginKey + "," + global_loginKey + END_VALUE;
+		 global_userKey + "," + global_userKey + END_VALUE;
 
 	  send(ModifyAllelePair, 0);
 	  send(ModifyImagePaneAssociation, 0);
@@ -616,7 +616,7 @@ rules:
 		     stateKey + "," +
 		     compoundKey + "," +
 		     newSeqNum + "," +
-		     global_loginKey + "," + global_loginKey + END_VALUE;
+		     global_userKey + "," + global_userKey + END_VALUE;
 
 	      ordergenotypes := true;
 	      reorderingAlleles := false;
@@ -706,7 +706,7 @@ rules:
 		     mgiTypeKey + "," +
 		     currentRecordKey + "," +
 		     isPrimaryKey + "," +
-		     global_loginKey + "," + global_loginKey + END_VALUE;
+		     global_userKey + "," + global_userKey + END_VALUE;
 
             elsif (editMode = TBL_ROW_MODIFY) then
               set := "_ImagePane_key = " + paneKey +

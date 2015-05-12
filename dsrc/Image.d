@@ -304,8 +304,8 @@ rules:
 		   defaultThumbNailKey + "," +
 		   xydim +
 	           mgi_DBprstr(top->FigureLabel->text.value) + "," +
-		   global_loginKey + "," +
-		   global_loginKey + END_VALUE;
+		   global_userKey + "," +
+		   global_userKey + END_VALUE;
 
 	    -- Thumbnails get one placeholder Image Pane record
 
@@ -333,8 +333,8 @@ rules:
 		 defaultThumbNailKey + "," +
 		 xydim +
 	         mgi_DBprstr(top->FigureLabel->text.value) + "," +
-		 global_loginKey + "," +
-		 global_loginKey + END_VALUE;
+		 global_userKey + "," +
+		 global_userKey + END_VALUE;
 
 	  send(ModifyImagePane, 0);
 

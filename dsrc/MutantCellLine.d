@@ -223,7 +223,7 @@ rules:
                  top->EditForm->AlleleCellLineTypeMenu.menuHistory.defaultValue + "," +
 	         top->mgiParentCellLine->ParentStrain->StrainID->text.value + "," +
                  top->mgiParentCellLine->Derivation->ObjectID->text.value + ",1," +
-                 global_loginKey + "," + global_loginKey + END_VALUE;
+                 global_userKey + "," + global_userKey + END_VALUE;
 
 	  --  Process Accession numbers
 

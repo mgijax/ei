@@ -51,7 +51,7 @@
  *
  * lec 05/23/2003
  *	- SAO; modifiedBy changed to _ModifiedBy_key
- *	- added global_loginKey
+ *	- added global_userKey
  *
  * lec 08/15/2002
  *	- TR 1463/SAO; SPECIES to ORGANISM
@@ -147,7 +147,7 @@
 
 char *global_application;     /* Set in Application dModule; holds main application value */
 char *global_version;         /* Set in Application dModule; holds main application version value */
-char *global_loginKey;        /* Set in Application dModule; holds login key value */
+char *global_userKey;         /* Set in Application dModule; holds login key value */
 
 /*
    Compose a string SQL value for a given value.
@@ -2500,7 +2500,7 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case VOC_EVIDENCE_PROPERTY:
       case VOC_TERM:
               sprintf(buf, "update %s set %s, _ModifiedBy_key = %s, modification_date = %s where %s = %s %s", 
-		  mgi_DBtable(table), str, global_loginKey, sql_getdate, mgi_DBkey(table), key, END_VALUE_C);
+		  mgi_DBtable(table), str, global_userKey, sql_getdate, mgi_DBkey(table), key, END_VALUE_C);
 	      break;
       case MGI_TRANSLATIONSEQNUM:
               sprintf(buf, "update %s set %s, modification_date = %s where %s = %s %s", 
@@ -2564,7 +2564,7 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case VOC_EVIDENCE_PROPERTY:
       case VOC_TERM:
               sprintf(buf, "update %s set _ModifiedBy_key = %s, modification_date = %s where %s = %s %s", 
-		  mgi_DBtable(table), global_loginKey, sql_getdate, mgi_DBkey(table), key, END_VALUE_C);
+		  mgi_DBtable(table), global_userKey, sql_getdate, mgi_DBkey(table), key, END_VALUE_C);
 	      break;
       default:
               sprintf(buf, "update %s set modification_date = %s where %s = %s %s", 
@@ -2600,7 +2600,7 @@ char *mgi_DBupdate2(int table, char *key, char *key2, char *str)
   {
     case MRK_HISTORY:
             sprintf(buf, "update %s set %s, _ModifiedBy_key = %s, modification_date = %s where %s = %s and sequenceNum = %s %s", 
-		mgi_DBtable(table), str, global_loginKey, sql_getdate, mgi_DBkey(table), key, key2, END_VALUE_C);
+		mgi_DBtable(table), str, global_userKey, sql_getdate, mgi_DBkey(table), key, key2, END_VALUE_C);
      	    break;
     case MRK_OFFSET:
             sprintf(buf, "update %s set %s, modification_date = %s where %s = %s and source = %s %s", 

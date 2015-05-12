@@ -161,7 +161,7 @@ rules:
 	   cmd : string;
 	   permOK : integer;
 
-	   cmd := exec_mgi_checkUserRole(mgi_DBprstr(top.name), mgi_DBprstr(global_login));
+	   cmd := exec_mgi_checkUserRole(mgi_DBprstr(top.name), mgi_DBprstr(global_user));
 		
 	   permOK := (integer) mgi_sp(cmd);
 
@@ -506,18 +506,18 @@ rules:
 		       evidenceKey + "," +
 		       refsKey + "," +
 		       "NULL," +
-		       global_loginKey + "," + global_loginKey + END_VALUE;
+		       global_userKey + "," + global_userKey + END_VALUE;
 
               cmd := cmd + mgi_DBinsert(VOC_EVIDENCE_PROPERTY, keyNameProperty) + 
                         MAX_KEY1 + keyName + MAX_KEY2 + "," +
                         defaultSexSpecificKey + ",1,1," +
                         mgi_DBprstr(sex) + "," +
-                        global_loginKey + "," +
-                        global_loginKey + END_VALUE;
+                        global_userKey + "," +
+                        global_userKey + END_VALUE;
 
 	      if (clipAnnotEvidenceKey.length > 0) then
 		-- add notes
-		cmd := cmd + exec_voc_copyAnnotEvidenceNotes(global_loginKey, clipAnnotEvidenceKey, MAX_KEY1 + keyName + MAX_KEY2);
+		cmd := cmd + exec_voc_copyAnnotEvidenceNotes(global_userKey, clipAnnotEvidenceKey, MAX_KEY1 + keyName + MAX_KEY2);
 		isUsingCopyAnnotEvidenceNotes := true;
 	      end if;
 
@@ -563,7 +563,7 @@ rules:
 	  ModifySQL.reselect := false;
           send(ModifySQL, 0);
 
-	  cmd := exec_voc_processAnnotHeader(global_loginKey, currentRecordKey, annotTypeKey);
+	  cmd := exec_voc_processAnnotHeader(global_userKey, currentRecordKey, annotTypeKey);
           ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
 	  ModifySQL.reselect := true;
@@ -655,9 +655,9 @@ rules:
 			  headerTermKey + "," +
 			  newSeqNum + "," +
 			  "0, " +
-			  global_loginKey + "," +
-			  global_loginKey + "," +
-			  global_loginKey + "," + CURRENT_DATE + END_VALUE;
+			  global_userKey + "," +
+			  global_userKey + "," +
+			  global_userKey + "," + CURRENT_DATE + END_VALUE;
 
             row := row + 1;
           end while;
@@ -675,7 +675,7 @@ rules:
 	  -- lose their 'isNormal' bit.  We use a stored procedure to
 	  -- recompute these.
 
-	  cmd := exec_voc_processAnnotHeader(global_loginKey, currentRecordKey, annotTypeKey);
+	  cmd := exec_voc_processAnnotHeader(global_userKey, currentRecordKey, annotTypeKey);
 	  ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
 	  ModifySQL.reselect := true;
@@ -1515,7 +1515,7 @@ rules:
 	      alleles.open;
 	      while (alleles.more) do
 	        s := alleles.next;
-	        (void) mgi_sp(exec_mgi_insertReferenceAssoc_usedFC(global_loginKey, s, refsKey));
+	        (void) mgi_sp(exec_mgi_insertReferenceAssoc_usedFC(global_userKey, s, refsKey));
 	      end while;
 	      alleles.close;
 	    end if;
