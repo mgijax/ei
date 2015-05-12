@@ -64,7 +64,6 @@ char *global_passwd;		/* Set in mgi_dbinit; holds user password name */
 char *global_reportdir;		/* Set in mgi_dbinit; holds user report directory name */
 char *global_database;  	/* Set in Application dModule; holds database value */
 char *global_server;    	/* Set in Application dModule; holds server value */
-char *global_radar;    		/* Set in Application dModule; holds radar db value */
 char *global_dbtype;		/* Set in Application dModule; holds db type */
 char *global_user;		/* Set in Application dModule; holds user login value */
 char *global_userKey;           /* Set in Application dModule; holds user login key value */

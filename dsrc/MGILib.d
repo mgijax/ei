@@ -128,7 +128,6 @@ rules:
 	  --envList.append("MGD_DBSERVER");
 	  --envList.append("SYBASE");
 	  --envList.append("MGD_DBNAME");
-	  --envList.append("RADAR_DBNAME");
 	  --envList.open;
 	  --while envList.more do;
 	    --env := envList.next;
@@ -170,8 +169,6 @@ rules:
 	  if (global_passwd.length = 0) then
 	    global_passwd := "mgdpub";
 	  end if;
-
-	  global_radar := getenv("RADAR_DBNAME");
 
 	  (void) busy_cursor(top);
 

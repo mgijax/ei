@@ -34,21 +34,22 @@ extern PGresult *res;
 extern int maxRow;
 extern int currentRow;
 
+/* for postgres, there is one database user, which is "mgd_dbo" */
+/* no individual pg-users are created */
 /* database login/password */
 extern char *global_login;
 extern char *global_loginKey;
 extern char *global_passwd_file;
 extern char *global_passwd;
 
-extern char *global_reportdir;
-extern char *global_database;
-extern char *global_server;
-extern char *global_radar;
-extern char *global_dbtype;
-
 /* mgi_user._user_key, login */
 extern char *global_user;
 extern char *global_userKey;
+
+extern char *global_reportdir;
+extern char *global_database;
+extern char *global_server;
+extern char *global_dbtype;
 
 extern int global_error;
 
