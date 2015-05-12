@@ -91,8 +91,8 @@ rules:
 --
 
 	InitApplication does
-	  envList : list;
-	  env : string;
+	  --envList : list;
+	  --env : string;
 
 	  top := create widget("Login", nil, nil);
 
@@ -101,8 +101,17 @@ rules:
 	  SetTitle.source_widget := top;
 	  send(SetTitle, 0);
 
-	  top->LoginServer->text.value := getenv("MGD_DBSERVER");
-	  top->LoginDB->text.value := getenv("MGD_DBNAME");
+	  if (GLOBAL_DBTYPE = "sybase") then
+	  	top->LoginServer->text.value := getenv("MGD_DBSERVER");
+	  	top->LoginDB->text.value := getenv("MGD_DBNAME");
+		top->User.sensitive := true;
+		top->Password.sensitive := true;
+	  else
+	  	top->LoginServer->text.value := getenv("PG_DBSERVER");
+	  	top->LoginDB->text.value := getenv("PG_DBNAME");
+		top->User.sensitive := false;
+		top->Password.sensitive := false;
+	  end if;
 
 	  -- If Server is a Development server, then do not allow selection
 	  -- of Production or Public server
@@ -111,23 +120,26 @@ rules:
 
 	  top.show;
 
-	  envList := create list("string");
-	  envList.append("EIAPP");
-	  envList.append("MGD_DBSERVER");
-	  envList.append("SYBASE");
-	  envList.append("MGD_DBNAME");
-	  envList.append("RADAR_DBNAME");
+	  --
+	  -- turned-off ; checks that env variables were set
+	  --
+	  --envList := create list("string");
+	  --envList.append("EIAPP");
+	  --envList.append("MGD_DBSERVER");
+	  --envList.append("SYBASE");
+	  --envList.append("MGD_DBNAME");
+	  --envList.append("RADAR_DBNAME");
+	  --envList.open;
+	  --while envList.more do;
+	    --env := envList.next;
+	    --if (getenv(env) = nil) then
+	      --StatusReport.source_widget := top;
+	      --StatusReport.message := "\nWARNING:  Environment Variable " + env + " is not defined.";
+	      --send(StatusReport, 0);
+	    --end if;
+	  --end while;
+	  --envList.close;
 
-	  envList.open;
-	  while envList.more do;
-	    env := envList.next;
-	    if (getenv(env) = nil) then
-	      StatusReport.source_widget := top;
-	      StatusReport.message := "\nWARNING:  Environment Variable " + env + " is not defined.";
-	      send(StatusReport, 0);
-	    end if;
-	  end while;
-	  envList.close;
 	end does;
 
 --
