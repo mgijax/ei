@@ -78,6 +78,7 @@ rules:
        commands.insert("-D" + global_database, commands.count + 1);
        commands.insert("-U" + global_login, commands.count + 1);
        commands.insert("-P" + global_passwd_file, commands.count + 1);
+       commands.insert("-W" + global_user, commands.count + 1);
  
        if (ReportGenerate.nlmMode = 1) then
          commands.insert("--mode=nlm", commands.count + 1);
