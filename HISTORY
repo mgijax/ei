@@ -1,13 +1,15 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-5-2-1-32
 TAG: ei-5-2-1-31
 TAG: ei-5-2-1-30
-DATE: 05/13/2015
+DATE: 05/13/2015, 05/14/2015
 STAFF: lec
 CHANGES:
 a) see TR11750
 b) removed 'radar'
 c) added 'global_user', 'global_userKey'
+d) removed Marker/Utilities/Split
 
 TAG: ei-5-2-1-29
 TAG: ei-5-2-1-28

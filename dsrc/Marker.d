@@ -177,7 +177,6 @@ devents:
 	MarkerWithdrawalRename :local [];
 	MarkerWithdrawalMerge :local [];
 	MarkerWithdrawalAlleleOf :local [];
-	MarkerWithdrawalSplit :local [];
 	MarkerWithdrawalDelete :local [];
 	MarkerWithdrawal :local [];
 	MarkerWithdrawalEnd :local [source_widget : widget;
@@ -530,22 +529,6 @@ rules:
 	end does;
 
 --
--- MarkerWithdrawalSplit
---
--- Activated from:  widget top->Utilities->MarkerWithdrawalSplit
---
--- Initializes Withdrawal Dialog fields for a Split
---
-
-	MarkerWithdrawalSplit does
-	  dialog : widget := top->WithdrawalDialog;
-
-	  dialog.eventKey := EVENT_SPLIT;
-	  dialog.eventLabel := MarkerWithdrawalSplit.source_widget.labelString;
-	  send(MarkerWithdrawalInit, 0);
-	end does;
-
---
 -- MarkerWithdrawalDelete
 --
 -- Activated from:  widget top->Utilities->MarkerWithdrawalDelete
@@ -633,13 +616,6 @@ rules:
 	    dialog->mgiMarker.managed := true;
 	    dialog->markerAccession.managed := true;
 	    dialog->NewMarker.sensitive := false;
-	  elsif (dialog.eventKey = EVENT_SPLIT) then
-	    dialog->nonVerified.managed := true;
-	    dialog->nonVerified.sensitive := false;
-	    dialog->Name.sensitive := false;
-	    dialog->mgiMarker.managed := false;
-	    dialog->markerAccession.managed := false;
-	    dialog->NewMarker.sensitive := true;
 	  elsif (dialog.eventKey = EVENT_DELETED) then
 	    dialog->nonVerified.managed := false;
 	    dialog->nonVerified.sensitive := true;
@@ -681,8 +657,6 @@ rules:
 	       (dialog->mgiMarker->ObjectID->text.value.length = 0 or
 	        dialog->mgiMarker->ObjectID->text.value = "NULL")) then
 	    ok := false;
-	  elsif (dialog.eventKey = EVENT_SPLIT and mgi_tblGetCell(table, 0, table.markerSymbol) = "") then
-	    ok := false;
 	  end if;
 
 	  if (not ok) then
@@ -707,15 +681,6 @@ rules:
 	  elsif ((dialog.eventKey = EVENT_MERGE or dialog.eventKey = EVENT_ALLELEOF) and
 	      dialog->mgiMarker->Marker->text.value = dialog->currentMarker->Marker->text.value) then
 	    ok := false;
-	  elsif (dialog.eventKey = EVENT_SPLIT) then
-	    row := 0;
-	    while (row < mgi_tblNumRows(table)) do
-	      symbol := mgi_tblGetCell(table, row, table.markerSymbol);
-	      if (symbol = dialog->currentMarker->Marker->text.value) then
-		ok := false;
-	      end if;
-	      row := row + 1;
-	    end while;
 	  end if;
 
 	  if (not ok) then
@@ -747,17 +712,6 @@ rules:
 	    cmds.insert("--newSymbols=" + mgi_DBprstr(dialog->nonVerified->Marker->text.value), cmds.count + 1);
 	  elsif (dialog.eventKey = EVENT_MERGE or dialog.eventKey = EVENT_ALLELEOF) then
 	    cmds.insert("--newKey=" + dialog->mgiMarker->ObjectID->text.value, cmds.count + 1);
-	  elsif (dialog.eventKey = EVENT_SPLIT) then
-	    row := 0;
-	    buf := "";
-	    while (row < mgi_tblNumRows(table)) do
-	      symbol := mgi_tblGetCell(table, row, table.markerSymbol);
-	      if (symbol.length > 0) then
-	        buf := buf + symbol + ",";
-	      end if;
-	      row := row + 1;
-	    end while;
-	    cmds.insert("--newSymbols=" + mgi_DBprstr(buf), cmds.count + 1);
 	  end if;
 
 	  -- Write cmds to user log
@@ -822,20 +776,6 @@ rules:
 	    where := where + mgi_DBprstr(dialog->nonVerified->Marker->text.value);
 	  elsif (dialog.eventKey = EVENT_MERGE or dialog.eventKey = EVENT_ALLELEOF) then
 	    where := where + mgi_DBprstr(dialog->mgiMarker->Marker->text.value);
-	  elsif (dialog.eventKey = EVENT_SPLIT) then
-	    where := where + mgi_DBprstr(mgi_tblGetCell(table, 0, table.markerSymbol));
-	    row := 1;
-	    while (row < mgi_tblNumRows(table)) do
-	      symbol := mgi_tblGetCell(table, row, table.markerSymbol);
-	      if (symbol.length > 0) then
-	        where := where + "," + mgi_DBprstr(symbol);
-	      else
-		break;
-	      end if;
-	      row := row + 1;
-	    end while;
-	  elsif (dialog.eventKey = EVENT_DELETED) then
-	    where := where + mgi_DBprstr(dialog->currentMarker->Marker->text.value);
 	  end if;
 
 	  where := where + ")\nand m._Marker_key = mu._Marker_key";

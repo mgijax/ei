@@ -334,7 +334,6 @@ extern char *global_version;
 #define EVENT_RENAME		"2"
 #define EVENT_MERGE		"3"
 #define EVENT_ALLELEOF		"4"
-#define EVENT_SPLIT		"5"
 #define EVENT_DELETED		"6"
 
 /* OMIM Cache Events */
