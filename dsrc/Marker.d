@@ -734,7 +734,7 @@ rules:
           cmds.insert(getenv("EIUTILS") + "/markerWithdrawal.csh", cmds.count + 1);
 	  cmds.insert("-S" + global_server, cmds.count + 1);
 	  cmds.insert("-D" + global_database, cmds.count + 1);
-	  cmds.insert("-U" + global_user, cmds.count + 1);
+	  cmds.insert("-U" + global_login, cmds.count + 1);
 	  cmds.insert("-P" + global_passwd_file, cmds.count + 1);
 	  cmds.insert("--eventKey=" + dialog.eventKey, cmds.count + 1);
 	  cmds.insert("--eventReasonKey=" + eventReason, cmds.count + 1);
