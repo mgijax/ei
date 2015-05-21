@@ -85,7 +85,7 @@ endsw
 setenv EIBUILDDIR ${MGI_LIVE}/ei
 
 # EI-utilities
-setenv EIUTILS  ${MGI_DBUTILS}/bin/ei
+setenv EIUTILS  ${PG_DBUTILS}/bin/ei
 
 # data directory
 setenv EIDATADIR /data/ei
