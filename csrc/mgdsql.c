@@ -1554,9 +1554,19 @@ char *ref_gxd_exists(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select count(*) from GXD_Index where _Refs_key = %s \
-   \nunion \
-   \nselect count(*) from GXD_Assay where _Refs_key = %s", key, key);
+
+  if (GLOBAL_DBTYPE == "sybase")
+  {
+  	sprintf(buf,"select count(*) from GXD_Index where _Refs_key = %s \
+   	\nunion \
+   	\nselect count(*) from GXD_Assay where _Refs_key = %s", key, key);
+  }
+  else
+  {
+  	sprintf(buf,"select 1 from GXD_Index where _Refs_key = %s \
+   	\nunion \
+   	\nselect 1 from GXD_Assay where _Refs_key = %s", key, key);
+  }
   return(buf);
 }
 
