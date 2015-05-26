@@ -416,7 +416,7 @@ rules:
           AddSQL.cmd := cmd;
           AddSQL.list := top->QueryList;
 	  AddSQL.selectNewListItem := false;
-          AddSQL.item := "Stage " + (string) current_stagenum + ":" + addDialog->structureText->text.value;
+          AddSQL.item := "Stage" + (string) current_stagenum + ":" + addDialog->structureText->text.value;
           AddSQL.key := top->ID->text;
           send(AddSQL, 0);
 
