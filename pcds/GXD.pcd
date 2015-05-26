@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Tue Mar 24 12:37:36 2015";
+      lastWritten = "Tue May 26 09:09:24 2015";
       copy = false;
       inCreateMenu = true;
         {
@@ -294,6 +294,12 @@ Module: GXD
                                       }
                                       {
                                         ProbeOrganismFrame = ProbeOrganismFrame : mgiOption;
+                                            Popups:
+                                            {
+                                              ProbeOrganismPulldown = OptionPulldown;
+                                              Group: User
+                                                sql = "select * from MGI_Organism_Antigen_View order by commonName";
+                                            }
                                       }
                                       {
                                         Strain = Strain : mgiDataTypes;
@@ -1171,6 +1177,12 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         ProbeOrganismFrame = ProbeOrganismFrame : mgiOption;
+                                            Popups:
+                                            {
+                                              ProbeOrganismPulldown = OptionPulldown;
+                                              Group: User
+                                                sql = "select * from MGI_Organism_Antibody_View order by commonName";
+                                            }
                                       }
                                       {
                                         Strain = Strain : mgiDataTypes;
