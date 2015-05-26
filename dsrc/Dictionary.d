@@ -354,7 +354,7 @@ rules:
 --
 
         Add does
-          skeyName : string := KEYNAME;
+          skeyName : string := mgi_DBkey(GXD_STRUCTURE);
           snkeyName : string := mgi_DBkey(GXD_STRUCTURENAME);
           parentKey : string;
           nullval : string := "NULL";
@@ -388,11 +388,7 @@ rules:
           cmd := cmd + mgi_setDBkey(GXD_STRUCTURE, NEWKEY, skeyName);
           cmd := cmd + mgi_setDBkey(GXD_STRUCTURENAME, NEWKEY, snkeyName);
 
-          cmd := cmd + mgi_DBinsert(GXD_STRUCTURENAME, MAX_KEY1 + snkeyName + MAX_KEY2) + 
-	                    MAX_KEY1 + skeyName + MAX_KEY2 + "," +
-			    mgi_DBprstr(addDialog->structureText->text.value) + ",1" + END_VALUE;
-
-          cmd := cmd + mgi_DBinsert(GXD_STRUCTURE, skeyName) + 
+          cmd := cmd + mgi_DBinsert(GXD_STRUCTURE, MAX_KEY1 + skeyName + MAX_KEY2) + 
                             parentKey + "," +
                             MAX_KEY1 + snkeyName + MAX_KEY2 + "," +
 			    defaultStageKey + "," +
@@ -402,6 +398,10 @@ rules:
                             "0,1,0, " +       /* treeDepth - set by trigger, printStop, topSort */
 			    addDialog->inheritSystemMenu.menuHistory.defaultValue + "," +
 			    mgi_DBprstr(addDialog->structureNote->text.value) + END_VALUE;
+
+          cmd := cmd + mgi_DBinsert(GXD_STRUCTURENAME, MAX_KEY1 + snkeyName + MAX_KEY2) + 
+	                    MAX_KEY1 + skeyName + MAX_KEY2 + "," +
+			    mgi_DBprstr(addDialog->structureText->text.value) + ",1" + END_VALUE;
 
           ModifyAliases.table := addDialog->mgiAliasTable->Table; 
           ModifyAliases.keyName := mgi_DBkey(GXD_STRUCTURENAME) + "_Aliases";
@@ -535,13 +535,13 @@ rules:
                   end if;
 
                   if not ModifyAliases.addStructureMode then
-                     cmd := cmd + mgi_DBinsert(GXD_STRUCTURENAME, keyName) +
+                     cmd := cmd + mgi_DBinsert(GXD_STRUCTURENAME, MAX_KEY1 + keyName + MAX_KEY2) +
                          top->ID->text.value + "," +
                          mgi_DBprstr(structure) + "," +
 			 isMGIAdded +
                          END_VALUE;
                   else -- modify is against the newly-added structure
-                     cmd := cmd + mgi_DBinsert(GXD_STRUCTURENAME, keyName) +
+                     cmd := cmd + mgi_DBinsert(GXD_STRUCTURENAME, MAX_KEY1 + keyName + MAX_KEY2) +
                          MAX_KEY1 + mgi_DBkey(GXD_STRUCTURE) + MAX_KEY2 + "," +
                          mgi_DBprstr(structure) + "," +
 			 isMGIAdded +

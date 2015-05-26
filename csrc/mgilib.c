@@ -1886,6 +1886,7 @@ char *mgi_DBinsert(int table, char *keyName)
     case GXD_GELROW:
     case GXD_GELBAND:
     case GXD_GELLANESTRUCTURE:
+    case GXD_STRUCTURE:
     case GXD_STRUCTURENAME:
     case GXD_INDEXSTAGES:
     case IMG_IMAGEPANE:
