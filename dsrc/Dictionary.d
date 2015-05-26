@@ -385,18 +385,18 @@ rules:
           -- need to add a new Structure record & its preferred StructureName:
           -- (in one batch).
 
-          cmd := cmd + mgi_setDBkey(GXD_STRUCTURE, NEWKEY, skeyName);
-          cmd := cmd + mgi_setDBkey(GXD_STRUCTURENAME, NEWKEY, snkeyName);
-
 	  if (global_dbtype = "sybase") then
+                cmd := cmd + mgi_setDBkey(GXD_STRUCTURE, NEWKEY, skeyName);
+                cmd := cmd + mgi_setDBkey(GXD_STRUCTURENAME, NEWKEY, snkeyName);
+
           	cmd := cmd + mgi_DBinsert(GXD_STRUCTURE, MAX_KEY1 + skeyName + MAX_KEY2) + 
                             	parentKey + "," +
                             	MAX_KEY1 + snkeyName + MAX_KEY2 + "," +
 			    	defaultStageKey + "," +
 			    	addDialog->ADSystemMenu.menuHistory.defaultValue + "," +
-                            	nullval + "," +   /* edinburgh key */
-                            	mgi_DBprstr(addDialog->structureText->text.value) + "," +   /* printName */
-                            	"0,1,0, " +       /* treeDepth - set by trigger, printStop, topSort */
+                            	nullval + "," +
+                            	mgi_DBprstr(addDialog->structureText->text.value) + "," +
+                            	"0,1,0, " + 
 			    	addDialog->inheritSystemMenu.menuHistory.defaultValue + "," +
 			    	mgi_DBprstr(addDialog->structureNote->text.value) + END_VALUE;
 
@@ -405,20 +405,26 @@ rules:
 			    	mgi_DBprstr(addDialog->structureText->text.value) + ",1" + END_VALUE;
 
           else
-          	cmd := cmd + mgi_DBinsert(GXD_STRUCTURENAME, MAX_KEY1 + snkeyName + MAX_KEY2) + 
+                skeyName := "key";
+
+                cmd := cmd + mgi_setDBkey(GXD_STRUCTURE, NEWKEY, skeyName);
+                cmd := cmd + mgi_setDBkey(GXD_STRUCTURENAME, NEWKEY, snkeyName);
+
+          	cmd := cmd + mgi_DBinsert(GXD_STRUCTURENAME, snkeyName) + 
 	                    	MAX_KEY1 + skeyName + MAX_KEY2 + "," +
 			    	mgi_DBprstr(addDialog->structureText->text.value) + ",1" + END_VALUE;
 
-          	cmd := cmd + mgi_DBinsert(GXD_STRUCTURE, MAX_KEY1 + skeyName + MAX_KEY2) + 
+          	cmd := cmd + mgi_DBinsert(GXD_STRUCTURE, skeyName) + 
                             	parentKey + "," +
                             	MAX_KEY1 + snkeyName + MAX_KEY2 + "," +
 			    	defaultStageKey + "," +
 			    	addDialog->ADSystemMenu.menuHistory.defaultValue + "," +
-                            	nullval + "," +   /* edinburgh key */
-                            	mgi_DBprstr(addDialog->structureText->text.value) + "," +   /* printName */
-                            	"0,1,0, " +       /* treeDepth - set by trigger, printStop, topSort */
+                            	nullval + "," +
+                            	mgi_DBprstr(addDialog->structureText->text.value) + "," +
+                            	"0,1,0, " +
 			    	addDialog->inheritSystemMenu.menuHistory.defaultValue + "," +
 			    	mgi_DBprstr(addDialog->structureNote->text.value) + END_VALUE;
+
 	  end if;
 
           ModifyAliases.table := addDialog->mgiAliasTable->Table; 
