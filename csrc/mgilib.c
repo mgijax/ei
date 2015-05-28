@@ -1947,13 +1947,6 @@ char *mgi_DBinsert(int table, char *keyName)
 	break;
   }
 
-  /* retrieve most recent new key */
-  if (selectKey)
-  {
-    sprintf(buf2, "select * from %sMax;", keyName);
-    strcat(buf, buf2);
-  }
-
   switch (table)
   {
     case ACC_ACTUALDB:
@@ -2377,6 +2370,14 @@ char *mgi_DBinsert(int table, char *keyName)
   }
   else
   {
+    /*
+    if (selectKey)
+    {
+      sprintf(buf2, "select * from %sMax;", keyName);
+      strcat(buf, buf2);
+    }
+    */
+
     if (strcmp(keyName, NOKEY) == 0)
     {
       sprintf(buf3, "\nvalues(");

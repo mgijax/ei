@@ -111,7 +111,7 @@ rules:
 	  -- calling event can set AddSQL.transaction = false
 
 	  if (AddSQL.transaction) then
-	    cmd := AddSQL.cmd + "select * from  keyMax;\n";
+	    cmd := AddSQL.cmd + "select * from keyMax;\n";
 	  else
 	    cmd := AddSQL.cmd;
 	  end if;

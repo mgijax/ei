@@ -309,14 +309,6 @@ rules:
            addDialog->structureText->text.value := "";
            addDialog->structureText->text.modified := false; 
      
-           -- clear the structure notes
-           addDialog->structureNote->text.value := "";
-           addDialog->structureNote->text.modified := false;
-     
-           -- clear the alias tables
-           ClearTable.table := addDialog->mgiAliasTable->Table;
-           send(ClearTable, 0);
-    
            SetOption.source_widget := addDialog->inheritSystemMenu; 
            SetOption.value := YES;
            send(SetOption, 0);  
@@ -397,8 +389,7 @@ rules:
                             	nullval + "," +
                             	mgi_DBprstr(addDialog->structureText->text.value) + "," +
                             	"0,1,0, " + 
-			    	addDialog->inheritSystemMenu.menuHistory.defaultValue + "," +
-			    	mgi_DBprstr(addDialog->structureNote->text.value) + END_VALUE;
+			    	addDialog->inheritSystemMenu.menuHistory.defaultValue + ",nullval" + END_VALUE;
 
           	cmd := cmd + mgi_DBinsert(GXD_STRUCTURENAME, MAX_KEY1 + snkeyName + MAX_KEY2) + 
 	                    	MAX_KEY1 + skeyName + MAX_KEY2 + "," +
@@ -422,15 +413,9 @@ rules:
                             	nullval + "," +
                             	mgi_DBprstr(addDialog->structureText->text.value) + "," +
                             	"0,1,0, " +
-			    	addDialog->inheritSystemMenu.menuHistory.defaultValue + "," +
-			    	mgi_DBprstr(addDialog->structureNote->text.value) + END_VALUE;
+			    	addDialog->inheritSystemMenu.menuHistory.defaultValue + "," + nullval + END_VALUE;
 
 	  end if;
-
-          ModifyAliases.table := addDialog->mgiAliasTable->Table; 
-          ModifyAliases.keyName := mgi_DBkey(GXD_STRUCTURENAME) + "_Aliases";
-          ModifyAliases.addStructureMode := true;
-          send(ModifyAliases, 0);
 
 	  -- Execute the add
 	  -- The new item will be added to the selection list, but we do not

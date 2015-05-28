@@ -2,7 +2,7 @@ Module: mgiAnatDictionary
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Wed May  6 09:07:20 2015";
+      lastWritten = "Tue May 26 14:12:39 2015";
         {
           DictionaryModule = Module : MGI;
           Group: Widget
@@ -984,20 +984,6 @@ Module: mgiAnatDictionary
                                           columns = 50;
                                       }
                                 }
-                                {
-                                  structureNote = Notes : mgiDataTypes;
-                                      {
-                                        label = XmLabel;
-                                      }
-                                      {
-                                        text = scrolledText;
-                                        Group: Widget
-                                          columns = 50;
-                                          rows = 2;
-                                        Group: Constraint
-                                          xrtGearAlignerAlignment = aligner_center;
-                                      }
-                                }
                           }
                     }
               }
@@ -1135,69 +1121,26 @@ Module: mgiAnatDictionary
                           }
                     }
                     {
-                      structureNote = Notes : mgiDataTypes;
-                      Group: Widget
-                        xrtGearOrientation = horizontal;
+                      inheritSystemFrame = inheritSystemFrame : mgiAnatDictionary;
                       Group: Constraint
                         leftAttachment = attach_form;
                         rightAttachment = attach_form;
+                        rightOffset = 5;
                         topAttachment = attach_widget;
                         bottomAttachment = attach_none;
                         resizable = true;
                         topWidget = structureText;
-                          {
-                            label = XmLabel;
-                          }
-                          {
-                            text = scrolledText;
-                            Group: Widget
-                              columns = 50;
-                              rows = 2;
-                            Group: Constraint
-                              xrtGearAlignerAlignment = aligner_center;
-                          }
-                    }
-                    {
-                      mgiAliasTable = aliasTable : mgiAnatDictionary;
-                      Group: Constraint
-                        leftAttachment = attach_opposite_widget;
-                        rightAttachment = attach_none;
-                        topAttachment = attach_widget;
-                        bottomAttachment = attach_form;
-                        resizable = true;
-                        topWidget = structureNote;
-                        leftWidget = structureText;
-                          {
-                            Table = mgiTable;
-                                {
-                                  label = XtXrtLabel;
-                                  Group: Widget
-                                    labelString = "MGI Aliases";
-                                }
-                          }
-                    }
-                    {
-                      inheritSystemFrame = inheritSystemFrame : mgiAnatDictionary;
-                      Group: Constraint
-                        leftAttachment = attach_widget;
-                        rightAttachment = attach_form;
-                        rightOffset = 5;
-                        topAttachment = attach_opposite_widget;
-                        bottomAttachment = attach_none;
-                        resizable = true;
-                        leftWidget = mgiAliasTable;
-                        topWidget = mgiAliasTable;
                     }
                     {
                       ADDSystemFrame = ADSystemFrame : mgiOption;
                       Group: Constraint
-                        leftAttachment = attach_widget;
-                        leftWidget = mgiAliasTable;
+                        leftAttachment = attach_form;
                         rightAttachment = attach_form;
                         topAttachment = attach_widget;
                         topWidget = inheritSystemFrame;
-                        bottomAttachment = attach_none;
+                        bottomAttachment = attach_form;
                         resizable = true;
+                        bottomOffset = 5;
                     }
               }
               {
