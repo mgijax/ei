@@ -389,7 +389,7 @@ rules:
                             	nullval + "," +
                             	mgi_DBprstr(addDialog->structureText->text.value) + "," +
                             	"0,1,0, " + 
-			    	addDialog->inheritSystemMenu.menuHistory.defaultValue + ",nullval" + END_VALUE;
+			    	addDialog->inheritSystemMenu.menuHistory.defaultValue + "," + nullval + END_VALUE;
 
           	cmd := cmd + mgi_DBinsert(GXD_STRUCTURENAME, MAX_KEY1 + snkeyName + MAX_KEY2) + 
 	                    	MAX_KEY1 + skeyName + MAX_KEY2 + "," +
