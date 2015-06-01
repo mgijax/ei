@@ -1646,14 +1646,16 @@ rules:
 	      ageKey := ageKey + " " + ageRange;
 	    end if;
 
-	    if (ageKey = "postnatal day"
-                or ageKey = "postnatal week"
-                or ageKey = "postnatal month"
-                or ageKey = "postnatal year"
-                or ageKey = "embryonic day") then
-	       StatusReport.source_widget := top;
-               StatusReport.message := "Invalid Age Value: " + ageKey + "\n";
-               send(StatusReport, 0);
+            if (editMode != TBL_ROW_DELETE) then
+              if (ageKey = "postnatal day" 
+                  or ageKey = "postnatal week"
+                  or ageKey = "postnatal month"
+                  or ageKey = "postnatal year"
+                  or ageKey = "embryonic day") then 
+                   StatusReport.source_widget := top; 
+                   StatusReport.message := "Invalid Age Value: " + ageKey + "\n";
+                   send(StatusReport, 0);
+              end if;
             end if;
 
             if (editMode = TBL_ROW_ADD) then
@@ -1809,14 +1811,16 @@ rules:
 	      ageKey := ageKey + " " + ageRange;
 	    end if;
 
-	    if (ageKey = "postnatal day"
-                or ageKey = "postnatal week"
-                or ageKey = "postnatal month"
-                or ageKey = "postnatal year"
-                or ageKey = "embryonic day") then
-	       StatusReport.source_widget := top;
-               StatusReport.message := "Invalid Age Value: " + ageKey + "\n";
-               send(StatusReport, 0);
+            if (editMode != TBL_ROW_DELETE) then
+	      if (ageKey = "postnatal day"
+                  or ageKey = "postnatal week"
+                  or ageKey = "postnatal month"
+                  or ageKey = "postnatal year"
+                  or ageKey = "embryonic day") then
+	           StatusReport.source_widget := top;
+                   StatusReport.message := "Invalid Age Value: " + ageKey + "\n";
+                   send(StatusReport, 0);
+	      end if;
             end if;
 
             if (editMode = TBL_ROW_ADD) then
