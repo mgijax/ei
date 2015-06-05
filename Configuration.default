@@ -35,6 +35,7 @@ setenv DB_TYPE  "sybase"
 switch (`whoami`)
     case lec:
     case sc: 
+    case klf:
     #case jeffc:
         setenv GLOBAL_USER "mgd_dbo"
         breaksw
