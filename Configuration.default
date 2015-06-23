@@ -22,21 +22,6 @@ unsetenv XKEYSYMDB
 setenv CVS_TAG  ei-5-2-2-5
 setenv TeleUSE /opt/teleuseXRT
 
-# sybase/postgres symlinks, etc.
-
-switch (${DB_TYPE})
-    case sybase:
-	setenv EIINCLUDE syblib.h
-	setenv EIDSQL SQL_syb.d
-	setenv EIDDATELIB DateLib_syb.d
-	breaksw
-    case postgres:
-	setenv EIINCLUDE pglib.h
-	setenv EIDSQL SQL_pg.d
-	setenv EIDDATELIB DateLib_pg.d
-	breaksw
-endsw
-
 switch (`whoami`)
     case lec:
     case sc:
@@ -50,21 +35,33 @@ switch (`whoami`)
         breaksw
 endsw
 
-switch (`uname -n`)
-    case bhmgiei01:
-        setenv EISSHSERVER   "lindon.informatics.jax.org"
-	setenv CVS_TAG	${CVS_TAG}-linux
+# sybase/postgres symlinks, etc.
+
+switch (${DB_TYPE})
+    case sybase:
+	setenv EIINCLUDE syblib.h
+	setenv EIDSQL SQL_syb.d
+	setenv EIDDATELIB DateLib_syb.d
 	setenv SYBASE /opt/sybase/15.7
 	setenv SYBASE_PATH ${SYBASE}/OCS-15_0/bin
+	breaksw
+
+    case postgres:
+	setenv EIINCLUDE pglib.h
+	setenv EIDSQL SQL_pg.d
+	setenv EIDDATELIB DateLib_pg.d
+	breaksw
+endsw
+
+switch (`uname -n`)
+    case bhmgiei01:
+	setenv CVS_TAG	${CVS_TAG}-linux
 	setenv LD_LIBRARY_PATH ${SYBASE}/OCS-15_0/lib:${TeleUSE}/lib:${TeleUSE}/XRT/lib-shared:${TeleUSE}/conf/lib
 	setenv USERLOG	${HOME}/.ei-log
         breaksw
 
     case bheidev01:
-        setenv EISSHSERVER   "rohan.informatics.jax.org"
 	setenv CVS_TAG	${CVS_TAG}-linux
-	setenv SYBASE /opt/sybase/15.7
-	setenv SYBASE_PATH ${SYBASE}/OCS-15_0/bin
 	setenv LD_LIBRARY_PATH ${SYBASE}/OCS-15_0/lib:${TeleUSE}/lib:${TeleUSE}/XRT/lib-shared:${TeleUSE}/conf/lib
 	setenv USERLOG	${HOME}/.eidev-log
         breaksw
@@ -73,7 +70,7 @@ switch (`uname -n`)
 	setenv CVS_TAG	${CVS_TAG}-solaris
 	setenv SYBASE /opt/sybase/12.5
 	setenv SYBASE_PATH ${SYBASE}/OCS-12_5/bin
-	setenv LD_LIBRARY_PATH /opt/sybase/12.5/ASE-12_5/lib:/opt/sybase/12.5/OCS-12_5/lib:/usr/lib:/usr/local/lib:/usr/ucblib:/usr/openwin/lib:/usr/local/postgres/lib:/opt/teleuseXRT/lib:/opt/teleuseXRT/conf/lib
+	setenv LD_LIBRARY_PATH ${SYBASE}/ASE-12_5/lib:${SYBASE}/OCS-12_5/lib:/usr/lib:/usr/local/lib:/usr/ucblib:/usr/openwin/lib:/opt/teleuseXRT/lib:/opt/teleuseXRT/conf/lib
 	setenv USERLOG	${HOME}/.eidev-log
 	breaksw
 
@@ -81,7 +78,7 @@ switch (`uname -n`)
 	setenv CVS_TAG	${CVS_TAG}-solaris
 	setenv SYBASE /opt/sybase/12.5
 	setenv SYBASE_PATH ${SYBASE}/OCS-12_5/bin
-	setenv LD_LIBRARY_PATH /opt/sybase/12.5/ASE-12_5/lib:/opt/sybase/12.5/OCS-12_5/lib:/usr/lib:/usr/local/lib:/usr/ucblib:/usr/openwin/lib:/usr/local/postgres/lib:/opt/teleuseXRT/lib:/opt/teleuseXRT/conf/lib
+	setenv LD_LIBRARY_PATH ${SYBASE}/ASE-12_5/lib:${SYBASE}/OCS-12_5/lib:/usr/lib:/usr/local/lib:/usr/ucblib:/usr/openwin/lib:/opt/teleuseXRT/lib:/opt/teleuseXRT/conf/lib
 	setenv USERLOG	${HOME}/.ei-log
 	breaksw
 
