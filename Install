@@ -26,14 +26,23 @@ setenv LOG `pwd`/Install.log
 rm -f $LOG
 
 switch (`uname -n`)
+
 	case bhmgiei01:
 		echo "building for linux/production..." >>& ${LOG}
-		./install_linux >>& ${LOG}
+		if (${DB_TYPE} == 'sybase') then
+			./install_linux >>& ${LOG}
+		else
+			./install_pg >>& ${LOG}
+		endif
 		breaksw
 
 	case bheidev01:
 		echo "building for linux/dev..." >>& ${LOG}
-		./install_linux_dev >>& ${LOG}
+		if (${DB_TYPE} == 'sybase') then
+			./install_linux_dev >>& ${LOG}
+		else
+			./install_pg_dev >>& ${LOG}
+		endif
 		breaksw
 
 	case rohan:
