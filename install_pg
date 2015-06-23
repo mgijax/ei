@@ -1,0 +1,36 @@
+#!/bin/csh -f
+
+#
+# Installs all EI apps as non-compiled applications
+#
+# Usage: install_pg
+#
+# Output: install_pg
+#
+
+source ./Configuration
+
+setenv LOG $0.log
+rm -f $LOG
+
+# run configuration to set proper sybase/postgres symlinks
+${EIBUILDDIR}/install_config
+
+cd ${EIBUILDDIR}
+
+setenv EIAPPS	"mgd gxd mgi mgiadmin"
+foreach app ($EIAPPS)
+
+echo "INSTALLING $app"
+setenv EIAPP $app
+
+date > ${LOG}
+cd ${EIAPP}
+uxb uxb_pg.conf clean >>& ${LOG}
+rm -rf *.o *.c *.do *.ui cderes* ${EIAPP} *.log >>& ${LOG}
+uxb uxb_pg.conf >>& ${LOG}
+cd ..
+date >> ${LOG}
+
+end
+
