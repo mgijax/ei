@@ -482,8 +482,8 @@ rules:
 --	  InitNoteForm.tableID := MGI_NOTETYPE_SOURCE_VIEW;
 --	  send(InitNoteForm, 0);
 
-	  LoadList.list := top.root->CloneLibrarySetList;
-	  send(LoadList, 0);
+--	  LoadList.list := top.root->CloneLibrarySetList;
+--	  send(LoadList, 0);
 
 	  InitOptionMenu.option := top->SourceSegmentTypeMenu;
 	  send(InitOptionMenu, 0);

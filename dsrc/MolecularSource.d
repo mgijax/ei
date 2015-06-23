@@ -48,7 +48,6 @@ devents:
 	Delete :local [];
 	MolecularSourceExit :global [];
 	Modify :local [];
-	ModifyCloneLibrarySet :local [];
 	PrepareSearch :local [];
 	Search :local [];
 	Select :local [item_position : integer;];
@@ -137,7 +136,6 @@ rules:
 	  send(AddMolecularSource, 0);
 
 	  cmd := "";
-	  send(ModifyCloneLibrarySet, 0);
 
 	  if (top->SourceForm.sql.length = 0) then
 	    (void) reset_cursor(top);
@@ -219,8 +217,6 @@ rules:
           ModifyNamedMolecularSource.source_widget := top;
           send(ModifyNamedMolecularSource, 0);
 
-	  send(ModifyCloneLibrarySet, 0);
-
 	  --  Process Accession numbers
 
           ProcessAcc.table := accTable;
@@ -240,69 +236,11 @@ rules:
 	end does;
 
 --
--- ModifyCloneLibrarySet
---
--- Activated from: devent Modify
---
--- Construct insert/update/delete for Marker Current symbols
---
-
-	ModifyCloneLibrarySet does
-          table : widget := top->CloneLibrarySet->Table;
-          row : integer := 0;
-          editMode : string;
-          memberKey : string;
-	  setKey : string;
-	  set : string := "";
-	  keyDeclared : boolean := false;
-	  keyName : string := "memberKey";
- 
-          -- Process while non-empty rows are found
- 
-          while (row < mgi_tblNumRows(table)) do
-            editMode := mgi_tblGetCell(table, row, table.editMode);
- 
-            if (editMode = TBL_ROW_EMPTY) then
-              break;
-            end if;
- 
-            memberKey := mgi_tblGetCell(table, row, table.memberKey);
-            setKey := mgi_tblGetCell(table, row, table.setKey);
- 
-            if (editMode = TBL_ROW_ADD) then
-
-              if (not keyDeclared) then
-                cmd := cmd + mgi_setDBkey(MGI_SETMEMBER, NEWKEY, keyName);
-                keyDeclared := true;
-              else
-                cmd := cmd + mgi_DBincKey(keyName);
-              end if;
- 
-              cmd := cmd + mgi_DBinsert(MGI_SETMEMBER, keyName) + 
-		     setKey + "," + 
-		     currentRecordKey + "," + 
-		     (string) (row + 1) + "," +
-		     global_userKey + "," + global_userKey + END_VALUE;
-
-            elsif (editMode = TBL_ROW_MODIFY) then
-              set := "_Set_key = " + setKey;
-              cmd := cmd + mgi_DBupdate(MGI_SETMEMBER, memberKey, set);
-
-            elsif (editMode = TBL_ROW_DELETE and memberKey.length > 0) then
-               cmd := cmd + mgi_DBdelete(MGI_SETMEMBER, memberKey);
-            end if;
- 
-            row := row + 1;
-          end while;
-	end does;
-
---
 -- PrepareSearch
 --
 
 	PrepareSearch does
 	  value : string := "";
-	  from_cloneset : boolean := false;
 
           -- Use Molecular Source library
 
@@ -322,19 +260,6 @@ rules:
           send(SearchAcc, 0);
 	  from := from + accTable.sqlFrom;
 	  where := where + accTable.sqlWhere;
-
-	  value := mgi_tblGetCell(top->CloneLibrarySet->Table, 0, top->CloneLibrarySet->Table.setKey);
-	  if (value.length > 0) then
-	    where := where + "\nand csv._Set_key = " + value;
-	    from_cloneset := true;
-	  end if;
-
-	  if (from_cloneset) then
-	    from := from + ", MGI_Set csv, MGI_SetMember csm ";
-	    where := where + "\nand csv._MGIType_key = 5" +
-		"\nand csv._Set_key = csm._Set_key" +
-		"\nand s._Source_key = csm._Object_key";
-	  end if;
 
           if (where.length > 0) then
             where := "where" + where->substr(5, where.length);
@@ -379,25 +304,6 @@ rules:
 	  DisplayMolecularSource.key := currentRecordKey;
 	  DisplayMolecularSource.master := true;
 	  send(DisplayMolecularSource, 0);
-
-	  -- Select Clone Library Sets
-
-	  scmd :string := molsource_select(currentRecordKey);
-
-	  table : widget := top->CloneLibrarySet->Table;
-	  row : integer := 0;
-	  dbproc : opaque := mgi_dbexec(scmd);
-
-	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-              (void) mgi_tblSetCell(table, row, table.setKey, mgi_getstr(dbproc, 1));
-              (void) mgi_tblSetCell(table, row, table.memberKey, mgi_getstr(dbproc, 2));
-              (void) mgi_tblSetCell(table, row, table.cloneLibrary, mgi_getstr(dbproc, 3));
-	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-	      row := row + 1;
-	    end while;
-          end while;
-	  (void) mgi_dbclose(dbproc);
 
           top->QueryList->List.row := Select.item_position;
 

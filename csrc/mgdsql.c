@@ -1117,23 +1117,6 @@ char *molecular_sourcekey(char *key)
 }
 
 /*
- * MolecularSource.d
-*/
-
-char *molsource_select(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select m._Set_key, m._SetMember_key, v.name  \
-   \nfrom MGI_Set v, MGI_SetMember m \
-   \nwhere v._MGIType_key = 5 \
-   \nand v._Set_key = m._Set_key \
-   \nand m._Object_key = %s \
-   \norder by m.sequenceNum", key);
-  return(buf);
-}
-
-/*
  * MPVocAnnot.d
 */
 

@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Thu May 28 12:06:19 2015";
+      lastWritten = "Wed Jun 10 08:48:12 2015";
       copy = false;
       inCreateMenu = true;
         {
@@ -363,26 +363,6 @@ Module: GXD
                                               Group: Widget
                                                 columns = 20;
                                                 maxLength = 50;
-                                            }
-                                      }
-                                      {
-                                        GenderFrame = GenderFrame : mgiOption;
-                                      }
-                                      {
-                                        mgiNoteForm = mgiNoteForm : mgiDataTypes;
-                                      }
-                                      {
-                                        CloneLibrarySet = Table : mgiTable;
-                                            {
-                                              Table = mgiTable : mgiTable;
-                                              Group: Widget
-                                                xrtTblColumnLabels = "Mode,Member key,Set key,Clone Library Set";
-                                                xrtTblNumColumns = 4;
-                                                xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 50)";
-                                                xrtTblEditableSeries = "(all 0-2 0)";
-                                                xrtTblPixelWidthSeries = "(all 0-2 0)";
-                                                userDefinedAttributes = "memberKey:Int(Int)=\"1\"\nsetKey:Int(Int)=\"2\"\ncloneLibrary:Int(Int)=\"3\"\n";
-                                                xrtTblVisibleRows = 3;
                                             }
                                       }
                                 }
@@ -1246,26 +1226,6 @@ Shift<Key>Tab: prev-tab-group()
                                               Group: Widget
                                                 columns = 20;
                                                 maxLength = 50;
-                                            }
-                                      }
-                                      {
-                                        GenderFrame = GenderFrame : mgiOption;
-                                      }
-                                      {
-                                        mgiNoteForm = mgiNoteForm : mgiDataTypes;
-                                      }
-                                      {
-                                        CloneLibrarySet = Table : mgiTable;
-                                            {
-                                              Table = mgiTable : mgiTable;
-                                              Group: Widget
-                                                xrtTblColumnLabels = "Mode,Member key,Set key,Clone Library Set";
-                                                xrtTblNumColumns = 4;
-                                                xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 50)";
-                                                xrtTblEditableSeries = "(all 0-2 0)";
-                                                xrtTblPixelWidthSeries = "(all 0-2 0)";
-                                                userDefinedAttributes = "memberKey:Int(Int)=\"1\"\nsetKey:Int(Int)=\"2\"\ncloneLibrary:Int(Int)=\"3\"\n";
-                                                xrtTblVisibleRows = 3;
                                             }
                                       }
                                 }

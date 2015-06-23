@@ -9,7 +9,7 @@
 #
 
 if ( ${?MGICONFIG} == 0 ) then
-	setenv MGICONFIG /usr/local/mgi/live/mgiconfig
+	setenv MGICONFIG /usr/local/mgi/lec/mgiconfig
 endif
 
 source ${MGICONFIG}/master.config.csh
@@ -22,19 +22,24 @@ unsetenv XKEYSYMDB
 setenv CVS_TAG  ei-5-2-2-5
 setenv TeleUSE /opt/teleuseXRT
 
-# symlinks for sybase/postgres
-setenv EIINCLUDE syblib.h
-setenv EIDSQL SQL_syb.d
-setenv EIDDATELIB DateLib_syb.d
-setenv DB_TYPE  "sybase"
-#setenv EIINCLUDE pglib.h
-#setenv EIDSQL SQL_pg.d
-#setenv EIDDATELIB DateLib_pg.d
-#setenv DB_TYPE  "postgres"
+# sybase/postgres symlinks, etc.
+
+switch (${DB_TYPE})
+    case sybase:
+	setenv EIINCLUDE syblib.h
+	setenv EIDSQL SQL_syb.d
+	setenv EIDDATELIB DateLib_syb.d
+	breaksw
+    case postgres:
+	setenv EIINCLUDE pglib.h
+	setenv EIDSQL SQL_pg.d
+	setenv EIDDATELIB DateLib_pg.d
+	breaksw
+endsw
 
 switch (`whoami`)
     case lec:
-    case sc: 
+    case sc:
     case klf:
     #case jeffc:
         setenv GLOBAL_USER "mgd_dbo"
@@ -86,8 +91,7 @@ endsw
 setenv EIBUILDDIR ${MGI_LIVE}/ei
 
 # EI-utilities
-setenv EIUTILS  ${MGI_DBUTILS}/bin/ei
-#setenv EIUTILS  ${PG_DBUTILS}/bin/ei
+setenv EIUTILS  ${PG_DBUTILS}/bin/ei
 
 # data directory
 setenv EIDATADIR /data/ei

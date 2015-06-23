@@ -161,10 +161,6 @@ extern char *molecular_alias(char *);
 extern char *molecular_rflv(char *);
 extern char *molecular_sourcekey(char *);
 
-/* MolecularSource.d */
-
-extern char *molsource_select(char *);
-
 /* MutantCellLine.d */
 
 extern char *mutant_cellline(char *);

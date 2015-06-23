@@ -111,8 +111,6 @@ CALLS
 	 mldp_countchr("char *")			: "char *";
 	 mldp_assay("char *")				: "char *";
 
-	 molsource_select("char *")			: "char *";
-
 	 molecular_termNA()				: "char *";
 	 molecular_termPrimer()				: "char *";
 	 molecular_probekey("char *")			: "char *";
