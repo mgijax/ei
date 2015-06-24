@@ -26,7 +26,8 @@ switch (`whoami`)
     case lec:
     case sc:
     case klf:
-    #case jeffc:
+    case jeffc:
+    case kstone:
         setenv GLOBAL_USER "mgd_dbo"
         breaksw
 
