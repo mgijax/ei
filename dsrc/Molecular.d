@@ -1200,7 +1200,7 @@ rules:
 
           value := mgi_tblGetCell(table, 0, table.markerChr);
           if (value.length > 0) then
-            where := where + "\nand l1.chromosome like " + mgi_DBprstr(value);
+            where := where + "\nand l1.chromosome = " + mgi_DBprstr(value);
             from_gmarker := true;
             from_marker := true;
           end if;
