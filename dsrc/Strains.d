@@ -799,12 +799,17 @@ rules:
 	  from := from + top->Reference->Table.sqlFrom;
 	  where := where + top->Reference->Table.sqlWhere;
 
-	  SearchNoteForm.notew := top->mgiNoteForm;
-	  SearchNoteForm.tableID := MGI_NOTE_STRAIN_VIEW;
-          SearchNoteForm.join := "s." + mgi_DBkey(STRAIN);
-	  send(SearchNoteForm, 0);
-	  from := from + top->mgiNoteForm.sqlFrom;
-	  where := where + top->mgiNoteForm.sqlWhere;
+          i : integer := 1;
+          while (i <= top->mgiNoteForm.numChildren) do
+            SearchNoteForm.notew := top->mgiNoteForm;
+            SearchNoteForm.noteTypeKey := top->mgiNoteForm.child(i)->Note.noteTypeKey;
+            SearchNoteForm.tableID := MGI_NOTE_STRAIN_VIEW;
+            SearchNoteForm.join := "s." + mgi_DBkey(STRAIN);
+            send(SearchNoteForm, 0);
+            from := from + top->mgiNoteForm.sqlFrom;
+            where := where + top->mgiNoteForm.sqlWhere;
+            i := i + 1; 
+          end while;
 
           if (top->ID->text.value.length > 0) then
             where := where + "\nand s._Strain_key = " + top->ID->text.value;
