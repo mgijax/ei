@@ -12,14 +12,17 @@
 --
 -- History
 --
+-- 06/24/2015	lec
+--	- TR11908/IMPC note/addlow edits
+--
 -- 09/04/2014	lec
---	scrum-bob/IMPC note ; do not allow edits
+--	- scrum-bob/IMPC note ; do not allow edits
 --
 -- 09/26/2013	lec
---	TR11337/add AppendNoteButton for GXD (addNote1)
+--	- TR11337/add AppendNoteButton for GXD (addNote1)
 --
 -- 10/28/2009   lec
---      TR9922/ProcessNoteForm.keyDeclared
+--      - TR9922/ProcessNoteForm.keyDeclared
 --
 -- lec 09/23/2009
 --	- TR 9797; added mgi_notetype_alldriver_view
@@ -682,11 +685,6 @@ rules:
 	    end if;
 	  elsif (noteWidget.noteType.length > 0) then
 	    noteType := mgi_DBprstr(noteWidget.noteType);
-	  end if;
-
-	  -- IMPC Colony ID : do not allow edits
-	  if (noteType = "1012") then
-	    return;
 	  end if;
 
 	  if (noteWidget.is_defined("mgiTypeKey") != nil) then
