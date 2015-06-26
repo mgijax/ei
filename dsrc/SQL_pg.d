@@ -171,26 +171,30 @@ rules:
 --
  
         DeleteSQL does
-	  top := DeleteSQL.list.top;
+          top := DeleteSQL.list.top;
 
-	  ExecSQL.cmd := mgi_DBdelete(DeleteSQL.tableID, DeleteSQL.key);
-	  ExecSQL.list := DeleteSQL.list;
-	  send(ExecSQL, 0);
+          if (DeleteSQL.key2 != nil) then
+             ExecSQL.cmd := mgi_DBdelete2(DeleteSQL.tableID, DeleteSQL.key, DeleteSQL.key2);
+             ExecSQL.list := DeleteSQL.list;
+             send(ExecSQL, 0); 
+          else
+             ExecSQL.cmd := mgi_DBdelete(DeleteSQL.tableID, DeleteSQL.key);
+             ExecSQL.list := DeleteSQL.list;
+             send(ExecSQL, 0); 
+          end if; 
 
-	  -- If delete was successful, delete row from list and re-count records
+          -- If delete was successful, delete row from list and re-count records
 
-	  (void) mgi_writeLog("\nDeleteSQL.list->List.sqlSuccessful : " + (string) DeleteSQL.list->List.sqlSuccessful + "\n");
-
-	  if (DeleteSQL.list->List.sqlSuccessful) then
+          if (DeleteSQL.list->List.sqlSuccessful) then
             DeleteList.list := DeleteSQL.list;
-            send(DeleteList, 0);
-	    top->RecordCount->text.value := mgi_DBrecordCount(DeleteSQL.tableID);
-	    if (top->Control->Delete != nil) then
-	      top->Control->Delete.deleteReturn := true;
-	    end if;
-          end if;
+            send(DeleteList, 0); 
+            top->RecordCount->text.value := mgi_DBrecordCount(DeleteSQL.tableID);
+            if (top->Control->Delete != nil) then
+              top->Control->Delete.deleteReturn := true;
+            end if; 
+          end if; 
         end does;
- 
+
 --
 -- ExecSQL
 --
