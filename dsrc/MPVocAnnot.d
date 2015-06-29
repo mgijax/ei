@@ -171,6 +171,8 @@ rules:
 	     top->Header->Save.sensitive := false;
 	   end if;
 
+	   top->Control->Delete.sensitive := false;
+
         end does;
  
 --
@@ -321,6 +323,8 @@ rules:
 
         Delete does
 	  cmd : string;
+
+	  -- always de-sensitize this buttom
 
 	  (void) busy_cursor(top);
 
