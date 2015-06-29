@@ -320,6 +320,8 @@ rules:
 --
 
         Delete does
+	  cmd : string;
+
 	  (void) busy_cursor(top);
 
 	  DeleteSQL.tableID := VOC_ANNOT;
@@ -327,6 +329,13 @@ rules:
 	  DeleteSQL.key2 := annotTypeKey;
 	  DeleteSQL.list := top->QueryList;
 	  send(DeleteSQL, 0);
+
+	  cmd := exec_voc_processAnnotHeader(global_userKey, currentRecordKey, annotTypeKey);
+          ModifySQL.cmd := cmd;
+	  ModifySQL.list := top->QueryList;
+	  ModifySQL.reselect := true;
+	  ModifySQL.transaction := false;
+          send(ModifySQL, 0);
 
           if (top->QueryList->List.row = 0) then
 	    send(ClearMP, 0);
