@@ -10,6 +10,9 @@
 --
 -- History:
 --
+-- 06/30/2015	lec
+--	- TR11624/added QTL (BIB_QTL_Exists)
+--
 -- 10/01/2014	lec
 --	- TR11786/add Allele and Marker tabs
 --
@@ -1221,6 +1224,8 @@ rules:
 	        cmd := ref_allele_exists(currentRecordKey);
 	      elsif (mgi_tblGetCell(statusTable, row, statusTable.existsProc) = "BIB_MRK_Exists") then
 	        cmd := ref_mrk_exists(currentRecordKey);
+	      elsif (mgi_tblGetCell(statusTable, row, statusTable.existsProc) = "BIB_QTL_Exists") then
+	        cmd := ref_qtl_exists(currentRecordKey);
 	      end if;
 
 	      if (mgi_sql1(cmd) != NO) then

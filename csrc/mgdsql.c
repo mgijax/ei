@@ -1583,6 +1583,14 @@ char *ref_mrk_exists(char *key)
   return(buf);
 }
 
+char *ref_qtl_exists(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select count(*) from MLD_Expts where exptType in ('TEXT-QTL', 'TEXT-QTL-Candidate Genes') and _Refs_key = %s", key);
+  return(buf);
+}
+
 char *ref_allele_count(char *key)
 {
   static char buf[TEXTBUFSIZ];
