@@ -1225,7 +1225,7 @@ rules:
 
           value := mgi_tblGetCell(table, 0, table.modifiedBy);
           if (value.length > 0) then
-            where := where + "\nand u.login like " + mgi_DBprstr(value);
+            where := where + "\nand u.login = " + mgi_DBprstr(value);
             from_marker := true;
             from_user := true;
           end if;

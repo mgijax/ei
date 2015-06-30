@@ -471,14 +471,14 @@ rules:
 
 	  value := mgi_tblGetCell(annotTable, 0, annotTable.editor);
 	  if (value.length > 0) then
-	    where := where + "\nand u1.login like " + mgi_DBprstr(value);
+	    where := where + "\nand u1.login = " + mgi_DBprstr(value);
 	    from_evidence := true;
 	    from_user1 := true;
 	  end if;
 
 	  value := mgi_tblGetCell(annotTable, 0, annotTable.createdBy);
 	  if (value.length > 0) then
-	    where := where + "\nand u2.login like " + mgi_DBprstr(value);
+	    where := where + "\nand u2.login = " + mgi_DBprstr(value);
 	    from_evidence := true;
 	    from_user2 := true;
 	  end if;

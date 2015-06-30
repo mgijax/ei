@@ -673,7 +673,7 @@ char *mgilib_user(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _User_key from MGI_User_Active_View where login like '%s'", key);
+  sprintf(buf,"select _User_key from MGI_User_Active_View where login = '%s'", key);
   return(buf);
 }
 
@@ -1303,7 +1303,7 @@ char *verify_allele_marker(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"and _Marker_key = %s", key);
+  sprintf(buf,"\nand _Marker_key = %s", key);
   return(buf);
 }
 
@@ -1568,7 +1568,7 @@ char *verify_user(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _User_key, login from MGI_User where login like %s", key);
+  sprintf(buf,"select _User_key, login from MGI_User where login = '%s'", key);
   return(buf);
 }
 
