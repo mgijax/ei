@@ -776,6 +776,8 @@ rules:
 	    where := where + mgi_DBprstr(dialog->nonVerified->Marker->text.value);
 	  elsif (dialog.eventKey = EVENT_MERGE or dialog.eventKey = EVENT_ALLELEOF) then
 	    where := where + mgi_DBprstr(dialog->mgiMarker->Marker->text.value);
+          elsif (dialog.eventKey = EVENT_DELETED) then
+            where := where + mgi_DBprstr(dialog->currentMarker->Marker->text.value);
 	  end if;
 
 	  where := where + ")\nand m._Marker_key = mu._Marker_key";
