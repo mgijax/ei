@@ -545,11 +545,10 @@ rules:
 	    if (editMode = TBL_ROW_ADD) then
               cmd := cmd + mgi_DBinsert(GXD_ANTIBODYMARKER, "") + currentRecordKey + "," + newKey + END_VALUE;
 	    elsif (editMode = TBL_ROW_MODIFY) then
-              cmd := cmd + mgi_DBupdate(GXD_ANTIBODYMARKER, currentRecordKey, mgi_DBkey(MRK_MOUSE) + " = " + newKey) +
-                     " and " + mgi_DBkey(MRK_MOUSE) + " = " + key + "\n";
+              cmd := cmd + mgi_DBupdate(GXD_ANTIBODYMARKER, currentRecordKey, mgi_DBkey(MRK_MOUSE) + " = " + newKey + \
+	      		" and _Marker_key = " + " = " + key);
 	    elsif (editMode = TBL_ROW_DELETE) then
-               cmd := cmd + mgi_DBdelete(GXD_ANTIBODYMARKER, currentRecordKey) +
-                     " and " + mgi_DBkey(MRK_MOUSE) + " = " + key + "\n";
+               cmd := cmd + mgi_DBdelete(GXD_ANTIBODYMARKER, currentRecordKey + " and _Marker_key = " + key);
 	    end if;
 
             row := row + 1;
