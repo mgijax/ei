@@ -1568,7 +1568,7 @@ char *verify_user(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _User_key, login from MGI_User where login = '%s'", key);
+  sprintf(buf,"select _User_key, login from MGI_User where login = %s", key);
   return(buf);
 }
 
