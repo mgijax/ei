@@ -1376,7 +1376,7 @@ char *verify_marker_union(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"\nunion \
+  sprintf(buf,"\nunion all \
    \nselect -1, 1, symbol, chromosome, null, substring(name, 1, 25), null \
    \nfrom NOM_Marker_Valid_View \
    \nwhere symbol like %s", key);
@@ -1438,7 +1438,7 @@ char *verify_marker_intable1(char *probeKey, char *markerKey)
    \n and pm.relationship in ('E', 'H') \
    \n and pm._Probe_key = %s  \
    \n and pm._Marker_key = %s) \
-   \nunion \
+   \nunion all \
    \nselect 1 from PRB_Marker pm \
    \nwhere exists (select 1 from PRB_Probe p, VOC_Term t \
    \n where pm._Probe_key = p._Probe_key \
@@ -1834,7 +1834,7 @@ char *strainalleletype_load(char *key, char *from, char *where)
 		\nfrom %s \
 		\nwhere %s = %s \
 		\nand chromosome not in ('X', 'Y', 'MT', 'UN', 'XY') \
-		\nunion \
+		\nunion all \
 		\nselect _StrainMarker_key, _Marker_key, _Allele_key, _Qualifier_key, \
 		\nsymbol, chromosome, alleleSymbol, qualifier, 99 as chrorder \
 		\nfrom %s \
@@ -1850,7 +1850,7 @@ char *strainalleletype_load(char *key, char *from, char *where)
 		\nfrom %s \
 		\nwhere %s = %s \
 		\nand chromosome not in ('X', 'Y', 'MT', 'UN', 'XY') \
-		\nunion \
+		\nunion all \
 		\nselect _StrainMarker_key, _Marker_key, _Allele_key, _Qualifier_key, \
 		\nsymbol, chromosome, alleleSymbol, qualifier, 99 as chrorder \
 		\nfrom %s \

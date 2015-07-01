@@ -610,7 +610,7 @@ rules:
 	    where := where + " and g.antibodyName like " + mgi_DBprstr(top->Name->text.value);
 
 	    -- union the antibody alias-es
-            unionalias := "\nunion\n" + select + from + "," + mgi_DBtable(GXD_ANTIBODYALIAS) + " aa" +
+            unionalias := "\nunion all\n" + select + from + "," + mgi_DBtable(GXD_ANTIBODYALIAS) + " aa" +
                 "\nwhere aa.alias like " + mgi_DBprstr(top->Name->text.value) +
 		"\nand g." + mgi_DBkey(GXD_ANTIBODY) + " = aa." + mgi_DBkey(GXD_ANTIBODY);
 	  end if;

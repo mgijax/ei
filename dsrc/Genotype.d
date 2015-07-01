@@ -939,7 +939,7 @@ rules:
 
 	  -- where allele pair does *not* exist
 	  if (not from_allele and not from_cellline) then
-	    includeUnion := "\nunion " + \
+	    includeUnion := "\nunion all\n" + \
 	  	"select distinct g._Genotype_key, ps.strain, ps.strain, null\n" + from;
 	    includeNotExists := "\nwhere g._Strain_key = ps._Strain_key and not exists (select 1 from GXD_AllelePair ap where g._Genotype_key = ap._Genotype_key)" + \
 		where;

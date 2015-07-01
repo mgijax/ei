@@ -180,7 +180,7 @@ char *allele_unionnomen(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"\nunion select distinct a._Allele_key, a.symbol, a.statusNum \
+  sprintf(buf,"\nunion all select distinct a._Allele_key, a.symbol, a.statusNum \
    \nfrom ALL_Allele_View a \
    \nwhere a.nomenSymbol like %s", key);
   return(buf);
@@ -361,7 +361,7 @@ char *genotype_search2(char *key)
    \nand g._Strain_key = ps._Strain_key \
    \nand g._Genotype_key = ap._Genotype_key \
    \nand ap._Allele_key_1 = a1._Allele_key \
-   \nunion \
+   \nunion all \
    \nselect distinct t._Object_key, \
    \nps.strain || ',' || a1.symbol || ',' || a2.symbol as strain \
    \nfrom VOC_Evidence v, VOC_Annot t, GXD_Genotype g, PRB_Strain ps, ALL_Allele a1, \
@@ -373,14 +373,14 @@ char *genotype_search2(char *key)
    \nand g._Strain_key = ps._Strain_key \
    \nand g._Genotype_key = ap._Genotype_key \
    \nand ap._Allele_key_1 = a1._Allele_key \
-   \nunion \
+   \nunion all \
    \nselect distinct v._Genotype_key, ps.strain \
    \nfrom GXD_Expression v, GXD_Genotype g, PRB_Strain ps \
    \nwhere v._Refs_key = %s \
    \nand v._Genotype_key = g._Genotype_key \
    \nand g._Strain_key = ps._Strain_key \
    \nand not exists (select 1 from GXD_AllelePair ap where g._Genotype_key = ap._Genotype_key) \
-   \nunion \
+   \nunion all \
    \nselect distinct t._Object_key, ps.strain \
    \nfrom VOC_Evidence v, VOC_Annot t, GXD_Genotype g, PRB_Strain ps \
    \nwhere v._Refs_key = %s \
@@ -525,12 +525,12 @@ char *govoc_select3(char *key)
    \nfrom VOC_Annot_View a, VOC_Evidence_View e, DAG_Node_View v \
    \nwhere a._AnnotType_key = 1000 \
    \nand a._Annot_key = e._Annot_key \
-   \nand a._Vocab_key = v._Vocab_key \
    \nand a._Term_key = v._Object_key \
+   \nand a._Vocab_key = v._Vocab_key \
    \nand a._Object_key = %s \
    \nand exists (select 1 from VOC_Evidence_Property p \
    \nwhere e._AnnotEvidence_key = p._AnnotEvidence_key) \
-   \nunion \
+   \nunion all \
    \nselect a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier, \
    \ne._AnnotEvidence_key, e._Annot_key, e._EvidenceTerm_key, e._Refs_key, e.inferredFrom, \
    \ne.creation_date, e.modification_date,  \
@@ -539,8 +539,8 @@ char *govoc_select3(char *key)
    \nfrom VOC_Annot_View a, VOC_Evidence_View e, DAG_Node_View v \
    \nwhere a._AnnotType_key = 1000 \
    \nand a._Annot_key = e._Annot_key \
-   \nand a._Vocab_key = v._Vocab_key \
    \nand a._Term_key = v._Object_key \
+   \nand a._Vocab_key = v._Vocab_key \
    \nand a._Object_key = %s \
    \nand not exists (select 1 from VOC_Evidence_Property p  \
    \nwhere e._AnnotEvidence_key = p._AnnotEvidence_key))", key, key);
