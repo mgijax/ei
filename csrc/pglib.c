@@ -101,6 +101,7 @@ int mgi_dbinit(char *user, char *pwd)
   static char passwdfile_name[TEXTBUFSIZ];
   static char dbtype[TEXTBUFSIZ];
   static char guser[TEXTBUFSIZ];
+  static char reportdir[TEXTBUFSIZ];
 
   memset(passwdfile, '\0', sizeof(passwdfile));
   memset(passwdfile, '\0', sizeof(passwdfile_name));
@@ -114,11 +115,13 @@ int mgi_dbinit(char *user, char *pwd)
   sprintf(server, "%s", getenv("PG_DBSERVER"));
   sprintf(dbtype, "%s", getenv("DB_TYPE"));
   sprintf(guser, "%s", getenv("GLOBAL_USER"));
+  sprintf(reportdir, "%s", getenv("EIREPORTDIR"));
   global_database = database;
   global_login = login;
   global_server = server;
   global_dbtype = dbtype;
   global_user = guser;
+  global_reportdir = reportdir;
 
   FILE *p_file = fopen(getenv("PG_1LINE_PASSFILE"), "r");
 
