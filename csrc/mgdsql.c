@@ -1587,7 +1587,9 @@ char *ref_qtl_exists(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select count(*) from MLD_Expts where exptType in ('TEXT-QTL', 'TEXT-QTL-Candidate Genes') and _Refs_key = %s", key);
+  sprintf(buf,"select count(*) from MLD_Expts \
+  \nwhere exptType in ('TEXT', 'TEXT-QTL', 'TEXT-QTL-Candidate Genes', 'TEXT-Congenic', 'TEXT-Meta Analysis') \
+  \nand _Refs_key = %s", key);
   return(buf);
 }
 
