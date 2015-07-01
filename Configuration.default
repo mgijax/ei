@@ -19,7 +19,7 @@ source ${MGICONFIG}/master.config.csh
 unsetenv OPENWINHOME
 unsetenv XKEYSYMDB
 
-setenv CVS_TAG  ei-5-2-2-15
+setenv CVS_TAG  ei-5-2-2-16
 setenv TeleUSE /opt/teleuseXRT
 
 switch (`whoami`)
