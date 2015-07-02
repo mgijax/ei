@@ -189,7 +189,7 @@ rules:
             newCmd := newCmd + saveCmd + " " + key;
 
             if (clipboard.is_defined("cmd2") != nil) then
-		newCmd := newCmd + "\nunion\n" + clipboard.cmd2 + " " + key + ")";
+		newCmd := newCmd + "\nunion all\n" + clipboard.cmd2 + " " + key + ")";
 	    end if;
 
             clipboard.cmd := newCmd + "\norder by " + clipboard.orderBy;
