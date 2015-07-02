@@ -384,7 +384,7 @@ rules:
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  QueryNoInterrupt.source_widget := top;
-	  QueryNoInterrupt.select := "select distinct g._Antigen_key, g.antigenName\n" + from + "\n" + 
+	  QueryNoInterrupt.select := "select g._Antigen_key, g.antigenName\n" + from + "\n" + 
 			where + "\norder by g.antigenName\n";
 	  QueryNoInterrupt.table := GXD_ANTIGEN;
 	  send(QueryNoInterrupt, 0);

@@ -434,7 +434,7 @@ rules:
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  QueryNoInterrupt.source_widget := top;
-	  QueryNoInterrupt.select := "select distinct _Vocab_key, name\n" + from + "\n" + where + "\norder by name\n";
+	  QueryNoInterrupt.select := "select _Vocab_key, name\n" + from + "\n" + where + "\norder by name\n";
 	  QueryNoInterrupt.table := VOC_VOCAB;
 	  send(QueryNoInterrupt, 0);
 	  (void) reset_cursor(top);

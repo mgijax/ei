@@ -248,7 +248,7 @@ rules:
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  QueryNoInterrupt.source_widget := top;
-	  QueryNoInterrupt.select := "select distinct *\n" + from + "\n" + where + "\norder by tissue\n";
+	  QueryNoInterrupt.select := "select *\n" + from + "\n" + where + "\norder by tissue\n";
 	  QueryNoInterrupt.table := TISSUE;
 	  send(QueryNoInterrupt, 0);
 	  (void) reset_cursor(top);
