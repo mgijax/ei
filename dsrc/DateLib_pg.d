@@ -69,29 +69,29 @@ rules:
 	  if (value.length > 0) then
 	    where := "\nand " + fieldName;
 
-	    --if (strstr(value, ">=") != nil or
-	        --strstr(value, "<=") != nil ) then
-	      --where := "\nand " + fieldName + " " +
-		       --value->substr(1,2) + " " + 
-		       --mgi_DBprstr(value->substr(3, value.length));
-	    --elsif (strstr(value, ">") != nil or
-	           --strstr(value, "<") != nil ) then
-	      --where := "\nand " + fieldName + " " +
-		       --value->substr(1,1) + " " + 
-		       --mgi_DBprstr(value->substr(2, value.length));
+	    if (strstr(value, ">=") != nil or
+	        strstr(value, "<=") != nil ) then
+	      where := "\nand " + fieldName + " " +
+		       value->substr(1,2) + " " + 
+		       mgi_DBprstr(value->substr(3, value.length));
+	    elsif (strstr(value, ">") != nil or
+	           strstr(value, "<") != nil ) then
+	      where := "\nand " + fieldName + " " +
+		       value->substr(1,1) + " " + 
+		       mgi_DBprstr(value->substr(2, value.length));
 	    --elsif (strstr(value, "..") != nil) then
 	    --  where := "\nand (" + 
 --		fieldName + " between substring(" + mgi_DBprstr(value) + ",1,charindex('..'," + mgi_DBprstr(value) + ") - 1) " +
 --		" and dateadd(day, 1, substring(" + mgi_DBprstr(value) + ",charindex('..'," + mgi_DBprstr(value) + ") + 2, char_length(" + mgi_DBprstr(value) + "))))";
 --
-	    --else
+	    else
 	      -- creation_date between '2000-08-11' and ('2000-08-11'::date + '1 day'::interval)
 
 	    -- all date/timeq queries
 
-	    where := "\nand (" + fieldName + " between " + mgi_DBprstr(value) + " and (" + mgi_DBprstr(value) + "::date + '1 day'::interval))";
+	      where := "\nand (" + fieldName + " between " + mgi_DBprstr(value) + " and (" + mgi_DBprstr(value) + "::date + '1 day'::interval))";
 
-	    --end if;
+	    end if;
 	  end if;
 
 	  if (not isTable) then
