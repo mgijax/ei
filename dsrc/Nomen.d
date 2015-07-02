@@ -774,9 +774,9 @@ rules:
 
 	  send(PrepareSearch, 0);
 
-	  selectSQL := "(select distinct m._Nomen_key, m.symbol\n" + from + "\n" + where;
+	  selectSQL := "(select m._Nomen_key, m.symbol\n" + from + "\n" + where;
 	  if (whereName.length > 0) then
-	    selectSQL := selectSQL + "\nunion all\nselect distinct m._Nomen_key, m.symbol\n" + from + "\n" + whereName;
+	    selectSQL := selectSQL + "\nunion all\nselect m._Nomen_key, m.symbol\n" + from + "\n" + whereName;
 	  end if;
 	  selectSQL := selectSQL + ")\norder by symbol\n";
 

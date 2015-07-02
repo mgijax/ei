@@ -607,7 +607,7 @@ rules:
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
-	  Query.select := "select distinct i._Index_key, " +
+	  Query.select := "select i._Index_key, " +
 		"i.symbol || ', ' || i.jnumID || ', ' || short_citation, i.symbol, i.short_citation\n" +
 		from + "\n" + where + "\norder by i.symbol, i.short_citation\n";
 	  Query.table := GXD_INDEX;

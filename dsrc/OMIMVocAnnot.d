@@ -596,7 +596,7 @@ rules:
 	  end if;
 
 	  Query.source_widget := top;
-	  Query.select := "select distinct v._Object_key, v.description\n" + 
+	  Query.select := "select v._Object_key, v.description\n" + 
 	  	from + "\n" + where + "\norder by description\n";
 	  Query.table := VOC_ANNOT_VIEW;
 	  send(Query, 0);

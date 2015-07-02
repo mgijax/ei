@@ -484,7 +484,7 @@ rules:
           end if;
 
 	  Query.source_widget := top;
-	  Query.select := "select distinct a._CellLine_key, a.cellLine\n" + from + "\n" + 
+	  Query.select := "select a._CellLine_key, a.cellLine\n" + from + "\n" + 
 			  where + "\norder by a.cellLine\n";
 	  Query.table := ALL_CELLLINE_VIEW;
 	  send(Query, 0);

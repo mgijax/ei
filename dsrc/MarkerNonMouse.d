@@ -403,7 +403,7 @@ rules:
 	  (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
-	  Query.select := "select distinct m._Marker_key, m.symbol\n" + from + "\n" + 
+	  Query.select := "select m._Marker_key, m.symbol\n" + from + "\n" + 
 			  where + "\norder by m.symbol\n";
 	  Query.table := MRK_MARKER;
 	  send(Query, 0);

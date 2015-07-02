@@ -493,7 +493,7 @@ rules:
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  QueryNoInterrupt.source_widget := top;
-	  QueryNoInterrupt.select := "select distinct s._Organism_key, s.commonName || ' (' || s.latinName || ')' as commonName\n" + from + "\n" + where + "\norder by commonName\n";
+	  QueryNoInterrupt.select := "select s._Organism_key, s.commonName || ' (' || s.latinName || ')' as commonName\n" + from + "\n" + where + "\norder by commonName\n";
 	  QueryNoInterrupt.table := MGI_ORGANISM;
 	  send(QueryNoInterrupt, 0);
 	  (void) reset_cursor(top);

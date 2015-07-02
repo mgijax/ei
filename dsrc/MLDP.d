@@ -2543,7 +2543,7 @@ rules:
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
           Query.source_widget := top;
-          Query.select := "select distinct e._Expt_key, \
+          Query.select := "select e._Expt_key, \
 			e.jnumID || ', ' || e.exptType || '-' || convert(varchar(5), e.tag) || ', Chr ' || e.chromosome, \
 			e.jnum, e.exptType, e.tag\n" +
 		from + "\n" + where + "\norder by e.jnum, e.exptType, e.tag";
