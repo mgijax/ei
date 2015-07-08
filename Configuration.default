@@ -19,7 +19,7 @@ source ${MGICONFIG}/master.config.csh
 unsetenv OPENWINHOME
 unsetenv XKEYSYMDB
 
-setenv CVS_TAG  ei-5-2-2-18
+setenv CVS_TAG  ei-5-2-2-19
 setenv TeleUSE /opt/teleuseXRT
 
 switch (`whoami`)
@@ -45,12 +45,14 @@ switch (${DB_TYPE})
 	setenv EIDDATELIB DateLib_syb.d
 	setenv SYBASE /opt/sybase/15.7
 	setenv SYBASE_PATH ${SYBASE}/OCS-15_0/bin
+	setenv EIUTILS  ${MGI_DBUTILS}/bin/ei
 	breaksw
 
     case postgres:
 	setenv EIINCLUDE pglib.h
 	setenv EIDSQL SQL_pg.d
 	setenv EIDDATELIB DateLib_pg.d
+	setenv EIUTILS  ${PG_DBUTILS}/bin/ei
 	breaksw
 endsw
 
@@ -87,9 +89,6 @@ endsw
 
 # build directory
 setenv EIBUILDDIR ${MGI_LIVE}/ei
-
-# EI-utilities
-setenv EIUTILS  ${PG_DBUTILS}/bin/ei
 
 # data directory
 setenv EIDATADIR /data/ei
