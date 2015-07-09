@@ -22,7 +22,7 @@ char *antibody_distinct()
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select distinct g._Antibody_key, g.antibodyName\n");
+  sprintf(buf,"select g._Antibody_key, g.antibodyName\n");
   return(buf);
 }
 

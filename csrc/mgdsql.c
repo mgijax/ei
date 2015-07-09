@@ -1481,7 +1481,7 @@ char *ref_dataset2()
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _DataSet_key, abbreviation from BIB_DataSet \
+  sprintf(buf,"select _DataSet_key, abbreviation as abbreviation from BIB_DataSet \
    \nwhere inMGIprocedure is null and isObsolete = 0 \
    \norder by sequenceNum");
   return(buf);

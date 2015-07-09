@@ -530,9 +530,6 @@ rules:
 	  send(NextJnum, 0);
 	  (void) reset_cursor(top);
 
-	  PythonReferenceCache.objectKey := currentRecordKey;
-	  send(PythonReferenceCache, 0);
-
 	end does;
 
 --
