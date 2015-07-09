@@ -1213,7 +1213,7 @@ rules:
 	  LoadNoteForm.objectKey := currentRecordKey;
 	  send(LoadNoteForm, 0);
 
---	  send(SelectReferences, 0);
+	  send(SelectReferences, 0);
 
 	  -- Initialize Option Menus for row 0
 

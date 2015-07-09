@@ -49,6 +49,7 @@ void busy_cursor(Widget w)
   	cursor = XCreateFontCursor(display, XC_watch);
   XDefineCursor(display, XtWindow(w), cursor);
   XFlush(display); 
+  mgi_writeLog("busy_cursor\n");
   return;
 }
 
@@ -64,6 +65,7 @@ void reset_cursor(Widget w)
   Display *display = XtDisplay(w);
   XUndefineCursor(display, XtWindow(w));
   XFlush(display);
+  mgi_writeLog("reset_cursor\n");
   return;
 }
 
