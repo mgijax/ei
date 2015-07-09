@@ -537,8 +537,8 @@ Shift<Key>Tab: prev-tab-group()
                           {
                             Table = mgiTable;
                             Group: Widget
-                              xrtTblVisibleRows = 6;
-                              xrtTblNumRows = 7;
+                              xrtTblVisibleRows = 7;
+                              xrtTblNumRows = 8;
                           }
                     }
                     {

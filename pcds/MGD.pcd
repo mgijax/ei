@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Wed Jul  1 12:12:17 2015";
+      lastWritten = "Thu Jul  9 12:25:23 2015";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -6729,6 +6729,32 @@ Module: MGD
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                      {
+                                        DataSetsForm = XmForm;
+                                        Group: Widget
+                                          rubberPositioning = False;
+                                          resizePolicy = resize_any;
+                                            {
+                                              RefDBSStatus = RefDBSStatus : mgiTable;
+                                              Group: Constraint
+                                                leftAttachment = attach_form;
+                                                rightAttachment = attach_widget;
+                                                rightWidget = RefDBSNonStatus;
+                                                topAttachment = attach_form;
+                                                bottomAttachment = attach_none;
+                                                resizable = true;
+                                                rightOffset = 10;
+                                            }
+                                            {
+                                              RefDBSNonStatus = RefDBSNonStatus : mgiTable;
+                                              Group: Constraint
+                                                leftAttachment = attach_none;
+                                                rightAttachment = attach_form;
+                                                topAttachment = attach_form;
+                                                bottomAttachment = attach_none;
+                                                resizable = true;
+                                            }
+                                      }
                                 }
                                 {
                                   notebookForm = notebookForm : mgiNoteBook;
