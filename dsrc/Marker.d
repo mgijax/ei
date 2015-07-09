@@ -1012,17 +1012,12 @@ rules:
 	  ModifySQL.reselect := false;
 	  send(ModifySQL, 0);
 
-	  -- now update cache
-
-	  if (cmd.length > 0) then
-            cmd := exec_mrk_reloadReference(currentRecordKey) +
-            	   exec_mrk_reloadLocation(currentRecordKey);
-	    ModifySQL.cmd := cmd;
-	    ModifySQL.list := top->QueryList;
-	    ModifySQL.reselect := true;
-	    ModifySQL.transaction := false;
-	    send(ModifySQL, 0);
-          end if;
+          cmd := exec_mrk_reloadReference(currentRecordKey) + exec_mrk_reloadLocation(currentRecordKey);
+	  ModifySQL.cmd := cmd;
+	  ModifySQL.list := top->QueryList;
+	  ModifySQL.reselect := true;
+	  ModifySQL.transaction := false;
+	  send(ModifySQL, 0);
 
 	  if (modifySymbol) then
 	    PythonAlleleCombination.source_widget := top;
