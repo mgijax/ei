@@ -424,13 +424,6 @@ char *mgi_citation(DBPROCESS *dbproc, int table)
          strcat(buf, ")");
          break;
     
-    /*
-    case GXD_STRUCTURE:
-         sprintf(buf, "Stage%02d;", atoi(mgi_getstr(dbproc,2)));
-         strcat(buf, mgi_getstr(dbproc, 3)); 
-         break;
-	 */
-
     default:
          strcpy(buf, mgi_getstr(dbproc, 2));
          break;
