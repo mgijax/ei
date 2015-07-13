@@ -159,7 +159,7 @@ locals:
         current_structure : opaque;   -- the current Structure pointer
         current_stagenum : integer;   -- current stage number
 
-        treesLoaded : boolean;       -- indicator that >= 1 tree is loaded
+        --treesLoaded : boolean;       -- indicator that >= 1 tree is loaded
                                      -- (just a sanity check)
 
         clipboard : widget;      -- the clipboard list.
@@ -183,7 +183,7 @@ rules:
 
         INITIALLY does
           current_structure := nil;
-          treesLoaded := false;  -- no trees are loaded initially 
+          --treesLoaded := false;  -- no trees are loaded initially 
 
           -- register callbacks
           init_callbacks();
@@ -274,7 +274,7 @@ rules:
                               
        if (DictionaryClear.clearStages) then
         current_structure := nil;
-        treesLoaded := false;
+        --treesLoaded := false;
         stagetrees_unloadStages(true);
        end if;
 
@@ -826,7 +826,7 @@ rules:
 
           -- load/refresh stages as necessary.
           (void) stagetrees_loadStages(from,where);
-          treesLoaded := true;
+          --treesLoaded := true;
 
           (void) reset_cursor(top);
         end does;
@@ -879,9 +879,9 @@ rules:
         InitAcc.table := accTable;
         send(InitAcc, 0);
 
-        if (not treesLoaded) then
-           return;
-        end if;
+        --if (not treesLoaded) then
+           --return;
+        --end if;
 
 	DictionaryClear.clearLists := 0;
 	send(DictionaryClear, 0);
