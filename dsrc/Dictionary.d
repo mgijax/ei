@@ -661,7 +661,6 @@ rules:
              -- refresh the stage tree
              stagetrees_refresh();
              -- reselect node
-             SelectNode.structure_key := (integer)current_structurekey;
              send(SelectNode, 0);
           end if;
 
@@ -854,7 +853,6 @@ rules:
         current_structurekey := top->QueryList->List.keys[Select.item_position];
         top->QueryList->List.row := Select.item_position;
 
-        SelectNode.structure_key := (integer)current_structurekey;
         send(SelectNode, 0);
 
     end does;
@@ -871,7 +869,6 @@ rules:
 --
 
     SelectNode does
-        structure_key : integer := SelectNode.structure_key;
         structure : opaque;
 	table : widget;
         row : integer;
@@ -888,8 +885,7 @@ rules:
 
         -- set globals
 
-        current_structurekey := (string) structure_key; 
-        structure := stagetrees_select(structure_key);
+        structure := stagetrees_select((integer) current_structurekey);
         current_structure := structure;
 
 	-- if the user selects the record from the tree, then
