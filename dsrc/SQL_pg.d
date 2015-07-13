@@ -344,6 +344,9 @@ rules:
             (void) XmListSelectPos(list_w->List, list_w->List.row, true);
 	    --end if;
 	  end if;
+
+	  (void) reset_cursor(Query.source_widget);
+
         end does;
  
 --
@@ -385,6 +388,9 @@ rules:
               (void) XmListSelectPos(list_w->List, list_w->List.row, true);
 	    end if;
 	  end if;
+
+	  (void) reset_cursor(QueryNoInterrupt.source_widget);
+
         end does;
  
 --

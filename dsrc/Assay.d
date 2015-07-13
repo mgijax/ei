@@ -380,7 +380,7 @@ rules:
 	INITIALLY does
 	  mgi := INITIALLY.parent;
 
-	  --(void) busy_cursor(mgi);
+	  (void) busy_cursor(mgi);
 
 	  top := create widget("AssayModule", nil, mgi);
 
@@ -398,7 +398,7 @@ rules:
 
 	  send(Init, 0);
 
-	  --(void) reset_cursor(mgi);
+	  (void) reset_cursor(mgi);
 	end does;
 
 --
@@ -603,7 +603,7 @@ rules:
             return;
           end if;
 
-          --(void) busy_cursor(top);
+          (void) busy_cursor(top);
 
 	  currentAssay := MAX_KEY1 + KEYNAME + MAX_KEY2;
 
@@ -720,7 +720,7 @@ rules:
 	  PythonExpressionCache.objectKey := currentAssay;
           send(PythonExpressionCache, 0);
 
-          --(void) reset_cursor(top);
+          (void) reset_cursor(top);
 	end does;
 
 --
@@ -1223,7 +1223,7 @@ rules:
 
         Delete does
 
-          --(void) busy_cursor(top);
+          (void) busy_cursor(top);
 
 	  DeleteSQL.tableID := GXD_ASSAY;
 	  DeleteSQL.key := currentAssay;
@@ -1237,7 +1237,7 @@ rules:
  
 	  currentAssay := "";
 
-          --(void) reset_cursor(top);
+          (void) reset_cursor(top);
         end does;
 
 --
@@ -1324,9 +1324,9 @@ rules:
 	  newAssayKey : string;
 	  duplicate : integer := DuplicateAssay.duplicate;
 
-	  --(void) busy_cursor(top);
+	  (void) busy_cursor(top);
 	  newAssayKey := (string) mgi_sp(exec_gxd_duplicateAssay(global_userKey, currentAssay, (string) duplicate));
-	  --(void) reset_cursor(top);
+	  (void) reset_cursor(top);
 
           PythonExpressionCache.source_widget := top;
 	  PythonExpressionCache.objectKey := newAssayKey;
@@ -1376,7 +1376,7 @@ rules:
             return; 
           end if; 
 
-	  --(void) busy_cursor(top);
+	  (void) busy_cursor(top);
 
 	  cmd := "";
 	  set := "";
@@ -1470,7 +1470,7 @@ rules:
           send(PythonExpressionCache, 0);
 	  (void) mgi_writeLog("ASSAY:end:gxdexpression\n");
 
-	  --(void) reset_cursor(top);
+	  (void) reset_cursor(top);
 	end does;
 
 --
@@ -2390,7 +2390,7 @@ rules:
 --
 
 	Search does
-          --(void) busy_cursor(top);
+          (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
 	  Query.select := "select distinct g._Assay_key, " + 
@@ -2398,7 +2398,7 @@ rules:
 			from + "\n" + where + "\norder by g.jnumID, g.assayType, g.symbol\n";
 	  Query.table := GXD_ASSAY;
 	  send(Query, 0);
-	  --(void) reset_cursor(top);
+	  (void) reset_cursor(top);
 	end does;
 
 --
@@ -2445,7 +2445,7 @@ rules:
             return;
           end if;
 
-          --(void) busy_cursor(top);
+          (void) busy_cursor(top);
 
 	  -- Un-manage InSitu Result Dialog
 	  if (top->InSituResultDialog.managed) then
@@ -2641,7 +2641,7 @@ rules:
 	  -- Make the selected item the first visible item in the list
 	  (void) XmListSetPos(top->QueryList->List, Select.item_position);
 
-	  --(void) reset_cursor(top);
+	  (void) reset_cursor(top);
 	end does;
 
 --

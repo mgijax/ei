@@ -362,14 +362,14 @@ Structure *stagetrees_select(int sk)
 
     if(structure)
     {
-       tu_printf("DEBUG: if (structure)\n");
+       /*tu_printf("DEBUG: if (structure)\n");*/
 
        /* select the current node */
        XrtGearObject node = structure_getnode(structure); 
 
        if (node)
        {
-          tu_printf("DEBUG: if (node)\n");
+          /*tu_printf("DEBUG: if (node)\n");*/
 
           if(!XmIsXrtNode(node))  /* sanity check */
             tu_printf("Node isn't an XrtNode!!! Argggh!\n");
@@ -395,14 +395,14 @@ Structure *stagetrees_select(int sk)
           { /* XRT doesn't seem to like just opening the folders from the
                node to the root, so we open the entire tree */
 
-             tu_printf("DEBUG: if (XrtGearNodeIsInCollapsedBranch)\n");
+             /*tu_printf("DEBUG: if (XrtGearNodeIsInCollapsedBranch)\n");*/
 
              int stage = structure_getStage(structure); 
              StageTree *stagetree = stagetrees_getStageTree(stage);
              open_folders(stagetree);
           }
 
-          tu_printf("DEBUG: if (XrtGearNodeTraverseTo)\n");
+          /*tu_printf("DEBUG: if (XrtGearNodeTraverseTo)\n");*/
 
           XrtGearNodeTraverseTo(node);
 
@@ -417,7 +417,7 @@ Structure *stagetrees_select(int sk)
        return structure;
     }
 
-    tu_printf("DEBUG: Returning NULL, structure not found\n");
+    /*tu_printf("DEBUG: Returning NULL, structure not found\n");*/
 
     return NULL;  /* structure not found */
 }
@@ -520,6 +520,8 @@ void stagetrees_internalLoadStages(int countdstages, int *distinctstages)
     if (countdstages == 0)
         return;
 
+    /*tu_printf("DEBUG: stagetrees_internalLoadStages : countdstages \n");*/
+
     /* Turn off repainting while updating tree */
     XtVaSetValues(stagetrees.outliner, 
                   XmNxrtGearRepaint, False,
@@ -545,7 +547,6 @@ void stagetrees_internalLoadStages(int countdstages, int *distinctstages)
         /*tu_printf("DEBUG: Adding Structures\n");*/
         /* Retrieve and store all new Structure records */ 
         stagetree_AddStructures(stagetree);
-
 
         /*tu_printf("DEBUG: Adding StructureNames\n");*/
         /* Retrieve and store all new StructureName records */ 
@@ -642,7 +643,7 @@ void stagetree_deleteStructureByKey(StageTree *stagetree, int sk)
    st = (Structure *)hashtbl_delete_obj(stagetree->Structures, sk);
    if(!st) 
    {
-     tu_printf("Key used to obtain NULL structure: %ld\n", sk);
+     /*tu_printf("Key used to obtain NULL structure: %ld\n", sk);*/
      stagetrees_error("NULL object retrieved from hash table!");
    }
 
@@ -787,9 +788,12 @@ void stagetree_AddStructure(StageTree *stagetree, Structure *st)
    int rc;
 
    hashtbl_key key = structure_getStructureKey(st);
+   /*tu_printf("DEBUG: stagetree_AddStructure : hashtbl_key : %ld\n", key);*/
 
    /* hash the key to a stored structure */
    hst = (Structure *)hashtbl_retrieve_obj(ht,key);
+
+   /*tu_printf("DEBUG: stagetree_AddStructure : hst : %ld\n", hst);*/
 
    if (hst)
    {  /* then we already have this structure.  Update it */ 
@@ -879,12 +883,18 @@ Structure *stagetree_getStructureByKey(StageTree *stagetree, int sk)
 
    hashtbl_key key = sk; 
 
+   /*tu_printf("DEBUG: stagetree_getStructureByKey : %ld\n", key);*/
+
    /* hash the key to a stored structure */
    hst = (Structure *)hashtbl_retrieve_obj(ht,key);
 
    if (hst)
+   {
+      /*tu_printf("DEBUG: stagetree_getStructureByKey : has NOT NULL\n");*/
       return hst;
+   }
 
+   /*tu_printf("DEBUG: stagetree_getStructureByKey : hash NULL\n");*/
    return NULL;
 }
 
@@ -1157,6 +1167,8 @@ void stagetree_AddStructures(StageTree *stagetree)
     int stage = stagetree_getStage(stagetree);
     static Structure tmpst; /* a temporary structure used for reading DB results */
 
+    /*tu_printf("DEBUG:  begin stagetree_AddStructures\n");*/
+
     sprintf(buf,"select s.*, t.stage \
                 \nfrom GXD_Structure s, GXD_TheilerStage t \
 		\nwhere t.stage = %d \
@@ -1178,5 +1190,7 @@ void stagetree_AddStructures(StageTree *stagetree)
        }
     }
     (void) mgi_dbclose(dbproc);
+
+    /*tu_printf("DEBUG:  end stagetree_AddStructures\n");*/
 }
 

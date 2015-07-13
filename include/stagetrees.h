@@ -367,7 +367,7 @@ Boolean stagetree_isEmpty(StageTree *stagetree);
 
 
 /* 
- *  #### Sybase-specific : StageTrees Object ####
+ *  #### StageTrees Object ####
  */
 
 void stagetrees_loadStages(char *from, char *where);
