@@ -362,11 +362,15 @@ Structure *stagetrees_select(int sk)
 
     if(structure)
     {
+       tu_printf("DEBUG: if (structure)\n");
+
        /* select the current node */
        XrtGearObject node = structure_getnode(structure); 
 
        if (node)
        {
+          tu_printf("DEBUG: if (node)\n");
+
           if(!XmIsXrtNode(node))  /* sanity check */
             tu_printf("Node isn't an XrtNode!!! Argggh!\n");
 
@@ -390,10 +394,16 @@ Structure *stagetrees_select(int sk)
               node))
           { /* XRT doesn't seem to like just opening the folders from the
                node to the root, so we open the entire tree */
+
+             tu_printf("DEBUG: if (XrtGearNodeIsInCollapsedBranch)\n");
+
              int stage = structure_getStage(structure); 
              StageTree *stagetree = stagetrees_getStageTree(stage);
              open_folders(stagetree);
           }
+
+          tu_printf("DEBUG: if (XrtGearNodeTraverseTo)\n");
+
           XrtGearNodeTraverseTo(node);
 
           XtVaSetValues(stagetrees.outliner, 
@@ -407,7 +417,7 @@ Structure *stagetrees_select(int sk)
        return structure;
     }
 
-    /*tu_printf("DEBUG: Returning NULL, structure not found\n");*/
+    tu_printf("DEBUG: Returning NULL, structure not found\n");
 
     return NULL;  /* structure not found */
 }
