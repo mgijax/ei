@@ -854,7 +854,6 @@ rules:
         current_structurekey := top->QueryList->List.keys[Select.item_position];
         top->QueryList->List.row := Select.item_position;
 
-	(void) mgi_writeLog("Select()\n");
 	SelectNode.structure_key := (integer) current_structurekey;
         send(SelectNode, 0);
 
@@ -878,8 +877,6 @@ rules:
         structure : opaque;
 	table : widget;
         row : integer;
-
-	(void) mgi_writeLog("SelectNode() : " + structure_key + "\n");
 
         InitAcc.table := accTable;
         send(InitAcc, 0);
