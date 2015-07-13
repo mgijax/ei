@@ -1123,8 +1123,8 @@ rules:
  
           (void) busy_cursor(top);
  
-          ClearTable.table := table;
-          send(ClearTable, 0);
+          --ClearTable.table := table;
+          --send(ClearTable, 0);
  
           if (top->QueryList->List.selectedItemCount = 0) then
 	    currentRecordKey := "";
@@ -1180,8 +1180,8 @@ rules:
  
           (void) busy_cursor(top);
  
-          ClearTable.table := table;
-          send(ClearTable, 0);
+          --ClearTable.table := table;
+          --send(ClearTable, 0);
  
           if (top->QueryList->List.selectedItemCount = 0) then
 	    currentRecordKey := "";

@@ -174,9 +174,9 @@ rules:
 	  showMGI : boolean := table.showMGI;
 
 	  -- Clear Table
-          ClearTable.table := table;
-          ClearTable.clearCells := InitAcc.clearCells;
-          send(ClearTable, 0);
+          --ClearTable.table := table;
+          --ClearTable.clearCells := InitAcc.clearCells;
+          --send(ClearTable, 0);
 
           i : integer := 1;
           row : integer := 0;

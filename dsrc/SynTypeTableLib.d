@@ -89,8 +89,8 @@ rules:
 	  cmd : string;
 	  row : integer := 0;
 
-	  ClearTable.table := table;
-	  send(ClearTable, 0);
+	  --ClearTable.table := table;
+	  --send(ClearTable, 0);
 
 	  cmd := syntypetable_init(mgi_DBtable(tableID));
 	  dbproc : opaque := mgi_dbexec(cmd);
@@ -131,8 +131,8 @@ rules:
 	  objectKey : string := LoadSynTypeTable.objectKey;
 	  cmd : string;
 
-	  ClearTable.table := table;
-	  send(ClearTable, 0);
+	  --ClearTable.table := table;
+	  --send(ClearTable, 0);
 
 	  if (tableID = MGI_SYNONYM_ALLELE_VIEW or 
 	      tableID = MGI_SYNONYM_NOMEN_VIEW or 
@@ -173,9 +173,9 @@ rules:
 
 	  -- Re-set the form
 
-	  ClearTable.table := table;
-	  ClearTable.clearCells := false;
-	  send(ClearTable, 0);
+	  --ClearTable.table := table;
+	  --ClearTable.clearCells := false;
+	  --send(ClearTable, 0);
 	end does;
 
 --

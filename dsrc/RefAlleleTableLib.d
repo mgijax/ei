@@ -40,8 +40,8 @@ rules:
 	  cmd : string;
 	  row : integer := 0;
 
-	  ClearTable.table := table;
-	  send(ClearTable, 0);
+	  --ClearTable.table := table;
+	  --send(ClearTable, 0);
 
 	  cmd := reftypetable_initallele2();
 	  dbproc : opaque := mgi_dbexec(cmd);
@@ -76,8 +76,8 @@ rules:
           refAlleleCount : string;
 	  refAlleleMax : string;
 
-	  ClearTable.table := table;
-	  send(ClearTable, 0);
+	  --ClearTable.table := table;
+	  --send(ClearTable, 0);
 
 	  -- if allele count > configuration limit, then do not display any alleles
 	  refAlleleMax := getenv("REFALLELE_LOOKUP");
@@ -109,9 +109,9 @@ rules:
 
 	  -- Re-set the form
 
-	  ClearTable.table := table;
-	  ClearTable.clearCells := false;
-	  send(ClearTable, 0);
+	  --ClearTable.table := table;
+	  --ClearTable.clearCells := false;
+	  --send(ClearTable, 0);
 
 	  -- Add default reference type
 	  AddRefTypeRow.table := table;

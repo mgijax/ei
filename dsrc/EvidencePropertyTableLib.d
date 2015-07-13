@@ -132,8 +132,8 @@ rules:
 	  nextSeqNum : integer := 0;
 	  lastRow : integer;
 
-	  ClearTable.table := table;
-	  send(ClearTable, 0);
+	  --ClearTable.table := table;
+	  --send(ClearTable, 0);
 
 	  table->label.labelString := labelString;
 
