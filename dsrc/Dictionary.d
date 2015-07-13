@@ -854,6 +854,8 @@ rules:
         current_structurekey := top->QueryList->List.keys[Select.item_position];
         top->QueryList->List.row := Select.item_position;
 
+	--(void) mgi_writeLog("Select() : " + current_structurekey + "\n");
+
 	SelectNode.structure_key := (integer) current_structurekey;
         send(SelectNode, 0);
 
@@ -890,7 +892,9 @@ rules:
 
         -- set globals
 
-        current_structurekey := (string) structure_key;
+	--(void) mgi_writeLog("SelectNode() : " + (string) structure_key + "\n");
+
+	current_structurekey := (string) structure_key;
         structure := stagetrees_select((integer) current_structurekey);
         current_structure := structure;
 

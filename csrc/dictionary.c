@@ -139,7 +139,6 @@ void nodeSelectionCB(Widget widget, XtPointer client_data,
        if(*sk > 0)  /* then there is a structure_key associated with this node */
        {
           /* send the selectNode event */
-	  tu_printf("DEBUG: send_SelectNode_event() : %ld\n", *sk);
           send_SelectNode_event(*sk);
        }
    }
