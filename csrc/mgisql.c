@@ -1308,7 +1308,7 @@ char *verify_allele_marker(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"\nand _Marker_key = %s", key);
+  sprintf(buf,"\nand a._Marker_key = %s", key);
   return(buf);
 }
 
