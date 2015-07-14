@@ -1095,7 +1095,7 @@ void stagetrees_loadStages(char *from, char *where)
     /* a count of the number of distinct stages we are processing */
     int countdstages = 0;
 
-    /*tu_printf("DEBUG: stagetrees_loadStages\n");*/
+    tu_printf("DEBUG: stagetrees_loadStages (where/from): %s, %s\n", where, from);
 
     /* determine what stages are affected by the current query.  It would
        be nice to read them from the results already obtained, but the
@@ -1113,7 +1113,9 @@ void stagetrees_loadStages(char *from, char *where)
        while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS)
        {
            if (countdstages < MAXSTAGE)
+	   {
               distinctstages[countdstages++] = atoi(mgi_getstr(dbproc, 1));
+           }
        }
     }
     (void) mgi_dbclose(dbproc);
@@ -1121,6 +1123,8 @@ void stagetrees_loadStages(char *from, char *where)
  /* cut here, provide countdstages and distinctstages as load args */
 
     stagetrees_internalLoadStages(countdstages, distinctstages);
+
+    tu_printf("DEBUG: stagetrees_loadStages (countdstages) : %ld\n", countdstages);
 }
 
 void stagetree_AddStructureNames(StageTree *stagetree)

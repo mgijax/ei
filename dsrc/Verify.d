@@ -700,7 +700,7 @@ rules:
 		select := verify_allele(mgi_DBprstr(value));
 
                 if (column = alleleID and accID.length > 0) then
-                  select := select + verify_alleleid(accID);
+                  select := verify_alleleid(accID);
 
 	        elsif (markerKey.length > 0 and markerKey != "NULL") then
                   select := select + verify_allele_marker(markerKey);
