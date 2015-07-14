@@ -267,7 +267,7 @@ char *derivation_parentcellline(char *key)
   sprintf(buf,"select distinct _CellLine_key, cellLine, _Strain_key, \
    \ncellLineStrain, _CellLine_Type_key \
    \nfrom ALL_CellLine_View \
-   \nwhere cellline = %s", key);
+   \nwhere lower(cellLine) = %s", key);
   return(buf);
 }
 
@@ -418,9 +418,9 @@ char *genotype_verifyallelemcl(char *key, char *value)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf, "select c._CellLine_key, c.cellline \
+  sprintf(buf, "select c._CellLine_key, c.cellLine \
    \nfrom ALL_CellLine c, ALL_Allele_CellLine a \
-   \nwhere c.isMutant = 1 and c.cellline = '%s' \
+   \nwhere c.isMutant = 1 and lower(c.cellLine) = '%s' \
    \nand c._CellLine_key = a._MutantCellLine_key \
    \nand a._Allele_key = %s", value, key);
   return(buf);
@@ -1247,7 +1247,7 @@ char *mutant_cellline(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select cellLine from ALL_CellLine where cellline = %s", key);
+  sprintf(buf,"select cellLine from ALL_CellLine where lower(cellLine) = %s", key);
   return(buf);
 }
 
