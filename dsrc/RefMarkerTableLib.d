@@ -40,8 +40,8 @@ rules:
 	  cmd : string;
 	  row : integer := 0;
 
-	  --ClearTable.table := table;
-	  --send(ClearTable, 0);
+	  ClearTable.table := table;
+	  send(ClearTable, 0);
 
 	  cmd := reftypetable_initmarker();
 	  dbproc : opaque := mgi_dbexec(cmd);
@@ -76,8 +76,8 @@ rules:
 	  refMarkerMax : string;
 	  refMarkerCount : string;
 
-	  --ClearTable.table := table;
-	  --send(ClearTable, 0);
+	  ClearTable.table := table;
+	  send(ClearTable, 0);
 
           -- if marker count > configuration limit, then do not display any markers
           refMarkerMax := getenv("REFMARKER_LOOKUP");
@@ -107,9 +107,9 @@ rules:
 
 	  -- Re-set the form
 
-	  --ClearTable.table := table;
-	  --ClearTable.clearCells := false;
-	  --send(ClearTable, 0);
+	  ClearTable.table := table;
+	  ClearTable.clearCells := false;
+	  send(ClearTable, 0);
 
 	  -- Add default reference type
 	  AddRefTypeRow.table := table;

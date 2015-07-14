@@ -143,8 +143,8 @@ rules:
 	  noteKey : string := "";
 	  prevNoteKey : string := "";
 
-	  --ClearTable.table := table;
-	  --send(ClearTable, 0);
+	  ClearTable.table := table;
+	  send(ClearTable, 0);
 
 	  table->label.labelString := labelString;
 

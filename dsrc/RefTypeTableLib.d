@@ -110,8 +110,8 @@ rules:
 	  cmd : string;
 	  row : integer := 0;
 
-	  --ClearTable.table := table;
-	  --send(ClearTable, 0);
+	  ClearTable.table := table;
+	  send(ClearTable, 0);
 
 	  if (tableID = MGI_REFTYPE_ALLELE_VIEW) then
 	     cmd := reftypetable_initallele(mgi_DBtable(tableID));
@@ -167,8 +167,8 @@ rules:
 	  cmd : string;
 	  orderBy : string;
 
-	  --ClearTable.table := table;
-	  --send(ClearTable, 0);
+	  ClearTable.table := table;
+	  send(ClearTable, 0);
 
 	  if (tableID = MGI_REFTYPE_ALLELE_VIEW) then
 	     orderBy := reftypetable_loadorder1();
@@ -214,9 +214,10 @@ rules:
 
 	  -- Re-set the form
 
-	  --ClearTable.table := table;
-	  --ClearTable.clearCells := false;
-	  --send(ClearTable, 0);
+	  ClearTable.table := table;
+	  ClearTable.clearCells := false;
+	  send(ClearTable, 0);
+
 	end does;
 
 --

@@ -92,8 +92,8 @@ rules:
 	  cmd : string;
 	  row : integer := 0;
 
-	  --ClearTable.table := table;
-	  --send(ClearTable, 0);
+	  ClearTable.table := table;
+	  send(ClearTable, 0);
 
 	  cmd := strainalleletype_init();
 
@@ -135,8 +135,8 @@ rules:
 	  objectKey : string := LoadStrainAlleleTypeTable.objectKey;
 	  cmd : string;
 
-	  --ClearTable.table := table;
-	  --send(ClearTable, 0);
+	  ClearTable.table := table;
+	  send(ClearTable, 0);
 
           cmd := strainalleletype_load(objectKey, mgi_DBtable(tableID), mgi_DBkey(STRAIN));
 
@@ -166,9 +166,9 @@ rules:
 
 	  -- Re-set the form
 
-	  --ClearTable.table := table;
-	  --ClearTable.clearCells := false;
-	  --send(ClearTable, 0);
+	  ClearTable.table := table;
+	  ClearTable.clearCells := false;
+	  send(ClearTable, 0);
 	end does;
 
 --
