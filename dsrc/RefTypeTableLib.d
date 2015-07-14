@@ -217,7 +217,6 @@ rules:
 	  ClearTable.table := table;
 	  ClearTable.clearCells := false;
 	  send(ClearTable, 0);
-
 	end does;
 
 --
