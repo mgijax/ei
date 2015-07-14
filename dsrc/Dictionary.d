@@ -890,6 +890,7 @@ rules:
 
         -- set globals
 
+	--(void) mgi_writeLog("SelectNode()\n");
 	current_structurekey := (string) structure_key;
         structure := stagetrees_select((integer) current_structurekey);
         current_structure := structure;

@@ -238,8 +238,6 @@ rules:
 
 	  (void) busy_cursor(mgi);
 
-	  (void) mgi_writeLog("create widget\n");
-	  (void) mgi_writeLog(get_time());
 	  top := create widget("MarkerModule", nil, mgi);
 
 	  -- Prevent multiple instances of the Marker form
@@ -267,8 +265,6 @@ rules:
 	  send(Init, 0);
 
 	  (void) reset_cursor(mgi);
-	  (void) mgi_writeLog("ending initialization...\n");
-	  (void) mgi_writeLog(get_time());
 	end does;
 
 --
