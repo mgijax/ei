@@ -324,7 +324,7 @@ char *genotype_orderby()
   memset(buf, '\0', sizeof(buf));
   /*sprintf(buf,"\norder by s.strain, ap.allele1");*/
   /*sprintf(buf,"\norder by s.strain, a1.symbol");*/
-  sprintf(buf,"\norder by strain, symbol");
+  sprintf(buf,"\norder by strain, symbol NULLS FIRST");
   return(buf);
 }
 
