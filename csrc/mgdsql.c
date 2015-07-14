@@ -162,7 +162,7 @@ char *allele_mutantcellline(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select * from ALL_CellLine_View where isMutant = 1 and cellLine = %s", key);
+  sprintf(buf,"select * from ALL_CellLine_View where isMutant = 1 and lower(cellLine) = %s", key);
   return(buf);
 }
 
@@ -172,7 +172,7 @@ char *allele_parentcellline(char *key)
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select _CellLine_key, cellLine, _Strain_key, cellLineStrain, _CellLine_Type_key \
    \nfrom ALL_CellLine_View \
-   \nwhere isMutant = 0 and cellLine = %s", key);
+   \nwhere isMutant = 0 and lower(cellLine) = %s", key);
   return(buf);
 }
 
@@ -1284,7 +1284,7 @@ char *mutant_parentcellline(char *key)
    \n_Strain_key, cellLineStrain, _CellLine_Type_key, \
    \n_Vector_key, vector, _Creator_key, _VectorType_key \
    \nfrom ALL_CellLine_View \
-   \nwhere isMutant = 0 and cellLine = %s", key);
+   \nwhere isMutant = 0 and lower(cellLine) = %s", key);
   return(buf);
 }
 
