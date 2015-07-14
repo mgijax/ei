@@ -353,7 +353,7 @@ char *genotype_search2(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"(select distinct v._Genotype_key, \
-   \nps.strain || ',' || a1.symbol || ',' || a2.symbol as strain \
+   \nCONCAT(ps.strain,',',a1.symbol,',',a2.symbol) as strain \
    \nfrom GXD_Expression v, GXD_Genotype g, PRB_Strain ps, ALL_Allele a1, \
    \n	GXD_AllelePair ap LEFT OUTER JOIN ALL_Allele a2 on (ap._Allele_key_2 = a2._Allele_key) \
    \nwhere v._Refs_key = %s \
@@ -363,7 +363,7 @@ char *genotype_search2(char *key)
    \nand ap._Allele_key_1 = a1._Allele_key \
    \nunion all \
    \nselect distinct t._Object_key, \
-   \nps.strain || ',' || a1.symbol || ',' || a2.symbol as strain \
+   \nCONCAT(ps.strain,',',a1.symbol,',',a2.symbol) as strain \
    \nfrom VOC_Evidence v, VOC_Annot t, GXD_Genotype g, PRB_Strain ps, ALL_Allele a1, \
    \n	GXD_AllelePair ap LEFT OUTER JOIN ALL_Allele a2 on (ap._Allele_key_2 = a2._Allele_key) \
    \nwhere v._Refs_key = %s \
