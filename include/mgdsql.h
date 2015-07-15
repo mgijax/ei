@@ -93,7 +93,6 @@ extern char *marker_tdc(char *, char *, char *);
 extern char *marker_alias(char *);
 extern char *marker_mouse(char *);
 extern char *marker_count(char *);
-extern char *marker_checkinvalid(char *);
 extern char *marker_checkaccid(char *, char *, char *);
 extern char *marker_checkseqaccid(char *, char *);
 extern char *marker_eventreason();

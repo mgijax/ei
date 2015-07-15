@@ -52,7 +52,6 @@ CALLS
 	 marker_alias("char *")				: "char *";
 	 marker_mouse("char *")				: "char *";
 	 marker_count("char *")				: "char *";
-	 marker_checkinvalid("char *")			: "char *";
 	 marker_checkaccid("char *", "char *", "char *"): "char *";
 	 marker_checkseqaccid("char *", "char *")	: "char *";
 	 marker_eventreason()				: "char *";

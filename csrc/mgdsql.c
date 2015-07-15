@@ -182,7 +182,7 @@ char *allele_unionnomen(char *key)
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"\nunion all select distinct a._Allele_key, a.symbol, a.statusNum \
    \nfrom ALL_Allele_View a \
-   \nwhere a.nomenSymbol like %s", key);
+   \nwhere lower(a.nomenSymbol) like %s", key);
   return(buf);
 }
 
@@ -714,18 +714,6 @@ char *marker_count(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select count(*) from ALL_Allele where _Marker_key = %s", key);
-  return(buf);
-}
-
-char *marker_checkinvalid(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"declare @isInvalid integer \
-   \nselect @isInvalid = 0 \
-   \nif (select %s) not like '[A-Z][0-9][0-9][0-9][0-9][0-9]' and \
-   \n(select %s) not like '[A-Z][A-Z][0-9][0-9][0-9][0-9][0-9][0-9]' \
-   \nbegin select @isInvalid = 1 end select @isInvalid", key,  key);
   return(buf);
 }
 
