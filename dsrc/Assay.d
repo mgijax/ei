@@ -2045,7 +2045,11 @@ rules:
                 laneKey := mgi_tblGetCell(table, row - 1, table.laneKey + x);
                 mgi_tblSetCell(table, row, table.laneKey + x, laneKey);
 	      else
-		laneKey := "@mgi_DBkey(GXD_GELLANE)";
+	        if (global_dbtype = "sybase") then
+		  laneKey := "@gelLaneKey";
+		 else
+		  laneKey := "gelLaneKey";
+	         end if;
 	      end if;
 	    end if;
 
