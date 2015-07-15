@@ -988,9 +988,15 @@ rules:
 
 	  (void) busy_cursor(top);
 
-	  (void) mgi_writeLog(value);
+	  dbproc : opaque;
 	  if (value.length > 0) then
-	      v_status := mgi_sql1(nomen_verifyMarker(mgi_DBprstr(value)));
+	      dbproc := mgi_dbexec(nomen_verifyMarker(mgi_DBprstr(value)));
+	      while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	        while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+	          v_status := v_status + mgi_getstr(dbproc, 1);
+	        end while;
+	      end while;
+	      (void) mgi_dbclose(dbproc);
           end if;
 
 	  if (v_status.length > 0) then

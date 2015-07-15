@@ -162,7 +162,7 @@ char *allele_mutantcellline(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select * from ALL_CellLine_View where isMutant = 1 and lower(cellLine) = %s", key);
+  sprintf(buf,"select * from ALL_CellLine_View where isMutant = 1 and lower(cellLine) = lower(%s)", key);
   return(buf);
 }
 
@@ -172,7 +172,7 @@ char *allele_parentcellline(char *key)
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select _CellLine_key, cellLine, _Strain_key, cellLineStrain, _CellLine_Type_key \
    \nfrom ALL_CellLine_View \
-   \nwhere isMutant = 0 and lower(cellLine) = %s", key);
+   \nwhere isMutant = 0 and lower(cellLine) = lower(%s)", key);
   return(buf);
 }
 
@@ -267,7 +267,7 @@ char *derivation_parentcellline(char *key)
   sprintf(buf,"select distinct _CellLine_key, cellLine, _Strain_key, \
    \ncellLineStrain, _CellLine_Type_key \
    \nfrom ALL_CellLine_View \
-   \nwhere lower(cellLine) = %s", key);
+   \nwhere lower(cellLine) = lower(%s)", key);
   return(buf);
 }
 
@@ -425,7 +425,7 @@ char *genotype_verifyallelemcl(char *key, char *value)
   memset(buf, '\0', sizeof(buf));
   sprintf(buf, "select c._CellLine_key, c.cellLine \
    \nfrom ALL_CellLine c, ALL_Allele_CellLine a \
-   \nwhere c.isMutant = 1 and lower(c.cellLine) = '%s' \
+   \nwhere c.isMutant = 1 and lower(c.cellLine) = lower('%s') \
    \nand c._CellLine_key = a._MutantCellLine_key \
    \nand a._Allele_key = %s", value, key);
   return(buf);
@@ -1238,7 +1238,7 @@ char *mutant_cellline(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select cellLine from ALL_CellLine where lower(cellLine) = %s", key);
+  sprintf(buf,"select cellLine from ALL_CellLine where lower(cellLine) = lower(%s)", key);
   return(buf);
 }
 
@@ -1275,7 +1275,7 @@ char *mutant_parentcellline(char *key)
    \n_Strain_key, cellLineStrain, _CellLine_Type_key, \
    \n_Vector_key, vector, _Creator_key, _VectorType_key \
    \nfrom ALL_CellLine_View \
-   \nwhere isMutant = 0 and lower(cellLine) = %s", key);
+   \nwhere isMutant = 0 and lower(cellLine) = lower(%s)", key);
   return(buf);
 }
 
@@ -1341,16 +1341,11 @@ char *nomen_verifyMarker(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"declare @status varchar(255) \
-    \nif exists (select 1 from MRK_Marker m where m.symbol = %s and m._Organism_key = 1 and m._Marker_Status_key = 1) \
-    \nselect @status = 'Official Symbol '%s' exists in MGD\n' \
-    \nif exists (select 1 from MRK_Marker m where m.symbol = %s and m._Organism_key = 1 and m._Marker_Status_key = 2) \
-    \nselect @status = 'Withdrawn Symbol '%s' exists in MGD\n' \
-    \nif exists (select 1 from MRK_Marker m where m.symbol = %s and m._Organism_key = 1 and m._Marker_Status_key = 3) \
-    \nselect @status = 'Interim Symbol '%s' exists in MGD\n' \
-    \nif exists (select 1 from NOM_Marker where symbol = %s) \
-    \nselect @status = @status + 'Symbol '%s' exists in Nomen\n' \
-    \nselect @status\n", key, key, key, key, key, key, key, key);
+
+  sprintf(buf,"select 'Official Symbol ' || symbol || ' exists in MGD' from MRK_Marker where lower(symbol) = lower(%s) and _Organism_key = 1 and _Marker_Status_key = 1 \
+  	\nunion all select 'Withdrawn Symbol ' || symbol || ' exists in MGD' from MRK_Marker where lower(symbol) = lower(%s) and _Organism_key = 1 and _Marker_Status_key = 2 \
+  	\nunion all select 'Interim Symbol ' || symbol || ' exists in MGD' from NOM_Marker where lower(symbol) = lower(%s) and _Organism_key = 1 and _Marker_Status_key = 3 \
+    	", key, key, key);
   return(buf);
 }
 
