@@ -520,7 +520,7 @@ void stagetrees_internalLoadStages(int countdstages, int *distinctstages)
     if (countdstages == 0)
         return;
 
-    /*tu_printf("DEBUG: stagetrees_internalLoadStages : countdstages \n");*/
+    tu_printf("DEBUG: stagetrees_internalLoadStages : (countdstages) : %ld\n", countdstages);
 
     /* Turn off repainting while updating tree */
     XtVaSetValues(stagetrees.outliner, 
@@ -1095,8 +1095,6 @@ void stagetrees_loadStages(char *from, char *where)
     /* a count of the number of distinct stages we are processing */
     int countdstages = 0;
 
-    tu_printf("DEBUG: stagetrees_loadStages (where/from): %s, %s\n", where, from);
-
     /* determine what stages are affected by the current query.  It would
        be nice to read them from the results already obtained, but the
        XmList doesn't support iteration and the generic query routines
@@ -1112,9 +1110,11 @@ void stagetrees_loadStages(char *from, char *where)
     {
        while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS)
        {
+    	   tu_printf("DEBUG: stagetrees_loadStages : countdstages : %ld\n", countdstages);
            if (countdstages < MAXSTAGE)
 	   {
               distinctstages[countdstages++] = atoi(mgi_getstr(dbproc, 1));
+    	      tu_printf("DEBUG: stagetrees_loadStages : found countdstages\n");
            }
        }
     }

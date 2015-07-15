@@ -241,27 +241,19 @@ rules:
 	  top := create widget("MarkerModule", nil, mgi);
 
 	  -- Prevent multiple instances of the Marker form
-	  (void) mgi_writeLog("initially launch\n");
-	  (void) mgi_writeLog(get_time());
           ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
 
 	  -- Set Permissions
-	  (void) mgi_writeLog("send(Permissions)\n");
-	  (void) mgi_writeLog(get_time());
 	  SetPermissions.source_widget := top;
 	  send(SetPermissions, 0);
 
 	  -- Build Dynamic GUI Components
-	  (void) mgi_writeLog("send(BuildDynamic)\n");
-	  (void) mgi_writeLog(get_time());
 	  send(BuildDynamicComponents, 0);
 
 	  top.show;
 
 	  -- Initialize
-	  (void) mgi_writeLog("send(Init)\n");
-	  (void) mgi_writeLog(get_time());
 	  send(Init, 0);
 
 	  (void) reset_cursor(mgi);
@@ -1591,9 +1583,6 @@ rules:
 
         Select does
 
-	  (void) mgi_writeLog("begin : select result\n");
-	  (void) mgi_writeLog(get_time());
-
 	  InitAcc.table := accTable;
           send(InitAcc, 0);
  
@@ -1857,9 +1846,6 @@ rules:
 	  top->QueryList->List.row := Select.item_position;
 	  ClearMarker.reset := true;
 	  send(ClearMarker, 0);
-
-	  (void) mgi_writeLog("end : select result\n");
-	  (void) mgi_writeLog(get_time());
 
 	  (void) reset_cursor(top);
 	end does;
