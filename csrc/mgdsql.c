@@ -322,9 +322,14 @@ char *genotype_orderby()
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  /*sprintf(buf,"\norder by s.strain, ap.allele1");*/
-  /*sprintf(buf,"\norder by s.strain, a1.symbol");*/
-  sprintf(buf,"\norder by strain, symbol NULLS FIRST");
+  if (GLOBAL_DBTYPE == "sybase")
+  {
+  	sprintf(buf,"\norder by strain, symbol");
+  }
+  else
+  {
+  	sprintf(buf,"\norder by strain, symbol NULLS FIRST");
+  }
   return(buf);
 }
 
