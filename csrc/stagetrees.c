@@ -174,6 +174,8 @@ void stagetrees_init(Widget outliner, Widget progressMeter)
    XrtGearIcon iconitem;
    extern char *iconitem_xpm[];
 
+   /*tu_printf("DEBUG: stagetrees_init : begin\n");*/
+
    stagetrees.progress = progressMeter;
    /* initially, no progress label */
    stagetrees_setProgressLabel(False, PROGRESS_LOADING, 28); 
@@ -224,6 +226,8 @@ void stagetrees_init(Widget outliner, Widget progressMeter)
            XmNxrtGearIconItem, &iconitem,
            XmNxrtGearIconItemSelected, &iconitem,
            NULL); 
+
+   /*tu_printf("DEBUG: stagetrees_init : end\n");*/
 }
 
 void stagetrees_destroy()
@@ -339,13 +343,18 @@ Structure *stagetrees_getStructureByKey(int sk)
     Structure *structure;
     int stage;
 
+    /*tu_printf("DEBUG: stagetrees_getStructureByKey : sk : %i\n", sk);*/
+
     for (stage=1; stage <= MAXSTAGE; stage++) 
     {
        stagetree = stagetrees_getStageTree(stage);
        structure = stagetree_getStructureByKey(stagetree, sk);
 
        if(structure)
+       {
+            /*tu_printf("DEBUG: stagetrees_getStructureByKey : if structure\n");*/
             return structure;
+       }
     }
 
     return NULL;
@@ -359,17 +368,18 @@ Structure *stagetrees_select(int sk)
     int stage;
 
     structure = stagetrees_getStructureByKey(sk);
+    /*tu_printf("DEBUG: stagetrees_select : structure : %i\n", sk);*/
 
     if(structure)
     {
-       /*tu_printf("DEBUG: if (structure)\n");*/
+       /*tu_printf("DEBUG: stagetrees_select : if (structure)\n");*/
 
        /* select the current node */
        XrtGearObject node = structure_getnode(structure); 
 
        if (node)
        {
-          /*tu_printf("DEBUG: if (node)\n");*/
+          /*tu_printf("DEBUG: stagetrees_select : if (node)\n");*/
 
           if(!XmIsXrtNode(node))  /* sanity check */
             tu_printf("Node isn't an XrtNode!!! Argggh!\n");
@@ -395,14 +405,14 @@ Structure *stagetrees_select(int sk)
           { /* XRT doesn't seem to like just opening the folders from the
                node to the root, so we open the entire tree */
 
-             /*tu_printf("DEBUG: if (XrtGearNodeIsInCollapsedBranch)\n");*/
+             /*tu_printf("DEBUG: stagetrees_select : if (XrtGearNodeIsInCollapsedBranch)\n");*/
 
              int stage = structure_getStage(structure); 
              StageTree *stagetree = stagetrees_getStageTree(stage);
              open_folders(stagetree);
           }
 
-          /*tu_printf("DEBUG: if (XrtGearNodeTraverseTo)\n");*/
+          /*tu_printf("DEBUG: stagetrees_select : if (XrtGearNodeTraverseTo)\n");*/
 
           XrtGearNodeTraverseTo(node);
 
@@ -417,7 +427,7 @@ Structure *stagetrees_select(int sk)
        return structure;
     }
 
-    /*tu_printf("DEBUG: Returning NULL, structure not found\n");*/
+    /*tu_printf("DEBUG: stagetrees_select : Returning NULL, structure not found\n");*/
 
     return NULL;  /* structure not found */
 }
@@ -520,7 +530,7 @@ void stagetrees_internalLoadStages(int countdstages, int *distinctstages)
     if (countdstages == 0)
         return;
 
-    tu_printf("DEBUG: stagetrees_internalLoadStages : (countdstages) : %ld\n", countdstages);
+    /*tu_printf("DEBUG: stagetrees_internalLoadStages : (countdstages) : %i\n", countdstages);*/
 
     /* Turn off repainting while updating tree */
     XtVaSetValues(stagetrees.outliner, 
@@ -643,7 +653,7 @@ void stagetree_deleteStructureByKey(StageTree *stagetree, int sk)
    st = (Structure *)hashtbl_delete_obj(stagetree->Structures, sk);
    if(!st) 
    {
-     /*tu_printf("Key used to obtain NULL structure: %ld\n", sk);*/
+     /*tu_printf("Key used to obtain NULL structure: %i\n", sk);*/
      stagetrees_error("NULL object retrieved from hash table!");
    }
 
@@ -788,12 +798,12 @@ void stagetree_AddStructure(StageTree *stagetree, Structure *st)
    int rc;
 
    hashtbl_key key = structure_getStructureKey(st);
-   /*tu_printf("DEBUG: stagetree_AddStructure : hashtbl_key : %ld\n", key);*/
+   /*tu_printf("DEBUG: stagetree_AddStructure : hashtbl_key : %i\n", key);*/
 
    /* hash the key to a stored structure */
    hst = (Structure *)hashtbl_retrieve_obj(ht,key);
 
-   /*tu_printf("DEBUG: stagetree_AddStructure : hst : %ld\n", hst);*/
+   /*tu_printf("DEBUG: stagetree_AddStructure : hst : %i\n", hst);*/
 
    if (hst)
    {  /* then we already have this structure.  Update it */ 
@@ -883,7 +893,7 @@ Structure *stagetree_getStructureByKey(StageTree *stagetree, int sk)
 
    hashtbl_key key = sk; 
 
-   /*tu_printf("DEBUG: stagetree_getStructureByKey : %ld\n", key);*/
+   /*tu_printf("DEBUG: stagetree_getStructureByKey : %i\n", key);*/
 
    /* hash the key to a stored structure */
    hst = (Structure *)hashtbl_retrieve_obj(ht,key);
@@ -1110,11 +1120,11 @@ void stagetrees_loadStages(char *from, char *where)
     {
        while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS)
        {
-    	   tu_printf("DEBUG: stagetrees_loadStages : countdstages : %ld\n", countdstages);
+    	   /*tu_printf("DEBUG: stagetrees_loadStages : countdstages : %i\n", countdstages);*/
            if (countdstages < MAXSTAGE)
 	   {
               distinctstages[countdstages++] = atoi(mgi_getstr(dbproc, 1));
-    	      tu_printf("DEBUG: stagetrees_loadStages : found countdstages\n");
+    	      /*tu_printf("DEBUG: stagetrees_loadStages : found countdstages\n");*/
            }
        }
     }
@@ -1124,7 +1134,7 @@ void stagetrees_loadStages(char *from, char *where)
 
     stagetrees_internalLoadStages(countdstages, distinctstages);
 
-    tu_printf("DEBUG: stagetrees_loadStages (countdstages) : %ld\n", countdstages);
+    /*tu_printf("DEBUG: stagetrees_loadStages (countdstages) : %i\n", countdstages);*/
 }
 
 void stagetree_AddStructureNames(StageTree *stagetree)

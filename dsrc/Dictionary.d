@@ -828,6 +828,8 @@ rules:
           (void) stagetrees_loadStages(from,where);
           --treesLoaded := true;
 
+	  send(Select, 0);
+
           (void) reset_cursor(top);
         end does;
 
