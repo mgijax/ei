@@ -1342,10 +1342,11 @@ char *nomen_verifyMarker(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
 
-  sprintf(buf,"select 'Official Symbol ' || symbol || ' exists in MGD' from MRK_Marker where lower(symbol) = lower(%s) and _Organism_key = 1 and _Marker_Status_key = 1 \
-  	\nunion all select 'Withdrawn Symbol ' || symbol || ' exists in MGD' from MRK_Marker where lower(symbol) = lower(%s) and _Organism_key = 1 and _Marker_Status_key = 2 \
-  	\nunion all select 'Interim Symbol ' || symbol || ' exists in MGD' from NOM_Marker where lower(symbol) = lower(%s) and _Organism_key = 1 and _Marker_Status_key = 3 \
-    	", key, key, key);
+  sprintf(buf,"select 'Official Symbol ' || symbol || ' exists in MGD\n' from MRK_Marker where lower(symbol) = lower(%s) and _Organism_key = 1 and _Marker_Status_key = 1 \
+  	\nunion all select 'Withdrawn Symbol ' || symbol || ' exists in MGD\n' from MRK_Marker where lower(symbol) = lower(%s) and _Organism_key = 1 and _Marker_Status_key = 2 \
+  	\nunion all select 'Interum Symbol ' || symbol || ' exists in MGD\n' from MRK_Marker where lower(symbol) = lower(%s) and _Organism_key = 1 and _Marker_Status_key = 3 \
+  	\nunion all select 'Symbol ' || symbol || ' exists in Nomen\n' from NOM_Marker where lower(symbol) = lower(%s) \
+    	", key, key, key, key);
   return(buf);
 }
 
