@@ -732,8 +732,6 @@ char *marker_checkaccid(char *key, char *logicalDBKey, char *accID)
 
 char *marker_checkseqaccid(char *logicalDBKey, char *accID)
 {
-   /*\nwhere lower(p.note) like \ */
-  /* \nlower('% staff have found evidence of artifact in the sequence of this molecular%') \ */
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select a.accID from PRB_Notes p, ACC_Accession a \
@@ -1923,7 +1921,7 @@ char *translation_accession1(char *key, char *description)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _Object_key, description, accID, mgiID from %s where description like %s", key, description);
+  sprintf(buf,"select _Object_key, description, accID, mgiID from %s where lower(description) like %s", key, description);
   return(buf);
 }
 
