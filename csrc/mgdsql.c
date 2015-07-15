@@ -182,7 +182,7 @@ char *allele_unionnomen(char *key)
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"\nunion all select distinct a._Allele_key, a.symbol, a.statusNum \
    \nfrom ALL_Allele_View a \
-   \nwhere lower(a.nomenSymbol) like %s", key);
+   \nwhere a.nomenSymbol like %s", key);
   return(buf);
 }
 
@@ -1921,7 +1921,7 @@ char *translation_accession1(char *key, char *description)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _Object_key, description, accID, mgiID from %s where lower(description) like %s", key, description);
+  sprintf(buf,"select _Object_key, description, accID, mgiID from %s where description like %s", key, description);
   return(buf);
 }
 
