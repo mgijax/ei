@@ -1777,7 +1777,7 @@ char *reftypetable_loadorder3()
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"\norder by allowOnlyOne desc, _RefAssocType_key");
+  sprintf(buf,"\norder by allowOnlyOne desc, _RefAssocType_key, jnum");
   return(buf);
 }
 
