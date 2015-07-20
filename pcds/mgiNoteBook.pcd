@@ -1,16 +1,16 @@
 Module: mgiNoteBook
 {
       autoCuil = False;
-      release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Sep  9 07:15:42 2010";
+      release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
+      lastWritten = "Mon Jul 20 08:47:52 2015";
         {
           notebook = XmNotebook;
           Group: Widget
             backPageBackground = Thistle;
             bindingType = none;
-            backPagePlacement = bottom_left;
             backPageSize = 10;
             frameShadowThickness = 3;
+            backPagePlacement = bottom_left;
           Group: Control
             vipComment = "XmNotebook widget manages other widgets on browsable pages with tabs, simulating a real notebook.";
             vip_x = 135;
@@ -35,7 +35,6 @@ Module: mgiNoteBook
                 Group: Widget
                   backPageBackground = Thistle;
                   bindingType = none;
-                  backPagePlacement = bottom_left;
               }
         }
 }

@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Thu Jul  9 12:25:23 2015";
+      lastWritten = "Mon Jul 20 08:53:17 2015";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -6793,8 +6793,8 @@ Module: MGD
                                                       xrtTblEditableSeries = "(all 0-5 False)(all 8 False)";
                                                       xrtTblTraversableSeries = "(all 0-5 False) (all 8 False)";
                                                       xrtTblPixelWidthSeries = "(all 0-4 0)";
-                                                      xrtTblNumRows = 11;
-                                                      xrtTblVisibleRows = 10;
+                                                      xrtTblNumRows = 10;
+                                                      xrtTblVisibleRows = 9;
                                                     Group: Constraint
                                                       leftAttachment = attach_form;
                                                       rightAttachment = attach_form;
@@ -6869,8 +6869,8 @@ Module: MGD
                                                       xrtTblEditableSeries = "(all 0-4 False)";
                                                       xrtTblTraversableSeries = "(all 0-4 False)(all 6 False)";
                                                       xrtTblPixelWidthSeries = "(all 0-3 0)";
-                                                      xrtTblNumRows = 11;
-                                                      xrtTblVisibleRows = 10;
+                                                      xrtTblNumRows = 10;
+                                                      xrtTblVisibleRows = 9;
                                                     Group: Constraint
                                                       leftAttachment = attach_form;
                                                       rightAttachment = attach_form;
@@ -6956,7 +6956,7 @@ Module: MGD
                                                     text = scrolledText;
                                                     Group: Widget
                                                       columns = 100;
-                                                      rows = 20;
+                                                      rows = 15;
                                                   }
                                             }
                                             {
