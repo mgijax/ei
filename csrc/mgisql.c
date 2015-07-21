@@ -971,7 +971,7 @@ char *image_orderByImageType()
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"\norder by i.imageType, i.jnum\n");
+  sprintf(buf,"\norder by i.imageType, i.jnum, i.figureLabel\n");
   return(buf);
 }
 
@@ -991,7 +991,7 @@ char *image_byRef(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select distinct i._Image_key, \
-	\ni.jnumID || ';' || i.figureLabel || ';' || i.imageType, i.jnum, i.imageType \
+	\ni.jnumID || ';' || i.figureLabel || ';' || i.imageType, i.jnum, i.imageType, i.figureLabel \
   	\nfrom IMG_Image_View i \
   	\nwhere _Refs_key = %s", key);
   return(buf);
