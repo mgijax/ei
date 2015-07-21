@@ -1547,6 +1547,7 @@ rules:
 	    select := verify_item_tissue(table);
 	  elsif (tableID = BIB_REFS) then
 	    select := verify_item_ref(table);
+	    orderby := "order by journal";
 	  elsif (tableID = CROSS) then
 	    select := verify_item_cross(table);
 	  elsif (tableID = RISET) then
