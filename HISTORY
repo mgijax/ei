@@ -1,5 +1,11 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-6-0-0-?
+DATE: 07/23/2015
+STAFF: lec
+CHANGES:
+a) TR11750/postgres - curator testing
+
 TAG: ei-5-2-2-25
 TAG: ei-5-2-2-24
 TAG: ei-5-2-2-23
