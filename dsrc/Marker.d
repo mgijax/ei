@@ -1276,7 +1276,7 @@ rules:
 	        StatusReport.message := "Cannot modify the offset to a NULL value.";
 	        send(StatusReport);
               else
-                set := "offset = " + offset;
+                set := "cmoffset = " + offset;
                 cmd := cmd + mgi_DBupdate2(MRK_OFFSET, currentRecordKey, key, set);
 	      end if;
             elsif (editMode = TBL_ROW_DELETE and key = "0") then
@@ -1402,7 +1402,7 @@ rules:
 	  end if;
 
 	  if (top->cMposition->text.modified) then
-	    where := where + "\nand moff.source = 0 and moff.offset = " + top->cMposition->text.value;
+	    where := where + "\nand moff.source = 0 and moff.cmoffset = " + top->cMposition->text.value;
 	    from_offset := true;
 	  end if;
 
@@ -1410,7 +1410,7 @@ rules:
           value := mgi_tblGetCell(top->Offset->Table, 0, top->Offset->Table.offset);
 
           if (value.length > 0) then
-	    where := where + "\nand moff.offset = " + value;
+	    where := where + "\nand moff.cmoffset = " + value;
 	    from_offset := true;
 	  end if;
 	    
