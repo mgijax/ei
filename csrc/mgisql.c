@@ -26,17 +26,7 @@ char *mgilib_count(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-      sprintf(buf,"select convert(char(10),rowcnt(MAX(doampg))) \
-       from sysobjects o, sysindexes i \
-       where o.id = i.id \
-       and o.name = '%s'", key);
-  }
-  else
-  {
-      sprintf(buf,"select count(*) from %s;", key);
-  }
+  sprintf(buf,"select count(*) from %s;", key);
   return(buf);
 }
 
@@ -56,14 +46,7 @@ char *exec_acc_assignJ(char *userKey, char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-    sprintf(buf,"exec ACC_assignJ %s,%s\n", userKey, key);
-  }
-  else
-  {
-    sprintf(buf,"select * from ACC_assignJ (%s,%s);\n", userKey, key);
-  }
+  sprintf(buf,"select * from ACC_assignJ (%s,%s);\n", userKey, key);
   return(buf);
 }
 
@@ -71,14 +54,7 @@ char *exec_acc_assignJNext(char *userKey, char *key, char *nextMGI)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-    sprintf(buf,"exec ACC_assignJ %s,%s,%s\n", userKey, key, nextMGI);
-  }
-  else
-  {
-    sprintf(buf,"select * from ACC_assignJ (%s,%s,%s);\n", userKey, key, nextMGI);
-  }
+  sprintf(buf,"select * from ACC_assignJ (%s,%s,%s);\n", userKey, key, nextMGI);
   return(buf);
 }
 
@@ -86,16 +62,8 @@ char *exec_acc_insert(char *userKey, char *key, char *accid, char *logicalKey, c
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-      sprintf(buf,"exec ACC_insertNoChecks %s,%s,%s,%s,%s,%s,%s,%s\n", \
-	    userKey, key, accid, logicalKey, table, refsKey, isPreferred, isPrivate);
-  }
-  else
-  {
-      sprintf(buf,"select * from ACC_insertNoChecks (%s,%s,%s,%s,%s,%s,%s,%s);\n", \
-	    userKey, key, accid, logicalKey, table, refsKey, isPreferred, isPrivate);
-  }
+  sprintf(buf,"select * from ACC_insertNoChecks (%s,%s,%s,%s,%s,%s,%s,%s);\n", \
+	   userKey, key, accid, logicalKey, table, refsKey, isPreferred, isPrivate);
   return(buf);
 }
 
@@ -103,16 +71,8 @@ char *exec_acc_update(char *userKey, char *key, char *accid, char *origRefsKey, 
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-     sprintf(buf,"exec ACC_update %s,%s,%s,%s,%s\n", \
+  sprintf(buf,"select * from ACC_update (%s, %s,%s,%s,%s);\n", \
            userKey, key, accid, origRefsKey, refsKey);
-  }
-  else
-  {
-     sprintf(buf,"select * from ACC_update (%s, %s,%s,%s,%s);\n", \
-           userKey, key, accid, origRefsKey, refsKey);
-  }
   return(buf);
 }
 
@@ -120,14 +80,7 @@ char *exec_acc_deleteByAccKey(char *key, char *refsKey)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-      sprintf(buf,"exec ACC_delete_byAccKey %s,%s\n", key, refsKey);
-  }
-  else
-  {
-      sprintf(buf,"select ACC_delete_byAccKey (%s,%s);\n", key, refsKey);
-  }
+  sprintf(buf,"select ACC_delete_byAccKey (%s,%s);\n", key, refsKey);
   return(buf);
 }
 
@@ -135,16 +88,8 @@ char *exec_accref_process(char *userKey, char *key, char *refsKey, char *accid, 
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-      sprintf(buf,"exec ACCRef_process %s, %s,%s,%s,%s,%s,%s,%s\n", \
+  sprintf(buf,"select ACCRef_process (%s, %s,%s,%s,%s,%s,%s,%s);\n", \
 	    userKey, key, refsKey, accid, logicalKey, table, isPreferred, isPrivate);
-  }
-  else
-  {
-      sprintf(buf,"select ACCRef_process (%s, %s,%s,%s,%s,%s,%s,%s);\n", \
-	    userKey, key, refsKey, accid, logicalKey, table, isPreferred, isPrivate);
-  }
   return(buf);
 }
 
@@ -152,14 +97,7 @@ char *exec_all_convert(char *userKey, char *key, char *oldSymbol, char *newSymbo
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-      sprintf(buf,"exec ALL_convertAllele %s,%s,'%s','%s'\n", userKey, key, oldSymbol, newSymbol);
-  }
-  else
-  {
-      sprintf(buf,"select * from ALL_convertAllele (%s,%s,'%s','%s');\n", userKey, key, oldSymbol, newSymbol);
-  }
+  sprintf(buf,"select * from ALL_convertAllele (%s,%s,'%s','%s');\n", userKey, key, oldSymbol, newSymbol);
   return(buf);
 }
 
@@ -167,14 +105,7 @@ char *exec_all_reloadLabel(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-      sprintf(buf,"exec ALL_reloadLabel %s\n", key);
-  }
-  else
-  {
-      sprintf(buf,"select * from ALL_reloadLabel (%s);\n", key);
-  }
+  sprintf(buf,"select * from ALL_reloadLabel (%s);\n", key);
   return(buf);
 }
 
@@ -182,14 +113,7 @@ char *exec_mgi_checkUserRole(char *module, char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-      sprintf(buf,"exec MGI_checkUserRole %s, %s\n", module, key);
-  }
-  else
-  {
-      sprintf(buf,"select * from MGI_checkUserRole (%s, %s);\n", module, key);
-  }
+  sprintf(buf,"select * from MGI_checkUserRole (%s, %s);\n", module, key);
   return(buf);
 }
 
@@ -197,14 +121,7 @@ char *exec_mgi_checkUserTask(char *taskType, char *userKey)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-      sprintf(buf,"exec MGI_checkUserTask '%s',%s\n", taskType, userKey);
-  }
-  else
-  {
-      sprintf(buf,"select * from MGI_checkUserTask ('%s', %s);\n", taskType, userKey);
-  }
+  sprintf(buf,"select * from MGI_checkUserTask ('%s', %s);\n", taskType, userKey);
   return(buf);
 }
 
@@ -212,14 +129,7 @@ char *exec_mgi_insertReferenceAssoc_antibody(char *userKey, char *key, char *mgi
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-      sprintf(buf,"exec MGI_insertReferenceAssoc %s, %s, %s, %s, %s\n", userKey, mgiTypeKey, key, refKey, refType);
-  }
-  else
-  {
-      sprintf(buf,"select MGI_insertReferenceAssoc (%s, %s, %s, %s, %s);\n", userKey, mgiTypeKey, key, refKey, refType);
-  }
+  sprintf(buf,"select MGI_insertReferenceAssoc (%s, %s, %s, %s, %s);\n", userKey, mgiTypeKey, key, refKey, refType);
   return(buf);
 }
 
@@ -227,14 +137,7 @@ char *exec_mgi_insertReferenceAssoc_usedFC(char *userKey, char *key, char *refKe
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-      sprintf(buf,"exec MGI_insertReferenceAssoc %s, 11, %s, %s, 'Used-FC'\n", userKey, key, refKey);
-  }
-  else
-  {
-      sprintf(buf,"select MGI_insertReferenceAssoc (%s, 11, %s, %s, 'Used-FC');\n", userKey, key, refKey);
-  }
+  sprintf(buf,"select MGI_insertReferenceAssoc (%s, 11, %s, %s, 'Used-FC');\n", userKey, key, refKey);
   return(buf);
 }
 
@@ -242,14 +145,7 @@ char *exec_mgi_resetAgeMinMax(char *key, char *table)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-      sprintf(buf,"exec MGI_resetAgeMinMax %s, %s\n", table, key);
-  }
-  else
-  {
-      sprintf(buf,"select MGI_resetAgeMinMax (%s, %s);\n", table, key);
-  }
+  sprintf(buf,"select MGI_resetAgeMinMax (%s, %s);\n", table, key);
   return(buf);
 }
 
@@ -257,14 +153,7 @@ char *exec_mgi_resetSequenceNum(char *key, char *table)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-      sprintf(buf,"exec MGI_resetSequenceNum %s, %s\n", table, key);
-  }
-  else
-  {
-      sprintf(buf,"select MGI_resetSequenceNum (%s, %s);\n", table, key);
-  }
+  sprintf(buf,"select MGI_resetSequenceNum (%s, %s);\n", table, key);
   return(buf);
 }
 
@@ -272,14 +161,7 @@ char *exec_mrk_reloadReference(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-      sprintf(buf,"exec MRK_reloadReference %s\n", key);
-  }
-  else
-  {
-      sprintf(buf,"select MRK_reloadReference (%s);\n", key);
-  }
+  sprintf(buf,"select MRK_reloadReference (%s);\n", key);
   return(buf);
 }
 
@@ -287,14 +169,7 @@ char *exec_mrk_reloadLocation(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-      sprintf(buf,"exec MRK_reloadLocation %s\n", key);
-  }
-  else
-  {
-      sprintf(buf,"select MRK_reloadLocation (%s);\n", key);
-  }
+  sprintf(buf,"select MRK_reloadLocation (%s);\n", key);
   return(buf);
 }
 
@@ -302,14 +177,7 @@ char *exec_nom_transferToMGD(char *userKey, char *key, char *status)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-      sprintf(buf,"exec NOM_transferToMGD %s, %s, %s", userKey, key, status);
-  }
-  else
-  {
-      sprintf(buf,"select * from NOM_transferToMGD (%s, %s);\n", userKey, key);
-  }
+  sprintf(buf,"select * from NOM_transferToMGD (%s, %s);\n", userKey, key);
   return(buf);
 }
 
@@ -317,14 +185,7 @@ char *exec_prb_insertReference(char *userKey, char *refKey, char *probeKey)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-      sprintf(buf,"exec PRB_insertReference %s, %s, %s\n", userKey, refKey, probeKey);
-  }
-  else
-  {
-      sprintf(buf,"select * from PRB_insertReference (%s, %s, %s);\n", userKey, refKey, probeKey);
-  }
+  sprintf(buf,"select * from PRB_insertReference (%s, %s, %s);\n", userKey, refKey, probeKey);
   return(buf);
 }
 
@@ -332,14 +193,7 @@ char *exec_prb_getStrainByReference(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-      sprintf(buf,"exec PRB_getStrainByReference %s\n", key);
-  }
-  else
-  {
-      sprintf(buf,"select * from PRB_getStrainByReference (%s);\n", key);
-  }
+  sprintf(buf,"select * from PRB_getStrainByReference (%s);\n", key);
   return(buf);
 }
 
@@ -347,14 +201,7 @@ char *exec_prb_getStrainReferences(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-      sprintf(buf,"exec PRB_getStrainReferences %s\n", key);
-  }
-  else
-  {
-      sprintf(buf,"select * from PRB_getStrainReferences (%s);\n", key);
-  }
+  sprintf(buf,"select * from PRB_getStrainReferences (%s);\n", key);
   return(buf);
 }
 
@@ -362,14 +209,7 @@ char *exec_prb_getStrainDataSets(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-      sprintf(buf,"exec PRB_getStrainDataSets %s\n", key);
-  }
-  else
-  {
-      sprintf(buf,"select * from PRB_getStrainDataSets (%s);\n", key);
-  }
+  sprintf(buf,"select * from PRB_getStrainDataSets (%s);\n", key);
   return(buf);
 }
 
@@ -377,14 +217,7 @@ char *exec_prb_mergeStrain(char *key1, char *key2)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-      sprintf(buf,"exec PRB_mergeStrain %s, %s\n", key1, key2);
-  }
-  else
-  {
-      sprintf(buf,"select * from PRB_mergeStrain (%s,%s);\n", key1, key2);
-  }
+  sprintf(buf,"select * from PRB_mergeStrain (%s,%s);\n", key1, key2);
   return(buf);
 }
 
@@ -402,9 +235,7 @@ char *exec_prb_processAntigenAnonSource(\
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-      sprintf(buf,"exec PRB_processAntigenAnonSource %s, %s, %s, %s, %s, %s, %s, %s, %s, %s\n",
+  sprintf(buf,"select * from PRB_processAntigenAnonSource (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);\n",
               objectKey,\
               msoKey,\
               organismKey,\
@@ -415,21 +246,6 @@ char *exec_prb_processAntigenAnonSource(\
               age,\
               tissueTreatment,\
               modifiedByKey);
-  }
-  else
-  {
-      sprintf(buf,"select * from PRB_processAntigenAnonSource (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);\n",
-              objectKey,\
-              msoKey,\
-              organismKey,\
-              strainKey,\
-              tissueKey,\
-              genderKey,\
-              cellLineKey,\
-              age,\
-              tissueTreatment,\
-              modifiedByKey);
-  }
   return(buf);
 }
 
@@ -448,9 +264,7 @@ char *exec_prb_processProbeSource(\
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-      sprintf(buf,"exec PRB_processProbeSource %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s\n",
+  sprintf(buf,"select * from PRB_processProbeSource (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);\n",
               objectKey,\
               msoKey,\
 	      isAnon,\
@@ -462,22 +276,6 @@ char *exec_prb_processProbeSource(\
               age,\
               tissueTreatment,\
               modifiedByKey);
-  }
-  else
-  {
-      sprintf(buf,"select * from PRB_processProbeSource (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);\n",
-              objectKey,\
-              msoKey,\
-	      isAnon,\
-              organismKey,\
-              strainKey,\
-              tissueKey,\
-              genderKey,\
-              cellLineKey,\
-              age,\
-              tissueTreatment,\
-              modifiedByKey);
-  }
   return(buf);
 }
 
@@ -496,9 +294,7 @@ char *exec_prb_processSequenceSource(\
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-      sprintf(buf,"exec PRB_processSequenceSource %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s\n",
+  sprintf(buf,"select * from PRB_processSequenceSource (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);\n",
               isAnon,\
               assocKey,\
               objectKey,\
@@ -510,22 +306,6 @@ char *exec_prb_processSequenceSource(\
               cellLineKey,\
               age,\
               modifiedByKey);
-  }
-  else
-  {
-      sprintf(buf,"select * from PRB_processSequenceSource (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);\n",
-              isAnon,\
-              assocKey,\
-              objectKey,\
-              msoKey,\
-              organismKey,\
-              strainKey,\
-              tissueKey,\
-              genderKey,\
-              cellLineKey,\
-              age,\
-              modifiedByKey);
-  }
   return(buf);
 }
 
@@ -533,14 +313,7 @@ char *exec_voc_copyAnnotEvidenceNotes(char *userKey, char *key, char *keyName)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-      sprintf(buf,"exec VOC_copyAnnotEvidenceNotes %s, %s, %s\n", userKey, key, keyName);
-  }
-  else
-  {
-      sprintf(buf,"select * from VOC_copyAnnotEvidenceNotes (%s, %s, %s);\n", userKey, key, keyName);
-  }
+  sprintf(buf,"select * from VOC_copyAnnotEvidenceNotes (%s, %s, %s);\n", userKey, key, keyName);
   return(buf);
 }
 
@@ -548,14 +321,7 @@ char *exec_voc_processAnnotHeader(char *userKey, char *key, char *annotTypeKey)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-      sprintf(buf,"exec VOC_processAnnotHeader %s,%s,%s\n", userKey, annotTypeKey, key);
-  }
-  else
-  {
-      sprintf(buf,"select VOC_processAnnotHeader (%s,%s,%s);\n", userKey, annotTypeKey, key);
-  }
+  sprintf(buf,"select VOC_processAnnotHeader (%s,%s,%s);\n", userKey, annotTypeKey, key);
   return(buf);
 }
 
@@ -563,14 +329,7 @@ char *exec_gxd_checkDuplicateGenotype(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-      sprintf(buf,"exec GXD_checkDuplicateGenotype %s\n", key);
-  }
-  else
-  {
-      sprintf(buf,"select GXD_checkDuplicateGenotype (%s);\n", key);
-  }
+  sprintf(buf,"select GXD_checkDuplicateGenotype (%s);\n", key);
   return(buf);
 }
 
@@ -578,15 +337,7 @@ char *exec_gxd_duplicateAssay(char *userKey, char *key, char *duplicateDetails)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-      sprintf(buf,"exec GXD_duplicateAssay %s, %s, %s\n", userKey, key, duplicateDetails);
-  }
-  else
-  {
-      sprintf(buf,"select * from GXD_duplicateAssay (%s, %s, %s);\n", userKey, key, duplicateDetails);
-  }
-  (void) mgi_writeLog(buf);
+  sprintf(buf,"select * from GXD_duplicateAssay (%s, %s, %s);\n", userKey, key, duplicateDetails);
   return(buf);
 }
 
@@ -594,14 +345,7 @@ char *exec_gxd_getGenotypesDataSets(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-      sprintf(buf,"exec GXD_getGenotypesDataSets %s\n", key);
-  }
-  else
-  {
-      sprintf(buf,"select * from GXD_getGenotypesDataSets (%s);\n", key);
-  }
+  sprintf(buf,"select * from GXD_getGenotypesDataSets (%s);\n", key);
   return(buf);
 }
 
@@ -609,14 +353,7 @@ char *exec_gxd_orderAllelePairs(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-      sprintf(buf,"exec GXD_orderAllelePairs %s\n", key);
-  }
-  else
-  {
-      sprintf(buf,"select GXD_orderAllelePairs (%s);\n", key);
-  }
+  sprintf(buf,"select GXD_orderAllelePairs (%s);\n", key);
   return(buf);
 }
 
@@ -624,14 +361,7 @@ char *exec_gxd_orderGenotypes(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-      sprintf(buf,"exec GXD_orderGenotypes %s\n", key);
-  }
-  else
-  {
-      sprintf(buf,"select GXD_orderGenotypes (%s);\n", key);
-  }
+  sprintf(buf,"select GXD_orderGenotypes (%s);\n", key);
   return(buf);
 }
 
@@ -639,14 +369,7 @@ char *exec_gxd_orderGenotypesAll(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-      sprintf(buf,"exec GXD_orderGenotypesAll %s\n", key);
-  }
-  else
-  {
-      sprintf(buf,"select GXD_orderGenotypesAll (%s);\n", key);
-  }
+  sprintf(buf,"select GXD_orderGenotypesAll (%s);\n", key);
   return(buf);
 }
 
@@ -654,14 +377,7 @@ char *exec_gxd_removeBadGelBand(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-      sprintf(buf,"exec GXD_removeBadGelBand %s\n", key);
-  }
-  else
-  {
-      sprintf(buf,"select GXD_removeBadGelBand (%s);\n", key);
-  }
+  sprintf(buf,"select GXD_removeBadGelBand (%s);\n", key);
   return(buf);
 }
 
@@ -919,17 +635,7 @@ char *image_getCopyright(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-  	sprintf(buf,"declare @copyright varchar(255) \
-		\nexec BIB_getCopyright %s, @copyright output \
-		\nselect @copyright", key);
-  }
-  else
-  {
-  	sprintf(buf,"select * from BIB_getCopyright (%s);\n", key);
-  }
+  sprintf(buf,"select * from BIB_getCopyright (%s);\n", key);
   return(buf);
 }
 
@@ -1830,26 +1536,7 @@ char *strainalleletype_load(char *key, char *from, char *where)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-  	sprintf(buf,"(select _StrainMarker_key, _Marker_key, _Allele_key, _Qualifier_key, \
-		\nsymbol, chromosome, alleleSymbol, qualifier, \
-		\nconvert(integer, chromosome) as chrorder \
-		\nfrom %s \
-		\nwhere %s = %s \
-		\nand chromosome not in ('X', 'Y', 'MT', 'UN', 'XY') \
-		\nunion all \
-		\nselect _StrainMarker_key, _Marker_key, _Allele_key, _Qualifier_key, \
-		\nsymbol, chromosome, alleleSymbol, qualifier, 99 as chrorder \
-		\nfrom %s \
-		\nwhere %s = %s \
-		\nand chromosome in ('X', 'Y', 'MT', 'UN', 'XY')) \
-		\norder by _Qualifier_key, chrorder, symbol", from, where, key, from, where, key);
-  }
-  else
-  {
-  	sprintf(buf,"(select _StrainMarker_key, _Marker_key, _Allele_key, _Qualifier_key, \
+  sprintf(buf,"(select _StrainMarker_key, _Marker_key, _Allele_key, _Qualifier_key, \
 		\nsymbol, chromosome, alleleSymbol, qualifier, \
 		\ncast(chromosome as int) as chrorder \
 		\nfrom %s \
@@ -1862,7 +1549,6 @@ char *strainalleletype_load(char *key, char *from, char *where)
 		\nwhere %s = %s \
 		\nand chromosome in ('X', 'Y', 'MT', 'UN', 'XY')) \
 		\norder by _Qualifier_key, chrorder, symbol", from, where, key, from, where, key);
-  }
   return(buf);
 }
 

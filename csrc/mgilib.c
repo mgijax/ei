@@ -431,22 +431,7 @@ char *mgi_setDBkey(int table, int key, char *keyName)
 
   memset(cmd, '\0', sizeof(cmd));
 
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-    if (key == NEWKEY)
-    {
-      sprintf(cmd, "declare @%s int\nselect @%s = max(%s) + 1 from %s\nif @%s is NULL or @%s = 0\nbegin\nselect @%s = %d\nend\n", 
-        keyName, keyName, mgi_DBkey(table), mgi_DBtable(table), keyName, keyName, keyName, startKey);
-    }
-    else 
-    {
-      sprintf(cmd, "declare @%s int\nselect @%s = %d\n", keyName, keyName, key);
-    }
-  }
-  else
-  {
-    sprintf(cmd, "select max(%s) + 1 as %s into temporary table %sMax from %s;\n", mgi_DBkey(table), keyName, keyName, mgi_DBtable(table));
-  }
+  sprintf(cmd, "select max(%s) + 1 as %s into temporary table %sMax from %s;\n", mgi_DBkey(table), keyName, keyName, mgi_DBtable(table));
 
   return(cmd);
 }
@@ -475,14 +460,7 @@ char *mgi_DBincKey(char *keyName)
 
   memset(cmd, '\0', sizeof(cmd));
 
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-    sprintf(cmd, "select @%s = @%s + 1\n", keyName, keyName);
-  }
-  else
-  {
-    sprintf(cmd, "update %sMax set %s = %s + 1;\n", keyName, keyName, keyName);
-  }
+  sprintf(cmd, "update %sMax set %s = %s + 1;\n", keyName, keyName, keyName);
 
   return(cmd);
 }
@@ -2336,58 +2314,16 @@ char *mgi_DBinsert(int table, char *keyName)
 	    break;
   }
 
-  if (GLOBAL_DBTYPE == "sybase")
+  if (strcmp(keyName, NOKEY) == 0)
   {
-    if (selectKey)
-    {
-      if (isalpha(keyName[0]))
-        sprintf(buf2, "select @%s\n", keyName);
-      else
-        sprintf(buf2, "select %s\n", keyName);
-      strcat(buf2, buf);
-      strcpy(buf, buf2);
-    }
-
-    if (strcmp(keyName, NOKEY) == 0)
-    {
-      sprintf(buf3, "\nvalues(");
-    }
-    else
-    {
-      /* Some tables only have one field and don't require the trailing comma */
-      switch(table)
-      {
-        default:
-                if (isalpha(keyName[0]))
-                  sprintf(buf3, "\nvalues(@%s,", keyName);
-                else
-                  sprintf(buf3, "\nvalues(%s,", keyName);
-                break;
-      }
-    }
-
-    strcat(buf, buf3);
+    sprintf(buf3, "\nvalues(");
   }
   else
   {
-    /*
-    if (selectKey)
-    {
-      sprintf(buf2, "select * from %sMax;", keyName);
-      strcat(buf, buf2);
-    }
-    */
-
-    if (strcmp(keyName, NOKEY) == 0)
-    {
-      sprintf(buf3, "\nvalues(");
-    }
-    else
-    {
-      sprintf(buf3, "\nvalues((select * from %sMax),", keyName);
-    }
-    strcat(buf, buf3);
+    sprintf(buf3, "\nvalues((select * from %sMax),", keyName);
   }
+
+  strcat(buf, buf3);
 
   return(buf);
 }
@@ -2423,14 +2359,7 @@ char *mgi_DBupdate(int table, char *key, char *str)
   memset(buf, '\0', sizeof(buf));
   memset(sql_getdate, '\0', sizeof(sql_getdate));
 
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-    sprintf(sql_getdate,"getdate()");
-  }
-  else
-  {
-    sprintf(sql_getdate,"current_date");
-  }
+  sprintf(sql_getdate,"current_date");
 
   /* Get rid of any trailing ',' */
 
@@ -2588,14 +2517,7 @@ char *mgi_DBupdate2(int table, char *key, char *key2, char *str)
   memset(buf, '\0', sizeof(buf));
   memset(sql_getdate, '\0', sizeof(sql_getdate));
 
-  if (GLOBAL_DBTYPE == "sybase")
-  {
-    sprintf(sql_getdate,"getdate()");
-  }
-  else
-  {
-    sprintf(sql_getdate,"current_date");
-  }
+  sprintf(sql_getdate,"current_date");
 
   switch (table)
   {

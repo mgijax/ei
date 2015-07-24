@@ -101,17 +101,8 @@ rules:
 	  SetTitle.source_widget := top;
 	  send(SetTitle, 0);
 
-	  if (GLOBAL_DBTYPE = "sybase") then
-	  	top->LoginServer->text.value := getenv("MGD_DBSERVER");
-	  	top->LoginDB->text.value := getenv("MGD_DBNAME");
-		top->User.sensitive := true;
-		top->Password.sensitive := true;
-	  else
-	  	top->LoginServer->text.value := getenv("PG_DBSERVER");
-	  	top->LoginDB->text.value := getenv("PG_DBNAME");
-		top->User.sensitive := false;
-		top->Password.sensitive := false;
-	  end if;
+	  top->LoginServer->text.value := getenv("PG_DBSERVER");
+	  top->LoginDB->text.value := getenv("PG_DBNAME");
 
 	  -- If Server is a Development server, then do not allow selection
 	  -- of Production or Public server
@@ -126,7 +117,6 @@ rules:
 	  --envList := create list("string");
 	  --envList.append("EIAPP");
 	  --envList.append("MGD_DBSERVER");
-	  --envList.append("SYBASE");
 	  --envList.append("MGD_DBNAME");
 	  --envList.open;
 	  --while envList.more do;
@@ -159,16 +149,6 @@ rules:
 	  global_server := top->LoginServer->text.value;
 	  global_database := top->LoginDB->text.value;
 	  global_passwd := passwd;
-
-	  if (top->User->text.value.length = 0) then
-	    global_login := "mgd_public";
-	  else
-	    global_login := top->User->text.value;
-	  end if;
-
-	  if (global_passwd.length = 0) then
-	    global_passwd := "mgdpub";
-	  end if;
 
 	  (void) busy_cursor(top);
 
@@ -217,14 +197,6 @@ rules:
 	  end if;
 
 	  (void) reset_cursor(top);
-	end does;
-
---
--- HidePassword
---
-
-	HidePassword does
-	  passwd := mgi_hide_passwd(HidePassword.callback_struct, passwd);
 	end does;
 
 --

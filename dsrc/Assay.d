@@ -700,11 +700,7 @@ rules:
 	  -- Update the modification date of the primary table so that the
 	  -- expression cache gets updated AFTER the Assay details are added
 
-	  if (global_dbtype = "sybase") then
-	    cmd := cmd + mgi_DBupdate(GXD_ASSAY, currentAssay, "") + "\nselect @key\n";
-	  else
-	    cmd := cmd + mgi_DBupdate(GXD_ASSAY, currentAssay, "");
-	  end if;
+	  cmd := cmd + mgi_DBupdate(GXD_ASSAY, currentAssay, "");
 
 	  -- Execute the insert
 
@@ -2045,11 +2041,7 @@ rules:
                 laneKey := mgi_tblGetCell(table, row - 1, table.laneKey + x);
                 mgi_tblSetCell(table, row, table.laneKey + x, laneKey);
 	      else
-	        if (global_dbtype = "sybase") then
-		  laneKey := "@gelLaneKey";
-		 else
-		  laneKey := "gelLaneKey";
-	         end if;
+		laneKey := "gelLaneKey";
 	      end if;
 	    end if;
 

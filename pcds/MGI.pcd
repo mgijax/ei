@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Wed Jun 10 08:48:11 2015";
+      lastWritten = "Fri Jul 24 10:18:16 2015";
       copy = false;
       inCreateMenu = true;
         {
@@ -78,59 +78,14 @@ Module: MGI
                               leftOffset = 2;
                           }
                           {
-                            User = CharText : mgiDataTypes;
-                            Group: Constraint
-                              leftAttachment = attach_opposite_widget;
-                              rightAttachment = attach_none;
-                              topAttachment = attach_widget;
-                              topOffset = 2;
-                              bottomAttachment = attach_none;
-                              resizable = true;
-                              topWidget = separator;
-                              leftWidget = LoginServer;
-                                {
-                                  label = XmLabel;
-                                  Group: Widget
-                                    labelString = User;
-                                }
-                                {
-                                  text = text;
-                                  Group: Widget
-                                    columns = 10;
-                                }
-                          }
-                          {
-                            Password = CharText : mgiDataTypes;
-                            Group: Constraint
-                              leftAttachment = attach_widget;
-                              leftWidget = User;
-                              rightAttachment = attach_form;
-                              topAttachment = attach_opposite_widget;
-                              topWidget = User;
-                              bottomAttachment = attach_none;
-                              resizable = true;
-                              leftOffset = 5;
-                              rightOffset = 5;
-                                {
-                                  label = XmLabel;
-                                  Group: Widget
-                                    labelString = Password;
-                                }
-                                {
-                                  text = text;
-                                  Group: Widget
-                                    modifyVerifyCallback = "D:HidePassword";
-                                }
-                          }
-                          {
                             separator1 = XmSeparator;
                             Group: Constraint
                               leftAttachment = attach_opposite_widget;
-                              leftWidget = User;
+                              leftWidget = LoginServer;
                               rightAttachment = attach_form;
                               rightOffset = 2;
                               topAttachment = attach_widget;
-                              topWidget = Password;
+                              topWidget = LoginServer;
                               topOffset = 5;
                               bottomAttachment = attach_none;
                               resizable = true;
@@ -186,8 +141,8 @@ Module: MGI
             closeWindowCallback = "D:Exit";
             createCallback = "D:SetTitle";
           Group: Control
-            vip_x = 68;
-            vip_y = 32;
+            vip_x = 70;
+            vip_y = 30;
             vipComment = "TopLevelShell is used for normal top-level windows such as any additional top-level widgets an application needs.";
               {
                 MainForm = XmForm;

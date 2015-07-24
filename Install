@@ -29,30 +29,16 @@ switch (`uname -n`)
 
 	case bhmgiei01:
 		echo "building for linux/production..." >>& ${LOG}
-		if (${DB_TYPE} == 'sybase') then
-			./install_linux >>& ${LOG}
-		else
-			./install_pg >>& ${LOG}
-		endif
+		./install_pg >>& ${LOG}
 		breaksw
 
 	case bheidev01:
 		echo "building for linux/dev..." >>& ${LOG}
-		if (${DB_TYPE} == 'sybase') then
-			./install_linux_dev >>& ${LOG}
-		else
-			./install_pg_dev >>& ${LOG}
-		endif
-		breaksw
-
-	case rohan:
-		echo "building for solaris/dev..." >>& ${LOG}
-		./install_solaris_dev >>& ${LOG}
+		./install_pg >>& ${LOG}
 		breaksw
 
 	default:
-		echo "building for solaris..." >>& ${LOG}
-		./install_solaris >>& ${LOG}
+		echo "unknown server..." >>& ${LOG}
 endsw
 
 

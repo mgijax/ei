@@ -9,7 +9,7 @@
 #
 
 if ( ${?MGICONFIG} == 0 ) then
-	setenv MGICONFIG /usr/local/mgi/live/mgiconfig
+	setenv MGICONFIG /usr/local/mgi/lec/mgiconfig
 endif
 
 source ${MGICONFIG}/master.config.csh
@@ -20,7 +20,6 @@ unsetenv OPENWINHOME
 unsetenv XKEYSYMDB
 
 setenv CVS_TAG  ei-6-0-0-1
-setenv TeleUSE /opt/teleuseXRT
 
 switch (`whoami`)
     case lec:
@@ -36,56 +35,21 @@ switch (`whoami`)
         breaksw
 endsw
 
-# sybase/postgres symlinks, etc.
-
-switch (${DB_TYPE})
-    case sybase:
-	setenv EIINCLUDE syblib.h
-	setenv EIDSQL SQL_syb.d
-	setenv EIDDATELIB DateLib_syb.d
-	setenv SYBASE /opt/sybase/15.7
-	setenv SYBASE_PATH ${SYBASE}/OCS-15_0/bin
-	setenv EIUTILS  ${MGI_DBUTILS}/bin/ei
-	breaksw
-
-    case postgres:
-	setenv EIINCLUDE pglib.h
-	setenv EIDSQL SQL_pg.d
-	setenv EIDDATELIB DateLib_pg.d
-	setenv EIUTILS  ${PG_DBUTILS}/bin/ei
-	breaksw
-endsw
-
 switch (`uname -n`)
     case bhmgiei01:
-	setenv CVS_TAG	${CVS_TAG}-linux
-	setenv LD_LIBRARY_PATH ${SYBASE}/OCS-15_0/lib:${TeleUSE}/lib:${TeleUSE}/XRT/lib-shared:${TeleUSE}/conf/lib
 	setenv USERLOG	${HOME}/.ei-log
         breaksw
 
     case bheidev01:
-	setenv CVS_TAG	${CVS_TAG}-linux
-	setenv LD_LIBRARY_PATH ${SYBASE}/OCS-15_0/lib:${TeleUSE}/lib:${TeleUSE}/XRT/lib-shared:${TeleUSE}/conf/lib
 	setenv USERLOG	${HOME}/.eidev-log
         breaksw
-
-    case rohan:
-	setenv CVS_TAG	${CVS_TAG}-solaris
-	setenv SYBASE /opt/sybase/12.5
-	setenv SYBASE_PATH ${SYBASE}/OCS-12_5/bin
-	setenv LD_LIBRARY_PATH ${SYBASE}/ASE-12_5/lib:${SYBASE}/OCS-12_5/lib:/usr/lib:/usr/local/lib:/usr/ucblib:/usr/openwin/lib:/opt/teleuseXRT/lib:/opt/teleuseXRT/conf/lib
-	setenv USERLOG	${HOME}/.eidev-log
-	breaksw
-
-    case lindon:
-	setenv CVS_TAG	${CVS_TAG}-solaris
-	setenv SYBASE /opt/sybase/12.5
-	setenv SYBASE_PATH ${SYBASE}/OCS-12_5/bin
-	setenv LD_LIBRARY_PATH ${SYBASE}/ASE-12_5/lib:${SYBASE}/OCS-12_5/lib:/usr/lib:/usr/local/lib:/usr/ucblib:/usr/openwin/lib:/opt/teleuseXRT/lib:/opt/teleuseXRT/conf/lib
-	setenv USERLOG	${HOME}/.ei-log
-	breaksw
-
 endsw
+
+setenv TeleUSE /opt/teleuseXRT
+setenv LD_LIBRARY_PATH ${TeleUSE}/lib:${TeleUSE}/XRT/lib-shared:${TeleUSE}/conf/lib
+
+# utility scripts
+setenv EIUTILS  ${PG_DBUTILS}/bin/ei
 
 # build directory
 setenv EIBUILDDIR ${MGI_LIVE}/ei

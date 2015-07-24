@@ -13,9 +13,6 @@ source ./Configuration
 setenv LOG $0.log
 rm -f $LOG
 
-# run configuration to set proper sybase/postgres symlinks
-${EIBUILDDIR}/install_config
-
 cd ${EIBUILDDIR}
 
 setenv EIAPPS	"mgd gxd mgi mgiadmin"
