@@ -6,12 +6,6 @@
 * this library provides wrappers around libpg ($POSTGRES_HOME/lib)
 * (C applications programmer's interface to PostgreSQL)
 *
-* the wrappers are called by the TeleUSE/D modules
-* and are complements to the sybase library (syblib.c).
-* that is, these wrappers have the same behavior
-* as the sybase library wrappers and will enable
-* the EI to talk to a PostgreSQL database.
-*
 * see install_pg_dev, uxb_pg.conf
 * 
 * mgi_dbinit 		done

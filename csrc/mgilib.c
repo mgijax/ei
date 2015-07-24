@@ -138,7 +138,7 @@
  *	- continous edits for MGI 2.0 release
  *
  * lec	03/13/98
- *	- created library from syblib.c
+ *	- created library from pglib.c
  *
 */
 

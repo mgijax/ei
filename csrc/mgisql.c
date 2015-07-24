@@ -394,26 +394,6 @@ char *mgilib_user(char *key)
 }
 
 /*
- * SQL.d
-*/
-
-char *sql_error()
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"\nselect @@error");
-  return(buf);
-}
-
-char *sql_transtate()
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"\nselect @@transtate");
-  return(buf);
-}
-
-/*
  * AccLib.d
 */
 

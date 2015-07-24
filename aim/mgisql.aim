@@ -50,9 +50,6 @@ CALLS
 	 exec_gxd_orderGenotypesAll("char *")			: "char *";
 	 exec_gxd_removeBadGelBand("char *")			: "char *";
 
-	 sql_error()						: "char *";
-	 sql_transtate()					: "char *";
-
 	 acclib_assoc()						: "char *";
 	 acclib_acc()						: "char *";
 	 acclib_ref()						: "char *";
