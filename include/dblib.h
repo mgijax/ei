@@ -49,7 +49,6 @@ extern char *global_userKey;
 extern char *global_reportdir;
 extern char *global_database;
 extern char *global_server;
-extern char *global_dbtype;
 
 extern int global_error;
 

@@ -1,7 +1,7 @@
 CALLS
   LANGUAGE C 
         INCLUDE
-             <pglib.h>
+             <dblib.h>
 	TYPE 
 	     "int"           <--> integer;
 	     "char *"        <--> string;
@@ -33,7 +33,6 @@ CALLS
 	 global_reportdir				 : "char *";
 	 global_database				 : "char *";
 	 global_server  				 : "char *";
-	 global_dbtype                                   : "char *";
 	 global_user					 : "char *";
 	 global_userKey				 	 : "char *";
 	 global_error  				 	 : "int";

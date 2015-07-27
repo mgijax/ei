@@ -76,7 +76,7 @@
 dmodule SQL is
 
 #include <mgilib.h>
-#include <pglib.h>
+#include <dblib.h>
 #include <mgisql.h>
 
 locals:

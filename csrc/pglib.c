@@ -69,7 +69,6 @@ char *global_passwd;            /* Set in mgi_dbinit; holds user password name *
 char *global_reportdir;         /* Set in mgi_dbinit; holds user report directory name */
 char *global_database;          /* Set in Application dModule; holds database value */
 char *global_server;            /* Set in Application dModule; holds server value */
-char *global_dbtype;            /* Set in Application dModule; holds db-type value */
 char *global_user;              /* Set in Application dModule; holds user login value */
 char *global_userKey;           /* Set in Application dModule; holds user login key value */
 int global_error;               /* PG error */
@@ -93,13 +92,11 @@ int mgi_dbinit(char *user, char *pwd)
   static char server[TEXTBUFSIZ];
   static char passwdfile[TEXTBUFSIZ];
   static char passwdfile_name[TEXTBUFSIZ];
-  static char dbtype[TEXTBUFSIZ];
   static char guser[TEXTBUFSIZ];
   static char reportdir[TEXTBUFSIZ];
 
   memset(passwdfile, '\0', sizeof(passwdfile));
   memset(passwdfile, '\0', sizeof(passwdfile_name));
-  memset(dbtype, '\0', sizeof(dbtype));
 
   sprintf(passwdfile, "%s", getenv("PG_1LINE_PASSFILE"));
   global_passwd_file = passwdfile;
@@ -107,13 +104,11 @@ int mgi_dbinit(char *user, char *pwd)
   sprintf(database, "%s", getenv("PG_DBNAME"));
   sprintf(login, "%s", getenv("PG_DBUSER"));
   sprintf(server, "%s", getenv("PG_DBSERVER"));
-  sprintf(dbtype, "%s", getenv("DB_TYPE"));
   sprintf(guser, "%s", getenv("GLOBAL_USER"));
   sprintf(reportdir, "%s", getenv("EIREPORTDIR"));
   global_database = database;
   global_login = login;
   global_server = server;
-  global_dbtype = dbtype;
   global_user = guser;
   global_reportdir = reportdir;
 
@@ -140,7 +135,7 @@ int mgi_dbinit(char *user, char *pwd)
 
   if (PQstatus(conn) != CONNECTION_OK)
   {
-    fprintf(stderr, "pglib: Connection to database failed: %s", PQerrorMessage(conn));
+    fprintf(stderr, "dblib: Connection to database failed: %s", PQerrorMessage(conn));
     mgi_dbexit(conn);
   }
 
@@ -342,7 +337,7 @@ int mgi_dbresults(PGconn *conn)
   *
   * if PQexec returns NULL, then return NO_MORE_RESULTS
   * NO_MORE_RESULTS is used in all of the D-code,
-  * so we simply define NO_MORE_RESULTS in include/pglib.h
+  * so we simply define NO_MORE_RESULTS in include/dblib.h
   *
   */
 
