@@ -2845,7 +2845,6 @@ char *mgi_DBcvname(int table)
 
 	buf contains:
 	   ab''cd 
-    - which will be interpreted by Sybase as ab'cd.
 */
 
 char *mgi_escape_quotes(char *txt)
