@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Mon Jul 20 08:53:17 2015";
+      lastWritten = "Mon Aug 10 14:34:39 2015";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -9540,6 +9540,17 @@ Shift<Key>Tab: prev-tab-group()
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                      {
+                                        ObjectID = ID : mgiDataTypes;
+                                      }
+                                      {
+                                        StrainType = CharText : mgiDataTypes;
+                                            {
+                                              label = XmLabel;
+                                              Group: Widget
+                                                labelString = "Strain Name Type";
+                                            }
+                                      }
                                 }
                                 {
                                   PrivateFrame = YesNoFrame : mgiOption;
@@ -9551,7 +9562,7 @@ Shift<Key>Tab: prev-tab-group()
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     leftOffset = 20;
-                                    leftWidget = strainSpecies;
+                                    leftWidget = strainTypes;
                                       {
                                         PrivateMenu : YesNoMenu = XmOptionMenu;
                                         Group: Widget
@@ -9719,6 +9730,7 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblVisibleRows = 3;
                                           xrtTblPixelWidthSeries = "(all 0-3 0)(all 8-9 0)";
                                           xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 20)(all 5 50)(all 6 10)(all 7 30)(all 8 12)(all 9 10)";
+                                          xrtTblColumnLabels = "Mode,Key,Type key,Ref key,Type,Alternative Name,J#,Citation,Modified By,Date";
                                         Group: User
                                           requiredColumns = 5;
                                       }
@@ -10442,7 +10454,7 @@ Shift<Key>Tab: prev-tab-group()
                                         List = list : mgiDataTypes;
                                         Group: User
                                           targetKey = ObjectID;
-                                          targetText = StrainType;
+                                          targetText = "Strain Name Type";
                                           targetWidget = strainTypes;
                                       }
                                 }

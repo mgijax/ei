@@ -2,7 +2,7 @@ Module: mgiDataTypes
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Fri Nov 21 08:33:24 2014";
+      lastWritten = "Mon Aug 10 14:33:56 2015";
         {
           toggle = XmToggleButton;
           Group: Widget
@@ -1077,7 +1077,7 @@ Shift<Key>Tab: prev-tab-group()
                     {
                       label = XmLabel;
                       Group: Widget
-                        labelString = "Strain Type";
+                        labelString = "Strain Name Type";
                     }
                     {
                       text = text : mgiDataTypes;

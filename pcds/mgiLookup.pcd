@@ -611,9 +611,9 @@ Module: mgiLookup
               {
                 Label = LookupLabel;
                 Group: Widget
-                  labelString = "Strain Types";
+                  labelString = "Strain Name Types";
                 Group: User
-                  defaultLabel = "Strain Types";
+                  defaultLabel = "Strain Name Types";
               }
               {
                 List = list : mgiDataTypes;
