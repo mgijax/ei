@@ -26,101 +26,101 @@ pcds
     show_names  = false
     height      = 209
 
-  load "/usr/local/mgi/lec/ei/pcds/MGI.pcd"
+  load "/home/lec/mgi/ei/pcds/MGI.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 561
 
-  load "/usr/local/mgi/lec/ei/pcds/GXD.pcd"
+  load "/home/lec/mgi/ei/pcds/GXD.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 396
 
-  load "/usr/local/mgi/lec/ei/pcds/MGD.pcd"
+  load "/home/lec/mgi/ei/pcds/MGD.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 836
 
-  load "/usr/local/mgi/lec/ei/pcds/mgiDialog.pcd"
+  load "/home/lec/mgi/ei/pcds/mgiDialog.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 561
     vsb_pos     = 1430
 
-  load "/usr/local/mgi/lec/ei/pcds/mgiLookup.pcd"
+  load "/home/lec/mgi/ei/pcds/mgiLookup.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 231
     vsb_pos     = 608
 
-  load "/usr/local/mgi/lec/ei/pcds/mgiOption.pcd"
+  load "/home/lec/mgi/ei/pcds/mgiOption.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 3861
 
-  load "/usr/local/mgi/lec/ei/pcds/mgiControl.pcd"
+  load "/home/lec/mgi/ei/pcds/mgiControl.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 121
 
-  load "/usr/local/mgi/lec/ei/pcds/mgiMenu.pcd"
+  load "/home/lec/mgi/ei/pcds/mgiMenu.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 396
 
-  load "/usr/local/mgi/lec/ei/pcds/mgiTable.pcd"
+  load "/home/lec/mgi/ei/pcds/mgiTable.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 176
     vsb_pos     = 74
 
-  load "/usr/local/mgi/lec/ei/pcds/mgiDataTypes.pcd"
+  load "/home/lec/mgi/ei/pcds/mgiDataTypes.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 1166
 
-  load "/usr/local/mgi/lec/ei/pcds/mgiAnatDictionary.pcd"
+  load "/home/lec/mgi/ei/pcds/mgiAnatDictionary.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 671
 
-  load "/usr/local/mgi/lec/ei/pcds/MGIAdmin.pcd"
+  load "/home/lec/mgi/ei/pcds/MGIAdmin.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 66
     vsb_pos     = 55
 
-  load "/usr/local/mgi/lec/ei/pcds/MGINomen.pcd"
+  load "/home/lec/mgi/ei/pcds/MGINomen.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 120
 
-  load "/usr/local/mgi/lec/ei/pcds/MGIMenu.pcd"
+  load "/home/lec/mgi/ei/pcds/MGIMenu.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 120
 
-  load "/usr/local/mgi/lec/ei/pcds/mgiCV.pcd"
+  load "/home/lec/mgi/ei/pcds/mgiCV.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 231
 
-  load "/usr/local/mgi/lec/ei/pcds/mgiNoteBook.pcd"
+  load "/home/lec/mgi/ei/pcds/mgiNoteBook.pcd"
     floating    = false
     opened      = false
     show_names  = false
