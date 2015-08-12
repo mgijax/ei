@@ -1312,16 +1312,12 @@ rules:
 	    newKey := mgi_tblGetCell(table, row, table.mutationKey);
 
 	    if (editMode = TBL_ROW_ADD) then
-	      cmd := cmd + mgi_DBinsert(ALL_ALLELE_MUTATION, NOKEY) + 
-		     currentRecordKey + "," + newKey + END_VALUE;
+	      cmd := cmd + mgi_DBinsert(ALL_ALLELE_MUTATION, NOKEY) + currentRecordKey + "," + newKey + END_VALUE;
 	    elsif (editMode = TBL_ROW_MODIFY) then
 	      set := "_Mutation_key = " + newKey;
-	      cmd := cmd + 
-		     mgi_DBupdate(ALL_ALLELE_MUTATION, currentRecordKey, set) + 
-		     "and _Mutation_key = " + key + "\n";
+	      cmd := cmd + mgi_DBupdate(ALL_ALLELE_MUTATION, currentRecordKey + " and _Mutation_key = " + key, set);
 	    elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
-	      cmd := cmd + mgi_DBdelete(ALL_ALLELE_MUTATION, currentRecordKey) + 
-		     "and _Mutation_key = " + key + "\n";
+	      cmd := cmd + mgi_DBdelete(ALL_ALLELE_MUTATION, currentRecordKey + " and _Mutation_key = " + key);
 	    end if;
  
 	    if (mgi_tblGetCell(table, row, table.mutation) = OTHERNOTES) then
