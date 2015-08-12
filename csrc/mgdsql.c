@@ -1507,9 +1507,9 @@ char *ref_gxd_exists(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select count(*) from GXD_Index where _Refs_key = %s \
-   \nunion \
-   \nselect count(*) from GXD_Assay where _Refs_key = %s", key, key);
+  sprintf(buf,"select count(*) from BIB_Refs where \
+   \nexists (select 1 from GXD_Index where _Refs_key = %s ) \
+   \nor exists (select 1 from GXD_Assay where _Refs_key = %s )", key, key);
   return(buf);
 }
 

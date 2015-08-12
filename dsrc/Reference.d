@@ -1209,6 +1209,8 @@ rules:
 
 	    -- has this reference been used?
 
+	    cmd := "";
+
 	    if (mgi_tblGetCell(statusTable, row, statusTable.existsProc) != "") then
 	      if (mgi_tblGetCell(statusTable, row, statusTable.existsProc) = "BIB_GO_Exists") then
 	        cmd := ref_go_exists(currentRecordKey);
@@ -1226,6 +1228,8 @@ rules:
 	        cmd := ref_mrk_exists(currentRecordKey);
 	      elsif (mgi_tblGetCell(statusTable, row, statusTable.existsProc) = "BIB_QTL_Exists") then
 	        cmd := ref_qtl_exists(currentRecordKey);
+	      else
+	      	(void) mgi_tblSetCell(statusTable, row, statusTable.notUsed, "");
 	      end if;
 
 	      if (mgi_sql1(cmd) != NO) then
