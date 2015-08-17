@@ -1,5 +1,12 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-6-0-0-7
+DATE: 08/17/2015
+STAFF: lec
+CHANGES:
+1) TR11853/Strain Name Type
+2) Allele/Modify/remove printWarning
+
 TAG: ei-6-0-0-6
 TAG: ei-6-0-0-5
 TAG: ei-6-0-0-4

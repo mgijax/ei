@@ -10454,7 +10454,7 @@ Shift<Key>Tab: prev-tab-group()
                                         List = list : mgiDataTypes;
                                         Group: User
                                           targetKey = ObjectID;
-                                          targetText = "Strain Name Type";
+                                          targetText = "StrainType";
                                           targetWidget = strainTypes;
                                       }
                                 }

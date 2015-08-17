@@ -1133,7 +1133,6 @@ rules:
 	  set : string := "";
 	  keyName : string := "mrkassocKey";
 	  keyDefined : boolean := false;
-	  printWarning : boolean := false;
  
 	  -- if the marker symbol is blank, print a warning
 	  editMode := mgi_tblGetCell(table, 0, table.editMode);
@@ -1210,17 +1209,10 @@ rules:
 
 	    elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
 	      cmd := cmd + mgi_DBdelete(ALL_MARKER_ASSOC, key);
-	      printWarning := true;
 	    end if;
 
 	    row := row + 1;
 	  end while;
-
-	  if (printWarning) then
-            StatusReport.source_widget := top.root;
-            StatusReport.message := "A Marker has been deleted.\nPlease verify the Allele Symbol.";
-            send(StatusReport);
-          end if;
 
 	end does;
  
