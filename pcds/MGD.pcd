@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Mon Aug 10 14:34:39 2015";
+      lastWritten = "Thu Aug 20 07:28:35 2015";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -7780,24 +7780,25 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         Table = mgiTable;
                                         Group: Widget
-                                          xrtTblColumnLabels = "Mode,Assoc Key,Marker Key,Refs Key,Status Key,Marker,J#,Citation,Modified By,Date,Status";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-4 10)(all 5 15)(all 6 10)(all 7 50)(all 8 12)(all 9 10)(all 10 20)";
+                                          xrtTblColumnLabels = "Mode,Marker Key,Refs Key,Status Key,Marker,J#,Citation,Status";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 15)(all 5 10)(all 6 50)(all 7 20)";
                                           xrtTblVisibleRows = 1;
                                           xrtTblNumRows = 1;
-                                          xrtTblEditableSeries = "(all 0-4 False)";
-                                          xrtTblNumColumns = 11;
-                                          xrtTblMaxLengthSeries = "(all 7 255)";
-                                          xrtTblPixelWidthSeries = "(all 0-4 0)";
-                                          xrtTblTraversableSeries = "(all 0-4 False)";
+                                          xrtTblEditableSeries = "(all 0-3 False)";
+                                          xrtTblNumColumns = 8;
+                                          xrtTblMaxLengthSeries = "(all 6 255)";
+                                          xrtTblPixelWidthSeries = "(all 0-3 0)";
+                                          xrtTblTraversableSeries = "(all 0-3 False)";
                                           userDefinedAttributes = "markerKey:Int(Int)=\"2\"\nmarkerSymbol:Int(Int)=\"4\"\nmodifiedBy:Int(Int)=\"7\"\nmodifiedDate:Int(Int)=\"8\"\nassocKey:Int(Int)=\"1\"\nmarkerColumns:Int(Int)=\"1\"\nstatusKey:Int(Int)=\"4\"\nstatus:Int(Int)=\"10\"\n";
                                           xrtTblValidateCellCallback = "D:VerifyMarker(allowNomen = true),\nD:VerifyReference,\nD:CommitTableCellEdit";
                                         Group: User
-                                          citation = 7;
-                                          jnum = 6;
-                                          refsKey = 3;
-                                          modifiedDate = 9;
-                                          modifiedBy = 8;
-                                          markerSymbol = 5;
+                                          citation = 6;
+                                          jnum = 5;
+                                          markerSymbol = 4;
+                                          refsKey = 2;
+                                          status = 7;
+                                          markerKey = 1;
+                                          statusKey = 3;
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;
@@ -7806,6 +7807,8 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         DeleteRow = TablePush : mgiTable;
+                                        Group: Widget
+                                          managed = False;
                                         Group: Constraint
                                           leftAttachment = attach_opposite_widget;
                                           leftWidget = Table;
@@ -10454,7 +10457,7 @@ Shift<Key>Tab: prev-tab-group()
                                         List = list : mgiDataTypes;
                                         Group: User
                                           targetKey = ObjectID;
-                                          targetText = "StrainType";
+                                          targetText = StrainType;
                                           targetWidget = strainTypes;
                                       }
                                 }

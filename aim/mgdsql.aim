@@ -19,7 +19,6 @@ CALLS
 	 allele_defcollectionNS()			: "char *";
 	 allele_select("char *")			: "char *";
 	 allele_derivation("char *", "char *", "char *", "char *", "char *", "char *") : "char *";
-	 allele_markerassoc("char *")			: "char *";
 	 allele_mutation("char *")			: "char *";
 	 allele_notes("char *")				: "char *";
 	 allele_images("char *", "char *")		: "char *";

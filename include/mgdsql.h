@@ -23,7 +23,6 @@ extern char *allele_definheritanceNS();
 extern char *allele_defcollectionNS();
 extern char *allele_select(char *);
 extern char *allele_derivation(char *, char *, char *, char *, char *, char *);
-extern char *allele_markerassoc(char *);
 extern char *allele_mutation(char *);
 extern char *allele_notes(char *);
 extern char *allele_images(char *, char *);

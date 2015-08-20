@@ -566,7 +566,6 @@ char *mgi_DBkey(int table)
     case ALL_ALLELE_CELLLINE_VIEW:
     case ALL_ALLELE_SUBTYPE_VIEW:
     case ALL_MUTATION_VIEW:
-    case ALL_MARKER_ASSOC_VIEW:
     case SEQ_ALLELE_ASSOC_VIEW:
             strcpy(buf, "_Allele_key");
 	    break;
@@ -580,7 +579,6 @@ char *mgi_DBkey(int table)
             strcpy(buf, "_Derivation_key");
 	    break;
     case ALL_ALLELE_CELLLINE:
-    case ALL_MARKER_ASSOC:
     case SEQ_ALLELE_ASSOC:
             strcpy(buf, "_Assoc_key");
 	    break;
@@ -1195,12 +1193,6 @@ char *mgi_DBtable(int table)
 	    break;
     case ALL_MUTATION_VIEW:
             strcpy(buf, "ALL_Allele_Mutation_View");
-	    break;
-    case ALL_MARKER_ASSOC:
-            strcpy(buf, "ALL_Marker_Assoc");
-	    break;
-    case ALL_MARKER_ASSOC_VIEW:
-            strcpy(buf, "ALL_Marker_Assoc_View");
 	    break;
     case SEQ_ALLELE_ASSOC_VIEW:
             strcpy(buf, "SEQ_Allele_Assoc_View");
@@ -1846,7 +1838,6 @@ char *mgi_DBinsert(int table, char *keyName)
     case ALL_ALLELE_CELLLINE:
     case ALL_ALLELE_MUTATION:
     case ALL_CELLLINE:
-    case ALL_MARKER_ASSOC:
     case BIB_BOOKS:
     case BIB_NOTES:
     case BIB_DATASET_ASSOC:
@@ -1936,10 +1927,7 @@ char *mgi_DBinsert(int table, char *keyName)
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case ALL_ALLELE:
-            sprintf(buf, "insert into %s (%s, _Marker_key, _Strain_key, _Mode_key, _Allele_Type_key, _Allele_Status_key, _Transmission_key, _Collection_key, symbol, name, nomenSymbol, isWildType, isExtinct, isMixed, _CreatedBy_key, _ModifiedBy_key, _ApprovedBy_key, approval_date)", mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case ALL_MARKER_ASSOC:
-            sprintf(buf, "insert into %s (%s, _Allele_key, _Marker_key, _Qualifier_key, _Refs_key, _Status_key, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
+            sprintf(buf, "insert into %s (%s, _Marker_key, _Strain_key, _Mode_key, _Allele_Type_key, _Allele_Status_key, _Transmission_key, _Collection_key, symbol, name, nomenSymbol, isWildType, isExtinct, isMixed, _Refs_key, _MarkerAllele_Status_key, _CreatedBy_key, _ModifiedBy_key, _ApprovedBy_key, approval_date)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case ALL_ALLELE_MUTATION:
             sprintf(buf, "insert into %s (%s, _Mutation_key)", mgi_DBtable(table), mgi_DBkey(table));
@@ -2383,7 +2371,6 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case ALL_ALLELE_CELLLINE:
       case ALL_CELLLINE:
       case ALL_CELLLINE_NONMUTANT:
-      case ALL_MARKER_ASSOC:
       case BIB_DATASET_ASSOC:
       case BIB_REFS:
       case GO_TRACKING:
@@ -2450,7 +2437,6 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case ALL_ALLELE_CELLLINE:
       case ALL_CELLLINE:
       case ALL_CELLLINE_NONMUTANT:
-      case ALL_MARKER_ASSOC:
       case BIB_REFS:
       case BIB_DATASET_ASSOC:
       case GO_TRACKING:

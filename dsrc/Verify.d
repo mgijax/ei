@@ -2326,6 +2326,10 @@ rules:
 	    return;
 	  end if;
 
+	  if (value = "%") then
+	    return;
+          end if;
+
 	  (void) busy_cursor(top);
 
 	  key : string;

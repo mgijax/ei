@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Wed Mar 25 09:21:03 2015";
+      lastWritten = "Thu Aug 20 06:57:39 2015";
       copy = false;
       inCreateMenu = true;
         {
@@ -3249,8 +3249,8 @@ Module: mgiOption
                 Group: User
                   sql = "select _Term_key, term from VOC_Term where _Vocab_key = 73 order by term";
                   tableForm = Marker;
-                  tableOptionKey = 4;
-                  tableOption = 10;
+                  tableOptionKey = 3;
+                  tableOption = 7;
                     {
                       SearhAllNoShow = SearhAllNoShow : mgiOption;
                     }

@@ -4,7 +4,7 @@
 --
 -- TopLevelShell:		Allele
 -- Database Tables Affected:	ALL_Allele, ALL_Allele_Mutation, 
---				ALL_Allele_CellLine, ALL_Marker_Assoc
+--				ALL_Allele_CellLine
 --				MGI_Note, MGI_Synonym, MGI_Reference_Assoc
 -- Actions Allowed:		Add, Modify, Delete
 --
@@ -119,7 +119,6 @@ devents:
 	ModifyAlleleNotes :local [];
 	ModifyAlleleSubType :local [];
 	ModifyImagePaneAssociation :local [];
-	ModifyMarkerAssoc :local [];
 	ModifyMolecularMutation :local [];
 	ModifyMutantCellLine :local [];
 
@@ -418,6 +417,7 @@ rules:
 	  markerKey : string := mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
 
 	  statusKey : string;
+	  markerstatusKey : string;
 	  inheritanceKey : string;
 	  collectionKey : string;
 	  strainKey : string;
@@ -578,6 +578,25 @@ rules:
 	      end if;
 	  end if;
 
+	  -- there is only one nomen symbol per allele...
+	  -- if the marker key is NULL, then this is a nomen symbol
+
+	  markerKey := mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
+	  if (markerKey = "-1" or markerKey = "" or markerKey = "NULL") then
+	    markerKey := "NULL";
+	    nomenSymbol := mgi_tblGetCell(markerTable, 0, markerTable.markerSymbol);
+          end if;
+
+	  refsKey := mgi_tblGetCell(markerTable, 0, markerTable.refsKey);
+	  if (refsKey.length = 0) then
+	    refsKey := "NULL";
+	  end if;
+
+	  markerstatusKey := mgi_tblGetCell(markerTable, 0, markerTable.statusKey);
+	  if (markerstatusKey.length = 0) then
+	    markerstatusKey := defaultStatus2Key;
+	  end if;
+
           cmd := mgi_setDBkey(ALL_ALLELE, NEWKEY, KEYNAME) +
                  mgi_DBinsert(ALL_ALLELE, KEYNAME) +
 		 markerKey + "," +
@@ -593,11 +612,12 @@ rules:
 		 (string) isWildType + "," +
 		 top->ExtinctMenu.menuHistory.defaultValue + "," +
 		 (string) isMixed + "," +
+		 refsKey + "," +
+		 markerstatusKey + "," +
 		 global_userKey + "," +
 		 global_userKey + "," +
 		 approvalLoginDate;
 
-	  send(ModifyMarkerAssoc, 0);
 	  send(ModifyAlleleSubType, 0);
 	  send(ModifyMolecularMutation, 0);
 	  send(ModifyImagePaneAssociation, 0);
@@ -723,11 +743,13 @@ rules:
 	  primaryPane : integer := 0;
 	  row : integer := 0;
 	  markerKey : string := mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
+	  nomenSymbol : string := "NULL";
 
 	  refsKey : string;
 	  refsType : string;
 	  originalRefs : integer := 0;
 	  transRefs : integer := 0;
+	  markerstatusKey : string;
 
 	  modifyCache := false;
 	  --modifyCacheCre := false;
@@ -948,12 +970,37 @@ rules:
 	    set := set + "isWildType = " + (string) isWildType + ",";
 	  end if;
 
-	  send(ModifyMarkerAssoc, 0);
+	  -- Marker
+
+	  editMode := mgi_tblGetCell(markerTable, 0, markerTable.editMode);
+	  if (editMode = TBL_ROW_MODIFY) then
+
+	    -- have already done this
+	    --markerKey := mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
+	    if (markerKey = "-1" or markerKey = "" or markerKey = "NULL") then
+	      markerKey := "NULL";
+	      nomenSymbol := mgi_tblGetCell(markerTable, 0, markerTable.markerSymbol);
+            end if;
+
+	    refsKey := mgi_tblGetCell(markerTable, 0, markerTable.refsKey);
+	    if (refsKey.length = 0) then
+	      refsKey := "NULL";
+	    end if;
+
+	    markerstatusKey := mgi_tblGetCell(markerTable, 0, markerTable.statusKey);
+	    if (markerstatusKey.length = 0) then
+	      markerstatusKey := defaultStatus2Key;
+	    end if;
+
+	    set := set + "_Marker_key = " + markerKey + ",";
+	    set := set + "_Refs_key = " + refsKey + ",";
+	    set := set + "_MarkerAllele_Status_key = " + markerstatusKey + ",";
+	  end if;
+
 	  send(ModifyAlleleSubType, 0);
 	  send(ModifyMolecularMutation, 0);
 	  send(ModifyImagePaneAssociation, 0);
 	  send(ModifyAlleleNotes, 0);
-
 	  send(ModifyMutantCellLine, 0);
 
 	  if (not top.allowEdit) then
@@ -1110,112 +1157,6 @@ rules:
 
 	end does;
 
---
--- ModifyMarkerAssoc
---
--- Activated from: devent Add/Modify
---
--- Construct insert/update/delete for Marker Association
--- Appends to global "cmd" string
---
- 
-	ModifyMarkerAssoc does
-	  table : widget := markerTable;
-	  row : integer := 0;
-	  editMode : string;
-	  key : string;
-	  markerSymbol : string;
-	  markerKey : string;
-	  refsKey : string;
-	  nomenSymbol : string;
-	  qualifierKey : string;
-	  statusKey : string;
-	  set : string := "";
-	  keyName : string := "mrkassocKey";
-	  keyDefined : boolean := false;
- 
-	  -- if the marker symbol is blank, print a warning
-	  editMode := mgi_tblGetCell(table, 0, table.editMode);
-	  markerSymbol := mgi_tblGetCell(table, 0, table.markerSymbol);
-
-	  if (editMode != TBL_ROW_DELETE and (markerSymbol = "" or markerSymbol = "NULL")) then
-            StatusReport.source_widget := top.root;
-            StatusReport.message := "There is no Marker association for this Allele.";
-            send(StatusReport);
-	    return;
-	  end if;
-
-	  -- there is only one nomen symbol per allele...
-	  -- if the marker key is NULL, then this is a nomen symbol and we are done
-
-	  markerKey := mgi_tblGetCell(table, 0, table.markerKey);
-	  if (markerKey = "-1" or markerKey = "" or markerKey = "NULL") then
-	    markerKey := "NULL";
-	    nomenSymbol := mgi_tblGetCell(table, 0, table.markerSymbol);
-	    set := "_Marker_key = NULL, nomenSymbol = " + mgi_DBprstr(nomenSymbol);
-	    cmd := cmd + mgi_DBupdate(ALL_ALLELE, currentRecordKey, set);
-	    return;
-          end if;
-
-	  -- Process while non-empty rows are found
- 
-	  while (row < mgi_tblNumRows(table)) do
-	    editMode := mgi_tblGetCell(table, row, table.editMode);
-
-	    if (editMode = TBL_ROW_EMPTY) then
-	      break;
-	    end if;
- 
-	    key := mgi_tblGetCell(table, row, table.assocKey);
-	    markerKey := mgi_tblGetCell(table, row, table.markerKey);
-	    refsKey := mgi_tblGetCell(table, row, table.refsKey);
-	    statusKey := mgi_tblGetCell(table, row, table.statusKey);
-	    qualifierKey := defaultQualifierKey;
-
-	    if (markerKey.length = 0) then
-	      markerKey := "NULL";
-	    end if;
-
-	    if (refsKey.length = 0) then
-	      refsKey := "NULL";
-	    end if;
-
-	    if (statusKey.length = 0) then
-	      statusKey := defaultStatus2Key;
-	    end if;
-
-	    if (editMode = TBL_ROW_ADD) then
-
-	      if (not keyDefined) then
-		cmd := cmd + mgi_setDBkey(ALL_MARKER_ASSOC, NEWKEY, keyName);
-		keyDefined := true;
-	      else
-		cmd := cmd + mgi_DBincKey(keyName);
-	      end if;
-
-	      cmd := cmd + mgi_DBinsert(ALL_MARKER_ASSOC, keyName) +
-		     currentRecordKey + "," +
-		     markerKey + "," +
-		     qualifierKey + "," +
-		     refsKey + "," +
-		     statusKey + "," +
-		     global_userKey + "," + global_userKey + END_VALUE;
-
-	    elsif (editMode = TBL_ROW_MODIFY) then
-	      set := "_Marker_key = " + markerKey +
-	             ",_Refs_key = " + refsKey +
-	             ",_Status_key = " + statusKey;
-	      cmd := cmd + mgi_DBupdate(ALL_MARKER_ASSOC, key, set);
-
-	    elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
-	      cmd := cmd + mgi_DBdelete(ALL_MARKER_ASSOC, key);
-	    end if;
-
-	    row := row + 1;
-	  end while;
-
-	end does;
- 
 --
 -- ModifyAlleleSubType
 --
@@ -1705,7 +1646,6 @@ rules:
 --
 
 	PrepareSearch does
-	  from_marker     : boolean := false;
 	  from_mutation   : boolean := false;
 	  from_notes      : boolean := false;
 	  from_cellline   : boolean := false;
@@ -1821,47 +1761,33 @@ rules:
             where := where + "\nand a.isExtinct = " + top->ExtinctMenu.menuHistory.searchValue;
           end if;
 
-	  -- Marker Assoc
-	  -- if a marker symbol contains "%", then search by both marker symbol and nomen symbol
+	  -- Marker
 
 	  value := mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
 	  if (value.length > 0 and value != "NULL" and value != "-1") then
-	    where := where + "\nand ma._Marker_key = " + mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
-	    from_marker := true;
+	    where := where + "\nand a._Marker_key = " + mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
 	  elsif (mgi_tblGetCell(markerTable, 0, markerTable.markerSymbol).length > 0) then
-	    where := where + "\nand ma.symbol like " + mgi_DBprstr(mgi_tblGetCell(markerTable, 0, markerTable.markerSymbol));
+	    where := where + "\nand a.markerSymbol like " + mgi_DBprstr(mgi_tblGetCell(markerTable, 0, markerTable.markerSymbol));
 	    union := allele_unionnomen(mgi_DBprstr(mgi_tblGetCell(markerTable, 0, markerTable.markerSymbol)));
-	    from_marker := true;
 	  end if;
 
 	  value := mgi_tblGetCell(markerTable, 0, markerTable.refsKey);
           if (value.length > 0 and value != "NULL") then
-	    where := where + " and ma._Refs_key = " + value;
-	    from_marker := true;
+	    where := where + "\nand a._Refs_key = " + value;
 	  else
-            value := mgi_tblGetCell(markerTable, 0, markerTable.jnum + 1);
+            value := mgi_tblGetCell(markerTable, 0, markerTable.jnum);
             if (value.length > 0) then
-	      where := where + "\nand ma.short_citation like " + mgi_DBprstr(value);
-	      from_marker := true;
+	      where := where + "\nand a.jnumID like " + mgi_DBprstr(value);
+	    end if;
+            value := mgi_tblGetCell(markerTable, 0, markerTable.citation);
+            if (value.length > 0) then
+	      where := where + "\nand a.citation like " + mgi_DBprstr(value);
 	    end if;
 	  end if;
 
-          value := mgi_tblGetCell(markerTable, 0, markerTable.modifiedBy);
-          if (value.length > 0) then
-            where := where + "\nand ma.modifiedBy like " + mgi_DBprstr(value);
-            from_marker := true;
-          end if;
-
 	  value := mgi_tblGetCell(markerTable, 0, markerTable.statusKey);
 	  if (value.length > 0 and value != "NULL") then
-	    where := where + "\nand ma._Status_key = " + value;
-            from_marker := true;
-	  else
-	    value := mgi_tblGetCell(markerTable, 0, markerTable.status);
-	    if (value.length > 0) then
-	      where := where + "\nand ma.status like " + mgi_DBprstr(value);
-              from_marker := true;
-	    end if;
+	    where := where + "\nand a._MarkerAllele_Status_key = " + value;
 	  end if;
 
 	  -- Allele SubType
@@ -1895,7 +1821,6 @@ rules:
           if (top->markerDescription->Note->text.value.length > 0) then
             where := where + "\nand mn.note like " + mgi_DBprstr(top->markerDescription->Note->text.value);
             from_notes := true;
-	    from_marker := true;
           end if;
       
 	  -- Mutant Cell Line
@@ -1966,11 +1891,6 @@ rules:
 	  end if;
 
 	  -- get the additional tables using the "from" values
-
-	  if (from_marker) then
-	    from := from + "," + mgi_DBtable(ALL_MARKER_ASSOC_VIEW) + " ma";
-	    where := where + "\nand a." + mgi_DBkey(ALL_ALLELE) + " = ma." + mgi_DBkey(ALL_ALLELE);
-	  end if;
 
 	  if (from_subtype) then
 	    from := from + "," + mgi_DBtable(ALL_ALLELE_SUBTYPE_VIEW) + " st";
@@ -2097,13 +2017,13 @@ rules:
 	      top->Name->text.value         := mgi_getstr(dbproc, 10);
 	      origAlleleSymbol := top->Symbol->text.value;
 
-	      (void) mgi_tblSetCell(table, table.approvedBy, table.byDate, mgi_getstr(dbproc, 18));
-	      (void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 19));
-	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 20));
+	      (void) mgi_tblSetCell(table, table.approvedBy, table.byDate, mgi_getstr(dbproc, 20));
+	      (void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 21));
+	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 22));
 
-	      (void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 26));
-	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 27));
-	      (void) mgi_tblSetCell(table, table.approvedBy, table.byUser, mgi_getstr(dbproc, 28));
+	      (void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 28));
+	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 29));
+	      (void) mgi_tblSetCell(table, table.approvedBy, table.byUser, mgi_getstr(dbproc, 30));
 
 	      -- If the Marker key is null, then use the Nomen Symbol field
 	      if (mgi_getstr(dbproc, 2) = "") then
@@ -2113,7 +2033,7 @@ rules:
 
 	      -- Strain of Origin
 	      top->StrainOfOrigin->StrainID->text.value := mgi_getstr(dbproc, 3);
-	      top->StrainOfOrigin->Verify->text.value := mgi_getstr(dbproc, 24);
+	      top->StrainOfOrigin->Verify->text.value := mgi_getstr(dbproc, 26);
 
               SetOption.source_widget := top->InheritanceModeMenu;
               SetOption.value := mgi_getstr(dbproc, 4);
@@ -2151,27 +2071,15 @@ rules:
 	      top->mgiParentCellLine->Derivation->ObjectID->text.value := "";
 	      top->mgiParentCellLine->Derivation->CharText->text.value := "";
 
-	      row := row + 1;
-	    end while;
-	  end while;
-	  (void) mgi_dbclose(dbproc);
-
-	  row := 0;
-	  cmd := allele_markerassoc(currentRecordKey);
-	  dbproc := mgi_dbexec(cmd);
-	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      (void) mgi_tblSetCell(markerTable, row, markerTable.assocKey, mgi_getstr(dbproc, 1));
 	      (void) mgi_tblSetCell(markerTable, row, markerTable.markerKey, mgi_getstr(dbproc, 2));
-	      (void) mgi_tblSetCell(markerTable, row, markerTable.markerSymbol, mgi_getstr(dbproc, 3));
-	      (void) mgi_tblSetCell(markerTable, row, markerTable.refsKey, mgi_getstr(dbproc, 4));
-	      (void) mgi_tblSetCell(markerTable, row, markerTable.jnum, mgi_getstr(dbproc, 5));
-	      (void) mgi_tblSetCell(markerTable, row, markerTable.citation, mgi_getstr(dbproc, 6));
-	      (void) mgi_tblSetCell(markerTable, row, markerTable.statusKey, mgi_getstr(dbproc, 7));
-	      (void) mgi_tblSetCell(markerTable, row, markerTable.status, mgi_getstr(dbproc, 8));
-	      (void) mgi_tblSetCell(markerTable, row, markerTable.modifiedBy, mgi_getstr(dbproc, 9));
-	      (void) mgi_tblSetCell(markerTable, row, markerTable.modifiedDate, mgi_getstr(dbproc, 10));
+	      (void) mgi_tblSetCell(markerTable, row, markerTable.markerSymbol, mgi_getstr(dbproc, 23));
+	      (void) mgi_tblSetCell(markerTable, row, markerTable.refsKey, mgi_getstr(dbproc, 15));
+	      (void) mgi_tblSetCell(markerTable, row, markerTable.jnum, mgi_getstr(dbproc, 32));
+	      (void) mgi_tblSetCell(markerTable, row, markerTable.citation, mgi_getstr(dbproc, 34));
+	      (void) mgi_tblSetCell(markerTable, row, markerTable.statusKey, mgi_getstr(dbproc, 16));
+	      (void) mgi_tblSetCell(markerTable, row, markerTable.status, mgi_getstr(dbproc, 31));
 	      (void) mgi_tblSetCell(markerTable, row, markerTable.editMode, TBL_ROW_NOCHG);
+
 	      row := row + 1;
 	    end while;
 	  end while;

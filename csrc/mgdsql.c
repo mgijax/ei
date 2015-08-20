@@ -97,16 +97,6 @@ char *allele_derivation(
   return(buf);
 }
 
-char *allele_markerassoc(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _Assoc_key, _Marker_key, symbol, _Refs_key, \
-   \njnum, short_citation, _Status_key, status, modifiedBy, modification_date \
-   \nfrom ALL_Marker_Assoc_View where _Allele_key = %s", key);
-  return(buf);
-}
-
 char *allele_mutation(char *key)
 {
   static char buf[TEXTBUFSIZ];
