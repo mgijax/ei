@@ -1,5 +1,11 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-6-0-0-?
+DATE: 08/20/2015
+STAFF: lec
+CHANGES:
+1) TR12020/all_marker_assoc obsolete
+
 TAG: ei-6-0-0-7
 DATE: 08/17/2015
 STAFF: lec
