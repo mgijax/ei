@@ -72,7 +72,7 @@ setenv EINLMDIR ${EIDATADIR}/nlm
 # TeleUSE/XRT stuff
 setenv TeleUSE /opt/teleuseXRT
 setenv XRTHOME $TeleUSE/XRT
-setenv PATH ${PATH}:${TeleUSE}/bin
+setenv PATH /usr/local/bin:${PATH}:${TeleUSE}/bin
 
 # check for existance of POSTGRES_HOME
 

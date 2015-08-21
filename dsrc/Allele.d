@@ -1039,13 +1039,16 @@ rules:
           send(ProcessAcc, 0);
           cmd := cmd + seqTable.sqlCmd;
 
-	  if ((cmd.length > 0 
-	       and cmd != accTable.sqlCmd 
-	       and cmd != top->mgiNoteForm.sql
-	       and cmd != top->mgiNoteDriverForm.sql) or
-	      set.length > 0) then
+	  if (cmd.length > 0) then
 	    cmd := cmd + mgi_DBupdate(ALL_ALLELE, currentRecordKey, set);
 	  end if;
+	  --if ((cmd.length > 0 
+	       --and cmd != accTable.sqlCmd 
+	       --and cmd != top->mgiNoteForm.sql
+	       --and cmd != top->mgiNoteDriverForm.sql) or
+	      --set.length > 0) then
+	    --cmd := cmd + mgi_DBupdate(ALL_ALLELE, currentRecordKey, set);
+	  --end if;
 
 	  top->WorkingDialog.messageString := "Modifying Allele....";
 	  top->WorkingDialog.managed := true;
