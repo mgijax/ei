@@ -2,7 +2,7 @@ Module: mgiDataTypes
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Mon Aug 10 14:33:56 2015";
+      lastWritten = "Fri Aug 21 10:11:02 2015";
         {
           toggle = XmToggleButton;
           Group: Widget
@@ -537,8 +537,8 @@ Shift<Key>Tab: prev-tab-group()
                           {
                             Table = mgiTable;
                             Group: Widget
-                              xrtTblVisibleRows = 7;
-                              xrtTblNumRows = 8;
+                              xrtTblVisibleRows = 8;
+                              xrtTblNumRows = 9;
                           }
                     }
                     {

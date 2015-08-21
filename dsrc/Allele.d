@@ -975,8 +975,7 @@ rules:
 	  editMode := mgi_tblGetCell(markerTable, 0, markerTable.editMode);
 	  if (editMode = TBL_ROW_MODIFY) then
 
-	    -- have already done this
-	    --markerKey := mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
+	    markerKey := mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
 	    if (markerKey = "-1" or markerKey = "" or markerKey = "NULL") then
 	      markerKey := "NULL";
 	      nomenSymbol := mgi_tblGetCell(markerTable, 0, markerTable.markerSymbol);

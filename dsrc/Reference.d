@@ -1230,13 +1230,14 @@ rules:
 	        cmd := ref_qtl_exists(currentRecordKey);
 	      end if;
 
-	      if (mgi_sql1(cmd) != NO) then
-	         (void) mgi_tblSetCell(statusTable, row, statusTable.used, "X");
-	      else
-		 if (mgi_tblGetCell(statusTable, row, statusTable.neverUsed) = "") then
-	            (void) mgi_tblSetCell(statusTable, row, statusTable.notUsed, "X");
-		 end if;
+	      if (cmd.length = 0) then
+	        (void) mgi_tblSetCell(statusTable, row, statusTable.notUsed, "X");
+	      elsif (mgi_sql1(cmd) != NO) then
+	        (void) mgi_tblSetCell(statusTable, row, statusTable.used, "X");
+	      elsif (mgi_tblGetCell(statusTable, row, statusTable.neverUsed) = "") then
+	        (void) mgi_tblSetCell(statusTable, row, statusTable.notUsed, "X");
 	      end if;
+
 	    end if;
 	    row := row + 1;
 	  end while;
