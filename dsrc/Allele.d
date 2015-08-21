@@ -1038,7 +1038,7 @@ rules:
           send(ProcessAcc, 0);
           cmd := cmd + seqTable.sqlCmd;
 
-	  if (cmd.length > 0) then
+	  if (cmd.length > 0 or set.length > 0) then
 	    cmd := cmd + mgi_DBupdate(ALL_ALLELE, currentRecordKey, set);
 	  end if;
 	  --if ((cmd.length > 0 
