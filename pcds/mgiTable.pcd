@@ -2,7 +2,7 @@ Module: mgiTable
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Wed Apr  9 10:50:43 2014";
+      lastWritten = "Mon Aug 24 09:13:21 2015";
         {
           mgiTable = XtXrtTable;
           Group: Widget
@@ -394,16 +394,16 @@ Module: mgiTable
               {
                 Table = mgiTable;
                 Group: Widget
-                  xrtTblNumColumns = 8;
-                  xrtTblColumnLabels = "Mode,DS Key,Prod,Assoc Key,Selected,Used,Not Used,Never Used";
-                  xrtTblCharWidthSeries = "(all 0 1)(all 4 8)(all 5 4)(all 6 8)(all 7 10)";
+                  xrtTblNumColumns = 9;
+                  xrtTblColumnLabels = "Mode,DS Key,Prod,Assoc Key,Selected,Used,Not Used,Never Used,Incomplete";
+                  xrtTblCharWidthSeries = "(all 0 1)(all 4 8)(all 5 4)(all 6 8)(all 7 10)(all 8 10)";
                   xrtTblSelectCallback = "D:VerifyDataSetsStatus";
                   xrtTblSelectedBackground = None;
                   xrtTblSelectedForeground = None;
                   xrtTblSelectionPolicy = select_single;
-                  xrtTblEditableSeries = "(all all False)(all 4 True)(all 7 True)";
+                  xrtTblEditableSeries = "(all all False)(all 4 True)(all 7 True)(all 8 True)";
                   xrtTblTraversableSeries = "(all all False)";
-                  userDefinedAttributes = "selected:Int(Int)=\"4\"\nused:Int(Int)=\"5\"\nnotUsed:Int(Int)=\"6\"\nneverUsed:Int(Int)=\"7\"\nexistsProc:Int(Int)=\"2\"\nbeginX:Int(Int)\nendX:Int(Int)\ndataSetKey:Int(Int)=\"1\"\nassocKey:Int(Int)=\"3\"\n";
+                  userDefinedAttributes = "selected:Int(Int)=\"4\"\nused:Int(Int)=\"5\"\nnotUsed:Int(Int)=\"6\"\nneverUsed:Int(Int)=\"7\"\nexistsProc:Int(Int)=\"2\"\nbeginX:Int(Int)\nendX:Int(Int)\ndataSetKey:Int(Int)=\"1\"\nassocKey:Int(Int)=\"3\"\nisIncomplete:Int(Int)=\"8\"\n";
                   xrtTblPixelWidthSeries = "(all 0-3 0)";
               }
               {
