@@ -243,11 +243,12 @@ rules:
 --	"Used"		the Reference/data set has an entry elsewhere in the DB
 --	"Not Used"	the Reference/data set does not have an entry elsewhere in the DB
 --	"Never Used"	Data Set never to be cross-referenced to another database entry
+--	"Incomplete"	Data Set partially used
 --
---	"Used" and "Not Used" are determined by stored procedures which check the current
+--	"Used", "Not Used", "Incompelte" are determined by stored procedures which check the current
 --	Reference record/data set pair for corresponding entries elsewhere in the DB.
 --	
---	The RefDBSStatus table contains "Select", "Used", "Not Used", "Never Used"
+--	The RefDBSStatus table contains "Select", "Used", "Not Used", "Never Used", "Incomplete"
 --	columns. 
 --
 --	The RefDBSNonStatus table contains "Select", "Never Used" columns. 
@@ -739,6 +740,7 @@ rules:
 	  searchConnector : string;
 	  dataSetKeys : string_list := create string_list();
 	  neverUsedKeys : string_list := create string_list();
+	  isIncompleteKeys : string_list := create string_list();
 	  table : widget;
 	  row : integer;
 
@@ -872,6 +874,11 @@ rules:
 	        else
 	          neverUsedKeys.insert("0", neverUsedKeys.count + 1);
 	        end if;
+	        if (mgi_tblGetCell(table, row, table.isIncomplete) != "") then
+	          isIncompleteKeys.insert("1", isIncompleteKeys.count + 1);
+	        else
+	          isIncompleteKeys.insert("0", isIncompleteKeys.count + 1);
+	        end if;
 	        from_dataset := true;
 	      end if;
 	      row := row + 1;
@@ -899,6 +906,11 @@ rules:
 	      -- if "never used" is set, then query for it
 	      if (neverUsedKeys[row] = "1") then
 		where := where + " and ba.isNeverUsed = " + neverUsedKeys[row];
+	      end if;
+
+	      -- if "isIncomplete" is set, then query for it
+	      if (isIncompleteKeys[row] = "1") then
+		where := where + " and ba.isIncomplete = " + isIncompleteKeys[row];
 	      end if;
 
 	      where := where + ")" + searchConnector;
@@ -1089,6 +1101,7 @@ rules:
           assocKey : string;
           dataSetKey : string;
 	  neverUsed : string;
+	  isIncomplete : string;
           set : string := "";
 	  keyName : string := "assocKey";
  
@@ -1107,6 +1120,12 @@ rules:
 	      neverUsed := YES;
             end if;
  
+	    if (mgi_tblGetCell(table, row, table.isIncomplete) = "") then
+	      isIncomplete := NO;
+	    else
+	      isIncomplete := YES;
+            end if;
+ 
 	    -- then it is new
 
             if (assocKey = "" and selected != "") then 
@@ -1123,12 +1142,13 @@ rules:
 		     currentRecordKey + "," +
 		     dataSetKey + "," +
 		     neverUsed + "," +
+		     isIncomplete + "," +
 		     global_userKey + "," + global_userKey + END_VALUE;
 
 	    -- update
 
             elsif (assocKey != "" and selected != "") then
-              set := "isNeverUsed = " + neverUsed;
+              set := "isNeverUsed = " + neverUsed + ",isIncomplete = " + isIncomplete;
               cmd := cmd + mgi_DBupdate(BIB_DATASET_ASSOC, assocKey, set);
 
 	    -- deletion
@@ -1174,6 +1194,9 @@ rules:
 	            (void) mgi_tblSetCell(statusTable, row, statusTable.selected, "X");
 		  else
 	            (void) mgi_tblSetCell(statusTable, row, statusTable.selected, "X");
+		  end if;
+		  if (mgi_getstr(dbproc, 4) = YES) then
+	            (void) mgi_tblSetCell(statusTable, row, statusTable.isIncomplete, "X");
 		  end if;
 		end if;
 	        row := row + 1;
@@ -1315,6 +1338,10 @@ rules:
 
 	  statusTable.beginX := statusTable.neverUsed;
 	  statusTable.endX := statusTable.neverUsed;
+	  send(SetCellToX, 0);
+
+	  statusTable.beginX := statusTable.isIncomplete;
+	  statusTable.endX := statusTable.isIncomplete;
 	  send(SetCellToX, 0);
 
 	  -- If "Never Used" is selected, then "Used" and "Not Used" are blank

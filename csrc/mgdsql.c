@@ -1451,7 +1451,7 @@ char *ref_dataset3(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _Assoc_key, _DataSet_key, isNeverUsed \
+  sprintf(buf,"select _Assoc_key, _DataSet_key, isNeverUsed, isIncomplete \
    \nfrom BIB_DataSet_Assoc where _Refs_key = %s", key);
   return(buf);
 }

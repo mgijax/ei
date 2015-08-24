@@ -1955,7 +1955,7 @@ char *mgi_DBinsert(int table, char *keyName)
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case BIB_DATASET_ASSOC:
-	    sprintf(buf, "insert into %s (%s, _Refs_key, _DataSet_key, isNeverUsed, _CreatedBy_key, _ModifiedBy_key)",
+	    sprintf(buf, "insert into %s (%s, _Refs_key, _DataSet_key, isNeverUsed, isIncomplete, _CreatedBy_key, _ModifiedBy_key)",
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case BIB_NOTES:
