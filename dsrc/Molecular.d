@@ -1281,8 +1281,7 @@ rules:
 	  if (value.length = 0) then
 	    value := top->MolReferenceForm->mgiCitation->Citation->text.value;
 	    if (value.length > 0) then
-	      where := where + "\nand (r.authors like " + mgi_DBprstr(value) +
-	      " or r.authors2 like " + mgi_DBprstr(value) + ")";
+	      where := where + "\nand r.authors like " + mgi_DBprstr(value);
 	      from_ref := true;
 	    end if;
 	  end if;

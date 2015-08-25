@@ -580,25 +580,13 @@ rules:
 	  end if;
 
 	  if (top->Authors->text.modified) then
-	    if (top->Authors->text.value.length <= 255) then
-	      set := set + "authors = " + mgi_DBprstr(top->Authors->text.value) + ",authors2 = NULL,";
-	    else
-	      set := set + "authors = " + mgi_DBprstr(top->Authors->text.value->substr(1, 255)) + "," +
-	             "authors2 = " + 
-		       mgi_DBprstr(top->Authors->text.value->substr(256, top->Authors->text.value.length)) + ",";
-	    end if;
+	    set := set + "authors = " + mgi_DBprstr(top->Authors->text.value) + ",";
 	    top->PrimaryAuthor->text.value := mgi_primary_author(top->Authors->text.value);
 	    set := set + "_primary = " + mgi_DBprstr(top->PrimaryAuthor->text.value) + ",";
 	  end if;
 
 	  if (top->Title->text.modified) then
-	    if (top->Title->text.value.length <= 255) then
-	      set := set + "title = " + mgi_DBprstr(top->Title->text.value) + ",title2 = NULL,";
-	    else
-	      set := set + "title = " + mgi_DBprstr(top->Title->text.value->substr(1, 255)) + "," +
-	             "title2 = " + 
-		       mgi_DBprstr(top->Title->text.value->substr(256, top->Title->text.value.length)) + ",";
-	    end if;
+	    set := set + "title = " + mgi_DBprstr(top->Title->text.value) + ",";
 	  end if;
 
 	  if (top->mgiJournal->Verify->text.modified) then
