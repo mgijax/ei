@@ -360,27 +360,12 @@ rules:
           cmd := mgi_setDBkey(BIB_REFS, NEWKEY, KEYNAME) +
                  mgi_DBinsert(BIB_REFS, KEYNAME) +
                  reviewStatus + "," +
-                 mgi_DBprstr(top->RefTypeMenu.menuHistory.defaultValue) + ",";
-
-	  if (top->Authors->text.value.length <= 255) then
-	    cmd := cmd + mgi_DBprstr(top->Authors->text.value) + ",NULL,";
-	  else
-	    cmd := cmd + 
-		   mgi_DBprstr(top->Authors->text.value->substr(1, 255)) + "," +
-	           mgi_DBprstr(top->Authors->text.value->substr(256, top->Authors->text.value.length)) + ",";
-	  end if;
+                 mgi_DBprstr(top->RefTypeMenu.menuHistory.defaultValue) + "," +
+	         mgi_DBprstr(top->Authors->text.value) + ",";
 
 	  top->PrimaryAuthor->text.value := mgi_primary_author(top->Authors->text.value);
 	  cmd := cmd + mgi_DBprstr(top->PrimaryAuthor->text.value) + ",";
-
-	  if (top->Title->text.value.length <= 255) then
-	    cmd := cmd + mgi_DBprstr(top->Title->text.value) + ",NULL,";
-	  else
-	    cmd := cmd + 
-		   mgi_DBprstr(top->Title->text.value->substr(1, 255)) + "," +
-	           mgi_DBprstr(top->Title->text.value->substr(256, top->Title->text.value.length)) + ",";
-	  end if;
-
+	  cmd := cmd + mgi_DBprstr(top->Title->text.value) + ",";
 	  cmd := cmd + mgi_DBprstr(top->mgiJournal->Verify->text.value) + ",";
 	  cmd := cmd + mgi_DBprstr(top->Volume->text.value) + ",";
 	  cmd := cmd + mgi_DBprstr(top->Issue->text.value) + ",";
@@ -979,9 +964,9 @@ rules:
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	        top->ID->text.value        := mgi_getstr(dbproc, 1);
-	        top->Authors->text.value   := mgi_getstr(dbproc, 4) + mgi_getstr(dbproc, 5);
+	        top->Authors->text.value   := mgi_getstr(dbproc, 4);
 	        top->PrimaryAuthor->text.value := mgi_getstr(dbproc, 6);
-	        top->Title->text.value     := mgi_getstr(dbproc, 7) + mgi_getstr(dbproc, 8);
+	        top->Title->text.value     := mgi_getstr(dbproc, 7);
 	        top->mgiJournal->Verify->text.value := mgi_getstr(dbproc, 9);
 	        top->Volume->text.value    := mgi_getstr(dbproc, 10);
 	        top->Issue->text.value     := mgi_getstr(dbproc, 11);
