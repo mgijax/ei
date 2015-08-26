@@ -538,7 +538,7 @@ rules:
 
           currentRecordKey := MAX_KEY1 + KEYNAME + MAX_KEY2;
  
-	  if (markerKey.length = 0) then
+	  if (markerKey = "-1" or markerKey.length = 0) then
 	    markerKey := "NULL";
 	  end if;
 

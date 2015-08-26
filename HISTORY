@@ -1,5 +1,11 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-6-0-0-11
+DATE: 08/26/2015
+STAFF: lec
+CHANGES:
+1) dsrc/Allele.d fix
+
 TAG: ei-6-0-0-10
 DATE: 08/25/2015
 STAFF: lec
