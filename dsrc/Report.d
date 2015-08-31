@@ -39,7 +39,6 @@ rules:
      top : widget := ReportGenerate.source_widget.root;
      dialog : widget := ReportGenerate.source_widget.top;
      select : string := dialog.child(1).select; -- top = <widget#ReportDialog_popup:XmDialogShell>
-     printSelect : string := dialog.child(1).printSelect;
 
      if (dialog->ReportList->List.selectedItemCount = 0) then
        StatusReport.source_widget := top;
@@ -114,10 +113,6 @@ rules:
          return;
        else
          commands.insert(select, commands.count + 1);
-       end if;
-
-       if (printSelect.length != 0) then
-         commands.insert(printSelect, commands.count + 1);
        end if;
 
      --
@@ -203,7 +198,6 @@ rules:
    ReportInit does
      dialog : widget := ReportInit.source_widget;
      top : widget := ReportInit.source_widget.root;
-     printer : string := "";
 
      (void) busy_cursor(dialog.root);
 
@@ -216,14 +210,6 @@ rules:
      end if;
 
      dialog->Output.value := "";                  -- Reset Status Area
-
-     printer := getenv("PRINTER");
-     if (printer.length > 0) then
-       (void) XmListSelectItem(dialog->PrinterList->List, xm_xmstring(printer), true);
-       (void) XmListSetItem(dialog->PrinterList->List, xm_xmstring(printer));
-     else
-       (void)XmListSelectPos(dialog->PrinterList->List, 1, true);      -- Default Printer to First in List
-     end if;
 
      (void)XmListSelectPos(dialog->ReportList->List, 1, true);      -- Default Report to First in List
 

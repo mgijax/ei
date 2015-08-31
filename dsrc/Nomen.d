@@ -874,17 +874,17 @@ rules:
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      top->ID->text.value             := mgi_getstr(dbproc, 1);
-	      top->Symbol->text.value         := mgi_getstr(dbproc, 7);
-	      top->Name->text.value           := mgi_getstr(dbproc, 8);
-	      top->StatusNotes->text.value    := mgi_getstr(dbproc, 11);
+	      top->Symbol->text.value         := mgi_getstr(dbproc, 6);
+	      top->Name->text.value           := mgi_getstr(dbproc, 7);
+	      top->StatusNotes->text.value    := mgi_getstr(dbproc, 10);
 
 	      table := top->ModificationHistory->Table;
-	      (void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 23));
-	      (void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 16));
-	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 24));
-	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 17));
-	      (void) mgi_tblSetCell(table, table.broadcastBy, table.byUser, mgi_getstr(dbproc, 25));
-	      (void) mgi_tblSetCell(table, table.broadcastBy, table.byDate, mgi_getstr(dbproc, 12));
+	      (void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 22));
+	      (void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 15));
+	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 23));
+	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 16));
+	      (void) mgi_tblSetCell(table, table.broadcastBy, table.byUser, mgi_getstr(dbproc, 24));
+	      (void) mgi_tblSetCell(table, table.broadcastBy, table.byDate, mgi_getstr(dbproc, 11));
 
               SetOption.source_widget := top->MarkerTypeMenu;
               SetOption.value := mgi_getstr(dbproc, 2);
@@ -895,7 +895,7 @@ rules:
               send(SetOption, 0);
 
               SetOption.source_widget := top->ChromosomeMenu;
-              SetOption.value := mgi_getstr(dbproc, 9);
+              SetOption.value := mgi_getstr(dbproc, 8);
               send(SetOption, 0);
 
 	      row := row + 1;

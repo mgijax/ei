@@ -965,18 +965,18 @@ rules:
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	        top->ID->text.value        := mgi_getstr(dbproc, 1);
 	        top->Authors->text.value   := mgi_getstr(dbproc, 4);
-	        top->PrimaryAuthor->text.value := mgi_getstr(dbproc, 6);
-	        top->Title->text.value     := mgi_getstr(dbproc, 7);
-	        top->mgiJournal->Verify->text.value := mgi_getstr(dbproc, 9);
-	        top->Volume->text.value    := mgi_getstr(dbproc, 10);
-	        top->Issue->text.value     := mgi_getstr(dbproc, 11);
-	        top->mgiDate->Date->text.value      := mgi_getstr(dbproc, 12);
-	        top->Page->text.value      := mgi_getstr(dbproc, 14);
-	        top->Abstract->text.value  := mgi_getstr(dbproc, 16);
-		(void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byUser, mgi_getstr(dbproc, 27));
-		(void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byDate, mgi_getstr(dbproc, 20));
-		(void) mgi_tblSetCell(modTable, modTable.modifiedBy, modTable.byUser, mgi_getstr(dbproc, 28));
-		(void) mgi_tblSetCell(modTable, modTable.modifiedBy, modTable.byDate, mgi_getstr(dbproc, 21));
+	        top->PrimaryAuthor->text.value := mgi_getstr(dbproc, 5);
+	        top->Title->text.value     := mgi_getstr(dbproc, 6);
+	        top->mgiJournal->Verify->text.value := mgi_getstr(dbproc, 7);
+	        top->Volume->text.value    := mgi_getstr(dbproc, 8);
+	        top->Issue->text.value     := mgi_getstr(dbproc, 9);
+	        top->mgiDate->Date->text.value      := mgi_getstr(dbproc, 10);
+	        top->Page->text.value      := mgi_getstr(dbproc, 12);
+	        top->Abstract->text.value  := mgi_getstr(dbproc, 14);
+		(void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byUser, mgi_getstr(dbproc, 25));
+		(void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byDate, mgi_getstr(dbproc, 18));
+		(void) mgi_tblSetCell(modTable, modTable.modifiedBy, modTable.byUser, mgi_getstr(dbproc, 26));
+		(void) mgi_tblSetCell(modTable, modTable.modifiedBy, modTable.byDate, mgi_getstr(dbproc, 19));
 
                 SetOption.source_widget := top->ReviewStatusMenu;
                 SetOption.value := mgi_getstr(dbproc, 2);
@@ -987,11 +987,11 @@ rules:
 	        send(SetOption, 0);
 
                 SetOption.source_widget := top->NLMStatusMenu;
-                SetOption.value := mgi_getstr(dbproc, 15);
+                SetOption.value := mgi_getstr(dbproc, 13);
                 send(SetOption, 0);
  
                 SetOption.source_widget := top->IsReviewMenu;
-                SetOption.value := mgi_getstr(dbproc, 17);
+                SetOption.value := mgi_getstr(dbproc, 15);
                 send(SetOption, 0);
  
 	        top->BookForm->Editors->text.value   := "";

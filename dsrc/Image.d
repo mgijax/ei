@@ -758,7 +758,7 @@ rules:
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
 	  Query.select := "select distinct i._Image_key, " + 
-			"i.jnumID || '; ' || i.imageType || '; ' || i.figureLabel, i.jnum, i.imageType, i.figureLabel\n" +
+			"convert(i.jnumID,'; ',i.imageType,'; ',i.figureLabel), i.jnum, i.imageType, i.figureLabel\n" +
 			from + "\n" + where + orderBy;
 	  Query.table := IMG_IMAGE;
 	  send(Query, 0);

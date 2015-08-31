@@ -37,10 +37,6 @@ NextJnum [source_widget : widget;];		-- Get Next Available J#
 
 Previous [];					-- Return Previous QueryList item
 
-PrintEnd [dialog : widget;];			-- End PrintFile process
-
-PrintFile [];					-- Print File
-
 SelectToggle [box : widget;			-- Set Option Menu Toggle based on key or value
 	      key : integer := 0;
 	      value : string := "";];

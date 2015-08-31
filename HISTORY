@@ -1,5 +1,11 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-6-0-0-12
+DATE: 08/31/2015
+STAFF: lec
+CHANGES:
+1) TR12083/MRK_Marker/_CurationState_key : obsolete
+
 TAG: ei-6-0-0-11
 DATE: 08/26/2015
 STAFF: lec
