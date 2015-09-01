@@ -2,7 +2,7 @@ Module: MGIAdmin
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Wed Mar 25 09:19:22 2015";
+      lastWritten = "Tue Sep  1 08:05:48 2015";
         {
           MGIAdmin = Application : MGI;
           Group: Control
@@ -285,65 +285,6 @@ Module: MGIAdmin
                                 }
                           }
                     }
-                    Popups:
-                    {
-                      StatusDialog = StatusDialog : mgiDialog;
-                    }
-                    {
-                      DeleteDialog = DeleteDialog : mgiDialog;
-                    }
-                    {
-                      ReportDialog = ReportDialog : mgiDialog;
-                          {
-                            FileSelection = FileSelection;
-                          }
-                          {
-                            Lookup = XmFrame;
-                                {
-                                  panedWindow = XmPanedWindow;
-                                      {
-                                        ReportList = LookupList : mgiLookup;
-                                      }
-                                      {
-                                        PrinterList = LookupList;
-                                      }
-                                      {
-                                        PrintOrient = Choice : mgiDataTypes;
-                                            {
-                                              PrintOrientBox : ChoiceBox = XmRowColumn;
-                                                  {
-                                                    Portrait = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      set = True;
-                                                      labelString = Portrait;
-                                                  }
-                                                  {
-                                                    Landscape = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = Landscape;
-                                                  }
-                                            }
-                                      }
-                                      {
-                                        PrintColumn = Choice : mgiDataTypes;
-                                            {
-                                              PrintColumnBox : ChoiceBox = XmRowColumn;
-                                                  {
-                                                    OneColumn = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      set = True;
-                                                      labelString = "1 column";
-                                                  }
-                                                  {
-                                                    TwoColumn = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = "2 column";
-                                                  }
-                                            }
-                                      }
-                                }
-                          }
-                    }
               }
         }
         {
@@ -494,65 +435,6 @@ Module: MGIAdmin
                                   Delete = ControlPush;
                                   Group: Widget
                                     sensitive = False;
-                                }
-                          }
-                    }
-                    Popups:
-                    {
-                      StatusDialog = StatusDialog : mgiDialog;
-                    }
-                    {
-                      DeleteDialog = DeleteDialog : mgiDialog;
-                    }
-                    {
-                      ReportDialog = ReportDialog : mgiDialog;
-                          {
-                            FileSelection = FileSelection;
-                          }
-                          {
-                            Lookup = XmFrame;
-                                {
-                                  panedWindow = XmPanedWindow;
-                                      {
-                                        ReportList = LookupList : mgiLookup;
-                                      }
-                                      {
-                                        PrinterList = LookupList;
-                                      }
-                                      {
-                                        PrintOrient = Choice : mgiDataTypes;
-                                            {
-                                              PrintOrientBox : ChoiceBox = XmRowColumn;
-                                                  {
-                                                    Portrait = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      set = True;
-                                                      labelString = Portrait;
-                                                  }
-                                                  {
-                                                    Landscape = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = Landscape;
-                                                  }
-                                            }
-                                      }
-                                      {
-                                        PrintColumn = Choice : mgiDataTypes;
-                                            {
-                                              PrintColumnBox : ChoiceBox = XmRowColumn;
-                                                  {
-                                                    OneColumn = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      set = True;
-                                                      labelString = "1 column";
-                                                  }
-                                                  {
-                                                    TwoColumn = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = "2 column";
-                                                  }
-                                            }
-                                      }
                                 }
                           }
                     }

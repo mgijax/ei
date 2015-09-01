@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Fri Aug 21 10:32:00 2015";
+      lastWritten = "Tue Sep  1 08:05:45 2015";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -517,65 +517,6 @@ Module: MGD
                                 }
                           }
                     }
-                    Popups:
-                    {
-                      StatusDialog = StatusDialog : mgiDialog;
-                    }
-                    {
-                      DeleteDialog = DeleteDialog : mgiDialog;
-                    }
-                    {
-                      ReportDialog = ReportDialog : mgiDialog;
-                          {
-                            FileSelection = FileSelection;
-                          }
-                          {
-                            Lookup = XmFrame;
-                                {
-                                  panedWindow = XmPanedWindow;
-                                      {
-                                        ReportList = LookupList : mgiLookup;
-                                      }
-                                      {
-                                        PrinterList = LookupList;
-                                      }
-                                      {
-                                        PrintOrient = Choice : mgiDataTypes;
-                                            {
-                                              PrintOrientBox : ChoiceBox = XmRowColumn;
-                                                  {
-                                                    Portrait = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      set = True;
-                                                      labelString = Portrait;
-                                                  }
-                                                  {
-                                                    Landscape = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = Landscape;
-                                                  }
-                                            }
-                                      }
-                                      {
-                                        PrintColumn = Choice : mgiDataTypes;
-                                            {
-                                              PrintColumnBox : ChoiceBox = XmRowColumn;
-                                                  {
-                                                    OneColumn = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      set = True;
-                                                      labelString = "1 column";
-                                                  }
-                                                  {
-                                                    TwoColumn = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = "2 column";
-                                                  }
-                                            }
-                                      }
-                                }
-                          }
-                    }
               }
         }
         {
@@ -760,65 +701,6 @@ Module: MGD
                                           columns = 75;
                                         Group: User
                                           required = True;
-                                      }
-                                }
-                          }
-                    }
-                    Popups:
-                    {
-                      StatusDialog = StatusDialog : mgiDialog;
-                    }
-                    {
-                      DeleteDialog = DeleteDialog : mgiDialog;
-                    }
-                    {
-                      ReportDialog = ReportDialog : mgiDialog;
-                          {
-                            FileSelection = FileSelection;
-                          }
-                          {
-                            Lookup = XmFrame;
-                                {
-                                  panedWindow = XmPanedWindow;
-                                      {
-                                        ReportList = LookupList : mgiLookup;
-                                      }
-                                      {
-                                        PrinterList = LookupList;
-                                      }
-                                      {
-                                        PrintOrient = Choice : mgiDataTypes;
-                                            {
-                                              PrintOrientBox : ChoiceBox = XmRowColumn;
-                                                  {
-                                                    Portrait = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      set = True;
-                                                      labelString = Portrait;
-                                                  }
-                                                  {
-                                                    Landscape = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = Landscape;
-                                                  }
-                                            }
-                                      }
-                                      {
-                                        PrintColumn = Choice : mgiDataTypes;
-                                            {
-                                              PrintColumnBox : ChoiceBox = XmRowColumn;
-                                                  {
-                                                    OneColumn = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      set = True;
-                                                      labelString = "1 column";
-                                                  }
-                                                  {
-                                                    TwoColumn = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = "2 column";
-                                                  }
-                                            }
                                       }
                                 }
                           }
@@ -1181,65 +1063,6 @@ Module: MGD
                                 }
                           }
                     }
-                    Popups:
-                    {
-                      StatusDialog = StatusDialog : mgiDialog;
-                    }
-                    {
-                      DeleteDialog = DeleteDialog : mgiDialog;
-                    }
-                    {
-                      ReportDialog = ReportDialog : mgiDialog;
-                          {
-                            FileSelection = FileSelection;
-                          }
-                          {
-                            Lookup = XmFrame;
-                                {
-                                  panedWindow = XmPanedWindow;
-                                      {
-                                        ReportList = LookupList : mgiLookup;
-                                      }
-                                      {
-                                        PrinterList = LookupList;
-                                      }
-                                      {
-                                        PrintOrient = Choice : mgiDataTypes;
-                                            {
-                                              PrintOrientBox : ChoiceBox = XmRowColumn;
-                                                  {
-                                                    Portrait = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      set = True;
-                                                      labelString = Portrait;
-                                                  }
-                                                  {
-                                                    Landscape = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = Landscape;
-                                                  }
-                                            }
-                                      }
-                                      {
-                                        PrintColumn = Choice : mgiDataTypes;
-                                            {
-                                              PrintColumnBox : ChoiceBox = XmRowColumn;
-                                                  {
-                                                    OneColumn = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      set = True;
-                                                      labelString = "1 column";
-                                                  }
-                                                  {
-                                                    TwoColumn = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = "2 column";
-                                                  }
-                                            }
-                                      }
-                                }
-                          }
-                    }
               }
         }
         {
@@ -1362,65 +1185,6 @@ Module: MGD
                                     topOffset = 2;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                }
-                          }
-                    }
-                    Popups:
-                    {
-                      StatusDialog = StatusDialog;
-                    }
-                    {
-                      DeleteDialog = DeleteDialog;
-                    }
-                    {
-                      ReportDialog = ReportDialog;
-                          {
-                            FileSelection = FileSelection;
-                          }
-                          {
-                            Lookup = XmFrame;
-                                {
-                                  panedWindow = XmPanedWindow;
-                                      {
-                                        ReportList = LookupList;
-                                      }
-                                      {
-                                        PrinterList = LookupList;
-                                      }
-                                      {
-                                        PrintOrient = Choice : mgiDataTypes;
-                                            {
-                                              PrintOrientBox : ChoiceBox = XmRowColumn;
-                                                  {
-                                                    Portrait = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      set = True;
-                                                      labelString = Portrait;
-                                                  }
-                                                  {
-                                                    Landscape = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = Landscape;
-                                                  }
-                                            }
-                                      }
-                                      {
-                                        PrintColumn = Choice : mgiDataTypes;
-                                            {
-                                              PrintColumnBox : ChoiceBox = XmRowColumn;
-                                                  {
-                                                    OneColumn = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      set = True;
-                                                      labelString = "1 column";
-                                                  }
-                                                  {
-                                                    TwoColumn = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = "2 column";
-                                                  }
-                                            }
-                                      }
                                 }
                           }
                     }
@@ -2251,55 +2015,6 @@ Module: MGD
                     }
                     {
                       ReportDialog = ReportDialog;
-                          {
-                            FileSelection = FileSelection;
-                          }
-                          {
-                            Lookup = XmFrame;
-                                {
-                                  panedWindow = XmPanedWindow;
-                                      {
-                                        ReportList = LookupList;
-                                      }
-                                      {
-                                        PrinterList = LookupList;
-                                      }
-                                      {
-                                        PrintOrient = Choice : mgiDataTypes;
-                                            {
-                                              PrintOrientBox : ChoiceBox = XmRowColumn;
-                                                  {
-                                                    Portrait = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      set = True;
-                                                      labelString = Portrait;
-                                                  }
-                                                  {
-                                                    Landscape = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = Landscape;
-                                                  }
-                                            }
-                                      }
-                                      {
-                                        PrintColumn = Choice : mgiDataTypes;
-                                            {
-                                              PrintColumnBox : ChoiceBox = XmRowColumn;
-                                                  {
-                                                    OneColumn = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      set = True;
-                                                      labelString = "1 column";
-                                                  }
-                                                  {
-                                                    TwoColumn = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = "2 column";
-                                                  }
-                                            }
-                                      }
-                                }
-                          }
                     }
                     {
                       SearchDialog = SearchDialog : mgiDialog;
@@ -3865,65 +3580,6 @@ Module: MGD
                                                     dbESTLibrary = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
-                                                  }
-                                            }
-                                      }
-                                }
-                          }
-                    }
-                    Popups:
-                    {
-                      StatusDialog = StatusDialog : mgiDialog;
-                    }
-                    {
-                      DeleteDialog = DeleteDialog : mgiDialog;
-                    }
-                    {
-                      ReportDialog = ReportDialog : mgiDialog;
-                          {
-                            FileSelection = FileSelection;
-                          }
-                          {
-                            Lookup = XmFrame;
-                                {
-                                  panedWindow = XmPanedWindow;
-                                      {
-                                        ReportList = LookupList : mgiLookup;
-                                      }
-                                      {
-                                        PrinterList = LookupList;
-                                      }
-                                      {
-                                        PrintOrient = Choice : mgiDataTypes;
-                                            {
-                                              PrintOrientBox : ChoiceBox = XmRowColumn;
-                                                  {
-                                                    Portrait = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      set = True;
-                                                      labelString = Portrait;
-                                                  }
-                                                  {
-                                                    Landscape = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = Landscape;
-                                                  }
-                                            }
-                                      }
-                                      {
-                                        PrintColumn = Choice : mgiDataTypes;
-                                            {
-                                              PrintColumnBox : ChoiceBox = XmRowColumn;
-                                                  {
-                                                    OneColumn = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      set = True;
-                                                      labelString = "1 column";
-                                                  }
-                                                  {
-                                                    TwoColumn = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = "2 column";
                                                   }
                                             }
                                       }
@@ -6312,65 +5968,6 @@ Module: MGD
                                 }
                           }
                     }
-                    Popups:
-                    {
-                      StatusDialog = StatusDialog : mgiDialog;
-                    }
-                    {
-                      DeleteDialog = DeleteDialog : mgiDialog;
-                    }
-                    {
-                      ReportDialog = ReportDialog : mgiDialog;
-                          {
-                            FileSelection = FileSelection;
-                          }
-                          {
-                            Lookup = XmFrame;
-                                {
-                                  panedWindow = XmPanedWindow;
-                                      {
-                                        ReportList = LookupList : mgiLookup;
-                                      }
-                                      {
-                                        PrinterList = LookupList;
-                                      }
-                                      {
-                                        PrintOrient = Choice : mgiDataTypes;
-                                            {
-                                              PrintOrientBox : ChoiceBox = XmRowColumn;
-                                                  {
-                                                    Portrait = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      set = True;
-                                                      labelString = Portrait;
-                                                  }
-                                                  {
-                                                    Landscape = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = Landscape;
-                                                  }
-                                            }
-                                      }
-                                      {
-                                        PrintColumn = Choice : mgiDataTypes;
-                                            {
-                                              PrintColumnBox : ChoiceBox = XmRowColumn;
-                                                  {
-                                                    OneColumn = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      set = True;
-                                                      labelString = "1 column";
-                                                  }
-                                                  {
-                                                    TwoColumn = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = "2 column";
-                                                  }
-                                            }
-                                      }
-                                }
-                          }
-                    }
               }
         }
         {
@@ -7209,55 +6806,6 @@ Module: MGD
                     }
                     {
                       ReportDialog = ReportDialog;
-                          {
-                            FileSelection = FileSelection;
-                          }
-                          {
-                            Lookup = XmFrame;
-                                {
-                                  panedWindow = XmPanedWindow;
-                                      {
-                                        ReportList = LookupList;
-                                      }
-                                      {
-                                        PrinterList = LookupList;
-                                      }
-                                      {
-                                        PrintOrient = Choice : mgiDataTypes;
-                                            {
-                                              PrintOrientBox : ChoiceBox = XmRowColumn;
-                                                  {
-                                                    Portrait = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      set = True;
-                                                      labelString = Portrait;
-                                                  }
-                                                  {
-                                                    Landscape = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = Landscape;
-                                                  }
-                                            }
-                                      }
-                                      {
-                                        PrintColumn = Choice : mgiDataTypes;
-                                            {
-                                              PrintColumnBox : ChoiceBox = XmRowColumn;
-                                                  {
-                                                    OneColumn = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      set = True;
-                                                      labelString = "1 column";
-                                                  }
-                                                  {
-                                                    TwoColumn = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = "2 column";
-                                                  }
-                                            }
-                                      }
-                                }
-                          }
                     }
                     {
                       SearchDialog = SearchDialog;
@@ -7276,55 +6824,6 @@ Module: MGD
                     }
                     {
                       NLMDialog = NLMDialog;
-                          {
-                            FileSelection = FileSelection;
-                          }
-                          {
-                            Lookup = XmFrame;
-                                {
-                                  panedWindow = XmPanedWindow;
-                                      {
-                                        ReportList = LookupList;
-                                      }
-                                      {
-                                        PrinterList = LookupList;
-                                      }
-                                      {
-                                        PrintOrient = Choice : mgiDataTypes;
-                                            {
-                                              PrintOrientBox : ChoiceBox = XmRowColumn;
-                                                  {
-                                                    Portrait = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      set = True;
-                                                      labelString = Portrait;
-                                                  }
-                                                  {
-                                                    Landscape = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = Landscape;
-                                                  }
-                                            }
-                                      }
-                                      {
-                                        PrintColumn = Choice : mgiDataTypes;
-                                            {
-                                              PrintColumnBox : ChoiceBox = XmRowColumn;
-                                                  {
-                                                    OneColumn = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      set = True;
-                                                      labelString = "1 column";
-                                                  }
-                                                  {
-                                                    TwoColumn = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = "2 column";
-                                                  }
-                                            }
-                                      }
-                                }
-                          }
                     }
               }
         }
@@ -9302,55 +8801,6 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       ReportDialog = ReportDialog : mgiDialog;
-                          {
-                            FileSelection = FileSelection;
-                          }
-                          {
-                            Lookup = XmFrame;
-                                {
-                                  panedWindow = XmPanedWindow;
-                                      {
-                                        ReportList = LookupList : mgiLookup;
-                                      }
-                                      {
-                                        PrinterList = LookupList;
-                                      }
-                                      {
-                                        PrintOrient = Choice : mgiDataTypes;
-                                            {
-                                              PrintOrientBox : ChoiceBox = XmRowColumn;
-                                                  {
-                                                    Portrait = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      set = True;
-                                                      labelString = Portrait;
-                                                  }
-                                                  {
-                                                    Landscape = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = Landscape;
-                                                  }
-                                            }
-                                      }
-                                      {
-                                        PrintColumn = Choice : mgiDataTypes;
-                                            {
-                                              PrintColumnBox : ChoiceBox = XmRowColumn;
-                                                  {
-                                                    OneColumn = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      set = True;
-                                                      labelString = "1 column";
-                                                  }
-                                                  {
-                                                    TwoColumn = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = "2 column";
-                                                  }
-                                            }
-                                      }
-                                }
-                          }
                     }
                     {
                       SearchDialog = SearchDialog : mgiDialog;
@@ -10502,55 +9952,6 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       ReportDialog = ReportDialog;
-                          {
-                            FileSelection = FileSelection;
-                          }
-                          {
-                            Lookup = XmFrame;
-                                {
-                                  panedWindow = XmPanedWindow;
-                                      {
-                                        ReportList = LookupList;
-                                      }
-                                      {
-                                        PrinterList = LookupList;
-                                      }
-                                      {
-                                        PrintOrient = Choice : mgiDataTypes;
-                                            {
-                                              PrintOrientBox : ChoiceBox = XmRowColumn;
-                                                  {
-                                                    Portrait = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      set = True;
-                                                      labelString = Portrait;
-                                                  }
-                                                  {
-                                                    Landscape = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = Landscape;
-                                                  }
-                                            }
-                                      }
-                                      {
-                                        PrintColumn = Choice : mgiDataTypes;
-                                            {
-                                              PrintColumnBox : ChoiceBox = XmRowColumn;
-                                                  {
-                                                    OneColumn = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      set = True;
-                                                      labelString = "1 column";
-                                                  }
-                                                  {
-                                                    TwoColumn = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = "2 column";
-                                                  }
-                                            }
-                                      }
-                                }
-                          }
                     }
                     {
                       SearchDialog = SearchDialog;
@@ -13177,55 +12578,6 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       ReportDialog = ReportDialog;
-                          {
-                            FileSelection = FileSelection;
-                          }
-                          {
-                            Lookup = XmFrame;
-                                {
-                                  panedWindow = XmPanedWindow;
-                                      {
-                                        ReportList = LookupList;
-                                      }
-                                      {
-                                        PrinterList = LookupList;
-                                      }
-                                      {
-                                        PrintOrient = Choice : mgiDataTypes;
-                                            {
-                                              PrintOrientBox : ChoiceBox = XmRowColumn;
-                                                  {
-                                                    Portrait = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      set = True;
-                                                      labelString = Portrait;
-                                                  }
-                                                  {
-                                                    Landscape = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = Landscape;
-                                                  }
-                                            }
-                                      }
-                                      {
-                                        PrintColumn = Choice : mgiDataTypes;
-                                            {
-                                              PrintColumnBox : ChoiceBox = XmRowColumn;
-                                                  {
-                                                    OneColumn = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      set = True;
-                                                      labelString = "1 column";
-                                                  }
-                                                  {
-                                                    TwoColumn = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = "2 column";
-                                                  }
-                                            }
-                                      }
-                                }
-                          }
                     }
                     {
                       SearchDialog = SearchDialog : mgiDialog;
@@ -15330,55 +14682,6 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       ReportDialog = ReportDialog;
-                          {
-                            FileSelection = FileSelection;
-                          }
-                          {
-                            Lookup = XmFrame;
-                                {
-                                  panedWindow = XmPanedWindow;
-                                      {
-                                        ReportList = LookupList;
-                                      }
-                                      {
-                                        PrinterList = LookupList;
-                                      }
-                                      {
-                                        PrintOrient = Choice : mgiDataTypes;
-                                            {
-                                              PrintOrientBox : ChoiceBox = XmRowColumn;
-                                                  {
-                                                    Portrait = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      set = True;
-                                                      labelString = Portrait;
-                                                  }
-                                                  {
-                                                    Landscape = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = Landscape;
-                                                  }
-                                            }
-                                      }
-                                      {
-                                        PrintColumn = Choice : mgiDataTypes;
-                                            {
-                                              PrintColumnBox : ChoiceBox = XmRowColumn;
-                                                  {
-                                                    OneColumn = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      set = True;
-                                                      labelString = "1 column";
-                                                  }
-                                                  {
-                                                    TwoColumn = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = "2 column";
-                                                  }
-                                            }
-                                      }
-                                }
-                          }
                     }
                     {
                       SearchDialog = SearchDialog;

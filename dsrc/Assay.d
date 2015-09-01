@@ -2390,7 +2390,7 @@ rules:
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
 	  Query.select := "select distinct g._Assay_key, " + 
-			"convert(g.jnumID,';',g.assayType,';',g.symbol), g.jnumID, g.assayType, g.symbol\n" + 
+			"concat(g.jnumID,';',g.assayType,';',g.symbol), g.jnumID, g.assayType, g.symbol\n" + 
 			from + "\n" + where + "\norder by g.jnumID, g.assayType, g.symbol\n";
 	  Query.table := GXD_ASSAY;
 	  send(Query, 0);

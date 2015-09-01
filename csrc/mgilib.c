@@ -2567,6 +2567,9 @@ char *mgi_DBdelete(int table, char *key)
       case MGI_EMAPS_MAPPING_PARENT:
               sprintf(buf, "delete from %s where %s = '%s' %s", mgi_DBtable(table), mgi_DBkey(table), key, END_VALUE_C);
 	      break;
+      case GXD_ANTIBODY:
+              sprintf(buf, "delete from GXD_AntibodyPrep where %s = %s %s \ndelete from %s where %s = %s %s", mgi_DBkey(table), key, END_VALUE_C, mgi_DBtable(table), mgi_DBkey(table), key, END_VALUE_C);
+	      break;
       default:
               sprintf(buf, "delete from %s where %s = %s %s", mgi_DBtable(table), mgi_DBkey(table), key, END_VALUE_C);
 	      break;
@@ -2600,6 +2603,9 @@ char *mgi_DBdelete2(int table, char *key, char *key2)
       case MGI_EMAPS_MAPPING_PARENT:
               sprintf(buf, "delete from %s where %s = '%s' %s", mgi_DBtable(table), mgi_DBkey(table), key, END_VALUE_C);
 	      break;
+      case GXD_ANTIBODY:
+              sprintf(buf, "delete from GXD_AntibodyPrep where %s = %s %s \ndelete from %s where %s = %s %s", mgi_DBkey(table), key, END_VALUE_C, mgi_DBtable(table), mgi_DBkey(table), key, END_VALUE_C);
+      	      break;
       default:
               sprintf(buf, "delete from %s where %s = %s %s", mgi_DBtable(table), mgi_DBkey(table), key, END_VALUE_C);
 	      break;

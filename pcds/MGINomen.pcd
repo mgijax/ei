@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Tue Jan 13 07:36:16 2015";
+      lastWritten = "Tue Sep  1 08:05:49 2015";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -738,55 +738,6 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       ReportDialog = ReportDialog;
-                          {
-                            FileSelection = FileSelection;
-                          }
-                          {
-                            Lookup = XmFrame;
-                                {
-                                  panedWindow = XmPanedWindow;
-                                      {
-                                        ReportList = LookupList : mgiLookup;
-                                      }
-                                      {
-                                        PrinterList = LookupList;
-                                      }
-                                      {
-                                        PrintOrient = Choice : mgiDataTypes;
-                                            {
-                                              PrintOrientBox : ChoiceBox = XmRowColumn;
-                                                  {
-                                                    Portrait = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      set = True;
-                                                      labelString = Portrait;
-                                                  }
-                                                  {
-                                                    Landscape = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = Landscape;
-                                                  }
-                                            }
-                                      }
-                                      {
-                                        PrintColumn = Choice : mgiDataTypes;
-                                            {
-                                              PrintColumnBox : ChoiceBox = XmRowColumn;
-                                                  {
-                                                    OneColumn = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      set = True;
-                                                      labelString = "1 column";
-                                                  }
-                                                  {
-                                                    TwoColumn = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = "2 column";
-                                                  }
-                                            }
-                                      }
-                                }
-                          }
                     }
                     {
                       SearchDialog = SearchDialog : mgiDialog;
