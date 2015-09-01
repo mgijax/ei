@@ -201,10 +201,6 @@ locals:
 
 	markerEvent : string := "1";    -- assigned
 
-	-- this column is always set to the default
-	-- this column can be removed (see TR10841)
-	curationState : string := "166894";	-- Default Curation State
-
 rules:
 
 --
@@ -416,7 +412,6 @@ rules:
                  top->MarkerStatusMenu.menuHistory.defaultValue + "," +
                  markerEvent + "," +
                  NOTSPECIFIED + "," +
-                 curationState + "," +
 	         mgi_DBprstr(top->Symbol->text.value) + "," +
 	         mgi_DBprstr(top->Name->text.value) + "," +
                  mgi_DBprstr(top->ChromosomeMenu.menuHistory.defaultValue) + "," +
