@@ -669,11 +669,11 @@ rules:
               top->mgiCitation->ObjectID->text.value != "NULL") then
             where := where + "\nand i._Refs_key = " + top->mgiCitation->ObjectID->text.value;
 	  elsif (top->mgiCitation->Citation->text.value.length > 0) then
-            where := where + "\nand i.short_citation like " + mgi_DBprstr(top->mgiCitation->Citation->text.value);
+            where := where + "\nand i.short_citation ilike " + mgi_DBprstr(top->mgiCitation->Citation->text.value);
           end if;
  
           if (top->FigureLabel->text.value.length > 0) then
-	    where := where + "\nand i.figureLabel like " + mgi_DBprstr(top->FigureLabel->text.value);
+	    where := where + "\nand i.figureLabel ilike " + mgi_DBprstr(top->FigureLabel->text.value);
 	  end if;
 
 	  if (top->ImageClassMenu.menuHistory.searchValue != "%") then
@@ -690,12 +690,12 @@ rules:
 
           if (top->Caption->text.value.length > 0) then
 	    where := where + "\nand n._NoteType_key = " + (string) top->Caption.noteTypeKey +
-		     "\nand n.note like " + mgi_DBprstr(top->Caption->text.value);
+		     "\nand n.note ilike " + mgi_DBprstr(top->Caption->text.value);
 	    from_note := true;
           elsif (top->Copyright->text.value.length > 0) then
 	    if (strstr(top->Copyright->text.value, "%") != nil) then
 	      where := where + "\nand n._NoteType_key = " + (string) top->Copyright.noteTypeKey +
-		       "\nand n.note like " + mgi_DBprstr(top->Copyright->text.value);
+		       "\nand n.note ilike " + mgi_DBprstr(top->Copyright->text.value);
 	      from_note := true;
 	    end if;
 	  end if;
@@ -728,7 +728,7 @@ rules:
 
 	  value := mgi_tblGetCell(table, 0, table.paneLabel);
 	  if (value.length > 0) then
-	    where := where + "\nand p.paneLabel like " + mgi_DBprstr2(value);
+	    where := where + "\nand p.paneLabel ilike " + mgi_DBprstr2(value);
 	    from_pane := true;
 	  end if;
 

@@ -826,7 +826,7 @@ rules:
 --	  end if;
 
 	  if (top->Library->text.value.length > 0) then
-	    where := where + " and s.name like " + mgi_DBprstr(top->Library->text.value);
+	    where := where + " and s.name ilike " + mgi_DBprstr(top->Library->text.value);
 	  end if;
 
 	  if (top->mgiCitation->ObjectID->text.value.length > 0 and top->mgiCitation->ObjectID->text.value != "NULL") then
@@ -849,14 +849,14 @@ rules:
             where := where + " and s._Strain_key = " + top->Strain->StrainID->text.value;
           elsif (top->Strain->Verify->text.value.length > 0) then
             fromStrain := true;
-            where := where + " and ss.strain like " + mgi_DBprstr(top->Strain->Verify->text.value) + "\n";
+            where := where + " and ss.strain ilike " + mgi_DBprstr(top->Strain->Verify->text.value) + "\n";
           end if;
  
           if (top->Tissue->TissueID->text.value.length > 0) then
             where := where + " and s._Tissue_key = " + top->Tissue->TissueID->text.value;
           elsif (top->Tissue->Verify->text.value.length > 0) then
             fromTissue := true;
-            where := where + " and st.tissue like " + mgi_DBprstr(top->Tissue->Verify->text.value) + "\n";
+            where := where + " and st.tissue ilike " + mgi_DBprstr(top->Tissue->Verify->text.value) + "\n";
           end if;
  
           if (top->GenderMenu.menuHistory.searchValue != "%") then
@@ -867,11 +867,11 @@ rules:
             where := where + " and s._CellLine_key = " + top->CellLine->CellLineID->text.value;
           elsif (top->CellLine->Verify->text.value.length > 0) then
             fromCellLine := true;
-            where := where + " and cl.term like " + mgi_DBprstr(top->CellLine->Verify->text.value) + "\n";
+            where := where + " and cl.term ilike " + mgi_DBprstr(top->CellLine->Verify->text.value) + "\n";
           end if;
  
           if (top->AgeMenu.menuHistory.searchValue != "%") then
-            where := where + " and s.age like '" + top->AgeMenu.menuHistory.defaultValue;
+            where := where + " and s.age ilike '" + top->AgeMenu.menuHistory.defaultValue;
 
             if (top->Age->text.value.length > 0) then
               where := where + " " + top->Age->text.value + "'";
@@ -879,11 +879,11 @@ rules:
               where := where + "%'";
             end if;
           elsif (top->AgeMenu.menuHistory.searchValue = "%" and top->Age->text.value.length > 0) then
-            where := where + " and s.age like '%" + top->Age->text.value + "'";
+            where := where + " and s.age ilike '%" + top->Age->text.value + "'";
           end if;
  
           if (top->Description->text.value.length > 0) then
-            where := where + " and s.description like " + mgi_DBprstr(top->Description->text.value);
+            where := where + " and s.description ilike " + mgi_DBprstr(top->Description->text.value);
           end if;
  
 	  if (not SelectMolecularSource.master and where.length > 0) then

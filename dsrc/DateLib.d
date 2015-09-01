@@ -175,14 +175,14 @@ rules:
 	  value := mgi_tblGetCell(table, table.createdBy, table.byUser);
 	  if (value.length > 0) then
 	    where := where + "\nand " + tag + "._CreatedBy_key = u1._User_key" +
-		"\nand u1.login like " + mgi_DBprstr(value);
+		"\nand u1.login ilike " + mgi_DBprstr(value);
 	    from := ",MGI_User u1";
 	  end if;
 
 	  value := mgi_tblGetCell(table, table.modifiedBy, table.byUser);
 	  if (value.length > 0) then
 	    where := where + "\nand " + tag + "._ModifiedBy_key = u2._User_key" +
-		"\nand u2.login like " + mgi_DBprstr(value);
+		"\nand u2.login ilike " + mgi_DBprstr(value);
 	    from := from + ",MGI_User u2";
 	  end if;
 
@@ -190,7 +190,7 @@ rules:
 	    value := mgi_tblGetCell(table, table.approvedBy, table.byUser);
 	    if (value.length > 0) then
 	      where := where + "\nand " + tag + "._ApprovedBy_key = u3._User_key" +
-		  "\nand u3.login like " + mgi_DBprstr(value);
+		  "\nand u3.login ilike " + mgi_DBprstr(value);
 	      from := from + ",MGI_User u3";
 	    end if;
 	  end if;
@@ -199,7 +199,7 @@ rules:
 	    value := mgi_tblGetCell(table, table.broadcastBy, table.byUser);
 	    if (value.length > 0) then
 	      where := where + "\nand " + tag + "._BroadcastBy_key = u4._User_key" +
-		  "\nand u4.login like " + mgi_DBprstr(value);
+		  "\nand u4.login ilike " + mgi_DBprstr(value);
 	      from := from + ",MGI_User u4";
 	    end if;
 	  end if;

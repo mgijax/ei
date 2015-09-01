@@ -460,11 +460,11 @@ rules:
           where := where + top->ModificationHistory->Table.sqlWhere;
  
           if (top->Latin->text.value.length > 0) then
-            where := where + "\nand s.latinName like " + mgi_DBprstr(top->Latin->text.value);
+            where := where + "\nand s.latinName ilike " + mgi_DBprstr(top->Latin->text.value);
           end if;
 
           if (top->Common->text.value.length > 0) then
-            where := where + "\nand s.commonName like " + mgi_DBprstr(top->Common->text.value);
+            where := where + "\nand s.commonName ilike " + mgi_DBprstr(top->Common->text.value);
           end if;
 
           value := mgi_tblGetCell(top->OrganismType->Table, 0, top->OrganismType->Table.typeKey);

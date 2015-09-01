@@ -409,25 +409,25 @@ rules:
 	  where := where + "\nand a.isMutant = 1";
 
           if (top->EditForm->CellLine->text.value.length > 0) then
-	    where := where + "\nand a.cellline like " + mgi_DBprstr(top->EditForm->CellLine->text.value);
+	    where := where + "\nand a.cellline ilike " + mgi_DBprstr(top->EditForm->CellLine->text.value);
 	  end if;
 
 	  if (top->EditForm->mgiParentCellLine->ObjectID->text.value.length > 0) then
 	    where := where + "\nand a.parentCellLine_key = " + top->EditForm->mgiParentCellLine->ObjectID->text.value;
 	  elsif (top->EditForm->mgiParentCellLine->CellLine->text.value.length > 0) then
-	    where := where + "\nand a.parentCellLine like " + mgi_DBprstr(top->EditForm->mgiParentCellLine->CellLine->text.value);
+	    where := where + "\nand a.parentCellLine ilike " + mgi_DBprstr(top->EditForm->mgiParentCellLine->CellLine->text.value);
 	  end if;
 
           if (top->EditForm->mgiParentCellLine->ParentStrain->StrainID->text.value.length > 0) then
             where := where + "\nand a.parentCellLineStrain_key = " + top->EditForm->mgiParentCellLine->ParentStrain->StrainID->text.value;;
           elsif (top->EditForm->mgiParentCellLine->ParentStrain->Verify->text.value.length > 0) then
-            where := where + "\nand a.parentCellLineStrain like " + mgi_DBprstr(top->EditForm->mgiParentCellLine->ParentStrain->Verify->text.value);
+            where := where + "\nand a.parentCellLineStrain ilike " + mgi_DBprstr(top->EditForm->mgiParentCellLine->ParentStrain->Verify->text.value);
           end if;
 
 	  if (top->EditForm->mgiParentCellLine->Derivation->ObjectID->text.value.length > 0) then
 	    where := where + "\nand a._Derivation_key = " + top->EditForm->mgiParentCellLine->Derivation->ObjectID->text.value;
 	  elsif (top->EditForm->mgiParentCellLine->Derivation->CharText->text.value.length > 0) then
-	    where := where + "\nand a.derivationName like " + mgi_DBprstr(top->EditForm->mgiParentCellLine->Derivation->CharText->text.value);
+	    where := where + "\nand a.derivationName ilike " + mgi_DBprstr(top->EditForm->mgiParentCellLine->Derivation->CharText->text.value);
 	  end if;
 
           if (top->EditForm->AlleleCellLineTypeMenu.menuHistory.searchValue != "%") then
@@ -445,7 +445,7 @@ rules:
 	  if (top->EditForm->mgiAlleleVector->ObjectID->text.value.length > 0) then
 	    where := where + "\nand a._Vector_key = " + top->EditForm->mgiAlleleVector->ObjectID->text.value;
 	  elsif (top->EditForm->mgiAlleleVector->Vector->text.value.length > 0) then
-	    where := where + "\nand a.vector like " + mgi_DBprstr(top->EditForm->mgiAlleleVector->Vector->text.value);
+	    where := where + "\nand a.vector ilike " + mgi_DBprstr(top->EditForm->mgiAlleleVector->Vector->text.value);
 	  end if;
 
           if (top->EditForm->AlleleVectorTypeMenu.menuHistory.searchValue != "%") then
@@ -453,7 +453,7 @@ rules:
           end if;
 
           if (top->Symbol->text.value.length > 0) then
-            where := where + "\nand c.symbol like " + mgi_DBprstr(top->Symbol->text.value);
+            where := where + "\nand c.symbol ilike " + mgi_DBprstr(top->Symbol->text.value);
 	    from_allele := true;
           end if;
 

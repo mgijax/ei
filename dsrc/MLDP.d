@@ -905,7 +905,7 @@ rules:
 	    if (ExptForm->Female->text.value.length <= 255) then
 	      set := set + 
 		     "female = " + mgi_DBprstr(ExptForm->Female->text.value) + "," +
-		     "female2 = NULL,";
+		     "female2 is NULL,";
             else
               set := set + 
 		     "female = " + mgi_DBprstr(ExptForm->Female->text.value->substr(1, 255)) + "," +
@@ -917,7 +917,7 @@ rules:
 	    if (ExptForm->Male->text.value.length <= 255) then
 	      set := set + 
 		     "male = " + mgi_DBprstr(ExptForm->Male->text.value) + "," +
-		     "male2 = NULL,";
+		     "male2 is NULL,";
             else
               set := set + 
 		     "male = " + mgi_DBprstr(ExptForm->Male->text.value->substr(1, 255)) + "," +
@@ -2018,12 +2018,12 @@ rules:
           elsif (top->ExptDetailForm->mgiCitation->Jnum->text.value.length > 0) then
 	    where := where + " and e.jnum = " + top->ExptDetailForm->mgiCitation->Jnum->text.value + "\n";
           elsif (top->ExptDetailForm->mgiCitation->Citation->text.value.length > 0) then
-	    where := where + " and e.short_citation like " + 
+	    where := where + " and e.short_citation ilike " + 
 		mgi_DBprstr(top->ExptDetailForm->mgiCitation->Citation->text.value) + "\n";
 	  end if;
 
           if (top->referenceNote->Note->text.value.length > 0) then
-            where := where + "\nand n.note like " + mgi_DBprstr(top->referenceNote->Note->text.value);
+            where := where + "\nand n.note ilike " + mgi_DBprstr(top->referenceNote->Note->text.value);
             from_note := true;
           end if;
       
@@ -2054,7 +2054,7 @@ rules:
 	  -- From Experiment Notes MLD_EXPT_NOTES
 
           if (ExptForm->Notes->text.value.length > 0) then
-            where := where + "\nand en.note like " + mgi_DBprstr(ExptForm->Notes->text.value);
+            where := where + "\nand en.note ilike " + mgi_DBprstr(ExptForm->Notes->text.value);
 	    from_enote := true;
           end if;
 
@@ -2068,7 +2068,7 @@ rules:
 	  else
             value := mgi_tblGetCell(table, 0, table.markerSymbol);
             if (value.length > 0) then
-              where := where + "\nand m.symbol like " + mgi_DBprstr(value);
+              where := where + "\nand m.symbol ilike " + mgi_DBprstr(value);
 	    from_emarker := true;
 	    from_marker := true;
 	    end if;
@@ -2081,7 +2081,7 @@ rules:
 	  else
             value := mgi_tblGetCell(table, 0, (integer) table.alleleSymbol[1]);
             if (value.length > 0) then
-              where := where + "\nand a.symbol like " + mgi_DBprstr(value);
+              where := where + "\nand a.symbol ilike " + mgi_DBprstr(value);
 	      from_emarker := true;
 	      from_allele := true;
 	    end if;
@@ -2095,7 +2095,7 @@ rules:
 
           value := mgi_tblGetCell(table, 0, table.description);
           if (value.length > 0) then
-            where := where + "\nand e.description like " + mgi_DBprstr(value);
+            where := where + "\nand e.description ilike " + mgi_DBprstr(value);
 	    from_emarker := true;
           end if;
 
@@ -2104,12 +2104,12 @@ rules:
 	  if (ExptForm = top->ExptCrossForm) then
 
 	    if (ExptForm->Female->text.value.length > 0) then
-	      where := where + "\nand c.female like " + mgi_DBprstr(ExptForm->Female->text.value);
+	      where := where + "\nand c.female ilike " + mgi_DBprstr(ExptForm->Female->text.value);
 	      from_cross := true;
 	    end if;
 
 	    if (ExptForm->Male->text.value.length > 0) then
-	      where := where + "\nand c.male like " + mgi_DBprstr(ExptForm->Male->text.value);
+	      where := where + "\nand c.male ilike " + mgi_DBprstr(ExptForm->Male->text.value);
 	      from_cross := true;
 	    end if;
 
@@ -2119,7 +2119,7 @@ rules:
 	    else
 	      if (ExptForm->mgiCross->Verify->text.value.length > 0) then
 	        where := where + 
-			"\nand cs.whoseCross like " + mgi_DBprstr(ExptForm->mgiCross->Verify->text.value);
+			"\nand cs.whoseCross ilike " + mgi_DBprstr(ExptForm->mgiCross->Verify->text.value);
 	        from_crossset := true;
 	      end if;
 
@@ -2135,7 +2135,7 @@ rules:
 	        from_crossset := true;
 	      elsif (ExptForm->FStrain->Verify->text.value.length > 0) then
 		where := where + 
-			"\nand s2.strain like " + mgi_DBprstr(ExptForm->FStrain->Verify->text.value);
+			"\nand s2.strain ilike " + mgi_DBprstr(ExptForm->FStrain->Verify->text.value);
 		from_crossset := true;
 		from_strain2 := true;
 	      end if;
@@ -2146,7 +2146,7 @@ rules:
 	        from_crossset := true;
 	      elsif (ExptForm->MStrain->Verify->text.value.length > 0) then
 		where := where + 
-			"\nand s3.strain like " + mgi_DBprstr(ExptForm->MStrain->Verify->text.value);
+			"\nand s3.strain ilike " + mgi_DBprstr(ExptForm->MStrain->Verify->text.value);
 		from_crossset := true;
 		from_strain3 := true;
 	      end if;
@@ -2157,7 +2157,7 @@ rules:
 	        from_crossset := true;
 	      elsif (ExptForm->Strain1->Verify->text.value.length > 0) then
 		where := where + 
-			"\nand s4.strain like " + mgi_DBprstr(ExptForm->Strain1->Verify->text.value);
+			"\nand s4.strain ilike " + mgi_DBprstr(ExptForm->Strain1->Verify->text.value);
 		from_crossset := true;
 		from_strain4 := true;
 	      end if;
@@ -2168,18 +2168,18 @@ rules:
 	        from_crossset := true;
 	      elsif (ExptForm->Strain2->Verify->text.value.length > 0) then
 		where := where + 
-			"\nand s5.strain like " + mgi_DBprstr(ExptForm->Strain2->Verify->text.value);
+			"\nand s5.strain ilike " + mgi_DBprstr(ExptForm->Strain2->Verify->text.value);
 		from_crossset := true;
 		from_strain5 := true;
 	      end if;
 
 	      if (ExptForm->Abbrev1->text.value.length > 0) then
-	        where := where + "\nand cs.abbrevHO like " + mgi_DBprstr(ExptForm->Abbrev1->text.value);
+	        where := where + "\nand cs.abbrevHO ilike " + mgi_DBprstr(ExptForm->Abbrev1->text.value);
 	        from_crossset := true;
 	      end if;
 
 	      if (ExptForm->Abbrev2->text.value.length > 0) then
-	        where := where + "\nand cs.abbrevHT like " + mgi_DBprstr(ExptForm->Abbrev2->text.value);
+	        where := where + "\nand cs.abbrevHT ilike " + mgi_DBprstr(ExptForm->Abbrev2->text.value);
 	        from_crossset := true;
 	      end if;
 
@@ -2198,7 +2198,7 @@ rules:
 
             value := mgi_tblGetCell(table, 0, table.haplotype);
             if (value.length > 0) then
-              where := where + "\nand ch.alleleLine like " + mgi_DBprstr(value);
+              where := where + "\nand ch.alleleLine ilike " + mgi_DBprstr(value);
 	      from_crosshap := true;
             end if;
 
@@ -2229,25 +2229,25 @@ rules:
 	    else
 	      if (ExptForm->mgiRISet->Verify->text.value.length > 0) then
 		where := where + 
-			"\nand rs.designation like " + mgi_DBprstr(ExptForm->mgiRISet->Verify->text.value);
+			"\nand rs.designation ilike " + mgi_DBprstr(ExptForm->mgiRISet->Verify->text.value);
 		from_riset := true;
 	      end if;
 
 	      if (ExptForm->mgiRISet->Origin->text.value.length > 0) then
 		where := where + 
-			"\nand rs.origin like " + mgi_DBprstr(ExptForm->mgiRISet->Origin->text.value);
+			"\nand rs.origin ilike " + mgi_DBprstr(ExptForm->mgiRISet->Origin->text.value);
 		from_riset := true;
 	      end if;
 
 	      if (ExptForm->mgiRISet->Abbrev1->text.value.length > 0) then
 		where := where + 
-			"\nand rs.abbrev1 like " + mgi_DBprstr(ExptForm->mgiRISet->Abbrev1->text.value);
+			"\nand rs.abbrev1 ilike " + mgi_DBprstr(ExptForm->mgiRISet->Abbrev1->text.value);
 		from_riset := true;
 	      end if;
 
 	      if (ExptForm->mgiRISet->Abbrev2->text.value.length > 0) then
 		where := where + 
-			"\nand rs.abbrev2 like " + mgi_DBprstr(ExptForm->mgiRISet->Abbrev2->text.value);
+			"\nand rs.abbrev2 ilike " + mgi_DBprstr(ExptForm->mgiRISet->Abbrev2->text.value);
 		from_riset := true;
 	      end if;
 	    end if;
@@ -2255,7 +2255,7 @@ rules:
 	    from_ri := from_ri or from_riset;
 
 	    if (ExptForm->Animal->text.value.length > 0) then
-	      where := where + "\nand r.RI_IdList like " + mgi_DBprstr(ExptForm->Animal->text.value);
+	      where := where + "\nand r.RI_IdList ilike " + mgi_DBprstr(ExptForm->Animal->text.value);
 	      from_ri := true;
 	    end if;
 
@@ -2269,7 +2269,7 @@ rules:
 
             value := mgi_tblGetCell(table, 0, table.haplotype);
             if (value.length > 0) then
-              where := where + "\nand rh.alleleLine like " + mgi_DBprstr(value);
+              where := where + "\nand rh.alleleLine ilike " + mgi_DBprstr(value);
 	      from_rihap := true;
             end if;
 
@@ -2289,7 +2289,7 @@ rules:
 
             value := mgi_tblGetCell(table, 0, table.sets);
             if (value.length > 0) then
-              where := where + "\nand rp.RI_Lines like " + mgi_DBprstr(value);
+              where := where + "\nand rp.RI_Lines ilike " + mgi_DBprstr(value);
 	      from_ripoint := true;
             end if;
 	  end if;
@@ -2299,7 +2299,7 @@ rules:
 	  if (ExptForm = top->ExptHybridForm) then
 
 	    if (ExptForm->Band->text.value.length > 0) then
-	      where := where + "\nand h.band like " + mgi_DBprstr(ExptForm->Band->text.value);
+	      where := where + "\nand h.band ilike " + mgi_DBprstr(ExptForm->Band->text.value);
 	      from_hybrid := true;
 	    end if;
 
@@ -2320,28 +2320,28 @@ rules:
 	      where := where + "\nand i._Strain_key = " + ExptForm->Strain->StrainID->text.value;
 	      from_insitu := true;
 	    elsif (ExptForm->Strain->Verify->text.value.length > 0) then
-	      where := where + "\nand s1.strain like " + mgi_DBprstr(ExptForm->Strain->Verify->text.value);
+	      where := where + "\nand s1.strain ilike " + mgi_DBprstr(ExptForm->Strain->Verify->text.value);
 	      from_insitu := true;
 	      from_strain1 := true;
 	    end if;
 
 	    if (ExptForm->Band->text.value.length > 0) then
-	      where := where + "\nand i.band like " + mgi_DBprstr(ExptForm->Band->text.value);
+	      where := where + "\nand i.band ilike " + mgi_DBprstr(ExptForm->Band->text.value);
 	      from_insitu := true;
 	    end if;
 
 	    if (ExptForm->CellOrigin->text.value.length > 0) then
-	      where := where + "\nand i.cellOrigin like " + mgi_DBprstr(ExptForm->CellOrigin->text.value);
+	      where := where + "\nand i.cellOrigin ilike " + mgi_DBprstr(ExptForm->CellOrigin->text.value);
 	      from_insitu := true;
 	    end if;
 
 	    if (ExptForm->KaryoType->text.value.length > 0) then
-	      where := where + "\nand i.karyotype like " + mgi_DBprstr(ExptForm->KaryoType->text.value);
+	      where := where + "\nand i.karyotype ilike " + mgi_DBprstr(ExptForm->KaryoType->text.value);
 	      from_insitu := true;
 	    end if;
 
 	    if (ExptForm->Robert->text.value.length > 0) then
-	      where := where + "\nand i.robertsonians like " + mgi_DBprstr(ExptForm->Robert->text.value);
+	      where := where + "\nand i.robertsonians ilike " + mgi_DBprstr(ExptForm->Robert->text.value);
 	      from_insitu := true;
 	    end if;
 
@@ -2349,7 +2349,7 @@ rules:
 
             value := mgi_tblGetCell(table, 0, table.region);
             if (value.length > 0) then
-              where := where + "\nand ir.region like " + mgi_DBprstr(value);
+              where := where + "\nand ir.region ilike " + mgi_DBprstr(value);
 	      from_insituregion := true;
 	    end if;
 	  end if;
@@ -2362,33 +2362,33 @@ rules:
 	      where := where + "\nand f._Strain_key = " + ExptForm->Strain->StrainID->text.value;
 	      from_fish := true;
 	    elsif (ExptForm->Strain->Verify->text.value.length > 0) then
-	      where := where + "\nand s1.strain like " + mgi_DBprstr(ExptForm->Strain->Verify->text.value);
+	      where := where + "\nand s1.strain ilike " + mgi_DBprstr(ExptForm->Strain->Verify->text.value);
 	      from_fish := true;
 	      from_strain1 := true;
 	    end if;
 
 	    if (ExptForm->Band->text.value.length > 0) then
-	      where := where + "\nand f.band like " + mgi_DBprstr(ExptForm->Band->text.value);
+	      where := where + "\nand f.band ilike " + mgi_DBprstr(ExptForm->Band->text.value);
 	      from_fish := true;
 	    end if;
 
 	    if (ExptForm->CellOrigin->text.value.length > 0) then
-	      where := where + "\nand f.cellOrigin like " + mgi_DBprstr(ExptForm->CellOrigin->text.value);
+	      where := where + "\nand f.cellOrigin ilike " + mgi_DBprstr(ExptForm->CellOrigin->text.value);
 	      from_fish := true;
 	    end if;
 
 	    if (ExptForm->KaryoType->text.value.length > 0) then
-	      where := where + "\nand f.karyotype like " + mgi_DBprstr(ExptForm->KaryoType->text.value);
+	      where := where + "\nand f.karyotype ilike " + mgi_DBprstr(ExptForm->KaryoType->text.value);
 	      from_fish := true;
 	    end if;
 
 	    if (ExptForm->Robert->text.value.length > 0) then
-	      where := where + "\nand f.robertsonians like " + mgi_DBprstr(ExptForm->Robert->text.value);
+	      where := where + "\nand f.robertsonians ilike " + mgi_DBprstr(ExptForm->Robert->text.value);
 	      from_fish := true;
 	    end if;
 
 	    if (ExptForm->Label->text.value.length > 0) then
-	      where := where + "\nand f.label like " + mgi_DBprstr(ExptForm->Label->text.value);
+	      where := where + "\nand f.label ilike " + mgi_DBprstr(ExptForm->Label->text.value);
 	      from_fish := true;
 	    end if;
 
@@ -2396,7 +2396,7 @@ rules:
 
             value := mgi_tblGetCell(table, 0, table.region);
             if (value.length > 0) then
-              where := where + "\nand fr.region like " + mgi_DBprstr(value);
+              where := where + "\nand fr.region ilike " + mgi_DBprstr(value);
 	      from_fishregion := true;
 	    end if;
 	  end if;
@@ -2544,7 +2544,7 @@ rules:
 	  send(PrepareSearch, 0);
           Query.source_widget := top;
           Query.select := "select e._Expt_key, \
-			e.jnumID || ', ' || e.exptType || '-' || convert(varchar(5), e.tag) || ', Chr ' || e.chromosome, \
+			e.jnumID || ', ' || e.exptType || '-' || e.tag || ', Chr ' || e.chromosome, \
 			e.jnum, e.exptType, e.tag\n" +
 		from + "\n" + where + "\norder by e.jnum, e.exptType, e.tag";
           Query.table := MLD_EXPT_VIEW;

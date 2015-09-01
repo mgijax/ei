@@ -607,11 +607,11 @@ rules:
 	  where := where + top->Reference->Table.sqlWhere;
 
           if (top->Name->text.value.length > 0) then
-	    where := where + " and g.antibodyName like " + mgi_DBprstr(top->Name->text.value);
+	    where := where + " and g.antibodyName ilike " + mgi_DBprstr(top->Name->text.value);
 
 	    -- union the antibody alias-es
             unionalias := "\nunion all\n" + select + from + "," + mgi_DBtable(GXD_ANTIBODYALIAS) + " aa" +
-                "\nwhere aa.alias like " + mgi_DBprstr(top->Name->text.value) +
+                "\nwhere aa.alias ilike " + mgi_DBprstr(top->Name->text.value) +
 		"\nand g." + mgi_DBkey(GXD_ANTIBODY) + " = aa." + mgi_DBkey(GXD_ANTIBODY);
 	  end if;
 
@@ -632,7 +632,7 @@ rules:
 	  end if;
 
           if (top->AntibodyNote->text.value.length > 0) then
-	    where := where + " and g.antibodyNote like " + 
+	    where := where + " and g.antibodyNote ilike " + 
 		mgi_DBprstr(top->AntibodyNote->text.value);
 	  end if;
 
@@ -642,7 +642,7 @@ rules:
 
           value := mgi_tblGetCell(table, 0, table.alias);
           if (value.length > 0) then
-            where := where + " and aa.alias like " + mgi_DBprstr(value);
+            where := where + " and aa.alias ilike " + mgi_DBprstr(value);
             from_alias := true;
 	  end if;
 
@@ -663,7 +663,7 @@ rules:
           else
             value := mgi_tblGetCell(table, 0, table.markerSymbol);
             if (value.length > 0) then
-              where := where + " and m.symbol like " + mgi_DBprstr(value);
+              where := where + " and m.symbol ilike " + mgi_DBprstr(value);
               from_amarker := true;
               from_marker := true;
             end if;
@@ -671,7 +671,7 @@ rules:
  
           value := mgi_tblGetCell(table, 0, table.markerChr);
           if (value.length > 0) then
-            where := where + " and m.chromosome like " + mgi_DBprstr(value);
+            where := where + " and m.chromosome ilike " + mgi_DBprstr(value);
             from_amarker := true;
             from_marker := true;
           end if;
@@ -683,7 +683,7 @@ rules:
 
             if (top->AntigenAccession->AccessionName->text.value.length > 0) then
 	      from_antigen := true;
-	      where := where + " and g1.antigenName like " + 
+	      where := where + " and g1.antigenName ilike " + 
 		  mgi_DBprstr(top->AntigenAccession->AccessionName->text.value);
 	    end if;
 
@@ -702,12 +702,12 @@ rules:
 
           if (top->Region->text.value.length > 0) then
 	    from_antigen := true;
-	    where := where + " and g1.regionCovered like " + mgi_DBprstr(top->Region->text.value);
+	    where := where + " and g1.regionCovered ilike " + mgi_DBprstr(top->Region->text.value);
 	  end if;
 
           if (top->AntigenNote->text.value.length > 0) then
 	    from_antigen := true;
-	    where := where + " and g1.antigenNote like " + mgi_DBprstr(top->AntigenNote->text.value);
+	    where := where + " and g1.antigenNote ilike " + mgi_DBprstr(top->AntigenNote->text.value);
 	  end if;
 
 	  if (from_alias) then

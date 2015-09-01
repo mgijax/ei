@@ -298,7 +298,7 @@ rules:
               propertyValue := mgi_tblGetCell(table, r, table.propertyValue);
 
 	      if (propertyValue.length > 0) then
-	        table.sqlWhere := table.sqlWhere + "\nand " + tableTag + ".propertyValue like " + mgi_DBprstr(propertyValue);
+	        table.sqlWhere := table.sqlWhere + "\nand " + tableTag + ".propertyValue ilike " + mgi_DBprstr(propertyValue);
 	      end if;
 
 	      break;

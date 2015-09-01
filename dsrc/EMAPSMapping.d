@@ -286,17 +286,17 @@ rules:
           where := where + top->ModifiedDate.sql;
  
           if (top->EMAPSid->text.value.length > 0) then
-	    where := where + " and e.emapsID like " + mgi_DBprstr(top->EMAPSid->text.value);
+	    where := where + " and e.emapsID ilike " + mgi_DBprstr(top->EMAPSid->text.value);
 	  end if;
 
           if (top->EMAPSterm->text.value.length > 0) then
-	    where := where + " and t.term like " + mgi_DBprstr(top->EMAPSterm->text.value);
+	    where := where + " and t.term ilike " + mgi_DBprstr(top->EMAPSterm->text.value);
 	    from_term := true;
 	  end if;
 
           value := mgi_tblGetCell(table, 0, table.accID);
           if (value.length > 0) then
-            where := where + "\nand e.accID like " + mgi_DBprstr(value);
+            where := where + "\nand e.accID ilike " + mgi_DBprstr(value);
           end if;
 
 	  if (from_term) then

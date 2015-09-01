@@ -345,7 +345,7 @@ rules:
           where := where + top->ModifiedDate.sql;
  
           if (top->Name->text.value.length > 0) then
-            where := where + "\nand " + tableName + " like " + mgi_DBprstr(top->Name->text.value);
+            where := where + "\nand " + tableName + " ilike " + mgi_DBprstr(top->Name->text.value);
           end if;
 
 	  if (tableID = GXD_ASSAYTYPE) then

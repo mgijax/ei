@@ -335,17 +335,17 @@ rules:
           where := where + top->ModifiedDate.sql;
  
           if (top->Name->text.value.length > 0) then
-	    where := where + " and g.antigenName like " + 
+	    where := where + " and g.antigenName ilike " + 
 		mgi_DBprstr(top->Name->text.value);
 	  end if;
 
           if (top->Region->text.value.length > 0) then
-	    where := where + " and g.regionCovered like " + 
+	    where := where + " and g.regionCovered ilike " + 
 		mgi_DBprstr(top->Region->text.value);
 	  end if;
 
           if (top->Note->text.value.length > 0) then
-	    where := where + " and g.antigenNote like " + 
+	    where := where + " and g.antigenNote ilike " + 
 		mgi_DBprstr(top->Note->text.value);
 	  end if;
 
@@ -359,8 +359,8 @@ rules:
 
           value := mgi_tblGetCell(table, 0, table.antibody);
           if (value.length > 0) then
-            where := where + " and (a.antibodyName like " + mgi_DBprstr(value) +
-		" or al.alias like " + mgi_DBprstr(value) + ")";
+            where := where + " and (a.antibodyName ilike " + mgi_DBprstr(value) +
+		" or al.alias ilike " + mgi_DBprstr(value) + ")";
             from_antibody := true;
 	  end if;
 

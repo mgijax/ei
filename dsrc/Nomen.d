@@ -722,25 +722,25 @@ rules:
           end if;
 
           if (top->Symbol->text.value.length > 0) then
-	    where := where + "\nand m.symbol like " + mgi_DBprstr(top->Symbol->text.value);
+	    where := where + "\nand m.symbol ilike " + mgi_DBprstr(top->Symbol->text.value);
 	    printSelect := printSelect + "\nSymbol = " + top->Symbol->text.value;
 	  end if;
 	    
           if (top->Name->text.value.length > 0) then
-	    where := where + "\nand m.name like " + mgi_DBprstr(top->Name->text.value);
+	    where := where + "\nand m.name ilike " + mgi_DBprstr(top->Name->text.value);
 	    printSelect := printSelect + "\nName = " + top->Name->text.value;
 	  end if;
 	    
           if (top->StatusNotes->text.value.length > 0) then
-	    where := where + "\nand m.statusNote like " + mgi_DBprstr(top->StatusNotes->text.value);
+	    where := where + "\nand m.statusNote ilike " + mgi_DBprstr(top->StatusNotes->text.value);
 	    printSelect := printSelect + "\nStatus Notes = " + top->StatusNotes->text.value;
 	  end if;
 	    
 	  -- If SymbolName filled in, then ignore all other search criteria
 
           if (top->SymbolName->text.value.length > 0) then
-	    where := "\nand m.symbol like " + mgi_DBprstr(top->SymbolName->text.value);
-	    whereName := "\nand m.name like " + mgi_DBprstr(top->SymbolName->text.value);
+	    where := "\nand m.symbol ilike " + mgi_DBprstr(top->SymbolName->text.value);
+	    whereName := "\nand m.name ilike " + mgi_DBprstr(top->SymbolName->text.value);
 	    printSelect := printSelect + "\nSymbol/Name = \n" + top->SymbolName->text.value;
 	  end if;
 	    

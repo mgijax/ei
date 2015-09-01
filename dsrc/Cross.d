@@ -239,7 +239,7 @@ rules:
             if (top->Progeny->text.value.length > 0) then
               set := set + "nProgeny = " + top->Progeny->text.value + ",";
 	    else
-              set := set + "nProgeny = NULL,";
+              set := set + "nProgeny is NULL,";
 	    end if;
           end if;
 
@@ -298,57 +298,57 @@ rules:
           if (top->FStrain->StrainID->text.value.length > 0) then
 	    where := where + "\nand c._femaleStrain_key = " + top->FStrain->StrainID->text.value;
           elsif (top->FStrain->Verify->text.value.length > 0) then
-	    where := where + "\nand s1.strain like " + mgi_DBprstr(top->FStrain->Verify->text.value);
+	    where := where + "\nand s1.strain ilike " + mgi_DBprstr(top->FStrain->Verify->text.value);
 	    from_strain1 := true;
 	  end if;
 
           if (top->FAllele1->text.value.length > 0) then
-	    where := where + "\nand c.femaleAllele1 like " + mgi_DBprstr(top->FAllele1->text.value);
+	    where := where + "\nand c.femaleAllele1 ilike " + mgi_DBprstr(top->FAllele1->text.value);
 	  end if;
 
           if (top->FAllele2->text.value.length > 0) then
-	    where := where + "\nand c.femaleAllele2 like " + mgi_DBprstr(top->FAllele2->text.value);
+	    where := where + "\nand c.femaleAllele2 ilike " + mgi_DBprstr(top->FAllele2->text.value);
 	  end if;
 
           if (top->MStrain->StrainID->text.value.length > 0) then
 	    where := where + "\nand c._maleStrain_key = " + top->MStrain->StrainID->text.value;
           elsif (top->MStrain->Verify->text.value.length > 0) then
-	    where := where + "\nand s2.strain like " + mgi_DBprstr(top->MStrain->Verify->text.value);
+	    where := where + "\nand s2.strain ilike " + mgi_DBprstr(top->MStrain->Verify->text.value);
 	    from_strain2 := true;
 	  end if;
 
           if (top->MAllele1->text.value.length > 0) then
-	    where := where + "\nand c.maleAllele1 like " + mgi_DBprstr(top->MAllele1->text.value);
+	    where := where + "\nand c.maleAllele1 ilike " + mgi_DBprstr(top->MAllele1->text.value);
 	  end if;
 
           if (top->MAllele2->text.value.length > 0) then
-	    where := where + "\nand c.maleAllele1 like " + mgi_DBprstr(top->MAllele2->text.value);
+	    where := where + "\nand c.maleAllele1 ilike " + mgi_DBprstr(top->MAllele2->text.value);
 	  end if;
 
           if (top->Abbrev1->text.value.length > 0) then
-	    where := where + "\nand c.abbrevHO like " + mgi_DBprstr(top->Abbrev1->text.value);
+	    where := where + "\nand c.abbrevHO ilike " + mgi_DBprstr(top->Abbrev1->text.value);
 	  end if;
 
           if (top->Strain1->StrainID->text.value.length > 0) then
 	    where := where + "\nand c._StrainHO_key = " + top->Strain1->StrainID->text.value;
           elsif (top->Strain1->Verify->text.value.length > 0) then
-	    where := where + "\nand s3.strain like " + mgi_DBprstr(top->Strain1->Verify->text.value);
+	    where := where + "\nand s3.strain ilike " + mgi_DBprstr(top->Strain1->Verify->text.value);
 	    from_strain3 := true;
 	  end if;
 
           if (top->Abbrev2->text.value.length > 0) then
-	    where := where + "\nand c.abbrevHT like " + mgi_DBprstr(top->Abbrev2->text.value);
+	    where := where + "\nand c.abbrevHT ilike " + mgi_DBprstr(top->Abbrev2->text.value);
 	  end if;
 
           if (top->Strain2->StrainID->text.value.length > 0) then
 	    where := where + "\nand c._StrainHT_key = " + top->Strain2->StrainID->text.value;
           elsif (top->Strain2->Verify->text.value.length > 0) then
-	    where := where + "\nand s4.strain like " + mgi_DBprstr(top->Strain2->Verify->text.value);
+	    where := where + "\nand s4.strain ilike " + mgi_DBprstr(top->Strain2->Verify->text.value);
 	    from_strain4 := true;
 	  end if;
 
           if (top->Name->text.value.length > 0) then
-	    where := where + "\nand c.whoseCross like " + mgi_DBprstr(top->Name->text.value);
+	    where := where + "\nand c.whoseCross ilike " + mgi_DBprstr(top->Name->text.value);
 	  end if;
 
           if (top->Allele.set) then

@@ -822,7 +822,7 @@ rules:
 	  else
 	    value := top->EditForm->Strain->Verify->text.value;
 	    if (value .length > 0) then
-	      where := where + "\nand ps.strain like " + mgi_DBprstr(value);
+	      where := where + "\nand ps.strain ilike " + mgi_DBprstr(value);
 	    end if;
 	  end if;
 	    
@@ -842,7 +842,7 @@ rules:
 	  else
             value := mgi_tblGetCell(top->AllelePair->Table, 0, top->AllelePair->Table.markerSymbol);
             if (value.length > 0) then
-	      where := where + "\nand m.symbol like " + mgi_DBprstr(value);
+	      where := where + "\nand m.symbol ilike " + mgi_DBprstr(value);
 	      from_allele := true;
 	      from_marker := true;
 	    end if;
@@ -864,7 +864,7 @@ rules:
 	  else
             value := mgi_tblGetCell(top->AllelePair->Table, 0, (integer) top->AllelePair->Table.alleleSymbol[1]);
             if (value.length > 0) then
-	      where := where + "\nand (a1.symbol like " + mgi_DBprstr(value) + " or a2.symbol like " + mgi_DBprstr(value) + ")";
+	      where := where + "\nand (a1.symbol ilike " + mgi_DBprstr(value) + " or a2.symbol ilike " + mgi_DBprstr(value) + ")";
 	      from_allele := true;
 	    end if;
 	  end if;
@@ -878,7 +878,7 @@ rules:
 	  else
             value := mgi_tblGetCell(top->AllelePair->Table, 0, (integer) top->AllelePair->Table.alleleSymbol[2]);
             if (value.length > 0) then
-	      where := where + "\nand (a1.symbol like " + mgi_DBprstr(value) + " or a2.symbol like " + mgi_DBprstr(value) + ")";
+	      where := where + "\nand (a1.symbol ilike " + mgi_DBprstr(value) + " or a2.symbol ilike " + mgi_DBprstr(value) + ")";
 	      from_allele := true;
 	    end if;
 	  end if;
@@ -893,7 +893,7 @@ rules:
             value := mgi_tblGetCell(top->AllelePair->Table, 0, (integer) top->AllelePair->Table.mutantCellLine[1]);
             if (value.length > 0) then
 	      where := where + "\nand ap._MutantCellLine_key_1 = ac._CellLine_key";
-	      where := where + "\nand ac.cellLine like " + mgi_DBprstr(value);
+	      where := where + "\nand ac.cellLine ilike " + mgi_DBprstr(value);
 	      from_cellline := true;
 	    end if;
 	  end if;
@@ -908,7 +908,7 @@ rules:
             value := mgi_tblGetCell(top->AllelePair->Table, 0, (integer) top->AllelePair->Table.mutantCellLine[2]);
             if (value.length > 0) then
 	      where := where + "\nand ap._MutantCellLine_key_2 = ac._CellLine_key";
-	      where := where + "\nand ac.cellLine like " + mgi_DBprstr(value);
+	      where := where + "\nand ac.cellLine ilike " + mgi_DBprstr(value);
 	      from_cellline := true;
 	    end if;
 	  end if;

@@ -415,7 +415,7 @@ rules:
 	    return;
 	  end if;
 
-	  -- First, sort the table by the Term so that all like Terms are grouped together.  
+	  -- First, sort the table by the Term so that all ilike Terms are grouped together.  
 	  -- This will enable us to easily create 1 _Annot_key per Term.
 	  -- If the current  Term is not equal to the previous  Term,
 	  -- then we have a new _Annot_key.
@@ -859,7 +859,7 @@ rules:
 	    if (value.length > 0) then
 	      where := where + "\nand v._LogicalDB_key = 1";
 	      where := where + "\nand v.preferred = 1";
-	      where := where + "\nand v.short_description like " + mgi_DBprstr(value);
+	      where := where + "\nand v.short_description ilike " + mgi_DBprstr(value);
 	    end if;
 	  end if;
 
@@ -879,7 +879,7 @@ rules:
 
           value := mgi_tblGetCell(annotTable, 0, annotTable.sex);
           if (value.length > 0 and value != "NULL") then
-            where := where + "\nand p.value like " + mgi_DBprstr(value);
+            where := where + "\nand p.value ilike " + mgi_DBprstr(value);
             from_evidence := true;
             from_property := true;
           end if;

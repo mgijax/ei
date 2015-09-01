@@ -816,15 +816,15 @@ rules:
           end if;
 
           if (top->Name->text.value.length > 0) then
-            where := where + "\nand s.strain like " + mgi_DBprstr(top->Name->text.value);
+            where := where + "\nand s.strain ilike " + mgi_DBprstr(top->Name->text.value);
           end if;
 
 	  if (top->strainSpecies->Species->text.value.length > 0) then
-	    where := where + "\nand s.species like " + mgi_DBprstr(top->strainSpecies->Species->text.value);
+	    where := where + "\nand s.species ilike " + mgi_DBprstr(top->strainSpecies->Species->text.value);
 	  end if;
 
 	  if (top->strainTypes->StrainType->text.value.length > 0) then
-	    where := where + "\nand s.strainType like " + mgi_DBprstr(top->strainTypes->StrainType->text.value);
+	    where := where + "\nand s.strainType ilike " + mgi_DBprstr(top->strainTypes->StrainType->text.value);
 	  end if;
 
           if (top->StandardMenu.menuHistory.searchValue != "%") then
@@ -883,7 +883,7 @@ rules:
 
           value := mgi_tblGetCell(top->Genotype->Table, 0, top->Genotype->Table.modifiedBy);
           if (value.length > 0) then
-            where := where + "\nand sg.modifiedBy like " + mgi_DBprstr(value);
+            where := where + "\nand sg.modifiedBy ilike " + mgi_DBprstr(value);
 	    from_straingenotype := true;
           end if;
 

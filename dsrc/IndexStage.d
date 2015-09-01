@@ -509,7 +509,7 @@ rules:
               top->mgiMarker->ObjectID->text.value != "NULL") then
             where := where + "\nand i._Marker_key = " + top->mgiMarker->ObjectID->text.value;
           elsif (top->mgiMarker->Marker->text.value.length > 0) then
-            where := where + "\nand i.symbol like " + mgi_DBprstr(top->mgiMarker->Marker->text.value);
+            where := where + "\nand i.symbol ilike " + mgi_DBprstr(top->mgiMarker->Marker->text.value);
           end if;
  
 	  value := top->mgiCitation->ObjectID->text.value;
@@ -522,13 +522,13 @@ rules:
 	    else
 	      value :=  top->mgiCitation->Citation->text.value;
 	      if (value.length > 0) then
-	        where := where + "\nand i.short_citation like " + mgi_DBprstr(value);
+	        where := where + "\nand i.short_citation ilike " + mgi_DBprstr(value);
 	      end if;
 	    end if;
 	  end if;
 
           if (top->Note->text.value.length > 0) then
-	    where := where + "\nand i.comments like " + mgi_DBprstr(top->Note->text.value);
+	    where := where + "\nand i.comments ilike " + mgi_DBprstr(top->Note->text.value);
 	  end if;
 
           if (top->CodedMenu.menuHistory.searchValue != "%") then

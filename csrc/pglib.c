@@ -236,10 +236,7 @@ void mgi_dbclose(PGconn *conn)
 
 PGconn *mgi_dbexec(char *cmd)
 {
-  static char newstr[TEXTBUFSIZ];
   char *ns = cmd;
-
-  memset(newstr, '\0', sizeof(newstr));
 
   /*
   *
@@ -248,52 +245,6 @@ PGconn *mgi_dbexec(char *cmd)
   *
   * see mgi_dbresults for the next step
   */
-
-  /* 
-  *
-  * query translations
-  *
-  * lower case
-  *
-  * "convert(varchar(5), e.tag)" => etag
-  *
-  * "str(pcntrecomb,6,2), str(stderr,6,2)" ==> 
-  *		to_char(pcntrecomb, '99.99'), to_char(stderr, '99.99')
-  *
-  * "str(offset,10,2)" ==> to_char(cmOffset, '9999.99')
-  *
-  */
-
-  /*
-  cmd = mgi_lowersub(cmd);
-  */
-
-  ns = mgi_simplesub(" like ", " ilike ", cmd);
-  strcpy(newstr, ns);
-
-  /*
-  ns = mgi_simplesub("= NULL", "is NULL", newstr);
-  strcpy(newstr, ns);
-
-  ns = mgi_simplesub("= null", "is null", newstr);
-  strcpy(newstr, ns);
-  */
-
-  ns = mgi_simplesub("convert(varchar(5), e.tag)", "e.tag", newstr);
-  strcpy(newstr, ns);
-
-  ns = mgi_simplesub("str(pcntrecomb,6,2), str(stderr,6,2)", \
-	"to_char(pcntrecomb, '99.99'), to_char(stderr, '99.99')", newstr);
-  strcpy(newstr, ns);
-
-  ns = mgi_simplesub("str(offset,10,2)", "to_char(cmOffset, '9999.99')", newstr);
-  strcpy(newstr, ns);
-
-  ns = mgi_simplesub("str_replace(n.note,char(13)||char(10),'')", "regexp_replace(n.note, E'[\\n\\r]+', '', 'g')", newstr);
-  strcpy(newstr, ns);
-
-  ns = mgi_simplesub("convert(varchar(10), x) || ',' || convert(varchar(10), y) || ',' || convert(varchar(10), width) || ',' || convert(varchar(10), height)", "x || ',' || y || ',' || width || ',' || height", newstr);
-  strcpy(newstr, ns);
 
   (void) mgi_writeLog(ns);
   (void) mgi_writeLog("\n\n");
@@ -639,111 +590,6 @@ char *mgi_sql1(char *cmd)
 void mgi_execute_search(Widget dialog, Widget list, char *cmd, int table, char *rowcount)
 {
   return;
-}
-
-/* 
-*
-* mgi_lowersub
-*
-* substitues:
-*
-* xxxx like xxxx ==> lower(xxxx) like lower(xxxx)
-*
-*/
-
-char *mgi_lowersub(char *str)
-{
-  static char newstr[TEXTBUFSIZ];
-  char pat[TEXTBUFSIZ];
-  char repl[TEXTBUFSIZ];
-
-  char *s1, *s2, *ns;
-  int i;
-
-  memset(newstr, '\0', sizeof(newstr));
-  memset(pat, '\0', sizeof(pat));
-  memset(repl, '\0', sizeof(repl));
-
-  s1 = str;
-  ns = newstr;
-
-  /*
-  * find first pattern
-  */
-  s2 = strstr(s1, " not like ");
-
-  /* do nothing if the "not like" action is being used */
-
-  if (s2 != NULL)
-    return(s1);
-
-  s2 = strstr(s1, " like ");
-
-  /* if we found the pattern.... */
-
-  if (s2 == NULL)
-    return(s1);
-
-  /* 
-  * iterate to the end of the pattern
-  *
-  * printf("str: %s\n", str);
-  */
-
-  s1 = s2;
-  *s1--;
-  i = 0;
-  while (*s1 != ' ')
-  {
-    i++;
-    *s1--;
-  }
-  strncat(pat, ++s1, i);
-  strcat(repl, "lower(");
-  strncat(repl, s1, i);
-  strcat(repl, ")");
-
-  /* 
-  * iterate thru the beginning of the pattern
-  *
-  * printf("str: %s\n", str);
-  */
-
-  s1 = s2;
-  while (*s1 != '\'')
-  {
-    *s1++;
-  }
-  s2 = s1;
-  s2++;
-  i = 1;
-  while (*s2 != '\'')
-  {
-    i++;
-    *s2++;
-  }
-  strcat(pat, " like ");
-  strncat(pat, s1, i+1);
-  strcat(repl, " like lower(");
-  strncat(repl, s1, i+1);
-  strcat(repl, ")");
-
-  /*
-  printf("pat: %s\n", pat);
-  printf("repl: %s\n", repl);
-  */
-
-  /*
-  * simple replacement of pattern to replacement
-  */
-
-  ns = mgi_simplesub(pat, repl, str);
-
-  /*
-  printf("ns: %s\n", ns);
-  */
-
-  return ns;
 }
 
 /* 

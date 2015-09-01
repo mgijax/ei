@@ -323,11 +323,11 @@ rules:
           where := where + top->ModifiedDate.sql;
  
           if (top->Name->text.value.length > 0) then
-            where := where + "\nand name like " + mgi_DBprstr(top->Name->text.value);
+            where := where + "\nand name ilike " + mgi_DBprstr(top->Name->text.value);
           end if;
 
           if (top->Description->text.value.length > 0) then
-            where := where + "\nand description like " + mgi_DBprstr(top->Description->text.value);
+            where := where + "\nand description ilike " + mgi_DBprstr(top->Description->text.value);
           end if;
 
           if (top->mgiOrganism->ObjectID->text.value.length > 0) then

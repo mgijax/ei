@@ -2208,7 +2208,7 @@ char *mgi_DBinsert(int table, char *keyName)
 	      mgi_DBtable(table), mgi_DBkey(table));
  	    break;
     case MRK_OFFSET:
-	    sprintf(buf, "insert into %s (%s, source, offset)",
+	    sprintf(buf, "insert into %s (%s, source, cmOffset)",
 	      mgi_DBtable(table), mgi_DBkey(table));
  	    break;
     case NOM_MARKER:

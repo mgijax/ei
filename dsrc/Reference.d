@@ -766,15 +766,15 @@ rules:
           end if;
  
 	  if (top->Authors->text.value.length > 0) then
-	    where := where + "\nand r.authors like " + mgi_DBprstr(top->Authors->text.value);
+	    where := where + "\nand r.authors ilike " + mgi_DBprstr(top->Authors->text.value);
 	  end if;
 
 	  if (top->Title->text.value.length > 0) then
-	    where := where + "\nand r.title like " + mgi_DBprstr(top->Title->text.value);
+	    where := where + "\nand r.title ilike " + mgi_DBprstr(top->Title->text.value);
 	  end if;
 
 	  if (top->mgiJournal->Verify->text.value.length > 0) then
-	    where := where + "\nand r.journal like " + mgi_DBprstr(top->mgiJournal->Verify->text.value);
+	    where := where + "\nand r.journal ilike " + mgi_DBprstr(top->mgiJournal->Verify->text.value);
 	  end if;
 
 	  if (top->mgiDate->Date->text.value.length > 0) then
@@ -784,53 +784,53 @@ rules:
                 top->mgiDate->Date->text.value = "is null") then
 	      where := where + "\nand r.year " + top->mgiDate->Date->text.value;
 	    else
-	      where := where + "\nand r.date like " + mgi_DBprstr(top->mgiDate->Date->text.value);
+	      where := where + "\nand r.date ilike " + mgi_DBprstr(top->mgiDate->Date->text.value);
 	    end if;
 	  end if;
 
 	  if (top->Volume->text.value.length > 0) then
-	    where := where + "\nand r.vol like " + mgi_DBprstr(top->Volume->text.value);
+	    where := where + "\nand r.vol ilike " + mgi_DBprstr(top->Volume->text.value);
 	  end if;
 
 	  if (top->Issue->text.value.length > 0) then
-	    where := where + "\nand r.issue like " + mgi_DBprstr(top->Issue->text.value);
+	    where := where + "\nand r.issue ilike " + mgi_DBprstr(top->Issue->text.value);
 	  end if;
 
 	  if (top->Page->text.value.length > 0) then
-	    where := where + "\nand r.pgs like " + mgi_DBprstr(top->Page->text.value);
+	    where := where + "\nand r.pgs ilike " + mgi_DBprstr(top->Page->text.value);
 	  end if;
 
 	  if (top->Abstract->text.value.length > 0) then
-	    where := where + "\nand r.abstract like " + mgi_DBprstr2(top->Abstract->text.value);
+	    where := where + "\nand r.abstract ilike " + mgi_DBprstr2(top->Abstract->text.value);
 	  end if;
 
 	  if (top->Notes->text.value.length > 0) then
 	    from_notes := true;
-	    where := where + "\nand n.note like " + mgi_DBprstr(top->Notes->text.value);
+	    where := where + "\nand n.note ilike " + mgi_DBprstr(top->Notes->text.value);
 	  end if;
 
 	  if (top->BookForm->Editors->text.value.length > 0) then
-	    where := where + "\nand b.book_au like " + mgi_DBprstr(top->BookForm->Editors->text.value);
+	    where := where + "\nand b.book_au ilike " + mgi_DBprstr(top->BookForm->Editors->text.value);
 	    from_book := true;
 	  end if;
 
 	  if (top->BookForm->Title->text.value.length > 0) then
-	    where := where + "\nand b.book_title like " + mgi_DBprstr(top->BookForm->Title->text.value);
+	    where := where + "\nand b.book_title ilike " + mgi_DBprstr(top->BookForm->Title->text.value);
 	    from_book := true;
 	  end if;
 
 	  if (top->BookForm->Place->text.value.length > 0) then
-	    where := where + "\nand b.place like " + mgi_DBprstr(top->BookForm->Place->text.value);
+	    where := where + "\nand b.place ilike " + mgi_DBprstr(top->BookForm->Place->text.value);
 	    from_book := true;
 	  end if;
 
 	  if (top->BookForm->Publisher->text.value.length > 0) then
-	    where := where + "\nand b.publisher like " + mgi_DBprstr(top->BookForm->Publisher->text.value);
+	    where := where + "\nand b.publisher ilike " + mgi_DBprstr(top->BookForm->Publisher->text.value);
 	    from_book := true;
 	  end if;
 
 	  if (top->BookForm->Series->text.value.length > 0) then
-	    where := where + "\nand b.series_ed like " + mgi_DBprstr(top->BookForm->Series->text.value);
+	    where := where + "\nand b.series_ed ilike " + mgi_DBprstr(top->BookForm->Series->text.value);
 	    from_book := true;
 	  end if;
 

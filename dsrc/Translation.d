@@ -385,7 +385,7 @@ rules:
 
           value := mgi_tblGetCell(translationTable, 0, translationTable.nonmgiTerm);
 	  if (value.length > 0) then
-	    where := where + "\nand m.badName like " + mgi_DBprstr(value);
+	    where := where + "\nand m.badName ilike " + mgi_DBprstr(value);
 	    from_term := true;
 	  end if;
 
@@ -401,7 +401,7 @@ rules:
 	      return;
 	    end if;
 	    from_term := true;
-	    where := where + "\nand v.description like " + mgi_DBprstr(value);
+	    where := where + "\nand v.description ilike " + mgi_DBprstr(value);
 	  end if;
 
 	  if (from_term) then 

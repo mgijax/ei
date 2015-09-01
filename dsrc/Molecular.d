@@ -640,7 +640,7 @@ rules:
 	          return;
 	        end if;
                 cmd := cmd + detailForm->SourceForm.sql;
-	        set := set + "derivedFrom = NULL,";
+	        set := set + "derivedFrom is NULL,";
 	        set := set + "_Source_key = " + MAX_KEY1 + sourceKeyName + MAX_KEY2 + ",";
 	      end if;
 
@@ -1128,11 +1128,11 @@ rules:
           end if;
 
           if (top->MolMasterForm->Name->text.value.length > 0) then
-	    where := where + "\nand p.name like " + mgi_DBprstr(top->MolMasterForm->Name->text.value);
+	    where := where + "\nand p.name ilike " + mgi_DBprstr(top->MolMasterForm->Name->text.value);
 	  end if;
 
           if (top->MolMasterForm->Region->text.value.length > 0) then
-	    where := where + "\nand p.regionCovered like " + mgi_DBprstr(top->MolMasterForm->Region->text.value);
+	    where := where + "\nand p.regionCovered ilike " + mgi_DBprstr(top->MolMasterForm->Region->text.value);
 	  end if;
 
 	  -- Non-Primer specific stuff
@@ -1141,12 +1141,12 @@ rules:
             if (top->MolDetailForm->ParentClone->ObjectID->text.value.length > 0) then
 	      where := where + "\nand p.derivedFrom = " + top->MolDetailForm->ParentClone->ObjectID->text.value;
             elsif (top->MolDetailForm->ParentClone->text.value.length > 0) then
-	      where := where + "\nand p2.name like " + mgi_DBprstr(top->MolDetailForm->ParentClone->text.value);
+	      where := where + "\nand p2.name ilike " + mgi_DBprstr(top->MolDetailForm->ParentClone->text.value);
 	      from_probe := true;
 	    end if;
 
             if (top->MolDetailForm->InsertSize->text.value.length > 0) then
-	      where := where + "\nand p.insertSize like " + mgi_DBprstr(top->MolDetailForm->InsertSize->text.value);
+	      where := where + "\nand p.insertSize ilike " + mgi_DBprstr(top->MolDetailForm->InsertSize->text.value);
 	    end if;
 
             if (top->MolDetailForm->VectorTypeMenu.menuHistory.searchValue != "%") then
@@ -1154,7 +1154,7 @@ rules:
             end if;
 
             if (top->MolDetailForm->InsertSite->text.value.length > 0) then
-	      where := where + "\nand p.insertSite like " + mgi_DBprstr(top->MolDetailForm->InsertSite->text.value);
+	      where := where + "\nand p.insertSite ilike " + mgi_DBprstr(top->MolDetailForm->InsertSite->text.value);
 	    end if;
 
 	    -- Source stuff
@@ -1169,15 +1169,15 @@ rules:
 
 	  else
             if (top->MolPrimerForm->Sequence1->text.value.length > 0) then
-	      where := where + "\nand p.primer1sequence like " + mgi_DBprstr(top->MolPrimerForm->Sequence1->text.value);
+	      where := where + "\nand p.primer1sequence ilike " + mgi_DBprstr(top->MolPrimerForm->Sequence1->text.value);
 	    end if;
 
             if (top->MolPrimerForm->Sequence2->text.value.length > 0) then
-	      where := where + "\nand p.primer2sequence like " + mgi_DBprstr(top->MolPrimerForm->Sequence2->text.value);
+	      where := where + "\nand p.primer2sequence ilike " + mgi_DBprstr(top->MolPrimerForm->Sequence2->text.value);
 	    end if;
 
             if (top->MolPrimerForm->ProductSize->text.value.length > 0) then
-	      where := where + "\nand p.productSize like " + mgi_DBprstr(top->MolPrimerForm->ProductSize->text.value);
+	      where := where + "\nand p.productSize ilike " + mgi_DBprstr(top->MolPrimerForm->ProductSize->text.value);
 	    end if;
 	  end if;
 
@@ -1192,7 +1192,7 @@ rules:
 	  else
             value := mgi_tblGetCell(table, 0, table.markerSymbol);
             if (value.length > 0) then
-              where := where + "\nand l1.symbol like " + mgi_DBprstr(value);
+              where := where + "\nand l1.symbol ilike " + mgi_DBprstr(value);
 	      from_gmarker := true;
               from_marker := true;
 	    end if;
@@ -1207,7 +1207,7 @@ rules:
 
           value := mgi_tblGetCell(table, 0, table.relationship);
           if (value.length > 0) then
-            where := where + "\nand g.relationship like " + mgi_DBprstr(value);
+            where := where + "\nand g.relationship ilike " + mgi_DBprstr(value);
             from_marker := true;
           end if;
 
@@ -1218,7 +1218,7 @@ rules:
 --	  else
 --            value := mgi_tblGetCell(table, 0, table.citation);
 --            if (value.length > 0) then
---	      where := where + "\nand g.short_citation like " + mgi_DBprstr(value);
+--	      where := where + "\nand g.short_citation ilike " + mgi_DBprstr(value);
 --	      from_marker := true;
 --	    end if;
 	  end if;
@@ -1237,7 +1237,7 @@ rules:
           end if;
 
           if (top->MolMarkerForm->MolNote->text.value.length > 0) then
-	    where := where + "\nand n.note like " + mgi_DBprstr(top->MolMarkerForm->MolNote->text.value);
+	    where := where + "\nand n.note ilike " + mgi_DBprstr(top->MolMarkerForm->MolNote->text.value);
 	    from_note := true;
 	  end if;
 
@@ -1281,7 +1281,7 @@ rules:
 	  if (value.length = 0) then
 	    value := top->MolReferenceForm->mgiCitation->Citation->text.value;
 	    if (value.length > 0) then
-	      where := where + "\nand r.authors like " + mgi_DBprstr(value);
+	      where := where + "\nand r.authors ilike " + mgi_DBprstr(value);
 	      from_ref := true;
 	    end if;
 	  end if;
@@ -1297,7 +1297,7 @@ rules:
 	  end if;
 
           if (top->MolReferenceForm->Notes->text.value.length > 0) then
-	    where := where + "\nand rn.note like " + mgi_DBprstr(top->MolReferenceForm->Notes->text.value);
+	    where := where + "\nand rn.note ilike " + mgi_DBprstr(top->MolReferenceForm->Notes->text.value);
 	    from_refnote := true;
 	    from_ref := true;
 	  end if;
@@ -1305,7 +1305,7 @@ rules:
           table := top->MolReferenceForm->Alias->Table;
           value := mgi_tblGetCell(table, 0, table.alias);
           if (value.length > 0) then
-            where := where + "\nand ra.alias like " + mgi_DBprstr(value);
+            where := where + "\nand ra.alias ilike " + mgi_DBprstr(value);
             from_alias := true;
 	    from_ref := true;
           end if;
@@ -1313,7 +1313,7 @@ rules:
           table := top->MolReferenceForm->RFLV->Table;
           value := mgi_tblGetCell(table, 0, table.endo);
           if (value.length > 0) then
-            where := where + "\nand rv.endonuclease like " + mgi_DBprstr(value);
+            where := where + "\nand rv.endonuclease ilike " + mgi_DBprstr(value);
 	    from_rflvs := true;
 	    from_ref := true;
 	  end if;
@@ -1326,7 +1326,7 @@ rules:
           else
             value := mgi_tblGetCell(table, 0, table.markerSymbol);
             if (value.length > 0) then
-              where := where + "\nand l2.symbol like " + mgi_DBprstr(value);
+              where := where + "\nand l2.symbol ilike " + mgi_DBprstr(value);
               from_rmarker := true;
               from_rflvs := true;
               from_ref := true;
@@ -1335,7 +1335,7 @@ rules:
 
           value := mgi_tblGetCell(table, 0, table.strains);
           if (value.length > 0) then
-            where := where + "\nand bs.strain like " + mgi_DBprstr(value);
+            where := where + "\nand bs.strain ilike " + mgi_DBprstr(value);
 	    from_rflvs := true;
 	    from_strain := true;
 	    from_ref := true;

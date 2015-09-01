@@ -308,7 +308,7 @@ rules:
               refsKey := mgi_tblGetCell(table, r, table.refsKey);
 
 	      if (synName.length > 0) then
-	        table.sqlWhere := table.sqlWhere + "\nand " + tableTag + ".synonym like " + mgi_DBprstr(synName);
+	        table.sqlWhere := table.sqlWhere + "\nand " + tableTag + ".synonym ilike " + mgi_DBprstr(synName);
 	      end if;
 
 	      if (refsKey.length > 0) then

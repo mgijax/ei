@@ -62,6 +62,6 @@ extern int global_error;
 #define SQL_LOWER1	"lower("
 #define SQL_LOWER2	")"
 #define END_VALUE_C	";\n"
-#define CURRENT_DATE	"current_date"
+#define CURRENT_DATE	"now()"
 
 #endif

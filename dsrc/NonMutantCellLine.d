@@ -273,14 +273,14 @@ rules:
 	  if (top->EditForm->mgiParentCellLine->ObjectID->text.value.length > 0) then
 	    where := where + "\nand a._CellLine_key = " + top->EditForm->mgiParentCellLine->ObjectID->text.value;
 	  elsif (top->EditForm->mgiParentCellLine->CellLine->text.value.length > 0) then
-	    where := where + "\nand a.cellLine like " + mgi_DBprstr(top->EditForm->mgiParentCellLine->CellLine->text.value);
+	    where := where + "\nand a.cellLine ilike " + mgi_DBprstr(top->EditForm->mgiParentCellLine->CellLine->text.value);
 	  end if;
 
           if (top->EditForm->mgiParentCellLine->Strain->StrainID->text.value.length > 0) then
             where := where + "\nand a._Strain_key = " + top->EditForm->mgiParentCellLine->Strain->StrainID->text.value;;
           elsif (top->EditForm->mgiParentCellLine->Strain->Verify->text.value.length > 0) then
             where := where + 
-		"\nand a.cellLineStrain like " + mgi_DBprstr(top->EditForm->mgiParentCellLine->Strain->Verify->text.value);
+		"\nand a.cellLineStrain ilike " + mgi_DBprstr(top->EditForm->mgiParentCellLine->Strain->Verify->text.value);
           end if;
 
           if (top->EditForm->mgiParentCellLine->AlleleCellLineTypeMenu.menuHistory.searchValue != "%") then

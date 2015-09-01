@@ -272,26 +272,26 @@ rules:
 	  where := where + top->ModifiedDate.sql;
 
           if (top->Name->text.value.length > 0) then
-	    where := where + "\nand table_name like " + mgi_DBprstr2(top->Name->text.value);
+	    where := where + "\nand table_name ilike " + mgi_DBprstr2(top->Name->text.value);
 	  end if;
 	    
           if (top->Description->text.value.length > 0) then
-	    where := where + "\nand table_description like " + mgi_DBprstr2(top->Description->text.value);
+	    where := where + "\nand table_description ilike " + mgi_DBprstr2(top->Description->text.value);
 	  end if;
 
 	  value := mgi_tblGetCell(top->Columns->Table, 0, top->Columns->Table.columnName);
 	  if (value.length > 0) then
-	    where := where + "\nand column_name like " + mgi_DBprstr2(value);
+	    where := where + "\nand column_name ilike " + mgi_DBprstr2(value);
 	  end if;
 
 	  value := mgi_tblGetCell(top->Columns->Table, 0, top->Columns->Table.description);
 	  if (value.length > 0) then
-	    where := where + "\nand column_description like " + mgi_DBprstr2(value);
+	    where := where + "\nand column_description ilike " + mgi_DBprstr2(value);
 	  end if;
 
 	  value := mgi_tblGetCell(top->Columns->Table, 0, top->Columns->Table.example);
 	  if (value.length > 0) then
-	    where := where + "\nand example like " + mgi_DBprstr2(value);
+	    where := where + "\nand example ilike " + mgi_DBprstr2(value);
 	  end if;
 
 	  if (where.length > 0) then

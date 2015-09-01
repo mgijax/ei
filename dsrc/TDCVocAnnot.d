@@ -262,7 +262,7 @@ rules:
 
 	  (void) busy_cursor(top);
 
-	  -- First, sort the table by the Term so that all like Terms
+	  -- First, sort the table by the Term so that all ilike Terms
 	  -- are grouped together.  
 	  -- This will enable us to easily create 1 _Annot_key per Term.
 	  -- If the current  Term is not equal to the previous  Term,
@@ -470,7 +470,7 @@ rules:
 	    if (value.length > 0) then
 	      where := where + "\nand v._LogicalDB_key = 1";
 	      where := where + "\nand v.preferred = 1";
-	      where := where + "\nand v.short_description like " + mgi_DBprstr(value);
+	      where := where + "\nand v.short_description ilike " + mgi_DBprstr(value);
 	    end if;
 	  end if;
 
@@ -554,7 +554,7 @@ rules:
 
 	  value := mgi_tblGetCell(annotTable, 0, annotTable.notes);
 	  if (value.length > 0) then
-	    where := where + "\nand n.note like " + mgi_DBprstr(value);
+	    where := where + "\nand n.note ilike " + mgi_DBprstr(value);
 	    from_annot := true;
 	    from_evidence := true;
 	    from_notes := true;

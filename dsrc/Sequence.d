@@ -423,7 +423,7 @@ rules:
 	  value := top->SequenceProviderMenu.menuHistory.searchValue;
           if (value != "%") then
 	    if (value[value.length] = '%') then
-              where := where + "\nand v2.term like " + mgi_DBprstr(value);
+              where := where + "\nand v2.term ilike " + mgi_DBprstr(value);
 	    else
               where := where + "\nand s._SequenceProvider_key = " + value;
 	    end if;
@@ -434,20 +434,20 @@ rules:
           end if;
 
           if (top->Description->text.value.length > 0) then
-	    where := where + "\nand s.description like " + mgi_DBprstr(top->Description->text.value);
+	    where := where + "\nand s.description ilike " + mgi_DBprstr(top->Description->text.value);
 	  end if;
 	    
           if (top->RawType->text.value.length > 0) then
-	    where := where + "\nand r.rawType like " + mgi_DBprstr(top->RawType->text.value);
+	    where := where + "\nand r.rawType ilike " + mgi_DBprstr(top->RawType->text.value);
 	    from_raw := true;
 	  end if;
 	    
           if (top->Version->text.value.length > 0) then
-	    where := where + "\nand s.version like " + mgi_DBprstr(top->Version->text.value);
+	    where := where + "\nand s.version ilike " + mgi_DBprstr(top->Version->text.value);
 	  end if;
 	    
           if (top->Division->text.value.length > 0) then
-	    where := where + "\nand s.division like " + mgi_DBprstr(top->Division->text.value);
+	    where := where + "\nand s.division ilike " + mgi_DBprstr(top->Division->text.value);
 	  end if;
 	    
 	  value := top->Length->text.value;
@@ -480,43 +480,43 @@ rules:
 
 	  value := mgi_tblGetCell(sourceTable, rawRow, sourceTable.library);
 	  if (value.length > 0) then
-	    where := where + "\nand r.rawLibrary like " + mgi_DBprstr(value);
+	    where := where + "\nand r.rawLibrary ilike " + mgi_DBprstr(value);
 	    from_raw := true;
 	  end if;
 
 	  value := mgi_tblGetCell(sourceTable, rawRow, sourceTable.organism);
 	  if (value.length > 0) then
-	    where := where + "\nand r.rawOrganism like " + mgi_DBprstr(value);
+	    where := where + "\nand r.rawOrganism ilike " + mgi_DBprstr(value);
 	    from_raw := true;
 	  end if;
 
 	  value := mgi_tblGetCell(sourceTable, rawRow, sourceTable.strains);
 	  if (value.length > 0) then
-	    where := where + "\nand r.rawStrain like " + mgi_DBprstr(value);
+	    where := where + "\nand r.rawStrain ilike " + mgi_DBprstr(value);
 	    from_raw := true;
 	  end if;
 
 	  value := mgi_tblGetCell(sourceTable, rawRow, sourceTable.tissue);
 	  if (value.length > 0) then
-	    where := where + "\nand r.rawTissue like " + mgi_DBprstr(value);
+	    where := where + "\nand r.rawTissue ilike " + mgi_DBprstr(value);
 	    from_raw := true;
 	  end if;
 
 	  value := mgi_tblGetCell(sourceTable, rawRow, sourceTable.cellLine);
 	  if (value.length > 0) then
-	    where := where + "\nand r.rawCellLine like " + mgi_DBprstr(value);
+	    where := where + "\nand r.rawCellLine ilike " + mgi_DBprstr(value);
 	    from_raw := true;
 	  end if;
 
 	  value := mgi_tblGetCell(sourceTable, rawRow, sourceTable.agePrefix);
 	  if (value.length > 0) then
-	    where := where + "\nand r.rawAge like " + mgi_DBprstr(value);
+	    where := where + "\nand r.rawAge ilike " + mgi_DBprstr(value);
 	    from_raw := true;
 	  end if;
 
 	  value := mgi_tblGetCell(sourceTable, rawRow, sourceTable.gender);
 	  if (value.length > 0) then
-	    where := where + "\nand r.rawSex like " + mgi_DBprstr(value);
+	    where := where + "\nand r.rawSex ilike " + mgi_DBprstr(value);
 	    from_raw := true;
 	  end if;
 
@@ -524,7 +524,7 @@ rules:
 
 	  value := mgi_tblGetCell(sourceTable, 1, sourceTable.library);
 	  if (value.length) > 0 then
-	    where := where + "\nand ps.name like " + mgi_DBprstr(value);
+	    where := where + "\nand ps.name ilike " + mgi_DBprstr(value);
 	    from_source := true;
 	  end if;
 
@@ -562,7 +562,7 @@ rules:
 	  value2 := mgi_tblGetCell(sourceTable, 1, sourceTable.ageRange);
 	  if (value.length > 0 or value2.length > 0) then
 	    value := value + " " + value2;
-	    where := where + " and ps.age like " + mgi_DBprstr(value);
+	    where := where + " and ps.age ilike " + mgi_DBprstr(value);
 	    from_source := true;
 	  end if;
 
@@ -572,8 +572,8 @@ rules:
 
 	  value := mgi_tblGetCell(table, 0, table.objectName);
           if (value.length > 0) then
-	    whereMarker := where + "\nand mm.symbol like " + mgi_DBprstr(value);
-	    whereProbe := where + "\nand pp.name like " + mgi_DBprstr(value);
+	    whereMarker := where + "\nand mm.symbol ilike " + mgi_DBprstr(value);
+	    whereProbe := where + "\nand pp.name ilike " + mgi_DBprstr(value);
 	    from_object := true;
 	  end if;
 

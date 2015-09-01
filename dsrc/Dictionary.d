@@ -707,7 +707,7 @@ rules:
           -- structure name
 
           if (top->structureText->text.value.length > 0) then
-            where := where + "\nand sn.structure like " + mgi_DBprstr(top->structureText->text.value);
+            where := where + "\nand sn.structure ilike " + mgi_DBprstr(top->structureText->text.value);
           end if;
 
           -- Stages text field
@@ -735,7 +735,7 @@ rules:
           -- structure note
 
           if (top->structureNote->text.value.length > 0 and top->structureNote->text.sensitive) then
-            where := where + "\nand s.structureNote like " + mgi_DBprstr(top->structureNote->text.value);
+            where := where + "\nand s.structureNote ilike " + mgi_DBprstr(top->structureNote->text.value);
           end if;
 
 	  --
@@ -744,12 +744,12 @@ rules:
 	  --
 
           if (top->EMAPSid->text.value.length > 0 and top->ID.sensitive) then
-	    where := where + " and em.emapsID like " + mgi_DBprstr(top->EMAPSid->text.value);
+	    where := where + " and em.emapsID ilike " + mgi_DBprstr(top->EMAPSid->text.value);
 	    from_EMAPS := true;
 	  end if;
 
           if (top->EMAPSterm->text.value.length > 0 and top->ID.sensitive) then
-	    where := where + " and emt.term like " + mgi_DBprstr(top->EMAPSterm->text.value);
+	    where := where + " and emt.term ilike " + mgi_DBprstr(top->EMAPSterm->text.value);
 	    from_EMAPS := true;
 	    from_EMAPSterm := true;
 	  end if;

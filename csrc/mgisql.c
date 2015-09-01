@@ -483,7 +483,7 @@ char *acclib_seqacc(char *logicalKey, char *accID)
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select _Object_key from SEQ_Sequence_Acc_View \
    where _LogicalDB_key = %s \
-   and accID like %s", logicalKey, accID);
+   and accID ilike %s", logicalKey, accID);
   return(buf);
 }
 
@@ -600,11 +600,7 @@ char *image_caption(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  /*
-  sprintf(buf,"select n._Note_key, n.note \
   sprintf(buf,"select n._Note_key, regexp_replace(n.note, E'[\\n\\r]+', '', 'g') as note \
-  */
-  sprintf(buf,"select n._Note_key, str_replace(n.note,char(13)||char(10),'') as note \
   	\nfrom MGI_Note_Image_View n \
   	\nwhere n.noteType = 'Caption' and n._Object_key = %s \
   	\norder by n.sequenceNum", key);
@@ -625,9 +621,8 @@ char *image_copyright(char *key)
   memset(buf, '\0', sizeof(buf));
   /*
   sprintf(buf,"select n._Note_key, n.note \
-  sprintf(buf,"select n._Note_key, regexp_replace(n.note, E'[\\n\\r]+', '', 'g') as note \
   */
-  sprintf(buf,"select n._Note_key, str_replace(n.note,char(13)||char(10),'') as note \
+  sprintf(buf,"select n._Note_key, regexp_replace(n.note, E'[\\n\\r]+', '', 'g') as note \
   	\nfrom MGI_Note_Image_View n \
   	\nwhere n.noteType = 'Copyright' and n._Object_key = %s \
   	\norder by n.sequenceNum", key);
@@ -638,8 +633,7 @@ char *image_pane(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _ImagePane_key, paneLabel, \
-  	convert(varchar(10), x) || ',' || convert(varchar(10), y) || ',' || convert(varchar(10), width) || ',' || convert(varchar(10), height) \
+  sprintf(buf,"select _ImagePane_key, paneLabel, concat(x||','||y||','||width||','||height) as xywidthheight \
   	\nfrom IMG_ImagePane where _Image_key = %s \
 	\norder by paneLabel", key);
   return(buf);
@@ -963,7 +957,7 @@ char *verify_allele(char *key)
   sprintf(buf,"select a._Allele_key, a._Marker_key, a.symbol, m.symbol as markerSymbol, aa.accID \
    \nfrom ALL_Allele a, MRK_Marker m, ACC_Accession aa \
    \nwhere a._Allele_Status_key in (847114, 3983021)  \
-   \nand a.symbol like %s \
+   \nand a.symbol ilike %s \
    \nand a._Marker_key = m._Marker_key \
    \nand a._Allele_key = aa._Object_key \
    \nand aa._MGIType_key = 11 \
@@ -1002,7 +996,7 @@ char *verify_cellline(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _Term_key, term from VOC_Term where _Vocab_key = 18 and term like %s", key);
+  sprintf(buf,"select _Term_key, term from VOC_Term where _Vocab_key = 18 and term ilike %s", key);
   return(buf);
 }
 
@@ -1010,7 +1004,7 @@ char *verify_genotype(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _Object_key, description from GXD_Genotype_Summary_View where mgiID like %s", key);
+  sprintf(buf,"select _Object_key, description from GXD_Genotype_Summary_View where mgiID ilike %s", key);
   return(buf);
 }
 
@@ -1028,7 +1022,7 @@ char *verify_imagepane(char *key)
    \nand a2._LogicalDB_key = 19 \
    \nand i._ImageType_key = t._Term_key \
    \nand t.term = 'Full Size' \
-   \nand a1.accID like %s", key);
+   \nand a1.accID ilike %s", key);
   return(buf);
 }
 
@@ -1043,7 +1037,7 @@ char *verify_marker(char *key, char *symbol)
    \n   and a._LogicalDB_key = 1 \
    \n   and a.preferred = 1) \
    \nwhere m._Organism_key = %s \
-   \nand m.symbol like %s", key, symbol);
+   \nand m.symbol ilike %s", key, symbol);
   return(buf);
 }
 
@@ -1070,7 +1064,7 @@ char *verify_marker_union(char *key)
   sprintf(buf,"\nunion all \
    \nselect -1, 1, symbol, chromosome, null, substring(name, 1, 25), null \
    \nfrom NOM_Marker_Valid_View \
-   \nwhere symbol like %s", key);
+   \nwhere symbol ilike %s", key);
   return(buf);
 }
 
@@ -1179,7 +1173,7 @@ char *verify_organism(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select _Organism_key, commonName, organism \
-  	from MGI_Organism_Marker_View where commonName like %s", key);
+  	from MGI_Organism_Marker_View where commonName ilike %s", key);
   return(buf);
 }
 
@@ -1187,7 +1181,7 @@ char *verify_strainspecies(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _Term_key, term from VOC_Term where _Vocab_key = 26 and term like %s", key);
+  sprintf(buf,"select _Term_key, term from VOC_Term where _Vocab_key = 26 and term ilike %s", key);
   return(buf);
 }
 
@@ -1211,7 +1205,7 @@ char *verify_strains3(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _Strain_key, strain, private from PRB_Strain where strain like %s", key);
+  sprintf(buf,"select _Strain_key, strain, private from PRB_Strain where strain ilike %s", key);
   return(buf);
 }
 
@@ -1219,7 +1213,7 @@ char *verify_strains4(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _Strain_key from PRB_Strain where strain like %s", key);
+  sprintf(buf,"select _Strain_key from PRB_Strain where strain ilike %s", key);
   return(buf);
 }
 
@@ -1243,7 +1237,7 @@ char *verify_tissue1(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _Tissue_key, tissue from PRB_Tissue where tissue like %s", key);
+  sprintf(buf,"select _Tissue_key, tissue from PRB_Tissue where tissue ilike %s", key);
   return(buf);
 }
 
@@ -1251,7 +1245,7 @@ char *verify_tissue2(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _Tissue_key from PRB_Tissue where tissue like %s", key);
+  sprintf(buf,"select _Tissue_key from PRB_Tissue where tissue ilike %s", key);
   return(buf);
 }
 

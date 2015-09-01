@@ -356,7 +356,7 @@ rules:
               note := mgi_tblGetCell(table, r, table.note);
 
 	      if (note.length > 0) then
-	        table.sqlWhere := table.sqlWhere + "\nand " + tableTag + ".note like " + mgi_DBprstr(note);
+	        table.sqlWhere := table.sqlWhere + "\nand " + tableTag + ".note ilike " + mgi_DBprstr(note);
 	      end if;
 
 	      break;

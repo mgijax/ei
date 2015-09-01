@@ -419,7 +419,7 @@ rules:
 	      notesModified := true;
 	  end if;
 
-	  -- First, sort the table by the Term so that all like Terms
+	  -- First, sort the table by the Term so that all ilike Terms
 	  -- are grouped together.  
 	  -- This will enable us to easily create 1 _Annot_key per Term.
 	  -- If the current  Term is not equal to the previous  Term,
@@ -564,14 +564,14 @@ rules:
 
 	  set := "isReferenceGene = " + referenceGene + ",";
 
-	  -- if "Annotation Complete?" = YES and date = null, then date = today
-	  -- else if "Annotation Complete?" = NO, then date = null
+	  -- if "Annotation Complete?" = YES and date is null, then date = today
+	  -- else if "Annotation Complete?" = NO, then date is null
 	  -- else leave date alone
 
 	  if (completeAnnotation = YES and completeDate.length = 0) then
 	    set := set + "_CompletedBy_key = " + global_userKey + ",completion_date = " + CURRENT_DATE;
 	  elsif (completeAnnotation = NO) then
-	    set := set + "_CompletedBy_key = null,completion_date = null";
+	    set := set + "_CompletedBy_key = NULL,completion_date = NULL";
 	  end if;
 
 	  cmd := cmd + mgi_DBupdate(GO_TRACKING, top->mgiAccession->ObjectID->text.value, set);
@@ -744,7 +744,7 @@ rules:
 	    if (value.length > 0) then
 	      where := where + "\nand v._LogicalDB_key = 1";
 	      where := where + "\nand v.preferred = 1";
-	      where := where + "\nand v.short_description like " + mgi_DBprstr(value);
+	      where := where + "\nand v.short_description ilike " + mgi_DBprstr(value);
 	    end if;
 	  end if;
 
@@ -785,20 +785,20 @@ rules:
 
 	  value := mgi_tblGetCell(annotTable, 0, annotTable.inferredFrom);
 	  if (value.length > 0) then
-	    where := where + "\nand e.inferredFrom like " + mgi_DBprstr(value);
+	    where := where + "\nand e.inferredFrom ilike " + mgi_DBprstr(value);
 	    from_evidence := true;
 	  end if;
 
 	  value := mgi_tblGetCell(annotTable, 0, annotTable.editor);
 	  if (value.length > 0) then
-	    where := where + "\nand u1.login like " + mgi_DBprstr(value);
+	    where := where + "\nand u1.login ilike " + mgi_DBprstr(value);
 	    from_evidence := true;
 	    from_user1 := true;
 	  end if;
 
 	  value := mgi_tblGetCell(annotTable, 0, annotTable.createdBy);
 	  if (value.length > 0) then
-	    where := where + "\nand u2.login like " + mgi_DBprstr(value);
+	    where := where + "\nand u2.login ilike " + mgi_DBprstr(value);
 	    from_evidence := true;
 	    from_user2 := true;
 	  end if;

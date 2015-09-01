@@ -293,13 +293,13 @@ rules:
 	      if (markerKey.length > 0 and markerKey != "NULL") then
 	        table.sqlWhere := table.sqlWhere + "\nand " + tableTag + "._Marker_key = " + markerKey;
 	      elsif (marker.length > 0) then
-	        table.sqlWhere := table.sqlWhere + "\nand " + tableTag + ".symbol like " + mgi_DBprstr(marker);
+	        table.sqlWhere := table.sqlWhere + "\nand " + tableTag + ".symbol ilike " + mgi_DBprstr(marker);
 	      end if;
 
 	      if (alleleKey.length > 0 and alleleKey != "NULL") then
 	        table.sqlWhere := table.sqlWhere + "\nand " + tableTag + "._Allele_key = " + alleleKey;
 	      elsif (allele.length > 0) then
-	        table.sqlWhere := table.sqlWhere + "\nand " + tableTag + ".alleleSymbol like " + mgi_DBprstr(allele);
+	        table.sqlWhere := table.sqlWhere + "\nand " + tableTag + ".alleleSymbol ilike " + mgi_DBprstr(allele);
 	      end if;
 
 	      break;

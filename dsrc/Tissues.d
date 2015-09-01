@@ -226,7 +226,7 @@ rules:
           where := where + top->ModifiedDate.sql;
  
           if (top->Name->text.value.length > 0) then
-            where := where + "\nand tissue like " + mgi_DBprstr(top->Name->text.value);
+            where := where + "\nand tissue ilike " + mgi_DBprstr(top->Name->text.value);
           end if;
 
           if (top->StandardMenu.menuHistory.searchValue != "%") then

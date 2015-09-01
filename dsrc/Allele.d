@@ -932,7 +932,7 @@ rules:
 	    if (top->AlleleStatusMenu.menuHistory.labelString = ALL_STATUS_APPROVED) then
 	      set := set + "_ApprovedBy_key = " + global_userKey + ",approval_date = " + CURRENT_DATE + ",";
 	    else
-	      set := set + "_ApprovedBy_key = null,approval_date = null,";
+	      set := set + "_ApprovedBy_key = NULL,approval_date = NULL,";
 	    end if;
           end if;
 
@@ -1722,11 +1722,11 @@ rules:
           where := where + top->ModificationHistory->Table.sqlWhere;
  
           if (top->Symbol->text.value.length > 0) then
-	    where := where + "\nand a.symbol like " + mgi_DBprstr(top->Symbol->text.value);
+	    where := where + "\nand a.symbol ilike " + mgi_DBprstr(top->Symbol->text.value);
 	  end if;
 	    
           if (top->Name->text.value.length > 0) then
-	    where := where + "\nand a.name like " + mgi_DBprstr(top->Name->text.value);
+	    where := where + "\nand a.name ilike " + mgi_DBprstr(top->Name->text.value);
 	  end if;
 	    
           if (top->AlleleTypeMenu.menuHistory.searchValue != "%") then
@@ -1763,7 +1763,7 @@ rules:
 	  if (value.length > 0 and value != "NULL" and value != "-1") then
 	    where := where + "\nand a._Marker_key = " + mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
 	  elsif (mgi_tblGetCell(markerTable, 0, markerTable.markerSymbol).length > 0) then
-	    where := where + "\nand a.markerSymbol like " + mgi_DBprstr(mgi_tblGetCell(markerTable, 0, markerTable.markerSymbol));
+	    where := where + "\nand a.markerSymbol ilike " + mgi_DBprstr(mgi_tblGetCell(markerTable, 0, markerTable.markerSymbol));
 	    union := allele_unionnomen(mgi_DBprstr(mgi_tblGetCell(markerTable, 0, markerTable.markerSymbol)));
 	  end if;
 
@@ -1773,11 +1773,11 @@ rules:
 	  else
             value := mgi_tblGetCell(markerTable, 0, markerTable.jnum);
             if (value.length > 0) then
-	      where := where + "\nand a.jnumID like " + mgi_DBprstr(value);
+	      where := where + "\nand a.jnumID ilike " + mgi_DBprstr(value);
 	    end if;
             value := mgi_tblGetCell(markerTable, 0, markerTable.citation);
             if (value.length > 0) then
-	      where := where + "\nand a.citation like " + mgi_DBprstr(value);
+	      where := where + "\nand a.citation ilike " + mgi_DBprstr(value);
 	    end if;
 	  end if;
 
@@ -1795,7 +1795,7 @@ rules:
 	  else
 	    value := mgi_tblGetCell(subtypeTable, 0, subtypeTable.term);
 	    if (value.length > 0) then
-	      where := where + "\nand st.term like " + mgi_DBprstr(value);
+	      where := where + "\nand st.term ilike " + mgi_DBprstr(value);
 	      from_subtype := true;
 	    end if;
 	  end if;
@@ -1809,13 +1809,13 @@ rules:
 	  else
 	    value := mgi_tblGetCell(molmutationTable, 0, molmutationTable.mutation);
 	    if (value.length > 0) then
-	      where := where + "\nand m.mutation like " + mgi_DBprstr(value);
+	      where := where + "\nand m.mutation ilike " + mgi_DBprstr(value);
 	      from_mutation := true;
 	    end if;
 	  end if;
 
           if (top->markerDescription->Note->text.value.length > 0) then
-            where := where + "\nand mn.note like " + mgi_DBprstr(top->markerDescription->Note->text.value);
+            where := where + "\nand mn.note ilike " + mgi_DBprstr(top->markerDescription->Note->text.value);
             from_notes := true;
           end if;
       
@@ -1828,20 +1828,20 @@ rules:
 	  else
 	    value := mgi_tblGetCell(cellLineTable, 0, cellLineTable.cellLine);
 	    if (value.length > 0) then
-	      where := where + "\nand c.cellLine like " + mgi_DBprstr(value);
+	      where := where + "\nand c.cellLine ilike " + mgi_DBprstr(value);
 	      from_cellline := true;
 	    end if;
 	  end if;
 
 	  value := mgi_tblGetCell(cellLineTable, 0, cellLineTable.creator);
 	  if (value.length > 0 and value != "NULL") then
-	    where := where + "\nand c.creator like " + mgi_DBprstr(value);
+	    where := where + "\nand c.creator ilike " + mgi_DBprstr(value);
 	    from_cellline := true;
 	  end if;
 
 	  value := mgi_tblGetCell(cellLineTable, 0, cellLineTable.modifiedBy);
 	  if (value.length > 0 and value != "NULL") then
-	    where := where + "\nand c.modifiedBy like " + mgi_DBprstr(value);
+	    where := where + "\nand c.modifiedBy ilike " + mgi_DBprstr(value);
 	    from_cellline := true;
 	  end if;
 
@@ -1851,7 +1851,7 @@ rules:
             where := where + "\nand c.parentCellLine_key = " + top->mgiParentCellLine->ObjectID->text.value;
 	    from_cellline := true;
 	  elsif (top->mgiParentCellLine->CellLine->text.value.length > 0) then
-            where := where + "\nand c.parentCellLine like " + mgi_DBprstr(top->mgiParentCellLine->CellLine->text.value);
+            where := where + "\nand c.parentCellLine ilike " + mgi_DBprstr(top->mgiParentCellLine->CellLine->text.value);
 	    from_cellline := true;
 	  end if;
 
@@ -1859,12 +1859,12 @@ rules:
             where := where + "\nand c.cellLineStrain_key = " + top->mgiParentCellLine->StrainID->text.value;;
 	    from_cellline := true;
 	  elsif (top->mgiParentCellLine->Verify->text.value.length > 0) then
-            where := where + "\nand c.cellLineStrain like " + mgi_DBprstr(top->mgiParentCellLine->Verify->text.value);
+            where := where + "\nand c.cellLineStrain ilike " + mgi_DBprstr(top->mgiParentCellLine->Verify->text.value);
 	    from_cellline := true;
 	  elsif (top->StrainOfOrigin->StrainID->text.value.length > 0) then
             where := where + "\nand a._Strain_key = " + top->StrainOfOrigin->StrainID->text.value;;
 	  elsif (top->StrainOfOrigin->Verify->text.value.length > 0) then
-            where := where + "\nand a.strain like " + mgi_DBprstr(top->StrainOfOrigin->Verify->text.value);
+            where := where + "\nand a.strain ilike " + mgi_DBprstr(top->StrainOfOrigin->Verify->text.value);
 	  end if;
 
           if (top->mgiParentCellLine->AlleleCellLineTypeMenu.menuHistory.searchValue != "%") then
@@ -1876,13 +1876,13 @@ rules:
 
 	  value := mgi_tblGetCell(imgTable, 0, imgTable.mgiID);
 	  if (value.length > 0 and value != "NULL") then
-	    where := where + "\nand i.mgiID like " + mgi_DBprstr(value);
+	    where := where + "\nand i.mgiID ilike " + mgi_DBprstr(value);
 	    from_image := true;
 	  end if;
 
 	  value := mgi_tblGetCell(imgTable, 0, imgTable.pixID);
 	  if (value.length > 0 and value != "NULL") then
-	    where := where + "\nand i.pixID like " + mgi_DBprstr(value);
+	    where := where + "\nand i.pixID ilike " + mgi_DBprstr(value);
 	    from_image := true;
 	  end if;
 

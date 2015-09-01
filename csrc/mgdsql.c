@@ -172,7 +172,7 @@ char *allele_unionnomen(char *key)
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"\nunion all select distinct a._Allele_key, a.symbol, a.statusNum \
    \nfrom ALL_Allele_View a \
-   \nwhere a.nomenSymbol like %s", key);
+   \nwhere a.nomenSymbol ilike %s", key);
   return(buf);
 }
 
@@ -615,7 +615,7 @@ char *marker_offset(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select source, str(offset,10,2) \
+  sprintf(buf,"select source, to_char(cmOffset, '9999.99') \
    \nfrom MRK_Offset \
    \nwhere _Marker_key = %s \
    \norder by source", key);
@@ -946,7 +946,7 @@ char *mldp_statistics(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select sequenceNum, _Marker_key_1, _Marker_key_2, symbol1, symbol2, recomb, total, \
-   \nstr(pcntrecomb,6,2), str(stderr,6,2) \
+   \nto_char(pcntrecomb, '99.99'), to_char(stderr, '99.99') \
    \nfrom MLD_Statistics_View where _Expt_key = %s \
    \norder by sequenceNum", key);
   return(buf);
@@ -1890,7 +1890,7 @@ char *translation_accession1(char *key, char *description)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _Object_key, description, accID, mgiID from %s where description like %s", key, description);
+  sprintf(buf,"select _Object_key, description, accID, mgiID from %s where description ilike %s", key, description);
   return(buf);
 }
 

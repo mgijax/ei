@@ -361,14 +361,14 @@ rules:
 			tableTag + "._Refs_key = " + refsKey;
 	      elsif (citation.length > 0) then
 	        table.sqlWhere := table.sqlWhere + "\nand " + 
-			tableTag + ".citation like " + mgi_DBprstr(citation);
+			tableTag + ".citation ilike " + mgi_DBprstr(citation);
 	      end if;
 
 	      if (table.is_defined("modifiedBy") != nil) then
 		modifiedBy := mgi_tblGetCell(table, r, table.modifiedBy);
 	        if (modifiedBy.length > 0) then
 	          table.sqlWhere := table.sqlWhere + "\nand " + 
-			  tableTag + ".modifiedBy like " + mgi_DBprstr(modifiedBy);
+			  tableTag + ".modifiedBy ilike " + mgi_DBprstr(modifiedBy);
 		end if;
 	      end if;
 

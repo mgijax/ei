@@ -232,29 +232,29 @@ rules:
           if (top->Strain1->StrainID->text.value.length > 0) then
             where := where + "\nand _Strain_key_1 = " + top->Strain1->StrainID->text.value;
 	  elsif (top->Strain1->Verify->text.value.length > 0) then
-	    where := where + "\nand strain1 like " + mgi_DBprstr(top->Strain1->Verify->text.value);
+	    where := where + "\nand strain1 ilike " + mgi_DBprstr(top->Strain1->Verify->text.value);
 	  end if;
 
           if (top->Strain2->StrainID->text.value.length > 0) then
             where := where + "\nand _Strain_key_2 = " + top->Strain2->StrainID->text.value;
 	  elsif (top->Strain2->Verify->text.value.length > 0) then
-	    where := where + "\nand strain2 like " + mgi_DBprstr(top->Strain2->Verify->text.value);
+	    where := where + "\nand strain2 ilike " + mgi_DBprstr(top->Strain2->Verify->text.value);
 	  end if;
 
           if (top->Designation->text.value.length > 0) then
-            where := where + "\nand designation like " + mgi_DBprstr(top->Designation->text.value);
+            where := where + "\nand designation ilike " + mgi_DBprstr(top->Designation->text.value);
           end if;
 
           if (top->Abbrev1->text.value.length > 0) then
-            where := where + "\nand abbrev1 like " + mgi_DBprstr(top->Abbrev1->text.value);
+            where := where + "\nand abbrev1 ilike " + mgi_DBprstr(top->Abbrev1->text.value);
           end if;
 
           if (top->Abbrev2->text.value.length > 0) then
-            where := where + "\nand abbrev2 like " + mgi_DBprstr(top->Abbrev2->text.value);
+            where := where + "\nand abbrev2 ilike " + mgi_DBprstr(top->Abbrev2->text.value);
           end if;
 
           if (top->Labels->text.value.length > 0) then
-            where := where + "\nand RI_IdList like " + mgi_DBprstr(top->Labels->text.value);
+            where := where + "\nand RI_IdList ilike " + mgi_DBprstr(top->Labels->text.value);
           end if;
  
           if (where.length > 0) then

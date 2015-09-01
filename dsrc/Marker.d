@@ -1386,11 +1386,11 @@ rules:
           end if;
 
           if (top->Symbol->text.value.length > 0) then
-	    where := where + "\nand m.symbol like " + mgi_DBprstr(top->Symbol->text.value);
+	    where := where + "\nand m.symbol ilike " + mgi_DBprstr(top->Symbol->text.value);
 	  end if;
 	    
           if (top->Name->text.value.length > 0) then
-	    where := where + "\nand m.name like " + mgi_DBprstr(top->Name->text.value);
+	    where := where + "\nand m.name ilike " + mgi_DBprstr(top->Name->text.value);
 	  end if;
 	    
           if (top->ChromosomeMenu.menuHistory.searchValue != "%") then
@@ -1398,7 +1398,7 @@ rules:
           end if;
 
 	  if (top->Cyto->text.modified) then
-	    where := where + "\nand m.cytogeneticOffset like " + mgi_DBprstr(top->Cyto->text.value);
+	    where := where + "\nand m.cytogeneticOffset ilike " + mgi_DBprstr(top->Cyto->text.value);
 	  end if;
 
 	  if (top->cMposition->text.modified) then
@@ -1422,7 +1422,7 @@ rules:
 	  else
             value := mgi_tblGetCell(top->Current->Table, 0, top->Current->Table.markerSymbol);
             if (value.length > 0) then
-	      where := where + "\nand mu.current_symbol like " + mgi_DBprstr(value);
+	      where := where + "\nand mu.current_symbol ilike " + mgi_DBprstr(value);
 	      from_current := true;
 	    end if;
 	  end if;
@@ -1434,14 +1434,14 @@ rules:
 	  else
             value := mgi_tblGetCell(top->History->Table, 0, top->History->Table.markerSymbol);
             if (value.length > 0) then
-	      where := where + "\nand mh.history like " + mgi_DBprstr(value);
+	      where := where + "\nand mh.history ilike " + mgi_DBprstr(value);
 	      from_history := true;
 	    end if;
 	  end if;
 
           value := mgi_tblGetCell(top->History->Table, 0, top->History->Table.markerName);
           if (value.length > 0) then
-	    where := where + "\nand mh.name like " + mgi_DBprstr(value);
+	    where := where + "\nand mh.name ilike " + mgi_DBprstr(value);
 	    from_history := true;
 	  end if;
 
@@ -1459,7 +1459,7 @@ rules:
 	  else
             value := mgi_tblGetCell(top->History->Table, 0, top->History->Table.jnum + 1);
             if (value.length > 0) then
-	      where := where + "\nand mh.short_citation like " + mgi_DBprstr(value);
+	      where := where + "\nand mh.short_citation ilike " + mgi_DBprstr(value);
 	      from_history := true;
 	    end if;
 	  end if;
@@ -1478,13 +1478,13 @@ rules:
 
           value := mgi_tblGetCell(top->History->Table, 0, top->History->Table.modifiedBy);
           if (value.length > 0) then
-	    where := where + "\nand mh.modifiedBy like " + mgi_DBprstr(value);
+	    where := where + "\nand mh.modifiedBy ilike " + mgi_DBprstr(value);
 	    from_history := true;
 	  end if;
 
           value := mgi_tblGetCell(top->Alias->Table, 0, top->Alias->Table.markerSymbol);
           if (value.length > 0) then
-	    where := where + "\nand ma.alias like " + mgi_DBprstr(value);
+	    where := where + "\nand ma.alias ilike " + mgi_DBprstr(value);
 	    from_alias := true;
 	  end if;
 
@@ -1495,7 +1495,7 @@ rules:
 	  else
             value := mgi_tblGetCell(top->Reference->Table, 0, top->Reference->Table.citation);
             if (value.length > 0) then
-	      where := where + "\nand mr.short_citation like " + mgi_DBprstr(value);
+	      where := where + "\nand mr.short_citation ilike " + mgi_DBprstr(value);
 	      from_reference := true;
 	    end if;
 	  end if;

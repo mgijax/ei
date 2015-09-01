@@ -288,7 +288,7 @@ rules:
           end if;
 
           if (top->Name->text.value.length > 0) then
-	    where := where + "\nand name like " + mgi_DBprstr(top->Name->text.value);
+	    where := where + "\nand name ilike " + mgi_DBprstr(top->Name->text.value);
 	  end if;
 	    
           if (where.length > 0) then

@@ -466,7 +466,7 @@ rules:
           where := where + top->mgiNoteForm.sqlWhere;
 
           if (top->EditForm->DerivationName->text.value.length > 0) then
-	    where := where + "\nand a.name like " + mgi_DBprstr(top->EditForm->DerivationName->text.value);
+	    where := where + "\nand a.name ilike " + mgi_DBprstr(top->EditForm->DerivationName->text.value);
 	  end if;
 
           if (top->EditForm->mgiCitation->ObjectID->text.value.length > 0 and
@@ -477,13 +477,13 @@ rules:
 	  if (top->EditForm->mgiParentCellLine->ObjectID->text.value.length > 0) then
 	    where := where + "\nand a.parentCellLine_key = " + top->EditForm->mgiParentCellLine->ObjectID->text.value;
 	  elsif (top->EditForm->mgiParentCellLine->CellLine->text.value.length > 0) then
-	    where := where + "\nand a.parentCellLine like " + mgi_DBprstr(top->EditForm->mgiParentCellLine->CellLine->text.value);
+	    where := where + "\nand a.parentCellLine ilike " + mgi_DBprstr(top->EditForm->mgiParentCellLine->CellLine->text.value);
 	  end if;
 
           if (top->EditForm->mgiParentCellLine->ParentStrain->StrainID->text.value.length > 0) then
             where := where + "\nand a.parentCellLineStrain_key = " + top->EditForm->mgiParentCellLine->ParentStrain->StrainID->text.value;
           elsif (top->EditForm->mgiParentCellLine->ParentStrain->Verify->text.value.length > 0) then
-            where := where + "\nand a.parentCellLineStrain like " + mgi_DBprstr(top->EditForm->mgiParentCellLine->ParentStrain->Verify->text.value);
+            where := where + "\nand a.parentCellLineStrain ilike " + mgi_DBprstr(top->EditForm->mgiParentCellLine->ParentStrain->Verify->text.value);
           end if;
 
           if (top->EditForm->mgiParentCellLine->AlleleCellLineTypeMenu.menuHistory.searchValue != "%") then
@@ -505,7 +505,7 @@ rules:
 	  if (top->EditForm->mgiAlleleVector->ObjectID->text.value.length > 0) then
 	    where := where + "\nand a._Vector_key = " + top->EditForm->mgiAlleleVector->ObjectID->text.value;
 	  elsif (top->EditForm->mgiAlleleVector->Vector->text.value.length > 0) then
-	    where := where + "\nand a.vector like " + mgi_DBprstr(top->EditForm->mgiAlleleVector->Vector->text.value);
+	    where := where + "\nand a.vector ilike " + mgi_DBprstr(top->EditForm->mgiAlleleVector->Vector->text.value);
 	  end if;
 
 	  if (where.length > 0) then

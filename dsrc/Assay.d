@@ -1396,7 +1396,7 @@ rules:
 	  pos : integer;
 	  if (assayDetailForm.name = "GelForm") then
 	    if (assayDetailForm->ImagePaneList->List.selectedItemCount = 0) then
-	      set := set + "_ImagePane_key = NULL,";
+	      set := set + "_ImagePane_key is NULL,";
 	    else
 	      pos := XmListItemPos(assayDetailForm->ImagePaneList->List, 
 			xm_xmstring(assayDetailForm->ImagePaneList->List.selectedItems[0]));
@@ -2123,7 +2123,7 @@ rules:
               top->mgiMarker->ObjectID->text.value != "NULL") then
             where := where + " and g._Marker_key = " + top->mgiMarker->ObjectID->text.value;
           elsif (top->mgiMarker->Marker->text.value.length > 0) then
-            where := where + " and g.symbol like " + 
+            where := where + " and g.symbol ilike " + 
 		mgi_DBprstr(top->mgiMarker->Marker->text.value);
           end if;
 
@@ -2143,7 +2143,7 @@ rules:
 	  end if;
 
           if (top->AssayNote->Note->text.value.length > 0) then
-	    where := where + " and n.assayNote like " + 
+	    where := where + " and n.assayNote ilike " + 
 		mgi_DBprstr(top->AssayNote->Note->text.value);
 	    from_note := true;
 	  end if;
@@ -2155,7 +2155,7 @@ rules:
               where := where + " and ap._Antibody_key = " + prepDetailForm->AntibodyAccession->ObjectID->text.value;
 	      from_antibodyPrep := true;
 	    elsif (prepDetailForm->AntibodyAccession->AccessionName->text.value.length > 0) then
-              where := where + " and ab.antibodyName like " + 
+              where := where + " and ab.antibodyName ilike " + 
 		mgi_DBprstr(prepDetailForm->AntibodyAccession->AccessionName->text.value);
 	      from_antibodyPrep := true;
 	      from_antibody := true;
@@ -2177,7 +2177,7 @@ rules:
               where := where + " and pp._Probe_key = " + prepDetailForm->ProbeAccession->ObjectID->text.value;
 	      from_probePrep := true;
 	    elsif (prepDetailForm->ProbeAccession->AccessionName->text.value.length > 0) then
-              where := where + " and p.name like " + 
+              where := where + " and p.name ilike " + 
 		mgi_DBprstr(prepDetailForm->ProbeAccession->AccessionName->text.value);
 	      from_probePrep := true;
 	      from_probe := true;
@@ -2228,19 +2228,19 @@ rules:
 
 	    value := mgi_tblGetCell(table, 0, table.specimenLabel);
 	    if (value.length > 0) then
-	      where := where + " and ig.specimenLabel like " + mgi_DBprstr(value);
+	      where := where + " and ig.specimenLabel ilike " + mgi_DBprstr(value);
 	      from_specimen := true;
 	    end if;
 
 	    value := mgi_tblGetCell(table, 0, table.hybridizationKey);
 	    if (value.length > 0) then
-	      where := where + " and ig.hybridization like " + mgi_DBprstr(value);
+	      where := where + " and ig.hybridization ilike " + mgi_DBprstr(value);
 	      from_specimen := true;
 	    end if;
 
 	    value := mgi_tblGetCell(table, 0, table.sex);
 	    if (value.length > 0) then
-	      where := where + " and ig.sex like " + mgi_DBprstr(value);
+	      where := where + " and ig.sex ilike " + mgi_DBprstr(value);
 	      from_specimen := true;
 	    end if;
 
@@ -2248,19 +2248,19 @@ rules:
 	    value2 := mgi_tblGetCell(table, 0, table.ageRange);
 	    if (value.length > 0 or value2.length > 0) then
 	      value := value + " " + value2;
-	      where := where + " and ig.age like " + mgi_DBprstr(value);
+	      where := where + " and ig.age ilike " + mgi_DBprstr(value);
 	      from_specimen := true;
 	    end if;
 
 	    value := mgi_tblGetCell(table, 0, table.ageNote);
 	    if (value.length > 0) then
-	      where := where + " and ig.ageNote like " + mgi_DBprstr(value);
+	      where := where + " and ig.ageNote ilike " + mgi_DBprstr(value);
 	      from_specimen := true;
 	    end if;
 
 	    value := mgi_tblGetCell(table, 0, table.specimenNote);
 	    if (value.length > 0) then
-	      where := where + " and ig.specimenNote like " + mgi_DBprstr(value);
+	      where := where + " and ig.specimenNote ilike " + mgi_DBprstr(value);
 	      from_specimen := true;
 	    end if;
 
@@ -2287,19 +2287,19 @@ rules:
 
 	    value := mgi_tblGetCell(table, 0, table.label);
 	    if (value.length > 0) then
-	      where := where + " and gg.laneLabel like " + mgi_DBprstr(value);
+	      where := where + " and gg.laneLabel ilike " + mgi_DBprstr(value);
 	      from_gel := true;
 	    end if;
 
 	    value := mgi_tblGetCell(table, 0, table.sampleAmt);
 	    if (value.length > 0) then
-	      where := where + " and gg.sampleAmount like " + mgi_DBprstr(value);
+	      where := where + " and gg.sampleAmount ilike " + mgi_DBprstr(value);
 	      from_gel := true;
 	    end if;
 
 	    value := mgi_tblGetCell(table, 0, table.sex);
 	    if (value.length > 0) then
-	      where := where + " and gg.sex like " + mgi_DBprstr(value);
+	      where := where + " and gg.sex ilike " + mgi_DBprstr(value);
 	      from_gel := true;
 	    end if;
 
@@ -2307,19 +2307,19 @@ rules:
 	    value2 := mgi_tblGetCell(table, 0, table.ageRange);
 	    if (value.length > 0 or value2.length > 0) then
 	      value := value + " " + value2;
-	      where := where + " and gg.age like " + mgi_DBprstr(value);
+	      where := where + " and gg.age ilike " + mgi_DBprstr(value);
 	      from_gel := true;
 	    end if;
 
 	    value := mgi_tblGetCell(table, 0, table.ageNote);
 	    if (value.length > 0) then
-	      where := where + " and gg.ageNote like " + mgi_DBprstr(value);
+	      where := where + " and gg.ageNote ilike " + mgi_DBprstr(value);
 	      from_gel := true;
 	    end if;
 
 	    value := mgi_tblGetCell(table, 0, table.laneNote);
 	    if (value.length > 0) then
-	      where := where + " and gg.laneNote like " + mgi_DBprstr(value);
+	      where := where + " and gg.laneNote ilike " + mgi_DBprstr(value);
 	      from_gel := true;
 	    end if;
 
@@ -2327,7 +2327,7 @@ rules:
 
 	    value := mgi_tblGetCell(table, 0, table.rowNotes);
 	    if (value.length > 0) then
-	      where := where + " and ggr.rowNote like " + mgi_DBprstr(value);
+	      where := where + " and ggr.rowNote ilike " + mgi_DBprstr(value);
 	      from_gel := true;
 	      from_gelbandrow := true;
 	    end if;

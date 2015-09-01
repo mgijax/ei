@@ -1526,15 +1526,15 @@ rules:
             elsif (verifyChars < 0) then
               where := SQL_LOWER1 + name + SQL_LOWER2 + " = " + SQL_LOWER1 + mgi_DBprstr(item.value) + SQL_LOWER2;
  
-            -- Use like if verifyChars is 0
+            -- Use ilike if verifyChars is 0
  
             elsif (verifyChars = 0) then
-              where := SQL_LOWER1 + name + SQL_LOWER2 + " like " + SQL_LOWER1 + mgi_DBprstr(item.value) + "%" + SQL_LOWER2;
-              --where := name + " like " + mgi_DBprstr(item.value + "%");
+              where := SQL_LOWER1 + name + SQL_LOWER2 + " ilike " + SQL_LOWER1 + mgi_DBprstr(item.value) + "%" + SQL_LOWER2;
+              --where := name + " ilike " + mgi_DBprstr(item.value + "%");
  
-            -- Use like w/ substring if verifyChars > 0
+            -- Use ilike w/ substring if verifyChars > 0
             else
-              where := SQL_LOWER1 + name + SQL_LOWER2 + " like " + SQL_LOWER1 + mgi_DBprstr(item.value->substr(1, verifyChars) + "%") + SQL_LOWER2;
+              where := SQL_LOWER1 + name + SQL_LOWER2 + " ilike " + SQL_LOWER1 + mgi_DBprstr(item.value->substr(1, verifyChars) + "%") + SQL_LOWER2;
             end if;
 	  end if;
 
@@ -2497,7 +2497,7 @@ rules:
 -- VerifyGOReference
 --
 --	Verify J# in BIB_Refs for Table is not a NO-GO Reference
---	(that is, that BIB_Refs.dbs not like "%GO*")
+--	(that is, that BIB_Refs.dbs not ilike "%GO*")
 --	If Table, assumes table.refsKey, table.jnum, table.citation, table.annotVocab are defined as
 --	  column values for unique identifier, J: and Citation, respectively
 --	Copy Ref Key into Appropriate widget/column

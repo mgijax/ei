@@ -373,19 +373,19 @@ rules:
 	  end if;
 
           if (top->Symbol->text.value.length > 0) then
-	    where := where + "\nand m.symbol like " + mgi_DBprstr(top->Symbol->text.value);
+	    where := where + "\nand m.symbol ilike " + mgi_DBprstr(top->Symbol->text.value);
 	  end if;
 	    
           if (top->Name->text.value.length > 0) then
-	    where := where + "\nand m.name like " + mgi_DBprstr(top->Name->text.value);
+	    where := where + "\nand m.name ilike " + mgi_DBprstr(top->Name->text.value);
 	  end if;
 	    
           if (top->Chromosome->text.value.length > 0) then
-            where := where + "\nand m.chromosome like " + mgi_DBprstr(top->Chromosome->text.value);
+            where := where + "\nand m.chromosome ilike " + mgi_DBprstr(top->Chromosome->text.value);
           end if;
 
 	  if (top->Cyto->text.modified) then
-	    where := where + "\nand m.cytogeneticOffset like " + mgi_DBprstr(top->Cyto->text.value);
+	    where := where + "\nand m.cytogeneticOffset ilike " + mgi_DBprstr(top->Cyto->text.value);
 	  end if;
 
 	end does;

@@ -378,7 +378,7 @@ rules:
 --	An example:
 --
 --	notew.sqlFrom = ,ALL_Note_View note
---	notew.sqlWhere = and note.note like '%blah%'
+--	notew.sqlWhere = and note.note ilike '%blah%'
 --                       and a._Allele_key = note._Allele_key
 --
 
@@ -403,7 +403,7 @@ rules:
 		   noteTypeKey < 0) then
 
 	        notew.sqlWhere := notew.sqlWhere + "\nand " +
-			  tableTag + ".note like " + mgi_DBprnotestr(textw->text.value);
+			  tableTag + ".note ilike " + mgi_DBprnotestr(textw->text.value);
 
 	        if (noteTypeKey > 0) then
 		  notew.sqlWhere := notew.sqlWhere + "\nand " +
