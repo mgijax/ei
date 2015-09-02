@@ -19,7 +19,7 @@ source ${MGICONFIG}/master.config.csh
 unsetenv OPENWINHOME
 unsetenv XKEYSYMDB
 
-setenv CVS_TAG  ei-6-0-0-16
+setenv CVS_TAG  ei-6-0-0-17
 
 switch (`whoami`)
     case lec:
