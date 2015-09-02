@@ -1906,7 +1906,7 @@ Module: MGD
                                                   {
                                                     MolecularSegments = ControlPush : mgiControl;
                                                     Group: Widget
-                                                      activateCallback = "D:Clear(clearForms = 63, clearLists = 7)";
+                                                      activateCallback = "D:Clear(clearForms = 63, clearLists = 3)";
                                                       labelString = "Molecular Segments";
                                                   }
                                                   {

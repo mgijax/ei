@@ -671,7 +671,7 @@ char *image_byRef(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select distinct i._Image_key, \
-	\ncon vert(i.jnumID,';',i.figureLabel,';',i.imageType), i.jnum, i.imageType, i.figureLabel \
+	\nCONCAT(i.jnumID,';',i.figureLabel,';',i.imageType), i.jnum, i.imageType, i.figureLabel \
   	\nfrom IMG_Image_View i \
   	\nwhere _Refs_key = %s", key);
   return(buf);
