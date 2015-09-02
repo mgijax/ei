@@ -1396,7 +1396,7 @@ rules:
 	  pos : integer;
 	  if (assayDetailForm.name = "GelForm") then
 	    if (assayDetailForm->ImagePaneList->List.selectedItemCount = 0) then
-	      set := set + "_ImagePane_key is NULL,";
+	      set := set + "_ImagePane_key = NULL,";
 	    else
 	      pos := XmListItemPos(assayDetailForm->ImagePaneList->List, 
 			xm_xmstring(assayDetailForm->ImagePaneList->List.selectedItems[0]));

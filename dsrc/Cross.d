@@ -239,7 +239,7 @@ rules:
             if (top->Progeny->text.value.length > 0) then
               set := set + "nProgeny = " + top->Progeny->text.value + ",";
 	    else
-              set := set + "nProgeny is NULL,";
+              set := set + "nProgeny = NULL,";
 	    end if;
           end if;
 
