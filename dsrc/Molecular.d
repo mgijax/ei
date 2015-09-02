@@ -640,7 +640,7 @@ rules:
 	          return;
 	        end if;
                 cmd := cmd + detailForm->SourceForm.sql;
-	        set := set + "derivedFrom is NULL,";
+	        set := set + "derivedFrom = NULL,";
 	        set := set + "_Source_key = " + MAX_KEY1 + sourceKeyName + MAX_KEY2 + ",";
 	      end if;
 
