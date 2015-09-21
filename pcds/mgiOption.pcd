@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Thu Aug 20 06:57:39 2015";
+      lastWritten = "Wed Sep  2 07:50:30 2015";
       copy = false;
       inCreateMenu = true;
         {
@@ -262,16 +262,6 @@ Module: mgiOption
                         defaultValue = 136;
                     }
                     {
-                      DFCI = AccToggle : mgiOption;
-                      Group: User
-                        defaultValue = 35;
-                    }
-                    {
-                      DOTS = AccToggle : mgiOption;
-                      Group: User
-                        defaultValue = 36;
-                    }
-                    {
                       EC = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 8;
@@ -296,13 +286,6 @@ Module: mgiOption
                         labelString = miRBase;
                       Group: User
                         defaultValue = 83;
-                    }
-                    {
-                      NIAGeneIndex = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = "NIA Mouse Gene Index";
-                      Group: User
-                        defaultValue = 53;
                     }
                     {
                       PDB = AccToggle : mgiOption;

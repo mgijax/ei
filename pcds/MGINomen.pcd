@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Tue Sep  1 08:05:49 2015";
+      lastWritten = "Wed Sep  2 07:50:33 2015";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -441,12 +441,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     CCDS = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    DFCI = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    DOTS = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     EC = AccToggle;
                                                     Group: Widget
                                                       managed = True;
@@ -463,9 +457,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     miRBase = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
-                                                  }
-                                                  {
-                                                    NIAGeneIndex = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     PDB = AccToggle : mgiOption;
@@ -701,12 +692,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     CCDS = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    DFCI = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    DOTS = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EC = AccToggle;
