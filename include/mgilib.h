@@ -268,8 +268,6 @@ extern char *global_version;
 #define MGI_REFTYPE_ANTIBODY_VIEW	661
 #define	MGI_NOTETYPE_PROBE_VIEW		662
 #define	MGI_NOTE_PROBE_VIEW		663
-#define MGI_SYNONYM_GOTERM_VIEW		664
-#define MGI_SYNONYMTYPE_GOTERM_VIEW	665
 
 /* Strains Tables */
 

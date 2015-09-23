@@ -37,17 +37,13 @@ devents:
 	Exit :local [];					-- Destroys D module instance & cleans up
 	Init :local [];					-- Initialize globals, etc.
 	Modify :local [];				-- Modify record
-	ModifyTerm :local [];				-- Modify Term record(s)
+	ModifyTerm :local[];				-- Modify Term record(s)
 	PrepareSearch :local [];			-- Construct SQL search clause
 	Search :local [];				-- Execute SQL search clause
 	Select :local [item_position : integer;];	-- Select record
 	SetOptions :local [source_widget : widget;	-- Set Option Pulldown Toggle
 			   row : integer;
 			   reason : integer;];
-
-	LoadSimpleVocabSyn :local [reason : integer;  		-- Load Notes
-			           row : integer := -1;];
-	ModifySimpleVocabSyn : local[];		        -- Modify Term/Synonym record(s)
 
 locals:
 	mgi : widget;			-- Top-level shell of Application
@@ -63,7 +59,6 @@ locals:
  
 	tables : list;
 	termTable : widget;
-	synTable : widget;
 
 rules:
 
@@ -120,15 +115,8 @@ rules:
 	  -- Dynamically create Menus
 
 	  termTable := top->Term->Table;
-	  synTable := top->SynonymTypeTable->Table;
 	  InitOptionMenu.option := top->ACCLogicalMenu;
 	  send(InitOptionMenu, 0);
-
-	  -- Initialize Synonym table
-
-	  InitSynTypeTable.table := synTable;
-	  InitSynTypeTable.tableID := MGI_SYNONYMTYPE_GOTERM_VIEW;
-	  send(InitSynTypeTable, 0);
 
 	end does;
 
@@ -150,8 +138,7 @@ rules:
 
 	  -- List of all Table widgets used in form
 
-	  tables.append(termTable);
-	  tables.append(synTable);
+	  tables.append(top->Term->Table);
 
           -- Set Row Count
           SetRowCount.source_widget := top;
@@ -424,98 +411,6 @@ rules:
 	end does;
 
 --
--- LoadSimpleVocabSyn
---
--- Activated from:	termTable.xrtTblEnterCellCallback
---
--- Load Synonyms of current row into Synonym table only if we haven't yet loaded the Synonyms
---
-
-	LoadSimpleVocabSyn does
-	  reason : integer := LoadSimpleVocabSyn.reason;
-	  row : integer := LoadSimpleVocabSyn.row;
-	  termKey : string;
-
-	  if (reason != TBL_REASON_ENTER_CELL_END) then
-	    return;
-	  end if;
-
-	  if (row < 0) then
-	    row := mgi_tblGetCurrentRow(termTable);
-	  end if;
-
-	  if (termTable.row != row) then
-	    synTable.synLoaded := false;
-	  end if;
-
-	  if (synTable.synLoaded) then
-	    return;
-	  end if;
-
-	  termKey := mgi_tblGetCell(termTable, row, termTable.termKey);
-
-	  if (termKey.length = 0) then
-	    ClearTable.table := synTable;
-	    send(ClearTable, 0);
-	    return;
-          end if;
-
-          (void) busy_cursor(top);
-
-          LoadSynTypeTable.table := synTable;
-	  LoadSynTypeTable.tableID := MGI_SYNONYM_GOTERM_VIEW;
-          LoadSynTypeTable.objectKey := termKey;
-          send(LoadSynTypeTable, 0);
-
-	  synTable.synLoaded := true;
-
-          (void) reset_cursor(top);
-	end does;
-
---
--- ModifySimpleVocabSyn
---
--- Activated from:	top->SynonymTypeTable->Save
---
--- Construct and execute command for record modifcations to Synonyms
---
-
-	ModifySimpleVocabSyn does
-	  row : integer;
-	  termKey : string;
-
-          (void) busy_cursor(top);
-
-	  if (currentRecordKey.length = 0) then
-	    (void) reset_cursor(top);
-	    StatusReport.source_widget := top;
-	    StatusReport.message := "Cannot save this Synonym if a record is not selected.";
-	    send(StatusReport, 0);
-	    return;
-	  end if;
-
-	  row := mgi_tblGetCurrentRow(termTable);
-	  termKey := mgi_tblGetCell(termTable, row, termTable.termKey);
-
-          ProcessSynTypeTable.table := synTable;
-          ProcessSynTypeTable.objectKey := termKey;
-	  ProcessSynTypeTable.tableID := MGI_SYNONYMTYPE_GOTERM_VIEW;
-          send(ProcessSynTypeTable, 0);
-
-          ModifySQL.cmd := synTable.sqlCmd;
-	  ModifySQL.list := top->QueryList;
-	  ModifySQL.reselect := false;
-          send(ModifySQL, 0);
-
-	  synTable.notesLoaded := false;
-	  LoadSimpleVocabSyn.reason := TBL_REASON_ENTER_CELL_END;
-	  send(LoadSimpleVocabSyn, 0);
-
-          (void) reset_cursor(top);
-	end does;
-
-
---
 -- PrepareSearch
 --
 -- Construct select statement based on values entered by user
@@ -640,11 +535,6 @@ rules:
             end while;
           end while;
 	  (void) mgi_dbclose(dbproc);
-
-	  synTable.synLoaded := false;
-          LoadSimpleVocabSyn.reason := TBL_REASON_ENTER_CELL_END;
-          LoadSimpleVocabSyn.row := 0;
-          send(LoadSimpleVocabSyn, 0);
 
 	  -- Set Option Menu for row 0
 

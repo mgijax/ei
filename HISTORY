@@ -1,5 +1,11 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-tr12070-BP
+DATE: 09/23/2015
+STAFF: lec
+CHANGES:
+1) branch point tag TR12070/12038
+
 TAG: ei-6-0-0-20
 TAG: ei-6-0-0-19
 TAG: ei-6-0-0-18

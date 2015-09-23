@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Wed Sep 16 14:36:15 2015";
+      lastWritten = "Tue Sep  1 08:05:43 2015";
       copy = false;
       inCreateMenu = true;
         {
@@ -1624,9 +1624,10 @@ Module: MGI
                                     topAttachment = attach_widget;
                                     topWidget = mgiCitation;
                                     topOffset = 10;
-                                    bottomAttachment = attach_none;
+                                    bottomAttachment = attach_form;
                                     resizable = true;
                                     rightOffset = 5;
+                                    bottomOffset = 5;
                                       {
                                         Table = mgiTable;
                                         Group: Widget
@@ -1636,64 +1637,15 @@ Module: MGI
                                           xrtTblNumRows = 25;
                                           xrtTblVisibleRows = 20;
                                           xrtTblPixelWidthSeries = "(all 0-1 0)(all 3-4 0)";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 3)(all 3 10)(all 4 1)(all 5 20)(all 6 50)(all 7 25)(all 8 25)(all 9 8)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 3)(all 3 10)(all 4 1)(all 5 20)(all 6 50)(all 7 50)(all 8 10)(all 9 8)";
                                           userDefinedAttributes = "termKey:Int(Int)=\"3\"\nterm:Int(Int)=\"6\"\nabbreviation:Int(Int)=\"7\"\ndefinition:Int(Int)=\"8\"\nmgiID:Int(Int)=\"5\"\nisObsolete:Int(Int)=\"9\"\nobsoleteKey:Int=\"4\"\n";
                                           xrtTblTraversableSeries = "(all 0-5 0)";
-                                          xrtTblEnterCellCallback = "D:LoadSimpleVocabSyn,\nD:SetOptions";
+                                          xrtTblEnterCellCallback = "D:SetOptions,\nD:SelectSynonym";
                                           xrtTblAllowCellResize = resize_all;
                                         Group: User
                                           saveEditableSeries = "(all 0-5 0)";
                                           saveTraversableSeries = "(all 0-5 0)";
                                           requiredColumns = 6;
-                                      }
-                                }
-                                {
-                                  SynonymTypeTable = SynonymTypeTable : mgiTable;
-                                  Group: Widget
-                                    rubberPositioning = False;
-                                    resizePolicy = resize_any;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = Term;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    bottomAttachment = attach_form;
-                                    resizable = true;
-                                    topWidget = Term;
-                                      {
-                                        Table = mgiTable : mgiTable;
-                                        Group: Widget
-                                          xrtTblPixelWidthSeries = "(all 0-3 0)(all 8-9 0)";
-                                      }
-                                      {
-                                        AddRow = TablePush : mgiTable;
-                                      }
-                                      {
-                                        DeleteRow = TablePush : mgiTable;
-                                      }
-                                      {
-                                        SynonymTypeFrame = SynonymTypeFrame : mgiOption;
-                                            Popups:
-                                            {
-                                              SynonymTypePulldown = OptionPulldown : mgiOption;
-                                              Group: User
-                                                sql = "select _SynonymType_key, synonymType from MGI_SynonymType_GOTerm_View where allowOnlyOne = 0 ";
-                                            }
-                                      }
-                                      {
-                                        Save = ControlPush : mgiControl;
-                                        Group: Widget
-                                          labelString = "Save Synonyms";
-                                          activateCallback = "D:ModifySimpleVocabSyn";
-                                        Group: Constraint
-                                          leftAttachment = attach_none;
-                                          rightAttachment = attach_opposite_widget;
-                                          rightWidget = Table;
-                                          topAttachment = attach_widget;
-                                          topWidget = Table;
-                                          topOffset = 2;
-                                          bottomAttachment = attach_none;
-                                          resizable = true;
                                       }
                                 }
                           }
@@ -2969,6 +2921,12 @@ Module: MGI
                                                     CCDS = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    DFCI = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    DOTS = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     EC = AccToggle;
                                                   }
                                                   {
@@ -2979,6 +2937,9 @@ Module: MGI
                                                   }
                                                   {
                                                     miRBase = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NIAGeneIndex = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     PDB = AccToggle : mgiOption;

@@ -2,7 +2,7 @@ Module: mgiAnatDictionary
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Wed Sep  2 07:50:32 2015";
+      lastWritten = "Tue Sep  1 08:05:48 2015";
         {
           DictionaryModule = Module : MGI;
           Group: Widget
@@ -586,6 +586,12 @@ Module: mgiAnatDictionary
                                                     CCDS = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    DFCI = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    DOTS = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     EC = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -596,6 +602,9 @@ Module: mgiAnatDictionary
                                                   }
                                                   {
                                                     miRBase = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NIAGeneIndex = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     PDB = AccToggle : mgiOption;
