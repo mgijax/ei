@@ -339,8 +339,8 @@ rules:
 	      end if;
 
 	      if (table.is_defined("modifiedBy") != nil) then
-	        (void) mgi_tblSetCell(table, row, table.modifiedBy, mgi_getstr(dbproc, 10));
-	        (void) mgi_tblSetCell(table, row, table.modifiedDate, mgi_getstr(dbproc, 11));
+	        (void) mgi_tblSetCell(table, row, table.modifiedBy, mgi_getstr(dbproc, 11));
+	        (void) mgi_tblSetCell(table, row, table.modifiedDate, mgi_getstr(dbproc, 12));
 	      end if;
 
 	      if (table.is_defined("sequenceKey") != nil) then
