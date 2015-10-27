@@ -1,5 +1,11 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-6-0-1-1
+DATE: 10/27/2015
+STAFF: lec
+CHANGES:
+1) dsrc/Assay : remove call to exec_gxd_removeBadGelBand
+
 TAG: ei-tr12070-BP
 DATE: 09/23/2015
 STAFF: lec
