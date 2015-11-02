@@ -568,6 +568,11 @@ Module: mgiOption
                         defaultValue = 90;
                     }
                     {
+                      ARC = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 177;
+                    }
+                    {
                       BCBC = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 58;
