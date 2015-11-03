@@ -9697,6 +9697,11 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
+                                                    ARC = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
                                                     BCBC = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;

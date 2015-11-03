@@ -2939,7 +2939,7 @@ rules:
 	  noteCol : integer := table.bandNotes;
 	  newColLabels : string := "Mode,Row Key,Unit Key,Row,Size,Units,Notes";
 	  newPixelWidthSeries : string := "(all 1-2 0)";
-	  newCharWidthSeries : string := "(all 0 1)(all 3 3)(all 4-6 5)";
+	  newCharWidthSeries : string := "(all 0 1)(all 3 3)(all 4 7)(all 5-6 5)";
 	  newTraverseSeries : string := "(all 0-3 False)";
 	  newEditableSeries : string := "(all 0-3 False) (all 5-6 False)";
 	  newRequiredColumns : string_list := create string_list();
