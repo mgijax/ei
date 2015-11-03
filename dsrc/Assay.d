@@ -2873,6 +2873,7 @@ rules:
 	      (void) mgi_tblSetCell(table, row, table.unitsKey, mgi_getstr(dbproc, 3));
 	      (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 4));
 	      (void) mgi_tblSetCell(table, row, table.size, mgi_getstr(dbproc, 9));
+	      --(void) mgi_tblSetCell(table, row, table.size, (string) mgi_getstr(dbproc, 5));
 	      (void) mgi_tblSetCell(table, row, table.rowNotes, mgi_getstr(dbproc, 6));
 	      (void) mgi_tblSetCell(table, row, table.units, mgi_getstr(dbproc, 10));
 	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
@@ -2939,7 +2940,7 @@ rules:
 	  noteCol : integer := table.bandNotes;
 	  newColLabels : string := "Mode,Row Key,Unit Key,Row,Size,Units,Notes";
 	  newPixelWidthSeries : string := "(all 1-2 0)";
-	  newCharWidthSeries : string := "(all 0 1)(all 3 3)(all 4-6 5)";
+	  newCharWidthSeries : string := "(all 0 1)(all 3 3)(all 4 8)(all 5-6 5)";
 	  newTraverseSeries : string := "(all 0-3 False)";
 	  newEditableSeries : string := "(all 0-3 False) (all 5-6 False)";
 	  newRequiredColumns : string_list := create string_list();

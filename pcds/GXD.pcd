@@ -2057,7 +2057,7 @@ Shift<Key>Tab: prev-tab-group()
                         xrtTblTraversableSeries = "(all 0-3 False)";
                         xrtTblColumnLabels = "Mode,Row Key,Unit Key,Row,Size,Units,Notes";
                         userDefinedAttributes = "rowKey:Int(Int)=\"1\"\nunitsKey:Int(Int)=\"2\"\nseqNum:Int(Int)=\"3\"\nsize:Int(Int)=\"4\"\nunits:Int(Int)=\"5\"\nrowNotes:Int(Int)=\"6\"\nbandIncrement:Int(Int)=\"6\"\nlaneKey:Int(Int)=\"8\"\nbandKey:Int(Int)=\"9\"\nstrengthKey:Int(Int)=\"10\"\nstrength:Int(Int)=\"11\"\nbandNotes:Int(Int)=\"12\"\nverifyFloat:StringTable(StringTable)=\"4\"\nbandMode:Int(Int)=\"7\"\n";
-                        xrtTblCharWidthSeries = "(all 0 1)(all 3 3)(all 4-6 5)";
+                        xrtTblCharWidthSeries = "(all 0 1)(all 3 3)(all 4 7)(all 5-6 5)";
                         xrtTblDisplayHorizScrollBar = dispsb_always;
                         xrtTblFrozenColumns = 6;
                         xrtTblEnterCellCallback = "D:SetOptions";
