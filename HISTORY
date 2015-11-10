@@ -1,5 +1,12 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-6-0-1-5
+DATE: 11/20/2015
+STAFF: lec
+CHANGES:
+1) add 'exec' to runapp
+
+1) TR12185/gxd gel size
 TAG: ei-6-0-1-4
 TAG: ei-6-0-1-3
 DATE: 11/03/2015
