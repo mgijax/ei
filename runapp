@@ -14,4 +14,4 @@ unsetenv MGICONFIG
 source ./Configuration
 
 cd ${EIBUILDDIR}/${EIAPP}
-${EIAPP} >>& ${USERLOG}
+exec ${EIAPP} >>& ${USERLOG}
