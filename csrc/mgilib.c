@@ -2347,7 +2347,7 @@ char *mgi_DBupdate(int table, char *key, char *str)
   memset(buf, '\0', sizeof(buf));
   memset(sql_getdate, '\0', sizeof(sql_getdate));
 
-  sprintf(sql_getdate,"current_date");
+  sprintf(sql_getdate,"now()");
 
   /* Get rid of any trailing ',' */
 
@@ -2503,7 +2503,7 @@ char *mgi_DBupdate2(int table, char *key, char *key2, char *str)
   memset(buf, '\0', sizeof(buf));
   memset(sql_getdate, '\0', sizeof(sql_getdate));
 
-  sprintf(sql_getdate,"current_date");
+  sprintf(sql_getdate,"now()");
 
   switch (table)
   {
