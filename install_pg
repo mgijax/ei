@@ -15,7 +15,7 @@ rm -f $LOG
 
 cd ${EIBUILDDIR}
 
-setenv EIAPPS	"mgd gxd mgi mgiadmin"
+setenv EIAPPS	"mgd gxd mgi"
 foreach app ($EIAPPS)
 
 echo "INSTALLING $app"

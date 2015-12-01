@@ -938,6 +938,9 @@ rules:
           InitAcc.table := accTable;
           send(InitAcc, 0);
  
+	  InitRefAlleleTable.table := top->RefAllele->Table;
+	  send(InitRefAlleleTable, 0);
+
           tables.open;
           while (tables.more) do
             ClearTable.table := tables.next;

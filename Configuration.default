@@ -61,7 +61,7 @@ setenv EIDATADIR /data/ei
 setenv EIPASSWORDFILE  ${HOME}/.mgd_password
 
 # EI Applications
-setenv EIAPPS	"mgd gxd mgiadmin mgi"
+setenv EIAPPS	"mgd gxd mgi"
 
 # Data directories
 setenv EIREPORTDIR	${HOME}/mgireport
