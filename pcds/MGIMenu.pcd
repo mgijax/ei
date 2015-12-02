@@ -65,14 +65,6 @@ Module: MGIMenu
                                     managed = True;
                                     labelString = "Gene Expression Database (GXD)";
                                 }
-                                {
-                                  MGIAdmin = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:ForkIt(app = \"runapp mgiadmin\")";
-                                    traversalOn = False;
-                                    managed = True;
-                                    labelString = "MGI Administration";
-                                }
                           }
                     }
               }

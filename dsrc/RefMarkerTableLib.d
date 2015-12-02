@@ -60,6 +60,10 @@ rules:
 	    send(InitOptionMenu, 0); 
 	  end if;
 
+          SetOption.source_widget := top->RefMarker->ReferenceTypeMenu;
+          SetOption.value := top->RefMarker->ReferenceTypeMenu.subMenuId.child(2).defaultValue;
+          send(SetOption, 0); 
+
 	end does;
 
 --

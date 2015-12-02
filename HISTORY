@@ -1,36 +1,16 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
-TAG: ei-6-0-1-6
-DATE: 11/20/2015
+TAG: ei-6-0-2-1
+DATE: 12/2/2015
 STAFF: lec
 CHANGES:
-1) dsrc/Antibody.d/ModifyMarker
+1) TR12070/12038
 
-TAG: ei-6-0-1-5
-DATE: 11/20/2015
+TAG: ei-tr12070-1
+DATE: 12/2/2015
 STAFF: lec
 CHANGES:
-1) add 'exec' to runapp
-
-1) TR12185/gxd gel size
-TAG: ei-6-0-1-4
-TAG: ei-6-0-1-3
-DATE: 11/03/2015
-STAFF: lec
-CHANGES:
-1) TR12185/gxd gel size
-
-TAG: ei-6-0-1-2
-DATE: 11/02/2015
-STAFF: lec
-CHANGES:
-1) added: ARC/ldb=177
-
-TAG: ei-6-0-1-1
-DATE: 10/27/2015
-STAFF: lec
-CHANGES:
-1) dsrc/Assay : remove call to exec_gxd_removeBadGelBand
+1) branch point tag TR12070/12038
 
 TAG: ei-tr12070-BP
 DATE: 09/23/2015

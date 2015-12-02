@@ -2,7 +2,7 @@ Module: mgiTable
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Mon Aug 24 09:13:21 2015";
+      lastWritten = "Mon Sep 21 08:45:33 2015";
         {
           mgiTable = XtXrtTable;
           Group: Widget
@@ -731,7 +731,7 @@ Module: mgiTable
                   xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 20)(all 5 50)(all 6 10)(all 7 30)(all 8 12)(all 9 10)";
                   xrtTblEditableSeries = "(all 0-4 False)";
                   xrtTblTraversableSeries = "(all 0-4 False)";
-                  userDefinedAttributes = "synKey:Int(Int)=\"1\"\nsynTypeKey:Int(Int)=\"2\"\nsynType:Int(Int)=\"4\"\nsynName:Int(Int)=\"5\"\nmgiTypeKey:String(String)\nrefsKey:Int(Int)=\"3\"\njnum:Int(Int)=\"6\"\ncitation:Int(Int)=\"7\"\nmodifiedBy:Int(Int)=\"8\"\nmodifiedDate:Int(Int)=\"9\"\nuseDefaultSynType:Boolean(Boolean)=\"False\"\n";
+                  userDefinedAttributes = "synKey:Int(Int)=\"1\"\nsynTypeKey:Int(Int)=\"2\"\nsynType:Int(Int)=\"4\"\nsynName:Int(Int)=\"5\"\nmgiTypeKey:String(String)\nrefsKey:Int(Int)=\"3\"\njnum:Int(Int)=\"6\"\ncitation:Int(Int)=\"7\"\nmodifiedBy:Int(Int)=\"8\"\nmodifiedDate:Int(Int)=\"9\"\nuseDefaultSynType:Boolean(Boolean)=\"False\"\nsynLoaded:Boolean(Boolean)=\"False\"\n";
                   xrtTblNumColumns = 10;
                   xrtTblValidateCellCallback = "D:VerifyReference,\nD:CommitTableCellEdit";
                   xrtTblMaxLengthSeries = "(all 5 255)";

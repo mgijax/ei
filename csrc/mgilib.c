@@ -773,6 +773,7 @@ char *mgi_DBkey(int table)
     case MGI_SYNONYM_MUSMARKER_VIEW:
     case MGI_SYNONYM_NOMEN_VIEW:
     case MGI_SYNONYM_STRAIN_VIEW:
+    case MGI_SYNONYM_GOTERM_VIEW:
             strcpy(buf, "_Object_key");
 	    break;
     case MGI_TRANSLATION:
@@ -1357,12 +1358,6 @@ char *mgi_DBtable(int table)
     case IMG_IMAGEPANE_ASSOC_VIEW:
             strcpy(buf, "IMG_ImagePane_Assoc_View");
 	    break;
-    case MGI_TABLES:
-            strcpy(buf, "MGI_Tables");
-	    break;
-    case MGI_COLUMNS:
-            strcpy(buf, "MGI_Columns");
-	    break;
     case MGI_NOTE:
 	    strcpy(buf, "MGI_Note");
 	    break;
@@ -1516,6 +1511,9 @@ char *mgi_DBtable(int table)
     case MGI_SYNONYM_STRAIN_VIEW:
 	    strcpy(buf, "MGI_Synonym_Strain_View");
 	    break;
+    case MGI_SYNONYM_GOTERM_VIEW:
+	    strcpy(buf, "MGI_Synonym_GOTerm_View");
+	    break;
     case MGI_SYNONYMTYPE_ALLELE_VIEW:
 	    strcpy(buf, "MGI_SynonymType_Allele_View");
 	    break;
@@ -1527,6 +1525,9 @@ char *mgi_DBtable(int table)
 	    break;
     case MGI_SYNONYMTYPE_STRAIN_VIEW:
 	    strcpy(buf, "MGI_SynonymType_Strain_View");
+	    break;
+    case MGI_SYNONYMTYPE_GOTERM_VIEW:
+	    strcpy(buf, "MGI_SynonymType_GOTerm_View");
 	    break;
     case MGI_TRANSLATION:
     case MGI_TRANSLATIONSEQNUM:

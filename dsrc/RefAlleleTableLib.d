@@ -60,6 +60,10 @@ rules:
 	    send(InitOptionMenu, 0); 
 	  end if;
 
+          SetOption.source_widget := top->RefAllele->ReferenceTypeMenu;
+          SetOption.value := top->RefAllele->ReferenceTypeMenu.subMenuId.child(2).defaultValue;
+          send(SetOption, 0);
+
 	end does;
 
 --

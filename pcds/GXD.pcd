@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Tue Sep  1 08:05:44 2015";
+      lastWritten = "Wed Sep  2 07:50:28 2015";
       copy = false;
       inCreateMenu = true;
         {
@@ -536,12 +536,6 @@ Module: GXD
                                                     CCDS = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    DFCI = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    DOTS = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     EC = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -552,9 +546,6 @@ Module: GXD
                                                   }
                                                   {
                                                     miRBase = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NIAGeneIndex = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     PDB = AccToggle : mgiOption;
@@ -1518,12 +1509,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     CCDS = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    DFCI = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    DOTS = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     EC = AccToggle;
                                                   }
                                                   {
@@ -1534,9 +1519,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     miRBase = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NIAGeneIndex = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     PDB = AccToggle : mgiOption;
@@ -4083,12 +4065,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     CCDS = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    DFCI = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    DOTS = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     EC = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -4099,9 +4075,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     miRBase = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NIAGeneIndex = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     PDB = AccToggle : mgiOption;

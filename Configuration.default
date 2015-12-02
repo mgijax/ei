@@ -19,7 +19,7 @@ source ${MGICONFIG}/master.config.csh
 unsetenv OPENWINHOME
 unsetenv XKEYSYMDB
 
-setenv CVS_TAG  ei-6-0-1-6
+setenv CVS_TAG  ei-6-0-2-1
 
 switch (`whoami`)
     case lec:
@@ -61,7 +61,7 @@ setenv EIDATADIR /data/ei
 setenv EIPASSWORDFILE  ${HOME}/.mgd_password
 
 # EI Applications
-setenv EIAPPS	"mgd gxd mgiadmin mgi"
+setenv EIAPPS	"mgd gxd mgi"
 
 # Data directories
 setenv EIREPORTDIR	${HOME}/mgireport

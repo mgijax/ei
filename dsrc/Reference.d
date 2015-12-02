@@ -945,6 +945,14 @@ rules:
           end while;
           tables.close;
 
+          SetOption.source_widget := top->RefAllele->ReferenceTypeMenu;
+          SetOption.value := top->RefAllele->ReferenceTypeMenu.subMenuId.child(2).defaultValue;
+          send(SetOption, 0); 
+
+          SetOption.source_widget := top->RefMarker->ReferenceTypeMenu;
+          SetOption.value := top->RefMarker->ReferenceTypeMenu.subMenuId.child(2).defaultValue;
+          send(SetOption, 0); 
+
 	  -- If no item selected, return
 
 	  if (top->QueryList->List.selectedItemCount = 0) then
