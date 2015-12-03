@@ -735,7 +735,7 @@ rules:
 	  -- process the note
 	  --
 
-	  if (mgi_DBprnotestr(note) != "NULL" or ModifyNotes.allowBlank) then
+	  if (mgi_DBprnotestr(note) != "NULL") then
 	    if (tableID = MGI_NOTE) then
 	          cmd := cmd +
 		         mgi_DBinsert(MGI_NOTECHUNK, NOKEY) + MAX_KEY1 + keyName + MAX_KEY2 + "," +
