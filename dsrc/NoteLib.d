@@ -731,30 +731,36 @@ rules:
 		   global_userKey + "," + global_userKey + END_VALUE;
 	  end if;
 
-	  if (tableID = MGI_NOTE) then
-	        cmd := cmd +
-		       mgi_DBinsert(MGI_NOTECHUNK, NOKEY) + MAX_KEY1 + keyName + MAX_KEY2 + "," +
-		       (string) i + "," + 
-                       mgi_DBprnotestr(note) + "," +
-		       global_userKey + "," + global_userKey + END_VALUE;
-	  elsif (isTable and noteType.length > 0) then
+	  --
+	  -- process the note
+	  --
+
+	  if (mgi_DBprnotestr(note) != "NULL" or ModifyNotes.allowBlank) then
+	    if (tableID = MGI_NOTE) then
+	          cmd := cmd +
+		         mgi_DBinsert(MGI_NOTECHUNK, NOKEY) + MAX_KEY1 + keyName + MAX_KEY2 + "," +
+		         (string) i + "," + 
+                         mgi_DBprnotestr(note) + "," +
+		         global_userKey + "," + global_userKey + END_VALUE;
+	    elsif (isTable and noteType.length > 0) then
+	            cmd := cmd + 
+		         mgi_DBinsert(tableID, NOKEY) + key + "," + 
+		         (string) i + "," + 
+		         mgi_DBprstr(noteType) + "," +
+                         mgi_DBprnotestr(note) + END_VALUE;
+	    elsif (noteType.length > 0) then
+	            cmd := cmd + 
+		         mgi_DBinsert(tableID, NOKEY) + key + "," + 
+		         (string) i + "," + 
+		         noteType + "," +
+                         mgi_DBprnotestr(note) + END_VALUE;
+              else
 	          cmd := cmd + 
 		       mgi_DBinsert(tableID, NOKEY) + key + "," + 
 		       (string) i + "," + 
-		       mgi_DBprstr(noteType) + "," +
                        mgi_DBprnotestr(note) + END_VALUE;
-	  elsif (noteType.length > 0) then
-	          cmd := cmd + 
-		       mgi_DBinsert(tableID, NOKEY) + key + "," + 
-		       (string) i + "," + 
-		       noteType + "," +
-                       mgi_DBprnotestr(note) + END_VALUE;
-          else
-	        cmd := cmd + 
-		     mgi_DBinsert(tableID, NOKEY) + key + "," + 
-		     (string) i + "," + 
-                     mgi_DBprnotestr(note) + END_VALUE;
-	  end if;
+	    end if;
+          end if;
 
 	  -- if notes are being added, then include 'masterCmd'
 	  -- else just include the 'deleteCmd'
