@@ -10,6 +10,9 @@
 --
 -- History:
 --
+-- lec 12/03/2015
+--      - TR12083/notes
+--
 -- 06/30/2015	lec
 --	- TR11624/added QTL (BIB_QTL_Exists)
 --
@@ -1029,6 +1032,7 @@ rules:
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	        top->Notes->text.value := top->Notes->text.value + mgi_getstr(dbproc, 1);
+	        --top->Notes->text.value := mgi_getstr(dbproc, 1);
 	    end while;
 	  end while;
 	  (void) mgi_dbclose(dbproc);

@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- lec 12/03/2015
+--      - TR12083/notes
+--
 -- lec  04/06/2010
 --	- TR 10148/remove unionalias select
 --
@@ -1558,6 +1561,7 @@ rules:
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	        top->MolMarkerForm->MolNote->text.value := top->MolMarkerForm->MolNote->text.value + mgi_getstr(dbproc, 1);
+	        --top->MolMarkerForm->MolNote->text.value := mgi_getstr(dbproc, 1);
             end while;
           end while;
 	  (void) mgi_dbclose(dbproc);
@@ -1677,8 +1681,8 @@ rules:
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-                top->MolReferenceForm->Notes->text.value := top->MolReferenceForm->Notes->text.value + 
-			mgi_getstr(dbproc, 1);
+                top->MolReferenceForm->Notes->text.value := top->MolReferenceForm->Notes->text.value + mgi_getstr(dbproc, 1);
+                --top->MolReferenceForm->Notes->text.value := mgi_getstr(dbproc, 1);
             end while;
           end while;
 	  (void) mgi_dbclose(dbproc);

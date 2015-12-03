@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- lec 12/03/2015
+--	- TR12083/notes
+--
 -- lec 01/30/2014
 --	- TR10841/obsolete/mld_distance/mld_physmap
 --
@@ -2617,6 +2620,7 @@ rules:
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
               ExptForm->Notes->text.value := ExptForm->Notes->text.value + mgi_getstr(dbproc, 1);
+              --ExptForm->Notes->text.value := mgi_getstr(dbproc, 1);
             end while;
           end while;
 	  (void) mgi_dbclose(dbproc);
@@ -2654,7 +2658,8 @@ rules:
 	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-              top->referenceNote->Note->text.value := top->referenceNote->Note->text.value + mgi_getstr(dbproc, 1);
+              --top->referenceNote->Note->text.value := top->referenceNote->Note->text.value + mgi_getstr(dbproc, 1);
+              top->referenceNote->Note->text.value := mgi_getstr(dbproc, 1);
             end while;
           end while;
 	  (void) mgi_dbclose(dbproc);
