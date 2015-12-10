@@ -438,20 +438,8 @@ rules:
 		 currentExptKey + "," +
 		 currentCrossKey + ",";
 
-	  if (ExptForm->Female->text.value.length <= 255) then
-	    cmd := cmd + mgi_DBprstr(ExptForm->Female->text.value) + ",NULL,";
-          else
-            cmd := cmd + mgi_DBprstr(ExptForm->Female->text.value->substr(1, 255)) + "," +
-	           mgi_DBprstr(ExptForm->Female->text.value->substr(256, ExptForm->Female->text.value.length)) + ",";
-	  end if;
-
-	  if (ExptForm->Male->text.value.length <= 255) then
-	    cmd := cmd + mgi_DBprstr(ExptForm->Male->text.value) + ",NULL";
-          else
-            cmd := cmd + mgi_DBprstr(ExptForm->Male->text.value->substr(1, 255)) + "," +
-	           mgi_DBprstr(ExptForm->Male->text.value->substr(256, ExptForm->Male->text.value.length));
-	  end if;
-
+	  cmd := cmd + mgi_DBprstr(ExptForm->Female->text.value) + ",NULL,";
+	  cmd := cmd + mgi_DBprstr(ExptForm->Male->text.value) + ",NULL";
 	  cmd := cmd + END_VALUE;
 
 	  send(ModifyCrossHaplotype, 0);
@@ -905,27 +893,15 @@ rules:
 	  end if;
 
 	  if (ExptForm->Female->text.modified) then
-	    if (ExptForm->Female->text.value.length <= 255) then
-	      set := set + 
-		     "female = " + mgi_DBprstr(ExptForm->Female->text.value) + "," +
-		     "female2 is NULL,";
-            else
-              set := set + 
-		     "female = " + mgi_DBprstr(ExptForm->Female->text.value->substr(1, 255)) + "," +
-	             "female2 = " + mgi_DBprstr(ExptForm->Female->text.value->substr(256, ExptForm->Female->text.value.length)) + ",";
-	    end if;
+	    set := set + 
+		   "female = " + mgi_DBprstr(ExptForm->Female->text.value) + "," +
+		   "female2 is NULL,";
 	  end if;
 
 	  if (ExptForm->Male->text.modified) then
-	    if (ExptForm->Male->text.value.length <= 255) then
-	      set := set + 
-		     "male = " + mgi_DBprstr(ExptForm->Male->text.value) + "," +
-		     "male2 is NULL,";
-            else
-              set := set + 
-		     "male = " + mgi_DBprstr(ExptForm->Male->text.value->substr(1, 255)) + "," +
-	             "male2 = " + mgi_DBprstr(ExptForm->Male->text.value->substr(256, ExptForm->Male->text.value.length)) + ",";
-	    end if;
+	    set := set + 
+		   "male = " + mgi_DBprstr(ExptForm->Male->text.value) + "," +
+		   "male2 is NULL,";
 	  end if;
 
 	  send(ModifyCrossHaplotype, 0);

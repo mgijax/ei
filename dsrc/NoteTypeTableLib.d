@@ -201,7 +201,6 @@ rules:
 
 	  cmd : string;
           row : integer := 0;
-	  i : integer := 1;
           editMode : string;
           key : string;
 	  defaultNoteTypeKey : string;
@@ -235,7 +234,6 @@ rules:
 	  row := 0;
           while (row < mgi_tblNumRows(table)) do
 
-	    i := 1;
             editMode := mgi_tblGetCell(table, row, table.editMode);
             key := mgi_tblGetCell(table, row, table.noteKey);
 	    note := mgi_tblGetCell(table, row, table.note);
@@ -277,26 +275,6 @@ rules:
 		     noteTypeKey + "," +
 		     global_userKey + "," + global_userKey + END_VALUE;
 
-              -- Break notes up into segments of 255
- 
-              while (note.length > 255) do
-
-                if (editMode = TBL_ROW_ADD) then
-	          cmd := cmd + mgi_DBinsert(MGI_NOTECHUNK, NOKEY) + MAX_KEY1 + keyName + MAX_KEY2 + ",";
-		else
-	          cmd := cmd + mgi_DBinsert(MGI_NOTECHUNK, NOKEY) + key + ",";
-		end if;
-
-		cmd := cmd + (string) i + "," + 
-                       mgi_DBprnotestr(note->substr(1, 255)) + "," +
-		       global_userKey + "," + global_userKey + END_VALUE;
-
-                note := note->substr(256, note.length);
-                i := i + 1;
-              end while;
- 
-	      -- Process the last remaining chunk of note
-    
 	      if (mgi_DBprnotestr(note) != "NULL") then
                 if (editMode = TBL_ROW_ADD) then
 	          cmd := cmd + mgi_DBinsert(MGI_NOTECHUNK, NOKEY) + MAX_KEY1 + keyName + MAX_KEY2 + ",";
@@ -304,7 +282,7 @@ rules:
 	          cmd := cmd + mgi_DBinsert(MGI_NOTECHUNK, NOKEY) + key + ",";
 		end if;
 
-		cmd := cmd + (string) i + "," + 
+		cmd := cmd + "1," + 
                        mgi_DBprnotestr(note) + "," +
 		       global_userKey + "," + global_userKey + END_VALUE;
 	      end if;
