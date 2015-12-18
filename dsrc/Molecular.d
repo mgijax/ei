@@ -1235,7 +1235,8 @@ rules:
 
           value := mgi_tblGetCell(table, 0, table.modifiedDate);
           if (value.length > 0) then
-            where := where + "\nand convert(char(10), g.modification_date, 101) = " + mgi_DBprstr(value);
+	    where := where + "\nand (g.modification_date between " + mgi_DBprstr(value) + \
+		" and (" + mgi_DBprstr(value) + "::date + '1 day'::interval))";
             from_marker := true;
           end if;
 

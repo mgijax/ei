@@ -746,7 +746,8 @@ rules:
 		end if;
 
 		if (modifiedDate.length > 0) then
-	          table.sqlWhere := table.sqlWhere + "\nand convert(char(10), ac.modification_date, 101) = " + mgi_DBprstr(modifiedDate);
+		  table.sqlWhere := table.sqlWhere + "\nand (ac.modification_date between " + mgi_DBprstr(modifiedDate) + \
+			" and (" + mgi_DBprstr(modifiedDate) + "::date + '1 day'::interval))";
 		end if;
 
 	        break;
