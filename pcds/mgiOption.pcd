@@ -2279,7 +2279,7 @@ Module: mgiOption
               {
                 MarkerStatusPulldown : OptionPulldown = OptionPulldown;
                 Group: User
-                  sql = "select * from MRK_Status where _Marker_Status_key > 0 order by status";
+                  sql = "select * from MRK_Status where _Marker_Status_key > 0 and status != 'interim' order by status";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }

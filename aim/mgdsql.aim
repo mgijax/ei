@@ -38,6 +38,7 @@ CALLS
 	 derivation_search("char *", "char *")		: "char *";
 
 	 alleledisease_search("char *", "char *")	: "char *";
+         alleledisease_select("char *")                 : "char *";
 
 	 cross_select("char *")				: "char *";
 	 cross_search("char *", "char *")		: "char *";

@@ -230,7 +230,6 @@ rules:
           editMode : string;
 	  key : string;
           annotKey : string;
-          annotKey2 : string;
           termKey : string;
 	  refsKey : string;
           qualifierKey : string;
@@ -239,8 +238,6 @@ rules:
           set : string := "";
 	  keyDeclared : boolean := false;
 	  keyName : string := "annotEvidenceKey";
-	  annotKeyDeclared : boolean := false;
-	  dupAnnot : boolean;
 	  editTerm : boolean := false;
 	  notesModified : boolean := false;
  
@@ -256,15 +253,6 @@ rules:
 	  end if;
 
 	  (void) busy_cursor(top);
-
-	  -- First, sort the table by the Term so that all ilike Terms
-	  -- are grouped together.  
-	  -- This will enable us to easily create 1 _Annot_key per Term.
-	  -- If the current  Term is not equal to the previous  Term,
-	  -- then we have a new _Annot_key.
-
-	  (void) mgi_tblSort(annotTable, annotTable.annotKey);
-	  (void) mgi_tblSort(annotTable, annotTable.term);
 
 	  editTerm := top->Annotation->EditTerm.set;
 
@@ -294,28 +282,7 @@ rules:
 
             if (editMode = TBL_ROW_ADD) then
 	      
-	      -- Since the annotTable is sorted by Term, if the previous 
-	      -- Term is equal to the current  Term, then use the same
-	      -- _Annot_key value, else generate a new one.
-
-  	      dupAnnot := false;
 	      annotKey := MAX_KEY1 + KEYNAME + MAX_KEY2;
-
-	      if (row > 0) then
-	        if (termKey = mgi_tblGetCell(annotTable, row - 1, annotTable.termKey) and
-	            qualifierKey = mgi_tblGetCell(annotTable, row - 1, annotTable.qualifierKey)) then
-
-		  -- if this is an existing annotation, use the same annotation key as previous row
-		  annotKey2 := mgi_tblGetCell(annotTable, row - 1, annotTable.annotKey);
-
-		  if (annotKey2.length > 0) then
-		    annotKey := annotKey2;
-		    mgi_tblSetCell(annotTable, row, annotTable.annotKey, annotKey);
-		  end if;
-
-		  dupAnnot := true;
-		end if;
-	      end if;
 
 	      -- Declare primary key name, or increment
 
@@ -326,31 +293,20 @@ rules:
                   cmd := cmd + mgi_DBincKey(keyName);
 	      end if;
 
-	      if (not dupAnnot) then
-
-		-- if the key def was not already declared, declare it
-                if (not annotKeyDeclared) then
-                  cmd := cmd + mgi_setDBkey(VOC_ANNOT, NEWKEY, KEYNAME);
-                  annotKeyDeclared := true;
-                else
-                  cmd := cmd + mgi_DBincKey(KEYNAME);
-                end if;
-
-                cmd := cmd +
-                       mgi_DBinsert(VOC_ANNOT, KEYNAME) +
-		       annotTypeKey + "," +
-		       top->mgiAccession->ObjectID->text.value + "," +
-		       termKey + "," +
-		       qualifierKey + END_VALUE;
-	      end if;
+              cmd := cmd + 
+                     mgi_DBinsert(VOC_ANNOT, KEYNAME) +
+		     annotTypeKey + "," +
+		     top->mgiAccession->ObjectID->text.value + "," +
+		     termKey + "," +
+		     qualifierKey + END_VALUE;
 
               cmd := cmd +
-		       mgi_DBinsert(VOC_EVIDENCE, keyName) +
-		       annotKey + "," +
-		       evidenceKey + "," +
-		       refsKey + "," +
-		       "NULL," +
-		       global_userKey + "," + global_userKey + END_VALUE;
+		     mgi_DBinsert(VOC_EVIDENCE, keyName) +
+		     annotKey + "," +
+		     evidenceKey + "," +
+		     refsKey + "," +
+		     "NULL," +
+		     global_userKey + "," + global_userKey + END_VALUE;
 
 	      ModifyNotes.source_widget := annotTable;
 	      ModifyNotes.tableID := MGI_NOTE;
@@ -625,7 +581,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  row := 0;
-	  cmd := omimvoc_select2(currentRecordKey, annotTypeKey);
+	  cmd := alleledisease_select(currentRecordKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do

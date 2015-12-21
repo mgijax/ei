@@ -2181,7 +2181,7 @@ Module: MGI
                                           xrtTblColumnLabels = "Mode,Task";
                                           xrtTblCharWidthSeries = "(all 0 1)(all 1 100)";
                                           userDefinedAttributes = "task:Int=\"1\"\n";
-                                          xrtTblNumRows = 11;
+                                          xrtTblNumRows = 2;
                                           xrtTblVisibleRows = 10;
                                       }
                                 }
