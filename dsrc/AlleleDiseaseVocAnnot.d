@@ -237,6 +237,7 @@ rules:
 	  notes : string;
           set : string := "";
 	  keyDeclared : boolean := false;
+          annotKeyDeclared : boolean := false;
 	  keyName : string := "annotEvidenceKey";
 	  editTerm : boolean := false;
 	  notesModified : boolean := false;
@@ -282,10 +283,16 @@ rules:
 
             if (editMode = TBL_ROW_ADD) then
 	      
+              -- primary key declaration of VOC_ANNOT
+              if (not annotKeyDeclared) then 
+                cmd := cmd + mgi_setDBkey(VOC_ANNOT, NEWKEY, KEYNAME);
+                annotKeyDeclared := true;
+              else
+                cmd := cmd + mgi_DBincKey(KEYNAME);
+              end if;
+
+	      -- primary key declaration of VOC_EVIDENCE
 	      annotKey := MAX_KEY1 + KEYNAME + MAX_KEY2;
-
-	      -- Declare primary key name, or increment
-
 	      if (not keyDeclared) then
                   cmd := cmd + mgi_setDBkey(VOC_EVIDENCE, NEWKEY, keyName);
                   keyDeclared := true;
