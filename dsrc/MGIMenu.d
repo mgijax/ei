@@ -44,6 +44,7 @@ rules:
 	  cmd_str : string_list;
 	  path : string := getenv("EIBUILDDIR");
 	  cmd_str := mgi_splitfields(ForkIt.app, " ");
+	  (void) mgi_writeLog(path + "/" + cmd_str[1] + " " + cmd_str[2] + "\n");
 	  proc_id : opaque := tu_fork_process(path + "/" + cmd_str[1], cmd_str, nil, ForkEnd);
 	  subprocs.append(proc_id);
 	  tu_fork_close_io(proc_id);

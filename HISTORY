@@ -1,5 +1,11 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-6-0-2-4
+DATE: 01/07/2016
+STAFF: lec
+CHANGES:
+1) TR12210/dsrc/AlleleDiseaseVocAnnot.d
+
 TAG: ei-6-0-2-3
 TAG: ei-6-0-2-2
 TAG: ei-6-0-2-1
