@@ -139,9 +139,9 @@ Module: mgiLookup
               {
                 Label = LookupLabel : mgiLookup;
                 Group: Widget
-                  labelString = "Anatomical Structures";
+                  labelString = "EMAPA Terms/Stages";
                 Group: User
-                  defaultLabel = "Anatomical Structures";
+                  defaultLabel = "EMAPA Terms/Stages";
               }
               {
                 List = list : mgiDataTypes;

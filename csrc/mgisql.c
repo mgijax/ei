@@ -1221,14 +1221,13 @@ char *verify_structure(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select sa.accID, sn.structure, t.stage \
-  	\nfrom GXD_Structure s, GXD_TheilerStage t, GXD_StructureName sn, ACC_Accession sa \
-  	\nwhere s._StructureName_key = sn._StructureName_key \
-  	\nand s._Structure_key = sn._Structure_key \
+  sprintf(buf,"select sa.accID, sn.term, t.stage \
+  	\nfrom VOC_Term_EMAPA s, GXD_TheilerStage t, VOC_Term sn, ACC_Accession sa \
+  	\nwhere s._Term_key = sn._Term_key \
   	\nand s._Stage_key = t._Stage_key \
-	\nand sn._Structure_key = sa._Object_key \
-	\nand sa._LogicalDB_key = 1 \
-	\nand sa._MGIType_key = 38 \
+	\nand sn._Term_key = sa._Object_key \
+	\nand sa._LogicalDB_key = 170 \
+	\nand sa._MGIType_key = 13 \
 	\nand sa.accID = %s", key);
   return(buf);
 }

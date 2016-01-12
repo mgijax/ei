@@ -28,6 +28,7 @@ ClipboardSetItems [table : widget;
 		   clipboard : widget;
 		   row : integer;
 		   column : integer;
+		   column2 : integer;
 		   reason : integer;];
 
 ADClipboardSetItems [source_widget : widget;

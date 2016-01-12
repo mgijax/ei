@@ -335,8 +335,10 @@ rules:
 	  clipboard : widget := ClipboardSetItems.clipboard;
           row : integer := ClipboardSetItems.row;
           column : integer := ClipboardSetItems.column;
+          column2 : integer := ClipboardSetItems.column2;
 	  reason : integer := ClipboardSetItems.reason;
           itemList : string_list;
+          itemList2 : string_list;
           item : string;
 	  notify : boolean := false;
 	  key : integer := 1;
@@ -354,10 +356,17 @@ rules:
 
           itemList := mgi_splitfields(mgi_tblGetCell(table, row, column), ",");
           itemList.rewind;
+          itemList2 := mgi_splitfields(mgi_tblGetCell(table, row, column2), ",");
+          itemList2.rewind;
 
           while (itemList.more) do
 
             item := itemList.next;
+
+	    if (itemList2.count > 0) then
+	      item := item + ":" + itemList2.next;
+            end if;
+
 	    key := clipboard->List.keys.find(item);
 
 	    -- selects an item at this position (key) in the list
@@ -399,6 +408,7 @@ rules:
 	  ClipboardSetItems.clipboard := clipboard;
 	  ClipboardSetItems.row := row;
 	  ClipboardSetItems.column := table.structureKeys;
+	  ClipboardSetItems.column2 := table.stageKeys;
 	  ClipboardSetItems.reason := reason;
 	  send(ClipboardSetItems, 0);
 	end does;

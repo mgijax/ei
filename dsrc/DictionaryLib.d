@@ -74,6 +74,7 @@ rules:
 	  key : string := ModifyStructure.key;
 	  row : integer := ModifyStructure.row;
 	  structures : string_list;
+	  stages : string_list;
 	  cmd : string;
 
 	  clipboard.updateCmd := "";
@@ -90,8 +91,10 @@ rules:
 
 	  structures := mgi_splitfields(mgi_tblGetCell(table, row, table.structureKeys), ",");
 	  structures.rewind;
+	  stages := mgi_splitfields(mgi_tblGetCell(table, row, table.stageKeys), ",");
+	  stages.rewind;
 	  while (structures.more) do
-            cmd := cmd + mgi_DBinsert(primaryID, NOKEY) + key + "," + structures.next + END_VALUE;
+            cmd := cmd + mgi_DBinsert(primaryID, NOKEY) + key + "," + structures.next + "," + stages.next + END_VALUE;
           end while;
  
 	  clipboard.updateCmd := cmd;

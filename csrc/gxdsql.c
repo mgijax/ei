@@ -201,7 +201,8 @@ char *assay_gellanestructure(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _GelLane_key, _Structure_key from GXD_GelLaneStructure_View where _Assay_key = %s", key);
+  sprintf(buf,"select _GelLane_key, _EMAPA_Term_key, _Stage_key, concat(_EMAPA_Term_key||':'||_Stage_key) \
+   \nfrom GXD_GelLaneStructure_View where _Assay_key = %s", key);
   return(buf);
 }
 
@@ -358,131 +359,9 @@ char *insitu_structure(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _Result_key, _Structure_key from GXD_ISResultStructure_View \
+  sprintf(buf,"select _Result_key, _EMAPA_Term_key, _Stage_key from GXD_ISResultStructure_View \
 	\nwhere _Specimen_key = %s \
 	\norder by sequenceNum", key);
-  return(buf);
-}
-
-/* 
- * Dictionary.d
-*/
-
-char *dictionary_stage(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _Stage_key from GXD_TheilerStage where stage = %s", key);
-  return(buf);
-}
-
-char *dictionary_system(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _defaultSystem_key from GXD_TheilerStage where _Stage_key =  %s", key);
-  return(buf);
-}
-
-char *dictionary_select(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select s.*, t.stage, sn.structure, sn.mgiAdded \
-  	\nfrom GXD_Structure s, GXD_TheilerStage t, GXD_StructureName sn \
-  	\nwhere s._StructureName_key = sn._StructureName_key \
-  	\nand s._Structure_key = sn._Structure_key \
-  	\nand s._Stage_key = t._Stage_key \
-  	\nand sn._Structure_key = %s", key);
-  return(buf);
-}
-
-char *dictionary_mgiAlias(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select sn._StructureName_key, sn.structure \
-  	\nfrom GXD_StructureName sn, GXD_Structure s \
-  	\nwhere s._StructureName_key != sn._StructureName_key \
-  	\nand s._Structure_key = sn._Structure_key \
-  	\nand sn.mgiAdded = 1 \
-  	\nand sn._Structure_key = %s", key);
-  return(buf);
-}
-
-char *dictionary_emaps(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select ea.accID, t.term \
-	\nfrom GXD_Structure sn, ACC_Accession sa, MGI_EMAPS_Mapping e, ACC_Accession ea, VOC_Term t \
-	\nwhere sn._Structure_key = %s \
-	\nand sn._Structure_key = sa._Object_key \
-	\nand sa._LogicalDB_key = 1 \
-	\nand sa._MGIType_key = 38 \
-	\nand sa.accID = e.accID \
-	\nand e.emapsID = ea.accID \
-	\nand ea._MGIType_key = 13 \
-	\nand ea._Object_key = t._Term_key", key);
-  return(buf);
-}
-
-/*
- * EMAPSMapping.d
-*/
-
-char *emaps_query1(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select distinct e.emapsID, e.creation_date, e.modification_date, u1.login, u2.login \
-	\nfrom MGI_EMAPS_Mapping e, MGI_User u1, MGI_User u2 \
-	\nwhere e.emapsID = '%s' \
-	\nand e._CreatedBy_key = u1._User_key \
-	and e._ModifiedBy_key = u2._User_key", key);
-  return(buf);
-}
-
-char *emaps_query2(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select t.term from MGI_EMAPS_Mapping e, ACC_Accession a, VOC_Term t \
-	\nwhere e.emapsID = '%s' \
-	\nand e.emapsID = a.accID \
-	\nand a._LogicalDB_key = 170 \
-	\nand a._Object_key = t._Term_key", key);
-  return(buf);
-}
-
-char *emaps_query3(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select e._Mapping_key, e.accID, s.printName, ts.stage \
-	\nfrom MGI_EMAPS_Mapping e, ACC_Accession a, GXD_Structure s, GXD_TheilerStage ts \
-	\nwhere e.emapsID = '%s' \
-	\nand e.accID = a.accID \
-	\nand a._LogicalDB_key = 1 \
-	\nand a._MGIType_key = 38 \
-	\nand a._Object_key = s._Structure_key \
-	\nand s._Stage_key = ts._Stage_key \
-	\norder by e.accID desc", key);
-  return(buf);
-}
-
-char *emaps_query4(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select e._Mapping_key, e.accID \
-	\nfrom MGI_EMAPS_Mapping e \
-	\nwhere e.emapsID = '%s' \
-	\nand not exists (select 1 from ACC_Accession a \
-		\nwhere e.accID = a.accID \
-		\nand a._LogicalDB_key = 1 \
-		\nand a._MGIType_key = 38) \
-	\norder by e.accID desc", key);
   return(buf);
 }
 

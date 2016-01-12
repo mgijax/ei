@@ -15,7 +15,7 @@
 -- 09/09/2009	lec
 --	- TR 9797 
 --	  PythonAlleleCreCache
---	  PythonADSystemLoad
+--	  PythonADSystemLoad (obsolete)
 --
 -- 06/17/2008	lec
 --	- TR 9057; Inferred From Cache; errors are printed
@@ -31,8 +31,6 @@
 --
 --
 
-PythonADSystemLoad [source_widget : widget;];
-
 PythonAlleleCombination [source_widget : widget;
 			 pythonevent : string;
 		         objectKey : string;];
@@ -46,8 +44,6 @@ PythonInferredFromCache [source_widget : widget;
 
 PythonExpressionCache [source_widget : widget;
 		       objectKey : string;];
-
-PythonADSystemLoadEnd [];
 
 PythonAlleleCombinationEnd [];
 

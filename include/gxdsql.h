@@ -58,21 +58,4 @@ extern char *insitu_select(char *);
 extern char *insitu_imagepane(char *);
 extern char *insitu_structure(char *);
 
-/* Dictionary.d */
-
-extern char *dictionary_stage(char *);
-extern char *dictionary_system(char *);
-extern char *dictionary_select(char *);
-extern char *dictionary_mgiAlias(char *);
-extern char *dictionary_emaps(char *);
-
-/* DictionaryLib.d : no sql */
-
-/* EMAPSMapping.d */
-
-extern char *emaps_query1(char *);
-extern char *emaps_query2(char *);
-extern char *emaps_query3(char *);
-extern char *emaps_query4(char *);
-
 #endif

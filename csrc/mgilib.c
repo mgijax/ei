@@ -689,22 +689,10 @@ char *mgi_DBkey(int table)
     case GXD_GELLANESTRUCTURE:
             strcpy(buf, "_GelLane_key");
 	    break;
-    case GXD_STRUCTURE:
-            strcpy(buf, "_Structure_key");
-            break;
-    case GXD_STRUCTURENAME:
-            strcpy(buf, "_StructureName_key");
-            break;
     case GXD_INDEX:
     case GXD_INDEXSTAGES:
             strcpy(buf, "_Index_key");
 	    break;
-    case MGI_EMAPS_MAPPING_PARENT:
-            strcpy(buf, "emapsID");
-            break;
-    case MGI_EMAPS_MAPPING:
-            strcpy(buf, "_Mapping_key");
-            break;
     case IMG_IMAGE:
             strcpy(buf, "_Image_key");
 	    break;
@@ -975,9 +963,6 @@ char *mgi_DBtype(int table)
     case GXD_ASSAY:
             strcpy(buf, "Assay");
 	    break;
-    case GXD_STRUCTURE:
-            strcpy(buf, "GXD Structures");
-	    break;
     case IMG_IMAGE:
             strcpy(buf, "Image");
 	    break;
@@ -1067,9 +1052,6 @@ char *mgi_DBaccTable(int table)
             break;
     case GXD_GENOTYPE:
             strcpy(buf, "GXD_Genotype_Acc_View");
-            break;
-    case GXD_STRUCTURE:
-            strcpy(buf, "GXD_Structure_Acc_View");
             break;
     case IMG_IMAGE:
             strcpy(buf, "IMG_Image_Acc_View");
@@ -1327,24 +1309,11 @@ char *mgi_DBtable(int table)
     case GXD_GELLANESTRUCTURE:
             strcpy(buf, "GXD_GelLaneStructure");
 	    break;
-    case GXD_STRUCTURE:
-            strcpy(buf, "GXD_Structure");
-	    break;
-    case GXD_STRUCTURENAME:
-            strcpy(buf, "GXD_StructureName");
-	    break;
-    case GXD_STRUCTURECLOSURE:
-            strcpy(buf, "GXD_StructureClosure");
-	    break;
     case GXD_INDEX:
             strcpy(buf, "GXD_Index");
 	    break;
     case GXD_INDEXSTAGES:
             strcpy(buf, "GXD_Index_Stages");
-	    break;
-    case MGI_EMAPS_MAPPING_PARENT:
-    case MGI_EMAPS_MAPPING:
-            strcpy(buf, "MGI_EMAPS_Mapping");
 	    break;
     case IMG_IMAGE:
             strcpy(buf, "IMG_Image");
@@ -1856,7 +1825,6 @@ char *mgi_DBinsert(int table, char *keyName)
     case GXD_GELROW:
     case GXD_GELBAND:
     case GXD_GELLANESTRUCTURE:
-    case GXD_STRUCTURENAME:
     case GXD_INDEXSTAGES:
     case IMG_IMAGEPANE:
     case IMG_IMAGEPANE_ASSOC:
@@ -2043,20 +2011,11 @@ char *mgi_DBinsert(int table, char *keyName)
     case GXD_GELLANESTRUCTURE:
             sprintf(buf, "insert into %s (_GelLane_key, _Structure_key)", mgi_DBtable(table));
 	    break;
-    case GXD_STRUCTURE:
-	    sprintf(buf, "insert into %s (_Structure_key, _Parent_key, _StructureName_key, _Stage_key, _System_key, edinburghKey, printName, treeDepth, printStop, topoSort, inheritSystem, structureNote)", mgi_DBtable(table));
-	    break;
-    case GXD_STRUCTURENAME:
-	    sprintf(buf, "insert into %s (_StructureName_key, _Structure_key, structure, mgiAdded)", mgi_DBtable(table));
-	    break;
     case GXD_INDEX:
 	    sprintf(buf, "insert into %s (_Index_key, _Refs_key, _Marker_key, _Priority_key, _ConditionalMutants_key, comments, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table));
 	    break;
     case GXD_INDEXSTAGES:
 	    sprintf(buf, "insert into %s (_Index_key, _IndexAssay_key, _StageID_key, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table));
-	    break;
-    case MGI_EMAPS_MAPPING:
-	    sprintf(buf, "insert into %s (_Mapping_key, accID, emapsID, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table));
 	    break;
     case IMG_IMAGE:
             sprintf(buf, "insert into %s (%s, _MGIType_key, _ImageClass_key, _ImageType_key, _Refs_key, _ThumbnailImage_key, xDim, yDim, figureLabel, _CreatedBy_key, _ModifiedBy_key)", 
@@ -2381,7 +2340,6 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case GXD_GENOTYPE:
       case GXD_INDEX:
       case GXD_INDEXSTAGES:
-      case MGI_EMAPS_MAPPING:
       case IMG_IMAGE:
       case IMG_IMAGEPANE_ASSOC:
       case MGI_NOTE:
@@ -2447,7 +2405,6 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case GXD_GENOTYPE:
       case GXD_INDEX:
       case GXD_INDEXSTAGES:
-      case MGI_EMAPS_MAPPING:
       case IMG_IMAGE:
       case IMG_IMAGEPANE_ASSOC:
       case MGI_NOTE:
@@ -2565,9 +2522,6 @@ char *mgi_DBdelete(int table, char *key)
               sprintf(buf, "delete from %s where table_name = '%s' and column_name = '%s' %s", 
 		mgi_DBtable(table), tokens[0], tokens[1], END_VALUE_C);
 	      break;
-      case MGI_EMAPS_MAPPING_PARENT:
-              sprintf(buf, "delete from %s where %s = '%s' %s", mgi_DBtable(table), mgi_DBkey(table), key, END_VALUE_C);
-	      break;
       case GXD_ANTIBODY:
               sprintf(buf, "delete from GXD_AntibodyPrep where %s = %s %s \ndelete from %s where %s = %s %s", mgi_DBkey(table), key, END_VALUE_C, mgi_DBtable(table), mgi_DBkey(table), key, END_VALUE_C);
 	      break;
@@ -2600,9 +2554,6 @@ char *mgi_DBdelete2(int table, char *key, char *key2)
       case VOC_ANNOT:
               sprintf(buf, "delete from %s where _Object_key = %s and _AnnotType_key = %s %s", 
 	      	mgi_DBtable(table), key, key2, END_VALUE_C);
-	      break;
-      case MGI_EMAPS_MAPPING_PARENT:
-              sprintf(buf, "delete from %s where %s = '%s' %s", mgi_DBtable(table), mgi_DBkey(table), key, END_VALUE_C);
 	      break;
       case GXD_ANTIBODY:
               sprintf(buf, "delete from GXD_AntibodyPrep where %s = %s %s \ndelete from %s where %s = %s %s", mgi_DBkey(table), key, END_VALUE_C, mgi_DBtable(table), mgi_DBkey(table), key, END_VALUE_C);

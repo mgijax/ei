@@ -2,7 +2,7 @@ Module: mgiCV
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Fri Apr 11 08:02:36 2014";
+      lastWritten = "Tue Jan 12 12:15:13 2016";
         {
           CVMenu = XmRowColumn;
           Group: Widget
@@ -95,7 +95,7 @@ Module: mgiCV
                     {
                       ADClipboard = ADClipboard : mgiLookup;
                       Group: User
-                        cmd = "select distinct _Structure_key, dbName, sequenceNum from GXD_GelLaneStructure_View where _Assay_key = ";
+                        cmd = "select distinct concat(_EMAPA_Term_key||':'||_Stage_key),  dbName, sequenceNum from GXD_GelLaneStructure_View where _Assay_key = ";
                         orderBy = sequenceNum;
                           {
                             Label = LookupLabel;
@@ -429,8 +429,8 @@ Module: mgiCV
                       Group: Widget
                         managed = False;
                       Group: User
-                        cmd = "select distinct i._Structure_key, i.dbName, i.sequenceNum from GXD_ISResultStructure_View i, GXD_Specimen s where s._Specimen_key = i._Specimen_key and s._Assay_key = ";
-                        orderBy = "sequenceNum";
+                        cmd = "select distinct i._EMAPA_Term_key, i._Stage_key, i.dbName, i.sequenceNum from GXD_ISResultStructure_View i, GXD_Specimen s where s._Specimen_key = i._Specimen_key and s._Assay_key = ";
+                        orderBy = sequenceNum;
                           {
                             Label = LookupLabel;
                           }
