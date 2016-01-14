@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Tue Jan 12 08:39:16 2016";
+      lastWritten = "Thu Jan 14 08:52:21 2016";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -729,7 +729,7 @@ Module: mgiDialog
                               xrtTblNumColumns = 15;
                               xrtTblEditableSeries = "(all 0-2 False)(all 9-13 False)";
                               xrtTblEnterCellCallback = "D:ADClipboardSetItems,\nD:SetImageResultOptions,\nD:SetImagePane";
-                              xrtTblPixelWidthSeries = "(all 0-1 0)(all 3-10 0)";
+                              xrtTblPixelWidthSeries = "(all 0-1 0)(all 3-8 0)(all 10 0)";
                               xrtTblTraversableSeries = "(all 0-10 False)";
                               xrtTblValidateCellCallback = "D:CopyInSituRow,\nD:CommitTableCellEdit";
                               xrtTblNumRows = 10;
@@ -741,7 +741,7 @@ Module: mgiDialog
                               xrtTblDisplayVertScrollBar = dispsb_always;
                             Group: User
                               requiredColumns = "6\n11";
-                              saveTraversableSeries = "(all 0-8 False)";
+                              saveTraversableSeries = "(all 0-10 False)";
                               saveEditableSeries = "(all 0-2 False)(all 9-13 False)";
                                 {
                                   label = XtXrtLabel;
@@ -868,7 +868,7 @@ Module: mgiDialog
                           {
                             ADClipboard = ADClipboard : mgiLookup;
                             Group: User
-                              cmd = "select distinct _EMAPA_Term_key, _Stage_key, dbName, sequenceNum from GXD_ISResultStructure_View where _Specimen_key = ";
+                              cmd = "select distinct concat(_EMAPA_Term_key||','||_Stage_key), dbName, sequenceNum from GXD_ISResultStructure_View where _Specimen_key = ";
                               orderBy = sequenceNum;
                                 {
                                   Label = LookupLabel;

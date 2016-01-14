@@ -94,7 +94,8 @@ rules:
 	  stages := mgi_splitfields(mgi_tblGetCell(table, row, table.stageKeys), ",");
 	  stages.rewind;
 	  while (structures.more) do
-            cmd := cmd + mgi_DBinsert(primaryID, NOKEY) + key + "," + structures.next + "," + stages.next + END_VALUE;
+            --cmd := cmd + mgi_DBinsert(primaryID, NOKEY) + key + "," + structures.next + "," + stages.next + END_VALUE;
+            cmd := cmd + mgi_DBinsert(primaryID, NOKEY) + key + "," + structures.next + END_VALUE;
           end while;
  
 	  clipboard.updateCmd := cmd;

@@ -364,7 +364,7 @@ rules:
             item := itemList.next;
 
 	    if (itemList2.count > 0) then
-	      item := item + ":" + itemList2.next;
+	      item := item + "," + itemList2.next;
             end if;
 
 	    key := clipboard->List.keys.find(item);
@@ -389,7 +389,7 @@ rules:
 -- ADClipboardSetItems
 --
 -- EnterCellCallback for table.
--- UDAs required:  structureKeys
+-- UDAs required:  structureKeys, stageKeys
 -- 
 
 	ADClipboardSetItems does
