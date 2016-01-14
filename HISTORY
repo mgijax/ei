@@ -5,6 +5,18 @@ DATE: 01/08/2016
 STAFF: lec
 CHANGES:
 1) TR12223/gxd anatomy II
+obsolete:
+aim/dictionary.aim
+csrc/dictionary.c
+csrc/hashtbl.c
+csrc/stageicons.c
+csrc/stagetrees.c
+include/dictionary.h
+include/hashtbl.h
+include/stagetrees.h
+dsrc/Dictionary.d
+dsrc/Dictionary.de
+dsrc/EMAPSMapping.d
 
 TAG: ei-tr12223-BP
 DATE: 01/08/2016

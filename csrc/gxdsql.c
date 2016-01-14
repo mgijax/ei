@@ -359,7 +359,8 @@ char *insitu_structure(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _Result_key, _EMAPA_Term_key, _Stage_key from GXD_ISResultStructure_View \
+  sprintf(buf,"select _Result_key, _EMAPA_Term_key, _Stage_key, concat(_EMAPA_Term_key||':'||_Stage_key) \
+  	\nfrom GXD_ISResultStructure_View \
 	\nwhere _Specimen_key = %s \
 	\norder by sequenceNum", key);
   return(buf);

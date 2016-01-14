@@ -1991,7 +1991,7 @@ char *mgi_DBinsert(int table, char *keyName)
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_ISRESULTSTRUCTURE:
-            sprintf(buf, "insert into %s (_Result_key, _Structure_key)", mgi_DBtable(table));
+            sprintf(buf, "insert into %s (_Result_key, _EMAPA_Term_key, _Stage_key)", mgi_DBtable(table));
 	    break;
     case GXD_ISRESULTIMAGE:
             sprintf(buf, "insert into %s (_Result_key, _ImagePane_key)", mgi_DBtable(table));
@@ -2009,7 +2009,7 @@ char *mgi_DBinsert(int table, char *keyName)
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_GELLANESTRUCTURE:
-            sprintf(buf, "insert into %s (_GelLane_key, _Structure_key)", mgi_DBtable(table));
+            sprintf(buf, "insert into %s (_GelLane_key, _EMAPA_Term_key, _Stage_key)", mgi_DBtable(table));
 	    break;
     case GXD_INDEX:
 	    sprintf(buf, "insert into %s (_Index_key, _Refs_key, _Marker_key, _Priority_key, _ConditionalMutants_key, comments, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table));

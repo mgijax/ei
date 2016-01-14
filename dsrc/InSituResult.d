@@ -452,12 +452,12 @@ rules:
 
 	      -- Process Structures
 
-	      --ModifyStructure.source_widget := table;
-	      --ModifyStructure.primaryID := structureID;
-	      --ModifyStructure.key := MAX_KEY1 + KEYNAME + MAX_KEY2;
-	      --ModifyStructure.row := row;
-	      --send(ModifyStructure, 0);
-	      --cmd := cmd + top->ADClipboard.updateCmd;
+	      ModifyStructure.source_widget := table;
+	      ModifyStructure.primaryID := structureID;
+	      ModifyStructure.key := MAX_KEY1 + KEYNAME + MAX_KEY2;
+	      ModifyStructure.row := row;
+	      send(ModifyStructure, 0);
+	      cmd := cmd + top->ADClipboard.updateCmd;
 
             elsif (editMode = TBL_ROW_MODIFY) then
 
@@ -483,12 +483,12 @@ rules:
 
 	        -- Process Structures
 
-	        --ModifyStructure.source_widget := table;
-	        --ModifyStructure.primaryID := structureID;
-	        --ModifyStructure.key := key;
-	        --ModifyStructure.row := row;
-	        --send(ModifyStructure, 0);
-	        --cmd := cmd + top->ADClipboard.updateCmd;
+	        ModifyStructure.source_widget := table;
+	        ModifyStructure.primaryID := structureID;
+	        ModifyStructure.key := key;
+	        ModifyStructure.row := row;
+	        send(ModifyStructure, 0);
+	        cmd := cmd + top->ADClipboard.updateCmd;
 	      end if;
 
             elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
@@ -573,6 +573,7 @@ rules:
 	  paneKeys : string := "";
 	  structureResult : string := "";
 	  structureKeys : string := "";
+	  stageKeys : string := "";
           dbproc : opaque;
 
           (void) busy_cursor(top.root);
@@ -665,15 +666,19 @@ rules:
 
 	      -- Retrieve any current Keys
               structureKeys := mgi_tblGetCell(table, row, table.structureKeys);
+              stageKeys := mgi_tblGetCell(table, row, table.stageKeys);
 
 	      -- Construct new Keys
 	      if (structureKeys.length > 0) then
 	          structureKeys := structureKeys + "," + mgi_getstr(dbproc, 2);
+	          stageKeys := stageKeys + "," + mgi_getstr(dbproc, 3);
 	      else
 	          structureKeys := mgi_getstr(dbproc, 2);
+	          stageKeys := mgi_getstr(dbproc, 3);
 	      end if;
 
               mgi_tblSetCell(table, row, table.structureKeys, structureKeys);
+              mgi_tblSetCell(table, row, table.stageKeys, stageKeys);
 	    end while;
 	  end while;
 	  (void) mgi_dbclose(dbproc);
@@ -687,13 +692,16 @@ rules:
 	  -- Initialize Structure column
 	  
 	  structures : string_list;
+	  stages : string_list;
 	  row := 0;
           while (row < mgi_tblNumRows(table)) do
 	    if (mgi_tblGetCell(table, row, table.resultKey) = "") then
 	      break;
 	    end if;
 	    structures := mgi_splitfields(mgi_tblGetCell(table, row, table.structureKeys), ",");
+	    stages := mgi_splitfields(mgi_tblGetCell(table, row, table.stageKeys), ",");
  	    mgi_tblSetCell(table, row, table.structures, (string) structures.count);
+ 	    mgi_tblSetCell(table, row, table.stages, stageKeys);
             row := row + 1;
           end while;
 

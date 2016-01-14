@@ -2752,7 +2752,6 @@ rules:
 	  structureGel : string := "";
 	  structureKeys : string := "";
 	  stageKeys : string := "";
-
           dbproc : opaque;
 	  
 	  row := 0;
