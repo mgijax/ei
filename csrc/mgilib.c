@@ -17,9 +17,6 @@
  * lec	1212/2013
  *	- TR11515/allele stuff
  *
- * lec	11/20/2013
- *	- TR11468/add MGI_EMAPS_MAPPING
- *
  * lec 10/02/2012
  *	- TR10273/add GXD_ALLELE_PAIR:Mutant Cell Lines
  *
@@ -130,9 +127,6 @@
  *
  * lec 06/03/98
  *  - added GXD_INDEX and GXD_INDEXSTAGES support.
- *
- * gld 03/15/98
- *  - added support for GXD Anatomical Dictionary tables. 
  *
  * lec 03/14/98-???
  *	- continous edits for MGI 2.0 release
