@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Thu Jan 14 08:52:21 2016";
+      lastWritten = "Tue Sep  1 08:05:45 2015";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -723,26 +723,27 @@ Module: mgiDialog
                           {
                             Table = mgiTable;
                             Group: Widget
-                              userDefinedAttributes = "resultKey:Int(Int)=\"3\"\nstrengthKey:Int(Int)=\"6\"\npatternKey:Int(Int)=\"7\"\nimagePaneKeys:Int(Int)=\"8\"\nstructures:Int(Int)=\"9\"\nstrength:Int(Int)=\"11\"\npattern:Int(Int)=\"12\"\nimagePanes:Int(Int)=\"13\"\nnotes:Int(Int)=\"14\"\nstructureKeys:Int(Int)=\"4\"\nclipboard:String(String)=\"Lookup\"\nstageKeys:Int(Int)=\"5\"\nstages:Int(Int)=\"10\"\n";
-                              xrtTblCharWidthSeries = "(all 0 1)(all 1-2 3)(all 9 10)(all 11 11)(all 12-13 15)(all 14 100)";
-                              xrtTblColumnLabels = "Mode,Current Order,#,Result key,EMAPA keys,Stage keys,Strength key,Pattern key,Image Pane keys,EMAPA,Stage,Strength,Pattern,Image Panes,Notes";
-                              xrtTblNumColumns = 15;
-                              xrtTblEditableSeries = "(all 0-2 False)(all 9-13 False)";
+                              userDefinedAttributes = "resultKey:Int(Int)=\"3\"\nstrengthKey:Int(Int)=\"5\"\npatternKey:Int(Int)=\"6\"\nimagePaneKeys:Int(Int)=\"7\"\nstructures:Int(Int)=\"8\"\nstrength:Int(Int)=\"9\"\npattern:Int(Int)=\"10\"\nimagePanes:Int(Int)=\"11\"\nnotes:Int(Int)=\"12\"\nstructureKeys:Int(Int)=\"4\"\nclipboard:String=\"Lookup\"\n";
+                              xrtTblCharWidthSeries = "(all 0 1)(all 1-2 3)(all 8 10)(all 9 11)(all 10-11 15)(all 12 100)";
+                              xrtTblColumnLabels = "Mode,Current Order,#,Result key,Struct keys,Strength key,Pattern key,Image Pane keys,EMAPA,Strength,Pattern,Image Panes,Notes";
+                              xrtTblNumColumns = 13;
+                              xrtTblEditableSeries = "(all 0-2 False)(all 8-11 False)";
                               xrtTblEnterCellCallback = "D:ADClipboardSetItems,\nD:SetImageResultOptions,\nD:SetImagePane";
-                              xrtTblPixelWidthSeries = "(all 0-1 0)(all 3-8 0)(all 10 0)";
-                              xrtTblTraversableSeries = "(all 0-10 False)";
+                              xrtTblPixelWidthSeries = "(all 0-1 0)(all 3-7 0)";
+                              xrtTblTraversableSeries = "(all 0-7 False)";
                               xrtTblValidateCellCallback = "D:CopyInSituRow,\nD:CommitTableCellEdit";
                               xrtTblNumRows = 10;
                               xrtTblVisibleRows = 8;
+                              xrtTblMaxLengthSeries = "(all 12 255)";
                               xrtTblAllowCellResize = resize_horizontal;
-                              xrtTblFrozenColumns = 11;
+                              xrtTblFrozenColumns = 9;
                               xrtTblDisplayHorizScrollBar = dispsb_always;
                               xrtTblMinCellVisibility = 0;
                               xrtTblDisplayVertScrollBar = dispsb_always;
                             Group: User
-                              requiredColumns = "6\n11";
-                              saveTraversableSeries = "(all 0-10 False)";
-                              saveEditableSeries = "(all 0-2 False)(all 9-13 False)";
+                              requiredColumns = "5\n9";
+                              saveTraversableSeries = "(all 0-7 False)";
+                              saveEditableSeries = "(all 0-2 False)(all 8-11 False)";
                                 {
                                   label = XtXrtLabel;
                                   Group: Widget
@@ -868,7 +869,7 @@ Module: mgiDialog
                           {
                             ADClipboard = ADClipboard : mgiLookup;
                             Group: User
-                              cmd = "select distinct concat(_EMAPA_Term_key||','||_Stage_key), dbName, sequenceNum from GXD_ISResultStructure_View where _Specimen_key = ";
+                              cmd = "select distinct concat(_EMAPA_Term_key||':'||_Stage_key), dbName, sequenceNum from GXD_ISResultStructure_View where _Specimen_key = ";
                               orderBy = sequenceNum;
                                 {
                                   Label = LookupLabel;

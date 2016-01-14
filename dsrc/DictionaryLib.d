@@ -46,7 +46,6 @@ dmodule DictionaryLib is
 
 #include <mgilib.h>
 #include <dblib.h>
-#include <dictionary.h>
 
 locals:
 
@@ -73,8 +72,8 @@ rules:
 	  primaryID : integer := ModifyStructure.primaryID;
 	  key : string := ModifyStructure.key;
 	  row : integer := ModifyStructure.row;
-	  structures : string_list;
-	  stages : string_list;
+	  structures1 : string_list;
+	  structures2 : string_list;
 	  cmd : string;
 
 	  clipboard.updateCmd := "";
@@ -88,14 +87,14 @@ rules:
           cmd := mgi_DBdelete(primaryID, key);
 
           -- Add each Structure selected
+	  -- structures1 = split table.strutureKeys  by "," -> emaps key:stage key
+	  -- structures2 = split structures1 by ":" -> emaps key (1) and  stage key (0)
 
-	  structures := mgi_splitfields(mgi_tblGetCell(table, row, table.structureKeys), ",");
-	  structures.rewind;
-	  stages := mgi_splitfields(mgi_tblGetCell(table, row, table.stageKeys), ",");
-	  stages.rewind;
-	  while (structures.more) do
-            --cmd := cmd + mgi_DBinsert(primaryID, NOKEY) + key + "," + structures.next + "," + stages.next + END_VALUE;
-            cmd := cmd + mgi_DBinsert(primaryID, NOKEY) + key + "," + structures.next + END_VALUE;
+	  structures1 := mgi_splitfields(mgi_tblGetCell(table, row, table.structureKeys), ",");
+	  structures1.rewind;
+	  while (structures1.more) do
+	    structures2 := mgi_splitfields(structures1.next, ":");
+            cmd := cmd + mgi_DBinsert(primaryID, NOKEY) + key + "," + structures2[1] + "," + structures2[0] + END_VALUE;
           end while;
  
 	  clipboard.updateCmd := cmd;

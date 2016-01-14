@@ -201,8 +201,9 @@ char *assay_gellanestructure(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _GelLane_key, _EMAPA_Term_key, _Stage_key, concat(_EMAPA_Term_key||':'||_Stage_key) \
-   \nfrom GXD_GelLaneStructure_View where _Assay_key = %s", key);
+  sprintf(buf,"select distinct _GelLane_key, concat(_EMAPA_Term_key||':'||_Stage_key), _Stage_key, term \
+   \nfrom GXD_GelLaneStructure_View where _Assay_key = %s \
+   \norder by _Stage_key, term", key);
   return(buf);
 }
 
@@ -359,7 +360,7 @@ char *insitu_structure(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _Result_key, _EMAPA_Term_key, _Stage_key, concat(_EMAPA_Term_key||':'||_Stage_key) \
+  sprintf(buf,"select distinct _Result_key, concat(_EMAPA_Term_key||':'||_Stage_key), sequenceNum \
   	\nfrom GXD_ISResultStructure_View \
 	\nwhere _Specimen_key = %s \
 	\norder by sequenceNum", key);
