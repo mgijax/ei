@@ -3365,28 +3365,6 @@ Module: mgiOption
               }
         }
         {
-          ADSystemFrame = OptionFrame : mgiOption;
-          Group: Control
-            vip_x = 110;
-            vip_y = 1955;
-            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
-              {
-                ADSystemMenu : OptionMenu = XmOptionMenu;
-                Group: Widget
-                  subMenuId = ADSystemPulldown;
-                  labelString = "Anatomical System";
-              }
-              Popups:
-              {
-                ADSystemPulldown : OptionPulldown = OptionPulldown;
-                Group: User
-                  sql = "select _Term_key, term from VOC_Term where _Vocab_key = 75 order by term";
-                    {
-                      SearchAll = SearchAll : mgiOption;
-                    }
-              }
-        }
-        {
           EvidencePropertyFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 110;
