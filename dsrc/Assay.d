@@ -816,7 +816,7 @@ rules:
 
 	  if (top.parent->(clipboard.editClipboard) = nil) then
 	    StatusReport.source_widget := top;
-            StatusReport.message := "The Anatomical Dictionary Module must be open in order to use this function.\n";
+            StatusReport.message := "The EMAPA Module must be open in order to use this function.\n";
             send(StatusReport, 0);
             return;
 	  end if;

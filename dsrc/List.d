@@ -411,7 +411,7 @@ rules:
 		  --(void) mgi_writeLog(item + "\n");
 		  item := results[results.count];
 		  results.remove(item);
-		  results.insert(item + "...", results.count + 1);
+		  results.insert(item + ".", results.count + 1);
 		end if;
 
 	      -- Dups allowed

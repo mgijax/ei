@@ -3,10 +3,7 @@
 -- Creator : lec
 -- DictionaryLib.d 05/26/98
 --
--- These events support the usage of the lookup list template
--- StructureList (gxdList.pcd).  This template is used to
--- interact with the Anatomical Dictionary clipboard and
--- current database A.D. structures in:
+-- This event supports changes to the EMAPA structures:
 --
 -- GXD_ISResultStructure
 -- GXD_GelLaneStructure

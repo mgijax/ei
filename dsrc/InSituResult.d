@@ -585,7 +585,7 @@ rules:
 	  -- Load the Image Pane List
 	  send(LoadImagePaneList, 0);
 
-	  -- Load the Anatomical Clipboard
+	  -- Load the EMAPA Clipboard
 	  ClipboardLoad.source_widget := top->ADClipboard->Label;
 	  send(ClipboardLoad, 0);
 
