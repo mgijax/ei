@@ -116,7 +116,7 @@ devents:
 	DisplayStemCellLine :translation [];
 
 	Modify :local [];
-	ModifyAlleleNotes :local [];
+	ModifyAlleleNotes :local [isAdd : boolean := false;];
 	ModifyAlleleSubType :local [];
 	ModifyImagePaneAssociation :local [];
 	ModifyMolecularMutation :local [];
@@ -632,6 +632,7 @@ rules:
 	    top->markerDescription->Note->text.modified := true;
 	  end if;
 
+	  ModifyAlleleNotes.isAdd := true;
 	  send(ModifyAlleleNotes, 0);
 
 	  if (not top.allowEdit) then
@@ -1092,6 +1093,7 @@ rules:
 --
  
 	ModifyAlleleNotes does
+	  isAdd : boolean := ModifyAlleleNotes.isAdd;
 	  noteKeyDeclared : boolean := false;
 
 	  -- Set required field for General Notes
@@ -1142,7 +1144,7 @@ rules:
 	  -- For now, we have only one Marker per Allele
 
 	  markerKey : string := mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
-	  if (markerKey != "NULL") then
+	  if (not isAdd and markerKey != "NULL") then
             ModifyNotes.source_widget := top->markerDescription->Note;
             ModifyNotes.tableID := MRK_NOTES;
             ModifyNotes.key := markerKey;
