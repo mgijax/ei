@@ -192,8 +192,6 @@ rules:
 
 	  end if;
 
-	  --(void) mgi_writeLog("ClipboardLoad:\n" + clipboard.cmd + "\n");
-
 	  if (clipboard.cmd.length > 0) then
             clipboard.cmd := clipboard.cmd + ")\norder by " + clipboard.orderBy + "\n\n";
             LoadList.list := clipboard;
