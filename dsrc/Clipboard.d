@@ -153,131 +153,53 @@ rules:
         ClipboardLoad does
 	  top : widget := ClipboardLoad.source_widget.top;
 	  clipboard : widget := ClipboardLoad.source_widget.parent;
-	  mgi : widget := top.root.parent;
-	  clipboardModule : widget := mgi->(clipboard.clipboardModule);
-	  editClipboard : widget := clipboardModule->(clipboard.editClipboard);
 
           key : string;
-          saveCmd : string;
-          newCmd : string;
- 
+
+          if (clipboard->List.itemCount > 0) then
+            ClearList.source_widget := clipboard;
+            ClearList.clearkeys := true;
+            send(ClearList, 0);
+          end if;
+
 	  if (top->ID = nil) then
 	    top := top.root;
 	  end if;
 
-	  -- First, cancel the edit to the target cell
-	  -- TR11204/removed this call because cancelling the edit causes no row to be selected
-	  --table : widget;
-	  --if (clipboard->List.targetWidget != nil) then
-	    --table := clipboard->List.targetWidget->Table;
-	    --(void) XrtTblCancelEdit(table, true);
-	  --end if;
+	  clipboard.cmd := "(";
 
-          -- Get current record key
+	  -- get clipboard query
+          if (clipboard.is_defined("cmdClipboard") != nil) then
+	    if (clipboard.cmdClipboard.length > 0) then
+	      clipboard.cmd := clipboard.cmd + clipboard.cmdClipboard + " " + global_loginKey;
+	    end if;
+          end if;
+
+          -- get current record key
           key := top->ID->text.value;
- 
+
 	  if (key.length > 0) then
-            -- Save lookup command
-            saveCmd := clipboard.cmd;
-	    newCmd := "";
- 
-            if (clipboard.is_defined("cmd2") != nil) then
-		newCmd := newCmd + "(";
+
+	    if (clipboard.cmdClipboard.length > 0) then
+	      clipboard.cmd := clipboard.cmd + "\nunion all\n";
 	    end if;
 
-            -- Append key to lookup command
-            newCmd := newCmd + saveCmd + " " + key;
+	    clipboard.cmd := clipboard.cmd + clipboard.cmdMaster + " " + key;
 
             if (clipboard.is_defined("cmd2") != nil) then
-		newCmd := newCmd + "\nunion all\n" + clipboard.cmd2 + " " + key + ")";
+	      clipboard.cmd := clipboard.cmd + "\nunion all\n" + clipboard.cmd2 + " " + key;
 	    end if;
 
-            clipboard.cmd := newCmd + "\norder by " + clipboard.orderBy;
- 
-            -- Load the list
+	  end if;
+
+	  --(void) mgi_writeLog("ClipboardLoad:\n" + clipboard.cmd + "\n");
+
+	  if (clipboard.cmd.length > 0) then
+            clipboard.cmd := clipboard.cmd + ")\norder by " + clipboard.orderBy + "\n\n";
             LoadList.list := clipboard;
 	    LoadList.allowDups := ClipboardLoad.allowDups;
             send(LoadList, 0);
- 
-            -- Restore original lookup command
-            clipboard.cmd := saveCmd;
-
-	  -- If no current key, then clear the list
-
-	  else
-            if (clipboard->List.itemCount > 0) then
-              ClearList.source_widget := clipboard;
-              ClearList.clearkeys := true;
-              send(ClearList, 0);
-            end if;
-	  end if;
-
-          -- If clipboard->List.keys does not exist already, create it
- 
-          if (clipboard->List.keys = nil) then
-            clipboard->List.keys := create string_list();
           end if;
- 
-          -- If clipboard->List.accIDs does not exist already, create it
- 
-          if (clipboard->List.accIDs = nil) then
-            clipboard->List.accIDs := create string_list();
-          end if;
- 
-          -- Append from the specified editing Clipboard
- 
-	  if (clipboardModule = nil or editClipboard = nil) then
-	    return;
-	  end if;
-
-	  sKeys : string_list := create string_list();
-	  sResults : xm_string_list := create xm_string_list();
-	  sAccIDs : string_list := create string_list();
-
-	  -- Append new keys to current keys
-
-	  sKeys := clipboard->List.keys;
-	  sAccIDs := clipboard->List.accIDs;
-
-	  i : integer := 1;
-	  numItems : integer;
-	  cKey : string;
-	  cName : string;
-	  cAccID : string;
-
-	  if (editClipboard->List != nil) then
-	    numItems := editClipboard->List.itemCount;
-
-	    while (i <= numItems) do
-	      cKey := editClipboard->List.keys[i];
-	      cName := editClipboard->List.items[i];
-	      cAccID := editClipboard->List.accIDs[i];
-
-	      if (ClipboardLoad.allowDups or sKeys.find(cKey) < 0) then
-	        sKeys.insert(cKey, sKeys.count + 1);
---	        sResults.insert(cbPrefix + cName, sResults.count + 1);
-	        sResults.insert("*" + cAccID + cName, sResults.count + 1);
-	        sAccIDs.insert(cAccID, sAccIDs.count + 1);
-	      end if;
-
-	      i := i + 1;
-	    end while;
-
-	    -- Append the items to the list
-
-	    if (sResults.count > 0) then
-              clipboard->List.keys := sKeys;
-              clipboard->List.accIDs := sAccIDs;
-	      (void) XmListAddItems(clipboard->List, sResults, sResults.count, 0);
-	    end if;
-
-	    -- Set the label
-
-	    clipboard->Label.labelString := 
-		  (string) clipboard->List.itemCount + " " +
-		  clipboard->Label.defaultLabel;
-
-	  end if;
 
 	end does;
 

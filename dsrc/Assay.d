@@ -797,6 +797,8 @@ rules:
 --
 -- AddToEditClipboard
 --
+-- TR12223/use new clipboard structures
+--
 
 	AddToEditClipboard does
 	  clipboard : widget;
