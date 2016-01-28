@@ -430,8 +430,9 @@ Module: mgiCV
                       Group: Widget
                         managed = False;
                       Group: User
-                        cmd = "select distinct concat(i._EMAPA_Term_key||':'||i._Stage_key), i.dbName, i.sequenceNum, 0 as isClipboard from GXD_ISResultStructure_View i, GXD_Specimen s where s._Specimen_key = i._Specimen_key and s._Assay_key = ";
                         orderBy = "isClipboard, sequenceNum";
+                        cmdClipboard = "select concat(s._Object_key||':'||s2._Stage_key), '*TS'||cast(t2.stage as varchar(5))||';'||t1.term as dbName, s.sequenceNum, 1 as isClipboard from mgi_setmember s, mgi_setmember_emapa s2, voc_term t1, gxd_theilerstage t2 where s._set_key = 1046 and s._setmember_key = s2._setmember_key and s._object_key = t1._term_key and s2._Stage_key = t2._stage_key and s._CreatedBy_key = ";
+                        cmdMaster = "select distinct concat(i._EMAPA_Term_key||':'||i._Stage_key), i.dbName, i.sequenceNum, 0 as isClipboard from GXD_ISResultStructure_View i, GXD_Specimen s where s._Specimen_key = i._Specimen_key and s._Assay_key = ";
                           {
                             Label = LookupLabel;
                           }
