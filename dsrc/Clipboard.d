@@ -166,8 +166,6 @@ rules:
 	    top := top.root;
 	  end if;
 
-	  clipboard.cmd := "(";
-
 	  -- get clipboard query
           if (clipboard.is_defined("cmdClipboard") != nil) then
 	    if (clipboard.cmdClipboard.length > 0) then
@@ -187,13 +185,15 @@ rules:
 	    clipboard.cmd := clipboard.cmd + clipboard.cmdMaster + " " + key;
 
             if (clipboard.is_defined("cmd2") != nil) then
-	      clipboard.cmd := clipboard.cmd + "\nunion all\n" + clipboard.cmd2 + " " + key;
+	      if (clipboard.cmd2.length > 0) then
+	        clipboard.cmd := clipboard.cmd + "\nunion all\n" + clipboard.cmd2 + " " + key;
+	      end if;
 	    end if;
 
 	  end if;
 
 	  if (clipboard.cmd.length > 0) then
-            clipboard.cmd := clipboard.cmd + ")\norder by " + clipboard.orderBy + "\n\n";
+            clipboard.cmd := "(" + clipboard.cmd + ")\norder by " + clipboard.orderBy + "\n\n";
             LoadList.list := clipboard;
 	    LoadList.allowDups := ClipboardLoad.allowDups;
             send(LoadList, 0);
