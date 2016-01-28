@@ -156,6 +156,8 @@ rules:
 
           key : string;
 
+	  clipboard.cmd := "";
+
           if (clipboard->List.itemCount > 0) then
             ClearList.source_widget := clipboard;
             ClearList.clearkeys := true;
@@ -193,7 +195,7 @@ rules:
 	  end if;
 
 	  if (clipboard.cmd.length > 0) then
-            clipboard.cmd := "(" + clipboard.cmd + ")\norder by " + clipboard.orderBy + "\n\n";
+            clipboard.cmd := "(" + clipboard.cmd + ")\norder by " + clipboard.orderBy + "\n";
             LoadList.list := clipboard;
 	    LoadList.allowDups := ClipboardLoad.allowDups;
             send(LoadList, 0);

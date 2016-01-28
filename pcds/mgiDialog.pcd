@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Tue Sep  1 08:05:45 2015";
+      lastWritten = "Thu Jan 28 07:33:44 2016";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -868,9 +868,11 @@ Module: mgiDialog
                           }
                           {
                             ADClipboard = ADClipboard : mgiLookup;
+                            Group: Widget
+                              userDefinedAttributes = "cmdMaster:String(String)\ncmdClipboard:String(String)\n";
                             Group: User
-                              cmd = "select distinct concat(_EMAPA_Term_key||':'||_Stage_key), dbName, sequenceNum from GXD_ISResultStructure_View where _Specimen_key = ";
-                              orderBy = sequenceNum;
+                              cmdMaster = "select distinct concat(_EMAPA_Term_key||':'||_Stage_key), dbName, sequenceNum, 0 as isClipboard from GXD_ISResultStructure_View where _Specimen_key = ";
+                              orderBy = "isClipboard, sequenceNum";
                                 {
                                   Label = LookupLabel;
                                 }
