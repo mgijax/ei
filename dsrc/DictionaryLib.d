@@ -91,6 +91,8 @@ rules:
 	  structures1.rewind;
 	  while (structures1.more) do
 	    structures2 := mgi_splitfields(structures1.next, ":");
+	    --(void) mgi_writeLog(structures2[0] + "\n");
+	    --(void) mgi_writeLog(structures2[1] + "\n");
             cmd := cmd + mgi_DBinsert(primaryID, NOKEY) + key + "," + structures2[1] + "," + structures2[0] + END_VALUE;
           end while;
  
