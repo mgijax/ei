@@ -1613,13 +1613,13 @@ char *insitu_emapa_clipboard(char *key, char *createdByKey)
         \ns.sequenceNum, 1 as isClipboard \
         \nfrom mgi_setmember s, mgi_setmember_emapa s2, voc_term t1, gxd_theilerstage t2 \
         \nwhere not exists (select 1 from GXD_ISResultStructure_View v where s._Object_key = v._EMAPA_Term_key \
-        \nand s2._Stage_key = v._Stage_key and v._Assay_key = %s) \
+        \nand s2._Stage_key = v._Stage_key and v._Specimen_key = %s) \
         \nand s._set_key = 1046 and s._setmember_key = s2._setmember_key \
         \nand s._object_key = t1._term_key and s2._Stage_key = t2._stage_key and s._CreatedBy_key = %s \
         \nunion all \
         \nselect distinct concat(i._EMAPA_Term_key||':'||i._Stage_key), i.dbName, i.sequenceNum, 0 as isClipboard \
         \nfrom GXD_ISResultStructure_View i, GXD_Specimen s \
-        \nwhere s._Specimen_key = i._Specimen_key and s._Assay_key = %s) \
+        \nwhere s._Specimen_key = i._Specimen_key and s._Specimen_key = %s) \
         \norder by isClipboard, dbName, sequenceNum", key, createdByKey, key);
   return(buf);
 }
