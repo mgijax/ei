@@ -174,30 +174,22 @@ rules:
 	  end if;
 
 	  --(void) mgi_writeLog("clipboard : " + clipboard.name + "\n");
+	  --(void) mgi_writeLog("top: " + top.name + "\n\n");
 
           -- get current record key
           key := top->ID->text.value;
 
 	  --if (top->GelForm.managed and clipboard.name = "GenotypeGelClipboard") then
 
-	  if (top->InSituForm.managed and clipboard.name = "ADClipboard" and key.length > 0) then
-	    clipboard.cmd := insitu_emapa_clipboard(key, global_loginKey);
-	  elsif (top->GelForm.managed and clipboard.name = "ADClipboard" and key.length > 0) then
-	    clipboard.cmd := gellane_emapa_clipboard(key, global_loginKey);
+	  if (clipboard.name = "ADClipboard" and key.length > 0) then
+	    if (top->GelForm.managed) then
+	      clipboard.cmd := gellane_emapa_clipboard(key, global_loginKey);
+	    else
+	      clipboard.cmd := insitu_emapa_clipboard(key, global_loginKey);
+	    end if;
 	  else
 
-	    -- get clipboard query
-            if (clipboard.is_defined("cmdClipboard") != nil) then
-	      if (clipboard.cmdClipboard.length > 0) then
-	        clipboard.cmd := clipboard.cmd + clipboard.cmdClipboard + " " + global_loginKey;
-	      end if;
-            end if;
-
 	    if (key.length > 0) then
-
-	      if (clipboard.cmdClipboard.length > 0) then
-	        clipboard.cmd := clipboard.cmd + "\nunion all\n";
-	      end if;
 
 	      clipboard.cmd := clipboard.cmd + clipboard.cmdMaster + " " + key;
 
@@ -206,6 +198,7 @@ rules:
 	          clipboard.cmd := clipboard.cmd + "\nunion all\n" + clipboard.cmd2 + " " + key;
 	        end if;
 	      end if;
+
 	    end if;
 	  end if;
 

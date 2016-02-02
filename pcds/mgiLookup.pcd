@@ -129,7 +129,7 @@ Module: mgiLookup
         {
           ADClipboard = ClipboardList : mgiLookup;
           Group: Widget
-            userDefinedAttributes = "updateCmd:String(String)\ncmdClipboard:String(String)\ncmdMaster:String(String)\n";
+            userDefinedAttributes = "updateCmd:String(String)\ncmdMaster:String(String)\n";
           Group: Control
             vip_x = 90;
             vip_y = 305;
@@ -388,7 +388,7 @@ Module: mgiLookup
         {
           GenotypeSpecimenClipboard = GenotypeClipboard;
           Group: Widget
-            userDefinedAttributes = "cmd2:String(String)\ncmdClipboard:String(String)\ncmdMaster:String(String)\n";
+            userDefinedAttributes = "cmd2:String(String)\ncmdMaster:String(String)\n";
           Group: Control
             vip_x = 90;
             vip_y = 1020;
@@ -409,7 +409,7 @@ Module: mgiLookup
         {
           GenotypeGelClipboard = GenotypeClipboard;
           Group: Widget
-            userDefinedAttributes = "cmd2:String(String)\ncmdClipboard:String(String)\ncmdMaster:String(String)\n";
+            userDefinedAttributes = "cmd2:String(String)\ncmdMaster:String(String)\n";
           Group: Control
             vip_x = 90;
             vip_y = 965;

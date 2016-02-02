@@ -869,10 +869,10 @@ Module: mgiDialog
                           {
                             ADClipboard = ADClipboard : mgiLookup;
                             Group: Widget
-                              userDefinedAttributes = "cmdMaster:String(String)\ncmdClipboard:String(String)\n";
+                              userDefinedAttributes = "cmdMaster:String(String)\n";
                             Group: User
-                              cmdMaster = "select distinct concat(_EMAPA_Term_key||':'||_Stage_key), dbName, sequenceNum, 0 as isClipboard from GXD_ISResultStructure_View where _Specimen_key = ";
-                              orderBy = "isClipboard, sequenceNum";
+                              cmdMaster = "";
+                              orderBy = "";
                                 {
                                   Label = LookupLabel;
                                 }

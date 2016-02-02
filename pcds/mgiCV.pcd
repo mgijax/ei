@@ -96,7 +96,6 @@ Module: mgiCV
                       ADClipboard = ADClipboard : mgiLookup;
                       Group: User
                         orderBy = "";
-                        cmdClipboard = "";
                         cmdMaster = "";
                           {
                             Label = LookupLabel;
@@ -431,7 +430,6 @@ Module: mgiCV
                         managed = False;
                       Group: User
                         orderBy = "";
-                        cmdClipboard = "";
                         cmdMaster = "";
                           {
                             Label = LookupLabel;
