@@ -24,8 +24,13 @@
 
 dmodule Clipboard is
 
+#include <mgilib.h>
+#include <dblib.h>
+#include <tables.h>
+#include <mgisql.h>
+
 locals:
-	cbPrefix : string := "[Clipboard]:  ";	-- From the Clipboard
+        cbPrefix : string := "[Clipboard]:  ";  -- From the Clipboard
 
 rules:
 
@@ -168,34 +173,46 @@ rules:
 	    top := top.root;
 	  end if;
 
-	  -- get clipboard query
-          if (clipboard.is_defined("cmdClipboard") != nil) then
-	    if (clipboard.cmdClipboard.length > 0) then
-	      clipboard.cmd := clipboard.cmd + clipboard.cmdClipboard + " " + global_loginKey;
-	    end if;
-          end if;
+	  --(void) mgi_writeLog("clipboard : " + clipboard.name + "\n");
 
           -- get current record key
           key := top->ID->text.value;
 
-	  if (key.length > 0) then
+	  --if (top->GelForm.managed and clipboard.name = "GenotypeGelClipboard") then
 
-	    if (clipboard.cmdClipboard.length > 0) then
-	      clipboard.cmd := clipboard.cmd + "\nunion all\n";
-	    end if;
+	  if (top->InSituForm.managed and clipboard.name = "ADClipboard" and key.length > 0) then
+	    clipboard.cmd := insitu_emapa_clipboard(key, global_loginKey);
+	  elsif (top->GelForm.managed and clipboard.name = "ADClipboard" and key.length > 0) then
+	    clipboard.cmd := gellane_emapa_clipboard(key, global_loginKey);
+	  else
 
-	    clipboard.cmd := clipboard.cmd + clipboard.cmdMaster + " " + key;
+	    -- get clipboard query
+            if (clipboard.is_defined("cmdClipboard") != nil) then
+	      if (clipboard.cmdClipboard.length > 0) then
+	        clipboard.cmd := clipboard.cmd + clipboard.cmdClipboard + " " + global_loginKey;
+	      end if;
+            end if;
 
-            if (clipboard.is_defined("cmd2") != nil) then
-	      if (clipboard.cmd2.length > 0) then
-	        clipboard.cmd := clipboard.cmd + "\nunion all\n" + clipboard.cmd2 + " " + key;
+	    if (key.length > 0) then
+
+	      if (clipboard.cmdClipboard.length > 0) then
+	        clipboard.cmd := clipboard.cmd + "\nunion all\n";
+	      end if;
+
+	      clipboard.cmd := clipboard.cmd + clipboard.cmdMaster + " " + key;
+
+              if (clipboard.is_defined("cmd2") != nil) then
+	        if (clipboard.cmd2.length > 0) then
+	          clipboard.cmd := clipboard.cmd + "\nunion all\n" + clipboard.cmd2 + " " + key;
+	        end if;
 	      end if;
 	    end if;
-
 	  end if;
 
 	  if (clipboard.cmd.length > 0) then
-            clipboard.cmd := "(" + clipboard.cmd + ")\norder by " + clipboard.orderBy + "\n";
+	    if (clipboard.name != "ADClipboard") then
+              clipboard.cmd := "(" + clipboard.cmd + ")\norder by " + clipboard.orderBy + "\n";
+	    end if;
             LoadList.list := clipboard;
 	    LoadList.allowDups := ClipboardLoad.allowDups;
             send(LoadList, 0);

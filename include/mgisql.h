@@ -235,4 +235,9 @@ extern char *syntypetable_syntypekey(char *);
 
 extern char *userrole_selecttask(char *);
 
+/* Clipboards */
+
+extern char *gellane_emapa_clipboard(char *, char *);
+extern char *insitu_emapa_clipboard(char *, char *);
+
 #endif
