@@ -1598,7 +1598,8 @@ char *gellane_emapa_clipboard(char *key, char *createdByKey)
         \nand s._set_key = 1046 and s._setmember_key = s2._setmember_key \
         \nand s._object_key = t1._term_key and s2._Stage_key = t2._stage_key and s._CreatedBy_key = %s \
         \nunion all \
-        \nselect concat(_EMAPA_Term_key||':'||_Stage_key), dbName, min(sequenceNum) as sequenceNum, 0 as isClipboard \
+        \nselect concat(_EMAPA_Term_key||':'||_Stage_key), \
+	\nconcat(dbName||' ('||count(*)||')') as dbName, min(sequenceNum) as sequenceNum, 0 as isClipboard \
         \nfrom GXD_GelLaneStructure_View where _Assay_key =  %s \
         \ngroup by _EMAPA_Term_key, _Stage_key, dbName \
         \n) order by isClipboard, sequenceNum, dbName", key, createdByKey, key);
@@ -1618,7 +1619,8 @@ char *insitu_emapa_clipboard(char *key, char *createdByKey)
         \nand s._set_key = 1046 and s._setmember_key = s2._setmember_key \
         \nand s._object_key = t1._term_key and s2._Stage_key = t2._stage_key and s._CreatedBy_key = %s \
         \nunion all \
-        \nselect concat(i._EMAPA_Term_key||':'||i._Stage_key), i.dbName, min(i.sequenceNum) as sequenceNum, 0 as isClipboard \
+        \nselect concat(i._EMAPA_Term_key||':'||i._Stage_key), \
+	\nconcat(i.dbName||' ('||count(*)||')') as dbName, min(i.sequenceNum) as sequenceNum, 0 as isClipboard \
         \nfrom GXD_ISResultStructure_View i, GXD_Specimen s \
         \nwhere s._Specimen_key = i._Specimen_key and s._Specimen_key = %s \
         \ngroup by _EMAPA_Term_key, _Stage_key, dbName \
