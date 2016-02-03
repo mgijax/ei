@@ -1618,7 +1618,7 @@ char *gellane_emapa_byassay_clipboard(char *key)
   return(buf);
 }
 
-char *gellane_emapa_byset_clipboard(char *key, char *createdByKey)
+char *gellane_emapa_byassayset_clipboard(char *key, char *createdByKey)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
@@ -1630,6 +1630,19 @@ char *gellane_emapa_byset_clipboard(char *key, char *createdByKey)
         \nand s._set_key = 1046 and s._setmember_key = s2._setmember_key \
         \nand s._object_key = t1._term_key and s2._Stage_key = t2._stage_key and s._CreatedBy_key = %s \
         \n) order by isClipboard, sequenceNum, dbName", key, createdByKey);
+  return(buf);
+}
+
+char *gellane_emapa_byset_clipboard(char *createdByKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf, "(select distinct concat(s._Object_key||':'||s2._Stage_key), \
+        \n'*TS'||cast(t2.stage as varchar(5))||';'||t1.term as dbName, 1 as sequenceNum, 1 as isClipboard \
+        \nfrom mgi_setmember s, mgi_setmember_emapa s2, voc_term t1, gxd_theilerstage t2 \
+        \nwhere s._set_key = 1046 and s._setmember_key = s2._setmember_key \
+        \nand s._object_key = t1._term_key and s2._Stage_key = t2._stage_key and s._CreatedBy_key = %s \
+        \n) order by isClipboard, sequenceNum, dbName", createdByKey);
   return(buf);
 }
 
@@ -1668,7 +1681,7 @@ char *insitu_emapa_byassay_clipboard(char *key)
   return(buf);
 }
 
-char *insitu_emapa_byset_clipboard(char *key, char *createdByKey)
+char *insitu_emapa_byassayset_clipboard(char *key, char *createdByKey)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
@@ -1681,6 +1694,20 @@ char *insitu_emapa_byset_clipboard(char *key, char *createdByKey)
         \nand s._set_key = 1046 and s._setmember_key = s2._setmember_key \
         \nand s._object_key = t1._term_key and s2._Stage_key = t2._stage_key and s._CreatedBy_key = %s \
         \n) order by isClipboard, sequenceNum, dbName", key, createdByKey);
+  return(buf);
+}
+
+char *insitu_emapa_byset_clipboard(char *createdByKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf, "(select distinct concat(s._Object_key||':'||s2._Stage_key), \
+        \n'*TS'||cast(t2.stage as varchar(5))||';'||t1.term as dbName, \
+        \n1 as sequenceNum, 1 as isClipboard \
+        \nfrom mgi_setmember s, mgi_setmember_emapa s2, voc_term t1, gxd_theilerstage t2 \
+        \nwhere s._set_key = 1046 and s._setmember_key = s2._setmember_key \
+        \nand s._object_key = t1._term_key and s2._Stage_key = t2._stage_key and s._CreatedBy_key = %s \
+        \n) order by isClipboard, sequenceNum, dbName", createdByKey);
   return(buf);
 }
 

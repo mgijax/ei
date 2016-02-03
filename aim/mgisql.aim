@@ -186,11 +186,14 @@ CALLS
 	 userrole_selecttask("char *")				: "char *";
 
 	 gellane_emapa_byunion_clipboard("char *", "char *")    : "char *";
-	 insitu_emapa_byunion_clipboard("char *", "char *")     : "char *";
 	 gellane_emapa_byassay_clipboard("char *")              : "char *";
+	 gellane_emapa_byassayset_clipboard("char *", "char *") : "char *";
+	 gellane_emapa_byset_clipboard("char *")                : "char *";
+
+	 insitu_emapa_byunion_clipboard("char *", "char *")     : "char *";
 	 insitu_emapa_byassay_clipboard("char *")               : "char *";
-	 gellane_emapa_byset_clipboard("char *", "char *")      : "char *";
-	 insitu_emapa_byset_clipboard("char *", "char *")       : "char *";
+	 insitu_emapa_byassayset_clipboard("char *", "char *")  : "char *";
+	 insitu_emapa_byset_clipboard("char *")                 : "char *";
 
   ENDL
 ENDC

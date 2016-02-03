@@ -238,10 +238,12 @@ extern char *userrole_selecttask(char *);
 /* Clipboards */
 
 extern char *gellane_emapa_byunion_clipboard(char *, char *);
-extern char *insitu_emapa_byunion_clipboard(char *, char *);
 extern char *gellane_emapa_byassay_clipboard(char *);
+extern char *gellane_emapa_byassayset_clipboard(char *, char *);
+extern char *gellane_emapa_byset_clipboard(char *);
+extern char *insitu_emapa_byunion_clipboard(char *, char *);
 extern char *insitu_emapa_byassay_clipboard(char *);
-extern char *gellane_emapa_byset_clipboard(char *, char *);
-extern char *insitu_emapa_byset_clipboard(char *, char *);
+extern char *insitu_emapa_byassayset_clipboard(char *, char *);
+extern char *insitu_emapa_byset_clipboard(char *);
 
 #endif

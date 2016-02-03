@@ -181,12 +181,18 @@ rules:
 
 	  --if (top->GelForm.managed and clipboard.name = "GenotypeGelClipboard") then
 
-	  if (clipboard.name = "ADClipboard" and key.length > 0) then
-	    if (top->GelForm.managed) then
-	      clipboard.cmd := gellane_emapa_byunion_clipboard(key, global_loginKey);
-	    else
-	      clipboard.cmd := insitu_emapa_byunion_clipboard(key, global_loginKey);
-	    end if;
+	  if (clipboard.name = "ADClipboard" and top->GelForm.managed and key.length > 0) then
+	    clipboard.cmd := gellane_emapa_byunion_clipboard(key, global_loginKey);
+
+	  elsif (clipboard.name = "ADClipboard" and top->GelForm.managed and key.length = 0) then
+	    clipboard.cmd := gellane_emapa_byset_clipboard(global_loginKey);
+
+	  elsif (clipboard.name = "ADClipboard" and key.length > 0) then
+	    clipboard.cmd := insitu_emapa_byunion_clipboard(key, global_loginKey);
+
+	  elsif (clipboard.name = "ADClipboard" and key.length = 0) then
+	    clipboard.cmd := insitu_emapa_byset_clipboard(global_loginKey);
+
 	  else
 
 	    if (key.length > 0) then
