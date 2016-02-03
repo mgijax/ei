@@ -183,9 +183,9 @@ rules:
 
 	  if (clipboard.name = "ADClipboard" and key.length > 0) then
 	    if (top->GelForm.managed) then
-	      clipboard.cmd := gellane_emapa_clipboard(key, global_loginKey);
+	      clipboard.cmd := gellane_emapa_byunion_clipboard(key, global_loginKey);
 	    else
-	      clipboard.cmd := insitu_emapa_clipboard(key, global_loginKey);
+	      clipboard.cmd := insitu_emapa_byunion_clipboard(key, global_loginKey);
 	    end if;
 	  else
 
@@ -244,8 +244,14 @@ rules:
 	    return;
 	  end if;
 
+	  if (clipboard.name = "ADClipboard" and top->GelForm.managed) then
+	    editClipboard.cmd := gellane_emapa_byassay_clipboard(key);
+	  else
+	    return;
+	  end if;
+
           -- Append key to lookup command
-          editClipboard.cmd := clipboard.cmd + " " + key + "\norder by " + clipboard.orderBy;
+          --editClipboard.cmd := clipboard.cmd + " " + key + "\norder by " + clipboard.orderBy;
  
           -- Load the list
           LoadList.list := editClipboard;
