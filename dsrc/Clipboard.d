@@ -176,9 +176,6 @@ rules:
 	    top := top.root;
 	  end if;
 
-	  (void) mgi_writeLog("ClipboardLoad: " + clipboard.name + "\n");
-	  (void) mgi_writeLog("ClipboardLoad: " + top.name + "\n\n");
-
           -- get current record key
           key := top->ID->text.value;
 
@@ -214,9 +211,6 @@ rules:
 
 	  -- else...Genotype clipboard (old style)
 
-	  (void) mgi_writeLog("ClipboardLoad:Genotype:cmdMaster: " + clipboard.cmdMaster + "\n\n");
-	  (void) mgi_writeLog("ClipboardLoad:Genotype:cmd2: " + clipboard.cmd2 + "\n\n");
-
 	  if (key.length > 0) then
 	    clipboard.cmd := clipboard.cmd + clipboard.cmdMaster + " " + key;
 
@@ -227,6 +221,9 @@ rules:
 	    end if;
 
             clipboard.cmd := "(" + clipboard.cmd + ")\norder by " + clipboard.orderBy + "\n";
+
+	    -- run the query to select the current clipboard associations
+
             LoadList.list := clipboard;
 	    LoadList.allowDups := ClipboardLoad.allowDups;
             send(LoadList, 0);
