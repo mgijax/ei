@@ -158,6 +158,9 @@ rules:
         ClipboardLoad does
 	  top : widget := ClipboardLoad.source_widget.top;
 	  clipboard : widget := ClipboardLoad.source_widget.parent;
+	  mgi : widget := top.root.parent;
+	  clipboardModule : widget := mgi->(clipboard.clipboardModule);
+	  editClipboard : widget := clipboardModule->(clipboard.editClipboard);
 
           key : string;
 
@@ -173,49 +176,135 @@ rules:
 	    top := top.root;
 	  end if;
 
-	  --(void) mgi_writeLog("clipboard : " + clipboard.name + "\n");
-	  --(void) mgi_writeLog("top: " + top.name + "\n\n");
+	  (void) mgi_writeLog("ClipboardLoad: " + clipboard.name + "\n");
+	  (void) mgi_writeLog("ClipboardLoad: " + top.name + "\n\n");
 
           -- get current record key
           key := top->ID->text.value;
 
-	  --if (top->GelForm.managed and clipboard.name = "GenotypeGelClipboard") then
-
 	  if (clipboard.name = "ADClipboard" and top->GelForm.managed and key.length > 0) then
 	    clipboard.cmd := gellane_emapa_byunion_clipboard(key, global_loginKey);
-
-	  elsif (clipboard.name = "ADClipboard" and top->GelForm.managed and key.length = 0) then
-	    clipboard.cmd := gellane_emapa_byset_clipboard(global_loginKey);
-
-	  elsif (clipboard.name = "ADClipboard" and key.length > 0) then
-	    clipboard.cmd := insitu_emapa_byunion_clipboard(key, global_loginKey);
-
-	  elsif (clipboard.name = "ADClipboard" and key.length = 0) then
-	    clipboard.cmd := insitu_emapa_byset_clipboard(global_loginKey);
-
-	  else
-
-	    if (key.length > 0) then
-
-	      clipboard.cmd := clipboard.cmd + clipboard.cmdMaster + " " + key;
-
-              if (clipboard.is_defined("cmd2") != nil) then
-	        if (clipboard.cmd2.length > 0) then
-	          clipboard.cmd := clipboard.cmd + "\nunion all\n" + clipboard.cmd2 + " " + key;
-	        end if;
-	      end if;
-
-	    end if;
-	  end if;
-
-	  if (clipboard.cmd.length > 0) then
-	    if (clipboard.name != "ADClipboard") then
-              clipboard.cmd := "(" + clipboard.cmd + ")\norder by " + clipboard.orderBy + "\n";
-	    end if;
             LoadList.list := clipboard;
 	    LoadList.allowDups := ClipboardLoad.allowDups;
             send(LoadList, 0);
+	    return;
+
+	  elsif (clipboard.name = "ADClipboard" and top->GelForm.managed and key.length = 0) then
+	    clipboard.cmd := gellane_emapa_byset_clipboard(global_loginKey);
+            LoadList.list := clipboard;
+	    LoadList.allowDups := ClipboardLoad.allowDups;
+            send(LoadList, 0);
+	    return;
+
+	  elsif (clipboard.name = "ADClipboard" and key.length > 0) then
+	    clipboard.cmd := insitu_emapa_byunion_clipboard(key, global_loginKey);
+            LoadList.list := clipboard;
+	    LoadList.allowDups := ClipboardLoad.allowDups;
+            send(LoadList, 0);
+	    return;
+
+	  elsif (clipboard.name = "ADClipboard" and key.length = 0) then
+	    clipboard.cmd := insitu_emapa_byset_clipboard(global_loginKey);
+            LoadList.list := clipboard;
+	    LoadList.allowDups := ClipboardLoad.allowDups;
+            send(LoadList, 0);
+	    return;
+
+	  end if;
+
+	  -- else...Genotype clipboard (old style)
+
+	  (void) mgi_writeLog("ClipboardLoad:Genotype:cmdMaster: " + clipboard.cmdMaster + "\n\n");
+	  (void) mgi_writeLog("ClipboardLoad:Genotype:cmd2: " + clipboard.cmd2 + "\n\n");
+
+	  if (key.length > 0) then
+	    clipboard.cmd := clipboard.cmd + clipboard.cmdMaster + " " + key;
+
+            if (clipboard.is_defined("cmd2") != nil) then
+              if (clipboard.cmd2.length > 0) then
+	        clipboard.cmd := clipboard.cmd + "\nunion all\n" + clipboard.cmd2 + " " + key;
+	      end if;
+	    end if;
+
+            clipboard.cmd := "(" + clipboard.cmd + ")\norder by " + clipboard.orderBy + "\n";
+            LoadList.list := clipboard;
+	    LoadList.allowDups := ClipboardLoad.allowDups;
+            send(LoadList, 0);
+
+	  else
+            if (clipboard->List.itemCount > 0) then
+              ClearList.source_widget := clipboard;
+              ClearList.clearkeys := true;
+              send(ClearList, 0);
+            end if;
+	  end if;
+
+          -- If clipboard->List.keys does not exist already, create it
+ 
+          if (clipboard->List.keys = nil) then
+            clipboard->List.keys := create string_list();
           end if;
+ 
+          -- If clipboard->List.accIDs does not exist already, create it
+ 
+          if (clipboard->List.accIDs = nil) then
+            clipboard->List.accIDs := create string_list();
+          end if;
+ 
+          -- Append from the specified editing Clipboard
+ 
+	  if (clipboardModule = nil or editClipboard = nil) then
+	    return;
+	  end if;
+
+	  sKeys : string_list := create string_list();
+	  sResults : xm_string_list := create xm_string_list();
+	  sAccIDs : string_list := create string_list();
+
+	  -- Append new keys to current keys
+
+	  sKeys := clipboard->List.keys;
+	  sAccIDs := clipboard->List.accIDs;
+
+	  i : integer := 1;
+	  numItems : integer;
+	  cKey : string;
+	  cName : string;
+	  cAccID : string;
+
+	  if (editClipboard->List != nil) then
+	    numItems := editClipboard->List.itemCount;
+
+	    while (i <= numItems) do
+	      cKey := editClipboard->List.keys[i];
+	      cName := editClipboard->List.items[i];
+	      cAccID := editClipboard->List.accIDs[i];
+
+	      if (ClipboardLoad.allowDups or sKeys.find(cKey) < 0) then
+	        sKeys.insert(cKey, sKeys.count + 1);
+--	        sResults.insert(cbPrefix + cName, sResults.count + 1);
+	        sResults.insert("[*" + cAccID + "]" + cName, sResults.count + 1);
+	        sAccIDs.insert(cAccID, sAccIDs.count + 1);
+	      end if;
+
+	      i := i + 1;
+	    end while;
+
+	    -- Append the items to the list
+
+	    if (sResults.count > 0) then
+              clipboard->List.keys := sKeys;
+              clipboard->List.accIDs := sAccIDs;
+	      (void) XmListAddItems(clipboard->List, sResults, sResults.count, 0);
+	    end if;
+
+	    -- Set the label
+
+	    clipboard->Label.labelString := 
+		  (string) clipboard->List.itemCount + " " +
+		  clipboard->Label.defaultLabel;
+
+	  end if;
 
 	end does;
 
