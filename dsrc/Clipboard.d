@@ -280,7 +280,7 @@ rules:
 	      if (ClipboardLoad.allowDups or sKeys.find(cKey) < 0) then
 	        sKeys.insert(cKey, sKeys.count + 1);
 --	        sResults.insert(cbPrefix + cName, sResults.count + 1);
-	        sResults.insert("[*" + cAccID + "]" + cName, sResults.count + 1);
+	        sResults.insert("[*" + cAccID + "] " + cName, sResults.count + 1);
 	        sAccIDs.insert(cAccID, sAccIDs.count + 1);
 	      end if;
 
