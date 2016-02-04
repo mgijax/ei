@@ -1956,7 +1956,7 @@ Shift<Key>Tab: prev-tab-group()
                       Table = mgiTable;
                       Group: Widget
                         xrtTblColumnLabels = "Mode,Current Order,Gel Lane Key,Control Key,Genotype key,Structure Key,RNA Key,Age Key,Age Min,Age Max,Sex Key,Lane,Label,Control,Genotype,EMAPA,Sample Amt,RNA,Age,Age Range,Age Note,Sex,Notes";
-                        xrtTblEnterCellCallback = "D:ADClipboardSetItems,\nD:GenotypeClipboardSetItems,\nD:SetOptions";
+                        xrtTblEnterCellCallback = "D:EMAPAClipboardSetItems,\nD:GenotypeClipboardSetItems,\nD:SetOptions";
                         xrtTblNumColumns = 23;
                         xrtTblEditableSeries = "(all all False) (all 12 True) (all 14 True) (all 16 True) (all 19 True)(all 20 True)(all 22 True)";
                         xrtTblNumRows = 16;
@@ -3406,7 +3406,7 @@ Shift<Key>Tab: prev-tab-group()
                                               CVMenu = CVMenu;
                                             }
                                             {
-                                              ADClipboard = ADClipboard : mgiLookup;
+                                              EMAPAClipboard = EMAPAClipboard : mgiLookup;
                                                   {
                                                     Label = LookupLabel;
                                                   }

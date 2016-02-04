@@ -457,7 +457,7 @@ rules:
 	      ModifyStructure.key := MAX_KEY1 + KEYNAME + MAX_KEY2;
 	      ModifyStructure.row := row;
 	      send(ModifyStructure, 0);
-	      cmd := cmd + top->ADClipboard.updateCmd;
+	      cmd := cmd + top->EMAPAClipboard.updateCmd;
 
             elsif (editMode = TBL_ROW_MODIFY) then
 
@@ -488,7 +488,7 @@ rules:
 	        ModifyStructure.key := key;
 	        ModifyStructure.row := row;
 	        send(ModifyStructure, 0);
-	        cmd := cmd + top->ADClipboard.updateCmd;
+	        cmd := cmd + top->EMAPAClipboard.updateCmd;
 	      end if;
 
             elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
@@ -586,7 +586,7 @@ rules:
 	  send(LoadImagePaneList, 0);
 
 	  -- Load the EMAPA Clipboard
-	  ClipboardLoad.source_widget := top->ADClipboard->Label;
+	  ClipboardLoad.source_widget := top->EMAPAClipboard->Label;
 	  send(ClipboardLoad, 0);
 
 	  row := 0;

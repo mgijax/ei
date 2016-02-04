@@ -16,17 +16,17 @@
 --	- Moved all but ModifyStructure to Clipboard.d
 --
 -- lec	05/21/98
---	- LoadADClipboard; LoadList should not allow dups
+--	- LoadEMAPAClipboard; LoadList should not allow dups
 --
 -- lec	05/20/98
 --	- check for invalid ADI structures when loading ADI clipboard
 --
 -- lec	05/19/98
---	- added CommitTableCellEdit from SelectADClipboard
+--	- added CommitTableCellEdit from SelectEMAPAClipboard
 --	- Clear Structure list if no current record selected
 --
 -- lec	05/18/98
---	- removed CommitTableCellEdit from SetADClipboard
+--	- removed CommitTableCellEdit from SetEMAPAClipboard
 --
 -- lec	05/14/98
 --	- set the first Structure as the first visible item in the list
@@ -57,14 +57,14 @@ rules:
 --	row : integer		current table row to process
 --	
 -- Construct SQL to modify Structure records
--- Sets the ADClipboard.updateCmd UDA
+-- Sets the EMAPAClipboard.updateCmd UDA
 --
 
 	ModifyStructure does
 	  top : widget := ModifyStructure.source_widget.top;
 	  table : widget := ModifyStructure.source_widget;
 	  form : widget := top->(table.clipboard);
-	  clipboard : widget := form->ADClipboard;
+	  clipboard : widget := form->EMAPAClipboard;
 	  list_w : widget := clipboard->List;
 	  primaryID : integer := ModifyStructure.primaryID;
 	  key : string := ModifyStructure.key;

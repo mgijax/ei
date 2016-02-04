@@ -31,7 +31,7 @@ ClipboardSetItems [table : widget;
 		   column2 : integer;
 		   reason : integer;];
 
-ADClipboardSetItems [source_widget : widget;
+EMAPAClipboardSetItems [source_widget : widget;
 		   row : integer;
 		   reason : integer;];
 

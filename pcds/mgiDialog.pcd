@@ -728,7 +728,7 @@ Module: mgiDialog
                               xrtTblColumnLabels = "Mode,Current Order,#,Result key,Struct keys,Strength key,Pattern key,Image Pane keys,EMAPA,Strength,Pattern,Image Panes,Notes";
                               xrtTblNumColumns = 13;
                               xrtTblEditableSeries = "(all 0-2 False)(all 8-11 False)";
-                              xrtTblEnterCellCallback = "D:ADClipboardSetItems,\nD:SetImageResultOptions,\nD:SetImagePane";
+                              xrtTblEnterCellCallback = "D:EMAPAClipboardSetItems,\nD:SetImageResultOptions,\nD:SetImagePane";
                               xrtTblPixelWidthSeries = "(all 0-1 0)(all 3-7 0)";
                               xrtTblTraversableSeries = "(all 0-7 False)";
                               xrtTblValidateCellCallback = "D:CopyInSituRow,\nD:CommitTableCellEdit";
@@ -867,7 +867,7 @@ Module: mgiDialog
                                 }
                           }
                           {
-                            ADClipboard = ADClipboard : mgiLookup;
+                            EMAPAClipboard = EMAPAClipboard : mgiLookup;
                             Group: Widget
                               userDefinedAttributes = "cmdMaster:String(String)\n";
                             Group: User

@@ -93,7 +93,7 @@ Module: mgiCV
               {
                 panedWindow = XmPanedWindow;
                     {
-                      ADClipboard = ADClipboard : mgiLookup;
+                      EMAPAClipboard = EMAPAClipboard : mgiLookup;
                       Group: User
                         orderBy = "";
                         cmdMaster = "";
@@ -425,7 +425,7 @@ Module: mgiCV
                           }
                     }
                     {
-                      ADClipboard = ADClipboard : mgiLookup;
+                      EMAPAClipboard = EMAPAClipboard : mgiLookup;
                       Group: Widget
                         managed = False;
                       Group: User

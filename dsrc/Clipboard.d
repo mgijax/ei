@@ -179,28 +179,28 @@ rules:
           -- get current record key
           key := top->ID->text.value;
 
-	  if (clipboard.name = "ADClipboard" and top->GelForm.managed and key.length > 0) then
+	  if (clipboard.name = "EMAPAClipboard" and top->GelForm.managed and key.length > 0) then
 	    clipboard.cmd := gellane_emapa_byunion_clipboard(key, global_loginKey);
             LoadList.list := clipboard;
 	    LoadList.allowDups := ClipboardLoad.allowDups;
             send(LoadList, 0);
 	    return;
 
-	  elsif (clipboard.name = "ADClipboard" and top->GelForm.managed and key.length = 0) then
+	  elsif (clipboard.name = "EMAPAClipboard" and top->GelForm.managed and key.length = 0) then
 	    clipboard.cmd := gellane_emapa_byset_clipboard(global_loginKey);
             LoadList.list := clipboard;
 	    LoadList.allowDups := ClipboardLoad.allowDups;
             send(LoadList, 0);
 	    return;
 
-	  elsif (clipboard.name = "ADClipboard" and key.length > 0) then
+	  elsif (clipboard.name = "EMAPAClipboard" and key.length > 0) then
 	    clipboard.cmd := insitu_emapa_byunion_clipboard(key, global_loginKey);
             LoadList.list := clipboard;
 	    LoadList.allowDups := ClipboardLoad.allowDups;
             send(LoadList, 0);
 	    return;
 
-	  elsif (clipboard.name = "ADClipboard" and key.length = 0) then
+	  elsif (clipboard.name = "EMAPAClipboard" and key.length = 0) then
 	    clipboard.cmd := insitu_emapa_byset_clipboard(global_loginKey);
             LoadList.list := clipboard;
 	    LoadList.allowDups := ClipboardLoad.allowDups;
@@ -336,8 +336,10 @@ rules:
 	    return;
 	  end if;
 
-	  if (clipboard.name = "ADClipboard" and top->GelForm.managed) then
+	  if (clipboard.name = "EMAPAClipboard" and top->GelForm.managed) then
 	    editClipboard.cmd := gellane_emapa_byassay_clipboard(key);
+	  elsif (clipboard.name = "EMAPAClipboard") then
+	    editClipboard.cmd := insitu_emapa_byassay_clipboard(key);
 	  else
 	    return;
 	  end if;
@@ -407,19 +409,19 @@ rules:
         end does;
  
 --
--- ADClipboardSetItems
+-- EMAPAClipboardSetItems
 --
 -- EnterCellCallback for table.
 -- UDAs required:  structureKeys, stageKeys
 -- 
 
-	ADClipboardSetItems does
-	  table : widget := ADClipboardSetItems.source_widget;
+	EMAPAClipboardSetItems does
+	  table : widget := EMAPAClipboardSetItems.source_widget;
 	  top : widget :=  table.top;
-	  reason : integer := ADClipboardSetItems.reason;
-	  row : integer := ADClipboardSetItems.row;
+	  reason : integer := EMAPAClipboardSetItems.reason;
+	  row : integer := EMAPAClipboardSetItems.row;
 	  form : widget := top->(table.clipboard);
-	  clipboard : widget := form->ADClipboard;
+	  clipboard : widget := form->EMAPAClipboard;
 
           if (reason != TBL_REASON_ENTER_CELL_END) then
             return;

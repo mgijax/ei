@@ -127,7 +127,7 @@ Module: mgiLookup
               }
         }
         {
-          ADClipboard = ClipboardList : mgiLookup;
+          EMAPAClipboard = ClipboardList : mgiLookup;
           Group: Widget
             userDefinedAttributes = "updateCmd:String(String)\ncmdMaster:String(String)\n";
           Group: Control
