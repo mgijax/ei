@@ -802,6 +802,7 @@ rules:
 
 	AddToEditClipboard does
 	  clipboard : widget;
+          key : string;
 
 	  if (currentAssay = "") then
 	    StatusReport.source_widget := top;
@@ -812,20 +813,27 @@ rules:
 
 	  if (assayDetailForm.name = "GelForm") then
 	    clipboard := top->CVGel->EMAPAClipboard;
+	    clipboard.cmd := gellane_emapa_byset_clipboard(global_loginKey);
 	  else
 	    clipboard := top->CVSpecimen->EMAPAClipboard;
+	    clipboard.cmd := insitu_emapa_byset_clipboard(global_loginKey);
 	  end if;
 
-	  --if (top.parent->(clipboard.editClipboard) = nil) then
-	  --  StatusReport.source_widget := top;
-          --  StatusReport.message := "The EMAPA Module must be open in order to use this function.\n";
-          --  send(StatusReport, 0);
-          --  return;
-	  --end if;
+          -- Get current record key
+          key := top->ID->text.value;
+ 
+	  -- Add Assay/EMAPA/Stage to Set/Clipboard
+	  if (key.length > 0) then
+	    (void) mgi_sp(exec_gxd_addemapaset(global_userKey, key));
+	  end if;
 
- 	  EditClipboardLoad.source_widget := clipboard;
-	  send(EditClipboardLoad, 0);
-	  send(ClearAssay, 0);
+	  -- Clear the form
+          send(ClearAssay, 0);
+
+	  -- Refresh clipboard display
+          LoadList.list := clipboard;
+          send(LoadList, 0);
+
 	end does;
 
 --

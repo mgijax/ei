@@ -23,17 +23,22 @@ extern char *exec_acc_insert(char *, char *, char *, char *, char *, char *, cha
 extern char *exec_acc_update(char *, char *, char *, char *, char *);
 extern char *exec_acc_deleteByAccKey(char *, char *);
 extern char *exec_accref_process(char *, char *, char *, char *, char *, char *, char *, char *);
+
 extern char *exec_all_convert(char *, char *, char *, char *);
 extern char *exec_all_reloadLabel(char *);
+
 extern char *exec_mgi_checkUserRole(char *, char *);
 extern char *exec_mgi_checkUserTask(char *, char *);
 extern char *exec_mgi_insertReferenceAssoc_antibody(char *, char *, char *, char *, char *);
 extern char *exec_mgi_insertReferenceAssoc_usedFC(char *, char *, char *);
 extern char *exec_mgi_resetAgeMinMax(char *, char *);
 extern char *exec_mgi_resetSequenceNum(char *, char *);
+
 extern char *exec_mrk_reloadReference(char *); 
 extern char *exec_mrk_reloadLocation(char *);
+
 extern char *exec_nom_transferToMGD(char *, char *, char *);
+
 extern char *exec_prb_insertReference(char *, char *, char *);
 extern char *exec_prb_getStrainByReference(char *);
 extern char *exec_prb_getStrainReferences(char *);
@@ -42,8 +47,11 @@ extern char *exec_prb_mergeStrain(char *, char *);
 extern char *exec_prb_processAntigenAnonSource(char *, char *, char *, char *, char *, char *, char *, char *, char *, char *);
 extern char *exec_prb_processProbeSource(char *, char *, char *, char *, char *, char *, char *, char *, char *, char *, char *);
 extern char *exec_prb_processSequenceSource(char *, char *, char *, char *, char *, char *, char *, char *, char *, char *, char *);
+
 extern char *exec_voc_copyAnnotEvidenceNotes(char *, char *, char *);
 extern char *exec_voc_processAnnotHeader(char *, char *, char *);
+
+extern char *exec_gxd_addemapaset(char *, char *);
 extern char *exec_gxd_checkDuplicateGenotype(char *);
 extern char *exec_gxd_duplicateAssay(char *, char *, char *);
 extern char *exec_gxd_getGenotypesDataSets(char *);

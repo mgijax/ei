@@ -39,7 +39,7 @@ char *mgilib_isAnchor(char *key)
 }
 
 /*
- * exec stored procedures
+ * execute procedures/functions
 */
 
 char *exec_acc_assignJ(char *userKey, char *key)
@@ -322,6 +322,14 @@ char *exec_voc_processAnnotHeader(char *userKey, char *key, char *annotTypeKey)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select VOC_processAnnotHeader (%s,%s,%s);\n", userKey, annotTypeKey, key);
+  return(buf);
+}
+
+char *exec_gxd_addemapaset(char *userKey, char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select * from GXD_addEMAPASet (%s, %s);\n", userKey, key);
   return(buf);
 }
 
