@@ -180,28 +180,28 @@ rules:
           key := top->ID->text.value;
 
 	  if (clipboard.name = "EMAPAClipboard" and top->GelForm != nil and key.length > 0) then
-	    clipboard.cmd := gellane_emapa_byunion_clipboard(key, global_loginKey);
+	    clipboard.cmd := gellane_emapa_byunion_clipboard(key, global_userKey);
             LoadList.list := clipboard;
 	    LoadList.allowDups := ClipboardLoad.allowDups;
             send(LoadList, 0);
 	    return;
 
 	  elsif (clipboard.name = "EMAPAClipboard" and top->GelForm != nil and key.length = 0) then
-	    clipboard.cmd := gellane_emapa_byset_clipboard(global_loginKey);
+	    clipboard.cmd := gellane_emapa_byset_clipboard(global_userKey);
             LoadList.list := clipboard;
 	    LoadList.allowDups := ClipboardLoad.allowDups;
             send(LoadList, 0);
 	    return;
 
 	  elsif (clipboard.name = "EMAPAClipboard" and key.length > 0) then
-	    clipboard.cmd := insitu_emapa_byunion_clipboard(key, global_loginKey);
+	    clipboard.cmd := insitu_emapa_byunion_clipboard(key, global_userKey);
             LoadList.list := clipboard;
 	    LoadList.allowDups := ClipboardLoad.allowDups;
             send(LoadList, 0);
 	    return;
 
 	  elsif (clipboard.name = "EMAPAClipboard" and key.length = 0) then
-	    clipboard.cmd := insitu_emapa_byset_clipboard(global_loginKey);
+	    clipboard.cmd := insitu_emapa_byset_clipboard(global_userKey);
             LoadList.list := clipboard;
 	    LoadList.allowDups := ClipboardLoad.allowDups;
             send(LoadList, 0);

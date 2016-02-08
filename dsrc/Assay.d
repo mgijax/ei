@@ -813,10 +813,10 @@ rules:
 
 	  if (assayDetailForm.name = "GelForm") then
 	    clipboard := top->CVGel->EMAPAClipboard;
-	    clipboard.cmd := gellane_emapa_byset_clipboard(global_loginKey);
+	    clipboard.cmd := gellane_emapa_byset_clipboard(global_userKey);
 	  else
 	    clipboard := top->CVSpecimen->EMAPAClipboard;
-	    clipboard.cmd := insitu_emapa_byset_clipboard(global_loginKey);
+	    clipboard.cmd := insitu_emapa_byset_clipboard(global_userKey);
 	  end if;
 
           -- Get current record key
