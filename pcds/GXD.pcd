@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Tue Jan 26 07:39:53 2016";
+      lastWritten = "Mon Feb  8 11:18:57 2016";
       copy = false;
       inCreateMenu = true;
         {
@@ -3264,9 +3264,9 @@ Shift<Key>Tab: prev-tab-group()
                                     leftOffset = 2;
                                 }
                                 {
-                                  AddToEditClipboard = ControlPush : mgiControl;
+                                  AddToEMAPAClipboard = ControlPush : mgiControl;
                                   Group: Widget
-                                    activateCallback = "D:AddToEditClipboard";
+                                    activateCallback = "D:AddToEMAPAClipboard";
                                     labelString = "Add Assay Structures To EMAPA Clipboard";
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
@@ -3276,6 +3276,21 @@ Shift<Key>Tab: prev-tab-group()
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     topWidget = DuplicatePrep;
+                                    topOffset = 2;
+                                }
+                                {
+                                  ClearEMAPAClipboard = ControlPush : mgiControl;
+                                  Group: Widget
+                                    activateCallback = "D:ClearEMAPAClipboard";
+                                    labelString = "Clear EMAPA Clipboard";
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = AddToEMAPAClipboard;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    topWidget = AddToEMAPAClipboard;
                                     topOffset = 2;
                                 }
                                 {
@@ -3323,10 +3338,10 @@ Shift<Key>Tab: prev-tab-group()
                                   RecordCount = RecordCount;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = AddToEditClipboard;
+                                    leftWidget = AddToEMAPAClipboard;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = AddToEditClipboard;
+                                    topWidget = ClearEMAPAClipboard;
                                     topOffset = 2;
                                     bottomAttachment = attach_none;
                                     resizable = true;

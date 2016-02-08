@@ -268,7 +268,7 @@ devents:
 	AddAntibodyReference :local [];
 	AddProbePrep :local [];
 	AddProbeReference :local [];
-	AddToEditClipboard :local [];
+	AddToEMAPAClipboard :local [];
 	AppendToAgeNote :local [];
 	Assay [];
 	BuildDynamicComponents :local [];
@@ -277,6 +277,7 @@ devents:
 		    clearLists : integer := 3;
 		    reset : boolean := false;
 		    select: boolean := false;];
+	ClearEMAPAClipboard :local [];
 	CopySpecimen :local [];
 	CopySpecimenColumn :local [];
 	CopyGelLane :local [];
@@ -484,6 +485,30 @@ rules:
 	    top->GXDReporterGeneMenu.required := false;
 	    top->GXDKnockInMenu.required := false;
 	  end if;
+	end does;
+
+--
+-- ClearEMAPAClipboard
+--
+-- Clear EMAPA clipboard (MGI_SetMember by set/user)
+--
+	ClearEMAPAClipboard does
+	  clipboard : widget;
+
+	  if (assayDetailForm.name = "GelForm") then
+	    clipboard := top->CVGel->EMAPAClipboard;
+	    clipboard.cmd := gellane_emapa_byset_clipboard(global_userKey);
+	  else
+	    clipboard := top->CVSpecimen->EMAPAClipboard;
+	    clipboard.cmd := insitu_emapa_byset_clipboard(global_userKey);
+	  end if;
+
+	  (void) mgi_sp(exec_gxd_clearemapaset(global_userKey));
+
+	  -- Refresh clipboard display
+          LoadList.list := clipboard;
+          send(LoadList, 0);
+
 	end does;
 
 -- 
@@ -795,12 +820,12 @@ rules:
 	end
 
 --
--- AddToEditClipboard
+-- AddToEMAPAClipboard
 --
 -- TR12223/use new clipboard structures
 --
 
-	AddToEditClipboard does
+	AddToEMAPAClipboard does
 	  clipboard : widget;
           key : string;
 

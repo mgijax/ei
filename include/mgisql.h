@@ -52,6 +52,7 @@ extern char *exec_voc_copyAnnotEvidenceNotes(char *, char *, char *);
 extern char *exec_voc_processAnnotHeader(char *, char *, char *);
 
 extern char *exec_gxd_addemapaset(char *, char *);
+extern char *exec_gxd_clearemapaset(char *);
 extern char *exec_gxd_checkDuplicateGenotype(char *);
 extern char *exec_gxd_duplicateAssay(char *, char *, char *);
 extern char *exec_gxd_getGenotypesDataSets(char *);

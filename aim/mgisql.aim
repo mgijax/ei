@@ -50,6 +50,7 @@ CALLS
 	 exec_voc_processAnnotHeader("char *", "char *", "char *")	: "char *";
 
 	 exec_gxd_addemapaset("char *", "char *")               : "char *";
+	 exec_gxd_clearemapaset("char *")                       : "char *";
 	 exec_gxd_checkDuplicateGenotype("char *")		: "char *";
 	 exec_gxd_duplicateAssay("char *", "char *", "char *")	: "char *";
 	 exec_gxd_getGenotypesDataSets("char *")		: "char *";

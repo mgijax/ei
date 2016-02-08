@@ -333,6 +333,14 @@ char *exec_gxd_addemapaset(char *userKey, char *key)
   return(buf);
 }
 
+char *exec_gxd_clearemapaset(char *userKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"delete from MGI_SetMember where _Set_key = 1046 and _CreatedBy_key = %s\n", userKey);
+  return(buf);
+}
+
 char *exec_gxd_checkDuplicateGenotype(char *key)
 {
   static char buf[TEXTBUFSIZ];
