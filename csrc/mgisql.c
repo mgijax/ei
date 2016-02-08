@@ -1620,7 +1620,7 @@ char *gellane_emapa_byunion_clipboard(char *key, char *createdByKey)
 	\nmin(sequenceNum) as sequenceNum, 0 as isClipboard \
         \nfrom GXD_GelLaneStructure_View where _Assay_key =  %s \
         \ngroup by _EMAPA_Term_key, _Stage_key, displayIt, term, stage \
-        \n) order by isClipboard, sequenceNum, term, stage", key, createdByKey, key);
+        \n) order by isClipboard, sequenceNum, stage, term", key, createdByKey, key);
   return(buf);
 }
 
@@ -1633,7 +1633,7 @@ char *gellane_emapa_byassay_clipboard(char *key)
 	\nmin(sequenceNum) as sequenceNum, 0 as isClipboard \
         \nfrom GXD_GelLaneStructure_View where _Assay_key =  %s \
         \ngroup by _EMAPA_Term_key, _Stage_key, displayIt, term, stage \
-        \n) order by isClipboard, sequenceNum, term, stage", key);
+        \n) order by isClipboard, sequenceNum, stage, term", key);
   return(buf);
 }
 
@@ -1649,7 +1649,7 @@ char *gellane_emapa_byassayset_clipboard(char *key, char *createdByKey)
         \nand s2._Stage_key = v._Stage_key and v._Assay_key = %s) \
         \nand s._set_key = 1046 and s._setmember_key = s2._setmember_key \
         \nand s._object_key = t1._term_key and s2._Stage_key = t2._stage_key and s._CreatedBy_key = %s \
-        \n) order by isClipboard, sequenceNum, t1.term, t2.stage", key, createdByKey);
+        \n) order by isClipboard, sequenceNum, t2.stage, t1.term", key, createdByKey);
   return(buf);
 }
 
@@ -1663,7 +1663,7 @@ char *gellane_emapa_byset_clipboard(char *createdByKey)
         \nfrom mgi_setmember s, mgi_setmember_emapa s2, voc_term t1, gxd_theilerstage t2 \
         \nwhere s._set_key = 1046 and s._setmember_key = s2._setmember_key \
         \nand s._object_key = t1._term_key and s2._Stage_key = t2._stage_key and s._CreatedBy_key = %s \
-        \n) order by isClipboard, sequenceNum, t1.term, t2.stage", createdByKey);
+        \n) order by isClipboard, sequenceNum, t2.stage, t1.term", createdByKey);
   return(buf);
 }
 
@@ -1686,7 +1686,7 @@ char *insitu_emapa_byunion_clipboard(char *key, char *createdByKey)
         \nfrom GXD_ISResultStructure_View i, GXD_Specimen s \
         \nwhere s._Specimen_key = i._Specimen_key and s._Specimen_key = %s \
         \ngroup by _EMAPA_Term_key, _Stage_key, displayIt, term, stage \
-        \n) order by isClipboard, sequenceNum, term, stage", key, createdByKey, key);
+        \n) order by isClipboard, sequenceNum, stage, term", key, createdByKey, key);
   return(buf);
 }
 
@@ -1700,7 +1700,7 @@ char *insitu_emapa_byassay_clipboard(char *key)
         \nfrom GXD_ISResultStructure_View i, GXD_Specimen s \
         \nwhere s._Specimen_key = i._Specimen_key and s._Specimen_key = %s \
         \ngroup by _EMAPA_Term_key, _Stage_key, displayIt, term, stage \
-        \n) order by isClipboard, sequenceNum, term, stage", key);
+        \n) order by isClipboard, sequenceNum, stage, term", key);
   return(buf);
 }
 
@@ -1716,7 +1716,7 @@ char *insitu_emapa_byassayset_clipboard(char *key, char *createdByKey)
         \nand s2._Stage_key = v._Stage_key and v._Specimen_key = %s) \
         \nand s._set_key = 1046 and s._setmember_key = s2._setmember_key \
         \nand s._object_key = t1._term_key and s2._Stage_key = t2._stage_key and s._CreatedBy_key = %s \
-        \n) order by isClipboard, sequenceNum, t1.term, t2.stage", key, createdByKey);
+        \n) order by isClipboard, sequenceNum, t2.stage, t1.term", key, createdByKey);
   return(buf);
 }
 
@@ -1730,7 +1730,7 @@ char *insitu_emapa_byset_clipboard(char *createdByKey)
         \nfrom mgi_setmember s, mgi_setmember_emapa s2, voc_term t1, gxd_theilerstage t2 \
         \nwhere s._set_key = 1046 and s._setmember_key = s2._setmember_key \
         \nand s._object_key = t1._term_key and s2._Stage_key = t2._stage_key and s._CreatedBy_key = %s \
-        \n) order by isClipboard, sequenceNum, t1.term, t2.stage", createdByKey);
+        \n) order by isClipboard, sequenceNum, t2.stage, t1.term", createdByKey);
   return(buf);
 }
 

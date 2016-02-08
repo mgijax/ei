@@ -2,7 +2,7 @@ Module: mgiCV
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Mon Jan 25 10:18:19 2016";
+      lastWritten = "Mon Feb  8 13:49:38 2016";
         {
           CVMenu = XmRowColumn;
           Group: Widget
