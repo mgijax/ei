@@ -509,6 +509,9 @@ rules:
           LoadList.list := clipboard;
           send(LoadList, 0);
 
+	  -- Reload the clipboard
+	  send(LoadClipboards, 0);
+
 	end does;
 
 -- 
