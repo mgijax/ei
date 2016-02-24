@@ -29,7 +29,7 @@ switch (`uname -n`)
 
 	case bhmgiei01:
 		echo "building for linux/production..." >>& ${LOG}
-		./install_pg >>& ${LOG}
+		./install_pg_live >>& ${LOG}
 		breaksw
 
 	case bheidev01:
