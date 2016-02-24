@@ -13,6 +13,9 @@
 #
 # Modification History:
 #
+# 02/24/2016	lec
+#	- add install_pg_live for a compiled installation
+#
 # 10/13/2014	lec
 #	- TR11750/merge solaris/linux installs
 #
@@ -29,7 +32,7 @@ switch (`uname -n`)
 
 	case bhmgiei01:
 		echo "building for linux/production..." >>& ${LOG}
-		./install_pg >>& ${LOG}
+		./install_pg_live >>& ${LOG}
 		breaksw
 
 	case bheidev01:
