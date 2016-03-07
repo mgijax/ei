@@ -376,10 +376,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     EnsemblGeneModel = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
-                                                    Group: User
-                                                      private = True;
                                                   }
                                                   {
                                                     EnsemblProtein = AccToggle : mgiOption;
@@ -411,10 +407,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     VEGAGeneModel = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
-                                                    Group: User
-                                                      private = True;
                                                   }
                                                   {
                                                     VEGAProtein = AccToggle : mgiOption;
