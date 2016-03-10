@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Mon Feb  8 13:49:39 2016";
+      lastWritten = "Thu Mar 10 08:39:26 2016";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -403,7 +403,6 @@ Module: mgiDialog
                       text = text;
                       Group: Widget
                         columns = 40;
-                        maxLength = 255;
                     }
               }
               {
@@ -559,7 +558,7 @@ Module: mgiDialog
                       text = scrolledText;
                       Group: Widget
                         columns = 75;
-                        userDefinedAttributes = "saveMaxNoteLength:Int(Int)=\"0\"\nshortMaxNoteLength:Int(Int)=\"255\"\nsaveRows:Int=\"0\"\n";
+                        userDefinedAttributes = "saveMaxNoteLength:Int(Int)=\"0\"\nsaveRows:Int=\"0\"\n";
                         rows = 15;
                     }
               }
@@ -734,7 +733,6 @@ Module: mgiDialog
                               xrtTblValidateCellCallback = "D:CopyInSituRow,\nD:CommitTableCellEdit";
                               xrtTblNumRows = 10;
                               xrtTblVisibleRows = 8;
-                              xrtTblMaxLengthSeries = "(all 12 255)";
                               xrtTblAllowCellResize = resize_horizontal;
                               xrtTblFrozenColumns = 9;
                               xrtTblDisplayHorizScrollBar = dispsb_always;

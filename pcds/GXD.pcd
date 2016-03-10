@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Mon Feb  8 13:49:40 2016";
+      lastWritten = "Thu Mar 10 08:37:16 2016";
       copy = false;
       inCreateMenu = true;
         {
@@ -318,7 +318,6 @@ Module: GXD
                                               text = text;
                                               Group: Widget
                                                 columns = 50;
-                                                maxLength = 255;
                                             }
                                       }
                                       {
@@ -1113,7 +1112,6 @@ Shift<Key>Tab: prev-tab-group()
                                               text = text;
                                               Group: Widget
                                                 columns = 50;
-                                                maxLength = 255;
                                             }
                                       }
                                       {
@@ -1297,7 +1295,7 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblNumColumns = 6;
                                           xrtTblPixelWidthSeries = "(all 0-2 0)";
                                           xrtTblColumnLabels = "Mode, Key, Ref Key,  Alias, J:, Citation";
-                                          xrtTblMaxLengthSeries = "(all 3 255) (all 4 10) (all 5 255)";
+                                          xrtTblMaxLengthSeries = "(all 4 10)";
                                           xrtTblCharWidthSeries = "(all 0 1) (all 3 15) (all 4 10) (all 5 30)";
                                           userDefinedAttributes = "aliasKey:Int=\"1\"\nrefsKey:Int=\"2\"\nalias:Int=\"3\"\njnum:Int=\"4\"\ncitation:Int=\"5\"\n";
                                           xrtTblValidateCellCallback = "D:VerifyReference,\nD:CommitTableCellEdit";
@@ -1807,8 +1805,6 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   text = scrolledText;
-                                  Group: Widget
-                                    maxLength = 255;
                                 }
                           }
                     }
@@ -1842,7 +1838,6 @@ Shift<Key>Tab: prev-tab-group()
                         xrtTblColumnLabels = "Mode,Current Order,#,Specimen Key,Geno Key,Age Key,Age Min, Age Max,Sex key,Fix Key,Embed Key,Hybrid Key,Specimen Label,Genotype,Age,Age Range,Age Note,Sex,Fixation,Embedding,Hybridization,R,Notes";
                         xrtTblEditableSeries = "(all 0-2 False)(all 14-22 False) (all 15 True)(all 16 True)(all 22 True)";
                         xrtTblEnterCellCallback = "D:GenotypeClipboardSetItems,\nD:SetOptions";
-                        xrtTblMaxLengthSeries = "(all 12 255)(all 16 255)(all 22 255)";
                         xrtTblNumColumns = 23;
                         xrtTblNumRows = 21;
                         xrtTblPixelWidthSeries = "(all 0-1 0)(all 3-11 0)";
@@ -1968,7 +1963,6 @@ Shift<Key>Tab: prev-tab-group()
                         xrtTblCharWidthSeries = "(all 0 1)(all 11 4)(all 12 5)(all 13 7)(all 14 15)(all 15 5)(all 16 10)(all 17 8)(all 18 15)(all 19 9)(all 20 10)(all 21 6)(all 22 50)";
                         xrtTblAllowCellResize = resize_horizontal;
                         xrtTblDisplayHorizScrollBar = dispsb_always;
-                        xrtTblMaxLengthSeries = "(all 20 255)(all 22 255)";
                         xrtTblMinCellVisibility = 5;
                         xrtTblFrozenColumns = 15;
                       Group: User
@@ -2249,7 +2243,6 @@ Shift<Key>Tab: prev-tab-group()
                                         Group: Widget
                                           rows = 2;
                                           columns = 100;
-                                          maxLength = 255;
                                       }
                                 }
                                 {

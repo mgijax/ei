@@ -81,8 +81,6 @@ Shift<Key>Tab: prev-tab-group()
               }
               {
                 text = text : mgiDataTypes;
-                Group: Widget
-                  maxLength = 255;
               }
         }
         {
@@ -95,8 +93,6 @@ Shift<Key>Tab: prev-tab-group()
               }
               {
                 text = scrolledText : mgiDataTypes;
-                Group: Widget
-                  maxLength = 255;
               }
         }
         {
@@ -211,7 +207,6 @@ Shift<Key>Tab: prev-tab-group()
               {
                 text = text;
                 Group: Widget
-                  maxLength = 255;
                   columns = 75;
                 Group: User
                   required = True;
@@ -862,7 +857,6 @@ Shift<Key>Tab: prev-tab-group()
                     {
                       text = text;
                       Group: Widget
-                        maxLength = 255;
                         translations = "#override
  Shift<Key>Tab: prev-tab-group()
 <Key>Tab: VerifyItem()";
@@ -917,7 +911,7 @@ Shift<Key>Tab: prev-tab-group()
         {
           NotePushShort = XmPushButton;
           Group: Widget
-            activateCallback = "D:NoteInit(shortNote = true)";
+            activateCallback = "D:NoteInit";
             userDefinedAttributes = "targetWidget:Widget(Widget)\ntargetColumn:Int(Int)\nmgiDialogName:String=\"NoteDialog\"\n";
             labelString = Notes;
             traversalOn = False;
@@ -1035,7 +1029,6 @@ Shift<Key>Tab: prev-tab-group()
                     {
                       text = scrolledText : mgiDataTypes;
                       Group: Widget
-                        maxLength = 255;
                         rows = 4;
                     }
               }

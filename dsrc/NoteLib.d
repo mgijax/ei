@@ -598,19 +598,6 @@ rules:
 		dialog->Buttons->addNote1.managed := true;
 	  end if;
 
-	  -- For short notes (max 255)
-	  if (NoteInit.shortNote) then
-	    if (target.is_defined("maxLength") != nil) then
-              dialog->label.labelString := dialog->label.labelString + " (max " + (string)target.maxLength + " characters)";
-              dialog->text.rows := target.rows;
-              dialog->Note->text.maxLength := target.maxLength;
-	    else
-	      dialog->label.labelString := dialog->label.labelString + " (no limit)";
-	      dialog->Note->text.rows := 4;
-	      dialog->Note->text.maxLength := dialog->Note->text.shortMaxNoteLength;
-            end if;
-	  end if;
-
 	  dialog.targetWidget := target;
 
 	  -- add new line due to issue with word-wrapping that occurs in linux

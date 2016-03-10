@@ -575,7 +575,6 @@ Module: MGI
                       text = text;
                       Group: Widget
                         columns = 50;
-                        maxLength = 255;
                     }
               }
               {
@@ -2967,7 +2966,6 @@ Module: MGI
                                         Group: Widget
                                           xrtTblPixelWidthSeries = "(all 0-1 0)";
                                           xrtTblCharWidthSeries = "(all 0 1) (all 2 25) (all 3 20)";
-                                          xrtTblMaxLengthSeries = "(all 3 255)";
                                           xrtTblColumnLabels = "Mode,IP Key,Label,X-Y-Width-Height";
                                           userDefinedAttributes = "imagePaneKey:Int(Int)=\"1\"\npaneLabel:Int(Int)=\"2\"\nxywidthheight:Int(Int)=\"3\"\n";
                                           xrtTblEditableSeries = "(all 0 0)";

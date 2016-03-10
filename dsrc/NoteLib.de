@@ -48,8 +48,7 @@ NoteCommit [source_widget : widget;
 
 -- Initializes NoteDialog
 NoteInit [source_widget : widget;
-	  commit : boolean := true;
-          shortNote : boolean := false;];
+	  commit : boolean := true;];
 
 -- Events which support processing of Note data
 
