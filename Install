@@ -34,7 +34,7 @@ switch (`uname -n`)
 
 	case bheidev01:
 		echo "building for linux/dev..." >>& ${LOG}
-		./install_pg >>& ${LOG}
+		./install_pg_live >>& ${LOG}
 		breaksw
 
 	default:
