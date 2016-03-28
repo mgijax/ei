@@ -460,7 +460,7 @@ rules:
 
           SearchNoteForm.notew := top->mgiNoteForm;
           SearchNoteForm.tableID := MGI_NOTE_DERIVATION_VIEW;
-          SearchNoteForm.join := "s." + mgi_DBkey(STRAIN);
+          SearchNoteForm.join := "a." + mgi_DBkey(ALL_CELLLINE_DERIVATION);
           send(SearchNoteForm, 0);
           from := from + top->mgiNoteForm.sqlFrom;
           where := where + top->mgiNoteForm.sqlWhere;
