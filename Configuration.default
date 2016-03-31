@@ -24,7 +24,6 @@ setenv CVS_TAG  ei-6-0-4-?
 switch (`whoami`)
     case lec:
     case sc:
-    case klf:
     case jeffc:
     case kstone:
         setenv GLOBAL_USER "mgd_dbo"

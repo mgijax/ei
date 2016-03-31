@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Tue Jan 26 07:39:52 2016";
+      lastWritten = "Thu Mar 31 13:15:05 2016";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -10574,6 +10574,8 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     KOMPCSD = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
                                                   }
                                                   {
                                                     RegeneronOther = AccToggle : mgiOption;
@@ -10588,6 +10590,11 @@ Shift<Key>Tab: prev-tab-group()
                                                     NORCOMMProject = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    EUCOMM = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
                                                     EUCOMMProject = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -10600,6 +10607,16 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     EUCOMMSequenceType = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    mirKO = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    PleiadesCellLine = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
                                                   }
                                                   {
                                                     RuleyHECellLine = AccToggle : mgiOption;
