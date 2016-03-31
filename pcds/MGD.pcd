@@ -10577,6 +10577,8 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     KOMPCSD = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
                                                   }
                                                   {
                                                     RegeneronOther = AccToggle : mgiOption;
