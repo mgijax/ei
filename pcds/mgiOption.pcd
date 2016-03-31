@@ -789,6 +789,12 @@ Module: mgiOption
                         private = True;
                     }
                     {
+                      EUCOMM = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 137;
+                        private = True;
+                    }
+                    {
                       EUCOMMProject = AccToggle : mgiOption;
                       Group: Widget
                         labelString = "EuComm Project";
@@ -814,6 +820,16 @@ Module: mgiOption
                         labelString = "EUCOMM Gene Trap Sequence Tag";
                       Group: User
                         defaultValue = 129;
+                    }
+                    {
+                      mirKO = AccToggle : mgiOption;
+                      Group: User 
+                        defaultValue = 165; 
+                    }
+                    {
+                      PleiadesCellLine = AccToggle : mgiOption;
+                      Group: User 
+                        defaultValue = 181; 
                     }
                     {
                       RuleyHECellLine = AccToggle : mgiOption;

@@ -10599,12 +10599,27 @@ Shift<Key>Tab: prev-tab-group()
                                                     Genentech = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    EUCOMM = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
                                                     EUCOMMCellLine = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
                                                   {
                                                     EUCOMMSequenceType = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    mirKO = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True; 
+                                                  }
+                                                  {
+                                                    PleiadesCellLine = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True; 
                                                   }
                                                   {
                                                     RuleyHECellLine = AccToggle : mgiOption;
