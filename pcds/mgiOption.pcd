@@ -827,6 +827,8 @@ Module: mgiOption
                     }
                     {
                       PleiadesCellLine = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "Pleiades Cell Line";
                       Group: User
                         defaultValue = 181;
                     }
