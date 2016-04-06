@@ -1,5 +1,11 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-6-0-3-3
+DATE: 04/06/2016
+STAFF: lec
+CHANGES:
+1) TR12273/add NorCOMM to Mutant CellLineModule/Accesion lookup
+
 TAG: ei-6-0-3-2
 TAG: ei-6-0-3-1
 DATE: 03/31/2016

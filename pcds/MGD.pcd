@@ -10631,6 +10631,11 @@ Shift<Key>Tab: prev-tab-group()
                                                     Group: Widget
                                                       managed = True;
                                                   }
+                                                  {
+                                                    NorCOMM = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True; 
+                                                  }
                                             }
                                       }
                                 }

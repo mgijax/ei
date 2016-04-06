@@ -846,6 +846,11 @@ Module: mgiOption
                         defaultValue = 152;
                     }
                     {
+                      NorCOMM= AccToggle : mgiOption;
+                      Group: User 
+                        defaultValue = 142; 
+                    }
+                    {
                       Lexicon = AccToggle : mgiOption;
                       Group: Widget
                         labelString = "Lexicon Genetics";
