@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Thu Mar 10 08:37:16 2016";
+      lastWritten = "Wed Apr  6 12:12:10 2016";
       copy = false;
       inCreateMenu = true;
         {
@@ -788,6 +788,9 @@ Module: GXD
                                                   }
                                                   {
                                                     IshidaYCellLine = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NorCOMM = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     Lexicon = AccToggle : mgiOption;
@@ -1764,47 +1767,13 @@ Shift<Key>Tab: prev-tab-group()
                                                     IshidaYCellLine = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    NorCOMM = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     Lexicon = AccToggle : mgiOption;
                                                   }
                                             }
                                       }
-                                }
-                          }
-                    }
-                    Popups:
-                    {
-                      StatusDialog = StatusDialog : mgiDialog;
-                    }
-                    {
-                      DeleteDialog = DeleteDialog : mgiDialog;
-                    }
-                    {
-                      ReportDialog = ReportDialog : mgiDialog;
-                    }
-                    {
-                      SearchDialog = SearchDialog : mgiDialog;
-                    }
-                    {
-                      WhichItem = WhichItem : mgiDialog;
-                    }
-                    {
-                      VerifyItemAdd = VerifyItemAdd : mgiDialog;
-                    }
-                    {
-                      WorkingDialog = WorkingDialog : mgiDialog;
-                    }
-                    {
-                      NoteDialog = NoteDialog : mgiDialog;
-                          {
-                            label = XmLabel;
-                          }
-                          {
-                            Note = Notes : mgiDataTypes;
-                                {
-                                  label = XmLabel;
-                                }
-                                {
-                                  text = scrolledText;
                                 }
                           }
                     }

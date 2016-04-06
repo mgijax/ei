@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Thu Mar 31 13:15:05 2016";
+      lastWritten = "Wed Apr  6 12:13:40 2016";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -1802,6 +1802,9 @@ Module: MGD
                                                   }
                                                   {
                                                     IshidaYCellLine = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NorCOMM = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     Lexicon = AccToggle : mgiOption;
@@ -7302,7 +7305,6 @@ Shift<Key>Tab: prev-tab-group()
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = Marker;
-                                    topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                       {
@@ -7384,7 +7386,7 @@ Shift<Key>Tab: prev-tab-group()
                                   Group: Constraint
                                     leftAttachment = attach_widget;
                                     leftWidget = Reference;
-                                    leftOffset = 10;
+                                    leftOffset = 5;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
                                     topWidget = Reference;
@@ -8250,6 +8252,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     IshidaYCellLine = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NorCOMM = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     Lexicon = AccToggle : mgiOption;
@@ -10625,6 +10630,11 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     IshidaYCellLine = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    NorCOMM = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }

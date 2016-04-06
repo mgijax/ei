@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Tue Jan 26 07:40:44 2016";
+      lastWritten = "Wed Apr  6 12:12:11 2016";
       copy = false;
       inCreateMenu = true;
         {
@@ -1821,6 +1821,9 @@ Module: MGI
                                                     IshidaYCellLine = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    NorCOMM = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     Lexicon = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -3574,6 +3577,9 @@ Module: MGI
                                                   }
                                                   {
                                                     IshidaYCellLine = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NorCOMM = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     Lexicon = AccToggle : mgiOption;
