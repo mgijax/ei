@@ -202,8 +202,6 @@ extern char *global_version;
 
 /* MGI Tables */
 
-#define MGI_TABLES			600
-#define MGI_COLUMNS			601
 #define MGI_NOTE			602
 #define MGI_NOTECHUNK			603
 #define MGI_NOTETYPE			604

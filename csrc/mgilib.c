@@ -92,12 +92,6 @@
  * lec 01/22/99
  *  - MRK_NOMEN and MRK_NOMEN_NOTES schema changes
  *
- * lec 01/05/99
- *  - MGD_Tables/MGD_Comments renamed MGI_Tables/MGI_Columns
- *
- * lec 12/23/98-12/28/98
- *  - added MGI_TABLES and MGI_COLUMNS processing
- *
  * lec 12/11/98
  *  - added IMG_IMAGENOTE and GXD_GELCONTROL processing
  *
@@ -696,12 +690,6 @@ char *mgi_DBkey(int table)
     case IMG_IMAGEPANE_ASSOC:
     case IMG_IMAGEPANE_ASSOC_VIEW:
             strcpy(buf, "_Assoc_key");
-	    break;
-    case MGI_COLUMNS:
-            strcpy(buf, "column_name");
-	    break;
-    case MGI_TABLES:
-            strcpy(buf, "table_name");
 	    break;
     case MGI_NOTE:
     case MGI_NOTECHUNK:
@@ -1822,8 +1810,6 @@ char *mgi_DBinsert(int table, char *keyName)
     case GXD_INDEXSTAGES:
     case IMG_IMAGEPANE:
     case IMG_IMAGEPANE_ASSOC:
-    case MGI_TABLES:
-    case MGI_COLUMNS:
     case MGI_NOTE:
     case MGI_NOTECHUNK:
     case MGI_ORGANISMTYPE:
@@ -2022,12 +2008,6 @@ char *mgi_DBinsert(int table, char *keyName)
     case IMG_IMAGEPANE_ASSOC:
             sprintf(buf, "insert into %s (%s, _ImagePane_key, _MGIType_key, _Object_key, isPrimary, _CreatedBy_key, _ModifiedBy_key)", 
 		mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case MGI_COLUMNS:
-            sprintf(buf, "insert into %s (table_name, column_name, description, example)", mgi_DBtable(table));
-	    break;
-    case MGI_TABLES:
-            sprintf(buf, "insert into %s (table_name, description)", mgi_DBtable(table));
 	    break;
     case MGI_NOTE:
             sprintf(buf, "insert into %s (%s, _Object_key, _MGIType_key, _NoteType_key, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
@@ -2312,15 +2292,6 @@ char *mgi_DBupdate(int table, char *key, char *str)
   {
     switch (table)
     {
-      case MGI_COLUMNS:
-	      tokens = (char **) mgi_splitfields(key, ":");
-              sprintf(buf, "update %s set %s, modification_date = %s where table_name = '%s' and column_name = '%s' %s", 
-		mgi_DBtable(table), str, sql_getdate, tokens[0], tokens[1], END_VALUE_C);
-	      break;
-      case MGI_TABLES:
-              sprintf(buf, "update %s set %s, modification_date = %s where %s = '%s' %s", 
-		mgi_DBtable(table), str, sql_getdate, mgi_DBkey(table), key, END_VALUE_C);
-	      break;
       case ALL_ALLELE:
       case ALL_ALLELE_CELLLINE:
       case ALL_CELLLINE:
@@ -2511,11 +2482,6 @@ char *mgi_DBdelete(int table, char *key)
   {
     switch (table)
     {
-      case MGI_COLUMNS:
-	      tokens = (char **) mgi_splitfields(key, ":");
-              sprintf(buf, "delete from %s where table_name = '%s' and column_name = '%s' %s", 
-		mgi_DBtable(table), tokens[0], tokens[1], END_VALUE_C);
-	      break;
       case GXD_ANTIBODY:
               sprintf(buf, "delete from GXD_AntibodyPrep where %s = %s %s \ndelete from %s where %s = %s %s", mgi_DBkey(table), key, END_VALUE_C, mgi_DBtable(table), mgi_DBkey(table), key, END_VALUE_C);
 	      break;
