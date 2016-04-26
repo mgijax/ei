@@ -18,6 +18,7 @@ dsrc/Dictionary.d
 dsrc/Dictionary.de
 dsrc/EMAPSMapping.d
 2) TR12137/remove 255 limit on GXD notes
+3) TR12196/Add ABI TagMan to Probe picklist
 
 TAG: ei-tr12223-BP
 DATE: 01/08/2016

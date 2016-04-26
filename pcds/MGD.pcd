@@ -2433,11 +2433,11 @@ Module: MGD
                               noteWidget = MolNote;
                           }
                           {
-                            SequenceSource = AppendNotePush : mgiDataTypes;
+                            ABITaqMan = AppendNotePush : mgiDataTypes;
                             Group: Widget
-                              labelString = "Sequence Source Difference";
+                              labelString = "ABI TaqMan Gene Expression Assay";
                             Group: User
-                              note = "The source of the material used to create this cDNA probe was different than that used to create the Genbank sequence record.";
+                              note = "ABI TaqMan Gene Expression Assay probe/primer set.";
                               noteWidget = MolNote;
                           }
                           {

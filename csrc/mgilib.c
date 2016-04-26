@@ -1925,7 +1925,7 @@ char *mgi_DBinsert(int table, char *keyName)
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_ASSAYTYPE:
-            sprintf(buf, "insert into %s (%s, %s, isRNAAssay, isGelAssay)", 
+            sprintf(buf, "insert into %s (%s, %s, isRNAAssay, isGelAssay, sequenceNum)", 
 		mgi_DBtable(table), mgi_DBkey(table), mgi_DBcvname(table));
 	    break;
     case GXD_ANTIBODY:
