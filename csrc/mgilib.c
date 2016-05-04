@@ -17,9 +17,6 @@
  * lec	1212/2013
  *	- TR11515/allele stuff
  *
- * lec	11/20/2013
- *	- TR11468/add MGI_EMAPS_MAPPING
- *
  * lec 10/02/2012
  *	- TR10273/add GXD_ALLELE_PAIR:Mutant Cell Lines
  *
@@ -95,12 +92,6 @@
  * lec 01/22/99
  *  - MRK_NOMEN and MRK_NOMEN_NOTES schema changes
  *
- * lec 01/05/99
- *  - MGD_Tables/MGD_Comments renamed MGI_Tables/MGI_Columns
- *
- * lec 12/23/98-12/28/98
- *  - added MGI_TABLES and MGI_COLUMNS processing
- *
  * lec 12/11/98
  *  - added IMG_IMAGENOTE and GXD_GELCONTROL processing
  *
@@ -130,9 +121,6 @@
  *
  * lec 06/03/98
  *  - added GXD_INDEX and GXD_INDEXSTAGES support.
- *
- * gld 03/15/98
- *  - added support for GXD Anatomical Dictionary tables. 
  *
  * lec 03/14/98-???
  *	- continous edits for MGI 2.0 release
@@ -689,22 +677,10 @@ char *mgi_DBkey(int table)
     case GXD_GELLANESTRUCTURE:
             strcpy(buf, "_GelLane_key");
 	    break;
-    case GXD_STRUCTURE:
-            strcpy(buf, "_Structure_key");
-            break;
-    case GXD_STRUCTURENAME:
-            strcpy(buf, "_StructureName_key");
-            break;
     case GXD_INDEX:
     case GXD_INDEXSTAGES:
             strcpy(buf, "_Index_key");
 	    break;
-    case MGI_EMAPS_MAPPING_PARENT:
-            strcpy(buf, "emapsID");
-            break;
-    case MGI_EMAPS_MAPPING:
-            strcpy(buf, "_Mapping_key");
-            break;
     case IMG_IMAGE:
             strcpy(buf, "_Image_key");
 	    break;
@@ -714,12 +690,6 @@ char *mgi_DBkey(int table)
     case IMG_IMAGEPANE_ASSOC:
     case IMG_IMAGEPANE_ASSOC_VIEW:
             strcpy(buf, "_Assoc_key");
-	    break;
-    case MGI_COLUMNS:
-            strcpy(buf, "column_name");
-	    break;
-    case MGI_TABLES:
-            strcpy(buf, "table_name");
 	    break;
     case MGI_NOTE:
     case MGI_NOTECHUNK:
@@ -975,9 +945,6 @@ char *mgi_DBtype(int table)
     case GXD_ASSAY:
             strcpy(buf, "Assay");
 	    break;
-    case GXD_STRUCTURE:
-            strcpy(buf, "GXD Structures");
-	    break;
     case IMG_IMAGE:
             strcpy(buf, "Image");
 	    break;
@@ -1067,9 +1034,6 @@ char *mgi_DBaccTable(int table)
             break;
     case GXD_GENOTYPE:
             strcpy(buf, "GXD_Genotype_Acc_View");
-            break;
-    case GXD_STRUCTURE:
-            strcpy(buf, "GXD_Structure_Acc_View");
             break;
     case IMG_IMAGE:
             strcpy(buf, "IMG_Image_Acc_View");
@@ -1327,24 +1291,11 @@ char *mgi_DBtable(int table)
     case GXD_GELLANESTRUCTURE:
             strcpy(buf, "GXD_GelLaneStructure");
 	    break;
-    case GXD_STRUCTURE:
-            strcpy(buf, "GXD_Structure");
-	    break;
-    case GXD_STRUCTURENAME:
-            strcpy(buf, "GXD_StructureName");
-	    break;
-    case GXD_STRUCTURECLOSURE:
-            strcpy(buf, "GXD_StructureClosure");
-	    break;
     case GXD_INDEX:
             strcpy(buf, "GXD_Index");
 	    break;
     case GXD_INDEXSTAGES:
             strcpy(buf, "GXD_Index_Stages");
-	    break;
-    case MGI_EMAPS_MAPPING_PARENT:
-    case MGI_EMAPS_MAPPING:
-            strcpy(buf, "MGI_EMAPS_Mapping");
 	    break;
     case IMG_IMAGE:
             strcpy(buf, "IMG_Image");
@@ -1856,12 +1807,9 @@ char *mgi_DBinsert(int table, char *keyName)
     case GXD_GELROW:
     case GXD_GELBAND:
     case GXD_GELLANESTRUCTURE:
-    case GXD_STRUCTURENAME:
     case GXD_INDEXSTAGES:
     case IMG_IMAGEPANE:
     case IMG_IMAGEPANE_ASSOC:
-    case MGI_TABLES:
-    case MGI_COLUMNS:
     case MGI_NOTE:
     case MGI_NOTECHUNK:
     case MGI_ORGANISMTYPE:
@@ -1977,7 +1925,7 @@ char *mgi_DBinsert(int table, char *keyName)
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_ASSAYTYPE:
-            sprintf(buf, "insert into %s (%s, %s, isRNAAssay, isGelAssay)", 
+            sprintf(buf, "insert into %s (%s, %s, isRNAAssay, isGelAssay, sequenceNum)", 
 		mgi_DBtable(table), mgi_DBkey(table), mgi_DBcvname(table));
 	    break;
     case GXD_ANTIBODY:
@@ -2023,7 +1971,7 @@ char *mgi_DBinsert(int table, char *keyName)
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_ISRESULTSTRUCTURE:
-            sprintf(buf, "insert into %s (_Result_key, _Structure_key)", mgi_DBtable(table));
+            sprintf(buf, "insert into %s (_Result_key, _EMAPA_Term_key, _Stage_key)", mgi_DBtable(table));
 	    break;
     case GXD_ISRESULTIMAGE:
             sprintf(buf, "insert into %s (_Result_key, _ImagePane_key)", mgi_DBtable(table));
@@ -2041,22 +1989,13 @@ char *mgi_DBinsert(int table, char *keyName)
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_GELLANESTRUCTURE:
-            sprintf(buf, "insert into %s (_GelLane_key, _Structure_key)", mgi_DBtable(table));
-	    break;
-    case GXD_STRUCTURE:
-	    sprintf(buf, "insert into %s (_Structure_key, _Parent_key, _StructureName_key, _Stage_key, _System_key, edinburghKey, printName, treeDepth, printStop, topoSort, inheritSystem, structureNote)", mgi_DBtable(table));
-	    break;
-    case GXD_STRUCTURENAME:
-	    sprintf(buf, "insert into %s (_StructureName_key, _Structure_key, structure, mgiAdded)", mgi_DBtable(table));
+            sprintf(buf, "insert into %s (_GelLane_key, _EMAPA_Term_key, _Stage_key)", mgi_DBtable(table));
 	    break;
     case GXD_INDEX:
 	    sprintf(buf, "insert into %s (_Index_key, _Refs_key, _Marker_key, _Priority_key, _ConditionalMutants_key, comments, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table));
 	    break;
     case GXD_INDEXSTAGES:
 	    sprintf(buf, "insert into %s (_Index_key, _IndexAssay_key, _StageID_key, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table));
-	    break;
-    case MGI_EMAPS_MAPPING:
-	    sprintf(buf, "insert into %s (_Mapping_key, accID, emapsID, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table));
 	    break;
     case IMG_IMAGE:
             sprintf(buf, "insert into %s (%s, _MGIType_key, _ImageClass_key, _ImageType_key, _Refs_key, _ThumbnailImage_key, xDim, yDim, figureLabel, _CreatedBy_key, _ModifiedBy_key)", 
@@ -2069,12 +2008,6 @@ char *mgi_DBinsert(int table, char *keyName)
     case IMG_IMAGEPANE_ASSOC:
             sprintf(buf, "insert into %s (%s, _ImagePane_key, _MGIType_key, _Object_key, isPrimary, _CreatedBy_key, _ModifiedBy_key)", 
 		mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case MGI_COLUMNS:
-            sprintf(buf, "insert into %s (table_name, column_name, description, example)", mgi_DBtable(table));
-	    break;
-    case MGI_TABLES:
-            sprintf(buf, "insert into %s (table_name, description)", mgi_DBtable(table));
 	    break;
     case MGI_NOTE:
             sprintf(buf, "insert into %s (%s, _Object_key, _MGIType_key, _NoteType_key, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
@@ -2359,15 +2292,6 @@ char *mgi_DBupdate(int table, char *key, char *str)
   {
     switch (table)
     {
-      case MGI_COLUMNS:
-	      tokens = (char **) mgi_splitfields(key, ":");
-              sprintf(buf, "update %s set %s, modification_date = %s where table_name = '%s' and column_name = '%s' %s", 
-		mgi_DBtable(table), str, sql_getdate, tokens[0], tokens[1], END_VALUE_C);
-	      break;
-      case MGI_TABLES:
-              sprintf(buf, "update %s set %s, modification_date = %s where %s = '%s' %s", 
-		mgi_DBtable(table), str, sql_getdate, mgi_DBkey(table), key, END_VALUE_C);
-	      break;
       case ALL_ALLELE:
       case ALL_ALLELE_CELLLINE:
       case ALL_CELLLINE:
@@ -2381,7 +2305,6 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case GXD_GENOTYPE:
       case GXD_INDEX:
       case GXD_INDEXSTAGES:
-      case MGI_EMAPS_MAPPING:
       case IMG_IMAGE:
       case IMG_IMAGEPANE_ASSOC:
       case MGI_NOTE:
@@ -2447,7 +2370,6 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case GXD_GENOTYPE:
       case GXD_INDEX:
       case GXD_INDEXSTAGES:
-      case MGI_EMAPS_MAPPING:
       case IMG_IMAGE:
       case IMG_IMAGEPANE_ASSOC:
       case MGI_NOTE:
@@ -2560,14 +2482,6 @@ char *mgi_DBdelete(int table, char *key)
   {
     switch (table)
     {
-      case MGI_COLUMNS:
-	      tokens = (char **) mgi_splitfields(key, ":");
-              sprintf(buf, "delete from %s where table_name = '%s' and column_name = '%s' %s", 
-		mgi_DBtable(table), tokens[0], tokens[1], END_VALUE_C);
-	      break;
-      case MGI_EMAPS_MAPPING_PARENT:
-              sprintf(buf, "delete from %s where %s = '%s' %s", mgi_DBtable(table), mgi_DBkey(table), key, END_VALUE_C);
-	      break;
       case GXD_ANTIBODY:
               sprintf(buf, "delete from GXD_AntibodyPrep where %s = %s %s \ndelete from %s where %s = %s %s", mgi_DBkey(table), key, END_VALUE_C, mgi_DBtable(table), mgi_DBkey(table), key, END_VALUE_C);
 	      break;
@@ -2600,9 +2514,6 @@ char *mgi_DBdelete2(int table, char *key, char *key2)
       case VOC_ANNOT:
               sprintf(buf, "delete from %s where _Object_key = %s and _AnnotType_key = %s %s", 
 	      	mgi_DBtable(table), key, key2, END_VALUE_C);
-	      break;
-      case MGI_EMAPS_MAPPING_PARENT:
-              sprintf(buf, "delete from %s where %s = '%s' %s", mgi_DBtable(table), mgi_DBkey(table), key, END_VALUE_C);
 	      break;
       case GXD_ANTIBODY:
               sprintf(buf, "delete from GXD_AntibodyPrep where %s = %s %s \ndelete from %s where %s = %s %s", mgi_DBkey(table), key, END_VALUE_C, mgi_DBtable(table), mgi_DBkey(table), key, END_VALUE_C);

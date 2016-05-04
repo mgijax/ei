@@ -21,16 +21,14 @@ ClipboardSort [source_widget : widget;];
 ClipboardLoad [source_widget : widget;
 	       allowDups : boolean := false;];
 
-EditClipboardLoad [source_widget : widget;
-	       allowDups : boolean := false;];
-
 ClipboardSetItems [table : widget;
 		   clipboard : widget;
 		   row : integer;
 		   column : integer;
+		   column2 : integer;
 		   reason : integer;];
 
-ADClipboardSetItems [source_widget : widget;
+EMAPAClipboardSetItems [source_widget : widget;
 		   row : integer;
 		   reason : integer;];
 

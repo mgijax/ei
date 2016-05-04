@@ -54,16 +54,6 @@ CALLS
         insitu_imagepane("char *")	: "char *";
         insitu_structure("char *")	: "char *";
 
-        dictionary_stage("char *")	: "char *";
-        dictionary_system("char *")	: "char *";
-        dictionary_select("char *")	: "char *";
-        dictionary_mgiAlias("char *")	: "char *";
-        dictionary_emaps("char *")	: "char *";
-
-        emaps_query1("char *")	        : "char *";
-        emaps_query2("char *")	        : "char *";
-        emaps_query3("char *")	        : "char *";
-        emaps_query4("char *")	        : "char *";
   ENDL
 ENDC
 

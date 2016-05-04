@@ -24,8 +24,13 @@
 
 dmodule Clipboard is
 
+#include <mgilib.h>
+#include <dblib.h>
+#include <tables.h>
+#include <mgisql.h>
+
 locals:
-	cbPrefix : string := "[Clipboard]:  ";	-- From the Clipboard
+        cbPrefix : string := "[Clipboard]:  ";  -- From the Clipboard
 
 rules:
 
@@ -158,51 +163,70 @@ rules:
 	  editClipboard : widget := clipboardModule->(clipboard.editClipboard);
 
           key : string;
-          saveCmd : string;
-          newCmd : string;
- 
+
+	  clipboard.cmd := "";
+
+          if (clipboard->List.itemCount > 0) then
+            ClearList.source_widget := clipboard;
+            ClearList.clearkeys := true;
+            send(ClearList, 0);
+          end if;
+
 	  if (top->ID = nil) then
 	    top := top.root;
 	  end if;
 
-	  -- First, cancel the edit to the target cell
-	  -- TR11204/removed this call because cancelling the edit causes no row to be selected
-	  --table : widget;
-	  --if (clipboard->List.targetWidget != nil) then
-	    --table := clipboard->List.targetWidget->Table;
-	    --(void) XrtTblCancelEdit(table, true);
-	  --end if;
-
-          -- Get current record key
+          -- get current record key
           key := top->ID->text.value;
- 
-	  if (key.length > 0) then
-            -- Save lookup command
-            saveCmd := clipboard.cmd;
-	    newCmd := "";
- 
-            if (clipboard.is_defined("cmd2") != nil) then
-		newCmd := newCmd + "(";
-	    end if;
 
-            -- Append key to lookup command
-            newCmd := newCmd + saveCmd + " " + key;
-
-            if (clipboard.is_defined("cmd2") != nil) then
-		newCmd := newCmd + "\nunion all\n" + clipboard.cmd2 + " " + key + ")";
-	    end if;
-
-            clipboard.cmd := newCmd + "\norder by " + clipboard.orderBy;
- 
-            -- Load the list
+	  if (clipboard.name = "EMAPAClipboard" and top->GelForm != nil and key.length > 0) then
+	    clipboard.cmd := gellane_emapa_byunion_clipboard(key, global_userKey);
             LoadList.list := clipboard;
 	    LoadList.allowDups := ClipboardLoad.allowDups;
             send(LoadList, 0);
- 
-            -- Restore original lookup command
-            clipboard.cmd := saveCmd;
+	    return;
 
-	  -- If no current key, then clear the list
+	  elsif (clipboard.name = "EMAPAClipboard" and top->GelForm != nil and key.length = 0) then
+	    clipboard.cmd := gellane_emapa_byset_clipboard(global_userKey);
+            LoadList.list := clipboard;
+	    LoadList.allowDups := ClipboardLoad.allowDups;
+            send(LoadList, 0);
+	    return;
+
+	  elsif (clipboard.name = "EMAPAClipboard" and key.length > 0) then
+	    clipboard.cmd := insitu_emapa_byunion_clipboard(key, global_userKey);
+            LoadList.list := clipboard;
+	    LoadList.allowDups := ClipboardLoad.allowDups;
+            send(LoadList, 0);
+	    return;
+
+	  elsif (clipboard.name = "EMAPAClipboard" and key.length = 0) then
+	    clipboard.cmd := insitu_emapa_byset_clipboard(global_userKey);
+            LoadList.list := clipboard;
+	    LoadList.allowDups := ClipboardLoad.allowDups;
+            send(LoadList, 0);
+	    return;
+
+	  end if;
+
+	  -- else...Genotype clipboard (old style)
+
+	  if (key.length > 0) then
+	    clipboard.cmd := clipboard.cmd + clipboard.cmdMaster + " " + key;
+
+            if (clipboard.is_defined("cmd2") != nil) then
+              if (clipboard.cmd2.length > 0) then
+	        clipboard.cmd := clipboard.cmd + "\nunion all\n" + clipboard.cmd2 + " " + key;
+	      end if;
+	    end if;
+
+            clipboard.cmd := "(" + clipboard.cmd + ")\norder by " + clipboard.orderBy + "\n";
+
+	    -- run the query to select the current clipboard associations
+
+            LoadList.list := clipboard;
+	    LoadList.allowDups := ClipboardLoad.allowDups;
+            send(LoadList, 0);
 
 	  else
             if (clipboard->List.itemCount > 0) then
@@ -256,7 +280,7 @@ rules:
 	      if (ClipboardLoad.allowDups or sKeys.find(cKey) < 0) then
 	        sKeys.insert(cKey, sKeys.count + 1);
 --	        sResults.insert(cbPrefix + cName, sResults.count + 1);
-	        sResults.insert("[*" + cAccID + "]" + cName, sResults.count + 1);
+	        sResults.insert("[*" + cAccID + "] " + cName, sResults.count + 1);
 	        sAccIDs.insert(cAccID, sAccIDs.count + 1);
 	      end if;
 
@@ -279,46 +303,6 @@ rules:
 
 	  end if;
 
-	end does;
-
---
--- EditClipboardLoad
---
---      source_widget : widget		source widget
---
--- Load EditClipboard list using current record
---
- 
-        EditClipboardLoad does
-	  clipboard : widget := EditClipboardLoad.source_widget;
-	  top : widget := clipboard.top;
-	  mgi : widget := top.root.parent;
-	  clipboardModule : widget := mgi->(clipboard.clipboardModule);
-	  editClipboard : widget := clipboardModule->(clipboard.editClipboard);
-          key : string;
- 
-	  if (editClipboard = nil) then
-	    return;
-	  end if;
-
-	  if (top->ID = nil) then
-	    top := top.root;
-	  end if;
-
-          -- Get current record key
-          key := top->ID->text.value;
- 
-	  if (key.length = 0) then
-	    return;
-	  end if;
-
-          -- Append key to lookup command
-          editClipboard.cmd := clipboard.cmd + " " + key + "\norder by " + clipboard.orderBy;
- 
-          -- Load the list
-          LoadList.list := editClipboard;
-	  LoadList.allowDups := EditClipboardLoad.allowDups;
-          send(LoadList, 0);
 	end does;
 
 --
@@ -377,19 +361,19 @@ rules:
         end does;
  
 --
--- ADClipboardSetItems
+-- EMAPAClipboardSetItems
 --
 -- EnterCellCallback for table.
--- UDAs required:  structureKeys
+-- UDAs required:  structureKeys, stageKeys
 -- 
 
-	ADClipboardSetItems does
-	  table : widget := ADClipboardSetItems.source_widget;
+	EMAPAClipboardSetItems does
+	  table : widget := EMAPAClipboardSetItems.source_widget;
 	  top : widget :=  table.top;
-	  reason : integer := ADClipboardSetItems.reason;
-	  row : integer := ADClipboardSetItems.row;
+	  reason : integer := EMAPAClipboardSetItems.reason;
+	  row : integer := EMAPAClipboardSetItems.row;
 	  form : widget := top->(table.clipboard);
-	  clipboard : widget := form->ADClipboard;
+	  clipboard : widget := form->EMAPAClipboard;
 
           if (reason != TBL_REASON_ENTER_CELL_END) then
             return;

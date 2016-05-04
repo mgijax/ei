@@ -39,7 +39,7 @@ char *mgilib_isAnchor(char *key)
 }
 
 /*
- * exec stored procedures
+ * execute procedures/functions
 */
 
 char *exec_acc_assignJ(char *userKey, char *key)
@@ -322,6 +322,22 @@ char *exec_voc_processAnnotHeader(char *userKey, char *key, char *annotTypeKey)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select VOC_processAnnotHeader (%s,%s,%s);\n", userKey, annotTypeKey, key);
+  return(buf);
+}
+
+char *exec_gxd_addemapaset(char *userKey, char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select * from GXD_addEMAPASet (%s, %s);\n", userKey, key);
+  return(buf);
+}
+
+char *exec_gxd_clearemapaset(char *userKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"delete from MGI_SetMember where _Set_key = 1046 and _CreatedBy_key = %s\n", userKey);
   return(buf);
 }
 
@@ -1221,14 +1237,13 @@ char *verify_structure(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select sa.accID, sn.structure, t.stage \
-  	\nfrom GXD_Structure s, GXD_TheilerStage t, GXD_StructureName sn, ACC_Accession sa \
-  	\nwhere s._StructureName_key = sn._StructureName_key \
-  	\nand s._Structure_key = sn._Structure_key \
+  sprintf(buf,"select sa.accID, sn.term, t.stage \
+  	\nfrom VOC_Term_EMAPA s, GXD_TheilerStage t, VOC_Term sn, ACC_Accession sa \
+  	\nwhere s._Term_key = sn._Term_key \
   	\nand s._Stage_key = t._Stage_key \
-	\nand sn._Structure_key = sa._Object_key \
-	\nand sa._LogicalDB_key = 1 \
-	\nand sa._MGIType_key = 38 \
+	\nand sn._Term_key = sa._Object_key \
+	\nand sa._LogicalDB_key = 170 \
+	\nand sa._MGIType_key = 13 \
 	\nand sa.accID = %s", key);
   return(buf);
 }
@@ -1580,6 +1595,142 @@ char *userrole_selecttask(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select usertask from MGI_RoleTask_View where _Role_key = %s order by usertask\n", key);
+  return(buf);
+}
+
+/*
+ * Clipboard
+*/
+
+char *gellane_emapa_byunion_clipboard(char *key, char *createdByKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf, "(select distinct concat(s._Object_key||':'||s2._Stage_key), \
+        \n'*TS'||cast(t2.stage as varchar(5))||';'||t1.term as emapatext, t1.term, t2.stage, \
+	\ns.sequenceNum as sequenceNum, 1 as isClipboard \
+        \nfrom mgi_setmember s, mgi_setmember_emapa s2, voc_term t1, gxd_theilerstage t2 \
+        \nwhere not exists (select 1 from GXD_GelLaneStructure_View v where s._Object_key = v._EMAPA_Term_key \
+        \nand s2._Stage_key = v._Stage_key and v._Assay_key = %s) \
+        \nand s._set_key = 1046 and s._setmember_key = s2._setmember_key \
+        \nand s._object_key = t1._term_key and s2._Stage_key = t2._stage_key and s._CreatedBy_key = %s \
+        \nunion all \
+        \nselect concat(_EMAPA_Term_key||':'||_Stage_key), \
+	\nconcat(displayIt||' ('||count(*)||')') as emapatext, term, stage, \
+	\nmin(sequenceNum) as sequenceNum, 0 as isClipboard \
+        \nfrom GXD_GelLaneStructure_View where _Assay_key =  %s \
+        \ngroup by _EMAPA_Term_key, _Stage_key, displayIt, term, stage \
+        \n) order by isClipboard, sequenceNum, stage, term", key, createdByKey, key);
+  return(buf);
+}
+
+char *gellane_emapa_byassay_clipboard(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf, "(select concat(_EMAPA_Term_key||':'||_Stage_key), \
+	\nconcat(displayIt||' ('||count(*)||')') as emapatext, term, stage, \
+	\nmin(sequenceNum) as sequenceNum, 0 as isClipboard \
+        \nfrom GXD_GelLaneStructure_View where _Assay_key =  %s \
+        \ngroup by _EMAPA_Term_key, _Stage_key, displayIt, term, stage \
+        \n) order by isClipboard, sequenceNum, stage, term", key);
+  return(buf);
+}
+
+char *gellane_emapa_byassayset_clipboard(char *key, char *createdByKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf, "(select distinct concat(s._Object_key||':'||s2._Stage_key), \
+        \n'*TS'||cast(t2.stage as varchar(5))||';'||t1.term as emapatext, t1.term, t2.stage, \
+	\ns.sequenceNum, 1 as isClipboard \
+        \nfrom mgi_setmember s, mgi_setmember_emapa s2, voc_term t1, gxd_theilerstage t2 \
+        \nwhere not exists (select 1 from GXD_GelLaneStructure_View v where s._Object_key = v._EMAPA_Term_key \
+        \nand s2._Stage_key = v._Stage_key and v._Assay_key = %s) \
+        \nand s._set_key = 1046 and s._setmember_key = s2._setmember_key \
+        \nand s._object_key = t1._term_key and s2._Stage_key = t2._stage_key and s._CreatedBy_key = %s \
+        \n) order by isClipboard, s.sequenceNum, t2.stage, t1.term", key, createdByKey);
+  return(buf);
+}
+
+char *gellane_emapa_byset_clipboard(char *createdByKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf, "(select distinct concat(s._Object_key||':'||s2._Stage_key), \
+        \n'*TS'||cast(t2.stage as varchar(5))||';'||t1.term as emapatext, t1.term, t2.stage, \
+	\ns.sequenceNum, 1 as isClipboard \
+        \nfrom mgi_setmember s, mgi_setmember_emapa s2, voc_term t1, gxd_theilerstage t2 \
+        \nwhere s._set_key = 1046 and s._setmember_key = s2._setmember_key \
+        \nand s._object_key = t1._term_key and s2._Stage_key = t2._stage_key and s._CreatedBy_key = %s \
+        \n) order by isClipboard, s.sequenceNum, t2.stage, t1.term", createdByKey);
+  return(buf);
+}
+
+char *insitu_emapa_byunion_clipboard(char *key, char *createdByKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf, "(select distinct concat(s._Object_key||':'||s2._Stage_key), \
+        \n'*TS'||cast(t2.stage as varchar(5))||';'||t1.term as emapatext, t1.term, t2.stage, \
+        \ns.sequenceNum as sequenceNum, 1 as isClipboard \
+        \nfrom mgi_setmember s, mgi_setmember_emapa s2, voc_term t1, gxd_theilerstage t2 \
+        \nwhere not exists (select 1 from GXD_ISResultStructure_View v where s._Object_key = v._EMAPA_Term_key \
+        \nand s2._Stage_key = v._Stage_key and v._Specimen_key = %s) \
+        \nand s._set_key = 1046 and s._setmember_key = s2._setmember_key \
+        \nand s._object_key = t1._term_key and s2._Stage_key = t2._stage_key and s._CreatedBy_key = %s \
+        \nunion all \
+        \nselect concat(i._EMAPA_Term_key||':'||i._Stage_key), \
+	\nconcat(i.displayIt||' ('||count(*)||')') as emapatext, term, stage, \
+	\nmin(i.sequenceNum) as sequenceNum, 0 as isClipboard \
+        \nfrom GXD_ISResultStructure_View i, GXD_Specimen s \
+        \nwhere s._Specimen_key = i._Specimen_key and s._Specimen_key = %s \
+        \ngroup by _EMAPA_Term_key, _Stage_key, displayIt, term, stage \
+        \n) order by isClipboard, sequenceNum, stage, term", key, createdByKey, key);
+  return(buf);
+}
+
+char *insitu_emapa_byassay_clipboard(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf, "(select concat(i._EMAPA_Term_key||':'||i._Stage_key), \
+	\nconcat(i.displayIt||' ('||count(*)||')') as emapatext, i.term, i.stage, \
+	\nmin(i.sequenceNum) as sequenceNum, 0 as isClipboard \
+        \nfrom GXD_ISResultStructure_View i, GXD_Specimen s \
+        \nwhere s._Specimen_key = i._Specimen_key and s._Specimen_key = %s \
+        \ngroup by _EMAPA_Term_key, _Stage_key, displayIt, term, stage \
+        \n) order by isClipboard, sequenceNum, stage, term", key);
+  return(buf);
+}
+
+char *insitu_emapa_byassayset_clipboard(char *key, char *createdByKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf, "(select distinct concat(s._Object_key||':'||s2._Stage_key), \
+        \n'*TS'||cast(t2.stage as varchar(5))||';'||t1.term as emapatext, t1.term, t2.stage, \
+        \ns.sequenceNum, 1 as isClipboard \
+        \nfrom mgi_setmember s, mgi_setmember_emapa s2, voc_term t1, gxd_theilerstage t2 \
+        \nwhere not exists (select 1 from GXD_ISResultStructure_View v where s._Object_key = v._EMAPA_Term_key \
+        \nand s2._Stage_key = v._Stage_key and v._Specimen_key = %s) \
+        \nand s._set_key = 1046 and s._setmember_key = s2._setmember_key \
+        \nand s._object_key = t1._term_key and s2._Stage_key = t2._stage_key and s._CreatedBy_key = %s \
+        \n) order by isClipboard, s.sequenceNum, t2.stage, t1.term", key, createdByKey);
+  return(buf);
+}
+
+char *insitu_emapa_byset_clipboard(char *createdByKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf, "(select distinct concat(s._Object_key||':'||s2._Stage_key), \
+        \n'*TS'||cast(t2.stage as varchar(5))||';'||t1.term as emapatext, t1.term, t2.stage, \
+        \ns.sequenceNum, 1 as isClipboard \
+        \nfrom mgi_setmember s, mgi_setmember_emapa s2, voc_term t1, gxd_theilerstage t2 \
+        \nwhere s._set_key = 1046 and s._setmember_key = s2._setmember_key \
+        \nand s._object_key = t1._term_key and s2._Stage_key = t2._stage_key and s._CreatedBy_key = %s \
+        \n) order by isClipboard, s.sequenceNum, t2.stage, t1.term", createdByKey);
   return(buf);
 }
 

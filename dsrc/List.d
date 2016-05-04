@@ -398,10 +398,14 @@ rules:
 	      -- If not allowing dups, then if key already exists, skip the row
 
 	      if (not allowDups) then
+
 		--(void) mgi_writeLog(mgi_getstr(dbproc, 1) + "\n");
+
 		if (keys.find(mgi_getstr(dbproc, 1)) = -1) then
+
+		  item := mgi_simplesub("(1)", "", mgi_getstr(dbproc, 2));
                   keys.insert(mgi_getstr(dbproc, 1), keys.count + 1);
-                  results.insert(mgi_getstr(dbproc, 2), results.count + 1);
+                  results.insert(item, results.count + 1);
                   accIDs.insert(mgi_getstr(dbproc, 3), accIDs.count + 1);
 
 		-- else, add an ellipsis to the result w/ the same key 
@@ -411,14 +415,15 @@ rules:
 		  --(void) mgi_writeLog(item + "\n");
 		  item := results[results.count];
 		  results.remove(item);
-		  results.insert(item + "...", results.count + 1);
+		  results.insert(item + ".", results.count + 1);
 		end if;
 
 	      -- Dups allowed
 
 	      else
+		item := mgi_simplesub("(1)", "", mgi_getstr(dbproc, 2));
                 keys.insert(mgi_getstr(dbproc, 1), keys.count + 1);
-                results.insert(mgi_getstr(dbproc, 2), results.count + 1);
+                results.insert(item, results.count + 1);
                 accIDs.insert(mgi_getstr(dbproc, 3), accIDs.count + 1);
 	      end if;
 

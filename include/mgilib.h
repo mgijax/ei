@@ -136,8 +136,6 @@ extern char *global_version;
 #define GXD_ALLELEPAIR_VIEW	226
 #define IMG_IMAGEPANE_ASSOC	227
 #define IMG_IMAGEPANE_ASSOC_VIEW 228
-#define MGI_EMAPS_MAPPING	229
-#define MGI_EMAPS_MAPPING_PARENT	245
 
 /* Allele Tables */
 
@@ -204,8 +202,6 @@ extern char *global_version;
 
 /* MGI Tables */
 
-#define MGI_TABLES			600
-#define MGI_COLUMNS			601
 #define MGI_NOTE			602
 #define MGI_NOTECHUNK			603
 #define MGI_NOTETYPE			604

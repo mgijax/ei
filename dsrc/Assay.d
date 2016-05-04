@@ -268,7 +268,7 @@ devents:
 	AddAntibodyReference :local [];
 	AddProbePrep :local [];
 	AddProbeReference :local [];
-	AddToEditClipboard :local [];
+	AddToEMAPAClipboard :local [];
 	AppendToAgeNote :local [];
 	Assay [];
 	BuildDynamicComponents :local [];
@@ -277,6 +277,7 @@ devents:
 		    clearLists : integer := 3;
 		    reset : boolean := false;
 		    select: boolean := false;];
+	ClearEMAPAClipboard :local [];
 	CopySpecimen :local [];
 	CopySpecimenColumn :local [];
 	CopyGelLane :local [];
@@ -484,6 +485,33 @@ rules:
 	    top->GXDReporterGeneMenu.required := false;
 	    top->GXDKnockInMenu.required := false;
 	  end if;
+	end does;
+
+--
+-- ClearEMAPAClipboard
+--
+-- Clear EMAPA clipboard (MGI_SetMember by set/user)
+--
+	ClearEMAPAClipboard does
+	  clipboard : widget;
+
+	  if (assayDetailForm.name = "GelForm") then
+	    clipboard := top->CVGel->EMAPAClipboard;
+	    clipboard.cmd := gellane_emapa_byset_clipboard(global_userKey);
+	  else
+	    clipboard := top->CVSpecimen->EMAPAClipboard;
+	    clipboard.cmd := insitu_emapa_byset_clipboard(global_userKey);
+	  end if;
+
+	  (void) mgi_sp(exec_gxd_clearemapaset(global_userKey));
+
+	  -- Refresh clipboard display
+          LoadList.list := clipboard;
+          send(LoadList, 0);
+
+	  -- Reload the clipboard
+	  send(LoadClipboards, 0);
+
 	end does;
 
 -- 
@@ -795,11 +823,14 @@ rules:
 	end
 
 --
--- AddToEditClipboard
+-- AddToEMAPAClipboard
+--
+-- TR12223/use new clipboard structures
 --
 
-	AddToEditClipboard does
+	AddToEMAPAClipboard does
 	  clipboard : widget;
+          key : string;
 
 	  if (currentAssay = "") then
 	    StatusReport.source_widget := top;
@@ -809,21 +840,28 @@ rules:
 	  end if;
 
 	  if (assayDetailForm.name = "GelForm") then
-	    clipboard := top->CVGel->ADClipboard;
+	    clipboard := top->CVGel->EMAPAClipboard;
+	    clipboard.cmd := gellane_emapa_byset_clipboard(global_userKey);
 	  else
-	    clipboard := top->CVSpecimen->ADClipboard;
+	    clipboard := top->CVSpecimen->EMAPAClipboard;
+	    clipboard.cmd := insitu_emapa_byset_clipboard(global_userKey);
 	  end if;
 
-	  if (top.parent->(clipboard.editClipboard) = nil) then
-	    StatusReport.source_widget := top;
-            StatusReport.message := "The Anatomical Dictionary Module must be open in order to use this function.\n";
-            send(StatusReport, 0);
-            return;
+          -- Get current record key
+          key := top->ID->text.value;
+ 
+	  -- Add Assay/EMAPA/Stage to Set/Clipboard
+	  if (key.length > 0) then
+	    (void) mgi_sp(exec_gxd_addemapaset(global_userKey, key));
 	  end if;
 
-	  EditClipboardLoad.source_widget := clipboard;
-	  send(EditClipboardLoad, 0);
-	  send(ClearAssay, 0);
+	  -- Clear the form
+          send(ClearAssay, 0);
+
+	  -- Refresh clipboard display
+          LoadList.list := clipboard;
+          send(LoadList, 0);
+
 	end does;
 
 --
@@ -1347,7 +1385,7 @@ rules:
 
 	LoadClipboards does
 
-          ClipboardLoad.source_widget := top->CVGel->ADClipboard->Label;
+          ClipboardLoad.source_widget := top->CVGel->EMAPAClipboard->Label;
           send(ClipboardLoad, 0);
 
 	  if (assayDetailForm.name = "InSituForm") then
@@ -1852,7 +1890,7 @@ rules:
               ModifyStructure.key := MAX_KEY1 + keyName + MAX_KEY2;
               ModifyStructure.row := row;
               send(ModifyStructure, 0);
-              cmd := cmd + top->CVGel->ADClipboard.updateCmd;
+              cmd := cmd + top->CVGel->EMAPAClipboard.updateCmd;
  
             elsif (editMode = TBL_ROW_MODIFY and key.length > 0) then
 
@@ -1876,7 +1914,7 @@ rules:
               ModifyStructure.key := key;
               ModifyStructure.row := row;
               send(ModifyStructure, 0);
-              cmd := cmd + top->CVGel->ADClipboard.updateCmd;
+              cmd := cmd + top->CVGel->EMAPAClipboard.updateCmd;
 
             elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
               cmd := cmd + mgi_DBdelete(GXD_GELLANE, key);
