@@ -1,0 +1,9 @@
+mgd/*.do
+gxd/*.do
+mgi/*.do
+mgd/*.o
+gxd/*.o
+mgi/*.o
+mgd/*.arg
+gxd/*.arg
+mgi/*.arg
