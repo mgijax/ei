@@ -1,0 +1,38 @@
+SAVE            1
+TARGET          linux
+C++EXTENSION    C
+OBJECTCENTER    0
+MODE            pcd
+IMAGEPATH       $TeleUSE/pixmaps
+C_OUT           uxb_gui.c ( GXD ../pcds/GXD.pcd ../pcds/MGI.pcd \
+                ../pcds/MGD.pcd ../pcds/mgiControl.pcd ../pcds/mgiCV.pcd \
+                ../pcds/mgiDataTypes.pcd ../pcds/mgiDialog.pcd \
+                ../pcds/mgiLookup.pcd ../pcds/mgiMenu.pcd \
+                ../pcds/MGINomen.pcd ../pcds/mgiNoteBook.pcd \
+                ../pcds/mgiOption.pcd ../pcds/mgiTable.pcd )
+DIRECTCALL      0
+NOTUCB          0
+DMODE           do
+AIM             ../aim/postgres.aim ../aim/tables.aim
+AIM             ../aim/utilities.aim ../aim/xrt.aim ../aim/mgi.aim
+AIM             ../aim/mgisql.aim ../aim/mgdsql.aim ../aim/gxdsql.aim
+AIMEXTR_OUT     uxb_extr.aim
+DEBUG           1
+FLG_OUT         uxb_flg.c ( -func uxb_mainc_declare_fl \
+                ../aim/postgres.aim ../aim/tables.aim \
+                ../aim/utilities.aim ../aim/xrt.aim ../aim/mgi.aim \
+                ../aim/mgisql.aim ../aim/mgdsql.aim ../aim/gxdsql.aim )
+NOSTDAIM        0
+EXECUTABLE      gxd
+MAINC_OUT       uxb_mainc.c
+TKINIT          ux_xt ux_xm ux_xrt
+APPLINIT        xrt_conv
+APPLCLASS       GXD
+LOGDISPLAY      Display1
+NOTUCVT         0
+WRSUPPORT       0
+DINTERPRET      1
+NOSYSERR        0
+ADA             0
+ADAMAIN         gxd
+RELEASE         teleuse4.0.0

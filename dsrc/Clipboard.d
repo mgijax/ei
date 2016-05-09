@@ -184,6 +184,10 @@ rules:
             LoadList.list := clipboard;
 	    LoadList.allowDups := ClipboardLoad.allowDups;
             send(LoadList, 0);
+	    EMAPAClipboardSetItems.source_widget := top->GelForm->GelLane->Table;
+	    EMAPAClipboardSetItems.row := mgi_tblGetCurrentRow(top->GelForm->GelLane->Table);
+            EMAPAClipboardSetItems.reason := TBL_REASON_ENTER_CELL_END;
+	    send(EMAPAClipboardSetItems, 0);
 	    return;
 
 	  elsif (clipboard.name = "EMAPAClipboard" and top->GelForm != nil and key.length = 0) then
@@ -191,6 +195,10 @@ rules:
             LoadList.list := clipboard;
 	    LoadList.allowDups := ClipboardLoad.allowDups;
             send(LoadList, 0);
+	    EMAPAClipboardSetItems.source_widget := top->GelForm->GelLane->Table;
+	    EMAPAClipboardSetItems.row := mgi_tblGetCurrentRow(top->GelForm->GelLane->Table);
+            EMAPAClipboardSetItems.reason := TBL_REASON_ENTER_CELL_END;
+	    send(EMAPAClipboardSetItems, 0);
 	    return;
 
 	  elsif (clipboard.name = "EMAPAClipboard" and key.length > 0) then
@@ -198,6 +206,10 @@ rules:
             LoadList.list := clipboard;
 	    LoadList.allowDups := ClipboardLoad.allowDups;
             send(LoadList, 0);
+	    EMAPAClipboardSetItems.source_widget := top->InSituResultDialog->Results->Table;
+	    EMAPAClipboardSetItems.row := mgi_tblGetCurrentRow(top->InSituResultDialog->Results->Table);
+            EMAPAClipboardSetItems.reason := TBL_REASON_ENTER_CELL_END;
+	    send(EMAPAClipboardSetItems, 0);
 	    return;
 
 	  elsif (clipboard.name = "EMAPAClipboard" and key.length = 0) then
@@ -205,6 +217,10 @@ rules:
             LoadList.list := clipboard;
 	    LoadList.allowDups := ClipboardLoad.allowDups;
             send(LoadList, 0);
+	    EMAPAClipboardSetItems.source_widget := top->InSituResultDialog->Results->Table;
+	    EMAPAClipboardSetItems.row := mgi_tblGetCurrentRow(top->InSituResultDialog->Results->Table);
+            EMAPAClipboardSetItems.reason := TBL_REASON_ENTER_CELL_END;
+	    send(EMAPAClipboardSetItems, 0);
 	    return;
 
 	  end if;

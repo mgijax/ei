@@ -1,0 +1,22 @@
+SAVE            1
+TARGET          linux
+C++EXTENSION    C
+OBJECTCENTER    0
+MODE            pcd
+IMAGEPATH       $TeleUSE/pixmaps
+C_OUT           uxb_gui.c ( MGI ../pcds/mgiDataTypes.pcd \
+                ../pcds/mgiMenu.pcd ../pcds/MGIMenu.pcd )
+DMODE           do
+DEBUG           1
+MAIN_OUT        uxb_main.c
+APPLCLASS       MGI
+LOGDISPLAY      Display1
+UIDEF_DEFAULT   /home/lec/mgi/ei-trunk/mgi/mgi.ui
+UIDEF_OUT       mgi.ui
+WRSUPPORT       0
+DINTERPRET      1
+GMAINNAME       main
+NOSYSERR        0
+ADA             0
+ADAMAIN         mgi
+RELEASE         teleuse4.0.0

@@ -1,0 +1,34 @@
+Compiling interpreted module '../dsrc/MGIMenu.d' d->do
+Generating function list file 'uxb_flg.c'
+Compiling function list file 'uxb_flg.c'
+C-compiling '../csrc/xrt_conv.c'
+C-compiling '../csrc/pglib.c'
+../csrc/pglib.c: In function 'send_status':
+../csrc/pglib.c:611: warning: passing argument 4 of 'tu_assign_event_field' makes pointer from integer without a cast
+C-compiling '../csrc/utilities.c'
+Generating C component file 'uxb_mainc.c'
+Compiling C component file 'uxb_mainc.c'
+Generating C main file 'uxb_main.c'
+Compiling C main file 'uxb_main.c'
+Building executable file
+Executable 'mgi' made
+make[1]: Entering directory `/home/lec/mgi/ei-trunk/mgi'
+/opt/teleuseXRT/XRT/bin/xrt_auth mgi
+xrt_auth running on CPUID 10.3.2.196
+Using XRTHOME = /opt/teleuseXRT/XRT
+
+Scanning mgi ...
+	Found XRT graph-Motif, version 4.3.0 .. patched.
+
+	Found XRT 3d-Motif, version 3.3.0 .. patched.
+
+	Found XRT field-Motif, version 2.3.0 .. patched.
+
+	Found XRT table-Motif, version 3.4.0 .. patched.
+
+	Found XRT gear-Motif, version 3.4.0 .. patched.
+
+	Found XRT gauge-Motif, version 1.3.0 .. patched.
+xrt authentication done
+make[1]: Leaving directory `/home/lec/mgi/ei-trunk/mgi'
+uxb done
