@@ -1,3 +1,4 @@
+Configuration
 mgd/*.do
 gxd/*.do
 mgi/*.do
@@ -7,3 +8,10 @@ mgi/*.o
 mgd/*.arg
 gxd/*.arg
 mgi/*.arg
+mgd/*.c
+gxd/*.c
+mgi/*.c
+mgd/*.ui
+gxd/*.ui
+mgi/*.ui
+*.log
