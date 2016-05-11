@@ -242,6 +242,14 @@ char *assay_segmenttype(char *key)
   return(buf);
 }
 
+char *exec_assay_replaceGenotype(char *key1, char *key2, char *key3)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select from GXD_replaceGenotype (%s, %s, %s)", key1, key2, key3);
+  return(buf);
+}
+
 /* 
  * IndexStage.d
 */

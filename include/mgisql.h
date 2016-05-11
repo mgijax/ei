@@ -59,7 +59,7 @@ extern char *exec_gxd_getGenotypesDataSets(char *);
 extern char *exec_gxd_orderAllelePairs(char *);
 extern char *exec_gxd_orderGenotypes(char *);
 extern char *exec_gxd_orderGenotypesAll(char *);
-extern char *exec_gxd_removeBadGelBand(char *);
+extern char *exec_gxd_removeBadGelBand();
 
 /* SQL.d */
 

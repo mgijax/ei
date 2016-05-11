@@ -389,11 +389,11 @@ char *exec_gxd_orderGenotypesAll(char *key)
   return(buf);
 }
 
-char *exec_gxd_removeBadGelBand(char *key)
+char *exec_gxd_removeBadGelBand()
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select GXD_removeBadGelBand (%s);\n", key);
+  sprintf(buf,"select GXD_removeBadGelBand ();\n");
   return(buf);
 }
 

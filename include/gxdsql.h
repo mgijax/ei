@@ -38,6 +38,7 @@ extern char *assay_gellanekey(char *);
 extern char *assay_gelrow(char *);
 extern char *assay_gelband(char *);
 extern char *assay_segmenttype(char *);
+extern char *exec_assay_replaceGenotype(char *, char *, char *);
 
 /* IndexStage.d */
 

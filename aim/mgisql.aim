@@ -57,7 +57,7 @@ CALLS
 	 exec_gxd_orderAllelePairs("char *")			: "char *";
 	 exec_gxd_orderGenotypes("char *")			: "char *";
 	 exec_gxd_orderGenotypesAll("char *")			: "char *";
-	 exec_gxd_removeBadGelBand("char *")			: "char *";
+	 exec_gxd_removeBadGelBand()			        : "char *";
 
 	 acclib_assoc()						: "char *";
 	 acclib_acc()						: "char *";

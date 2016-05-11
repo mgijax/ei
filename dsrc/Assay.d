@@ -326,6 +326,10 @@ devents:
 	ViewAssayDetail [source_widget : widget;];
 	ViewPrepDetail [source_widget : widget;];
 
+        -- Process Assay/Genotype Replace Events
+        AssayGenotypeReplaceInit :local [];
+        AssayGenotypeReplace :local [];
+
 locals:
 	mgi : widget;		  -- Main Application Widget
 	top : widget;		  -- Local Application Widget
@@ -3420,6 +3424,81 @@ rules:
 	  end if;
 
         end
+
+--
+-- AssayGenotypeReplaceInit
+--
+-- Activated from:  top->Edit->AssayGenotypeReplaceInit, activateCallback
+--
+-- Initialize Assay/Genotype Replace Dialog fields
+--
+ 
+        AssayGenotypeReplaceInit does
+          dialog : widget := top->AssayGenotypeReplaceDialog;
+
+          dialog->mgiCitation->ObjectID->text.value := "";
+          dialog->mgiCitation->Jnum->text.value := "";
+          dialog->mgiCitation->Citation->text.value := "";
+	  dialog->mgiAccession->ObjectID->text.value := "";
+	  dialog->mgiAccession->AccessionID->text.value := "";
+	  dialog->mgiAccession->AccessionName->text.value := "";
+	  dialog->mgiAccession1->ObjectID->text.value := "";
+	  dialog->mgiAccession1->AccessionID->text.value := "";
+	  dialog->mgiAccession1->AccessionName->text.value := "";
+	  dialog.managed := true;
+	end does;
+
+--
+-- AssayGenotypeReplace
+--
+-- Activated from:  top->AssayGenotypeReplaceDialog->Process
+--
+-- Execute the appropriate stored procedure to merge the entered Strains.
+--
+ 
+        AssayGenotypeReplace does
+          dialog : widget := top->AssayGenotypeReplaceDialog;
+ 
+	  if (dialog->mgiCitation->ObjectID->text.value.length = 0) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "J: Required.";
+            send(StatusReport);
+            return;
+          end if;
+ 
+	  if (dialog->mgiAccession->ObjectID->text.value.length = 0) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "Old Genotype Required.";
+            send(StatusReport);
+            return;
+          end if;
+ 
+	  if (dialog->mgiAccession1->ObjectID->text.value.length = 0) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "New Genotype Required.";
+            send(StatusReport);
+            return;
+          end if;
+ 
+          (void) busy_cursor(dialog);
+
+	  cmd := exec_assay_replaceGenotype(\
+		dialog->top->mgiCitation->ObjectID->text.value, \
+	        dialog->mgiAccession->ObjectID->text.value, \
+	  	dialog->mgiAccession1->ObjectID->text.value);
+	  
+	  ExecSQL.cmd := cmd;
+	  send(ExecSQL, 0);
+
+	  -- After merge, search for New Strain
+
+--	  send(ClearStrain, 0);
+--        top->ID->text.value := dialog->Strain2->StrainID->text.value;
+--	  send(Search, 0);
+
+	  (void) reset_cursor(dialog);
+
+	end does;
 
 --
 -- Exit

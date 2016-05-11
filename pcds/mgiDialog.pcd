@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Thu Mar 10 08:39:26 2016";
+      lastWritten = "Wed May 11 07:43:06 2016";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -1435,10 +1435,10 @@ Shift<Key>Tab: prev-tab-group()
             vip_y = 1240;
         }
         {
-          GenotypeMergeDialog = XmFormDialog;
+          AssayGenotypeReplaceDialog = XmFormDialog;
           Group: Widget
             dialogStyle = dialog_primary_application_modal;
-            dialogTitle = "Strain Merge";
+            dialogTitle = "Replace Genotype";
             managed = False;
             rubberPositioning = False;
             resizePolicy = resize_any;
@@ -1456,6 +1456,17 @@ Shift<Key>Tab: prev-tab-group()
                   resizable = true;
                   leftOffset = 5;
                   topOffset = 5;
+                    {
+                      ObjectID = ID : mgiDataTypes;
+                    }
+                    {
+                      Jnum = Jnum : mgiDataTypes;
+                    }
+                    {
+                      Citation = Citation : mgiDataTypes;
+                      Group: Widget
+                        traversalOn = False;
+                    }
               }
               {
                 mgiAccession = mgiAccession : mgiDataTypes;
@@ -1478,6 +1489,8 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       AccessionName = CharSText : mgiDataTypes;
+                      Group: Widget
+                        traversalOn = False;
                           {
                             label = XmLabel;
                             Group: Widget
@@ -1506,6 +1519,8 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       AccessionName = CharSText : mgiDataTypes;
+                      Group: Widget
+                        traversalOn = False;
                           {
                             label = XmLabel;
                             Group: Widget
@@ -1546,8 +1561,9 @@ Shift<Key>Tab: prev-tab-group()
                     {
                       Process = DialogPush : mgiDialog;
                       Group: Widget
-                        labelString = "Process Merge";
+                        labelString = Process;
                         traversalOn = False;
+                        activateCallback = "D:AssayGenotypeReplace";
                     }
                     {
                       Done = DialogPush : mgiDialog;

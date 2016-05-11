@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Wed Apr  6 12:12:10 2016";
+      lastWritten = "Wed May 11 07:33:22 2016";
       copy = false;
       inCreateMenu = true;
         {
@@ -2839,6 +2839,12 @@ Shift<Key>Tab: prev-tab-group()
                                           activateCallback = "D:CreateMGIModule(name = \"Genotype\")";
                                           labelString = Genotypes;
                                       }
+                                      {
+                                        ReplaceGenotype = MenuCascade : mgiMenu;
+                                        Group: Widget
+                                          activateCallback = "D:AssayGenotypeReplaceInit";
+                                          labelString = "Replace Genotype";
+                                      }
                                 }
                           }
                     }
@@ -3437,6 +3443,9 @@ Shift<Key>Tab: prev-tab-group()
                       Group: Widget
                         okCallback = "D:NextISResult";
                         cancelCallback = "D:NextISResult(answer = false)";
+                    }
+                    {
+                      AssayGenotypeReplaceDialog = AssayGenotypeReplaceDialog : mgiDialog;
                     }
               }
         }
