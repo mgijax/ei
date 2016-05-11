@@ -15,4 +15,5 @@ mgd/*.ui
 gxd/*.ui
 mgi/*.ui
 pcds/*~
+*/*.nfs
 *.log
