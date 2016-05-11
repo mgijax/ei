@@ -3,9 +3,9 @@ Configuration
 */*.do
 */*.arg
 */*.ui
+*/*.nfs
+*.log
 mgd/*.c
 gxd/*.c
 mgi/*.c
 pcds/*~
-*/*.nfs
-*.log
