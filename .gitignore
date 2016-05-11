@@ -14,4 +14,5 @@ mgi/*.c
 mgd/*.ui
 gxd/*.ui
 mgi/*.ui
+pcds/*~
 *.log
