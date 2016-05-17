@@ -6,4 +6,6 @@ Configuration
 */*.nfs
 *.log
 */uxb*.c
+*/gxd
+*/mgd
 pcds/*~
