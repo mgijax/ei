@@ -3120,14 +3120,6 @@ static char *appl_argl324[] = {
   "char *",
 };
 
-static char *d_argl325[] = {
-  "string",
-};
-
-static char *appl_argl325[] = {
-  "char *",
-};
-
 static char *d_argl336[] = {
   "string",
   "string",
@@ -10142,14 +10134,14 @@ static dp_calldef_rec functions[] = {
     -1,
     dp_ansi_c,
     NULL,
-    appl_argl325,
+    NULL,
     "char *",
     (int (*)()) exec_gxd_removeBadGelBand,
     "exec_gxd_removeBadGelBand",
     4,
     "string",
-    1,
-    d_argl325,
+    0,
+    NULL,
     -1,
     0,
     NULL,

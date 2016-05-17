@@ -38,7 +38,7 @@ CALLS
 	assay_gelrow("char *")		: "char *";
 	assay_gelband("char *")		: "char *";
 	assay_segmenttype("char *")	: "char *";
-	exec_assay_replaceGenotype("char *", "char *", "char *") : "char *";
+	exec_assay_replaceGenotype("char *", "char *", "char *", "char *") : "char *";
 
 	index_assayterms()		: "char *";
 	index_stageterms()		: "char *";

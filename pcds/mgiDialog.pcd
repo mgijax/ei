@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Wed May 11 07:43:06 2016";
+      lastWritten = "Mon May 16 08:02:12 2016";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -1437,7 +1437,7 @@ Shift<Key>Tab: prev-tab-group()
         {
           AssayGenotypeReplaceDialog = XmFormDialog;
           Group: Widget
-            dialogStyle = dialog_primary_application_modal;
+            dialogStyle = dialog_modeless;
             dialogTitle = "Replace Genotype";
             managed = False;
             rubberPositioning = False;
@@ -1469,23 +1469,40 @@ Shift<Key>Tab: prev-tab-group()
                     }
               }
               {
-                mgiAccession = mgiAccession : mgiDataTypes;
+                mgiAccessionOld = mgiAccession : mgiDataTypes;
                 Group: Widget
                   orientation = horizontal;
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
-                  rightAttachment = attach_none;
+                  rightAttachment = attach_form;
                   topAttachment = attach_widget;
                   topOffset = 5;
                   bottomAttachment = attach_none;
                   resizable = true;
                   leftWidget = mgiCitation;
                   topWidget = mgiCitation;
+                  rightOffset = 5;
+                Group: User
+                  tableID = 210;
                     {
                       ObjectID = ID : mgiDataTypes;
                     }
                     {
-                      AccessionID = CharText : mgiDataTypes;
+                      AccessionID = CharText;
+                          {
+                            label = XmLabel;
+                            Group: Widget
+                              labelString = "Current Genotype Acc ID";
+                          }
+                          {
+                            text = text;
+                            Group: Widget
+                              translations = "#override
+Shift<Key>Tab: prev-tab-group()
+<Key>Tab: VerifyMGIAcc()";
+                            Group: User
+                              required = True;
+                          }
                     }
                     {
                       AccessionName = CharSText : mgiDataTypes;
@@ -1494,28 +1511,49 @@ Shift<Key>Tab: prev-tab-group()
                           {
                             label = XmLabel;
                             Group: Widget
-                              labelString = "Current Genotype";
+                              labelString = " ";
+                          }
+                          {
+                            text = scrolledText : mgiDataTypes;
+                            Group: Widget
+                              columns = 100;
                           }
                     }
               }
               {
-                mgiAccession1 = mgiAccession : mgiDataTypes;
+                mgiAccessionNew = mgiAccession : mgiDataTypes;
                 Group: Widget
                   orientation = horizontal;
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
-                  leftWidget = mgiAccession;
+                  leftWidget = mgiAccessionOld;
                   rightAttachment = attach_none;
                   topAttachment = attach_widget;
-                  topWidget = mgiAccession;
+                  topWidget = mgiAccessionOld;
                   bottomAttachment = attach_none;
                   resizable = true;
                   topOffset = 5;
+                Group: User
+                  tableID = 210;
                     {
                       ObjectID = ID : mgiDataTypes;
                     }
                     {
-                      AccessionID = CharText : mgiDataTypes;
+                      AccessionID = CharText;
+                          {
+                            label = XmLabel;
+                            Group: Widget
+                              labelString = "New Genotype Acc ID";
+                          }
+                          {
+                            text = text;
+                            Group: Widget
+                              translations = "#override
+Shift<Key>Tab: prev-tab-group()
+<Key>Tab: VerifyMGIAcc()";
+                            Group: User
+                              required = True;
+                          }
                     }
                     {
                       AccessionName = CharSText : mgiDataTypes;
@@ -1524,7 +1562,12 @@ Shift<Key>Tab: prev-tab-group()
                           {
                             label = XmLabel;
                             Group: Widget
-                              labelString = "New Genotype";
+                              labelString = " ";
+                          }
+                          {
+                            text = scrolledText : mgiDataTypes;
+                            Group: Widget
+                              columns = 100;
                           }
                     }
               }
@@ -1534,7 +1577,7 @@ Shift<Key>Tab: prev-tab-group()
                   leftAttachment = attach_form;
                   rightAttachment = attach_form;
                   topAttachment = attach_widget;
-                  topWidget = mgiAccession1;
+                  topWidget = mgiAccessionNew;
                   topOffset = 2;
                   bottomAttachment = attach_none;
                   resizable = true;

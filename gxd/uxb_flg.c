@@ -1761,14 +1761,6 @@ static char *appl_argl142[] = {
   "char *",
 };
 
-static char *d_argl143[] = {
-  "string",
-};
-
-static char *appl_argl143[] = {
-  "char *",
-};
-
 static char *d_argl154[] = {
   "string",
   "string",
@@ -4159,11 +4151,17 @@ static char *appl_argl474[] = {
   "char *",
 };
 
-static char *d_argl477[] = {
+static char *d_argl475[] = {
+  "string",
+  "string",
+  "string",
   "string",
 };
 
-static char *appl_argl477[] = {
+static char *appl_argl475[] = {
+  "char *",
+  "char *",
+  "char *",
   "char *",
 };
 
@@ -4201,19 +4199,19 @@ static char *appl_argl481[] = {
 
 static char *d_argl482[] = {
   "string",
-  "string",
 };
 
 static char *appl_argl482[] = {
-  "char *",
   "char *",
 };
 
 static char *d_argl483[] = {
   "string",
+  "string",
 };
 
 static char *appl_argl483[] = {
+  "char *",
   "char *",
 };
 
@@ -4246,6 +4244,14 @@ static char *d_argl487[] = {
 };
 
 static char *appl_argl487[] = {
+  "char *",
+};
+
+static char *d_argl488[] = {
+  "string",
+};
+
+static char *appl_argl488[] = {
   "char *",
 };
 
@@ -6971,14 +6977,14 @@ static dp_calldef_rec functions[] = {
     -1,
     dp_ansi_c,
     NULL,
-    appl_argl143,
+    NULL,
     "char *",
     (int (*)()) exec_gxd_removeBadGelBand,
     "exec_gxd_removeBadGelBand",
     4,
     "string",
-    1,
-    d_argl143,
+    0,
+    NULL,
     -1,
     0,
     NULL,
@@ -13279,6 +13285,25 @@ static dp_calldef_rec functions[] = {
     -1,
     dp_ansi_c,
     NULL,
+    appl_argl475,
+    "char *",
+    (int (*)()) exec_assay_replaceGenotype,
+    "exec_assay_replaceGenotype",
+    4,
+    "string",
+    4,
+    d_argl475,
+    -1,
+    0,
+    NULL,
+    NULL,
+    0,
+    0
+  },
+  {
+    -1,
+    dp_ansi_c,
+    NULL,
     NULL,
     "char *",
     (int (*)()) index_assayterms,
@@ -13317,29 +13342,10 @@ static dp_calldef_rec functions[] = {
     -1,
     dp_ansi_c,
     NULL,
-    appl_argl477,
+    appl_argl478,
     "char *",
     (int (*)()) index_select,
     "index_select",
-    4,
-    "string",
-    1,
-    d_argl477,
-    -1,
-    0,
-    NULL,
-    NULL,
-    0,
-    0
-  },
-  {
-    -1,
-    dp_ansi_c,
-    NULL,
-    appl_argl478,
-    "char *",
-    (int (*)()) index_stages,
-    "index_stages",
     4,
     "string",
     1,
@@ -13357,8 +13363,8 @@ static dp_calldef_rec functions[] = {
     NULL,
     appl_argl479,
     "char *",
-    (int (*)()) index_hasAssay,
-    "index_hasAssay",
+    (int (*)()) index_stages,
+    "index_stages",
     4,
     "string",
     1,
@@ -13376,8 +13382,8 @@ static dp_calldef_rec functions[] = {
     NULL,
     appl_argl480,
     "char *",
-    (int (*)()) index_priority,
-    "index_priority",
+    (int (*)()) index_hasAssay,
+    "index_hasAssay",
     4,
     "string",
     1,
@@ -13395,8 +13401,8 @@ static dp_calldef_rec functions[] = {
     NULL,
     appl_argl481,
     "char *",
-    (int (*)()) index_conditional,
-    "index_conditional",
+    (int (*)()) index_priority,
+    "index_priority",
     4,
     "string",
     1,
@@ -13414,11 +13420,11 @@ static dp_calldef_rec functions[] = {
     NULL,
     appl_argl482,
     "char *",
-    (int (*)()) index_set2,
-    "index_set2",
+    (int (*)()) index_conditional,
+    "index_conditional",
     4,
     "string",
-    2,
+    1,
     d_argl482,
     -1,
     0,
@@ -13433,11 +13439,11 @@ static dp_calldef_rec functions[] = {
     NULL,
     appl_argl483,
     "char *",
-    (int (*)()) insitu_specimen_count,
-    "insitu_specimen_count",
+    (int (*)()) index_set2,
+    "index_set2",
     4,
     "string",
-    1,
+    2,
     d_argl483,
     -1,
     0,
@@ -13452,8 +13458,8 @@ static dp_calldef_rec functions[] = {
     NULL,
     appl_argl484,
     "char *",
-    (int (*)()) insitu_imageref_count,
-    "insitu_imageref_count",
+    (int (*)()) insitu_specimen_count,
+    "insitu_specimen_count",
     4,
     "string",
     1,
@@ -13471,8 +13477,8 @@ static dp_calldef_rec functions[] = {
     NULL,
     appl_argl485,
     "char *",
-    (int (*)()) insitu_select,
-    "insitu_select",
+    (int (*)()) insitu_imageref_count,
+    "insitu_imageref_count",
     4,
     "string",
     1,
@@ -13490,8 +13496,8 @@ static dp_calldef_rec functions[] = {
     NULL,
     appl_argl486,
     "char *",
-    (int (*)()) insitu_imagepane,
-    "insitu_imagepane",
+    (int (*)()) insitu_select,
+    "insitu_select",
     4,
     "string",
     1,
@@ -13509,12 +13515,31 @@ static dp_calldef_rec functions[] = {
     NULL,
     appl_argl487,
     "char *",
+    (int (*)()) insitu_imagepane,
+    "insitu_imagepane",
+    4,
+    "string",
+    1,
+    d_argl487,
+    -1,
+    0,
+    NULL,
+    NULL,
+    0,
+    0
+  },
+  {
+    -1,
+    dp_ansi_c,
+    NULL,
+    appl_argl488,
+    "char *",
     (int (*)()) insitu_structure,
     "insitu_structure",
     4,
     "string",
     1,
-    d_argl487,
+    d_argl488,
     -1,
     0,
     NULL,
@@ -13534,7 +13559,7 @@ void uxb_mainc_declare_fl()
 void uxb_mainc_declare_fl(void)
 #endif /* _NO_PROTO */
 {
-  dl_register_functions(functions, 488);
+  dl_register_functions(functions, 489);
 }
 
 #if defined(__cplusplus) || defined(c_plusplus)

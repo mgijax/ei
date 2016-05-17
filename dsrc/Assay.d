@@ -3439,12 +3439,12 @@ rules:
           dialog->mgiCitation->ObjectID->text.value := "";
           dialog->mgiCitation->Jnum->text.value := "";
           dialog->mgiCitation->Citation->text.value := "";
-	  dialog->mgiAccession->ObjectID->text.value := "";
-	  dialog->mgiAccession->AccessionID->text.value := "";
-	  dialog->mgiAccession->AccessionName->text.value := "";
-	  dialog->mgiAccession1->ObjectID->text.value := "";
-	  dialog->mgiAccession1->AccessionID->text.value := "";
-	  dialog->mgiAccession1->AccessionName->text.value := "";
+	  dialog->mgiAccessionOld->ObjectID->text.value := "";
+	  dialog->mgiAccessionOld->AccessionID->text.value := "";
+	  dialog->mgiAccessionOld->AccessionName->text.value := "";
+	  dialog->mgiAccessionNew->ObjectID->text.value := "";
+	  dialog->mgiAccessionNew->AccessionID->text.value := "";
+	  dialog->mgiAccessionNew->AccessionName->text.value := "";
 	  dialog.managed := true;
 	end does;
 
@@ -3466,14 +3466,14 @@ rules:
             return;
           end if;
  
-	  if (dialog->mgiAccession->ObjectID->text.value.length = 0) then
+	  if (dialog->mgiAccessionOld->ObjectID->text.value.length = 0) then
             StatusReport.source_widget := top;
             StatusReport.message := "Old Genotype Required.";
             send(StatusReport);
             return;
           end if;
  
-	  if (dialog->mgiAccession1->ObjectID->text.value.length = 0) then
+	  if (dialog->mgiAccessionNew->ObjectID->text.value.length = 0) then
             StatusReport.source_widget := top;
             StatusReport.message := "New Genotype Required.";
             send(StatusReport);
@@ -3483,18 +3483,36 @@ rules:
           (void) busy_cursor(dialog);
 
 	  cmd := exec_assay_replaceGenotype(\
-		dialog->top->mgiCitation->ObjectID->text.value, \
-	        dialog->mgiAccession->ObjectID->text.value, \
-	  	dialog->mgiAccession1->ObjectID->text.value);
+		global_userKey, \
+		dialog->mgiCitation->ObjectID->text.value, \
+	        dialog->mgiAccessionOld->ObjectID->text.value, \
+	  	dialog->mgiAccessionNew->ObjectID->text.value);
 	  
 	  ExecSQL.cmd := cmd;
 	  send(ExecSQL, 0);
 
-	  -- After merge, search for New Strain
+	  -- Select InSitu information
 
---	  send(ClearStrain, 0);
---        top->ID->text.value := dialog->Strain2->StrainID->text.value;
---	  send(Search, 0);
+          if (top->QueryList->List.selectedItemCount > 0) then
+
+	    if (assayDetailForm.name = "InSituForm") then
+	      send(SelectInSitu, 0);
+
+	    -- Select Gel information
+
+	    elsif (assayDetailForm.name = "GelForm") then
+	      send(InitImagePane, 0);
+	      send(SelectGelLane, 0);
+	      send(SelectGelRow, 0);
+	      SelectGelBand.reason := TBL_REASON_ENTER_CELL_END;
+	      send(SelectGelBand, 0);
+	    end if;
+
+	  end if;
+
+          StatusReport.source_widget := top;
+          StatusReport.message := "Processing complete.";
+          send(StatusReport);
 
 	  (void) reset_cursor(dialog);
 
