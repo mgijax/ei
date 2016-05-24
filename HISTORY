@@ -1,11 +1,12 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
-TAG: ei-6-0-4-?
+TAG: ei-6-0-4-5
 DATE: ?
 STAFF: lec
 CHANGES:
 1) TR6939/assay/genotype/replace dialog
 
+TAG: ei-6-0-4-4
 TAG: ei-6-0-4-3
 TAG: ei-6-0-4-2
 TAG: ei-6-0-4-1
