@@ -1,5 +1,11 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-6-0-4-6
+DATE: 06/06/2016
+STAFF: lec
+CHANGES:
+1) replace CVS_TAG with GITHUB_TAG
+
 TAG: ei-6-0-4-5
 DATE: ?
 STAFF: lec

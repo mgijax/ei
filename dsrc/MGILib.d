@@ -11,7 +11,7 @@
 --	- SetPermissions; add Utilities
 --
 -- 02/01/2011 lec
---	- CVS_TAG added
+--	- GITHUB_TAG added
 --
 -- 05/19/2010 lec
 --	- revised LoginServer/LoginDB to use Configuration file
@@ -96,7 +96,7 @@ rules:
 
 	  top := create widget("Login", nil, nil);
 
-	  global_version := getenv("CVS_TAG");
+	  global_version := getenv("GITHUB_TAG");
 
 	  SetTitle.source_widget := top;
 	  send(SetTitle, 0);
