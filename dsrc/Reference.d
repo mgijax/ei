@@ -1105,10 +1105,12 @@ rules:
 	      neverUsed := YES;
             end if;
  
-	    if (mgi_tblGetCell(table, row, table.isIncomplete) = "") then
-	      isIncomplete := NO;
-	    else
-	      isIncomplete := YES;
+	    if (table.is_defined("isIncomplete") != nil) then
+	      if (mgi_tblGetCell(table, row, table.isIncomplete) = "") then
+	        isIncomplete := NO;
+	      else
+	        isIncomplete := YES;
+	      end if;
             end if;
  
 	    -- then it is new
