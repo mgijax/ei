@@ -1105,6 +1105,7 @@ rules:
 	      neverUsed := YES;
             end if;
  
+	    isIncomplete := NO;
 	    if (table.is_defined("isIncomplete") != nil) then
 	      if (mgi_tblGetCell(table, row, table.isIncomplete) = "") then
 	        isIncomplete := NO;
