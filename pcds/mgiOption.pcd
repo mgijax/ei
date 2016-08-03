@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Wed Apr  6 12:12:03 2016";
+      lastWritten = "Wed Aug  3 14:09:56 2016";
       copy = false;
       inCreateMenu = true;
         {
@@ -653,6 +653,11 @@ Module: mgiOption
                       WTSI = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 155;
+                    }
+                    {
+                      SMOC = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 184;
                     }
                     {
                       IMAGELibrary = AccToggle : mgiOption;

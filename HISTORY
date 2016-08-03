@@ -1,5 +1,11 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-6-0-5-1
+DATE: 08/03/2016
+STAFF: lec
+CHANGES:
+1) Add SMOC/Shanghai Model Organisms Center (184) to Strain module
+
 TAG: ei-6-0-4-8
 TAG: ei-6-0-4-7
 DATE: 07/22/2016
