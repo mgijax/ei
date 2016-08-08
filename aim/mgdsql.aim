@@ -81,6 +81,7 @@ CALLS
 	 govoc_orderF()					: "char *";
 	 govoc_tracking("char *")			: "char *";
 	 govoc_xref("char *", "char *")			: "char *";
+	 govoc_isoform_exists("char *")			: "char *";
 
 	 nonmouse_term()				: "char *";
 	 nonmouse_select("char *")			: "char *";

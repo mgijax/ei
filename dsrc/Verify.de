@@ -48,6 +48,8 @@ VerifyReference :translation [];
 
 VerifyGOInferredFrom [];
 
+VerifyGOIsoform [];
+
 VerifyGOReference [];
 
 VerifyOrganism :translation [ignoreRow : integer := -1;];

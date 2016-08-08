@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- 08/05/2016	lec
+--	- TR12345/VerifyGOIsoform
+--
 -- 04/07/2014	lec
 --	- TR11549/change some documetation/no semi-colons
 --
@@ -2493,6 +2496,70 @@ rules:
 
 	end does;
 
+--
+-- VerifyGOIsoform
+--
+--	Verify that the "Isoform" value exists in the Protein Isoform Ontology/GPI
+--
+
+	VerifyGOIsoform does
+	  sourceWidget : widget := VerifyGOIsoform.source_widget;
+	  top : widget := sourceWidget.top;
+	  isTable : boolean;
+	  value : string;
+	  isIsoformExists : string;
+
+	  -- These variables are only relevant for Tables
+	  row : integer;
+	  column : integer;
+	  reason : integer;
+
+	  isTable := mgi_tblIsTable(sourceWidget);
+
+	  if (isTable) then
+	    row := VerifyGOIsoform.row;
+	    column := VerifyGOIsoform.column;
+	    reason := VerifyGOIsoform.reason;
+	    value := VerifyGOIsoform.value;
+
+	    -- If not in the propertyValue, return
+
+	    if (column != sourceWidget.propertyValue) then
+	      return;
+	    end if;
+
+	    if (reason = TBL_REASON_VALIDATE_CELL_END) then
+	      return;
+	    end if;
+	  else
+	    return;
+	  end if;
+
+	  -- If Isoform is null, it is okay, return
+
+	  if (value.length = 0 or value = "%") then
+	    return;
+	  end if;
+
+	  if (mgi_tblGetCell(sourceWidget, row, sourceWidget.propertyTerm) != "gene product") then
+	    return;
+	  end if;
+
+	  -- If Isoform does not exist, display an error message
+
+	  isIsoformExists := mgi_sql1(govoc_isoform_exists(value));
+	  if ((integer) isIsoformExists < 1) then
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "This Isoform does not exist in the MGD/GPI lookup:\n\n" + value + "\n\n";
+            send(StatusReport, 0);
+	    VerifyGOIsoform.doit := (integer) false;
+	    (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.propertyValue, "");
+            return;
+	  end if;
+
+	end does;
+
+--
 --
 -- VerifyGOReference
 --

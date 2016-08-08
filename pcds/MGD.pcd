@@ -15342,6 +15342,8 @@ Shift<Key>Tab: prev-tab-group()
                                     topWidget = Annotation;
                                       {
                                         Table = mgiTable;
+                                        Group: Widget
+                                          xrtTblValidateCellCallback = "D:VerifyGOIsoform";
                                       }
                                       {
                                         AddRow = TablePush;

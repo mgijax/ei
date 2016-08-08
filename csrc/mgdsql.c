@@ -608,6 +608,14 @@ char *govoc_xref(char *key, char *annotTypeKey)
   return(buf);
 }
 
+char *govoc_isoform_exists(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select count(*) from ACC_Accession where _LogicalDB_key = 183 and accID = '%s'", key);
+  return(buf);
+}
+
 /*
 * Marker.d
 */

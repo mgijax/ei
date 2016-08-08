@@ -81,6 +81,7 @@ extern char *govoc_orderE();
 extern char *govoc_orderF();
 extern char *govoc_tracking(char *);
 extern char *govoc_xref(char *, char *);
+extern char *govoc_isoform_exists(char *);
 
 /* Marker.d */
 
