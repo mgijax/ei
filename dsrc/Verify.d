@@ -2559,6 +2559,8 @@ rules:
             return;
 	  end if;
 
+	  (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.propertyValue, value);
+
 	end does;
 
 --
