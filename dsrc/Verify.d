@@ -2547,6 +2547,8 @@ rules:
 
 	  -- If Isoform does not exist, display an error message
 
+	  value := value.raise_case;
+
 	  isIsoformExists := mgi_sql1(govoc_isoform_exists(value));
 	  if ((integer) isIsoformExists < 1) then
             StatusReport.source_widget := top.root;
