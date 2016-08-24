@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Wed Aug  3 14:09:56 2016";
+      lastWritten = "Mon Aug 22 13:52:01 2016";
       copy = false;
       inCreateMenu = true;
         {
@@ -127,6 +127,13 @@ Module: mgiOption
                         labelString = DOI;
                       Group: User
                         defaultValue = 65;
+                    }
+                    {
+                      GOREF = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = GO_REF;
+                      Group: User
+                        defaultValue = 185;
                     }
                     {
                       NSequence = AccToggle : mgiOption;
@@ -2313,7 +2320,7 @@ Module: mgiOption
               {
                 MarkerStatusPulldown : OptionPulldown = OptionPulldown;
                 Group: User
-                  sql = "select * from MRK_Status where _Marker_Status_key > 0 and status != 'interim' order by status";
+                  sql = "select * from MRK_Status where _Marker_Status_key > 0 order by status";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }

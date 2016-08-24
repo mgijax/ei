@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Wed Aug  3 14:10:37 2016";
+      lastWritten = "Mon Aug 22 13:53:07 2016";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -313,6 +313,9 @@ Module: MGD
                                                   }
                                                   {
                                                     DXDOI = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    GOREF = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NSequence = AccToggle : mgiOption;
@@ -1501,6 +1504,9 @@ Module: MGD
                                                     DXDOI = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    GOREF = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     NSequence = AccToggle;
                                                   }
                                                   {
@@ -2645,6 +2651,9 @@ Module: MGD
                                   DXDOI = AccToggle : mgiOption;
                                 }
                                 {
+                                  GOREF = AccToggle : mgiOption;
+                                }
+                                {
                                   NSequence = AccToggle;
                                   Group: Widget
                                     set = True;
@@ -3299,6 +3308,9 @@ Module: MGD
                                                   }
                                                   {
                                                     DXDOI = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    GOREF = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NSequence = AccToggle : mgiOption;
@@ -5657,6 +5669,9 @@ Module: MGD
                                                     DXDOI = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    GOREF = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     NSequence = AccToggle;
                                                     Group: Widget
                                                       managed = True;
@@ -5751,6 +5766,9 @@ Module: MGD
                                                   }
                                                   {
                                                     DXDOI = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    GOREF = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NSequence = AccToggle;
@@ -6746,6 +6764,11 @@ Module: MGD
                                                   }
                                                   {
                                                     DXDOI = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    GOREF = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -7932,6 +7955,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     DXDOI = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    GOREF = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     NSequence = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
@@ -8416,6 +8442,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     DXDOI = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    GOREF = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NSequence = AccToggle : mgiOption;
@@ -9536,6 +9565,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     DXDOI = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    GOREF = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     NSequence = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -10290,6 +10322,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     DXDOI = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    GOREF = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NSequence = AccToggle : mgiOption;
@@ -12350,6 +12385,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     DXDOI = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    GOREF = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     NSequence = AccToggle;
                                                   }
                                                   {
@@ -14038,6 +14076,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     DXDOI = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    GOREF = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     NSequence = AccToggle;
                                                     Group: Widget
                                                       managed = True;
@@ -14107,6 +14148,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     DXDOI = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    GOREF = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NSequence = AccToggle;
@@ -14236,6 +14280,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     DXDOI = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    GOREF = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NSequence = AccToggle;
@@ -14531,6 +14578,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     DXDOI = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    GOREF = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NSequence = AccToggle;

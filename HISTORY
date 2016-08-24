@@ -1,5 +1,16 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-6-0-6-?
+DATE: 08/05/2016
+STAFF: lec
+CHANGES:
+TR12349/gone-dor & more 
+TR12345/GPAD/GPI
+1) add Verify/VerifyGOIsoform
+2) mgdsql.c/_marker_status_key = 3 (interim) is obsolete
+
+TAG: ei-6-0-4-8
+TAG: ei-6-0-4-7
 TAG: ei-6-0-5-1
 DATE: 08/03/2016
 STAFF: lec
