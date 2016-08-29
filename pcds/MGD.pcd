@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Mon Aug 22 13:53:07 2016";
+      lastWritten = "Mon Aug 29 06:51:50 2016";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -1670,6 +1670,9 @@ Module: MGD
                                                   }
                                                   {
                                                     JRS = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    MPD = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     MMRRC = AccToggle : mgiOption;
@@ -3487,6 +3490,9 @@ Module: MGD
                                                   }
                                                   {
                                                     JRS = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    MPD = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     MMRRC = AccToggle : mgiOption;
@@ -8134,6 +8140,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     JRS = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    MPD = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     MMRRC = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -8619,6 +8628,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     JRS = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    MPD = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     MMRRC = AccToggle : mgiOption;
@@ -9741,6 +9753,11 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
+                                                    MPD = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
                                                     MMRRC = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
@@ -10499,6 +10516,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     JRS = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    MPD = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     MMRRC = AccToggle : mgiOption;

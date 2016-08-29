@@ -8,6 +8,7 @@ TR12349/gone-dor & more
 TR12345/GPAD/GPI
 1) add Verify/VerifyGOIsoform
 2) mgdsql.c/_marker_status_key = 3 (interim) is obsolete
+3) TR12331/add MDP to Strain module
 
 TAG: ei-6-0-4-8
 TAG: ei-6-0-4-7

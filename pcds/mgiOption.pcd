@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Mon Aug 22 13:52:01 2016";
+      lastWritten = "Mon Aug 29 06:50:50 2016";
       copy = false;
       inCreateMenu = true;
         {
@@ -546,6 +546,11 @@ Module: mgiOption
                       Group: User
                         private = True;
                         defaultValue = 22;
+                    }
+                    {
+                      MPD = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 188;
                     }
                     {
                       MMRRC = AccToggle : mgiOption;
