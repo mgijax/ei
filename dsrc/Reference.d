@@ -1242,6 +1242,8 @@ rules:
 	        cmd := ref_mrk_exists(currentRecordKey);
 	      elsif (mgi_tblGetCell(statusTable, row, statusTable.existsProc) = "BIB_QTL_Exists") then
 	        cmd := ref_qtl_exists(currentRecordKey);
+	      elsif (mgi_tblGetCell(statusTable, row, statusTable.existsProc) = "BIB_PRO_Exists") then
+	        cmd := ref_pro_exists(currentRecordKey);
 	      end if;
 
 	      if (cmd.length = 0) then
