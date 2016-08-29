@@ -10,13 +10,16 @@
 --
 -- History:
 --
+-- lec 08/29/2016
+--	- TR12229/added PRO (BIB_PRO_Exists)
+--
 -- lec 12/03/2015
 --      - TR12083/notes
 --
--- 06/30/2015	lec
+-- lec 06/30/2015
 --	- TR11624/added QTL (BIB_QTL_Exists)
 --
--- 10/01/2014	lec
+-- lec 10/01/2014
 --	- TR11786/add Allele and Marker tabs
 --
 -- lec 11/18/2008

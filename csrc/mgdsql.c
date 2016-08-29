@@ -1578,6 +1578,20 @@ char *ref_qtl_exists(char *key)
   return(buf);
 }
 
+char *ref_pro_exists(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select count(e._Refs_key) \
+   \nfrom VOC_Annot a, VOC_Evidence e, VOC_Evidence_Property p \
+   \nwhere a._AnnotType_key = 1000 \
+   \nand a._Annot_key = e._Annot_key \
+   \nand e._AnnotEvidence_key = p._AnnotEvidence_key \
+   \nand p._PropertyTerm_key = 6481775 \
+   \nand e._Refs_key = %s", key);
+  return(buf);
+}
+
 char *ref_allele_count(char *key)
 {
   static char buf[TEXTBUFSIZ];
