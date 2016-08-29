@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Mon Aug 29 06:51:50 2016";
+      lastWritten = "Mon Aug 29 13:08:58 2016";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -1672,9 +1672,6 @@ Module: MGD
                                                     JRS = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    MPD = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     MMRRC = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -1708,6 +1705,9 @@ Module: MGD
                                                     NCIMR = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    MPD = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     MTG = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -1729,6 +1729,9 @@ Module: MGD
                                                     RIKENBRC = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    SMOC = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     TAC = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -1736,9 +1739,6 @@ Module: MGD
                                                   }
                                                   {
                                                     WTSI = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    SMOC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     IMAGELibrary = AccToggle : mgiOption;
@@ -3492,9 +3492,6 @@ Module: MGD
                                                     JRS = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    MPD = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     MMRRC = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -3528,6 +3525,9 @@ Module: MGD
                                                     NCIMR = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    MPD = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     MTG = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -3549,6 +3549,9 @@ Module: MGD
                                                     RIKENBRC = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    SMOC = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     TAC = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -3556,9 +3559,6 @@ Module: MGD
                                                   }
                                                   {
                                                     WTSI = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    SMOC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     IMAGELibrary = AccToggle : mgiOption;
@@ -8140,9 +8140,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     JRS = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    MPD = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     MMRRC = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -8176,6 +8173,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     NCIMR = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    MPD = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     MTG = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -8197,6 +8197,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     RIKENBRC = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    SMOC = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     TAC = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -8204,9 +8207,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     WTSI = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    SMOC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     IMAGELibrary = AccToggle : mgiOption;
@@ -8630,9 +8630,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     JRS = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    MPD = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     MMRRC = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -8666,6 +8663,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     NCIMR = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    MPD = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     MTG = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -8687,6 +8687,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     RIKENBRC = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    SMOC = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     TAC = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -8694,9 +8697,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     WTSI = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    SMOC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     IMAGELibrary = AccToggle : mgiOption;
@@ -9753,11 +9753,6 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
-                                                    MPD = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
                                                     MMRRC = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
@@ -9818,6 +9813,11 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
+                                                    MPD = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
                                                     MTG = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
@@ -9853,6 +9853,11 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
+                                                    SMOC = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
                                                     TAC = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
@@ -9864,11 +9869,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     WTSI = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
-                                                    SMOC = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -10518,9 +10518,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     JRS = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    MPD = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     MMRRC = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -10554,6 +10551,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     NCIMR = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    MPD = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     MTG = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -10575,6 +10575,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     RIKENBRC = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    SMOC = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     TAC = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -10582,9 +10585,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     WTSI = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    SMOC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     IMAGELibrary = AccToggle : mgiOption;

@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Mon Aug 29 06:50:52 2016";
+      lastWritten = "Mon Aug 29 13:08:57 2016";
       copy = false;
       inCreateMenu = true;
         {
@@ -655,9 +655,6 @@ Module: GXD
                                                     JRS = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    MPD = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     MMRRC = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -691,6 +688,9 @@ Module: GXD
                                                     NCIMR = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    MPD = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     MTG = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -712,6 +712,9 @@ Module: GXD
                                                     RIKENBRC = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    SMOC = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     TAC = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -719,9 +722,6 @@ Module: GXD
                                                   }
                                                   {
                                                     WTSI = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    SMOC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     IMAGELibrary = AccToggle : mgiOption;
@@ -1641,9 +1641,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     JRS = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    MPD = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     MMRRC = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -1677,6 +1674,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     NCIMR = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    MPD = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     MTG = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -1698,6 +1698,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     RIKENBRC = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    SMOC = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     TAC = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -1705,9 +1708,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     WTSI = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    SMOC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     IMAGELibrary = AccToggle : mgiOption;

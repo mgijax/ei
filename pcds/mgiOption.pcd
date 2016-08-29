@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Mon Aug 29 06:50:50 2016";
+      lastWritten = "Mon Aug 29 13:08:55 2016";
       copy = false;
       inCreateMenu = true;
         {
@@ -548,11 +548,6 @@ Module: mgiOption
                         defaultValue = 22;
                     }
                     {
-                      MPD = AccToggle : mgiOption;
-                      Group: User
-                        defaultValue = 188;
-                    }
-                    {
                       MMRRC = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 38;
@@ -613,6 +608,11 @@ Module: mgiOption
                         defaultValue = 54;
                     }
                     {
+                      MPD = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 188;
+                    }
+                    {
                       MTG = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 92;
@@ -650,6 +650,11 @@ Module: mgiOption
                         defaultValue = 70;
                     }
                     {
+                      SMOC = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 184;
+                    }
+                    {
                       TAC = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 94;
@@ -665,11 +670,6 @@ Module: mgiOption
                       WTSI = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 155;
-                    }
-                    {
-                      SMOC = AccToggle : mgiOption;
-                      Group: User
-                        defaultValue = 184;
                     }
                     {
                       IMAGELibrary = AccToggle : mgiOption;
