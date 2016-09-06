@@ -1108,7 +1108,7 @@ rules:
 
 	BroadcastSymbolOfficial does
 	  (void) busy_cursor(top);
-	  ExecSQL.cmd := exec_nom_transferToMGD(global_userKey, currentNomenKey, mgi_DBprstr(BROADCASTOFFICIAL));
+	  ExecSQL.cmd := exec_nom_transferToMGD(global_userKey, currentNomenKey);
 	  send(ExecSQL, 0);
 	  (void) reset_cursor(top);
 	end does;

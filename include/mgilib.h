@@ -361,7 +361,6 @@ extern char *global_version;
 
 #define STATUS_NRESERVED        "Reserved"
 #define STATUS_BROADCASTOFF     "Broadcast - Official"
-#define BROADCASTOFFICIAL       "official"
 
 /* Allele Nomen */
 

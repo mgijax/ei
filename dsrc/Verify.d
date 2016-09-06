@@ -2002,10 +2002,11 @@ rules:
 
 	  -- If withdrawn symbols are not allowed, then display list of current symbols
 
-	  --if (not VerifyMarker.allowWithdrawn and whichStatus = STATUS_WITHDRAWN) then
-	  if (not VerifyMarker.allowWithdrawn and \
-	  	(whichStatus = STATUS_WITHDRAWN or whichStatus = STATUS_RESERVED)) then
+	  -- TR11083/nomenclature
+	  --if (not VerifyMarker.allowWithdrawn and \
+	  	--(whichStatus = STATUS_WITHDRAWN or whichStatus = STATUS_RESERVED)) then
 
+	  if (not VerifyMarker.allowWithdrawn and whichStatus = STATUS_WITHDRAWN) then
 	    if (whichStatus = STATUS_WITHDRAWN) then
                 message := "Symbol '" + value + "' has been Withdrawn\n\n" +
                            "The current symbol(s) are:\n\n";
