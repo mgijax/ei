@@ -1324,7 +1324,7 @@ char *nomen_status()
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _Term_key, term from VOC_Term where _Vocab_key = 16 order by _Term_key");
+  sprintf(buf,"select _Term_key, term from VOC_Term where _Vocab_key = 16 order by sequenceNum");
   return(buf);
 }
 

@@ -37,7 +37,7 @@ extern char *exec_mgi_resetSequenceNum(char *, char *);
 extern char *exec_mrk_reloadReference(char *); 
 extern char *exec_mrk_reloadLocation(char *);
 
-extern char *exec_nom_transferToMGD(char *, char *, char *);
+extern char *exec_nom_transferToMGD(char *, char *);
 
 extern char *exec_prb_insertReference(char *, char *, char *);
 extern char *exec_prb_getStrainByReference(char *);
@@ -136,6 +136,7 @@ extern char *molsource_reference(char *);
 /* NoteLib.d */
 
 extern char *notelib_1(char *);
+extern char *notelib_1a(char *);
 extern char *notelib_2(char *);
 extern char *notelib_3a(char *, char *);
 extern char *notelib_3b(char *);

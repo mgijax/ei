@@ -355,13 +355,11 @@ extern char *global_version;
 
 #define STATUS_APPROVED		"1"
 #define STATUS_WITHDRAWN	"2"
+#define STATUS_RESERVED	"3"
 
 /* Nomen Status */
 
-#define STATUS_PENDING          "In Progress"
-#define STATUS_NDELETED         "Deleted"
-#define STATUS_RESERVED         "Reserved"
-#define STATUS_NAPPROVED        "Approved"
+#define STATUS_NRESERVED        "Reserved"
 #define STATUS_BROADCASTOFF     "Broadcast - Official"
 #define BROADCASTOFFICIAL       "official"
 

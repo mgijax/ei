@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Wed Aug 31 08:58:38 2016";
+      lastWritten = "Fri Sep  2 13:29:24 2016";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -13668,7 +13668,7 @@ Shift<Key>Tab: prev-tab-group()
                                     leftOffset = 2;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_form;
-                                    topOffset = 5;
+                                    topOffset = 6;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                 }
@@ -13717,6 +13717,10 @@ Shift<Key>Tab: prev-tab-group()
                                         Group: Widget
                                           columns = 50;
                                           maxLength = 40;
+                                          translations = "#override
+Shift<Key>Tab: prev-tab-group()
+<Key>Tab: SetDefault() Search()
+";
                                         Group: User
                                           required = True;
                                       }
@@ -13729,7 +13733,7 @@ Shift<Key>Tab: prev-tab-group()
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = Symbol;
-                                    topOffset = 2;
+                                    topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                       {
@@ -13740,7 +13744,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         text = text;
                                         Group: Widget
-                                          columns = 100;
+                                          columns = 80;
                                         Group: User
                                           required = True;
                                       }
@@ -13748,18 +13752,17 @@ Shift<Key>Tab: prev-tab-group()
                                 {
                                   Cyto = CharText : mgiDataTypes;
                                   Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
+                                    leftAttachment = attach_widget;
                                     leftWidget = Name;
                                     rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
+                                    topAttachment = attach_opposite_widget;
                                     topWidget = Name;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    topOffset = 5;
                                       {
                                         label = XmLabel;
                                         Group: Widget
-                                          labelString = "Cytogenetic Band";
+                                          labelString = "Cytogenetic \nBand";
                                       }
                                       {
                                         text = text;
@@ -13781,7 +13784,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         label = XmLabel;
                                         Group: Widget
-                                          labelString = "cM Position";
+                                          labelString = "cM \nPosition";
                                       }
                                       {
                                         text = text;
@@ -13859,7 +13862,7 @@ Shift<Key>Tab: prev-tab-group()
                                     rightAttachment = attach_form;
                                     rightOffset = 2;
                                     topAttachment = attach_widget;
-                                    topWidget = Cyto;
+                                    topWidget = mgiNoteForm;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -13889,14 +13892,14 @@ Shift<Key>Tab: prev-tab-group()
                                   Group: Widget
                                     orientation = horizontal;
                                   Group: Constraint
-                                    leftAttachment = attach_widget;
+                                    leftAttachment = attach_opposite_widget;
                                     rightAttachment = attach_none;
-                                    topAttachment = attach_opposite_widget;
-                                    topWidget = cMposition;
+                                    topAttachment = attach_widget;
+                                    topWidget = Name;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    leftWidget = cMposition;
-                                    leftOffset = 20;
+                                    leftWidget = Name;
+                                    topOffset = 5;
                                 }
                                 {
                                   notebookForm = notebookForm : mgiNoteBook;
@@ -14713,6 +14716,21 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       NoteDialog = NoteDialog;
+                          {
+                            label = XmLabel;
+                          }
+                          {
+                            Note = Notes : mgiDataTypes;
+                                {
+                                  label = XmLabel;
+                                }
+                                {
+                                  text = scrolledText;
+                                  Group: Widget
+                                    rows = 45;
+                                    columns = 125;
+                                }
+                          }
                     }
                     {
                       WithdrawalDialog = WithdrawalDialog : mgiDialog;

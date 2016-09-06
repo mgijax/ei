@@ -2002,18 +2002,25 @@ rules:
 
 	  -- If withdrawn symbols are not allowed, then display list of current symbols
 
-	  if (not VerifyMarker.allowWithdrawn and whichStatus = STATUS_WITHDRAWN) then
-            message := "Symbol '" + value + "' has been Withdrawn\n\n" +
-                       "The current symbol(s) are:\n\n";
+	  --if (not VerifyMarker.allowWithdrawn and whichStatus = STATUS_WITHDRAWN) then
+	  if (not VerifyMarker.allowWithdrawn and \
+	  	(whichStatus = STATUS_WITHDRAWN or whichStatus = STATUS_RESERVED)) then
 
-            select := verify_marker_current(whichMarker);
-            dbproc := mgi_dbexec(select);
-            while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
-              while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-                message := message + "  " + mgi_getstr(dbproc, 1);
-              end while;
-            end while;
-            (void) mgi_dbclose(dbproc);
+	    if (whichStatus = STATUS_WITHDRAWN) then
+                message := "Symbol '" + value + "' has been Withdrawn\n\n" +
+                           "The current symbol(s) are:\n\n";
+                select := verify_marker_current(whichMarker);
+                dbproc := mgi_dbexec(select);
+                while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+                  while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+                    message := message + "  " + mgi_getstr(dbproc, 1);
+                  end while;
+                end while;
+                (void) mgi_dbclose(dbproc);
+	    else
+                message := "Symbol '" + value + "' is Reserved\n";
+	    end if;
+
 
             StatusReport.source_widget := top.root;
             StatusReport.message := message;

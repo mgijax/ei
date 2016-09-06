@@ -173,7 +173,7 @@ char *exec_mrk_reloadLocation(char *key)
   return(buf);
 }
 
-char *exec_nom_transferToMGD(char *userKey, char *key, char *status)
+char *exec_nom_transferToMGD(char *userKey, char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
@@ -807,6 +807,16 @@ char *notelib_1(char *key)
   sprintf(buf,"select _NoteType_key, noteType, -1 as private, _MGIType_key \
    from %s \
    order by _NoteType_key", key);
+  return(buf);
+}
+
+char *notelib_1a(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _NoteType_key, noteType, private, _MGIType_key \
+   from %s \
+   order by private", key);
   return(buf);
 }
 

@@ -1,15 +1,15 @@
 
 !
 ! VIP init file
-! written: Wed Feb 15 11:15:01 2006
+! written: Fri Sep  2 10:07:15 2016
 !
 
 session_information {
-  x       = 851
-  y       = 0
-  width   = 1054
-  height  = 1044
-  display = ":0.0"
+  x       = 875
+  y       = 29
+  width   = 973
+  height  = 1042
+  display = "aragorn.informatics.jax.org:0.0"
 }
 
 pcds
@@ -88,19 +88,6 @@ pcds
     opened      = false
     show_names  = false
     height      = 1166
-
-  load "/home/lec/mgi/ei/pcds/mgiAnatDictionary.pcd"
-    floating    = false
-    opened      = false
-    show_names  = false
-    height      = 671
-
-  load "/home/lec/mgi/ei/pcds/MGIAdmin.pcd"
-    floating    = false
-    opened      = false
-    show_names  = false
-    height      = 66
-    vsb_pos     = 55
 
   load "/home/lec/mgi/ei/pcds/MGINomen.pcd"
     floating    = false
@@ -227,9 +214,10 @@ image_path  = "$TeleUSE/pixmaps"
 
 preferences
 {
-  attributeSetOrderSort = "True"
   showStatusBox = "True"
+  moduleWidth = "310"
   attributeAlphabetic = "True"
+  attributeSetOrderSort = "True"
   useCDEInitial = "False"
 }
 

@@ -371,11 +371,11 @@ rules:
 
 	  if (top->MarkerStatusMenu.menuHistory.labelString = STATUS_BROADCASTOFF) then
             SetOption.source_widget := top->MarkerStatusMenu;
-            SetOption.value := STATUS_PENDING;
+            SetOption.value := STATUS_NRESERVED;
             send(SetOption, 0);
 	  end if;
 
-	  if ((Add.broadcast or top->MarkerStatusMenu.menuHistory.labelString != STATUS_RESERVED) and
+	  if ((Add.broadcast or top->MarkerStatusMenu.menuHistory.labelString != STATUS_NRESERVED) and
               (mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_EMPTY or
                mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_DELETE)) then
             StatusReport.source_widget := top;
@@ -504,7 +504,7 @@ rules:
 	  table : widget := top->Reference->Table;
 	  error : boolean := false;
 
-	  if (top->MarkerStatusMenu.menuHistory.labelString != STATUS_RESERVED and
+	  if (top->MarkerStatusMenu.menuHistory.labelString != STATUS_NRESERVED and
               (mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_EMPTY or
                mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_DELETE)) then
             StatusReport.source_widget := top;
@@ -1093,7 +1093,7 @@ rules:
 	  -- if Add was successful, broadcast to Nomen
 	  if (top->QueryList->List.sqlSuccessful) then
 	    (void) busy_cursor(top);
-	    ExecSQL.cmd := exec_nom_transferToMGD(global_userKey, currentNomenKey, mgi_DBprstr(BROADCASTOFFICIAL));
+	    ExecSQL.cmd := exec_nom_transferToMGD(global_userKey, currentNomenKey);
 	    send(ExecSQL, 0);
 	    (void) reset_cursor(top);
 	  end if;

@@ -135,7 +135,6 @@ rules:
 	      tableID = MGI_NOTETYPE_DERIVATION_VIEW or 
 	      tableID = MGI_NOTETYPE_GENOTYPE_VIEW or 
 	      tableID = MGI_NOTETYPE_IMAGE_VIEW or 
-	      tableID = MGI_NOTETYPE_MARKER_VIEW or 
 	      tableID = MGI_NOTETYPE_MRKGO_VIEW or 
 	      tableID = MGI_NOTETYPE_NOMEN_VIEW or 
 	      tableID = MGI_NOTETYPE_PROBE_VIEW or 
@@ -144,6 +143,8 @@ rules:
 	      tableID = MGI_NOTETYPE_STRAIN_VIEW or 
 	      tableID = MGI_NOTETYPE_VOCEVIDENCE_VIEW) then
 	    cmd := notelib_1(mgi_DBtable(tableID));
+          elsif (tableID = MGI_NOTETYPE_MARKER_VIEW) then
+	    cmd := notelib_1a(mgi_DBtable(tableID));
 	  else
 	    cmd := notelib_2(mgi_DBtable(tableID));
 	  end if;
@@ -219,7 +220,7 @@ rules:
 	      tableID = MGI_NOTE_DERIVATION_VIEW or 
 	      tableID = MGI_NOTE_GENOTYPE_VIEW or 
 	      tableID = MGI_NOTE_IMAGE_VIEW or 
-	      tableID = MGI_NOTE_MARKER_VIEW or 
+	      tableID = MGI_NOTE_MARKER_VIEW or
 	      tableID = MGI_NOTE_MRKGO_VIEW or 
 	      tableID = MGI_NOTE_NOMEN_VIEW or 
 	      tableID = MGI_NOTE_PROBE_VIEW or 
