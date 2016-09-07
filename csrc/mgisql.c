@@ -810,16 +810,6 @@ char *notelib_1(char *key)
   return(buf);
 }
 
-char *notelib_1a(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _NoteType_key, noteType, private, _MGIType_key \
-   from %s \
-   order by private", key);
-  return(buf);
-}
-
 char *notelib_2(char *key)
 {
   static char buf[TEXTBUFSIZ];

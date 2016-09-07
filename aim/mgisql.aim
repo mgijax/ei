@@ -108,7 +108,6 @@ CALLS
 	 molsource_reference("char *")				: "char *";
 
 	 notelib_1("char *")					: "char *";
-	 notelib_1a("char *")					: "char *";
 	 notelib_2("char *")					: "char *";
 	 notelib_3a("char *", "char *")				: "char *";
 	 notelib_3b("char *")					: "char *";

@@ -136,7 +136,6 @@ extern char *molsource_reference(char *);
 /* NoteLib.d */
 
 extern char *notelib_1(char *);
-extern char *notelib_1a(char *);
 extern char *notelib_2(char *);
 extern char *notelib_3a(char *, char *);
 extern char *notelib_3b(char *);
