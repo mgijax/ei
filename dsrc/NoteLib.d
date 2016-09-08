@@ -730,18 +730,18 @@ rules:
                          mgi_DBprnotestr(note) + "," +
 		         global_userKey + "," + global_userKey + END_VALUE;
 	    elsif (isTable and noteType.length > 0) then
-	            cmd := cmd + 
+	          cmd := cmd + 
 		         mgi_DBinsert(tableID, NOKEY) + key + "," + 
 		         (string) i + "," + 
 		         mgi_DBprstr(noteType) + "," +
                          mgi_DBprnotestr(note) + END_VALUE;
 	    elsif (noteType.length > 0) then
-	            cmd := cmd + 
+	          cmd := cmd + 
 		         mgi_DBinsert(tableID, NOKEY) + key + "," + 
 		         (string) i + "," + 
 		         noteType + "," +
                          mgi_DBprnotestr(note) + END_VALUE;
-              else
+            else
 	          cmd := cmd + 
 		       mgi_DBinsert(tableID, NOKEY) + key + "," + 
 		       (string) i + "," + 
