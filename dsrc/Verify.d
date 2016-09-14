@@ -1918,10 +1918,11 @@ rules:
 	    end if;
           end if;
 
+	  -- TR11083/remove allowNomen
 	  -- If searching Nomen as well....
-	  if (VerifyMarker.allowNomen) then
-	    select := select + verify_marker_union(mgi_DBprstr(value));
-	  end if;
+	  --if (VerifyMarker.allowNomen) then
+	    --select := select + verify_marker_union(mgi_DBprstr(value));
+	  --end if;
 
 	  -- Insert results into string list for loading into Marker selection list
 	  -- Insert chromosomes into string list for future reference

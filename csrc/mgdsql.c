@@ -166,6 +166,7 @@ char *allele_parentcellline(char *key)
   return(buf);
 }
 
+/* TR11083/remove */
 char *allele_unionnomen(char *key)
 {
   static char buf[TEXTBUFSIZ];

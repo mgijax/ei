@@ -1057,6 +1057,16 @@ char *verify_marker(char *key, char *symbol)
   return(buf);
 }
 
+char *verify_marker_official(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select count(*) from MRK_Marker \
+   \nwhere _Marker_Status_key = 1 \
+   \nand _Marker_key = %s", key);
+  return(buf);
+}
+
 char *verify_markerid(char *key)
 {
   static char buf[TEXTBUFSIZ];

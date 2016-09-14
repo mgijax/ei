@@ -363,7 +363,6 @@ rules:
 --
 
 	Add does
-	  suid : string := "";
 	  table : widget := top->Reference->Table;
 
 	  -- Set Status to In Progress if set to Broadcast...this can happen

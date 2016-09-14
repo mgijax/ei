@@ -415,6 +415,7 @@ rules:
 	  isWildType : integer := 0;
 	  nomenSymbol : string := "NULL";
 	  markerKey : string := mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
+	  markerIsOfficial : string;
 
 	  statusKey : string;
 	  markerstatusKey : string;
@@ -453,6 +454,18 @@ rules:
 	  -- Approved Alleles must have a valid MGD Marker
 	  -- unless they are gene trap alleles (which can have no marker)
 
+          -- Verify Marker is valid/official
+          markerIsOfficial := mgi_sql1(verify_marker_official(markerKey));
+	  if (top->AlleleStatusMenu.menuHistory.labelString = ALL_STATUS_APPROVED
+	      and top->AlleleTypeMenu.menuHistory.labelString != "Gene trapped"
+              and (integer) markerIsOfficial = 0) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "Approved Allele Symbol must have an Approved Marker.";
+            send(StatusReport);
+            return;
+          end if;
+
+	  -- TR11083 : remove after nomen is gone
 	  if (top->AlleleStatusMenu.menuHistory.labelString = ALL_STATUS_APPROVED
 	      and top->AlleleTypeMenu.menuHistory.labelString != "Gene trapped"
 	      and (markerKey = "-1" or markerKey = "" or markerKey = "NULL")) then
@@ -538,6 +551,7 @@ rules:
 
           currentRecordKey := MAX_KEY1 + KEYNAME + MAX_KEY2;
  
+	  -- TR11083 : remove after nomen is gone
 	  if (markerKey = "-1" or markerKey.length = 0) then
 	    markerKey := "NULL";
 	  end if;
@@ -578,9 +592,9 @@ rules:
 	      end if;
 	  end if;
 
+	  -- TR11083 : remove after nomen is gone
 	  -- there is only one nomen symbol per allele...
 	  -- if the marker key is NULL, then this is a nomen symbol
-
 	  markerKey := mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
 	  if (markerKey = "-1" or markerKey = "" or markerKey = "NULL") then
 	    markerKey := "NULL";
@@ -744,6 +758,7 @@ rules:
 	  primaryPane : integer := 0;
 	  row : integer := 0;
 	  markerKey : string := mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
+	  markerIsOfficial : string;
 	  nomenSymbol : string := "NULL";
 
 	  refsKey : string;
@@ -770,6 +785,18 @@ rules:
 	  -- Approved Alleles must have a valid MGD Marker
 	  -- unless they are gene trap alleles (which can have no marker)
 
+          -- Verify Marker is valid/official
+          markerIsOfficial := mgi_sql1(verify_marker_official(markerKey));
+	  if (top->AlleleStatusMenu.menuHistory.labelString = ALL_STATUS_APPROVED
+	      and top->AlleleTypeMenu.menuHistory.labelString != "Gene trapped"
+              and (integer) markerIsOfficial = 0) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "Approved Allele Symbol must have an Approved Marker.";
+            send(StatusReport);
+            return;
+          end if;
+
+	  -- TR11083 : remove after nomen is gone
 	  if (top->AlleleStatusMenu.menuHistory.labelString = ALL_STATUS_APPROVED
 	      and top->AlleleTypeMenu.menuHistory.labelString != "Gene trapped"
 	      and (markerKey = "-1" or markerKey = "" or markerKey = "NULL")) then
@@ -977,6 +1004,7 @@ rules:
 	  if (editMode = TBL_ROW_MODIFY) then
 
 	    markerKey := mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
+	    -- TR11083 : remove after nomen is gone
 	    if (markerKey = "-1" or markerKey = "" or markerKey = "NULL") then
 	      markerKey := "NULL";
 	      nomenSymbol := mgi_tblGetCell(markerTable, 0, markerTable.markerSymbol);
@@ -1144,6 +1172,7 @@ rules:
 	  -- For now, we have only one Marker per Allele
 
 	  markerKey : string := mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
+	  -- TR11083 : remove 'markerKey != "NULL"' after nomen is gone
 	  if (not isAdd and markerKey != "NULL") then
             ModifyNotes.source_widget := top->markerDescription->Note;
             ModifyNotes.tableID := MRK_NOTES;
@@ -1760,6 +1789,8 @@ rules:
           end if;
 
 	  -- Marker
+	  -- TR11083 : remove -1 check after nomen is gone
+	  -- TR11083 : remove elsif/union after nomen is gone
 
 	  value := mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
 	  if (value.length > 0 and value != "NULL" and value != "-1") then
@@ -2023,12 +2054,6 @@ rules:
 	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 29));
 	      (void) mgi_tblSetCell(table, table.approvedBy, table.byUser, mgi_getstr(dbproc, 30));
 
-	      -- If the Marker key is null, then use the Nomen Symbol field
-	      if (mgi_getstr(dbproc, 2) = "") then
-	        (void) mgi_tblSetCell(markerTable, 0, markerTable.markerKey, mgi_getstr(dbproc, 2));
-	        (void) mgi_tblSetCell(markerTable, 0, markerTable.markerSymbol, mgi_getstr(dbproc, 11));
-	      end if;
-
 	      -- Strain of Origin
 	      top->StrainOfOrigin->StrainID->text.value := mgi_getstr(dbproc, 3);
 	      top->StrainOfOrigin->Verify->text.value := mgi_getstr(dbproc, 26);
@@ -2069,8 +2094,15 @@ rules:
 	      top->mgiParentCellLine->Derivation->ObjectID->text.value := "";
 	      top->mgiParentCellLine->Derivation->CharText->text.value := "";
 
-	      (void) mgi_tblSetCell(markerTable, row, markerTable.markerKey, mgi_getstr(dbproc, 2));
-	      (void) mgi_tblSetCell(markerTable, row, markerTable.markerSymbol, mgi_getstr(dbproc, 23));
+	      -- TR11083 : remove NULL check after nomen is gone
+	      -- If the Marker key is null, then use the Nomen Symbol field
+	      if (mgi_getstr(dbproc, 2) = "") then
+	        (void) mgi_tblSetCell(markerTable, 0, markerTable.markerKey, mgi_getstr(dbproc, 2));
+	        (void) mgi_tblSetCell(markerTable, 0, markerTable.markerSymbol, mgi_getstr(dbproc, 11));
+	      else
+	        (void) mgi_tblSetCell(markerTable, row, markerTable.markerKey, mgi_getstr(dbproc, 2));
+	        (void) mgi_tblSetCell(markerTable, row, markerTable.markerSymbol, mgi_getstr(dbproc, 23));
+	      end if;
 	      (void) mgi_tblSetCell(markerTable, row, markerTable.refsKey, mgi_getstr(dbproc, 15));
 	      (void) mgi_tblSetCell(markerTable, row, markerTable.jnum, mgi_getstr(dbproc, 32));
 	      (void) mgi_tblSetCell(markerTable, row, markerTable.citation, mgi_getstr(dbproc, 34));
