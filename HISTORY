@@ -1,5 +1,6 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-6-0-6-3
 TAG: ei-6-0-6-2
 TAG: ei-6-0-6-1
 DATE: 08/05/2016
@@ -11,6 +12,7 @@ TR12345/GPAD/GPI
 2) mgdsql.c/_marker_status_key = 3 (interim) is obsolete
 3) TR12331/add MDP to Strain module
 4) TR12229/add PRO to Reference module/data sets
+5) TR12363/GXD Index/coded? query
 
 TAG: ei-6-0-4-8
 TAG: ei-6-0-4-7
