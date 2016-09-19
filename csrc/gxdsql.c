@@ -290,12 +290,13 @@ char *index_stages(char *key)
 char *index_hasAssay(char *key)
 {
   /* has the assay been coded? */
+  /* \nwhere i._Marker_key = e._Marker_key and i._Refs_key = e._Refs_key */
 
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select i._Index_key from GXD_Index i \
   	\nwhere exists (select 1 from GXD_Expression e \
-  	\nwhere i._Marker_key = e._Marker_key and i._Refs_key = e._Refs_key \
+  	\nwhere i._Refs_key = e._Refs_key \
 	and i._Index_key = %s)", key);
   return(buf);
 }
