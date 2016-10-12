@@ -723,8 +723,8 @@ rules:
           ClearIndex.reset := true;
           send(ClearIndex, 0);
 
-	  SetXCellsToFlash.source_widget := top->Stage->Table;
-	  send(SetXCellsToFlash, 0);
+	  --SetXCellsToFlash.source_widget := top->Stage->Table;
+	  --send(SetXCellsToFlash, 0);
 
 	  (void) reset_cursor(top); end does;
 

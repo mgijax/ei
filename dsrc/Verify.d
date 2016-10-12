@@ -3938,6 +3938,16 @@ rules:
 	  isHeader : string;
 	  dbproc : opaque;
 	  select : string;
+	  omimid : string_list;
+
+	  -- for OMIM (44) only
+	  -- if no prefix (OMIM:), then add it
+	  if (sourceWidget.vocabKey = 44) then
+              omimid := mgi_splitfields(value, ":");
+              if (omimid.find("OMIM") <= 0) then
+	          value := "OMIM:" + value;
+	      end if;
+	  end if;
 
 	  if (not searchObsolete) then
 	    select := verify_vocabtermaccIDNoObsolete(mgi_DBprstr(value), (string) sourceWidget.vocabKey);

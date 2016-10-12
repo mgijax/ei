@@ -374,10 +374,72 @@ rules:
 --
 -- Contruct and execute insert statement
 --
--- Note that ALL new markers should be added via Nomen.
---
 
 	Add does
+
+	  if (not top.allowEdit) then
+	    top->QueryList->List.sqlSuccessful := false;
+	    return;
+	  end if;
+
+	  (void) busy_cursor(top);
+
+          -- If adding, then KEYNAME must be used in all Modify events
+ 
+	  currentRecordKey := MAX_KEY1 + KEYNAME + MAX_KEY2;
+ 
+	  -- Insert master Nomen Record
+
+          cmd := mgi_setDBkey(MRK_MARKER, NEWKEY, KEYNAME) +
+                 mgi_DBinsert(MRK_MARKER, KEYNAME) +
+		 "1," +
+                 top->MarkerStatusMenu.menuHistory.defaultValue + "," +
+                 top->MarkerTypeMenu.menuHistory.defaultValue + "," +
+	         mgi_DBprstr(top->Symbol->text.value) + "," +
+	         mgi_DBprstr(top->Name->text.value) + "," +
+                 mgi_DBprstr(top->ChromosomeMenu.menuHistory.defaultValue) + "," +
+	         "NULL," +
+		 global_userKey + "," + global_userKey + END_VALUE;
+
+	  --  Process References
+
+	  ProcessRefTypeTable.table := top->Reference->Table;
+	  ProcessRefTypeTable.objectKey := currentRecordKey;
+	  send(ProcessRefTypeTable, 0);
+          cmd := cmd + top->Reference->Table.sqlCmd;
+
+          --  Process Synonyms
+
+          ProcessSynTypeTable.table := top->Synonym->Table;
+          ProcessSynTypeTable.objectKey := currentRecordKey;
+          send(ProcessSynTypeTable, 0);
+          cmd := cmd + top->Synonym->Table.sqlCmd;
+
+	  -- Process Notes
+
+	  ProcessNoteForm.notew := top->mgiNoteForm;
+	  ProcessNoteForm.tableID := MGI_NOTE;
+	  ProcessNoteForm.objectKey := currentRecordKey;
+	  send(ProcessNoteForm, 0);
+	  cmd := cmd + top->mgiNoteForm.sql;
+
+	  -- Execute the add
+
+	  AddSQL.tableID := MRK_MARKER;
+          AddSQL.cmd := cmd;
+          AddSQL.list := top->QueryList;
+          AddSQL.item := top->Symbol->text.value;
+          AddSQL.key := top->ID->text;
+          send(AddSQL, 0);
+
+	  -- If add was sucessful, re-initialize the form
+
+	  if (top->QueryList->List.sqlSuccessful) then
+	    ClearMarker.clearKeys := false;
+	    send(ClearMarker, 0);
+	  end if;
+
+	  (void) reset_cursor(top);
 	end does;
 
 --

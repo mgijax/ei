@@ -1611,9 +1611,6 @@ char *mgi_DBtable(int table)
     case NOM_MARKER_VIEW:
 	    strcpy(buf, "NOM_Marker_View");
 	    break;
-    case NOM_MARKER_VALID_VIEW:
-	    strcpy(buf, "NOM_Marker_Valid_View");
-	    break;
     case NOM_TRANSFERSYMBOL:
 	    strcpy(buf, "NOM_transferToMGD");
 	    break;

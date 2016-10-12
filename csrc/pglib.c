@@ -422,7 +422,6 @@ char *mgi_getstr(PGconn *conn, int column)
 
   switch (coltype)
   {
-    /*case 1043: varchar) */
     case 1560:
       if (strcmp(buf, "t") == 0)
       {

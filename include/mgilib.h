@@ -198,7 +198,6 @@ extern char *global_version;
 #define NOM_MARKER			500
 #define NOM_MARKER_VIEW			501
 #define NOM_ACC_REFERENCE		502
-#define NOM_MARKER_VALID_VIEW		503
 
 /* MGI Tables */
 

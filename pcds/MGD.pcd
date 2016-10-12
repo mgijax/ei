@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Fri Sep  2 13:29:24 2016";
+      lastWritten = "Tue Sep 20 13:59:23 2016";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -13733,7 +13733,7 @@ Shift<Key>Tab: prev-tab-group()
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = Symbol;
-                                    topOffset = 5;
+                                    topOffset = 6;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                       {
@@ -14495,7 +14495,7 @@ Shift<Key>Tab: prev-tab-group()
                                 {
                                   Add = ControlPush;
                                   Group: Widget
-                                    sensitive = False;
+                                    sensitive = True;
                                 }
                                 {
                                   Delete = ControlPush;

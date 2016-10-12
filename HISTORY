@@ -1,5 +1,12 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-6-0-8-?
+DATE: 10/12/2016
+STAFF: lec
+CHANGES:
+TR12427/Disease Ontology (DO)
+1) Verify.d/VerifyVocabTermAccID
+
 TAG: ei-6-0-6-3
 TAG: ei-6-0-6-2
 TAG: ei-6-0-6-1
