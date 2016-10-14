@@ -2320,8 +2320,6 @@ Module: mgiOption
                 Group: Widget
                   subMenuId = MarkerStatusPulldown;
                   labelString = Status;
-                Group: User
-                  defaultChild = 2;
               }
               Popups:
               {
