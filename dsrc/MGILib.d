@@ -253,10 +253,10 @@ rules:
 	   end if;
 
 	   -- only certain users have permission to turn 'Delete' on in this module
-	   if (top.name = "MarkerModule" and 
-	      	    global_user != "mgd_dbo" and global_user != "mmh" and global_user != "djr") then
-	       top->Control->Delete.sensitive := false;
-	   end if;
+	   --if (top.name = "MarkerModule" and 
+	      	    --global_user != "mgd_dbo" and global_user != "mmh" and global_user != "djr") then
+	       --top->Control->Delete.sensitive := false;
+	   --end if;
 
         end does;
  

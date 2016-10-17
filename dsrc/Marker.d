@@ -185,7 +185,7 @@ devents:
 	ModifyAlias :local [];
 	ModifyChromosome :exported [];
 	ModifyCurrent :local [];
-	ModifyHistory :local [];
+	ModifyHistory :local [mode = "modify";];
 	ModifyOffset :local [];
 
 	PrepareSearch :local [];
@@ -400,6 +400,9 @@ rules:
                  mgi_DBprstr(top->ChromosomeMenu.menuHistory.defaultValue) + "," +
 	         "NULL," +
 		 global_userKey + "," + global_userKey + END_VALUE;
+
+	  --ModifyHistory.mode = "add";
+	  --send(ModifyHistory, 0);
 
 	  --  Process References
 
@@ -1172,7 +1175,7 @@ rules:
 
 	ModifyHistory does
           table : widget := top->History->Table;
-          row : integer;
+          row : integer := 0;
           editMode : string;
           set : string := "";
           deleteCmd : string := "";
@@ -1197,9 +1200,24 @@ rules:
             return;
           end if;
  
+	  -- Check "add"
+          refsKey := mgi_tblGetCell(table, row, table.refsKey);
+	  if ModifyHistory.mode = "add":
+            #if (top->MarkerStatusMenu.menuHistory.defaultValue = "1" and len(refsKey) == 0) then
+            #  StatusReport.source_widget := top;
+	    #  StatusReport.message := "Primary Reference Required for 'official' Marker.";
+	    #  send(StatusReport);
+	    #  return;
+	    #end if;
+	    if len(refsKey) == 0:
+	      refsKey = '22864';
+	    end if;
+            cmd := cmd + "PERFORM MRK_insertHistory(global_userKey, currentRecordKey, currentRecordKey, refsKey, 1, 01, mgi_DBprstr(top->Name->text.value));\n";
+	    return;
+          end if;
+
           -- Process while non-empty rows are found
  
-          row := 0;
           while (row < mgi_tblNumRows(table)) do
             editMode := mgi_tblGetCell(table, row, table.editMode);
  
