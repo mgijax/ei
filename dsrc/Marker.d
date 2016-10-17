@@ -185,7 +185,7 @@ devents:
 	ModifyAlias :local [];
 	ModifyChromosome :exported [];
 	ModifyCurrent :local [];
-	ModifyHistory :local [mode = "modify";];
+	ModifyHistory :local [mode : string := "modify";];
 	ModifyOffset :local [];
 
 	PrepareSearch :local [];
@@ -401,7 +401,7 @@ rules:
 	         "NULL," +
 		 global_userKey + "," + global_userKey + END_VALUE;
 
-	  --ModifyHistory.mode = "add";
+	  --ModifyHistory.mode := "add";
 	  --send(ModifyHistory, 0);
 
 	  --  Process References
@@ -1201,20 +1201,20 @@ rules:
           end if;
  
 	  -- Check "add"
-          refsKey := mgi_tblGetCell(table, row, table.refsKey);
-	  if ModifyHistory.mode = "add":
-            #if (top->MarkerStatusMenu.menuHistory.defaultValue = "1" and len(refsKey) == 0) then
-            #  StatusReport.source_widget := top;
-	    #  StatusReport.message := "Primary Reference Required for 'official' Marker.";
-	    #  send(StatusReport);
-	    #  return;
-	    #end if;
-	    if len(refsKey) == 0:
-	      refsKey = '22864';
-	    end if;
-            cmd := cmd + "PERFORM MRK_insertHistory(global_userKey, currentRecordKey, currentRecordKey, refsKey, 1, 01, mgi_DBprstr(top->Name->text.value));\n";
-	    return;
-          end if;
+          --refsKey := mgi_tblGetCell(table, row, table.refsKey);
+	  --if ModifyHistory.mode = "add":
+            --if (top->MarkerStatusMenu.menuHistory.defaultValue = "1" and len(refsKey) == 0) then
+              --StatusReport.source_widget := top;
+	      --StatusReport.message := "Primary Reference Required for 'official' Marker.";
+	      --send(StatusReport);
+	      --return;
+	    --end if;
+	    --if len(refsKey) == 0:
+	      --refsKey = "22864";
+	    --end if;
+            --cmd := cmd + "PERFORM MRK_insertHistory(global_userKey, currentRecordKey, currentRecordKey, refsKey, 1, 01, mgi_DBprstr(top->Name->text.value));\n";
+	    --return;
+          --end if;
 
           -- Process while non-empty rows are found
  
