@@ -216,6 +216,7 @@ locals:
 	currentChr : string;		-- current Chromosome of selected record
 	currentName : string;		-- current Name of selected record
 	currentSymbol : string;		-- current Name of selected record
+	currentStatus : string;
 
         currentRecordKey : string;      -- Primary Key value of currently selected record
                                         -- Initialized in Select[] and Add[] events
@@ -401,8 +402,8 @@ rules:
 	         "NULL," +
 		 global_userKey + "," + global_userKey + END_VALUE;
 
-	  --ModifyHistory.mode := "add";
-	  --send(ModifyHistory, 0);
+	  ModifyHistory.mode := "add";
+	  send(ModifyHistory, 0);
 
 	  --  Process References
 
@@ -943,6 +944,14 @@ rules:
 	    return;
 	  end if;
 
+          if (currentStatus != top->MarkerStatusMenu.menuHistory.defaultValue
+	  	and top->MarkerStatusMenu.menuHistory.defaultValue = "2") then
+            StatusReport.source_widget := top;
+	    StatusReport.message := "Cannot change the status to 'withdrawn'.";
+	    send(StatusReport);
+	    return;
+          end if;
+
 	  (void) busy_cursor(top);
 
 	  cmd := "";
@@ -1201,20 +1210,20 @@ rules:
           end if;
  
 	  -- Check "add"
-          --refsKey := mgi_tblGetCell(table, row, table.refsKey);
-	  --if ModifyHistory.mode = "add":
-            --if (top->MarkerStatusMenu.menuHistory.defaultValue = "1" and len(refsKey) == 0) then
-              --StatusReport.source_widget := top;
-	      --StatusReport.message := "Primary Reference Required for 'official' Marker.";
-	      --send(StatusReport);
-	      --return;
-	    --end if;
-	    --if len(refsKey) == 0:
-	      --refsKey = "22864";
-	    --end if;
-            --cmd := cmd + "PERFORM MRK_insertHistory(global_userKey, currentRecordKey, currentRecordKey, refsKey, 1, 01, mgi_DBprstr(top->Name->text.value));\n";
-	    --return;
-          --end if;
+          refsKey := mgi_tblGetCell(table, row, table.refsKey);
+	  if (ModifyHistory.mode = "add") then
+	    -- if no reference, then use J:23000
+	    if (refsKey.length = 0) then
+	      refsKey := "22864";
+	    end if;
+            cmd := cmd + "select * from MRK_insertHistory(" + \
+	    	global_userKey + "," + \
+		currentRecordKey + "," + \
+		currentRecordKey + "," + \
+		refsKey + ", 1, 1," + \ 
+		mgi_DBprstr(top->Name->text.value) + ");";
+	    return;
+          end if;
 
           -- Process while non-empty rows are found
  
@@ -1878,6 +1887,7 @@ rules:
 	  currentChr := top->ChromosomeMenu.menuHistory.defaultValue;
 	  currentName := top->Name->text.value;
 	  currentSymbol := top->Symbol->text.value;
+	  currentStatus := top->MarkerStatusMenu.menuHistory.defaultValue;
 
 	  -- Withdrawn markers will not have MGI accession IDs
 
