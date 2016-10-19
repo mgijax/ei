@@ -136,7 +136,6 @@ CALLS
 	 verify_marker("char *", "char *")			: "char *";
 	 verify_marker_official("char *")			: "char *";
 	 verify_markerid("char *")				: "char *";
-	 verify_marker_union("char *")				: "char *";
 	 verify_marker_current("char *")			: "char *";
 	 verify_marker_which("char *")				: "char *";
 	 verify_marker_nonmouse("char *")			: "char *";

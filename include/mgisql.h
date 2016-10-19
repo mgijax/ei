@@ -173,7 +173,6 @@ extern char *verify_imagepane(char *);
 extern char *verify_marker(char *, char *);
 extern char *verify_marker_official(char *);
 extern char *verify_markerid(char *);
-extern char *verify_marker_union(char *);
 extern char *verify_marker_current(char *);
 extern char *verify_marker_which(char *);
 extern char *verify_marker_nonmouse(char *);

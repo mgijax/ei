@@ -1083,17 +1083,6 @@ char *verify_markerid(char *key)
   return(buf);
 }
 
-char *verify_marker_union(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"\nunion all \
-   \nselect -1, 1, symbol, chromosome, null, substring(name, 1, 25), null \
-   \nfrom NOM_Marker_Valid_View \
-   \nwhere symbol ilike %s", key);
-  return(buf);
-}
-
 char *verify_marker_current(char *key)
 {
   static char buf[TEXTBUFSIZ];

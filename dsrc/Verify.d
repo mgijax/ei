@@ -168,7 +168,6 @@
 -- lec 03/20/2001
 --	- TR 1939; VerifyAllele; status must be approved to be valid
 --	- VerifyNomenMarker; created
---	- VerifyMarker; added allowNomen parameter
 --
 -- lec 12/19/2000
 --	- TR 2128; VerifyChromosome; raise case
@@ -1917,12 +1916,6 @@ rules:
 	      select := verify_markerid(accID);
 	    end if;
           end if;
-
-	  -- TR11083/remove allowNomen
-	  -- If searching Nomen as well....
-	  if (VerifyMarker.allowNomen) then
-	    select := select + verify_marker_union(mgi_DBprstr(value));
-	  end if;
 
 	  -- Insert results into string list for loading into Marker selection list
 	  -- Insert chromosomes into string list for future reference
