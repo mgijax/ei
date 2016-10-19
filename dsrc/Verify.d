@@ -1996,26 +1996,39 @@ rules:
 
 	  -- If withdrawn symbols are not allowed, then display list of current symbols
 
-	  -- TR11083/nomenclature
-	  --if (not VerifyMarker.allowWithdrawn and \
-	  	--(whichStatus = STATUS_WITHDRAWN or whichStatus = STATUS_RESERVED)) then
-
 	  if (not VerifyMarker.allowWithdrawn and whichStatus = STATUS_WITHDRAWN) then
-	    if (whichStatus = STATUS_WITHDRAWN) then
-                message := "Symbol '" + value + "' has been Withdrawn\n\n" +
-                           "The current symbol(s) are:\n\n";
-                select := verify_marker_current(whichMarker);
-                dbproc := mgi_dbexec(select);
-                while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
-                  while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-                    message := message + "  " + mgi_getstr(dbproc, 1);
-                  end while;
-                end while;
-                (void) mgi_dbclose(dbproc);
+
+            message := "Symbol '" + value + "' has been Withdrawn\n\n" +
+                       "The current symbol(s) are:\n\n";
+            select := verify_marker_current(whichMarker);
+            dbproc := mgi_dbexec(select);
+            while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+              while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+                message := message + "  " + mgi_getstr(dbproc, 1);
+              end while;
+            end while;
+            (void) mgi_dbclose(dbproc);
+
+            StatusReport.source_widget := top.root;
+            StatusReport.message := message;
+            send(StatusReport);
+
+	    if (isTable) then
+              (void) mgi_tblSetCell(sourceWidget, row, markerKey, "NULL");
+	      VerifyMarker.doit := (integer) false;
 	    else
-                message := "Symbol '" + value + "' is Reserved\n";
+	      top->mgiMarker->ObjectID->text.value := "NULL";
+	      if (accessionWidget != nil) then
+	        accessionWidget->AccessionID->text.value := "";
+	      end if;
 	    end if;
 
+	    (void) reset_cursor(top);
+	    return;
+	  end if;
+
+	  if (not VerifyMarker.allowReserved and whichStatus = STATUS_RESERVED) then
+            message := "Symbol '" + value + "' is Reserved\n";
 
             StatusReport.source_widget := top.root;
             StatusReport.message := message;

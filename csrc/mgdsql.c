@@ -166,17 +166,6 @@ char *allele_parentcellline(char *key)
   return(buf);
 }
 
-/* TR11083/remove */
-char *allele_unionnomen(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"\nunion all select distinct a._Allele_key, a.symbol, a.statusNum \
-   \nfrom ALL_Allele_View a \
-   \nwhere a.nomenSymbol ilike %s", key);
-  return(buf);
-}
-
 char *allele_search(char *from, char *where, char *addUnion)
 {
   static char buf[TEXTBUFSIZ];

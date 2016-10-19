@@ -26,7 +26,6 @@ CALLS
 	 allele_stemcellline("char *")			: "char *";
 	 allele_mutantcellline("char *")		: "char *";
 	 allele_parentcellline("char *")		: "char *";
-	 allele_unionnomen("char *")		: "char *";
 	 allele_search("char *", "char *", "char *")	: "char *";
 	 allele_subtype("char *")			: "char *";
 

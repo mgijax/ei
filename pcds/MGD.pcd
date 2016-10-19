@@ -7280,7 +7280,7 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblPixelWidthSeries = "(all 0-3 0)";
                                           xrtTblTraversableSeries = "(all 0-3 False)";
                                           userDefinedAttributes = "markerKey:Int(Int)=\"2\"\nmarkerSymbol:Int(Int)=\"4\"\nmodifiedBy:Int(Int)=\"7\"\nmodifiedDate:Int(Int)=\"8\"\nassocKey:Int(Int)=\"1\"\nmarkerColumns:Int(Int)=\"1\"\nstatusKey:Int(Int)=\"4\"\nstatus:Int(Int)=\"10\"\n";
-                                          xrtTblValidateCellCallback = "D:VerifyMarker,\nD:VerifyReference,\nD:CommitTableCellEdit";
+                                          xrtTblValidateCellCallback = "D:VerifyMarker(allowReserved = true),\nD:VerifyReference,\nD:CommitTableCellEdit";
                                         Group: User
                                           citation = 6;
                                           jnum = 5;

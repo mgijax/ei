@@ -465,16 +465,6 @@ rules:
             return;
           end if;
 
-	  -- TR11083 : remove after nomen is gone
-	  if (top->AlleleStatusMenu.menuHistory.labelString = ALL_STATUS_APPROVED
-	      and top->AlleleTypeMenu.menuHistory.labelString != "Gene trapped"
-	      and (markerKey = "-1" or markerKey = "" or markerKey = "NULL")) then
-            StatusReport.source_widget := top;
-            StatusReport.message := "Approved Allele Symbol must have an Approved Marker.";
-            send(StatusReport);
-            return;
-	  end if;
-
 	  -- Verify References
 
 	  row := 0;
