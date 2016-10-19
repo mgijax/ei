@@ -1318,38 +1318,6 @@ char *mutant_derivationVerify(
 }
 
 /*
- * Nomen.d
-*/
-
-char *nomen_status()
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _Term_key, term from VOC_Term where _Vocab_key = 16 order by sequenceNum");
-  return(buf);
-}
-
-char *nomen_select(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select * from NOM_Marker_View where _Nomen_key = %s", key);
-  return(buf);
-}
-
-char *nomen_verifyMarker(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-
-  sprintf(buf,"select 'Official Symbol ' || symbol || ' exists in MGD\n' from MRK_Marker where lower(symbol) = lower(%s) and _Organism_key = 1 and _Marker_Status_key = 1 \
-  	\nunion all select 'Withdrawn Symbol ' || symbol || ' exists in MGD\n' from MRK_Marker where lower(symbol) = lower(%s) and _Organism_key = 1 and _Marker_Status_key = 2 \
-  	\nunion all select 'Symbol ' || symbol || ' exists in Nomen\n' from NOM_Marker where lower(symbol) = lower(%s) \
-    	", key, key, key, key);
-  return(buf);
-}
-
-/*
 * NonMutantCellLine.d
 */
 

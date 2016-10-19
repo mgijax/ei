@@ -171,12 +171,6 @@ extern char *mutant_parentcellline(char *);
 extern char *mutant_derivationDisplay(char *);
 extern char *mutant_derivationVerify(char *, char *, char *, char *, char *, char *, char *);
 
-/* Nomen.d */
-
-extern char *nomen_status();
-extern char *nomen_select(char *);
-extern char *nomen_verifyMarker(char *);
-
 /* NonMutantCellLine.d */
 
 extern char *nonmutant_select(char *);

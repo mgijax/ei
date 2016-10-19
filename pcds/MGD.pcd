@@ -5253,13 +5253,6 @@ Module: MGD
                                     traversalOn = False;
                                 }
                                 {
-                                  Nomen = XmPushButton;
-                                  Group: Widget
-                                    labelString = Nomenclature;
-                                    activateCallback = "D:CreateMGIModule(name = \"Nomen\")";
-                                    traversalOn = False;
-                                }
-                                {
                                   Marker = XmPushButton;
                                   Group: Widget
                                     activateCallback = "D:CreateMGIModule(name = \"Marker\")";

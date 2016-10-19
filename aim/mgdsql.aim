@@ -151,10 +151,6 @@ CALLS
 	 omimvoc_evidencecode("char *")			: "char *";
 	 omimvoc_qualifier("char *")			: "char *";
 
-	 nomen_status()					: "char *";
-	 nomen_select("char *")				: "char *";
-	 nomen_verifyMarker("char *")			: "char *";
-
 	 nonmutant_select("char *")			: "char *";
 	 nonmutant_count("char *")			: "char *";
 
