@@ -1220,7 +1220,7 @@ rules:
 	    	global_userKey + "," + \
 		currentRecordKey + "," + \
 		currentRecordKey + "," + \
-		refsKey + ", 1, 1," + \ 
+		refsKey + ",1,-1," + \ 
 		mgi_DBprstr(top->Name->text.value) + ");";
 	    return;
           end if;
