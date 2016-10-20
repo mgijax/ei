@@ -798,6 +798,7 @@ rules:
 		    top.background := "Red";
 		    option.background := "Red";
 		    option.child(i).background := "Red";
+		    top.menuHistory.background := "Red";
 		  end if;
 
 		  if (option.child(i).labelString = "Reserved"
@@ -812,6 +813,7 @@ rules:
 		    top.background := "Violet";
 		    option.background := "Violet";
 		    option.child(i).background := "Violet";
+		    top.menuHistory.background := "Violet";
 		  end if;
 	        end if;
 
