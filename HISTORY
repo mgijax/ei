@@ -1,5 +1,12 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-6-0-6-? (placeholder)
+DATE: 10/28/2016
+STAFF: lec
+CHANGES:
+1) TR12370/scrum-bob/MGI_Organism_MGIType schema change
+2) TR12448/remove dsrc//Verify.de/Verify.d/VerifyStrainNomenclature
+
 TAG: ei-6-0-6-3
 TAG: ei-6-0-6-2
 TAG: ei-6-0-6-1

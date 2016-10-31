@@ -427,7 +427,7 @@ rules:
             if (editMode = TBL_ROW_ADD) then
               cmd := cmd + mgi_DBinsert(MGI_ORGANISMTYPE, NOKEY) + 
 		currentRecordKey + "," +
-		newKey + "," +
+		newKey + ",50," +
 		global_userKey + "," + global_userKey + END_VALUE;
             elsif (editMode = TBL_ROW_MODIFY) then
               set := "_MGIType_key = " + newKey;
