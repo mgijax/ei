@@ -1057,7 +1057,23 @@ char *verify_marker(char *key, char *symbol)
   return(buf);
 }
 
-char *verify_marker_official(char *key)
+char *verify_marker_official(char *key, char *symbol)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select m._Marker_key, m._Marker_Status_key, m.symbol, m.chromosome, \
+   \nm.cytogeneticOffset, substring(m.name,1,25), a.accID \
+   \nfrom MRK_Marker m LEFT OUTER JOIN ACC_Accession a on (m._Marker_key = a._Object_key \
+   \n   and a._MGIType_key = 2 \
+   \n   and a._LogicalDB_key = 1 \
+   \n   and a.preferred = 1) \
+   \nwhere m._Organism_key = %s \
+   \nand m._Marker_Status_key = 1 \
+   \nand m.symbol ilike %s", key, symbol);
+  return(buf);
+}
+
+char *verify_marker_official_count(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
@@ -1075,6 +1091,23 @@ char *verify_markerid(char *key)
    \nm.cytogeneticOffset, substring(m.name,1,25), a.accID \
    \nfrom MRK_Marker m, ACC_Accession a \
    \nwhere m._Marker_key = a._Object_key \
+   \nand a._MGIType_key = 2 \
+   \nand a._LogicalDB_key = 1 \
+   \nand a.preferred = 1 \
+   \nand a.prefixPart = 'MGI:' \
+   \nand a.numericPart = %s", key);
+  return(buf);
+}
+
+char *verify_markerid_official(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select m._Marker_key, m._Marker_Status_key, m.symbol, m.chromosome, \
+   \nm.cytogeneticOffset, substring(m.name,1,25), a.accID \
+   \nfrom MRK_Marker m, ACC_Accession a \
+   \nwhere m._Marker_Status_key = 1 \
+   \nand m._Marker_key = a._Object_key \
    \nand a._MGIType_key = 2 \
    \nand a._LogicalDB_key = 1 \
    \nand a.preferred = 1 \

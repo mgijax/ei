@@ -455,7 +455,7 @@ rules:
 	  -- unless they are gene trap alleles (which can have no marker)
 
           -- Verify Marker is valid/official
-          markerIsOfficial := mgi_sql1(verify_marker_official(markerKey));
+          markerIsOfficial := mgi_sql1(verify_marker_official_count(markerKey));
 	  if (top->AlleleStatusMenu.menuHistory.labelString = ALL_STATUS_APPROVED
 	      and top->AlleleTypeMenu.menuHistory.labelString != "Gene trapped"
               and (integer) markerIsOfficial = 0) then
@@ -762,7 +762,7 @@ rules:
 	  -- unless they are gene trap alleles (which can have no marker)
 
           -- Verify Marker is valid/official
-          markerIsOfficial := mgi_sql1(verify_marker_official(markerKey));
+          markerIsOfficial := mgi_sql1(verify_marker_official_count(markerKey));
 	  if (top->AlleleStatusMenu.menuHistory.labelString = ALL_STATUS_APPROVED
 	      and top->AlleleTypeMenu.menuHistory.labelString != "Gene trapped"
               and (integer) markerIsOfficial = 0) then

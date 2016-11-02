@@ -1835,7 +1835,7 @@ rules:
 	    end if;
 	  end if;
 
-	  -- If no value entered, return
+	  -- If no value entered or value is not modified, return
 
 	  if (value.length = 0) then
 	    if (isTable) then
@@ -1909,11 +1909,19 @@ rules:
 
 	  -- Search for Marker in the database
 
-	  select := verify_marker(organismKey, mgi_DBprstr(value));
+	  if (not VerifyMarker.allowWithdrawn or not VerifyMarker.allowReserved) then
+	    select := verify_marker_official(organismKey, mgi_DBprstr(value));
+	  else
+	    select := verify_marker(organismKey, mgi_DBprstr(value));
+	  end if;
 
 	  if (isTable) then
 	    if (column = markerID and accID.length > 0) then
-	      select := verify_markerid(accID);
+	      if (not VerifyMarker.allowWithdrawn or not VerifyMarker.allowReserved) then
+	        select := verify_markerid_official(accID);
+	      else
+	        select := verify_markerid(accID);
+	      end if;
 	    end if;
           end if;
 

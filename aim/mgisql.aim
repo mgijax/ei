@@ -134,8 +134,10 @@ CALLS
 	 verify_genotype("char *")				: "char *";
 	 verify_imagepane("char *")				: "char *";
 	 verify_marker("char *", "char *")			: "char *";
-	 verify_marker_official("char *")			: "char *";
+	 verify_marker_official("char *", "char *")		: "char *";
+	 verify_marker_official_count("char *")			: "char *";
 	 verify_markerid("char *")				: "char *";
+	 verify_markerid_official("char *")			: "char *";
 	 verify_marker_current("char *")			: "char *";
 	 verify_marker_which("char *")				: "char *";
 	 verify_marker_nonmouse("char *")			: "char *";
