@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Mon Oct 17 08:18:43 2016";
+      lastWritten = "Fri Oct 28 07:30:53 2016";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -122,12 +122,12 @@ Module: MGD
                                       {
                                         Table = mgiTable : mgiTable;
                                         Group: Widget
-                                          xrtTblNumColumns = 4;
+                                          xrtTblNumColumns = 6;
                                           xrtTblPixelWidthSeries = "(all 0-2 0)";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 3 30)";
-                                          xrtTblTraversableSeries = "(all 0-2 False)";
-                                          xrtTblEditableSeries = "(all 0-2 False)";
-                                          xrtTblColumnLabels = "Mode,Key,Key,MGI Type";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-4 3)(all 5 30)";
+                                          xrtTblTraversableSeries = "(all 0-3 False)";
+                                          xrtTblEditableSeries = "(all 0-3 False)";
+                                          xrtTblColumnLabels = "Mode,Key,Key,Current Order,#,MGI Type";
                                           userDefinedAttributes = "currentTypeKey:Int=\"1\"\ntypeKey:Int=\"2\"\ntypeName:Int=\"3\"\n";
                                             {
                                               label = XtXrtLabel;
@@ -6446,7 +6446,7 @@ Module: MGD
                                                     Table = mgiTable : mgiTable;
                                                     Group: Widget
                                                       userDefinedAttributes = "markerKey:Int(Int)=\"3\"\nmarkerSymbol:Int(Int)=\"5\"\nassocKey:Int(Int)=\"1\"\nrefsTypeKey:Int(Int)=\"2\"\nrefsType:Int(Int)=\"4\"\nmarkerColumns:Int(Int)\nmarkerID:Int(Int)=\"6\"\n";
-                                                      xrtTblValidateCellCallback = "D:VerifyMarker,\nD:CommitTableCellEdit";
+                                                      xrtTblValidateCellCallback = "D:VerifyMarker(allowWithdrawn = false, allowReserved = false),\nD:CommitTableCellEdit";
                                                       xrtTblNumColumns = 7;
                                                       xrtTblColumnLabels = "Mode,Key,Key,Key,Type,Marker,Marker ID";
                                                       xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 15)(all 5 50)(all 6 20)";
@@ -8958,7 +8958,7 @@ Shift<Key>Tab: prev-tab-group()
                                           columns = 95;
                                           translations = "#override
 Shift<Key>Tab: prev-tab-group()
-<Key>Tab: VerifyStrainNomenclature() VerifyDuplicateStrain()";
+<Key>Tab: VerifyDuplicateStrain()";
                                         Group: User
                                           required = True;
                                       }

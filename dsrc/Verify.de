@@ -54,8 +54,6 @@ VerifyGOReference [];
 
 VerifyOrganism :translation [ignoreRow : integer := -1;];
 
-VerifyStrainNomenclature :translation [];
-
 VerifyStrainSpecies :translation [];
 
 VerifyStrains [ignoreRow : integer := -1;];
