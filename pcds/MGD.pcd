@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Fri Oct 28 07:30:53 2016";
+      lastWritten = "Fri Oct 28 13:17:12 2016";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -124,11 +124,11 @@ Module: MGD
                                         Group: Widget
                                           xrtTblNumColumns = 6;
                                           xrtTblPixelWidthSeries = "(all 0-2 0)";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-4 3)(all 5 30)";
-                                          xrtTblTraversableSeries = "(all 0-3 False)";
-                                          xrtTblEditableSeries = "(all 0-3 False)";
-                                          xrtTblColumnLabels = "Mode,Key,Key,Current Order,#,MGI Type";
-                                          userDefinedAttributes = "currentTypeKey:Int=\"1\"\ntypeKey:Int=\"2\"\ntypeName:Int=\"3\"\n";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 0)(all 3 30)";
+                                          xrtTblTraversableSeries = "(all 0-2 False)";
+                                          xrtTblEditableSeries = "(all 0-2 False)";
+                                          xrtTblColumnLabels = "Mode,Key,Key,MGI Type";
+                                          userDefinedAttributes = "currentTypeKey:Int(Int)=\"1\"\ntypeKey:Int(Int)=\"2\"\ntypeName:Int(Int)=\"3\"\n";
                                             {
                                               label = XtXrtLabel;
                                               Group: Widget

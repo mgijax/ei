@@ -2019,7 +2019,7 @@ char *mgi_DBinsert(int table, char *keyName)
             sprintf(buf, "insert into %s (%s, commonName, latinName, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MGI_ORGANISMTYPE:
-            sprintf(buf, "insert into %s (%s, _MGIType_key, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
+            sprintf(buf, "insert into %s (%s, _MGIType_key, sequenceNum, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MGI_REFERENCE_ASSOC:
             sprintf(buf, "insert into %s (%s, _Refs_key, _Object_key, _MGIType_key, _RefAssocType_key, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
