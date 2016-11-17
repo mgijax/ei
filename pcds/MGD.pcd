@@ -16042,12 +16042,12 @@ Shift<Key>Tab: prev-tab-group()
           Group: Widget
             width = 1225;
             height = 900;
-            closeWindowCallback = "D:OMIMVocAnnotExit";
+            closeWindowCallback = "D:DOVocAnnotExit";
           Group: Control
             vip_x = 90;
             vip_y = 360;
           Group: User
-            activateButtonName = OMIMVocAnnot;
+            activateButtonName = DOVocAnnot;
             homeWidget = mgiAccession;
               {
                 MainForm = XmForm;
@@ -16064,7 +16064,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         Exit = MenuPush : mgiMenu;
                                         Group: Widget
-                                          activateCallback = "D:OMIMVocAnnotExit";
+                                          activateCallback = "D:DOVocAnnotExit";
                                       }
                                 }
                           }
@@ -16175,16 +16175,16 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         VocAnnotTypePulldown = OptionPulldown;
                                             {
-                                              OMIM = OptionToggle;
+                                              DO = OptionToggle;
                                               Group: Widget
                                                 valueChangedCallback = "D:SetModify,\nD:SetAnnotTypeDefaults";
                                                 userDefinedAttributes = "evidenceKey:Int(Int)=\"0\"\nmgiTypeKey:Int(Int)=\"0\"\nvocabKey:Int(Int)=\"0\"\nannotVocab:String(String)\nqualifierKey:Int=\"0\"\n";
-                                                labelString = "OMIM/Genotype";
+                                                labelString = "DO/Genotype";
                                               Group: User
-                                                annotVocab = "OMIM/Genotype";
+                                                annotVocab = "DO/Genotype";
                                                 evidenceKey = 43;
                                                 mgiTypeKey = 12;
-                                                vocabKey = 44;
+                                                vocabKey = 125;
                                                 defaultValue = 1025;
                                                 qualifierKey = 53;
                                             }
@@ -16274,7 +16274,7 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblTraversableSeries = "(all 0-7 False)(all 9-10 False)(all 12 False)";
                                           xrtTblEnterCellCallback = "D:SetOptions";
                                           width = 1000;
-                                          xrtTblTraverseCellCallback = "D:OMIMTraverse";
+                                          xrtTblTraverseCellCallback = "D:DOTraverse";
                                         Group: User
                                           requiredColumns = "3\n5";
                                           saveTraversableSeries = "(all 0-7 False)(all 9-10 False)(all 12 False)";

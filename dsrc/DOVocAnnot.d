@@ -30,7 +30,7 @@ devents:
 	BuildDynamicComponents :local [];
 	Delete :local [];				-- Delete record
 	DOVocAnnotExit :local [];				-- Destroys D module instance & cleans up
-	OMIMTraverse :local [];
+	DOTraverse :local [];
 	Init :local [];					-- Initialize globals, etc.
 	Modify :local [];				-- Modify record
 	PrepareSearch :local [];			-- Construct SQL search clause
@@ -783,7 +783,7 @@ rules:
         end does;
 
 --
--- OMIMTraverse
+-- DOTraverse
 --
 --  Skips over the Modified By/Modification Date/Created By/Creation Date columns
 --  These cells need to be traversable in order to enter search criteria,
@@ -791,11 +791,11 @@ rules:
 --
 --
 
-	OMIMTraverse does;
-	  table : widget := OMIMTraverse.source_widget;
-	  row : integer := OMIMTraverse.row;
-	  column : integer := OMIMTraverse.column;
-	  reason : integer := OMIMTraverse.reason;
+	DOTraverse does;
+	  table : widget := DOTraverse.source_widget;
+	  row : integer := DOTraverse.row;
+	  column : integer := DOTraverse.column;
+	  reason : integer := DOTraverse.reason;
 
 	  if (row < 0) then
 	    return;
@@ -806,8 +806,8 @@ rules:
 	      AddTableRow.table := annotTable;
 	      send(AddTableRow, 0);
 	    end if;
-	    OMIMTraverse.next_row := row + 1;
-	    OMIMTraverse.next_column := annotTable.termAccID;
+	    DOTraverse.next_row := row + 1;
+	    DOTraverse.next_column := annotTable.termAccID;
 	  end if;
 
 	end does;
