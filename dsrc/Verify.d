@@ -3874,6 +3874,7 @@ rules:
 	  dbproc : opaque;
 	  select : string;
 	  omimid : string_list;
+	  doid : string_list;
 
 	  -- for OMIM (44) only
 	  -- if no prefix (OMIM:), then add it
@@ -3881,6 +3882,15 @@ rules:
               omimid := mgi_splitfields(value, ":");
               if (omimid.find("OMIM") <= 0) then
 	          value := "OMIM:" + value;
+	      end if;
+	  end if;
+
+	  -- for DO (125) only
+	  -- if no prefix (DOID:), then add it
+	  if (sourceWidget.vocabKey = 125) then
+              doid := mgi_splitfields(value, ":");
+              if (doid.find("DOID") <= 0) then
+	          value := "DOID:" + value;
 	      end if;
 	  end if;
 
