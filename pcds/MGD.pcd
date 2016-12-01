@@ -1687,6 +1687,9 @@ Module: MGD
                                                     CMMR = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    CRL = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     EMMA = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -3505,6 +3508,9 @@ Module: MGD
                                                   }
                                                   {
                                                     CMMR = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    CRL = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EMMA = AccToggle : mgiOption;
@@ -8155,6 +8161,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     CMMR = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    CRL = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     EMMA = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -8643,6 +8652,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     CMMR = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    CRL = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EMMA = AccToggle : mgiOption;
@@ -9783,6 +9795,11 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
+                                                    CRL = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
                                                     EMMA = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
@@ -10531,6 +10548,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     CMMR = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    CRL = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EMMA = AccToggle : mgiOption;

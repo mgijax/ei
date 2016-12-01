@@ -1701,6 +1701,9 @@ Module: MGI
                                                     CMMR = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    CRL = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     EMMA = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -3466,6 +3469,9 @@ Module: MGI
                                                   }
                                                   {
                                                     CMMR = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    CRL = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EMMA = AccToggle : mgiOption;
