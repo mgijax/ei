@@ -578,6 +578,11 @@ Module: mgiOption
                         defaultValue = 71;
                     }
                     {
+                      CRL = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 200;
+                    }
+                    {
                       EMMA = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 37;
