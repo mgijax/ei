@@ -1221,7 +1221,7 @@ rules:
 		currentRecordKey + "," + \
 		currentRecordKey + "," + \
 		refsKey + ",1,-1," + \
-		mgi_DBprstr(top->Name->text.value) + ")";
+		mgi_DBprstr(top->Name->text.value) + ");";
 	    return;
           end if;
 
