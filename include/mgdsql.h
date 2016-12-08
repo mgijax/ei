@@ -44,6 +44,7 @@ extern char *derivation_search(char *, char *);
 
 /* AlleleDiseaseVocAnnot.d */
 extern char *alleledisease_search(char *, char *);
+extern char *allelediseasedo_search(char *, char *);
 extern char *alleledisease_select(char *);
 
 /* Cross.d */
