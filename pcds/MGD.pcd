@@ -15196,7 +15196,7 @@ Shift<Key>Tab: prev-tab-group()
                                                 annotVocab = "Allele/Disease (DO)";
                                                 evidenceKey = 85;
                                                 mgiTypeKey = 11;
-                                                vocabKey = 44;
+                                                vocabKey = 125;
                                                 defaultValue = 1026;
                                                 qualifierKey = 84;
                                             }
