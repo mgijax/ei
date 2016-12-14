@@ -3885,9 +3885,9 @@ rules:
 	      end if;
 	  end if;
 
-	  -- for DO (125) only
+	  -- for DO (125, 126) only
 	  -- if no prefix (DOID:), then add it
-	  if (sourceWidget.vocabKey = 125) then
+	  if (sourceWidget.vocabKey = 125 or sourceWidget.vocabKey = 126) then
               doid := mgi_splitfields(value, ":");
               if (doid.find("DOID") <= 0) then
 	          value := "DOID:" + value;
