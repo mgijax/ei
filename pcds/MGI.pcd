@@ -1243,7 +1243,7 @@ Module: MGI
                                           xrtTblVisibleRows = 5;
                                           xrtTblNumColumns = 6;
                                           xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 40)(all 5 20)";
-                                          xrtTblColumnLabels = "Mode,Current Key,New Key,J#,Citation/Strain,Data Set";
+                                          xrtTblColumnLabels = "Mode,Current Key,New Key,J#,Citation/Strain/HT Sample,Data Set";
                                           userDefinedAttributes = "dataSet:Int=\"5\"\n";
                                       }
                                       {

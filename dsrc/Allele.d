@@ -577,6 +577,10 @@ rules:
 	      end if;
 	  end if;
 
+	  if (markerKey.length = 0) then
+	    markerKey := "NULL";
+	  end if;
+
 	  refsKey := mgi_tblGetCell(markerTable, 0, markerTable.refsKey);
 	  if (refsKey.length = 0) then
 	    refsKey := "NULL";
