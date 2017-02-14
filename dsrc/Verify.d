@@ -168,7 +168,6 @@
 -- lec 03/20/2001
 --	- TR 1939; VerifyAllele; status must be approved to be valid
 --	- VerifyNomenMarker; created
---	- VerifyMarker; added allowNomen parameter
 --
 -- lec 12/19/2000
 --	- TR 2128; VerifyChromosome; raise case
@@ -1836,7 +1835,7 @@ rules:
 	    end if;
 	  end if;
 
-	  -- If no value entered, return
+	  -- If no value entered or value is not modified, return
 
 	  if (value.length = 0) then
 	    if (isTable) then
@@ -1910,19 +1909,21 @@ rules:
 
 	  -- Search for Marker in the database
 
+	  --if (not VerifyMarker.allowWithdrawn or not VerifyMarker.allowReserved) then
+	    --select := verify_marker_official(organismKey, mgi_DBprstr(value));
+	  --else
 	  select := verify_marker(organismKey, mgi_DBprstr(value));
+	  --end if;
 
 	  if (isTable) then
 	    if (column = markerID and accID.length > 0) then
+	      --if (not VerifyMarker.allowWithdrawn or not VerifyMarker.allowReserved) then
+	        --select := verify_markerid_official(accID);
+	      --else
 	      select := verify_markerid(accID);
+	      --end if;
 	    end if;
           end if;
-
-	  -- TR11083/remove allowNomen
-	  -- If searching Nomen as well....
-	  if (VerifyMarker.allowNomen) then
-	    select := select + verify_marker_union(mgi_DBprstr(value));
-	  end if;
 
 	  -- Insert results into string list for loading into Marker selection list
 	  -- Insert chromosomes into string list for future reference
@@ -2003,26 +2004,39 @@ rules:
 
 	  -- If withdrawn symbols are not allowed, then display list of current symbols
 
-	  -- TR11083/nomenclature
-	  --if (not VerifyMarker.allowWithdrawn and \
-	  	--(whichStatus = STATUS_WITHDRAWN or whichStatus = STATUS_RESERVED)) then
-
 	  if (not VerifyMarker.allowWithdrawn and whichStatus = STATUS_WITHDRAWN) then
-	    if (whichStatus = STATUS_WITHDRAWN) then
-                message := "Symbol '" + value + "' has been Withdrawn\n\n" +
-                           "The current symbol(s) are:\n\n";
-                select := verify_marker_current(whichMarker);
-                dbproc := mgi_dbexec(select);
-                while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
-                  while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-                    message := message + "  " + mgi_getstr(dbproc, 1);
-                  end while;
-                end while;
-                (void) mgi_dbclose(dbproc);
+
+            message := "Symbol '" + value + "' has been Withdrawn\n\n" +
+                       "The current symbol(s) are:\n\n";
+            select := verify_marker_current(whichMarker);
+            dbproc := mgi_dbexec(select);
+            while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+              while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+                message := message + "  " + mgi_getstr(dbproc, 1);
+              end while;
+            end while;
+            (void) mgi_dbclose(dbproc);
+
+            StatusReport.source_widget := top.root;
+            StatusReport.message := message;
+            send(StatusReport);
+
+	    if (isTable) then
+              (void) mgi_tblSetCell(sourceWidget, row, markerKey, "NULL");
+	      VerifyMarker.doit := (integer) false;
 	    else
-                message := "Symbol '" + value + "' is Reserved\n";
+	      top->mgiMarker->ObjectID->text.value := "NULL";
+	      if (accessionWidget != nil) then
+	        accessionWidget->AccessionID->text.value := "";
+	      end if;
 	    end if;
 
+	    (void) reset_cursor(top);
+	    return;
+	  end if;
+
+	  if (not VerifyMarker.allowReserved and whichStatus = STATUS_RESERVED) then
+            message := "Symbol '" + value + "' is Reserved\n";
 
             StatusReport.source_widget := top.root;
             StatusReport.message := message;
@@ -3859,6 +3873,26 @@ rules:
 	  isHeader : string;
 	  dbproc : opaque;
 	  select : string;
+	  omimid : string_list;
+	  doid : string_list;
+
+	  -- for OMIM (44) only
+	  -- if no prefix (OMIM:), then add it
+	  if (sourceWidget.vocabKey = 44) then
+              omimid := mgi_splitfields(value, ":");
+              if (omimid.find("OMIM") <= 0) then
+	          value := "OMIM:" + value;
+	      end if;
+	  end if;
+
+	  -- for DO (125, 126) only
+	  -- if no prefix (DOID:), then add it
+	  if (sourceWidget.vocabKey = 125 or sourceWidget.vocabKey = 126) then
+              doid := mgi_splitfields(value, ":");
+              if (doid.find("DOID") <= 0) then
+	          value := "DOID:" + value;
+	      end if;
+	  end if;
 
 	  if (not searchObsolete) then
 	    select := verify_vocabtermaccIDNoObsolete(mgi_DBprstr(value), (string) sourceWidget.vocabKey);

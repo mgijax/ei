@@ -166,17 +166,6 @@ char *allele_parentcellline(char *key)
   return(buf);
 }
 
-/* TR11083/remove */
-char *allele_unionnomen(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"\nunion all select distinct a._Allele_key, a.symbol, a.statusNum \
-   \nfrom ALL_Allele_View a \
-   \nwhere a.nomenSymbol ilike %s", key);
-  return(buf);
-}
-
 char *allele_search(char *from, char *where, char *addUnion)
 {
   static char buf[TEXTBUFSIZ];
@@ -295,6 +284,19 @@ char *alleledisease_select(char *key)
   return(buf);
 }
 
+char *allelediseasedo_select(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier, e.* \
+   \nfrom VOC_Annot_View a, VOC_Evidence_View e \
+   \nwhere a._Annot_key = e._Annot_key \
+   \nand a._AnnotType_key = 1026 \
+   \nand a._Object_key = %s \
+   \norder by a.term, e.jnumid", key);
+  return(buf);
+}
+
 /*
 * Cross.d
 */
@@ -360,7 +362,7 @@ char *genotype_search2(char *key)
    \n	GXD_AllelePair ap LEFT OUTER JOIN ALL_Allele a2 on (ap._Allele_key_2 = a2._Allele_key) \
    \nwhere v._Refs_key = %s \
    \nand v._Annot_key = t._Annot_key \
-   \nand t._AnnotType_key in (1002,1005) \
+   \nand t._AnnotType_key in (1002,1005,1025) \
    \nand t._Object_key = g._Genotype_key \
    \nand g._Strain_key = ps._Strain_key \
    \nand g._Genotype_key = ap._Genotype_key \
@@ -377,7 +379,7 @@ char *genotype_search2(char *key)
    \nfrom VOC_Evidence v, VOC_Annot t, GXD_Genotype g, PRB_Strain ps \
    \nwhere v._Refs_key = %s \
    \nand v._Annot_key = t._Annot_key \
-   \nand t._AnnotType_key in (1002,1005) \
+   \nand t._AnnotType_key in (1002,1005,1025) \
    \nand t._Object_key = g._Genotype_key \
    \nand g._Strain_key = ps._Strain_key \
    \nand not exists (select 1 from GXD_AllelePair ap where g._Genotype_key = ap._Genotype_key) \
@@ -1314,38 +1316,6 @@ char *mutant_derivationVerify(
    \nand c._Strain_key = %s \
    \nand c._CellLine_Type_key = %s",
    derivationTypeKey, parentKey, creatorKey, vectorTypeKey, vectorKey, strainKey, cellLineTypeKey);
-  return(buf);
-}
-
-/*
- * Nomen.d
-*/
-
-char *nomen_status()
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _Term_key, term from VOC_Term where _Vocab_key = 16 order by sequenceNum");
-  return(buf);
-}
-
-char *nomen_select(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select * from NOM_Marker_View where _Nomen_key = %s", key);
-  return(buf);
-}
-
-char *nomen_verifyMarker(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-
-  sprintf(buf,"select 'Official Symbol ' || symbol || ' exists in MGD\n' from MRK_Marker where lower(symbol) = lower(%s) and _Organism_key = 1 and _Marker_Status_key = 1 \
-  	\nunion all select 'Withdrawn Symbol ' || symbol || ' exists in MGD\n' from MRK_Marker where lower(symbol) = lower(%s) and _Organism_key = 1 and _Marker_Status_key = 2 \
-  	\nunion all select 'Symbol ' || symbol || ' exists in Nomen\n' from NOM_Marker where lower(symbol) = lower(%s) \
-    	", key, key, key, key);
   return(buf);
 }
 

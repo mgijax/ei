@@ -336,7 +336,7 @@ Shift<Key>Tab: prev-tab-group()
                         columns = 50;
                         translations = "#override
  Shift<Key>Tab: prev-tab-group()
-<Key>Tab: VerifyStrainNomenclature() VerifyItem()";
+<Key>Tab: VerifyItem()";
                     }
               }
         }

@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Mon Aug 29 13:08:55 2016";
+      lastWritten = "Wed Sep 21 08:20:06 2016";
       copy = false;
       inCreateMenu = true;
         {

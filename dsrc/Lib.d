@@ -420,11 +420,11 @@ rules:
 	  end while;
 
 	  -- set back to original color
-          top.background := "Wheat";
+          --top.background := "Wheat";
 
-	  if (top.menuHistory != nil) then
-            top.menuHistory.background := "Wheat";
-          end if;
+	  --if (top.menuHistory != nil) then
+            --top.menuHistory.background := "Wheat";
+          --end if;
 
 	  -- If still no default, then use top.defaultOption (if set)
 
@@ -785,7 +785,7 @@ rules:
 	        -- Set the colors BEFORE assigning top.menuHistory...
 
 	        if (top.name = "MarkerStatusMenu" or
-		    top.name = "AlleleStatusMenu" or
+	            top.name = "AlleleStatusMenu" or
 		    top.name = "MixedMenu" or
 		    top.name = "ExtinctMenu") then
 
@@ -798,18 +798,22 @@ rules:
 		    top.background := "Red";
 		    option.background := "Red";
 		    option.child(i).background := "Red";
+		    top.menuHistory.background := "Red";
 		  end if;
 
-		  if (option.child(i).labelString = "Reserved") then
+		  if (option.child(i).labelString = "Reserved"
+		  	or option.child(i).labelString = "reserved") then
 		    top.background := "Yellow";
 		    option.background := "Yellow";
 		    option.child(i).background := "Yellow";
+		    top.menuHistory.background := "Yellow";
 		  end if;
 
 		  if (option.child(i).labelString = "Yes") then
 		    top.background := "Violet";
 		    option.background := "Violet";
 		    option.child(i).background := "Violet";
+		    top.menuHistory.background := "Violet";
 		  end if;
 	        end if;
 

@@ -36,7 +36,7 @@ VerifyItemAdd [];
 
 VerifyMarker :translation [source_widget : widget;
 			   allowWithdrawn : boolean := false;
-			   allowNomen : boolean := false;
+			   allowReserved : boolean := false;
 			   verifyOtherOrganism : boolean := false;];
 
 VerifyMarkerChromosome :translation [source_widget : widget;

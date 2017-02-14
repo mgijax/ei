@@ -10,6 +10,9 @@
 --
 -- History:
 --
+-- lec 09/28/2016
+--	- TR12425/added GXD-HT (BIB_GXDHT_Exists)
+--
 -- lec 08/29/2016
 --	- TR12229/added PRO (BIB_PRO_Exists)
 --

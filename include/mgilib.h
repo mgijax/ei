@@ -198,7 +198,6 @@ extern char *global_version;
 #define NOM_MARKER			500
 #define NOM_MARKER_VIEW			501
 #define NOM_ACC_REFERENCE		502
-#define NOM_MARKER_VALID_VIEW		503
 
 /* MGI Tables */
 
@@ -320,6 +319,7 @@ extern char *global_version;
 #define	BACKGROUNDALT2		"Red"
 #define	BACKGROUNDALT3		"SkyBlue"
 #define	BACKGROUNDALT4		"PaleGreen"
+#define	BACKGROUNDALT5		"Yellow"
 
 #define	STANDARD	"Wheat"
 #define	NONSTANDARD	"Red"

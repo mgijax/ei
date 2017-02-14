@@ -30,7 +30,6 @@ extern char *allele_cellline(char *);
 extern char *allele_stemcellline(char *);
 extern char *allele_mutantcellline(char *);
 extern char *allele_parentcellline(char *);
-extern char *allele_unionnomen(char *);
 extern char *allele_search(char *, char *, char *);
 extern char *allele_subtype(char *);
 
@@ -46,6 +45,7 @@ extern char *derivation_search(char *, char *);
 /* AlleleDiseaseVocAnnot.d */
 extern char *alleledisease_search(char *, char *);
 extern char *alleledisease_select(char *);
+extern char *allelediseasedo_select(char *);
 
 /* Cross.d */
 
@@ -170,12 +170,6 @@ extern char *mutant_stemcellline(char *);
 extern char *mutant_parentcellline(char *);
 extern char *mutant_derivationDisplay(char *);
 extern char *mutant_derivationVerify(char *, char *, char *, char *, char *, char *, char *);
-
-/* Nomen.d */
-
-extern char *nomen_status();
-extern char *nomen_select(char *);
-extern char *nomen_verifyMarker(char *);
 
 /* NonMutantCellLine.d */
 

@@ -171,9 +171,10 @@ extern char *verify_genotype(char *);
 extern char *verify_imagepane(char *);
 
 extern char *verify_marker(char *, char *);
-extern char *verify_marker_official(char *);
+extern char *verify_marker_official(char *, char *);
+extern char *verify_marker_official_count(char *);
 extern char *verify_markerid(char *);
-extern char *verify_marker_union(char *);
+extern char *verify_markerid_official(char *);
 extern char *verify_marker_current(char *);
 extern char *verify_marker_which(char *);
 extern char *verify_marker_nonmouse(char *);

@@ -26,7 +26,6 @@ CALLS
 	 allele_stemcellline("char *")			: "char *";
 	 allele_mutantcellline("char *")		: "char *";
 	 allele_parentcellline("char *")		: "char *";
-	 allele_unionnomen("char *")		: "char *";
 	 allele_search("char *", "char *", "char *")	: "char *";
 	 allele_subtype("char *")			: "char *";
 
@@ -39,6 +38,7 @@ CALLS
 
 	 alleledisease_search("char *", "char *")	: "char *";
          alleledisease_select("char *")                 : "char *";
+         allelediseasedo_select("char *")               : "char *";
 
 	 cross_select("char *")				: "char *";
 	 cross_search("char *", "char *")		: "char *";
@@ -150,10 +150,6 @@ CALLS
 	 omimvoc_dbview("char *")			: "char *";
 	 omimvoc_evidencecode("char *")			: "char *";
 	 omimvoc_qualifier("char *")			: "char *";
-
-	 nomen_status()					: "char *";
-	 nomen_select("char *")				: "char *";
-	 nomen_verifyMarker("char *")			: "char *";
 
 	 nonmutant_select("char *")			: "char *";
 	 nonmutant_count("char *")			: "char *";

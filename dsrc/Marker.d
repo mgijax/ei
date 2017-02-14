@@ -185,7 +185,7 @@ devents:
 	ModifyAlias :local [];
 	ModifyChromosome :exported [];
 	ModifyCurrent :local [];
-	ModifyHistory :local [];
+	ModifyHistory :local [mode : string := "modify";];
 	ModifyOffset :local [];
 
 	PrepareSearch :local [];
@@ -216,6 +216,7 @@ locals:
 	currentChr : string;		-- current Chromosome of selected record
 	currentName : string;		-- current Name of selected record
 	currentSymbol : string;		-- current Name of selected record
+	currentStatus : string;
 
         currentRecordKey : string;      -- Primary Key value of currently selected record
                                         -- Initialized in Select[] and Add[] events
@@ -374,10 +375,75 @@ rules:
 --
 -- Contruct and execute insert statement
 --
--- Note that ALL new markers should be added via Nomen.
---
 
 	Add does
+
+	  if (not top.allowEdit) then
+	    top->QueryList->List.sqlSuccessful := false;
+	    return;
+	  end if;
+
+	  (void) busy_cursor(top);
+
+          -- If adding, then KEYNAME must be used in all Modify events
+ 
+	  currentRecordKey := MAX_KEY1 + KEYNAME + MAX_KEY2;
+ 
+	  -- Insert master Nomen Record
+
+          cmd := mgi_setDBkey(MRK_MARKER, NEWKEY, KEYNAME) +
+                 mgi_DBinsert(MRK_MARKER, KEYNAME) +
+		 "1," +
+                 top->MarkerStatusMenu.menuHistory.defaultValue + "," +
+                 top->MarkerTypeMenu.menuHistory.defaultValue + "," +
+	         mgi_DBprstr(top->Symbol->text.value) + "," +
+	         mgi_DBprstr(top->Name->text.value) + "," +
+                 mgi_DBprstr(top->ChromosomeMenu.menuHistory.defaultValue) + "," +
+	         "NULL," +
+		 global_userKey + "," + global_userKey + END_VALUE;
+
+	  ModifyHistory.mode := "add";
+	  send(ModifyHistory, 0);
+
+	  --  Process References
+
+	  ProcessRefTypeTable.table := top->Reference->Table;
+	  ProcessRefTypeTable.objectKey := currentRecordKey;
+	  send(ProcessRefTypeTable, 0);
+          cmd := cmd + top->Reference->Table.sqlCmd;
+
+          --  Process Synonyms
+
+          ProcessSynTypeTable.table := top->Synonym->Table;
+          ProcessSynTypeTable.objectKey := currentRecordKey;
+          send(ProcessSynTypeTable, 0);
+          cmd := cmd + top->Synonym->Table.sqlCmd;
+
+	  -- Process Notes
+
+	  ProcessNoteForm.notew := top->mgiNoteForm;
+	  ProcessNoteForm.tableID := MGI_NOTE;
+	  ProcessNoteForm.objectKey := currentRecordKey;
+	  send(ProcessNoteForm, 0);
+	  cmd := cmd + top->mgiNoteForm.sql;
+
+	  -- Execute the add
+
+	  AddSQL.tableID := MRK_MARKER;
+          AddSQL.cmd := cmd;
+          AddSQL.list := top->QueryList;
+          AddSQL.item := top->Symbol->text.value;
+          AddSQL.key := top->ID->text;
+          send(AddSQL, 0);
+
+	  -- If add was sucessful, re-initialize the form
+
+	  if (top->QueryList->List.sqlSuccessful) then
+	    ClearMarker.clearKeys := false;
+	    send(ClearMarker, 0);
+	  end if;
+
+	  (void) reset_cursor(top);
 	end does;
 
 --
@@ -878,6 +944,14 @@ rules:
 	    return;
 	  end if;
 
+          if (currentStatus != top->MarkerStatusMenu.menuHistory.defaultValue
+	  	and top->MarkerStatusMenu.menuHistory.defaultValue = "2") then
+            StatusReport.source_widget := top;
+	    StatusReport.message := "Cannot change the status to 'withdrawn'.";
+	    send(StatusReport);
+	    return;
+          end if;
+
 	  (void) busy_cursor(top);
 
 	  cmd := "";
@@ -1110,7 +1184,7 @@ rules:
 
 	ModifyHistory does
           table : widget := top->History->Table;
-          row : integer;
+          row : integer := 0;
           editMode : string;
           set : string := "";
           deleteCmd : string := "";
@@ -1135,9 +1209,24 @@ rules:
             return;
           end if;
  
+	  -- Check "add"
+          refsKey := mgi_tblGetCell(table, row, table.refsKey);
+	  if (ModifyHistory.mode = "add") then
+	    -- if no reference, then use J:23000
+	    if (refsKey.length = 0) then
+	      refsKey := "22864";
+	    end if;
+            cmd := cmd + "select * from MRK_insertHistory(" + \
+	    	global_userKey + "," + \
+		currentRecordKey + "," + \
+		currentRecordKey + "," + \
+		refsKey + ",1,-1," + \
+		mgi_DBprstr(top->Name->text.value) + ");";
+	    return;
+          end if;
+
           -- Process while non-empty rows are found
  
-          row := 0;
           while (row < mgi_tblNumRows(table)) do
             editMode := mgi_tblGetCell(table, row, table.editMode);
  
@@ -1798,6 +1887,7 @@ rules:
 	  currentChr := top->ChromosomeMenu.menuHistory.defaultValue;
 	  currentName := top->Name->text.value;
 	  currentSymbol := top->Symbol->text.value;
+	  currentStatus := top->MarkerStatusMenu.menuHistory.defaultValue;
 
 	  -- Withdrawn markers will not have MGI accession IDs
 
