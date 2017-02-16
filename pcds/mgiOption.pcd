@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Wed Sep 21 08:20:06 2016";
+      lastWritten = "Thu Feb 16 10:15:24 2017";
       copy = false;
       inCreateMenu = true;
         {
@@ -593,6 +593,11 @@ Module: mgiOption
                         defaultValue = 91;
                     }
                     {
+                      EUCOMM = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 137;
+                    }
+                    {
                       Harwell = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 39;
@@ -811,11 +816,6 @@ Module: mgiOption
                         private = True;
                     }
                     {
-                      EUCOMM = AccToggle : mgiOption;
-                      Group: User
-                        defaultValue = 137;
-                    }
-                    {
                       EUCOMMProject = AccToggle : mgiOption;
                       Group: Widget
                         labelString = "EuComm Project";
@@ -841,6 +841,14 @@ Module: mgiOption
                         labelString = "EUCOMM Gene Trap Sequence Tag";
                       Group: User
                         defaultValue = 129;
+                    }
+                    {
+                      EUMMCR = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = EUMMCR;
+                      Group: User
+                        defaultValue = 202;
+                        private = True;
                     }
                     {
                       mirKO = AccToggle : mgiOption;

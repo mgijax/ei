@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Mon Aug 29 13:08:57 2016";
+      lastWritten = "Thu Feb 16 10:15:26 2017";
       copy = false;
       inCreateMenu = true;
         {
@@ -679,6 +679,9 @@ Module: GXD
                                                     EMS = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    EUCOMM = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     Harwell = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -794,6 +797,9 @@ Module: GXD
                                                   }
                                                   {
                                                     EUCOMMSequenceType = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EUMMCR = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     RuleyHECellLine = AccToggle : mgiOption;
@@ -1668,6 +1674,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     EMS = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    EUCOMM = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     Harwell = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -1783,6 +1792,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     EUCOMMSequenceType = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EUMMCR = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     RuleyHECellLine = AccToggle : mgiOption;

@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Thu Nov 17 10:12:47 2016";
+      lastWritten = "Thu Feb 16 10:15:27 2017";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -1696,6 +1696,9 @@ Module: MGD
                                                     EMS = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    EUCOMM = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     Harwell = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -1811,6 +1814,9 @@ Module: MGD
                                                   }
                                                   {
                                                     EUCOMMSequenceType = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EUMMCR = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     RuleyHECellLine = AccToggle : mgiOption;
@@ -3517,6 +3523,9 @@ Module: MGD
                                                   }
                                                   {
                                                     EMS = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EUCOMM = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     Harwell = AccToggle : mgiOption;
@@ -8178,6 +8187,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     EMS = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    EUCOMM = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     Harwell = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -8307,6 +8319,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     EUCOMMSequenceType = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
+                                                  }
+                                                  {
+                                                    EUMMCR = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     RuleyHECellLine = AccToggle : mgiOption;
@@ -8669,6 +8684,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     EMS = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EUCOMM = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     Harwell = AccToggle : mgiOption;
@@ -9818,6 +9836,14 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
+                                                    EUCOMM = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EUMMCR = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
                                                     Harwell = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
@@ -9896,6 +9922,78 @@ Shift<Key>Tab: prev-tab-group()
                                                     WTSI = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
+                                                  }
+                                                  {
+                                                    Taxon = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    IMAGELibrary = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    dbESTLibrary = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    IGTC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    LexiconGeneTrap = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    BayGenomicGeneTrap = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    TexasGeneTrap = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    TIGEMGeneTrap = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    ModellingHumanGeneTrap = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    ESCDGeneTrap = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    ExchangeableClonesGeneTrap = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    GermanGeneTrap = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    SangerGeneTrap = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    HutchinsonGeneTrap = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    KOMPRegeneron = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    KOMPCSD = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RegeneronOther = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    KOMPRegeneronProject = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    KOMPCSDProject = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NORCOMMProject = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EUCOMMProject = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Genentech = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EUCOMMCellLine = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EUCOMMSequenceType = AccToggle : mgiOption;
                                                   }
                                             }
                                       }
@@ -10567,6 +10665,11 @@ Shift<Key>Tab: prev-tab-group()
                                                     EMS = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    EUCOMM = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
                                                     Harwell = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -10698,11 +10801,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     NORCOMMProject = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    EUCOMM = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
                                                     EUCOMMProject = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -10715,6 +10813,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     EUCOMMSequenceType = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EUMMCR = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     mirKO = AccToggle : mgiOption;
@@ -16460,79 +16561,6 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                           }
-                          {
-                            Commands = Commands : mgiMenu;
-                                Popups:
-                                {
-                                  CommandsPulldown = MenuPulldown : mgiMenu;
-                                      {
-                                        Search = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Modify = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Add = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Delete = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        separator1 = XmSeparator;
-                                      }
-                                      {
-                                        Clear = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Clear1 = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Clear2 = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        separator2 = XmSeparator;
-                                      }
-                                      {
-                                        Previous = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Next = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Bottom = MenuPush : mgiMenu;
-                                      }
-                                }
-                          }
-                          {
-                            Edit = Edit : mgiMenu;
-                                Popups:
-                                {
-                                  EditPulldown = MenuPulldown : mgiMenu;
-                                }
-                          }
-                          {
-                            View = View : mgiMenu;
-                                Popups:
-                                {
-                                  ViewPulldown = MenuPulldown : mgiMenu;
-                                      {
-                                        Strain = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Tissue = MenuPush : mgiMenu;
-                                      }
-                                }
-                          }
-                          {
-                            Reports = MenuCascade;
-                          }
-                          {
-                            Utilities = Utilities : mgiMenu;
-                                Popups:
-                                {
-                                  UtilitiesPulldown = MenuPulldown : mgiMenu;
-                                }
-                          }
                     }
                     {
                       Edit = XmFrame;
@@ -16543,12 +16571,6 @@ Shift<Key>Tab: prev-tab-group()
                               resizePolicy = resize_any;
                                 {
                                   ID = ID : mgiDataTypes;
-                                      {
-                                        label = XmLabel;
-                                      }
-                                      {
-                                        text = text;
-                                      }
                                 }
                                 {
                                   VocAnnotTypeFrame = VocAnnotTypeFrame : mgiOption;
@@ -16560,9 +16582,6 @@ Shift<Key>Tab: prev-tab-group()
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                      {
-                                        VocAnnotTypeMenu = XmOptionMenu;
-                                      }
                                       Popups:
                                       {
                                         VocAnnotTypePulldown = OptionPulldown;
@@ -16597,12 +16616,6 @@ Shift<Key>Tab: prev-tab-group()
                                     resizable = true;
                                       {
                                         ObjectID = ID : mgiDataTypes;
-                                            {
-                                              label = XmLabel;
-                                            }
-                                            {
-                                              text = text;
-                                            }
                                       }
                                       {
                                         AccessionID = CharText : mgiDataTypes;
@@ -16760,58 +16773,21 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   Clear1 = XmMenuBar;
-                                      {
-                                        Clear = XmCascadeButton;
-                                            Popups:
-                                            {
-                                              ClearPulldown = XmPulldownMenu;
-                                            }
-                                      }
                                 }
                                 {
                                   RecordCount = RecordCount : mgiDataTypes;
                                   Group: Widget
                                     managed = False;
-                                      {
-                                        label = XmLabel;
-                                      }
-                                      {
-                                        text = text;
-                                      }
                                 }
                                 {
                                   CreationDate = CreationDate : mgiDataTypes;
                                   Group: Widget
                                     managed = False;
-                                      {
-                                        label = XmLabel;
-                                      }
-                                      {
-                                        text = text;
-                                      }
                                 }
                                 {
                                   ModifiedDate = ModifiedDate : mgiDataTypes;
                                   Group: Widget
                                     managed = False;
-                                      {
-                                        label = XmLabel;
-                                      }
-                                      {
-                                        text = text;
-                                      }
-                                }
-                                {
-                                  ModificationHistory = ModificationHistory : mgiTable;
-                                      {
-                                        Table = mgiTable : mgiTable;
-                                      }
-                                      {
-                                        AddRow = TablePush : mgiTable;
-                                      }
-                                      {
-                                        DeleteRow = TablePush : mgiTable;
-                                      }
                                 }
                           }
                     }
@@ -16840,9 +16816,6 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   AnnotQualifierFrame = AnnotQualifierFrame : mgiOption;
-                                      {
-                                        AnnotQualifierMenu = XmOptionMenu;
-                                      }
                                       Popups:
                                       {
                                         AnnotQualifierPulldown = OptionPulldown;
@@ -16853,9 +16826,6 @@ Shift<Key>Tab: prev-tab-group()
                                           tableOption = 10;
                                           tableOptionKey = 4;
                                           sql = "select _Term_key, abbreviation from VOC_Term \nwhere _Vocab_key = 53\norder by abbreviation";
-                                            {
-                                              SearhAllNoShow = SearhAllNoShow : mgiOption;
-                                            }
                                       }
                                 }
                                 {
@@ -16892,12 +16862,6 @@ Shift<Key>Tab: prev-tab-group()
                       ReportDialog = ReportDialog : mgiDialog;
                           {
                             FileSelection = FileSelection;
-                                {
-                                  filler = XmSeparator;
-                                }
-                                {
-                                  Delete = XmPushButton;
-                                }
                           }
                           {
                             Lookup = XmFrame;
@@ -16916,9 +16880,6 @@ Shift<Key>Tab: prev-tab-group()
                                                 keys = "GORefs.py";
                                             }
                                       }
-                                      {
-                                        Output = XmScrolledText;
-                                      }
                                 }
                           }
                     }
@@ -16927,24 +16888,6 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       WhichItem = WhichItem : mgiDialog;
-                          {
-                            ItemList = LookupList : mgiLookup;
-                                {
-                                  Label = LookupLabel;
-                                }
-                                {
-                                  List = list;
-                                }
-                          }
-                          {
-                            separator = XmSeparator;
-                          }
-                          {
-                            Buttons = XmRowColumn;
-                                {
-                                  Cancel = DialogPush : mgiDialog;
-                                }
-                          }
                     }
                     {
                       VerifyItemAdd = VerifyItemAdd : mgiDialog;
@@ -16956,33 +16899,6 @@ Shift<Key>Tab: prev-tab-group()
                       NoteDialog = NoteDialog : mgiDialog;
                       Group: Widget
                         dialogStyle = dialog_primary_application_modal;
-                          {
-                            label = XmLabel;
-                          }
-                          {
-                            Note = Notes : mgiDataTypes;
-                                {
-                                  label = XmLabel;
-                                }
-                                {
-                                  text = scrolledText;
-                                }
-                          }
-                          {
-                            separator = XmSeparator;
-                          }
-                          {
-                            Buttons = Buttons : mgiDialog;
-                                {
-                                  OK = DialogPush;
-                                }
-                                {
-                                  Cancel = DialogPush;
-                                }
-                                {
-                                  addNote1 = AppendNotePush : mgiDataTypes;
-                                }
-                          }
                     }
               }
         }

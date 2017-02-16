@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Thu Nov 17 10:13:48 2016";
+      lastWritten = "Thu Feb 16 10:15:25 2017";
       copy = false;
       inCreateMenu = true;
         {
@@ -1718,6 +1718,9 @@ Module: MGI
                                                     EMS = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    EUCOMM = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     Harwell = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -1833,6 +1836,9 @@ Module: MGI
                                                   }
                                                   {
                                                     EUCOMMSequenceType = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EUMMCR = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     RuleyHECellLine = AccToggle : mgiOption;
@@ -3488,6 +3494,9 @@ Module: MGI
                                                     EMS = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    EUCOMM = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     Harwell = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -3603,6 +3612,9 @@ Module: MGI
                                                   }
                                                   {
                                                     EUCOMMSequenceType = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EUMMCR = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     RuleyHECellLine = AccToggle : mgiOption;
