@@ -1909,19 +1909,11 @@ rules:
 
 	  -- Search for Marker in the database
 
-	  --if (not VerifyMarker.allowWithdrawn or not VerifyMarker.allowReserved) then
-	    --select := verify_marker_official(organismKey, mgi_DBprstr(value));
-	  --else
 	  select := verify_marker(organismKey, mgi_DBprstr(value));
-	  --end if;
 
 	  if (isTable) then
 	    if (column = markerID and accID.length > 0) then
-	      --if (not VerifyMarker.allowWithdrawn or not VerifyMarker.allowReserved) then
-	        --select := verify_markerid_official(accID);
-	      --else
 	      select := verify_markerid(accID);
-	      --end if;
 	    end if;
           end if;
 
