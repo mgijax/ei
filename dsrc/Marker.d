@@ -31,7 +31,6 @@
 --
 -- 07/19/2005	lec
 --	MGI 3.3
---	PythonMarkerOMIMCache
 --
 -- 03/2005	lec
 --	TR 4289, MPR

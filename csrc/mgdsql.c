@@ -291,7 +291,7 @@ char *allelediseasedo_select(char *key)
   sprintf(buf,"select a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier, e.* \
    \nfrom VOC_Annot_View a, VOC_Evidence_View e \
    \nwhere a._Annot_key = e._Annot_key \
-   \nand a._AnnotType_key = 1026 \
+   \nand a._AnnotType_key = 1021 \
    \nand a._Object_key = %s \
    \norder by a.term, e.jnumid", key);
   return(buf);
