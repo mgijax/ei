@@ -1,9 +1,9 @@
 --
--- Name    : DOAlleleDiseaseVocAnnot.d
+-- Name    : AlleleDiseaseVocAnnot.d
 -- Creator : 
--- DOAlleleDiseaseVocAnnot.d
+-- AlleleDiseaseVocAnnot.d
 --
--- TopLevelShell:		DOAlleleDiseaseVocAnnotModule
+-- TopLevelShell:		AlleleDiseaseVocAnnotModule
 -- Database Tables Affected:	Voc_Annot, VOC_Evidence
 -- Actions Allowed:		Add, Modify, Delete
 --
@@ -18,7 +18,7 @@
 --	TR10971/new Allele/Disease annotations
 --
 
-dmodule DOAlleleDiseaseVocAnnot is
+dmodule AlleleDiseaseVocAnnot is
 
 #include <mgilib.h>
 #include <dblib.h>
@@ -32,7 +32,7 @@ devents:
 	Add :local [];					-- Add record
 	BuildDynamicComponents :local [];
 	Delete :local [];				-- Delete record
-	DOAlleleDiseaseVocAnnotExit :local [];				-- Destroys D module instance & cleans up
+	AlleleDiseaseVocAnnotExit :local [];				-- Destroys D module instance & cleans up
 	DOAlleleDiseaseTraverse :local [];
 	Init :local [];					-- Initialize globals, etc.
 	Modify :local [];				-- Modify record
@@ -74,7 +74,7 @@ rules:
 --
 -- Activated from:  MGI:CreateMGIModule
 --
--- Creates and manages D Module "DOAlleleDiseaseVocAnnot"
+-- Creates and manages D Module "AlleleDiseaseVocAnnot"
 --
 
 	INITIALLY does
@@ -88,7 +88,7 @@ rules:
           ab.sensitive := false;
 
 	  -- Create the widget hierarchy in memory
-	  top := create widget("DOAlleleDiseaseVocAnnotModule", ab.name, mgi);
+	  top := create widget("AlleleDiseaseVocAnnotModule", ab.name, mgi);
 
 	  -- Set Permissions
 	  SetPermissions.source_widget := top;
@@ -737,7 +737,7 @@ rules:
 -- Destroy D module instance and call ExitWindow to destroy widgets
 --
  
-        DOAlleleDiseaseVocAnnotExit does
+        AlleleDiseaseVocAnnotExit does
 	  ab.sensitive := true;
           destroy self;
           ExitWindow.source_widget := top;
