@@ -33,7 +33,7 @@ devents:
 	BuildDynamicComponents :local [];
 	Delete :local [];				-- Delete record
 	AlleleDiseaseVocAnnotExit :local [];				-- Destroys D module instance & cleans up
-	DOAlleleDiseaseTraverse :local [];
+	AlleleDiseaseTraverse :local [];
 	Init :local [];					-- Initialize globals, etc.
 	Modify :local [];				-- Modify record
 	PrepareSearch :local [];			-- Construct SQL search clause
@@ -702,7 +702,7 @@ rules:
         end does;
 
 --
--- DOAlleleDiseaseTraverse
+-- AlleleDiseaseTraverse
 --
 --  Skips over the Modified By/Modification Date/Created By/Creation Date columns
 --  These cells need to be traversable in order to enter search criteria,
@@ -710,11 +710,11 @@ rules:
 --
 --
 
-	DOAlleleDiseaseTraverse does;
-	  table : widget := DOAlleleDiseaseTraverse.source_widget;
-	  row : integer := DOAlleleDiseaseTraverse.row;
-	  column : integer := DOAlleleDiseaseTraverse.column;
-	  reason : integer := DOAlleleDiseaseTraverse.reason;
+	AlleleDiseaseTraverse does;
+	  table : widget := AlleleDiseaseTraverse.source_widget;
+	  row : integer := AlleleDiseaseTraverse.row;
+	  column : integer := AlleleDiseaseTraverse.column;
+	  reason : integer := AlleleDiseaseTraverse.reason;
 
 	  if (row < 0) then
 	    return;
@@ -725,8 +725,8 @@ rules:
 	      AddTableRow.table := annotTable;
 	      send(AddTableRow, 0);
 	    end if;
-	    DOAlleleDiseaseTraverse.next_row := row + 1;
-	    DOAlleleDiseaseTraverse.next_column := annotTable.termAccID;
+	    AlleleDiseaseTraverse.next_row := row + 1;
+	    AlleleDiseaseTraverse.next_column := annotTable.termAccID;
 	  end if;
 
 	end does;

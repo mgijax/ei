@@ -6,6 +6,7 @@ STAFF: lec
 CHANGES:
 TR12540/Disease Ontology (DO) All The Way
 1) OMIMVocAnnot.d : obsolete
+2) DOAlleleDiseaseVocAnnot renamed AlleleDiseaseVocAnnot
 
 TAG: ei-6-0-8-2
 TAG: ei-6-0-8-1
