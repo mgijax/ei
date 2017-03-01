@@ -176,14 +176,14 @@ extern char *mutant_derivationVerify(char *, char *, char *, char *, char *, cha
 extern char *nonmutant_select(char *);
 extern char *nonmutant_count(char *);
 
-/* OMIMVocAnnot.d */
+/* DOVocAnnot.d */
 
-extern char *omimvoc_select1(char *, char *, char *);
-extern char *omimvoc_select2(char *, char *);
-extern char *omimvoc_notes(char *);
-extern char *omimvoc_dbview(char *);
-extern char *omimvoc_evidencecode(char *);
-extern char *omimvoc_qualifier(char *);
+extern char *dovoc_select1(char *, char *, char *);
+extern char *dovoc_select2(char *, char *);
+extern char *dovoc_notes(char *);
+extern char *dovoc_dbview(char *);
+extern char *dovoc_evidencecode(char *);
+extern char *dovoc_qualifier(char *);
 
 /* RI.d */
 

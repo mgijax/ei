@@ -1,9 +1,9 @@
 --
--- Name    : AlleleDiseaseVocAnnot.d
+-- Name    : DOAlleleDiseaseVocAnnot.d
 -- Creator : 
--- AlleleDiseaseVocAnnot.d
+-- DOAlleleDiseaseVocAnnot.d
 --
--- TopLevelShell:		AlleleDiseaseVocAnnotModule
+-- TopLevelShell:		DOAlleleDiseaseVocAnnotModule
 -- Database Tables Affected:	Voc_Annot, VOC_Evidence
 -- Actions Allowed:		Add, Modify, Delete
 --
@@ -18,7 +18,7 @@
 --	TR10971/new Allele/Disease annotations
 --
 
-dmodule AlleleDiseaseVocAnnot is
+dmodule DOAlleleDiseaseVocAnnot is
 
 #include <mgilib.h>
 #include <dblib.h>
@@ -32,8 +32,8 @@ devents:
 	Add :local [];					-- Add record
 	BuildDynamicComponents :local [];
 	Delete :local [];				-- Delete record
-	AlleleDiseaseVocAnnotExit :local [];				-- Destroys D module instance & cleans up
-	AlleleDiseaseTraverse :local [];
+	DOAlleleDiseaseVocAnnotExit :local [];				-- Destroys D module instance & cleans up
+	DOAlleleDiseaseTraverse :local [];
 	Init :local [];					-- Initialize globals, etc.
 	Modify :local [];				-- Modify record
 	PrepareSearch :local [];			-- Construct SQL search clause
@@ -74,7 +74,7 @@ rules:
 --
 -- Activated from:  MGI:CreateMGIModule
 --
--- Creates and manages D Module "AlleleDiseaseVocAnnot"
+-- Creates and manages D Module "DOAlleleDiseaseVocAnnot"
 --
 
 	INITIALLY does
@@ -88,7 +88,7 @@ rules:
           ab.sensitive := false;
 
 	  -- Create the widget hierarchy in memory
-	  top := create widget("AlleleDiseaseVocAnnotModule", ab.name, mgi);
+	  top := create widget("DOAlleleDiseaseVocAnnotModule", ab.name, mgi);
 
 	  -- Set Permissions
 	  SetPermissions.source_widget := top;
@@ -570,7 +570,7 @@ rules:
           dbproc : opaque;
 	  objectLoaded : boolean := false;
 
-	  cmd := omimvoc_select1(currentRecordKey, mgiTypeKey, dbView);
+	  cmd := dovoc_select1(currentRecordKey, mgiTypeKey, dbView);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -588,7 +588,7 @@ rules:
 	  (void) mgi_dbclose(dbproc);
 
 	  row := 0;
-	  cmd := alleledisease_select(currentRecordKey);
+	  cmd := allelediseasedo_select(currentRecordKey);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -660,21 +660,21 @@ rules:
 	  annotTypeKey := (string) top->VocAnnotTypeMenu.menuHistory.defaultValue;
 	  annotType := top->VocAnnotTypeMenu.menuHistory.labelString;
 	  mgiTypeKey := (string) top->VocAnnotTypeMenu.menuHistory.mgiTypeKey;
-	  dbView := mgi_sql1(omimvoc_dbview(mgiTypeKey));
+	  dbView := mgi_sql1(dovoc_dbview(mgiTypeKey));
 	  top->mgiAccession.mgiTypeKey := mgiTypeKey;
 	  annotTable.vocabKey := top->VocAnnotTypeMenu.menuHistory.vocabKey;
 	  annotTable.vocabEvidenceKey := top->VocAnnotTypeMenu.menuHistory.evidenceKey;
 	  annotTable.vocabQualifierKey := top->VocAnnotTypeMenu.menuHistory.qualifierKey;
 	  annotTable.annotVocab := top->VocAnnotTypeMenu.menuHistory.annotVocab;
 
-	  top->EvidenceCodeList.cmd := omimvoc_evidencecode((string) evidenceKey);
+	  top->EvidenceCodeList.cmd := dovoc_evidencecode((string) evidenceKey);
           LoadList.list := top->EvidenceCodeList;
 	  send(LoadList, 0);
 
           pos := XmListItemPos(top->EvidenceCodeList->List, xm_xmstring("TAS"));
 	  defaultEvidenceCodeKey := top->EvidenceCodeList->List.keys[pos];
 
-	  defaultQualifierKey := mgi_sql1(omimvoc_qualifier((string) annotTable.vocabQualifierKey));
+	  defaultQualifierKey := mgi_sql1(dovoc_qualifier((string) annotTable.vocabQualifierKey));
 
 	  (void) reset_cursor(mgi);
 	end does;
@@ -702,7 +702,7 @@ rules:
         end does;
 
 --
--- AlleleDiseaseTraverse
+-- DOAlleleDiseaseTraverse
 --
 --  Skips over the Modified By/Modification Date/Created By/Creation Date columns
 --  These cells need to be traversable in order to enter search criteria,
@@ -710,11 +710,11 @@ rules:
 --
 --
 
-	AlleleDiseaseTraverse does;
-	  table : widget := AlleleDiseaseTraverse.source_widget;
-	  row : integer := AlleleDiseaseTraverse.row;
-	  column : integer := AlleleDiseaseTraverse.column;
-	  reason : integer := AlleleDiseaseTraverse.reason;
+	DOAlleleDiseaseTraverse does;
+	  table : widget := DOAlleleDiseaseTraverse.source_widget;
+	  row : integer := DOAlleleDiseaseTraverse.row;
+	  column : integer := DOAlleleDiseaseTraverse.column;
+	  reason : integer := DOAlleleDiseaseTraverse.reason;
 
 	  if (row < 0) then
 	    return;
@@ -725,8 +725,8 @@ rules:
 	      AddTableRow.table := annotTable;
 	      send(AddTableRow, 0);
 	    end if;
-	    AlleleDiseaseTraverse.next_row := row + 1;
-	    AlleleDiseaseTraverse.next_column := annotTable.termAccID;
+	    DOAlleleDiseaseTraverse.next_row := row + 1;
+	    DOAlleleDiseaseTraverse.next_column := annotTable.termAccID;
 	  end if;
 
 	end does;
@@ -737,7 +737,7 @@ rules:
 -- Destroy D module instance and call ExitWindow to destroy widgets
 --
  
-        AlleleDiseaseVocAnnotExit does
+        DOAlleleDiseaseVocAnnotExit does
 	  ab.sensitive := true;
           destroy self;
           ExitWindow.source_widget := top;

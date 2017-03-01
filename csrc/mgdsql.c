@@ -1340,10 +1340,10 @@ char *nonmutant_count(char *key)
 }
 
 /*
- * OMIMVocAnnot.d
+ * DOVocAnnot.d
 */
 
-char *omimvoc_select1(char *key, char *key2, char *dbView)
+char *dovoc_select1(char *key, char *key2, char *dbView)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
@@ -1355,7 +1355,7 @@ char *omimvoc_select1(char *key, char *key2, char *dbView)
   return(buf);
 }
 
-char *omimvoc_select2(char *key, char *annotTypeKey)
+char *dovoc_select2(char *key, char *annotTypeKey)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
@@ -1368,7 +1368,7 @@ char *omimvoc_select2(char *key, char *annotTypeKey)
   return(buf);
 }
 
-char *omimvoc_notes(char *key)
+char *dovoc_notes(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
@@ -1381,7 +1381,7 @@ char *omimvoc_notes(char *key)
   return(buf);
 }
 
-char *omimvoc_dbview(char *key)
+char *dovoc_dbview(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
@@ -1389,7 +1389,7 @@ char *omimvoc_dbview(char *key)
   return(buf);
 }
 
-char *omimvoc_evidencecode(char *key)
+char *dovoc_evidencecode(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
@@ -1398,7 +1398,7 @@ char *omimvoc_evidencecode(char *key)
   return(buf);
 }
 
-char *omimvoc_qualifier(char *key)
+char *dovoc_qualifier(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));

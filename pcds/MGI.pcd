@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Thu Feb 16 10:15:25 2017";
+      lastWritten = "Wed Mar  1 09:30:49 2017";
       copy = false;
       inCreateMenu = true;
         {
@@ -986,14 +986,6 @@ Module: MGI
                                         Group: Widget
                                           activateCallback = "D:CreateMGIModule(name = \"MPVocAnnot\")";
                                           labelString = "Mammalian Phenotype Annotations";
-                                          userDefinedAttributes = "annotTypeKey:Int(Int)=\"1002\"\n";
-                                          managed = True;
-                                      }
-                                      {
-                                        OMIMVocAnnot = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          activateCallback = "D:CreateMGIModule(name = \"OMIMVocAnnot\")";
-                                          labelString = "OMIM Annotations";
                                           userDefinedAttributes = "annotTypeKey:Int(Int)=\"1002\"\n";
                                           managed = True;
                                       }

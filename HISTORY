@@ -4,7 +4,8 @@ TAG: ei-6-0-10-?
 DATE: 02/28/2017
 STAFF: lec
 CHANGES:
-TR12540/Disease Ontology (DO)
+TR12540/Disease Ontology (DO) All The Way
+1) OMIMVocAnnot.d : obsolete
 
 TAG: ei-6-0-8-2
 TAG: ei-6-0-8-1
