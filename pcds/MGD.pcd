@@ -7188,7 +7188,7 @@ Shift<Key>Tab: prev-tab-group()
                                         Group: Widget
                                           activateCallback = "D:CreateMGIModule(name = \"DOAlleleDiseaseVocAnnot\")";
                                           labelString = "DO Disease Annotations";
-                                          userDefinedAttributes = "annotTypeKey:Int(Int)=\"1026\"\n";
+                                          userDefinedAttributes = "annotTypeKey:Int(Int)=\"1021\"\n";
                                           managed = True;
                                       }
                                       {
@@ -15298,7 +15298,7 @@ Shift<Key>Tab: prev-tab-group()
                                                 evidenceKey = 85;
                                                 mgiTypeKey = 11;
                                                 vocabKey = 125;
-                                                defaultValue = 1026;
+                                                defaultValue = 1021;
                                                 qualifierKey = 84;
                                             }
                                       }
@@ -16596,7 +16596,7 @@ Shift<Key>Tab: prev-tab-group()
                                                 evidenceKey = 43;
                                                 mgiTypeKey = 12;
                                                 vocabKey = 125;
-                                                defaultValue = 1025;
+                                                defaultValue = 1020;
                                                 qualifierKey = 53;
                                             }
                                       }
