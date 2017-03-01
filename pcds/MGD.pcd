@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Thu Feb 16 10:15:27 2017";
+      lastWritten = "Wed Mar  1 09:25:02 2017";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -5324,13 +5324,6 @@ Module: MGD
                                     traversalOn = False;
                                 }
                                 {
-                                  DOVocAnnot = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"DOVocAnnot\")";
-                                    labelString = "DO Vocabulary Annotations";
-                                    traversalOn = False;
-                                }
-                                {
                                   TDCVocAnnot = XmPushButton;
                                   Group: Widget
                                     activateCallback = "D:CreateMGIModule(name = \"TDCVocAnnot\")";
@@ -9922,78 +9915,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     WTSI = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
-                                                  }
-                                                  {
-                                                    Taxon = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    IMAGELibrary = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    dbESTLibrary = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    IGTC = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    LexiconGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    BayGenomicGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TexasGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TIGEMGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    ModellingHumanGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    ESCDGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    ExchangeableClonesGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    GermanGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    SangerGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    HutchinsonGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    KOMPRegeneron = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    KOMPCSD = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RegeneronOther = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    KOMPRegeneronProject = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    KOMPCSDProject = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NORCOMMProject = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    EUCOMMProject = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    Genentech = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    EUCOMMCellLine = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    EUCOMMSequenceType = AccToggle : mgiOption;
                                                   }
                                             }
                                       }
