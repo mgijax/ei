@@ -297,7 +297,7 @@ rules:
             termKey := mgi_tblGetCell(annotTable, row, annotTable.termKey);
             qualifierKey := mgi_tblGetCell(annotTable, row, annotTable.qualifierKey);
             refsKey := mgi_tblGetCell(annotTable, row, annotTable.refsKey);
-            evidenceKey := defaultEvidenceCodeKey;
+	    evidenceKey := mgi_tblGetCell(annotTable, row, annotTable.evidenceKey);
             notes := mgi_tblGetCell(annotTable, row, annotTable.notes);
  
 	    if (qualifierKey = "NULL" or qualifierKey.length = 0) then
@@ -305,6 +305,13 @@ rules:
 	      -- set it in the table because we need to check it later on...
 	      mgi_tblSetCell(annotTable, row, annotTable.qualifier, "");
 	      mgi_tblSetCell(annotTable, row, annotTable.qualifierKey, qualifierKey);
+	    end if;
+
+	    if (evidenceKey = "NULL" or evidenceKey.length = 0) then
+	      evidenceKey := defaultEvidenceCodeKey;
+	      -- set it in the table because we need to check it later on...
+	      mgi_tblSetCell(annotTable, row, annotTable.evidence, "");
+	      mgi_tblSetCell(annotTable, row, annotTable.evidenceKey, qualifierKey);
 	    end if;
 
             if (editMode = TBL_ROW_ADD) then
