@@ -64,12 +64,6 @@
  *	- TR 2217; Allele Enhancements
  *	- TR 1939; Allele Nomenclature
  *
- * lec 09/25/2000
- *	- TR 1966; Nomen
- *
- * lec 09/05/2000
- *	- TR 1916; Nomen
- *
  * lec 08/20/2000
  *	- TR 1003; GXD_ANTIBODY and GXD_ANTIBODYSPECIES 
  *

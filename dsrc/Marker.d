@@ -388,7 +388,7 @@ rules:
  
 	  currentRecordKey := MAX_KEY1 + KEYNAME + MAX_KEY2;
  
-	  -- Insert master Nomen Record
+	  -- Insert master Marker Record
 
           cmd := mgi_setDBkey(MRK_MARKER, NEWKEY, KEYNAME) +
                  mgi_DBinsert(MRK_MARKER, KEYNAME) +

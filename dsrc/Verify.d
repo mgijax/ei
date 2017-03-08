@@ -39,7 +39,6 @@
 --	- VerifyDate; removed unnecessary validation
 --	- VerifyAnyMarker; not used anywhere
 --	- VerifyMarkerAlleles; not used anywhere
---	- VerifyNomenMarker; not used anywhere
 --	- VerifyTissueAge; not used anywhere
 --	- VerifyYesNo; remove unnecessary validation
 --
@@ -161,10 +160,6 @@
 -- lec 04/04/2001
 --	- VerifyItem; added ALL_CELLLINE
 --	- added VerifyAnyMarker
---
--- lec 03/20/2001
---	- TR 1939; VerifyAllele; status must be approved to be valid
---	- VerifyNomenMarker; created
 --
 -- lec 12/19/2000
 --	- TR 2128; VerifyChromosome; raise case

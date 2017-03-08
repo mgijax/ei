@@ -149,7 +149,7 @@ rules:
 --
 -- Contruct and execute insert statement
 --
--- Note that ALL new markers should be added via Nomen.
+-- Note that ALL new markers should be added via Marker module
 --
 
 	Delete does

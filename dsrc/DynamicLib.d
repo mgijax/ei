@@ -23,9 +23,6 @@
 --	lec	05/23/2003
 --	TR 3710; set x.prepform in InitOptionMenu
 --
---	lec	05/31/2002
---	TR 1463; SAO; Nomen status can now be accessed 
---
 --	lec	01/15/2002
 --	TR 2867; added mgiTypeKey, vocabKey to VOCAnnotTypeMenu
 --
