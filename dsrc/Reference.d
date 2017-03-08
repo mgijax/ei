@@ -1235,8 +1235,6 @@ rules:
 	        cmd := ref_gxd_exists(currentRecordKey);
 	      elsif (mgi_tblGetCell(statusTable, row, statusTable.existsProc) = "BIB_MLD_Exists") then
 	        cmd := ref_mld_exists(currentRecordKey);
-	      elsif (mgi_tblGetCell(statusTable, row, statusTable.existsProc) = "BIB_NOM_Exists") then
-	        cmd := ref_nom_exists(currentRecordKey);
 	      elsif (mgi_tblGetCell(statusTable, row, statusTable.existsProc) = "BIB_PRB_Exists") then
 	        cmd := ref_prb_exists(currentRecordKey);
 	      elsif (mgi_tblGetCell(statusTable, row, statusTable.existsProc) = "BIB_MLC_Exists") then

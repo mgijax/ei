@@ -291,7 +291,7 @@ char *allelediseasedo_select(char *key)
   sprintf(buf,"select a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier, e.* \
    \nfrom VOC_Annot_View a, VOC_Evidence_View e \
    \nwhere a._Annot_key = e._Annot_key \
-   \nand a._AnnotType_key = 1021 \
+   \nand a._AnnotType_key = 1026 \
    \nand a._Object_key = %s \
    \norder by a.term, e.jnumid", key);
   return(buf);
@@ -1340,10 +1340,10 @@ char *nonmutant_count(char *key)
 }
 
 /*
- * DOVocAnnot.d
+ * OMIMVocAnnot.d
 */
 
-char *dovoc_select1(char *key, char *key2, char *dbView)
+char *omimvoc_select1(char *key, char *key2, char *dbView)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
@@ -1355,7 +1355,7 @@ char *dovoc_select1(char *key, char *key2, char *dbView)
   return(buf);
 }
 
-char *dovoc_select2(char *key, char *annotTypeKey)
+char *omimvoc_select2(char *key, char *annotTypeKey)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
@@ -1368,7 +1368,7 @@ char *dovoc_select2(char *key, char *annotTypeKey)
   return(buf);
 }
 
-char *dovoc_notes(char *key)
+char *omimvoc_notes(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
@@ -1381,7 +1381,7 @@ char *dovoc_notes(char *key)
   return(buf);
 }
 
-char *dovoc_dbview(char *key)
+char *omimvoc_dbview(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
@@ -1389,7 +1389,7 @@ char *dovoc_dbview(char *key)
   return(buf);
 }
 
-char *dovoc_evidencecode(char *key)
+char *omimvoc_evidencecode(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
@@ -1398,7 +1398,7 @@ char *dovoc_evidencecode(char *key)
   return(buf);
 }
 
-char *dovoc_qualifier(char *key)
+char *omimvoc_qualifier(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));

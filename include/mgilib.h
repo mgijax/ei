@@ -337,11 +337,6 @@ extern char *global_version;
 #define STATUS_WITHDRAWN	"2"
 #define STATUS_RESERVED	"3"
 
-/* Nomen Status */
-
-#define STATUS_NRESERVED        "Reserved"
-#define STATUS_BROADCASTOFF     "Broadcast - Official"
-
 /* Allele Nomen */
 
 #define ALL_STATUS_PENDING	"In Progress"
