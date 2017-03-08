@@ -173,14 +173,6 @@ char *exec_mrk_reloadLocation(char *key)
   return(buf);
 }
 
-char *exec_nom_transferToMGD(char *userKey, char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select * from NOM_transferToMGD (%s, %s);\n", userKey, key);
-  return(buf);
-}
-
 char *exec_prb_insertReference(char *userKey, char *refKey, char *probeKey)
 {
   static char buf[TEXTBUFSIZ];

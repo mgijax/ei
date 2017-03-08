@@ -37,8 +37,6 @@ extern char *exec_mgi_resetSequenceNum(char *, char *);
 extern char *exec_mrk_reloadReference(char *); 
 extern char *exec_mrk_reloadLocation(char *);
 
-extern char *exec_nom_transferToMGD(char *, char *);
-
 extern char *exec_prb_insertReference(char *, char *, char *);
 extern char *exec_prb_getStrainByReference(char *);
 extern char *exec_prb_getStrainReferences(char *);

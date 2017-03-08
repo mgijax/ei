@@ -119,9 +119,6 @@
 -- lec 12/06/2002
 --	- TR 4262; for Unknown GO ID terms, fill in J: and Evidence code (VerifyVocabTermAccID)
 --
--- lec 05/29/2002
---	- SAO; removed NOMEN environment variable
---
 -- lec 05/16/2002
 --	- TR 1463/SAO; MRK_Species replaced with MGI_Species
 --
