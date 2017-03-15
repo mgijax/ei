@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Thu Feb 16 10:15:24 2017";
+      lastWritten = "Wed Mar 15 11:31:40 2017";
       copy = false;
       inCreateMenu = true;
         {
@@ -401,6 +401,15 @@ Module: mgiOption
                         labelString = GUDMAP;
                       Group: User
                         defaultValue = 163;
+                        allowAdd = False;
+                        allowModify = False;
+                    }
+                    {
+                      EMAGE = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = EMAGE;
+                      Group: User
+                        defaultValue = 116;
                         allowAdd = False;
                         allowModify = False;
                     }

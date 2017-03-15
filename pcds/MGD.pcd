@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Mon Mar  6 12:41:23 2017";
+      lastWritten = "Wed Mar 15 11:31:43 2017";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -430,6 +430,9 @@ Module: MGD
                                                   }
                                                   {
                                                     GUDMAP = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EMAGE = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     CREX = AccToggle : mgiOption;
@@ -1610,6 +1613,9 @@ Module: MGD
                                                   }
                                                   {
                                                     GUDMAP = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EMAGE = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     CREX = AccToggle : mgiOption;
@@ -2797,6 +2803,9 @@ Module: MGD
                                   GUDMAP = AccToggle : mgiOption;
                                 }
                                 {
+                                  EMAGE = AccToggle : mgiOption;
+                                }
+                                {
                                   CREX = AccToggle : mgiOption;
                                 }
                                 {
@@ -3437,6 +3446,9 @@ Module: MGD
                                                   }
                                                   {
                                                     GUDMAP = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EMAGE = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     CREX = AccToggle : mgiOption;
@@ -5907,6 +5919,9 @@ Module: MGD
                                                     GUDMAP = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    EMAGE = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     CREX = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -8088,6 +8103,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     GUDMAP = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    EMAGE = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     CREX = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -8585,6 +8603,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     GUDMAP = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EMAGE = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     CREX = AccToggle : mgiOption;
@@ -9717,6 +9738,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     GUDMAP = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    EMAGE = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     CREX = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -10492,6 +10516,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     GUDMAP = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EMAGE = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     CREX = AccToggle : mgiOption;
@@ -12193,6 +12220,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     GUDMAP = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EMAGE = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     CREX = AccToggle;
