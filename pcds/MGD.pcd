@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Wed Mar 15 12:41:44 2017";
+      lastWritten = "Wed Mar 15 12:47:12 2017";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -430,6 +430,9 @@ Module: MGD
                                                   }
                                                   {
                                                     GUDMAP = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EMAGE = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EUREXPRESS = AccToggle : mgiOption;
@@ -1613,6 +1616,9 @@ Module: MGD
                                                   }
                                                   {
                                                     GUDMAP = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EMAGE = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EUREXPRESS = AccToggle : mgiOption;
@@ -2803,6 +2809,9 @@ Module: MGD
                                   GUDMAP = AccToggle : mgiOption;
                                 }
                                 {
+                                  EMAGE = AccToggle : mgiOption;
+                                }
+                                {
                                   EUREXPRESS = AccToggle : mgiOption;
                                 }
                                 {
@@ -3446,6 +3455,9 @@ Module: MGD
                                                   }
                                                   {
                                                     GUDMAP = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EMAGE = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EUREXPRESS = AccToggle : mgiOption;
@@ -5919,6 +5931,9 @@ Module: MGD
                                                     GUDMAP = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    EMAGE = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     EUREXPRESS = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -8103,6 +8118,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     GUDMAP = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    EMAGE = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     EUREXPRESS = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -8603,6 +8621,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     GUDMAP = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EMAGE = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EUREXPRESS = AccToggle : mgiOption;
@@ -9738,6 +9759,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     GUDMAP = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    EMAGE = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     EUREXPRESS = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -10516,6 +10540,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     GUDMAP = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EMAGE = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EUREXPRESS = AccToggle : mgiOption;
@@ -12220,6 +12247,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     GUDMAP = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EMAGE = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EUREXPRESS = AccToggle : mgiOption;
