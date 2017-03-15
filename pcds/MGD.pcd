@@ -7173,7 +7173,7 @@ Shift<Key>Tab: prev-tab-group()
                                         Group: Widget
                                           activateCallback = "D:CreateMGIModule(name = \"AlleleDiseaseVocAnnot\")";
                                           labelString = "Disease Annotations";
-                                          userDefinedAttributes = "annotTypeKey:Int(Int)=\"1012\"\n";
+                                          userDefinedAttributes = "annotTypeKey:Int(Int)=\"1020\"\n";
                                           managed = True;
                                       }
                                       {
