@@ -362,7 +362,7 @@ char *genotype_search2(char *key)
    \n	GXD_AllelePair ap LEFT OUTER JOIN ALL_Allele a2 on (ap._Allele_key_2 = a2._Allele_key) \
    \nwhere v._Refs_key = %s \
    \nand v._Annot_key = t._Annot_key \
-   \nand t._AnnotType_key in (1002,1005,1025) \
+   \nand t._AnnotType_key in (1002,1020) \
    \nand t._Object_key = g._Genotype_key \
    \nand g._Strain_key = ps._Strain_key \
    \nand g._Genotype_key = ap._Genotype_key \
@@ -379,7 +379,7 @@ char *genotype_search2(char *key)
    \nfrom VOC_Evidence v, VOC_Annot t, GXD_Genotype g, PRB_Strain ps \
    \nwhere v._Refs_key = %s \
    \nand v._Annot_key = t._Annot_key \
-   \nand t._AnnotType_key in (1002,1005,1025) \
+   \nand t._AnnotType_key in (1002,1020) \
    \nand t._Object_key = g._Genotype_key \
    \nand g._Strain_key = ps._Strain_key \
    \nand not exists (select 1 from GXD_AllelePair ap where g._Genotype_key = ap._Genotype_key) \
