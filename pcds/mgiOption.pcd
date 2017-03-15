@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Wed Mar 15 11:31:40 2017";
+      lastWritten = "Wed Mar 15 12:41:43 2017";
       copy = false;
       inCreateMenu = true;
         {
@@ -405,11 +405,11 @@ Module: mgiOption
                         allowModify = False;
                     }
                     {
-                      EMAGE = AccToggle : mgiOption;
+                      EUREXPRESS = AccToggle : mgiOption;
                       Group: Widget
-                        labelString = EMAGE;
+                        labelString = Eurexpress;
                       Group: User
-                        defaultValue = 116;
+                        defaultValue = 148;
                         allowAdd = False;
                         allowModify = False;
                     }
