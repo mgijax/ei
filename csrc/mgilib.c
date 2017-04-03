@@ -1811,7 +1811,7 @@ char *mgi_DBinsert(int table, char *keyName)
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case ALL_ALLELE:
-            sprintf(buf, "insert into %s (%s, _Marker_key, _Strain_key, _Mode_key, _Allele_Type_key, _Allele_Status_key, _Transmission_key, _Collection_key, symbol, name, nomenSymbol, isWildType, isExtinct, isMixed, _Refs_key, _MarkerAllele_Status_key, _CreatedBy_key, _ModifiedBy_key, _ApprovedBy_key, approval_date)", mgi_DBtable(table), mgi_DBkey(table));
+            sprintf(buf, "insert into %s (%s, _Marker_key, _Strain_key, _Mode_key, _Allele_Type_key, _Allele_Status_key, _Transmission_key, _Collection_key, symbol, name, isWildType, isExtinct, isMixed, _Refs_key, _MarkerAllele_Status_key, _CreatedBy_key, _ModifiedBy_key, _ApprovedBy_key, approval_date)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case ALL_ALLELE_MUTATION:
             sprintf(buf, "insert into %s (%s, _Mutation_key)", mgi_DBtable(table), mgi_DBkey(table));

@@ -413,7 +413,6 @@ rules:
 
 	Add does
 	  isWildType : integer := 0;
-	  nomenSymbol : string := "NULL";
 	  markerKey : string := mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
 	  markerIsOfficial : string;
 
@@ -602,7 +601,6 @@ rules:
                  collectionKey + "," +
 	         mgi_DBprstr(top->Symbol->text.value) + "," +
 	         mgi_DBprstr(top->Name->text.value) + "," +
-		 mgi_DBprstr(nomenSymbol) + "," +
 		 (string) isWildType + "," +
 		 top->ExtinctMenu.menuHistory.defaultValue + "," +
 		 (string) isMixed + "," +
@@ -739,7 +737,6 @@ rules:
 	  row : integer := 0;
 	  markerKey : string := mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
 	  markerIsOfficial : string;
-	  nomenSymbol : string := "NULL";
 
 	  refsKey : string;
 	  refsType : string;
