@@ -2000,17 +2000,17 @@ rules:
 	      top->Name->text.value         := mgi_getstr(dbproc, 10);
 	      origAlleleSymbol := top->Symbol->text.value;
 
-	      (void) mgi_tblSetCell(table, table.approvedBy, table.byDate, mgi_getstr(dbproc, 20));
-	      (void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 21));
-	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 22));
+	      (void) mgi_tblSetCell(table, table.approvedBy, table.byDate, mgi_getstr(dbproc, 19));
+	      (void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 20));
+	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 21));
 
-	      (void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 28));
-	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 29));
-	      (void) mgi_tblSetCell(table, table.approvedBy, table.byUser, mgi_getstr(dbproc, 30));
+	      (void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 27));
+	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 28));
+	      (void) mgi_tblSetCell(table, table.approvedBy, table.byUser, mgi_getstr(dbproc, 29));
 
 	      -- Strain of Origin
 	      top->StrainOfOrigin->StrainID->text.value := mgi_getstr(dbproc, 3);
-	      top->StrainOfOrigin->Verify->text.value := mgi_getstr(dbproc, 26);
+	      top->StrainOfOrigin->Verify->text.value := mgi_getstr(dbproc, 25);
 
               SetOption.source_widget := top->InheritanceModeMenu;
               SetOption.value := mgi_getstr(dbproc, 4);
@@ -2033,11 +2033,11 @@ rules:
               send(SetOption, 0);
 
               SetOption.source_widget := top->MixedMenu;
-              SetOption.value := mgi_getstr(dbproc, 14);
+              SetOption.value := mgi_getstr(dbproc, 13);
               send(SetOption, 0);
 
               SetOption.source_widget := top->ExtinctMenu;
-              SetOption.value := mgi_getstr(dbproc, 13);
+              SetOption.value := mgi_getstr(dbproc, 12);
               send(SetOption, 0);
 
 	      -- Parent Cell Line info
@@ -2049,12 +2049,12 @@ rules:
 	      top->mgiParentCellLine->Derivation->CharText->text.value := "";
 
 	      (void) mgi_tblSetCell(markerTable, row, markerTable.markerKey, mgi_getstr(dbproc, 2));
-	      (void) mgi_tblSetCell(markerTable, row, markerTable.markerSymbol, mgi_getstr(dbproc, 23));
-	      (void) mgi_tblSetCell(markerTable, row, markerTable.refsKey, mgi_getstr(dbproc, 15));
-	      (void) mgi_tblSetCell(markerTable, row, markerTable.jnum, mgi_getstr(dbproc, 32));
-	      (void) mgi_tblSetCell(markerTable, row, markerTable.citation, mgi_getstr(dbproc, 34));
-	      (void) mgi_tblSetCell(markerTable, row, markerTable.statusKey, mgi_getstr(dbproc, 16));
-	      (void) mgi_tblSetCell(markerTable, row, markerTable.status, mgi_getstr(dbproc, 31));
+	      (void) mgi_tblSetCell(markerTable, row, markerTable.markerSymbol, mgi_getstr(dbproc, 22));
+	      (void) mgi_tblSetCell(markerTable, row, markerTable.refsKey, mgi_getstr(dbproc, 14));
+	      (void) mgi_tblSetCell(markerTable, row, markerTable.jnum, mgi_getstr(dbproc, 31));
+	      (void) mgi_tblSetCell(markerTable, row, markerTable.citation, mgi_getstr(dbproc, 33));
+	      (void) mgi_tblSetCell(markerTable, row, markerTable.statusKey, mgi_getstr(dbproc, 15));
+	      (void) mgi_tblSetCell(markerTable, row, markerTable.status, mgi_getstr(dbproc, 30));
 	      (void) mgi_tblSetCell(markerTable, row, markerTable.editMode, TBL_ROW_NOCHG);
 
 	      row := row + 1;
