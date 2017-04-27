@@ -5341,17 +5341,10 @@ Module: MGD
                                     traversalOn = False;
                                 }
                                 {
-<<<<<<< HEAD
-                                  OMIMVocAnnot = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"OMIMVocAnnot\")";
-                                    labelString = "OMIM Vocabulary Annotations";
-=======
                                   DOVocAnnot = XmPushButton;
                                   Group: Widget
                                     activateCallback = "D:CreateMGIModule(name = \"DOVocAnnot\")";
                                     labelString = "DO Vocabulary Annotations";
->>>>>>> tr12540
                                     traversalOn = False;
                                 }
                                 {

@@ -990,17 +990,10 @@ Module: MGI
                                           managed = True;
                                       }
                                       {
-<<<<<<< HEAD
-                                        OMIMVocAnnot = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          activateCallback = "D:CreateMGIModule(name = \"OMIMVocAnnot\")";
-                                          labelString = "OMIM Annotations";
-=======
                                         DOVocAnnot = MenuPush : mgiMenu;
                                         Group: Widget
                                           activateCallback = "D:CreateMGIModule(name = \"DOVocAnnot\")";
                                           labelString = "DO Annotations";
->>>>>>> tr12540
                                           userDefinedAttributes = "annotTypeKey:Int(Int)=\"1002\"\n";
                                           managed = True;
                                       }
