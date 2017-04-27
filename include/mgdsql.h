@@ -45,7 +45,6 @@ extern char *derivation_search(char *, char *);
 /* AlleleDiseaseVocAnnot.d */
 extern char *alleledisease_search(char *, char *);
 extern char *alleledisease_select(char *);
-extern char *allelediseasedo_select(char *);
 
 /* Cross.d */
 
@@ -176,14 +175,14 @@ extern char *mutant_derivationVerify(char *, char *, char *, char *, char *, cha
 extern char *nonmutant_select(char *);
 extern char *nonmutant_count(char *);
 
-/* OMIMVocAnnot.d */
+/* DOVocAnnot.d */
 
-extern char *omimvoc_select1(char *, char *, char *);
-extern char *omimvoc_select2(char *, char *);
-extern char *omimvoc_notes(char *);
-extern char *omimvoc_dbview(char *);
-extern char *omimvoc_evidencecode(char *);
-extern char *omimvoc_qualifier(char *);
+extern char *dovoc_select1(char *, char *, char *);
+extern char *dovoc_select2(char *, char *);
+extern char *dovoc_notes(char *);
+extern char *dovoc_dbview(char *);
+extern char *dovoc_evidencecode(char *);
+extern char *dovoc_qualifier(char *);
 
 /* RI.d */
 
@@ -201,7 +200,6 @@ extern char *ref_go_exists(char *);
 extern char *ref_gxd_exists(char *);
 extern char *ref_mlc_exists(char *);
 extern char *ref_mld_exists(char *);
-extern char *ref_nom_exists(char *);
 extern char *ref_prb_exists(char *);
 extern char *ref_allele_exists(char *);
 extern char *ref_mrk_exists(char *);

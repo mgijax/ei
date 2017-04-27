@@ -193,12 +193,6 @@ extern char *global_version;
 #define ACC_LOGICALDB		404
 #define ACC_MGITYPE		405
 
-/* Nomen Tables */
-
-#define NOM_MARKER			500
-#define NOM_MARKER_VIEW			501
-#define NOM_ACC_REFERENCE		502
-
 /* MGI Tables */
 
 #define MGI_NOTE			602
@@ -206,19 +200,15 @@ extern char *global_version;
 #define MGI_NOTETYPE			604
 #define MGI_REFERENCE_ASSOC		605
 #define MGI_REFASSOCTYPE		606
-#define MGI_REFERENCE_NOMEN_VIEW	607
 #define MGI_REFERENCE_SEQUENCE_VIEW	608
 #define MGI_ORGANISM			609
 #define MGI_ORGANISMTYPE		610
 #define MGI_NOTE_MRKGO_VIEW             611
 #define MGI_NOTETYPE_MRKGO_VIEW         612
-#define MGI_NOTE_NOMEN_VIEW		613
-#define MGI_NOTETYPE_NOMEN_VIEW		614
 #define MGI_NOTE_SEQUENCE_VIEW		615
 #define MGI_NOTETYPE_SEQUENCE_VIEW	616
 #define MGI_NOTE_SOURCE_VIEW		617
 #define MGI_NOTETYPE_SOURCE_VIEW	618
-#define MGI_REFTYPE_NOMEN_VIEW		619
 #define MGI_REFTYPE_SEQUENCE_VIEW	620
 #define MGI_TRANSLATION			621
 #define MGI_TRANSLATIONTYPE		622
@@ -232,8 +222,6 @@ extern char *global_version;
 #define MGI_SYNONYMTYPE			630
 #define MGI_SYNONYM_STRAIN_VIEW		631
 #define MGI_SYNONYMTYPE_STRAIN_VIEW	632
-#define MGI_SYNONYM_NOMEN_VIEW		633
-#define MGI_SYNONYMTYPE_NOMEN_VIEW	634
 #define MGI_SYNONYM_MUSMARKER_VIEW	635
 #define MGI_SYNONYMTYPE_MUSMARKER_VIEW	636
 #define MGI_REFERENCE_STRAIN_VIEW	637
@@ -312,8 +300,6 @@ extern char *global_version;
 
 /* Stored procedures */
 
-#define NOM_TRANSFERSYMBOL	2000
-
 #define	BACKGROUNDNORMAL	"Wheat"
 #define	BACKGROUNDALT1		"Thistle"
 #define	BACKGROUNDALT2		"Red"
@@ -331,12 +317,6 @@ extern char *global_version;
 #define EVENT_MERGE		"3"
 #define EVENT_ALLELEOF		"4"
 #define EVENT_DELETED		"6"
-
-/* OMIM Cache Events */
-
-#define EVENT_OMIM_BYALLELE	"1"
-#define EVENT_OMIM_BYMARKER	"2"
-#define EVENT_OMIM_BYGENOTYPE	"3"
 
 /* Allele Combination Events */
 
@@ -356,11 +336,6 @@ extern char *global_version;
 #define STATUS_APPROVED		"1"
 #define STATUS_WITHDRAWN	"2"
 #define STATUS_RESERVED	"3"
-
-/* Nomen Status */
-
-#define STATUS_NRESERVED        "Reserved"
-#define STATUS_BROADCASTOFF     "Broadcast - Official"
 
 /* Allele Nomen */
 

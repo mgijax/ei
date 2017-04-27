@@ -570,7 +570,7 @@ rules:
           dbproc : opaque;
 	  objectLoaded : boolean := false;
 
-	  cmd := omimvoc_select1(currentRecordKey, mgiTypeKey, dbView);
+	  cmd := dovoc_select1(currentRecordKey, mgiTypeKey, dbView);
           dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -660,21 +660,21 @@ rules:
 	  annotTypeKey := (string) top->VocAnnotTypeMenu.menuHistory.defaultValue;
 	  annotType := top->VocAnnotTypeMenu.menuHistory.labelString;
 	  mgiTypeKey := (string) top->VocAnnotTypeMenu.menuHistory.mgiTypeKey;
-	  dbView := mgi_sql1(omimvoc_dbview(mgiTypeKey));
+	  dbView := mgi_sql1(dovoc_dbview(mgiTypeKey));
 	  top->mgiAccession.mgiTypeKey := mgiTypeKey;
 	  annotTable.vocabKey := top->VocAnnotTypeMenu.menuHistory.vocabKey;
 	  annotTable.vocabEvidenceKey := top->VocAnnotTypeMenu.menuHistory.evidenceKey;
 	  annotTable.vocabQualifierKey := top->VocAnnotTypeMenu.menuHistory.qualifierKey;
 	  annotTable.annotVocab := top->VocAnnotTypeMenu.menuHistory.annotVocab;
 
-	  top->EvidenceCodeList.cmd := omimvoc_evidencecode((string) evidenceKey);
+	  top->EvidenceCodeList.cmd := dovoc_evidencecode((string) evidenceKey);
           LoadList.list := top->EvidenceCodeList;
 	  send(LoadList, 0);
 
           pos := XmListItemPos(top->EvidenceCodeList->List, xm_xmstring("TAS"));
 	  defaultEvidenceCodeKey := top->EvidenceCodeList->List.keys[pos];
 
-	  defaultQualifierKey := mgi_sql1(omimvoc_qualifier((string) annotTable.vocabQualifierKey));
+	  defaultQualifierKey := mgi_sql1(dovoc_qualifier((string) annotTable.vocabQualifierKey));
 
 	  (void) reset_cursor(mgi);
 	end does;

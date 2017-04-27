@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Wed Mar  1 09:25:27 2017";
+      lastWritten = "Wed Mar 15 12:47:43 2017";
       copy = false;
       inCreateMenu = true;
         {
@@ -990,10 +990,17 @@ Module: MGI
                                           managed = True;
                                       }
                                       {
+<<<<<<< HEAD
                                         OMIMVocAnnot = MenuPush : mgiMenu;
                                         Group: Widget
                                           activateCallback = "D:CreateMGIModule(name = \"OMIMVocAnnot\")";
                                           labelString = "OMIM Annotations";
+=======
+                                        DOVocAnnot = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          activateCallback = "D:CreateMGIModule(name = \"DOVocAnnot\")";
+                                          labelString = "DO Annotations";
+>>>>>>> tr12540
                                           userDefinedAttributes = "annotTypeKey:Int(Int)=\"1002\"\n";
                                           managed = True;
                                       }
@@ -1621,6 +1628,12 @@ Module: MGI
                                                   }
                                                   {
                                                     GUDMAP = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EMAGE = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EUREXPRESS = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     CREX = AccToggle : mgiOption;
@@ -3398,6 +3411,16 @@ Module: MGI
                                                   }
                                                   {
                                                     GUDMAP = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    EMAGE = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    EUREXPRESS = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }

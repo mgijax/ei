@@ -38,7 +38,6 @@ CALLS
 
 	 alleledisease_search("char *", "char *")	: "char *";
          alleledisease_select("char *")                 : "char *";
-         allelediseasedo_select("char *")               : "char *";
 
 	 cross_select("char *")				: "char *";
 	 cross_search("char *", "char *")		: "char *";
@@ -144,12 +143,12 @@ CALLS
 	 mutant_derivationDisplay("char *") 		: "char *";
 	 mutant_derivationVerify("char *", "char *", "char *", "char *", "char *", "char *", "char *") : "char *";
 
-	 omimvoc_select1("char *", "char *", "char *")	: "char *";
-	 omimvoc_select2("char *", "char *")		: "char *";
-	 omimvoc_notes("char *")			: "char *";
-	 omimvoc_dbview("char *")			: "char *";
-	 omimvoc_evidencecode("char *")			: "char *";
-	 omimvoc_qualifier("char *")			: "char *";
+	 dovoc_select1("char *", "char *", "char *")	: "char *";
+	 dovoc_select2("char *", "char *")		: "char *";
+	 dovoc_notes("char *")				: "char *";
+	 dovoc_dbview("char *")				: "char *";
+	 dovoc_evidencecode("char *")			: "char *";
+	 dovoc_qualifier("char *")			: "char *";
 
 	 nonmutant_select("char *")			: "char *";
 	 nonmutant_count("char *")			: "char *";
@@ -165,7 +164,6 @@ CALLS
 	 ref_go_exists("char *")			: "char *";
 	 ref_gxd_exists("char *")			: "char *";
 	 ref_mld_exists("char *")			: "char *";
-	 ref_nom_exists("char *")			: "char *";
 	 ref_prb_exists("char *")			: "char *";
 	 ref_allele_exists("char *")			: "char *";
 	 ref_mrk_exists("char *")			: "char *";

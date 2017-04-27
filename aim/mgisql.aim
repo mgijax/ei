@@ -35,8 +35,6 @@ CALLS
          exec_mrk_reloadReference("char *")                     : "char *"; 
 	 exec_mrk_reloadLocation("char *")			: "char *";
 
-	 exec_nom_transferToMGD("char *", "char *")		: "char *";
-
 	 exec_prb_insertReference("char *", "char *", "char *")	: "char *";
 	 exec_prb_getStrainByReference("char *")		: "char *";
 	 exec_prb_getStrainReferences("char *")			: "char *";

@@ -135,7 +135,6 @@ rules:
 	  send(ClearTable, 0);
 
 	  if (tableID = MGI_SYNONYM_ALLELE_VIEW or 
-	      tableID = MGI_SYNONYM_NOMEN_VIEW or 
 	      tableID = MGI_SYNONYM_MUSMARKER_VIEW or
 	      tableID = MGI_SYNONYM_STRAIN_VIEW or
 	      tableID = MGI_SYNONYM_GOTERM_VIEW) then
@@ -158,7 +157,6 @@ rules:
 	      (void) mgi_tblSetCell(table, row, table.modifiedBy, mgi_getstr(dbproc, 7));
 
 	      if (tableID = MGI_SYNONYM_ALLELE_VIEW or 
-	          tableID = MGI_SYNONYM_NOMEN_VIEW or
 	          tableID = MGI_SYNONYM_MUSMARKER_VIEW or
 		  tableID = MGI_SYNONYM_STRAIN_VIEW or
 		  tableID = MGI_SYNONYM_GOTERM_VIEW) then

@@ -278,20 +278,7 @@ char *alleledisease_select(char *key)
   sprintf(buf,"select a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier, e.* \
    \nfrom VOC_Annot_View a, VOC_Evidence_View e \
    \nwhere a._Annot_key = e._Annot_key \
-   \nand a._AnnotType_key = 1012 \
-   \nand a._Object_key = %s \
-   \norder by a.term, e.jnumid", key);
-  return(buf);
-}
-
-char *allelediseasedo_select(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier, e.* \
-   \nfrom VOC_Annot_View a, VOC_Evidence_View e \
-   \nwhere a._Annot_key = e._Annot_key \
-   \nand a._AnnotType_key = 1026 \
+   \nand a._AnnotType_key = 1021 \
    \nand a._Object_key = %s \
    \norder by a.term, e.jnumid", key);
   return(buf);
@@ -362,7 +349,7 @@ char *genotype_search2(char *key)
    \n	GXD_AllelePair ap LEFT OUTER JOIN ALL_Allele a2 on (ap._Allele_key_2 = a2._Allele_key) \
    \nwhere v._Refs_key = %s \
    \nand v._Annot_key = t._Annot_key \
-   \nand t._AnnotType_key in (1002,1005,1025) \
+   \nand t._AnnotType_key in (1002,1020) \
    \nand t._Object_key = g._Genotype_key \
    \nand g._Strain_key = ps._Strain_key \
    \nand g._Genotype_key = ap._Genotype_key \
@@ -379,7 +366,7 @@ char *genotype_search2(char *key)
    \nfrom VOC_Evidence v, VOC_Annot t, GXD_Genotype g, PRB_Strain ps \
    \nwhere v._Refs_key = %s \
    \nand v._Annot_key = t._Annot_key \
-   \nand t._AnnotType_key in (1002,1005,1025) \
+   \nand t._AnnotType_key in (1002,1020) \
    \nand t._Object_key = g._Genotype_key \
    \nand g._Strain_key = ps._Strain_key \
    \nand not exists (select 1 from GXD_AllelePair ap where g._Genotype_key = ap._Genotype_key) \
@@ -1340,10 +1327,10 @@ char *nonmutant_count(char *key)
 }
 
 /*
- * OMIMVocAnnot.d
+ * DOVocAnnot.d
 */
 
-char *omimvoc_select1(char *key, char *key2, char *dbView)
+char *dovoc_select1(char *key, char *key2, char *dbView)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
@@ -1355,7 +1342,7 @@ char *omimvoc_select1(char *key, char *key2, char *dbView)
   return(buf);
 }
 
-char *omimvoc_select2(char *key, char *annotTypeKey)
+char *dovoc_select2(char *key, char *annotTypeKey)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
@@ -1368,7 +1355,7 @@ char *omimvoc_select2(char *key, char *annotTypeKey)
   return(buf);
 }
 
-char *omimvoc_notes(char *key)
+char *dovoc_notes(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
@@ -1381,7 +1368,7 @@ char *omimvoc_notes(char *key)
   return(buf);
 }
 
-char *omimvoc_dbview(char *key)
+char *dovoc_dbview(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
@@ -1389,7 +1376,7 @@ char *omimvoc_dbview(char *key)
   return(buf);
 }
 
-char *omimvoc_evidencecode(char *key)
+char *dovoc_evidencecode(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
@@ -1398,7 +1385,7 @@ char *omimvoc_evidencecode(char *key)
   return(buf);
 }
 
-char *omimvoc_qualifier(char *key)
+char *dovoc_qualifier(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
@@ -1504,14 +1491,6 @@ char *ref_mld_exists(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select count(*) from MLD_Expts where _Refs_key = %s", key);
-  return(buf);
-}
-
-char *ref_nom_exists(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select count(*) from MGI_Reference_Nomen_View where _Refs_key = %s", key);
   return(buf);
 }
 

@@ -64,33 +64,14 @@
  *	- TR 2217; Allele Enhancements
  *	- TR 1939; Allele Nomenclature
  *
- * lec 09/25/2000
- *	- TR 1966; Nomen
- *
- * lec 09/05/2000
- *	- TR 1916; Nomen
- *
  * lec 08/20/2000
  *	- TR 1003; GXD_ANTIBODY and GXD_ANTIBODYSPECIES 
- *
- * lec 03/20/2000
- *	- TR 1291
- *	- removed MRK_NOMEN_MARKER_VIEW
- *	- removed MRK_NOMEN_HOMOLOGY_VIEW
  *
  * lec 10/18/1999
  *  - TR 204
  *
- * lec 08/04/1999
- *  - TR 518; removed reference to MRK_NOMEN.ECNumber
- *  - mgi_DBtype; added def for MRK_Nomen & MRK_NOMEN_ACC_REFERENCE
- *  - mgi_DBaccTable; added def for MRK_Nomen & MRK_NOMEN_ACC_REFERENCE
- *
  * lec 02/10/99
  *  - TR 322; MLC_HISTORY_EDIT and MLC_HISTORY are obsolete
- *
- * lec 01/22/99
- *  - MRK_NOMEN and MRK_NOMEN_NOTES schema changes
  *
  * lec 12/11/98
  *  - added IMG_IMAGENOTE and GXD_GELCONTROL processing
@@ -704,7 +685,6 @@ char *mgi_DBkey(int table)
     case MGI_NOTE_IMAGE_VIEW:
     case MGI_NOTE_MARKER_VIEW:
     case MGI_NOTE_MRKGO_VIEW:
-    case MGI_NOTE_NOMEN_VIEW:
     case MGI_NOTE_PROBE_VIEW:
     case MGI_NOTE_SEQUENCE_VIEW:
     case MGI_NOTE_SOURCE_VIEW:
@@ -725,7 +705,6 @@ char *mgi_DBkey(int table)
     case MGI_REFERENCE_ALLELE_VIEW:
     case MGI_REFERENCE_ANTIBODY_VIEW:
     case MGI_REFERENCE_MARKER_VIEW:
-    case MGI_REFERENCE_NOMEN_VIEW:
     case MGI_REFERENCE_SEQUENCE_VIEW:
     case MGI_REFERENCE_STRAIN_VIEW:
             strcpy(buf, "_Object_key");
@@ -741,7 +720,6 @@ char *mgi_DBkey(int table)
 	    break;
     case MGI_SYNONYM_ALLELE_VIEW:
     case MGI_SYNONYM_MUSMARKER_VIEW:
-    case MGI_SYNONYM_NOMEN_VIEW:
     case MGI_SYNONYM_STRAIN_VIEW:
     case MGI_SYNONYM_GOTERM_VIEW:
             strcpy(buf, "_Object_key");
@@ -820,9 +798,6 @@ char *mgi_DBkey(int table)
 	    break;
     case MRK_STATUS:
             strcpy(buf, "_Marker_Status_key");
-	    break;
-    case NOM_MARKER:
-            strcpy(buf, "_Nomen_key");
 	    break;
     case PRB_ALIAS:
             strcpy(buf, "_Alias_key");
@@ -962,10 +937,6 @@ char *mgi_DBtype(int table)
     case MRK_ACC_REFERENCE3:
             strcpy(buf, "Marker");
 	    break;
-    case NOM_MARKER:
-    case NOM_ACC_REFERENCE:
-            strcpy(buf, "Nomenclature");
-            break;
     case PRB_PROBE:
             strcpy(buf, "Segment");
 	    break;
@@ -1059,12 +1030,6 @@ char *mgi_DBaccTable(int table)
             break;
     case MRK_ACC_REFERENCE3:
             strcpy(buf, "MRK_AccRef3_View");
-            break;
-    case NOM_MARKER:
-	    strcpy(buf, "NOM_AccNoRef_View");
-            break;
-    case NOM_ACC_REFERENCE:
-	    strcpy(buf, "NOM_AccRef_View");
             break;
     case PRB_PROBE:
             strcpy(buf, "PRB_AccNoRef_View");
@@ -1363,12 +1328,6 @@ char *mgi_DBtable(int table)
     case MGI_NOTETYPE_MRKGO_VIEW:
 	    strcpy(buf, "MGI_NoteType_MRKGO_View");
 	    break;
-    case MGI_NOTE_NOMEN_VIEW:
-	    strcpy(buf, "MGI_Note_Nomen_View");
-	    break;
-    case MGI_NOTETYPE_NOMEN_VIEW:
-	    strcpy(buf, "MGI_NoteType_Nomen_View");
-	    break;
     case MGI_NOTE_SEQUENCE_VIEW:
 	    strcpy(buf, "MGI_Note_Sequence_View");
 	    break;
@@ -1414,9 +1373,6 @@ char *mgi_DBtable(int table)
     case MGI_REFERENCE_MARKER_VIEW:
 	    strcpy(buf, "MGI_Reference_Marker_View");
 	    break;
-    case MGI_REFERENCE_NOMEN_VIEW:
-	    strcpy(buf, "MGI_Reference_Nomen_View");
-	    break;
     case MGI_REFERENCE_SEQUENCE_VIEW:
 	    strcpy(buf, "MGI_Reference_Sequence_View");
 	    break;
@@ -1431,9 +1387,6 @@ char *mgi_DBtable(int table)
 	    break;
     case MGI_REFTYPE_MARKER_VIEW:
 	    strcpy(buf, "MGI_RefType_Marker_View");
-	    break;
-    case MGI_REFTYPE_NOMEN_VIEW:
-	    strcpy(buf, "MGI_RefType_Nomen_View");
 	    break;
     case MGI_REFTYPE_SEQUENCE_VIEW:
 	    strcpy(buf, "MGI_RefType_Sequence_View");
@@ -1456,9 +1409,6 @@ char *mgi_DBtable(int table)
     case MGI_SYNONYM_MUSMARKER_VIEW:
 	    strcpy(buf, "MGI_Synonym_MusMarker_View");
 	    break;
-    case MGI_SYNONYM_NOMEN_VIEW:
-	    strcpy(buf, "MGI_Synonym_Nomen_View");
-	    break;
     case MGI_SYNONYM_STRAIN_VIEW:
 	    strcpy(buf, "MGI_Synonym_Strain_View");
 	    break;
@@ -1470,9 +1420,6 @@ char *mgi_DBtable(int table)
 	    break;
     case MGI_SYNONYMTYPE_MUSMARKER_VIEW:
 	    strcpy(buf, "MGI_SynonymType_MusMarker_View");
-	    break;
-    case MGI_SYNONYMTYPE_NOMEN_VIEW:
-	    strcpy(buf, "MGI_SynonymType_Nomen_View");
 	    break;
     case MGI_SYNONYMTYPE_STRAIN_VIEW:
 	    strcpy(buf, "MGI_SynonymType_Strain_View");
@@ -1604,15 +1551,6 @@ char *mgi_DBtable(int table)
 	    break;
     case MRK_STATUS:
 	    strcpy(buf, "MRK_Status");
-	    break;
-    case NOM_MARKER:
-	    strcpy(buf, "NOM_Marker");
-	    break;
-    case NOM_MARKER_VIEW:
-	    strcpy(buf, "NOM_Marker_View");
-	    break;
-    case NOM_TRANSFERSYMBOL:
-	    strcpy(buf, "NOM_transferToMGD");
 	    break;
     case PRB_ALIAS:
             strcpy(buf, "PRB_Alias");
@@ -1873,7 +1811,7 @@ char *mgi_DBinsert(int table, char *keyName)
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case ALL_ALLELE:
-            sprintf(buf, "insert into %s (%s, _Marker_key, _Strain_key, _Mode_key, _Allele_Type_key, _Allele_Status_key, _Transmission_key, _Collection_key, symbol, name, nomenSymbol, isWildType, isExtinct, isMixed, _Refs_key, _MarkerAllele_Status_key, _CreatedBy_key, _ModifiedBy_key, _ApprovedBy_key, approval_date)", mgi_DBtable(table), mgi_DBkey(table));
+            sprintf(buf, "insert into %s (%s, _Marker_key, _Strain_key, _Mode_key, _Allele_Type_key, _Allele_Status_key, _Transmission_key, _Collection_key, symbol, name, isWildType, isExtinct, isMixed, _Refs_key, _MarkerAllele_Status_key, _CreatedBy_key, _ModifiedBy_key, _ApprovedBy_key, approval_date)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case ALL_ALLELE_MUTATION:
             sprintf(buf, "insert into %s (%s, _Mutation_key)", mgi_DBtable(table), mgi_DBkey(table));
@@ -2142,11 +2080,6 @@ char *mgi_DBinsert(int table, char *keyName)
 	    sprintf(buf, "insert into %s (%s, source, cmOffset)",
 	      mgi_DBtable(table), mgi_DBkey(table));
  	    break;
-    case NOM_MARKER:
-            sprintf(buf, "insert into %s (%s, _Marker_Type_key, _NomenStatus_key, _Marker_Event_key, _Marker_EventReason_key, symbol, name, chromosome, humanSymbol, statusNote, _CreatedBy_key, _ModifiedBy_key)",
-
-	      mgi_DBtable(table), mgi_DBkey(table));
-	    break;
     case PRB_ALIAS:
             sprintf(buf, "insert into %s (%s, _Reference_key, alias, _CreatedBy_key, _ModifiedBy_key)",
 		mgi_DBtable(table), mgi_DBkey(table));
@@ -2320,7 +2253,6 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case MRK_CHROMOSOME:
       case MRK_HISTORY:
       case MRK_MARKER:
-      case NOM_MARKER:
       case PRB_ALIAS:
       case PRB_ALLELE:
       case PRB_ALLELE_STRAIN:
@@ -2384,7 +2316,6 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case MGI_USERROLE:
       case MRK_HISTORY:
       case MRK_MARKER:
-      case NOM_MARKER:
       case PRB_ALIAS:
       case PRB_ALLELE:
       case PRB_ALLELE_STRAIN:

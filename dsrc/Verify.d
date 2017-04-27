@@ -39,7 +39,6 @@
 --	- VerifyDate; removed unnecessary validation
 --	- VerifyAnyMarker; not used anywhere
 --	- VerifyMarkerAlleles; not used anywhere
---	- VerifyNomenMarker; not used anywhere
 --	- VerifyTissueAge; not used anywhere
 --	- VerifyYesNo; remove unnecessary validation
 --
@@ -119,9 +118,6 @@
 -- lec 12/06/2002
 --	- TR 4262; for Unknown GO ID terms, fill in J: and Evidence code (VerifyVocabTermAccID)
 --
--- lec 05/29/2002
---	- SAO; removed NOMEN environment variable
---
 -- lec 05/16/2002
 --	- TR 1463/SAO; MRK_Species replaced with MGI_Species
 --
@@ -164,10 +160,6 @@
 -- lec 04/04/2001
 --	- VerifyItem; added ALL_CELLLINE
 --	- added VerifyAnyMarker
---
--- lec 03/20/2001
---	- TR 1939; VerifyAllele; status must be approved to be valid
---	- VerifyNomenMarker; created
 --
 -- lec 12/19/2000
 --	- TR 2128; VerifyChromosome; raise case
@@ -3865,17 +3857,7 @@ rules:
 	  isHeader : string;
 	  dbproc : opaque;
 	  select : string;
-	  omimid : string_list;
 	  doid : string_list;
-
-	  -- for OMIM (44) only
-	  -- if no prefix (OMIM:), then add it
-	  if (sourceWidget.vocabKey = 44) then
-              omimid := mgi_splitfields(value, ":");
-              if (omimid.find("OMIM") <= 0) then
-	          value := "OMIM:" + value;
-	      end if;
-	  end if;
 
 	  -- for DO (125, 126) only
 	  -- if no prefix (DOID:), then add it
