@@ -108,6 +108,7 @@ extern char *image_select(char *);
 extern char *image_caption(char *);
 extern char *image_getCopyright(char *);
 extern char *image_copyright(char *);
+extern char *image_creativecommons(char *);
 extern char *image_pane(char *);
 extern char *image_orderByJnum();
 extern char *image_orderByImageType();

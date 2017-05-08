@@ -208,6 +208,7 @@ rules:
 	    top->Caption.noteKey := -1;
 	    top->Copyright->text.value := "";
 	    top->Copyright.noteKey := -1;
+	    top->CreativeCommons.managed := false;
             SetOption.source_widget := top->MGITypeMenu;
             SetOption.value := defaultMGITypeKey;
             send(SetOption, 0);

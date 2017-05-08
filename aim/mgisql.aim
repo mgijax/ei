@@ -86,6 +86,7 @@ CALLS
          image_caption("char *")         			: "char *";
          image_getCopyright("char *")    			: "char *";
          image_copyright("char *")       			: "char *";
+         image_creativecommons("char *")       			: "char *";
          image_pane("char *")            			: "char *";
          image_orderByJnum()             			: "char *";
          image_orderByImageType()        			: "char *";

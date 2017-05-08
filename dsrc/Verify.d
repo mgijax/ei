@@ -2288,6 +2288,7 @@ rules:
 	  value : string;
 	  dbproc : opaque;
 	  copyright : string;
+	  creativecommons : string;
 
 	  -- These variables are only relevant for Tables
 	  row : integer;
@@ -2393,6 +2394,13 @@ rules:
 		  if (copyright.length > 0) then
 		    top->Copyright->text.value := copyright;
 		  end if;
+		end if;
+	      end if;
+
+	      if (top->CreativeCommons != nil) then
+	        creativecommons := mgi_sp(image_creativecommons(key));
+		if (creativecommons.length > 0) then
+		    top->CreativeCommons.managed := true;
 		end if;
 	      end if;
 

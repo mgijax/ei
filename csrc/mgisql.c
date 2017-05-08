@@ -637,6 +637,31 @@ char *image_copyright(char *key)
   return(buf);
 }
 
+char *image_creativecommons(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select * from BIB_Refs \
+  	\nwhere journal in ('Acta Biochim Biophys Sin (Shanghai)', \
+		'Brain', \
+		'Carcinogenesis', \
+		'Cardiovasc Res', \
+		'Cereb Cortex', \
+		'Chem Senses', \
+		'Glycobiology', \
+		'Hum Mol Genet', \
+		'Hum Reprod', \
+		'J Gerontol A Biol Sci Med Sci', \
+		'Mol Biol Evol', \
+		'Toxicol Sci', \
+		'EMBO J', \
+		'J Invest Dermatol', \
+		'Mol Psychiatry', \
+		'Cell Cycle') \
+  	\nand _Refs_key = %s;\n", key);
+  return(buf);
+}
+
 char *image_pane(char *key)
 {
   static char buf[TEXTBUFSIZ];

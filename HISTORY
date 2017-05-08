@@ -1,5 +1,6 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-6-0-10-3
 TAG: ei-6-0-10-2
 TAG: ei-6-0-10-1
 DATE: 04/27/2017
@@ -8,6 +9,7 @@ CHANGES:
 TR12540/Disease Ontology (DO) All The Way
 1) OMIMVocAnnot.d : obsolete
 2) DOAlleleDiseaseVocAnnot renamed AlleleDiseaseVocAnnot
+3) TR12514/GXD Images/add Creative Commons red label
 
 TAG: ei-6-0-8-2
 TAG: ei-6-0-8-1
