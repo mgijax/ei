@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Wed Mar 15 12:47:12 2017";
+      lastWritten = "Tue May 23 07:33:16 2017";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -1715,6 +1715,9 @@ Module: MGD
                                                   }
                                                   {
                                                     JPGA = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    genOway = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     KOMP = AccToggle : mgiOption;
@@ -3556,6 +3559,9 @@ Module: MGD
                                                   }
                                                   {
                                                     JPGA = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    genOway = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     KOMP = AccToggle : mgiOption;
@@ -8217,6 +8223,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     JPGA = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    genOway = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     KOMP = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -8720,6 +8729,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     JPGA = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    genOway = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     KOMP = AccToggle : mgiOption;
@@ -9887,6 +9899,11 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
+                                                    genOway = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
                                                     KOMP = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
@@ -10641,6 +10658,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     JPGA = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    genOway = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     KOMP = AccToggle : mgiOption;

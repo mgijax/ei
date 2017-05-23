@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Tue May  9 08:00:55 2017";
+      lastWritten = "Tue May 23 07:25:27 2017";
       copy = false;
       inCreateMenu = true;
         {
@@ -1723,6 +1723,9 @@ Module: MGI
                                                   }
                                                   {
                                                     JPGA = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    genOway = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     KOMP = AccToggle : mgiOption;
@@ -3528,6 +3531,9 @@ Module: MGI
                                                   }
                                                   {
                                                     JPGA = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    genOway = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     KOMP = AccToggle : mgiOption;
