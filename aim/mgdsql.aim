@@ -164,6 +164,7 @@ CALLS
 	 ref_go_exists("char *")			: "char *";
 	 ref_gxd_exists("char *")			: "char *";
 	 ref_mld_exists("char *")			: "char *";
+	 ref_nom_exists("char *")                       : "char *";
 	 ref_prb_exists("char *")			: "char *";
 	 ref_allele_exists("char *")			: "char *";
 	 ref_mrk_exists("char *")			: "char *";

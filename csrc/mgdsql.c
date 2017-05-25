@@ -1494,6 +1494,14 @@ char *ref_mld_exists(char *key)
   return(buf);
 }
 
+char *ref_nom_exists(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select count(*) from MGI_Reference_Marker_View where _Refs_key = %s", key);
+  return(buf);
+}
+
 char *ref_prb_exists(char *key)
 {
   static char buf[TEXTBUFSIZ];
