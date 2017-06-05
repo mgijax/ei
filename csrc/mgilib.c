@@ -559,9 +559,6 @@ char *mgi_DBkey(int table)
     case BIB_DATASET_ASSOC:
 	    strcpy(buf, "_Assoc_key");
 	    break;
-    case BIB_REVIEW_STATUS:
-            strcpy(buf, "_ReviewStatus_key");
-	    break;
     case CROSS:
             strcpy(buf, "_Cross_key");
 	    break;
@@ -1135,9 +1132,6 @@ char *mgi_DBtable(int table)
 	    break;
     case BIB_NOTES:
             strcpy(buf, "BIB_Notes");
-	    break;
-    case BIB_REVIEW_STATUS:
-            strcpy(buf, "BIB_ReviewStatus");
 	    break;
     case BIB_DATASET_ASSOC:
             strcpy(buf, "BIB_DataSet_Assoc");
@@ -1831,7 +1825,7 @@ char *mgi_DBinsert(int table, char *keyName)
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case BIB_REFS:
-	    sprintf(buf, "insert into %s (%s, _ReviewStatus_key, refType, authors, _primary, title, journal, vol, issue, date, year, pgs, NLMstatus, isReviewArticle, abstract, _CreatedBy_key, _ModifiedBy_key)",
+	    sprintf(buf, "insert into %s (%s, refType, authors, _primary, title, journal, vol, issue, date, year, pgs, isReviewArticle, abstract, _CreatedBy_key, _ModifiedBy_key)",
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case BIB_BOOKS:

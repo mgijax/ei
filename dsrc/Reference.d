@@ -106,7 +106,6 @@ devents:
 	Search :local [];
 	Select :local [item_position : integer;];
 	SetDataSets :local [];
-	SetReviewStatus :local [];
 	VerifyDataSetsStatus :local [];
 
 locals:
@@ -179,11 +178,9 @@ rules:
 --
 
 	BuildDynamicComponents does
-          -- Dynamically create Review Status Menu
-          InitOptionMenu.option := top->ReviewStatusMenu;
-          send(InitOptionMenu, 0);
 
-	  -- Initialize Reference table
+          InitOptionMenu.option := top->RefTypeMenu;
+          send(InitOptionMenu, 0);
 
 	  InitRefAlleleTable.table := top->RefAllele->Table;
 	  send(InitRefAlleleTable, 0);
@@ -364,11 +361,8 @@ rules:
  
           currentRecordKey := MAX_KEY1 + KEYNAME + MAX_KEY2;
  
-	  send(SetReviewStatus, 0);
-
           cmd := mgi_setDBkey(BIB_REFS, NEWKEY, KEYNAME) +
                  mgi_DBinsert(BIB_REFS, KEYNAME) +
-                 reviewStatus + "," +
                  mgi_DBprstr(top->RefTypeMenu.menuHistory.defaultValue) + "," +
 	         mgi_DBprstr(top->Authors->text.value) + ",";
 
@@ -382,15 +376,6 @@ rules:
 	  cmd := cmd + mgi_year(top->mgiDate->Date->text.value) + ",";
 	  cmd := cmd + mgi_DBprstr(top->Page->text.value) + ",";
 
-	  -- Default Mouse Genome and Mouse News Letter to "Never"
-
-	  if (top->mgiJournal->Verify->text.value = "Mouse Genome" or 
-	      top->mgiJournal->Verify->text.value = "Mouse News Lett") then
-            cmd := cmd + mgi_DBprstr(top->NLMStatusPulldown->Never.defaultValue) + ",";
-          else
-            cmd := cmd + mgi_DBprstr(top->NLMStatusMenu.menuHistory.defaultValue) + ",";
-          end if;
- 
 	  cmd := cmd + top->IsReviewMenu.menuHistory.defaultValue + ",";
 	  cmd := cmd + mgi_DBprstr2(top->Abstract->text.value) + ",";
 	  cmd := cmd + global_userKey + "," + global_userKey + END_VALUE;
@@ -405,9 +390,9 @@ rules:
 	    cmd := cmd + exec_acc_assignJ(global_userKey, currentRecordKey);
 	  end if;
 
-	  -- If Reference is of type "BOOK", then additional info is required
+	  -- If Reference is of type "Book", then additional info is required
 
-	  if (top->RefTypeMenu.menuHistory.defaultValue = "BOOK") then
+	  if (top->RefTypeMenu.menuHistory.defaultValue = "Book") then
 	    send(AddBook, 0);
 	  end if;
 
@@ -485,7 +470,7 @@ rules:
 --
 -- AddBook
 --
--- Constructs insert command required for Reference of type "BOOK"
+-- Constructs insert command required for Reference of type "Book"
 -- Concatenates command onto exisiting command string
 --
 
@@ -546,28 +531,11 @@ rules:
 	  cmd := "";
 	  set : string := "";
 
-	  if (top->Title->text.modified or
-	      top->mgiJournal->Verify->text.modified or
-              top->ReviewStatusMenu.menuHistory.modified) then
-	    send(SetReviewStatus, 0);
-            top->ReviewStatusMenu.menuHistory.modified := true;
-	  end if;
-
-          if (top->ReviewStatusMenu.menuHistory.modified and
-              top->ReviewStatusMenu.menuHistory.searchValue != "%") then
-            set := set + "_ReviewStatus_key = "  + reviewStatus + ",";
-          end if;
- 
 	  if (top->RefTypeMenu.menuHistory.modified and
               top->RefTypeMenu.menuHistory.searchValue != "%") then
 	    set := set + "refType = " + mgi_DBprstr(top->RefTypeMenu.menuHistory.defaultValue) + ",";
 	  end if;
 
-          if (top->NLMStatusMenu.menuHistory.modified and
-              top->NLMStatusMenu.menuHistory.searchValue != "%") then
-            set := set + "NLMstatus = "  + mgi_DBprstr(top->NLMStatusMenu.menuHistory.defaultValue) + ",";
-          end if;
- 
 	  if (top->IsReviewMenu.menuHistory.modified and
               top->IsReviewMenu.menuHistory.searchValue != "%") then
 	    set := set + "isReviewArticle = " + top->IsReviewMenu.menuHistory.defaultValue + ",";
@@ -620,14 +588,14 @@ rules:
 	  send(ModifyNotes, 0);
 	  cmd := cmd + top->Notes.sql;
 
-	  -- If Reference Type is changed Book->Article, remove Book entry
-	  -- If Reference Type is changed Article->Book, add Book entry
+	  -- If Reference Type is changed Book->not Book, remove Book entry
+	  -- If Reference Type is changed not Book->Book, add Book entry
 
-	  if (origRefTypeMenu = "BOOK" and top->RefTypeMenu.menuHistory.defaultValue = "BOOK") then
+	  if (origRefTypeMenu = "Book" and top->RefTypeMenu.menuHistory.defaultValue = "Book") then
 	    send(ModifyBook, 0);
-	  elsif (origRefTypeMenu = "BOOK" and top->RefTypeMenu.menuHistory.defaultValue != "BOOK") then
+	  elsif (origRefTypeMenu = "Book" and top->RefTypeMenu.menuHistory.defaultValue != "Book") then
 	    cmd := cmd + mgi_DBdelete(BIB_BOOKS, currentRecordKey);
-	  elsif (origRefTypeMenu != "BOOK" and top->RefTypeMenu.menuHistory.defaultValue = "BOOK") then
+	  elsif (origRefTypeMenu != "Book" and top->RefTypeMenu.menuHistory.defaultValue = "Book") then
 	    send(AddBook, 0);
 	  end if;
 
@@ -758,16 +726,8 @@ rules:
           from := from + top->ModificationHistory->Table.sqlFrom;
           where := where + top->ModificationHistory->Table.sqlWhere;
  
-          if (top->ReviewStatusMenu.menuHistory.searchValue != "%") then
-            where := where + "\nand r._ReviewStatus_key = " + top->ReviewStatusMenu.menuHistory.searchValue;
-          end if;
- 
           if (top->RefTypeMenu.menuHistory.searchValue != "%") then
             where := where + "\nand r.refType = " + mgi_DBprstr(top->RefTypeMenu.menuHistory.searchValue);
-          end if;
- 
-          if (top->NLMStatusMenu.menuHistory.searchValue != "%") then
-            where := where + "\nand r.NLMstatus = " + mgi_DBprstr(top->NLMStatusMenu.menuHistory.searchValue);
           end if;
  
           if (top->IsReviewMenu.menuHistory.searchValue != "%") then
@@ -981,34 +941,26 @@ rules:
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	        top->ID->text.value        := mgi_getstr(dbproc, 1);
-	        top->Authors->text.value   := mgi_getstr(dbproc, 4);
-	        top->PrimaryAuthor->text.value := mgi_getstr(dbproc, 5);
-	        top->Title->text.value     := mgi_getstr(dbproc, 6);
-	        top->mgiJournal->Verify->text.value := mgi_getstr(dbproc, 7);
-	        top->Volume->text.value    := mgi_getstr(dbproc, 8);
-	        top->Issue->text.value     := mgi_getstr(dbproc, 9);
-	        top->mgiDate->Date->text.value      := mgi_getstr(dbproc, 10);
-	        top->Page->text.value      := mgi_getstr(dbproc, 12);
-	        top->Abstract->text.value  := mgi_getstr(dbproc, 14);
-		(void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byUser, mgi_getstr(dbproc, 25));
-		(void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byDate, mgi_getstr(dbproc, 18));
-		(void) mgi_tblSetCell(modTable, modTable.modifiedBy, modTable.byUser, mgi_getstr(dbproc, 26));
-		(void) mgi_tblSetCell(modTable, modTable.modifiedBy, modTable.byDate, mgi_getstr(dbproc, 19));
+	        top->Authors->text.value   := mgi_getstr(dbproc, 3);
+	        top->PrimaryAuthor->text.value := mgi_getstr(dbproc, 4);
+	        top->Title->text.value     := mgi_getstr(dbproc, 5);
+	        top->mgiJournal->Verify->text.value := mgi_getstr(dbproc, 6);
+	        top->Volume->text.value    := mgi_getstr(dbproc, 7);
+	        top->Issue->text.value     := mgi_getstr(dbproc, 8);
+	        top->mgiDate->Date->text.value      := mgi_getstr(dbproc, 9);
+	        top->Page->text.value      := mgi_getstr(dbproc, 11);
+	        top->Abstract->text.value  := mgi_getstr(dbproc, 12);
+		(void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byUser, mgi_getstr(dbproc, 23));
+		(void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byDate, mgi_getstr(dbproc, 16));
+		(void) mgi_tblSetCell(modTable, modTable.modifiedBy, modTable.byUser, mgi_getstr(dbproc, 24));
+		(void) mgi_tblSetCell(modTable, modTable.modifiedBy, modTable.byDate, mgi_getstr(dbproc, 17));
 
-                SetOption.source_widget := top->ReviewStatusMenu;
-                SetOption.value := mgi_getstr(dbproc, 2);
-                send(SetOption, 0);
- 
 	        SetOption.source_widget := top->RefTypeMenu;
-	        SetOption.value := mgi_getstr(dbproc, 3);
+	        SetOption.value := mgi_getstr(dbproc, 2);
 	        send(SetOption, 0);
 
-                SetOption.source_widget := top->NLMStatusMenu;
-                SetOption.value := mgi_getstr(dbproc, 13);
-                send(SetOption, 0);
- 
                 SetOption.source_widget := top->IsReviewMenu;
-                SetOption.value := mgi_getstr(dbproc, 15);
+                SetOption.value := mgi_getstr(dbproc, 13);
                 send(SetOption, 0);
  
 	        top->BookForm->Editors->text.value   := "";
@@ -1261,55 +1213,6 @@ rules:
 	    row := row + 1;
 	  end while;
 
-	end does;
-
---
--- SetReviewStatus
---
--- Sets Review Status based on entry of Title and Journal
---
-
-	SetReviewStatus does
-	  foundAbstr : boolean := false;
-	  foundPers1 : boolean := false;
-	  foundPers2 : boolean := false;
-	  foundDB : boolean := false;
-
-	  title : string := top->Title->text.value.lower_case;
-	  page : string := top->Page->text.value.lower_case;
-	  journal : string := top->mgiJournal->Verify->text.value.lower_case;
-
-	  -- If Title contains the term 'abstr', then Unreviewed
-	  -- If Page contains the term 'abstr', then Unreviewed
-	  -- If Title contains the term 'Personal Comm', then Unreviewed
-	  -- If Journal contains the term 'Personal Comm', then Unreviewed
-	  -- If Journal contains the term 'Database Release', then Unreviewed
-	  -- If Journal = 'Mouse News Lett', then Unreviewed
-
-	  if (strstr(title, "abstr") != nil or
-	      strstr(page, "abstr") != nil) then
-	    foundAbstr := true;
-	  end if;
-
-	  if (strstr(title, "personal comm") != nil) then
-	    foundPers1 := true;
-	  end if;
-
-	  if (strstr(journal, "personal comm") != nil) then
-	    foundPers2 := true;
-	  end if;
-
-	  if (strstr(journal, "database release") != nil) then
-	    foundDB := true;
-	  end if;
-
-	  if (foundAbstr or foundPers1 or foundPers2 or foundDB or
-	      journal = "mouse news lett") then
-            reviewStatus := top->ReviewStatusPulldown->Unreviewed.defaultValue;
-          else
-            reviewStatus := top->ReviewStatusMenu.menuHistory.defaultValue;
-	  end if;
- 
 	end does;
 
 --

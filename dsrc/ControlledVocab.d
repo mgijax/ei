@@ -13,7 +13,6 @@
 --
 -- MLD_Assay_Types     : Mapping Assays
 -- MRK_EventReason     : Marker Event Reason
--- BIB_ReviewStatus    : Reference Review Status
 -- MGI_NoteType        : MGI Note Type
 -- MGI_RefAssocType    : MGI Reference Association Type
 -- MGI_SynonymType     : MGI Synonym Type

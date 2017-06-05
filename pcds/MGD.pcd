@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Tue May 30 08:02:51 2017";
+      lastWritten = "Mon Jun  5 08:01:16 2017";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -6106,38 +6106,14 @@ Module: MGD
                                     resizable = true;
                                 }
                                 {
-                                  NLMStatusFrame = NLMStatusFrame : mgiOption;
-                                  Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    leftWidget = RefTypeFrame;
-                                    leftOffset = 10;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_opposite_widget;
-                                    topWidget = RefTypeFrame;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                }
-                                {
-                                  ReviewStatusFrame = ReviewStatusFrame : mgiOption;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = RefTypeFrame;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = RefTypeFrame;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    topOffset = 5;
-                                }
-                                {
                                   IsReviewFrame = YesNoFrame : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
-                                    leftWidget = ReviewStatusFrame;
+                                    leftWidget = RefTypeFrame;
                                     leftOffset = 5;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
-                                    topWidget = ReviewStatusFrame;
+                                    topWidget = RefTypeFrame;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                   Group: User
@@ -6159,11 +6135,11 @@ Module: MGD
                                   Authors = CharText : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = ReviewStatusFrame;
+                                    leftWidget = RefTypeFrame;
                                     rightAttachment = attach_form;
                                     rightOffset = 2;
                                     topAttachment = attach_widget;
-                                    topWidget = ReviewStatusFrame;
+                                    topWidget = RefTypeFrame;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
