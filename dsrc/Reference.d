@@ -533,7 +533,7 @@ rules:
 
 	  if (top->RefTypeMenu.menuHistory.modified and
               top->RefTypeMenu.menuHistory.searchValue != "%") then
-	    set := set + "refType = " + mgi_DBprstr(top->RefTypeMenu.menuHistory.defaultValue) + ",";
+	    set := set + "_ReferenceType_key = " + top->RefTypeMenu.menuHistory.defaultValue + ",";
 	  end if;
 
 	  if (top->IsReviewMenu.menuHistory.modified and
@@ -727,7 +727,7 @@ rules:
           where := where + top->ModificationHistory->Table.sqlWhere;
  
           if (top->RefTypeMenu.menuHistory.searchValue != "%") then
-            where := where + "\nand r.refType = " + mgi_DBprstr(top->RefTypeMenu.menuHistory.searchValue);
+            where := where + "\nand r._ReferenceType_key = " + top->RefTypeMenu.menuHistory.searchValue;
           end if;
  
           if (top->IsReviewMenu.menuHistory.searchValue != "%") then
