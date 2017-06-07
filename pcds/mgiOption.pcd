@@ -2624,7 +2624,7 @@ Module: mgiOption
                 RefTypePulldown : OptionPulldown = OptionPulldown;
                 Group: User
                   menuId = ReferenceMenu;
-                  sql = "select _Term_key, term from VOC_Term where _Vocab_key = 127 order by term";
+                  sql = "select _Term_key, term from VOC_Term where _Vocab_key = 131 order by term";
                     {
                       SearchAll = SearchAll;
                     }
