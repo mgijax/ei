@@ -877,6 +877,11 @@ Module: mgiOption
                         defaultValue = 165;
                     }
                     {
+                      mirKOproject = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 166;
+                    }
+                    {
                       PleiadesCellLine = AccToggle : mgiOption;
                       Group: Widget
                         labelString = "Pleiades Cell Line";
