@@ -13649,7 +13649,7 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblNumColumns = 15;
                                           xrtTblPixelWidthSeries = "(all 0-5 0)";
                                           xrtTblTraversableSeries = "(all 0-6 False)";
-                                          xrtTblValidateCellCallback = "D:VerifyMarker(allowWithdrawn = true),\nD:VerifyReference,\nD:CommitTableCellEdit";
+                                          xrtTblValidateCellCallback = "D:VerifyMarker(allowWithdrawn = true, allowReserved = true),\nD:VerifyReference,\nD:CommitTableCellEdit";
                                           userDefinedAttributes = "markerKey:Int(Int)=\"2\"\nrefsKey:Int(Int)=\"3\"\nmarkerSymbol:Int(Int)=\"7\"\nmarkerName:Int(Int)=\"8\"\neventDate:Int(Int)=\"9\"\njnum:Int(Int)=\"10\"\ncitation:Int(Int)=\"11\"\nevent:Int(Int)=\"12\"\nmarkerChr:Int(Int)=\"-1\"\nmarkerColumns:Int(Int)=\"1\"\ndate:Int(Int)=\"9\"\neventKey:Int(Int)=\"4\"\neventReasonKey:Int(Int)=\"5\"\neventReason:Int(Int)=\"13\"\nmodifiedBy:Int=\"14\"\n";
                                           xrtTblVisibleRows = 5;
                                           xrtTblAllowCellResize = resize_horizontal;
