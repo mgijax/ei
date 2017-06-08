@@ -799,8 +799,7 @@ rules:
 	  creatorKey := top->EditForm->AlleleCreatorMenu.menuHistory.defaultValue;
 	  cellLineTypeKey := top->mgiParentCellLine->AlleleCellLineTypeMenu.menuHistory.defaultValue;
 	  vectorTypeKey := top->EditForm->AlleleVectorTypeMenu.menuHistory.defaultValue;
-	  vectorKey := top->mgiAlleleVector->ObjectID->text.defaultValue;
-	  --vectorKey := top->mgiAlleleVector->ObjectID->text.value;
+	  vectorKey := top->mgiAlleleVector->ObjectID->text.value;
 
 	  -- if any of the required fields have not been set...
 
