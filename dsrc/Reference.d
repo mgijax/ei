@@ -591,13 +591,14 @@ rules:
 	  -- If Reference Type is changed Book->not Book, remove Book entry
 	  -- If Reference Type is changed not Book->Book, add Book entry
 
-	  --if (origRefTypeMenu = "Book" and top->RefTypeMenu.menuHistory.defaultValue = "Book") then
-	    --send(ModifyBook, 0);
-	  --elsif (origRefTypeMenu = "Book" and top->RefTypeMenu.menuHistory.defaultValue != "Book") then
+	  (void) mgi_writeLog("origRefTypeMenu:  " + origRefTypeMenu + "\n");
+	  if (origRefTypeMenu = "31576679" and top->RefTypeMenu.menuHistory.defaultValue = "31576679") then
+	    send(ModifyBook, 0);
+	  --elsif (origRefTypeMenu = "31576679" and top->RefTypeMenu.menuHistory.defaultValue != "31576679") then
 	    --cmd := cmd + mgi_DBdelete(BIB_BOOKS, currentRecordKey);
-	  --elsif (origRefTypeMenu != "Book" and top->RefTypeMenu.menuHistory.defaultValue = "Book") then
-	    --send(AddBook, 0);
-	  --end if;
+	  elsif (origRefTypeMenu != "31576679" and top->RefTypeMenu.menuHistory.defaultValue = "31576679") then
+	    send(AddBook, 0);
+	  end if;
 
 	  -- Process Allele associations
 
