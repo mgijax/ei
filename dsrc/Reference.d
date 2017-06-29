@@ -594,8 +594,8 @@ rules:
 	  (void) mgi_writeLog("origRefTypeMenu:  " + origRefTypeMenu + "\n");
 	  if (origRefTypeMenu = "31576679" and top->RefTypeMenu.menuHistory.defaultValue = "31576679") then
 	    send(ModifyBook, 0);
-	  --elsif (origRefTypeMenu = "31576679" and top->RefTypeMenu.menuHistory.defaultValue != "31576679") then
-	    --cmd := cmd + mgi_DBdelete(BIB_BOOKS, currentRecordKey);
+	  elsif (origRefTypeMenu = "31576679" and top->RefTypeMenu.menuHistory.defaultValue != "31576679") then
+	    cmd := cmd + mgi_DBdelete(BIB_BOOKS, currentRecordKey);
 	  elsif (origRefTypeMenu != "31576679" and top->RefTypeMenu.menuHistory.defaultValue = "31576679") then
 	    send(AddBook, 0);
 	  end if;
