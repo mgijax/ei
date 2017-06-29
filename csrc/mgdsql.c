@@ -1443,7 +1443,13 @@ char *ref_select(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select * from BIB_All2_View where _Refs_key = %s", key);
+  sprintf(buf, "select r.*, c.referenceType, c.jnumID, c.numericPart as jnum, c.citation, c.short_citation, \
+   \nu1.login as createdBy, u2.login as modifiedBy \
+   \nfrom BIB_Refs r, BIB_Citation_Cache c, MGI_User u1, MGI_User u2 \
+   \nwhere r._Refs_key = c._Refs_key \
+   \nand r._CreatedBy_key = u1._User_key \
+   \nand r._ModifiedBy_key = u2._User_key \
+   \nand r._Refs_key = %s", key);
   return(buf);
 }
 
