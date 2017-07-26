@@ -6693,62 +6693,6 @@ Module: MGD
                                                   }
                                                   }
                                             }
-                                            {
-                                              WorkflowStatus = Table : mgiTable;
-                                              Group: Widget
-                                                rubberPositioning = False;
-                                                resizePolicy = resize_any;
-                                              Group: Constraint
-                                                resizable = true;
-                                                  {
-                                                    Table = mgiTable : mgiTable;
-                                                    Group: Widget
-                                                      userDefinedAttributes = "statusKey:Int(Int)=\"2\"\nstatusTerm:Int(Int)=\"3\"\nassocKey:Int(Int)=\"1\"\n";
-                                                      xrtTblValidateCellCallback = "D:CommitTableCellEdit";
-                                                      xrtTblNumColumns = 4;
-                                                      xrtTblColumnLabels = "Mode,Key,Key,Status";
-                                                      xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 50)";
-                                                      xrtTblEditableSeries = "(all 0-2 False)";
-                                                      xrtTblTraversableSeries = "(all 0-2 False)(all 6 False)";
-                                                      xrtTblPixelWidthSeries = "(all 0-2 0)";
-                                                      xrtTblNumRows = 10;
-                                                      xrtTblVisibleRows = 9;
-                                                    Group: Constraint
-                                                      leftAttachment = attach_form;
-                                                      rightAttachment = attach_form;
-                                                      topAttachment = attach_form;
-                                                      bottomAttachment = attach_none;
-                                                      resizable = true;
-                                                    Group: User
-                                                      saveTraversableSeries = "(all 0-2 False)";
-                                                      saveEditableSeries = "(all 0-2 False)";
-                                                  }
-                                                  {
-                                                    AddRow = TablePush : mgiTable;
-                                                    Group: Widget
-                                                      activateCallback = "D:AddRefTypeRow";
-                                                    Group: Constraint
-                                                      leftAttachment = attach_opposite_widget;
-                                                      rightAttachment = attach_none;
-                                                      topAttachment = attach_widget;
-                                                      bottomAttachment = attach_none;
-                                                      resizable = true;
-                                                      topOffset = 2;
-                                                      leftWidget = Table;
-                                                      topWidget = Table;
-                                                  }
-                                                  {
-                                                    DeleteRow = TablePush : mgiTable;
-                                                    Group: Constraint
-                                                      leftAttachment = attach_widget;
-                                                      rightAttachment = attach_none;
-                                                      topAttachment = attach_opposite_widget;
-                                                      bottomAttachment = attach_none;
-                                                      resizable = true;
-                                                      leftWidget = AddRow;
-                                                      topWidget = AddRow;
-                                                  }
-                                            }
                                       }
                                 }
                           }

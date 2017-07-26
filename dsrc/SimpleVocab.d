@@ -444,12 +444,16 @@ rules:
 	    row := mgi_tblGetCurrentRow(termTable);
 	  end if;
 
-	  if (termTable.row != row) then
-	    synTable.synLoaded := false;
+	  if (synTable.is_defined("synLoaded") != nil) then
+	      if (termTable.row != row) then
+	        synTable.synLoaded := false;
+	      end if;
 	  end if;
 
-	  if (synTable.synLoaded) then
-	    return;
+	  if (synTable.is_defined("synLoaded") != nil) then
+	      if (synTable.synLoaded) then
+	        return;
+	      end if;
 	  end if;
 
 	  termKey := mgi_tblGetCell(termTable, row, termTable.termKey);
@@ -467,7 +471,9 @@ rules:
           LoadSynTypeTable.objectKey := termKey;
           send(LoadSynTypeTable, 0);
 
-	  synTable.synLoaded := true;
+	  if (synTable.is_defined("synLoaded") != nil) then
+	      synTable.synLoaded := true;
+          end if;
 
           (void) reset_cursor(top);
 	end does;
@@ -641,7 +647,9 @@ rules:
           end while;
 	  (void) mgi_dbclose(dbproc);
 
-	  synTable.synLoaded := false;
+	  if (synTable.is_defined("synLoaded") != nil) then
+	      synTable.synLoaded := false;
+	  end if;
           LoadSimpleVocabSyn.reason := TBL_REASON_ENTER_CELL_END;
           LoadSimpleVocabSyn.row := 0;
           send(LoadSimpleVocabSyn, 0);
