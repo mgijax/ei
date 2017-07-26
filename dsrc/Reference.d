@@ -392,7 +392,7 @@ rules:
 
 	  -- If Reference is of type "Book", then additional info is required
 
-	  if (top->RefTypeMenu.menuHistory.defaultValue = "Book") then
+	  if (top->RefTypeMenu.menuHistory.defaultValue = "31576679") then
 	    send(AddBook, 0);
 	  end if;
 
