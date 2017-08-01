@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Thu Jun 29 07:33:55 2017";
+      lastWritten = "Tue Aug  1 07:42:31 2017";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -6057,24 +6057,6 @@ Module: MGD
                                       }
                                 }
                           }
-                          {
-                            Edit = Edit;
-                          }
-                          {
-                            View = View;
-                          }
-                          {
-                            Reports = MenuCascade;
-                          }
-                          {
-                            Utilities = Utilities : mgiMenu;
-                          }
-                          {
-                            NLM = MenuCascade : mgiMenu;
-                            Group: Widget
-                              activateCallback = "C: TuManage(find = NLMDialog)";
-                              labelString = NLM;
-                          }
                     }
                     {
                       Edit = XmFrame;
@@ -6815,34 +6797,6 @@ Module: MGD
                                       }
                                 }
                           }
-                    }
-                    Popups:
-                    {
-                      StatusDialog = StatusDialog;
-                    }
-                    {
-                      DeleteDialog = DeleteDialog;
-                    }
-                    {
-                      ReportDialog = ReportDialog;
-                    }
-                    {
-                      SearchDialog = SearchDialog;
-                    }
-                    {
-                      WhichItem = WhichItem;
-                    }
-                    {
-                      VerifyItemAdd = VerifyItemAdd;
-                    }
-                    {
-                      WorkingDialog = WorkingDialog;
-                    }
-                    {
-                      NoteDialog = NoteDialog;
-                    }
-                    {
-                      NLMDialog = NLMDialog;
                     }
               }
         }

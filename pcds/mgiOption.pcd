@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Mon Jun  5 08:23:46 2017";
+      lastWritten = "Tue Aug  1 07:46:11 2017";
       copy = false;
       inCreateMenu = true;
         {
@@ -1241,7 +1241,7 @@ Module: mgiOption
           VisualizationFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 110;
-            vip_y = 6025;
+            vip_y = 5970;
             vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
               {
                 VisualizationMenu : OptionMenu = XmOptionMenu;
@@ -1263,7 +1263,7 @@ Module: mgiOption
           SenseFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 110;
-            vip_y = 5255;
+            vip_y = 5200;
             vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
               {
                 SenseMenu : OptionMenu = XmOptionMenu;
@@ -1285,7 +1285,7 @@ Module: mgiOption
           PrepTypeFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 110;
-            vip_y = 4870;
+            vip_y = 4815;
             vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
               {
                 PrepTypeMenu : OptionMenu = XmOptionMenu;
@@ -1320,7 +1320,7 @@ Module: mgiOption
           SecondaryFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 110;
-            vip_y = 5145;
+            vip_y = 5090;
             vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
               {
                 SecondaryMenu : OptionMenu = XmOptionMenu;
@@ -1466,7 +1466,7 @@ Module: mgiOption
           RNAAssayFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 110;
-            vip_y = 5090;
+            vip_y = 5035;
             vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
               {
                 RNAAssayMenu : OptionMenu = XmOptionMenu;
@@ -1732,7 +1732,7 @@ Module: mgiOption
           StrengthFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 110;
-            vip_y = 5805;
+            vip_y = 5750;
             vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
               {
                 StrengthMenu : OptionMenu = XmOptionMenu;
@@ -1754,7 +1754,7 @@ Module: mgiOption
           PatternFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 110;
-            vip_y = 4815;
+            vip_y = 4760;
             vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
               {
                 PatternMenu : OptionMenu = XmOptionMenu;
@@ -1844,51 +1844,6 @@ Module: mgiOption
           Group: Control
             vip_x = 110;
             vip_y = 525;
-        }
-        {
-          NLMStatusFrame = OptionFrame : mgiOption;
-          Group: Control
-            vip_x = 110;
-            vip_y = 4650;
-            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
-              {
-                NLMStatusMenu : OptionMenu = XmOptionMenu;
-                Group: Widget
-                  subMenuId = NLMStatusPulldown;
-                  labelString = "In NLM?";
-                Group: User
-                  defaultOption = YesNLM;
-              }
-              Popups:
-              {
-                NLMStatusPulldown : OptionPulldown = OptionPulldown;
-                    {
-                      SearchAll = SearchAll : mgiOption;
-                    }
-                    {
-                      YesNLM = OptionToggle : mgiOption;
-                      Group: Widget
-                        background = Thistle;
-                        labelString = Yes;
-                      Group: User
-                        searchValue = Y;
-                        defaultValue = Y;
-                    }
-                    {
-                      NoNLM = OptionToggle : mgiOption;
-                      Group: Widget
-                        labelString = No;
-                      Group: User
-                        searchValue = N;
-                        defaultValue = N;
-                    }
-                    {
-                      Never = OptionToggle : mgiOption;
-                      Group: User
-                        searchValue = X;
-                        defaultValue = X;
-                    }
-              }
         }
         {
           CrossTypeFrame = OptionFrame : mgiOption;
@@ -2003,7 +1958,7 @@ Module: mgiOption
           StandardFrame = YesNoFrame : mgiOption;
           Group: Control
             vip_x = 110;
-            vip_y = 5640;
+            vip_y = 5585;
           Group: User
             defaultOption = No;
               {
@@ -2098,7 +2053,7 @@ Module: mgiOption
           SegmentTypeFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 110;
-            vip_y = 5200;
+            vip_y = 5145;
             vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
               {
                 SegmentTypeMenu : OptionMenu = XmOptionMenu;
@@ -2123,7 +2078,7 @@ Module: mgiOption
           VectorTypeFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 110;
-            vip_y = 5970;
+            vip_y = 5915;
             vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
               {
                 VectorTypeMenu : OptionMenu = XmOptionMenu;
@@ -2147,7 +2102,7 @@ Module: mgiOption
           YesNoFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 110;
-            vip_y = 6190;
+            vip_y = 6135;
             vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
           Group: User
             defaultOption = SearchAll;
@@ -2512,7 +2467,7 @@ Module: mgiOption
           ReferenceTypeFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 110;
-            vip_y = 4980;
+            vip_y = 4925;
             vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
               {
                 ReferenceTypeMenu : OptionMenu = XmOptionMenu;
@@ -2531,7 +2486,7 @@ Module: mgiOption
           ProbeOrganismFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 110;
-            vip_y = 4925;
+            vip_y = 4870;
             vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
               {
                 ProbeOrganismMenu : OptionMenu = XmOptionMenu;
@@ -2599,7 +2554,7 @@ Module: mgiOption
           VocAnnotTypeFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 110;
-            vip_y = 6080;
+            vip_y = 6025;
             vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
               {
                 VocAnnotTypeMenu : OptionMenu = XmOptionMenu;
@@ -2616,7 +2571,7 @@ Module: mgiOption
           RefTypeFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 110;
-            vip_y = 5035;
+            vip_y = 4980;
             vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
               {
                 RefTypeMenu : OptionMenu = XmOptionMenu;
@@ -2685,7 +2640,7 @@ Module: mgiOption
           SexFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 110;
-            vip_y = 5530;
+            vip_y = 5475;
             vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
               {
                 SexMenu : OptionMenu = XmOptionMenu;
@@ -2819,7 +2774,7 @@ Module: mgiOption
           SequenceTypeFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 110;
-            vip_y = 5475;
+            vip_y = 5420;
             vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
               {
                 SequenceTypeMenu : OptionMenu = XmOptionMenu;
@@ -2841,7 +2796,7 @@ Module: mgiOption
           SequenceStatusFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 110;
-            vip_y = 5420;
+            vip_y = 5365;
             vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
               {
                 SequenceStatusMenu : OptionMenu = XmOptionMenu;
@@ -2863,7 +2818,7 @@ Module: mgiOption
           SequenceProviderFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 110;
-            vip_y = 5310;
+            vip_y = 5255;
             vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
               {
                 SequenceProviderMenu : OptionMenu = XmOptionMenu;
@@ -2892,7 +2847,7 @@ Module: mgiOption
           SequenceQualityFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 110;
-            vip_y = 5365;
+            vip_y = 5310;
             vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
               {
                 SequenceQualityMenu : OptionMenu = XmOptionMenu;
@@ -2914,7 +2869,7 @@ Module: mgiOption
           NoteFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 110;
-            vip_y = 4705;
+            vip_y = 4650;
             vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
               {
                 NoteMenu : OptionMenu = XmOptionMenu;
@@ -2930,7 +2885,7 @@ Module: mgiOption
           TranslationTypeFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 110;
-            vip_y = 5915;
+            vip_y = 5860;
             vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
               {
                 TranslationTypeMenu : OptionMenu = XmOptionMenu;
@@ -2969,7 +2924,7 @@ Module: mgiOption
           SortFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 110;
-            vip_y = 5585;
+            vip_y = 5530;
             vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
               {
                 SortMenu : OptionMenu = XmOptionMenu;
@@ -2988,7 +2943,7 @@ Module: mgiOption
           SynonymTypeFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 110;
-            vip_y = 5860;
+            vip_y = 5805;
             vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
               {
                 SynonymTypeMenu : OptionMenu = XmOptionMenu;
@@ -3007,7 +2962,7 @@ Module: mgiOption
           StrainAlleleTypeFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 110;
-            vip_y = 5695;
+            vip_y = 5640;
             vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
               {
                 StrainAlleleTypeMenu : OptionMenu = XmOptionMenu;
@@ -3028,7 +2983,7 @@ Module: mgiOption
           NoteTypeFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 110;
-            vip_y = 4760;
+            vip_y = 4705;
             vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
               {
                 NoteTypeMenu : OptionMenu = XmOptionMenu;
@@ -3047,7 +3002,7 @@ Module: mgiOption
           StrainGenoQualFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 110;
-            vip_y = 5750;
+            vip_y = 5695;
             vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
               {
                 StrainGenoQualMenu : OptionMenu = XmOptionMenu;
@@ -3065,7 +3020,7 @@ Module: mgiOption
           UserRoleFrame = OptionFrame : mgiOption;
           Group: Control
             vip_x = 110;
-            vip_y = 6135;
+            vip_y = 6080;
             vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
               {
                 UserRoleMenu : OptionMenu = XmOptionMenu;
