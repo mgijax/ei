@@ -396,11 +396,11 @@ rules:
 	    send(AddBook, 0);
 	  end if;
 
-	  assocKeyDeclared := false;
-	  ModifyDataSets.table := statusTable;
-	  send(ModifyDataSets, 0);
-	  ModifyDataSets.table := nonstatusTable;
-	  send(ModifyDataSets, 0);
+	  --assocKeyDeclared := false;
+	  --ModifyDataSets.table := statusTable;
+	  --send(ModifyDataSets, 0);
+	  --ModifyDataSets.table := nonstatusTable;
+	  --send(ModifyDataSets, 0);
 
 	  -- Add Notes
 
@@ -576,11 +576,11 @@ rules:
 	    set := set + "abstract = " + mgi_DBprstr2(top->Abstract->text.value) + ",";
 	  end if;
 
-	  assocKeyDeclared := false;
-	  ModifyDataSets.table := statusTable;
-	  send(ModifyDataSets, 0);
-	  ModifyDataSets.table := nonstatusTable;
-	  send(ModifyDataSets, 0);
+	  --assocKeyDeclared := false;
+	  --ModifyDataSets.table := statusTable;
+	  --send(ModifyDataSets, 0);
+	  --ModifyDataSets.table := nonstatusTable;
+	  --send(ModifyDataSets, 0);
 
 	  ModifyNotes.source_widget := top->Notes;
 	  ModifyNotes.tableID := BIB_NOTES;

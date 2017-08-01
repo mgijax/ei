@@ -245,11 +245,6 @@ rules:
 
 	      top->MainMenu->Utilities.managed := false;
 
-	      --do not need this right now...but may in the future...
-	      --if (top->MainMenu->NLM != nil) then
-	      --  top->MainMenu->NLM.managed := false;
-	      --end if;
-
 	   end if;
 
 	   -- only certain users have permission to turn 'Delete' on in this module

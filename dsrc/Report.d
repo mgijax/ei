@@ -56,51 +56,7 @@ rules:
 
      which_commands := mgi_splitfields(dialog->ReportList->List.keys[dialog->ReportList->List.row], " ");
 
-     if (which_commands[1] = "nlm.csh") then      -- NLM program
-
-       commands.insert(getenv("EIUTILS") + "/" + which_commands[1], commands.count + 1);
-
-       -- NLM Mode = 1 is the NLM Update
-       -- NLM Mode = 2 is the NLM Add and requires a starting J#
-
-       if (ReportGenerate.nlmMode = 2 and
-           (dialog->Jnum->text.value.length = 0 or
-           (integer) dialog->Jnum->text.value <= (integer) top->NextJnum->text.value)) then
-         StatusReport.source_widget := top;
-         StatusReport.message := "Invalid J#";
-         send(StatusReport);
-         (void) reset_cursor(dialog.top);
-         return;
-       end if;
- 
-       commands.insert("-S" + global_server, commands.count + 1);
-       commands.insert("-D" + global_database, commands.count + 1);
-       commands.insert("-U" + global_login, commands.count + 1);
-       commands.insert("-P" + global_passwd_file, commands.count + 1);
-       commands.insert("-W" + global_user, commands.count + 1);
- 
-       if (ReportGenerate.nlmMode = 1) then
-         commands.insert("--mode=nlm", commands.count + 1);
-       elsif (ReportGenerate.nlmMode = 2) then
-         commands.insert("--mode=addnlm", commands.count + 1);
-       end if;
- 
-       if (ReportGenerate.nlmMode = 2) then
-         commands.insert("-j" + dialog->Jnum->text.value, commands.count + 1);
-       end if;
- 
-       commands.insert(dialog->FileSelection.textString, commands.count + 1);
-
-       if (ReportGenerate.nlmMode = 1) then
-         dialog->Output.value := "NLM UPDATE\n";
-       elsif (ReportGenerate.nlmMode = 2) then
-         dialog->Output.value := "NLM ADD\n";
-       end if;
- 
-     -- Other Python scripts are not user-dependent and can execute using the public login
-     -- These programs rely on the last search the User performed from within the form
-
-     elsif (strstr(which_commands[1], ".py") != nil) then
+     if (strstr(which_commands[1], ".py") != nil) then
 
        (void) mgi_writeLog("EIUTILS : " + getenv("EIUTILS") + "\n");
        commands.insert(getenv("EIUTILS") + "/" + which_commands[1], commands.count + 1);
@@ -212,12 +168,6 @@ rules:
      dialog->Output.value := "";                  -- Reset Status Area
 
      (void)XmListSelectPos(dialog->ReportList->List, 1, true);      -- Default Report to First in List
-
-     if (dialog.name = "NLMDialog") then
-       NextJnum.source_widget := dialog.top;
-       send(NextJnum, 0);
-       dialog->Jnum->text.value := (string)((integer) top->NextJnum->text.value + 1);
-     end if;
 
      (void) reset_cursor(dialog.root);
    end does;
