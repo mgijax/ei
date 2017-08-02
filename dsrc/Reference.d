@@ -950,10 +950,10 @@ rules:
 	        top->mgiDate->Date->text.value      := mgi_getstr(dbproc, 9);
 	        top->Page->text.value      := mgi_getstr(dbproc, 11);
 	        top->Abstract->text.value  := mgi_getstr(dbproc, 12);
-		(void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byUser, mgi_getstr(dbproc, 23));
-		(void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byDate, mgi_getstr(dbproc, 16));
-		(void) mgi_tblSetCell(modTable, modTable.modifiedBy, modTable.byUser, mgi_getstr(dbproc, 24));
-		(void) mgi_tblSetCell(modTable, modTable.modifiedBy, modTable.byDate, mgi_getstr(dbproc, 17));
+		(void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byUser, mgi_getstr(dbproc, 24));
+		(void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byDate, mgi_getstr(dbproc, 17));
+		(void) mgi_tblSetCell(modTable, modTable.modifiedBy, modTable.byUser, mgi_getstr(dbproc, 25));
+		(void) mgi_tblSetCell(modTable, modTable.modifiedBy, modTable.byDate, mgi_getstr(dbproc, 18));
 
 	        SetOption.source_widget := top->RefTypeMenu;
 	        SetOption.value := mgi_getstr(dbproc, 2);
