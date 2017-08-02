@@ -375,9 +375,8 @@ rules:
 	  cmd := cmd + mgi_DBprstr(top->mgiDate->Date->text.value) + ",";
 	  cmd := cmd + mgi_year(top->mgiDate->Date->text.value) + ",";
 	  cmd := cmd + mgi_DBprstr(top->Page->text.value) + ",";
-
-	  cmd := cmd + top->IsReviewMenu.menuHistory.defaultValue + ",";
 	  cmd := cmd + mgi_DBprstr2(top->Abstract->text.value) + ",";
+	  cmd := cmd + top->IsReviewMenu.menuHistory.defaultValue + ",";
 	  cmd := cmd + global_userKey + "," + global_userKey + END_VALUE;
 
 	  -- System will assign the J: unless it is overridden by the user

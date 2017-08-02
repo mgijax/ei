@@ -1825,7 +1825,7 @@ char *mgi_DBinsert(int table, char *keyName)
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case BIB_REFS:
-	    sprintf(buf, "insert into %s (%s, _ReferenceType_key, authors, _primary, title, journal, vol, issue, date, year, pgs, isReviewArticle, abstract, _CreatedBy_key, _ModifiedBy_key)",
+	    sprintf(buf, "insert into %s (%s, _ReferenceType_key, authors, _primary, title, journal, vol, issue, date, year, pgs, abstract, isReviewArticle, 0, _CreatedBy_key, _ModifiedBy_key)",
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case BIB_BOOKS:
