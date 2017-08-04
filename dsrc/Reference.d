@@ -377,6 +377,7 @@ rules:
 	  cmd := cmd + mgi_DBprstr(top->Page->text.value) + ",";
 	  cmd := cmd + mgi_DBprstr2(top->Abstract->text.value) + ",";
 	  cmd := cmd + top->IsReviewMenu.menuHistory.defaultValue + ",";
+	  cmd := cmd + top->IsDiscardMenu.menuHistory.defaultValue + ",";
 	  cmd := cmd + global_userKey + "," + global_userKey + END_VALUE;
 
 	  -- System will assign the J: unless it is overridden by the user
@@ -538,6 +539,11 @@ rules:
 	  if (top->IsReviewMenu.menuHistory.modified and
               top->IsReviewMenu.menuHistory.searchValue != "%") then
 	    set := set + "isReviewArticle = " + top->IsReviewMenu.menuHistory.defaultValue + ",";
+	  end if;
+
+	  if (top->IsDiscardMenu.menuHistory.modified and
+              top->IsDiscardMenu.menuHistory.searchValue != "%") then
+	    set := set + "isDiscard = " + top->IsDiscardMenu.menuHistory.defaultValue + ",";
 	  end if;
 
 	  if (top->Authors->text.modified) then
@@ -732,6 +738,10 @@ rules:
  
           if (top->IsReviewMenu.menuHistory.searchValue != "%") then
             where := where + "\nand r.isReviewArticle = " + top->IsReviewMenu.menuHistory.searchValue;
+          end if;
+ 
+          if (top->IsDiscardMenu.menuHistory.searchValue != "%") then
+            where := where + "\nand r.isDiscard = " + top->IsDiscardMenu.menuHistory.searchValue;
           end if;
  
 	  if (top->Authors->text.value.length > 0) then
@@ -961,6 +971,10 @@ rules:
 
                 SetOption.source_widget := top->IsReviewMenu;
                 SetOption.value := mgi_getstr(dbproc, 13);
+                send(SetOption, 0);
+ 
+                SetOption.source_widget := top->IsDiscardMenu;
+                SetOption.value := mgi_getstr(dbproc, 14);
                 send(SetOption, 0);
  
 	        top->BookForm->Editors->text.value   := "";
