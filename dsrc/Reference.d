@@ -434,6 +434,8 @@ rules:
 
 	  -- Execute the Add
 
+	  cmd := cmd + exec_bib_reloadCache(currentRecordKey);
+
 	  AddSQL.tableID := BIB_REFS;
           AddSQL.cmd := cmd;
 	  AddSQL.list := top->QueryList;
@@ -459,8 +461,8 @@ rules:
 	    NextJnum.source_widget := top;
 	    send(NextJnum, 0);
 
-	    PythonReferenceCache.objectKey := currentRecordKey;
-	    send(PythonReferenceCache, 0);
+	    #PythonReferenceCache.objectKey := currentRecordKey;
+	    #send(PythonReferenceCache, 0);
 
 	  end if;
 
@@ -633,13 +635,15 @@ rules:
 	    cmd := cmd + mgi_DBupdate(BIB_REFS, currentRecordKey, set);
 	  end if;
 
+	  cmd := cmd + exec_bib_reloadCache(currentRecordKey);
+
           ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
 	  ModifySQL.logOnly := Modify.logOnly;
           send(ModifySQL, 0);
 
-	  PythonReferenceCache.objectKey := currentRecordKey;
-	  send(PythonReferenceCache, 0);
+	  #PythonReferenceCache.objectKey := currentRecordKey;
+	  #send(PythonReferenceCache, 0);
 
 	  if (not Modify.logOnly) then
 	  	Modify.logOnly := true;

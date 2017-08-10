@@ -24,6 +24,7 @@ CALLS
 
 	 exec_all_convert("char *", "char *", "char *", "char *") : "char *";
 	 exec_all_reloadLabel("char *")			: "char *";
+	 exec_bib_reloadCache("char *")			: "char *";
 
 	 exec_mgi_checkUserRole("char *", "char *")		: "char *";
 	 exec_mgi_checkUserTask("char *", "char *")		: "char *";

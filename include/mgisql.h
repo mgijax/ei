@@ -26,6 +26,7 @@ extern char *exec_accref_process(char *, char *, char *, char *, char *, char *,
 
 extern char *exec_all_convert(char *, char *, char *, char *);
 extern char *exec_all_reloadLabel(char *);
+extern char *exec_bib_reloadCache(char *);
 
 extern char *exec_mgi_checkUserRole(char *, char *);
 extern char *exec_mgi_checkUserTask(char *, char *);

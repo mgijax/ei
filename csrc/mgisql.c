@@ -109,6 +109,14 @@ char *exec_all_reloadLabel(char *key)
   return(buf);
 }
 
+char *exec_bib_reloadCache(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select * from BIB_reloadCache (%s);\n", key);
+  return(buf);
+}
+
 char *exec_mgi_checkUserRole(char *module, char *key)
 {
   static char buf[TEXTBUFSIZ];
