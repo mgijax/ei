@@ -141,45 +141,6 @@ rules:
 	end does;
 
 --
--- PythonReferenceCache
---
--- Activated from:  Reference module
--- after an insert, update or delete
---
-
-	PythonReferenceCache does
-	  objectKey : string := PythonReferenceCache.objectKey;
-	  cmds : string_list := create string_list();
-	  buf : string;
-
-	  cmds.insert(getenv("MGICACHELOAD") + "/bibcitation.py", cmds.count + 1);
-	  cmds.insert("-S" + global_server, cmds.count + 1);
-	  cmds.insert("-D" + global_database, cmds.count + 1);
-	  cmds.insert("-U" + global_login, cmds.count + 1);
-	  cmds.insert("-P" + global_passwd_file, cmds.count + 1);
-	  cmds.insert("-K" + objectKey, cmds.count + 1);
-
-	  -- Write cmds to user log
-	  buf := "";
-	  cmds.rewind;
-	  while (cmds.more) do
-	    buf := buf + cmds.next + " ";
-	  end while;
-	  buf := buf + "\n\n";
-	  (void) mgi_writeLog(buf);
-
-	  -- Execute
-          proc_id : opaque := tu_fork_process(cmds[1], cmds, nil, PythonReferenceCacheEnd);
-
-	  while (tu_fork_ok(proc_id)) do
-	    (void) keep_busy();
-	  end while;
-
-	  tu_fork_free(proc_id);
-
-	end does;
-
---
 -- PythonInferredFromCache
 --
 -- Activated from:  GO Annotation module
@@ -283,13 +244,6 @@ rules:
 
 	PythonMarkerCVCacheEnd does
 	  (void) mgi_writeLog("Marker Category Vocabulary Cache done.\n\n");
-	end does;
-
--- PythonReferenceCacheEnd
---
-
-	PythonReferenceCacheEnd does
-	  (void) mgi_writeLog("Reference Cache done.\n\n");
 	end does;
 
 --

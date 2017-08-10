@@ -460,10 +460,6 @@ rules:
 
 	    NextJnum.source_widget := top;
 	    send(NextJnum, 0);
-
-	    #PythonReferenceCache.objectKey := currentRecordKey;
-	    #send(PythonReferenceCache, 0);
-
 	  end if;
 
 	  (void) reset_cursor(top);
@@ -641,9 +637,6 @@ rules:
 	  ModifySQL.list := top->QueryList;
 	  ModifySQL.logOnly := Modify.logOnly;
           send(ModifySQL, 0);
-
-	  #PythonReferenceCache.objectKey := currentRecordKey;
-	  #send(PythonReferenceCache, 0);
 
 	  if (not Modify.logOnly) then
 	  	Modify.logOnly := true;

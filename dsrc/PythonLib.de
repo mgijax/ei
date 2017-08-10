@@ -37,8 +37,6 @@ PythonAlleleCombination [source_widget : widget;
 
 PythonMarkerCVCache [objectKey : string;];
 
-PythonReferenceCache [objectKey : string;];
-
 PythonInferredFromCache [source_widget : widget;
 			 objectKey : string;];
 
@@ -48,8 +46,6 @@ PythonExpressionCache [source_widget : widget;
 PythonAlleleCombinationEnd [];
 
 PythonMarkerCVCacheEnd [];
-
-PythonReferenceCacheEnd [];
 
 PythonInferredFromCacheEnd [];
 
