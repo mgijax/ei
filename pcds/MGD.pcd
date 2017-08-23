@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Fri Aug  4 07:57:15 2017";
+      lastWritten = "Wed Aug 23 13:20:45 2017";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -6480,11 +6480,11 @@ Module: MGD
                                                   {
                                                     Table = mgiTable : mgiTable;
                                                     Group: Widget
-                                                      userDefinedAttributes = "markerKey:Int(Int)=\"3\"\nmarkerSymbol:Int(Int)=\"5\"\nassocKey:Int(Int)=\"1\"\nrefsTypeKey:Int(Int)=\"2\"\nrefsType:Int(Int)=\"4\"\nmarkerColumns:Int(Int)\nmarkerID:Int(Int)=\"6\"\n";
+                                                      userDefinedAttributes = "markerKey:Int(Int)=\"3\"\nmarkerSymbol:Int(Int)=\"5\"\nassocKey:Int(Int)=\"1\"\nrefsTypeKey:Int(Int)=\"2\"\nrefsType:Int(Int)=\"4\"\nmarkerColumns:Int(Int)\nmarkerID:Int(Int)=\"6\"\nmodifiedBy:Int(Int)=\"7\"\nmodifiedDate:Int(INt)=\"8\"\n";
                                                       xrtTblValidateCellCallback = "D:VerifyMarker(allowWithdrawn = false, allowReserved = false),\nD:CommitTableCellEdit";
-                                                      xrtTblNumColumns = 7;
-                                                      xrtTblColumnLabels = "Mode,Key,Key,Key,Type,Marker,Marker ID";
-                                                      xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 15)(all 5 50)(all 6 20)";
+                                                      xrtTblNumColumns = 9;
+                                                      xrtTblColumnLabels = "Mode,Key,Key,Key,Type,Marker,Marker ID,Modified By,Date";
+                                                      xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 15)(all 5 50)(all 6 20)(all 7 12)(all 8 10)";
                                                       xrtTblEditableSeries = "(all 0-4 False)";
                                                       xrtTblTraversableSeries = "(all 0-4 False)(all 6 False)";
                                                       xrtTblPixelWidthSeries = "(all 0-3 0)";

@@ -1593,7 +1593,8 @@ char *ref_marker_load(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select r._Assoc_key, r._RefAssocType_key, r.assocType, r._Object_key, m.symbol, a.accID \
+  sprintf(buf,"select r._Assoc_key, r._RefAssocType_key, r.assocType, r._Object_key, m.symbol, a.accID,  \
+  \nr.modifiedBy, r.modification_date \
   \nfrom MGI_Reference_Marker_View r, MRK_Marker m, ACC_Accession a \
   \nwhere r._Object_key = m._Marker_key \
   \nand r._Refs_key = %s \

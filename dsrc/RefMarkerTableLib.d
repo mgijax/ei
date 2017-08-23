@@ -103,6 +103,8 @@ rules:
 	      (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 4));
 	      (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 5));
 	      (void) mgi_tblSetCell(table, row, table.markerID, mgi_getstr(dbproc, 6));
+	      (void) mgi_tblSetCell(table, row, table.modifiedBy, mgi_getstr(dbproc, 7));
+	      (void) mgi_tblSetCell(table, row, table.modifiedDate, mgi_getstr(dbproc, 8));
 	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
               row := row + 1;
             end while;
