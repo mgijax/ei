@@ -1003,7 +1003,17 @@ char *verify_allele(char *key)
    \nand a._Allele_key = aa._Object_key \
    \nand aa._MGIType_key = 11 \
    \nand aa._LogicalDB_key = 1 \
-   \nand aa.preferred = 1", key);
+   \nand aa.preferred = 1 \
+   \nunion \
+   \nselect a._Allele_key, a._Marker_key, a.symbol, null, aa.accID \
+   \nfrom ALL_Allele a, ACC_Accession aa \
+   \nwhere a._Allele_Status_key in (847114, 3983021)  \
+   \nand a.symbol ilike %s \
+   \nand a._Marker_key is null \
+   \nand a._Allele_key = aa._Object_key \
+   \nand aa._MGIType_key = 11 \
+   \nand aa._LogicalDB_key = 1 \
+   \nand aa.preferred = 1", key, key);
   return(buf);
 }
 
@@ -1021,7 +1031,17 @@ char *verify_alleleid(char *key)
    \nand aa._MGIType_key = 11 \
    \nand aa._LogicalDB_key = 1 \
    \nand aa.preferred = 1 \
-   \nand aa.accID = 'MGI:%s'", key);
+   \nand aa.accID = 'MGI:%s' \
+   \nunion \
+   \nselect a._Allele_key, a._Marker_key, a.symbol, null, aa.accID \
+   \nfrom ALL_Allele a, ACC_Accession aa \
+   \nwhere a._Allele_Status_key in (847114, 3983021)  \
+   \nand a._Allele_key = aa._Object_key \
+   \nand a._Marker_key is null \
+   \nand aa._MGIType_key = 11 \
+   \nand aa._LogicalDB_key = 1 \
+   \nand aa.preferred = 1 \
+   \nand aa.accID = 'MGI:%s'", key, key);
   return(buf);
 }
 
