@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Wed Aug 23 13:20:45 2017";
+      lastWritten = "Tue Sep 12 14:19:01 2017";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -6075,36 +6075,57 @@ Module: MGD
                               resizePolicy = resize_any;
                                 {
                                   ID = ID;
+                                  Group: Widget
+                                    managed = True;
+                                  Group: Constraint
+                                    leftAttachment = attach_form;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_form;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    leftOffset = 5;
+                                      {
+                                        label = XmLabel;
+                                        Group: Widget
+                                          managed = True;
+                                          labelString = key;
+                                      }
+                                      {
+                                        text = text;
+                                        Group: Widget
+                                          managed = True;
+                                      }
                                 }
                                 {
                                   RefTypeFrame = RefTypeFrame : mgiOption;
                                   Group: Constraint
-                                    leftAttachment = attach_form;
+                                    leftAttachment = attach_widget;
                                     leftOffset = 5;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_form;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                    leftWidget = ID;
                                 }
                                 {
                                   IsReviewFrame = YesNoFrame : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
-                                    leftWidget = RefTypeFrame;
-                                    leftOffset = 5;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
                                     topWidget = RefTypeFrame;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                    leftWidget = RefTypeFrame;
                                   Group: User
                                     defaultOption = No;
                                       {
                                         IsReviewMenu : YesNoMenu = XmOptionMenu;
                                         Group: Widget
                                           subMenuId = IsReviewPulldown;
-                                          labelString = "Is Review Article?";
+                                          labelString = "Review Article?";
                                         Group: User
                                           defaultOption = No;
                                       }
@@ -6130,7 +6151,7 @@ Module: MGD
                                         IsDiscardMenu : YesNoMenu = XmOptionMenu;
                                         Group: Widget
                                           subMenuId = IsDiscardPulldown;
-                                          labelString = "Is Discard?";
+                                          labelString = "Discard?";
                                         Group: User
                                           defaultOption = No;
                                       }
@@ -6142,15 +6163,15 @@ Module: MGD
                                 {
                                   Authors = CharText : mgiDataTypes;
                                   Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = RefTypeFrame;
+                                    leftAttachment = attach_form;
                                     rightAttachment = attach_form;
                                     rightOffset = 2;
                                     topAttachment = attach_widget;
-                                    topWidget = RefTypeFrame;
+                                    topWidget = ID;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                    leftOffset = 5;
                                       {
                                         label = XmLabel;
                                         Group: Widget
@@ -6194,8 +6215,7 @@ Module: MGD
                                 {
                                   Title = CharText : mgiDataTypes;
                                   Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = Authors;
+                                    leftAttachment = attach_form;
                                     rightAttachment = attach_form;
                                     rightOffset = 2;
                                     topAttachment = attach_widget;
@@ -6203,6 +6223,7 @@ Module: MGD
                                     topOffset = 2;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                    leftOffset = 5;
                                       {
                                         label = XmLabel;
                                         Group: Widget
@@ -6218,8 +6239,7 @@ Module: MGD
                                 {
                                   mgiJournal = mgiJournal : mgiDataTypes;
                                   Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = Title;
+                                    leftAttachment = attach_form;
                                     rightAttachment = attach_form;
                                     rightOffset = 2;
                                     topAttachment = attach_widget;
@@ -6227,18 +6247,19 @@ Module: MGD
                                     topOffset = 2;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                    leftOffset = 5;
                                 }
                                 {
                                   mgiDate = mgiDate : mgiDataTypes;
                                   Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = mgiJournal;
+                                    leftAttachment = attach_form;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     topWidget = mgiJournal;
                                     topOffset = 2;
+                                    leftOffset = 5;
                                       {
                                         Date = Date;
                                             {
