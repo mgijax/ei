@@ -2,13 +2,13 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Tue Sep 12 14:19:01 2017";
+      lastWritten = "Thu Sep 28 07:47:51 2017";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
           Group: Control
             vip_x = 90;
-            vip_y = 1020;
+            vip_y = 965;
           Group: User
             homeWidget = Latin;
             activateButtonName = Organism;
@@ -525,7 +525,7 @@ Module: MGD
             title = "RI Sets";
           Group: Control
             vip_x = 90;
-            vip_y = 1130;
+            vip_y = 1075;
           Group: User
             homeWidget = Designation;
             activateButtonName = RISet;
@@ -1069,7 +1069,7 @@ Module: MGD
           TissueModule = Module : MGI;
           Group: Control
             vip_x = 90;
-            vip_y = 1240;
+            vip_y = 1185;
           Group: User
             homeWidget = Name;
             activateButtonName = Tissue;
@@ -2061,7 +2061,7 @@ Module: MGD
             width = 600;
           Group: Control
             vip_x = 90;
-            vip_y = 1955;
+            vip_y = 1900;
               {
                 ID = ID;
               }
@@ -2387,7 +2387,7 @@ Module: MGD
             width = 600;
           Group: Control
             vip_x = 90;
-            vip_y = 1900;
+            vip_y = 1845;
               {
                 Marker = ReferenceTable : mgiTable;
                 Group: Constraint
@@ -2593,7 +2593,7 @@ Module: MGD
             managed = False;
           Group: Control
             vip_x = 90;
-            vip_y = 2065;
+            vip_y = 2010;
           Group: User
             homeWidget = Jnum;
             queryList = ReferenceList;
@@ -3021,7 +3021,7 @@ Module: MGD
             width = 600;
           Group: Control
             vip_x = 90;
-            vip_y = 2010;
+            vip_y = 1955;
               {
                 Sequence1 = CharText : mgiDataTypes;
                 Group: Constraint
@@ -3631,7 +3631,7 @@ Module: MGD
             resizePolicy = resize_any;
           Group: Control
             vip_x = 90;
-            vip_y = 1735;
+            vip_y = 1680;
               {
                 ID = ID;
               }
@@ -3666,7 +3666,7 @@ Module: MGD
             resizePolicy = resize_any;
           Group: Control
             vip_x = 90;
-            vip_y = 1460;
+            vip_y = 1405;
               {
                 ID = ID;
               }
@@ -3703,7 +3703,7 @@ Module: MGD
             height = 700;
           Group: Control
             vip_x = 90;
-            vip_y = 1570;
+            vip_y = 1515;
               {
                 ID = ID;
               }
@@ -3787,7 +3787,7 @@ Module: MGD
             height = 700;
           Group: Control
             vip_x = 90;
-            vip_y = 1625;
+            vip_y = 1570;
               {
                 ID = ID;
               }
@@ -4064,7 +4064,7 @@ Module: MGD
             height = 700;
           Group: Control
             vip_x = 90;
-            vip_y = 1515;
+            vip_y = 1460;
               {
                 ID = ID;
               }
@@ -4324,7 +4324,7 @@ Module: MGD
             height = 700;
           Group: Control
             vip_x = 90;
-            vip_y = 1680;
+            vip_y = 1625;
               {
                 ID = ID;
               }
@@ -4495,7 +4495,7 @@ Module: MGD
             height = 700;
           Group: Control
             vip_x = 90;
-            vip_y = 1295;
+            vip_y = 1240;
               {
                 ID = ID;
               }
@@ -4878,7 +4878,7 @@ Module: MGD
             height = 775;
           Group: Control
             vip_x = 90;
-            vip_y = 1790;
+            vip_y = 1735;
           Group: User
             homeWidget = Jnum;
               {
@@ -4989,7 +4989,7 @@ Module: MGD
             height = 1000;
           Group: Control
             vip_x = 90;
-            vip_y = 1405;
+            vip_y = 1350;
           Group: User
             homeWidget = Chromosome;
             queryList = ExperimentList;
@@ -6014,7 +6014,7 @@ Module: MGD
             title = "Master Bibliography";
           Group: Control
             vip_x = 90;
-            vip_y = 1075;
+            vip_y = 1020;
           Group: User
             homeWidget = Authors;
             clearForms = "ControlForm\nEditForm\nDataSetsForm\nBookForm";
@@ -6119,6 +6119,7 @@ Module: MGD
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     leftWidget = RefTypeFrame;
+                                    leftOffset = 5;
                                   Group: User
                                     defaultOption = No;
                                       {
@@ -6855,7 +6856,7 @@ Module: MGD
             width = 600;
           Group: Control
             vip_x = 90;
-            vip_y = 1845;
+            vip_y = 1790;
               {
                 ParentClone = mgiAccession : mgiDataTypes;
                 Group: Widget
@@ -8944,7 +8945,7 @@ Shift<Key>Tab: prev-tab-group()
           StrainModule = Module : MGI;
           Group: Control
             vip_x = 90;
-            vip_y = 1185;
+            vip_y = 1130;
           Group: User
             homeWidget = Name;
             activateButtonName = Strain;
@@ -11551,7 +11552,7 @@ Shift<Key>Tab: prev-tab-group()
             height = 900;
           Group: Control
             vip_x = 90;
-            vip_y = 1350;
+            vip_y = 1295;
           Group: User
             homeWidget = Jnum;
               {
