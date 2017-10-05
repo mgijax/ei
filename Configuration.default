@@ -19,8 +19,7 @@ source ${MGICONFIG}/master.config.csh
 unsetenv OPENWINHOME
 unsetenv XKEYSYMDB
 
-#setenv GITHUB_TAG  ei-6-0-11-?
-setenv GITHUB_TAG  ei-littriage
+setenv GITHUB_TAG  ei-6-0-11-1
 
 switch (`whoami`)
     case lec:
