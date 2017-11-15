@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Wed Jun  7 13:36:20 2017";
+      lastWritten = "Wed Nov 15 10:18:08 2017";
       copy = false;
       inCreateMenu = true;
         {
@@ -2760,13 +2760,6 @@ Shift<Key>Tab: prev-tab-group()
                                     activateCallback = "D:CreateMGIModule(name = \"Assay\")";
                                     traversalOn = False;
                                     labelString = Assays;
-                                }
-                                {
-                                  IndexStage = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"IndexStage\")";
-                                    traversalOn = False;
-                                    labelString = Index;
                                 }
                                 {
                                   Reference = XmPushButton;
