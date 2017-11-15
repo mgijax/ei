@@ -706,6 +706,9 @@ char *mgi_DBkey(int table)
     case MGI_REFERENCE_STRAIN_VIEW:
             strcpy(buf, "_Object_key");
 	    break;
+    case MGI_RELATIONSHIP:
+            strcpy(buf, "_Relationship_key");
+	    break;
     case MGI_SETMEMBER:
 	    strcpy(buf, "_SetMember_key");
 	    break;
@@ -1358,6 +1361,9 @@ char *mgi_DBtable(int table)
     case MGI_REFASSOCTYPE:
 	    strcpy(buf, "MGI_RefAssocType");
 	    break;
+    case MGI_RELATIONSHIP:
+            strcpy(buf, "MGI_Relationship");
+	    break;
     case MGI_REFERENCE_ALLELE_VIEW:
 	    strcpy(buf, "MGI_Reference_Allele_View");
 	    break;
@@ -1743,6 +1749,7 @@ char *mgi_DBinsert(int table, char *keyName)
     case MGI_NOTECHUNK:
     case MGI_ORGANISMTYPE:
     case MGI_REFERENCE_ASSOC:
+    case MGI_RELATIONSHIP:
     case MGI_SETMEMBER:
     case MGI_SYNONYM:
     case MGI_USER:
@@ -1958,6 +1965,9 @@ char *mgi_DBinsert(int table, char *keyName)
 	    break;
     case MGI_REFASSOCTYPE:
             sprintf(buf, "insert into %s (%s, _MGIType_key, assocType, allowOnlyOne, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MGI_RELATIONSHIP:
+            sprintf(buf, "insert into %s (%s, _Category_key, _Object_key_1, _Object_key_2, _RelationshipTerm_key, _Qualifier_key, _Evidence_key, _Refs_key, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MGI_SETMEMBER:
             sprintf(buf, "insert into %s (%s, _Set_key, _Object_key, sequenceNum, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
@@ -2238,6 +2248,7 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case MGI_ORGANISMTYPE:
       case MGI_REFASSOCTYPE:
       case MGI_REFERENCE_ASSOC:
+      case MGI_RELATIONSHIP:
       case MGI_SETMEMBER:
       case MGI_SYNONYM:
       case MGI_SYNONYMTYPE:
@@ -2302,6 +2313,7 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case MGI_ORGANISMTYPE:
       case MGI_REFASSOCTYPE:
       case MGI_REFERENCE_ASSOC:
+      case MGI_RELATIONSHIP:
       case MGI_SETMEMBER:
       case MGI_SYNONYM:
       case MGI_SYNONYMTYPE:
