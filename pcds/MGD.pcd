@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Thu Sep 28 07:47:51 2017";
+      lastWritten = "Wed Nov 15 10:58:38 2017";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -8863,6 +8863,23 @@ Shift<Key>Tab: prev-tab-group()
                                           targetKey = ObjectID;
                                           targetText = CellLine;
                                           targetWidget = mgiParentCellLine;
+                                      }
+                                }
+                                {
+                                  OrganismList = OrganismList : mgiLookup;
+                                  Group: User
+                                    cmd = "select _Organism_key, organism from MGI_Organism_Allele_View order by organism";
+                                      {
+                                        Label = LookupLabel;
+                                      }
+                                      {
+                                        List = list;
+                                        Group: Widget
+                                          visibleItemCount = 10;
+                                        Group: User
+                                          targetWidget = mgiOrganism;
+                                          targetText = Organism;
+                                          targetKey = ObjectID;
                                       }
                                 }
                           }

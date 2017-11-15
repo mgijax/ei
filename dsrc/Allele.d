@@ -271,6 +271,9 @@ rules:
           LoadList.list := top->StemCellLineList;
 	  send(LoadList, 0);
 
+          LoadList.list := top->OrganismList;
+          send(LoadList, 0); 
+
 	  -- Initialize Reference table
 
 	  InitRefTypeTable.table := top->Reference->Table;
