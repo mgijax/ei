@@ -469,7 +469,7 @@ Module: mgiLookup
             vip_x = 90;
             vip_y = 1405;
           Group: User
-            cmd = "select _MGIType_key, name from ACC_MGIType where _MGIType_key in (2,3,6,7,18,19,43) order by name";
+            cmd = "select distinct a._MGIType_key, a.name from ACC_MGIType a, MGI_Organism_MGIType t where a._MGIType_key = t._MGIType_key order by name";
               {
                 Label = LookupLabel : mgiLookup;
                 Group: Widget
