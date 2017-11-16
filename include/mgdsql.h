@@ -32,6 +32,7 @@ extern char *allele_mutantcellline(char *);
 extern char *allele_parentcellline(char *);
 extern char *allele_search(char *, char *, char *);
 extern char *allele_subtype(char *);
+extern char *allele_driver(char *);
 
 /* AlleleDerivation.d */
 
@@ -203,6 +204,7 @@ extern char *ref_mld_exists(char *);
 extern char *ref_nom_exists(char *);
 extern char *ref_prb_exists(char *);
 extern char *ref_allele_exists(char *);
+extern char *ref_allele_get(char *);
 extern char *ref_mrk_exists(char *);
 extern char *ref_qtl_exists(char *);
 extern char *ref_pro_exists(char *);

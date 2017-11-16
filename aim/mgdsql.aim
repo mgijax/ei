@@ -168,6 +168,7 @@ CALLS
 	 ref_nom_exists("char *")                       : "char *";
 	 ref_prb_exists("char *")			: "char *";
 	 ref_allele_exists("char *")			: "char *";
+	 ref_allele_get("char *")			: "char *";
 	 ref_mrk_exists("char *")			: "char *";
 	 ref_qtl_exists("char *")			: "char *";
 	 ref_pro_exists("char *")			: "char *";

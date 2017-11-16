@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Thu Nov 16 09:36:39 2017";
+      lastWritten = "Thu Nov 16 11:34:11 2017";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -8361,12 +8361,14 @@ Shift<Key>Tab: prev-tab-group()
                                                     Table = mgiTable : mgiTable;
                                                     Group: Widget
                                                       xrtTblPixelWidthSeries = "(all 0-3 0)";
-                                                      xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 10)(all 5 50)";
+                                                      xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 20)(all 5 50)";
                                                       xrtTblColumnLabels = "Mode,Current Key,oKey,mKey,Organism,Marker";
                                                       xrtTblNumColumns = 6;
                                                       userDefinedAttributes = "relCurrentKey:Int(Int)=\"1\"\norganismKey:Int(Int)=\"2\"\norganism:Int(Int)=\"4\"\nmarkerKey:Int(Int)=\"3\"\nmarkerSymbol:Int(Int)=\"5\"\n";
                                                       xrtTblEnterCellCallback = "D:SetOptions";
                                                       xrtTblEditableSeries = "(all 0-3 False)";
+                                                      xrtTblNumRows = 1;
+                                                      xrtTblTraversableSeries = "(all 0-4 False)";
                                                   {
                                                     label = XtXrtLabel;
                                                     Group: Widget
@@ -8375,9 +8377,19 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     AddRow = TablePush : mgiTable;
+                                                    Group: Widget
+                                                      managed = False;
                                                   }
                                                   {
                                                     DeleteRow = TablePush : mgiTable;
+                                                    Group: Constraint
+                                                      leftAttachment = attach_opposite_widget;
+                                                      leftWidget = Table;
+                                                      rightAttachment = attach_none;
+                                                      topAttachment = attach_widget;
+                                                      topWidget = Table;
+                                                      bottomAttachment = attach_none;
+                                                      resizable = true;
                                                   }
                                                   {
                                                     AlleleDriverFrame = OptionFrame : mgiOption;

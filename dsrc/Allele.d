@@ -624,6 +624,7 @@ rules:
 	  send(ModifyMolecularMutation, 0);
 	  send(ModifyImagePaneAssociation, 0);
 	  send(ModifyMutantCellLine, 0);
+	  send(ModifyAlleleDriver, 0);
 
 	  -- TR 5672
 	  -- always set note modified = true so if user has used
@@ -1000,6 +1001,7 @@ rules:
 	  send(ModifyImagePaneAssociation, 0);
 	  send(ModifyAlleleNotes, 0);
 	  send(ModifyMutantCellLine, 0);
+	  send(ModifyAlleleDriver, 0);
 
 	  if (not top.allowEdit) then
 	    (void) reset_cursor(top);
@@ -1569,56 +1571,6 @@ rules:
 	end does;
  
 --
--- ModifyAlleleDriver
---
--- Activated from: devent Add/Modify
---
--- Construct insert/update/delete for MGI_Relationship/_Category_key = 1006
--- Appends to global "cmd" string
---
--- key|1006|allele_key|marker_key|36770349|11391898|17396909|254076|1001|1001|now()|now()
---
- 
-	ModifyAlleleDriver does
-	  table : widget := molmutationTable;
-	  row : integer := 0;
-	  editMode : string;
-	  key : string;
-	  newKey : string;
-	  set : string := "";
- 
-	  molecularNotesRequired := false;
-
-	  -- Process while non-empty rows are found
- 
-	  while (row < mgi_tblNumRows(table)) do
-	    editMode := mgi_tblGetCell(table, row, table.editMode);
-
-	    if (editMode = TBL_ROW_EMPTY) then
-	      break;
-	    end if;
- 
-	    key := mgi_tblGetCell(table, row, table.mutationCurrentKey);
-	    newKey := mgi_tblGetCell(table, row, table.mutationKey);
-
-	    if (editMode = TBL_ROW_ADD) then
-	      cmd := cmd + mgi_DBinsert(ALL_ALLELE_MUTATION, NOKEY) + currentRecordKey + "," + newKey + END_VALUE;
-	    elsif (editMode = TBL_ROW_MODIFY) then
-	      set := "_Mutation_key = " + newKey;
-	      cmd := cmd + mgi_DBupdate(ALL_ALLELE_MUTATION, currentRecordKey + " and _Mutation_key = " + key, set);
-	    elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
-	      cmd := cmd + mgi_DBdelete(ALL_ALLELE_MUTATION, currentRecordKey + " and _Mutation_key = " + key);
-	    end if;
- 
-	    if (mgi_tblGetCell(table, row, table.mutation) = OTHERNOTES) then
-	      molecularNotesRequired := true;
-	    end if;
-
-	    row := row + 1;
-	  end while;
-	end does;
- 
---
 -- ModifyImagePaneAssociation
 --
 -- Activated from: devent Add/Modify
@@ -1678,6 +1630,66 @@ rules:
             elsif (editMode = TBL_ROW_DELETE and assocKey.length > 0) then
               cmd := cmd + mgi_DBdelete(IMG_IMAGEPANE_ASSOC, assocKey);
             end if;
+ 
+	    row := row + 1;
+	  end while;
+	end does;
+ 
+--
+-- ModifyAlleleDriver
+--
+-- Activated from: devent Modify
+--
+-- Construct insert/update/delete for Allele Driver (attribute)
+-- Appends to global "cmd" string
+--
+ 
+	ModifyAlleleDriver does
+	  table : widget := top->AlleleDriver->Table;
+	  row : integer := 0;
+	  editMode : string;
+	  key : string;
+	  markerKey : string;
+	  set : string := "";
+	  keyDeclared : boolean := false;
+	  keyName : string := "relationshipKey";
+	  molRefKey : string;
+ 
+	  -- Process while non-empty rows are found
+ 
+	  while (row < mgi_tblNumRows(table)) do
+	    editMode := mgi_tblGetCell(table, row, table.editMode);
+
+	    if (editMode = TBL_ROW_EMPTY) then
+	      break;
+	    end if;
+ 
+	    key := mgi_tblGetCell(table, row, table.relCurrentKey);
+	    markerKey := mgi_tblGetCell(table, row, table.markerKey);
+	    molRefKey := mgi_sql1(ref_allele_get(currentRecordKey));
+
+	    if (editMode = TBL_ROW_ADD) then
+              if (not keyDeclared) then
+                cmd := cmd + mgi_setDBkey(MGI_RELATIONSHIP, NEWKEY, keyName);
+                keyDeclared := true;
+              else
+                cmd := cmd + mgi_DBincKey(keyName);
+              end if;
+
+              cmd := cmd + mgi_DBinsert(MGI_RELATIONSHIP, keyName) + 
+		     "1006," +
+                     currentRecordKey + "," + 
+		     markerKey + "," +
+		     "36770349,11391898,17396909," +
+		     molRefKey + ","+
+		     global_userKey + "," + global_userKey + END_VALUE;
+
+	    elsif (editMode = TBL_ROW_MODIFY) then
+	      set := "_Object_key_2 = " + markerKey;
+	      cmd := cmd + mgi_DBupdate(MGI_RELATIONSHIP, key, set);
+	    elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
+	      cmd := cmd + mgi_DBdelete(MGI_RELATIONSHIP, key);
+	    end if;
  
 	    row := row + 1;
 	  end while;
