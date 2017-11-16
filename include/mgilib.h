@@ -153,6 +153,7 @@ extern char *global_version;
 #define SEQ_ALLELE_ASSOC	243
 #define SEQ_ALLELE_ASSOC_VIEW	244
 #define ALL_ALLELE_SUBTYPE_VIEW	246
+#define ALL_ALLELE_DRIVER_VIEW	247
 
 /* MGI Controlled Vocabulary Tables */
 
@@ -253,6 +254,7 @@ extern char *global_version;
 #define	MGI_NOTE_PROBE_VIEW		663
 #define MGI_SYNONYM_GOTERM_VIEW		664
 #define MGI_SYNONYMTYPE_GOTERM_VIEW	665
+#define MGI_RELATIONSHIP		666
 
 /* Strains Tables */
 

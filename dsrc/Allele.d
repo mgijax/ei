@@ -121,6 +121,7 @@ devents:
 	ModifyImagePaneAssociation :local [];
 	ModifyMolecularMutation :local [];
 	ModifyMutantCellLine :local [];
+	ModifyAlleleDriver :local [];
 
 	PrepareSearch :local [];
 
@@ -145,12 +146,14 @@ locals:
 	accTable : widget;
 	refTable : widget;
 	molmutationTable : widget;
+	alleledriverTable : widget;
 	imgTable : widget;
 	markerTable : widget;
 	cellLineTable : widget;
 	seqTable : widget;
 	subtypeTable : widget;
 	mgiTypeKey : string;
+	driverTable : widget;
 
 	cmd : string;
 	from : string;
@@ -268,6 +271,9 @@ rules:
 	  InitOptionMenu.option := top->mgiParentCellLine->AlleleCellLineTypeMenu;
 	  send(InitOptionMenu, 0);
 
+	  InitOptionMenu.option := top->AlleleDriver->AlleleDriverMenu;
+	  send(InitOptionMenu, 0);
+
           LoadList.list := top->StemCellLineList;
 	  send(LoadList, 0);
 
@@ -333,6 +339,7 @@ rules:
 	  subtypeTable := top->AlleleSubType->Table;
 	  molmutationTable := top->MolecularMutation->Table;
 	  imgTable := top->ImagePane->Table;
+	  driverTable := top->AlleleDriver->Table;
 	  markerTable := top->Marker->Table;
 	  cellLineTable := top->MutantCellLine->Table;
 	  seqTable := top->SequenceAllele->Table;
@@ -1562,6 +1569,56 @@ rules:
 	end does;
  
 --
+-- ModifyAlleleDriver
+--
+-- Activated from: devent Add/Modify
+--
+-- Construct insert/update/delete for MGI_Relationship/_Category_key = 1006
+-- Appends to global "cmd" string
+--
+-- key|1006|allele_key|marker_key|36770349|11391898|17396909|254076|1001|1001|now()|now()
+--
+ 
+	ModifyAlleleDriver does
+	  table : widget := molmutationTable;
+	  row : integer := 0;
+	  editMode : string;
+	  key : string;
+	  newKey : string;
+	  set : string := "";
+ 
+	  molecularNotesRequired := false;
+
+	  -- Process while non-empty rows are found
+ 
+	  while (row < mgi_tblNumRows(table)) do
+	    editMode := mgi_tblGetCell(table, row, table.editMode);
+
+	    if (editMode = TBL_ROW_EMPTY) then
+	      break;
+	    end if;
+ 
+	    key := mgi_tblGetCell(table, row, table.mutationCurrentKey);
+	    newKey := mgi_tblGetCell(table, row, table.mutationKey);
+
+	    if (editMode = TBL_ROW_ADD) then
+	      cmd := cmd + mgi_DBinsert(ALL_ALLELE_MUTATION, NOKEY) + currentRecordKey + "," + newKey + END_VALUE;
+	    elsif (editMode = TBL_ROW_MODIFY) then
+	      set := "_Mutation_key = " + newKey;
+	      cmd := cmd + mgi_DBupdate(ALL_ALLELE_MUTATION, currentRecordKey + " and _Mutation_key = " + key, set);
+	    elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
+	      cmd := cmd + mgi_DBdelete(ALL_ALLELE_MUTATION, currentRecordKey + " and _Mutation_key = " + key);
+	    end if;
+ 
+	    if (mgi_tblGetCell(table, row, table.mutation) = OTHERNOTES) then
+	      molecularNotesRequired := true;
+	    end if;
+
+	    row := row + 1;
+	  end while;
+	end does;
+ 
+--
 -- ModifyImagePaneAssociation
 --
 -- Activated from: devent Add/Modify
@@ -1641,6 +1698,7 @@ rules:
 	  from_sequence   : boolean := false;
 	  from_subtype    : boolean := false;
 	  from_image      : boolean := false;
+	  from_driver     : boolean := false;
 
 	  value : string;
 
@@ -1876,6 +1934,31 @@ rules:
 	    from_image := true;
 	  end if;
 
+	  -- Allele Driver
+
+	  value := mgi_tblGetCell(driverTable, 0, driverTable.organismKey);
+	  if (value.length > 0 and value != "NULL") then
+	    where := where + "\nand driver._Organism_key = " + value;
+	    from_driver := true;
+	  else
+	    value := mgi_tblGetCell(driverTable, 0, driverTable.organism);
+	    if (value.length > 0) then
+	      where := where + "\nand driver.organism ilike " + mgi_DBprstr(value);
+	      from_driver := true;
+	    end if;
+	  end if;
+	  value := mgi_tblGetCell(driverTable, 0, driverTable.markerKey);
+	  if (value.length > 0 and value != "NULL") then
+	    where := where + "\nand driver._Marker_key = " + value;
+	    from_driver := true;
+	  else
+	    value := mgi_tblGetCell(driverTable, 0, driverTable.markerSymbol);
+	    if (value.length > 0) then
+	      where := where + "\nand driver.symbol ilike " + mgi_DBprstr(value);
+	      from_driver := true;
+	    end if;
+	  end if;
+
 	  -- get the additional tables using the "from" values
 
 	  if (from_subtype) then
@@ -1907,6 +1990,11 @@ rules:
 	    from := from + "," + mgi_DBtable(IMG_IMAGEPANE_ASSOC_VIEW) + " i";
 	    where := where + "\nand a." + mgi_DBkey(ALL_ALLELE) + " = i._Object_key" +
 	    	"\nand i._MGIType_key = 11";
+	  end if;
+
+	  if (from_driver) then
+	    from := from + "," + mgi_DBtable(ALL_ALLELE_DRIVER_VIEW) + " driver";
+	    where := where + "\nand a." + mgi_DBkey(ALL_ALLELE) + " = driver." + mgi_DBkey(ALL_ALLELE);
 	  end if;
 
 	  if (where.length > 0) then
@@ -2162,6 +2250,23 @@ rules:
 	    end while;
 	  end while;
 	  (void) mgi_dbclose(dbproc);
+
+          row := 0;
+          table := top->AlleleDriver->Table;
+          cmd := allele_driver(currentRecordKey);
+          dbproc := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+                (void) mgi_tblSetCell(table, row, table.relCurrentKey, mgi_getstr(dbproc, 1));
+                (void) mgi_tblSetCell(table, row, table.organismKey, mgi_getstr(dbproc, 2));
+                (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 3));
+                (void) mgi_tblSetCell(table, row, table.organism, mgi_getstr(dbproc, 4));
+                (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 5));
+                (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+                row := row + 1;
+            end while;
+          end while;
+          (void) mgi_dbclose(dbproc);
 
           LoadRefTypeTable.table := top->Reference->Table;
 	  LoadRefTypeTable.tableID := MGI_REFERENCE_ALLELE_VIEW;

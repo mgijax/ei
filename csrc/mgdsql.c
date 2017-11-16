@@ -190,6 +190,19 @@ char *allele_subtype(char *key)
   return(buf);
 }
 
+char *allele_driver(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select r._Relationship_key, m._Organism_key, m._Marker_key, o.commonname, m.symbol \
+	\nfrom MGI_Relationship r, MRK_Marker m, MGI_Organism o \
+	\nwhere r._Category_key = 1006 \
+	\nand r._Object_key_2 = m._Marker_key \
+	\nand m._Organism_key = o._Organism_key \
+	\nand r._Object_key_1 = %s", key);
+  return(buf);
+}
+
 /*
 * AlleleDerivation.d
 */
@@ -1521,6 +1534,14 @@ char *ref_allele_exists(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select count(*) from MGI_Reference_Allele_View where _Refs_key = %s", key);
+  return(buf);
+}
+
+char *ref_allele_get(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select min(_Refs_key) as _Refs_key from MGI_Reference_Allele_View where _Object_key = %s", key);
   return(buf);
 }
 

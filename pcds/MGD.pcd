@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Wed Nov 15 10:58:38 2017";
+      lastWritten = "Thu Nov 16 09:36:39 2017";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -7722,7 +7722,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         legend = XmLabelGadget;
                                         Group: Widget
-                                          labelString = "1 = Synonyms, 2 = Allele Attribute, 3 = Molecular Mutations, 4 = Image, 5 = Sequence";
+                                          labelString = "1 = Synonyms, 2 = Allele Attribute, 3 = Molecular Mutations, 4 = Image, 5 = Sequence, 6 = Driver Gene";
                                       }
                                       {
                                         notebook = notebook : mgiNoteBook;
@@ -8348,6 +8348,62 @@ Shift<Key>Tab: prev-tab-group()
                                                       allowAdd = False;
                                                       allowDelete = False;
                                                       allowModify = False;
+                                                  }
+                                                  }
+                                                  }
+                                            }
+                                            {
+                                              AlleleDriver = TableLabel : mgiTable;
+                                              Group: Widget
+                                                rubberPositioning = False;
+                                                resizePolicy = resize_any;
+                                                  {
+                                                    Table = mgiTable : mgiTable;
+                                                    Group: Widget
+                                                      xrtTblPixelWidthSeries = "(all 0-3 0)";
+                                                      xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 10)(all 5 50)";
+                                                      xrtTblColumnLabels = "Mode,Current Key,oKey,mKey,Organism,Marker";
+                                                      xrtTblNumColumns = 6;
+                                                      userDefinedAttributes = "relCurrentKey:Int(Int)=\"1\"\norganismKey:Int(Int)=\"2\"\norganism:Int(Int)=\"4\"\nmarkerKey:Int(Int)=\"3\"\nmarkerSymbol:Int(Int)=\"5\"\n";
+                                                      xrtTblEnterCellCallback = "D:SetOptions";
+                                                      xrtTblEditableSeries = "(all 0-3 False)";
+                                                  {
+                                                    label = XtXrtLabel;
+                                                    Group: Widget
+                                                      labelString = "Allele Driver Gene";
+                                                  }
+                                                  }
+                                                  {
+                                                    AddRow = TablePush : mgiTable;
+                                                  }
+                                                  {
+                                                    DeleteRow = TablePush : mgiTable;
+                                                  }
+                                                  {
+                                                    AlleleDriverFrame = OptionFrame : mgiOption;
+                                                    Group: Constraint
+                                                      leftAttachment = attach_widget;
+                                                      leftWidget = DeleteRow;
+                                                      rightAttachment = attach_none;
+                                                      topAttachment = attach_opposite_widget;
+                                                      topWidget = DeleteRow;
+                                                      bottomAttachment = attach_none;
+                                                      resizable = true;
+                                                  {
+                                                    AlleleDriverMenu : OptionMenu = XmOptionMenu;
+                                                    Group: Widget
+                                                      subMenuId = AlleleDriverPulldown;
+                                                  }
+                                                  Popups:
+                                                  {
+                                                    AlleleDriverPulldown : OptionPulldown = OptionPulldown : mgiOption;
+                                                    Group: User
+                                                      sql = "select _Organism_key, commonname from MGI_Organism_Allele_View \norder by commonname";
+                                                      tableForm = AlleleDriver;
+                                                      tableOptionKey = 2;
+                                                      tableOption = 4;
+                                                  {
+                                                    SearhAllNoShow = SearhAllNoShow : mgiOption;
                                                   }
                                                   }
                                                   }

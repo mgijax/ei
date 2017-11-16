@@ -28,6 +28,7 @@ CALLS
 	 allele_parentcellline("char *")		: "char *";
 	 allele_search("char *", "char *", "char *")	: "char *";
 	 allele_subtype("char *")			: "char *";
+	 allele_driver("char *")			: "char *";
 
 	 derivation_checkdup("char *", "char *", "char *", "char *", "char *") : "char *";
 	 derivation_select("char *")			: "char *";
