@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Wed Jun  7 13:36:21 2017";
+      lastWritten = "Mon Nov 20 10:10:44 2017";
       copy = false;
       inCreateMenu = true;
         {
@@ -1702,6 +1702,9 @@ Module: MGI
                                                   }
                                                   {
                                                     CARD = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    CHROMus = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     CMMR = AccToggle : mgiOption;
@@ -3510,6 +3513,9 @@ Module: MGI
                                                   }
                                                   {
                                                     CARD = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    CHROMus = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     CMMR = AccToggle : mgiOption;

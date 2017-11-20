@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Thu Nov 16 11:34:11 2017";
+      lastWritten = "Mon Nov 20 10:11:32 2017";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -1694,6 +1694,9 @@ Module: MGD
                                                   }
                                                   {
                                                     CARD = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    CHROMus = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     CMMR = AccToggle : mgiOption;
@@ -3538,6 +3541,9 @@ Module: MGD
                                                   }
                                                   {
                                                     CARD = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    CHROMus = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     CMMR = AccToggle : mgiOption;
@@ -8180,6 +8186,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     CARD = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    CHROMus = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     CMMR = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -8754,6 +8763,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     CARD = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    CHROMus = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     CMMR = AccToggle : mgiOption;
@@ -9944,6 +9956,11 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
+                                                    CHROMus = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
                                                     CMMR = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
@@ -10718,6 +10735,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     CARD = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    CHROMus = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     CMMR = AccToggle : mgiOption;
