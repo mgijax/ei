@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Mon Nov 20 10:11:32 2017";
+      lastWritten = "Mon Nov 20 13:22:04 2017";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -8370,14 +8370,15 @@ Shift<Key>Tab: prev-tab-group()
                                                     Table = mgiTable : mgiTable;
                                                     Group: Widget
                                                       xrtTblPixelWidthSeries = "(all 0-3 0)";
-                                                      xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 20)(all 5 50)";
-                                                      xrtTblColumnLabels = "Mode,Current Key,oKey,mKey,Organism,Marker";
+                                                      xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 25)(all 5 25)";
+                                                      xrtTblColumnLabels = "Mode,Current Key,oKey,mKey,Marker, Organism";
                                                       xrtTblNumColumns = 6;
-                                                      userDefinedAttributes = "relCurrentKey:Int(Int)=\"1\"\norganismKey:Int(Int)=\"2\"\norganism:Int(Int)=\"4\"\nmarkerKey:Int(Int)=\"3\"\nmarkerSymbol:Int(Int)=\"5\"\n";
+                                                      userDefinedAttributes = "relCurrentKey:Int(Int)=\"1\"\norganismKey:Int(Int)=\"2\"\norganism:Int(Int)=\"5\"\nmarkerKey:Int(Int)=\"3\"\nmarkerSymbol:Int(Int)=\"4\"\nmarkerColumns:Int(Int)=\"1\"\n";
                                                       xrtTblEnterCellCallback = "D:SetOptions";
                                                       xrtTblEditableSeries = "(all 0-3 False)";
                                                       xrtTblNumRows = 1;
-                                                      xrtTblTraversableSeries = "(all 0-4 False)";
+                                                      xrtTblTraversableSeries = "(all 0-3 False)";
+                                                      xrtTblValidateCellCallback = "D:VerifyMarker(verifyOtherOrganism = true)\nD:CommitTableCellEdit";
                                                   {
                                                     label = XtXrtLabel;
                                                     Group: Widget
@@ -8422,7 +8423,7 @@ Shift<Key>Tab: prev-tab-group()
                                                       sql = "select _Organism_key, commonname from MGI_Organism_Allele_View \norder by commonname";
                                                       tableForm = AlleleDriver;
                                                       tableOptionKey = 2;
-                                                      tableOption = 4;
+                                                      tableOption = 5;
                                                   {
                                                     SearhAllNoShow = SearhAllNoShow : mgiOption;
                                                   }
@@ -8943,23 +8944,6 @@ Shift<Key>Tab: prev-tab-group()
                                           targetKey = ObjectID;
                                           targetText = CellLine;
                                           targetWidget = mgiParentCellLine;
-                                      }
-                                }
-                                {
-                                  OrganismList = OrganismList : mgiLookup;
-                                  Group: User
-                                    cmd = "select _Organism_key, organism from MGI_Organism_Allele_View order by organism";
-                                      {
-                                        Label = LookupLabel;
-                                      }
-                                      {
-                                        List = list;
-                                        Group: Widget
-                                          visibleItemCount = 10;
-                                        Group: User
-                                          targetWidget = mgiOrganism;
-                                          targetText = Organism;
-                                          targetKey = ObjectID;
                                       }
                                 }
                           }
