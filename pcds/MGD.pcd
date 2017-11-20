@@ -8419,7 +8419,7 @@ Shift<Key>Tab: prev-tab-group()
                                                   {
                                                     AlleleDriverPulldown : OptionPulldown = OptionPulldown : mgiOption;
                                                     Group: User
-                                                      sql = "select _Organism_key, commonname from MGI_Organism_Marker_View \norder by commonname";
+                                                      sql = "select _Organism_key, commonname from MGI_Organism_Allele_View \norder by commonname";
                                                       tableForm = AlleleDriver;
                                                       tableOptionKey = 2;
                                                       tableOption = 4;
