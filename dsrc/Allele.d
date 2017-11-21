@@ -328,6 +328,7 @@ rules:
 	  tables.append(top->MutantCellLine->Table);
 	  tables.append(top->Synonym->Table);
 	  tables.append(top->SequenceAllele->Table);
+	  tables.append(top->AlleleDriver->Table);
 
 	  -- Global Accession number Tables
 
