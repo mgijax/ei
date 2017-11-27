@@ -1541,7 +1541,21 @@ char *ref_allele_get(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select min(_Refs_key) as _Refs_key from MGI_Reference_Allele_View where _Object_key = %s", key);
+  sprintf(buf, "WITH bib_year AS ( \
+   \nselect min(br.year) as minyear  \
+   \nfrom MGI_Reference_Assoc r, BIB_Refs br \
+   \nwhere r._Object_key = %s \
+   \nand r._MGIType_key = 11 \
+   \nand r._RefAssocType_key in (1012) \
+   \nand r._Refs_key = br._Refs_key \
+   \n) \
+   \nselect min(r._Refs_key) as _Refs_key \
+   \nfrom MGI_Reference_Assoc r, BIB_Refs br, bib_year y \
+   \nwhere r._Object_key = %s \
+   \nand r._MGIType_key = 11 \
+   \nand r._RefAssocType_key in (1012) \
+   \nand r._Refs_key = br._Refs_key \
+   \nand br.year = y.minyear ", key, key);
   return(buf);
 }
 
