@@ -1901,7 +1901,11 @@ rules:
 
 	  -- Search for Marker in the database
 
-	  select := verify_marker(organismKey, mgi_DBprstr(value));
+	  if (VerifyMarker.allowWithdrawn = false and VerifyMarker.allowReserved = false) then
+	      select := verify_marker_official(organismKey, mgi_DBprstr(value));
+          else
+	      select := verify_marker(organismKey, mgi_DBprstr(value));
+          end if;
 
 	  if (isTable) then
 	    if (column = markerID and accID.length > 0) then
