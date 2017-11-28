@@ -557,9 +557,6 @@ char *mgi_DBkey(int table)
     case BIB_NOTES:
             strcpy(buf, "_Refs_key");
 	    break;
-    case BIB_DATASET_ASSOC:
-	    strcpy(buf, "_Assoc_key");
-	    break;
     case CROSS:
             strcpy(buf, "_Cross_key");
 	    break;
@@ -1139,9 +1136,6 @@ char *mgi_DBtable(int table)
 	    break;
     case BIB_NOTES:
             strcpy(buf, "BIB_Notes");
-	    break;
-    case BIB_DATASET_ASSOC:
-            strcpy(buf, "BIB_DataSet_Assoc");
 	    break;
     case CROSS:
             strcpy(buf, "CRS_Cross");
@@ -1731,7 +1725,6 @@ char *mgi_DBinsert(int table, char *keyName)
     case ALL_CELLLINE:
     case BIB_BOOKS:
     case BIB_NOTES:
-    case BIB_DATASET_ASSOC:
     case GXD_ANTIBODYMARKER:
     case GXD_ANTIBODYALIAS:
     case GXD_ASSAYNOTE:
@@ -1841,10 +1834,6 @@ char *mgi_DBinsert(int table, char *keyName)
 	    break;
     case BIB_BOOKS:
 	    sprintf(buf, "insert into %s (%s, book_au, book_title, place, publisher, series_ed)",
-	      mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case BIB_DATASET_ASSOC:
-	    sprintf(buf, "insert into %s (%s, _Refs_key, _DataSet_key, isNeverUsed, isIncomplete, _CreatedBy_key, _ModifiedBy_key)",
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case BIB_NOTES:
@@ -2234,7 +2223,6 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case ALL_ALLELE_CELLLINE:
       case ALL_CELLLINE:
       case ALL_CELLLINE_NONMUTANT:
-      case BIB_DATASET_ASSOC:
       case BIB_REFS:
       case GO_TRACKING:
       case GXD_ANTIBODY:
@@ -2300,7 +2288,6 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case ALL_CELLLINE:
       case ALL_CELLLINE_NONMUTANT:
       case BIB_REFS:
-      case BIB_DATASET_ASSOC:
       case GO_TRACKING:
       case GXD_ANTIBODY:
       case GXD_ANTIGEN:

@@ -185,7 +185,6 @@ extern char *verify_marker_intable1(char *, char *);
 extern char *verify_marker_intable2(char *, char *, char *, char *);
 
 extern char *verify_reference(char *);
-extern char *verify_goreference(char *);
 extern char *verify_organism(char *);
 
 extern char *verify_strainspecies(char *);

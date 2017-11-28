@@ -1423,35 +1423,6 @@ char *ri_select(char *key)
 * Reference.d
 */
 
-char *ref_dataset1()
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _DataSet_key, abbreviation, inMGIprocedure from BIB_DataSet \
-   \nwhere inMGIprocedure is not null and isObsolete = 0 \
-   \norder by sequenceNum");
-  return(buf);
-}
-
-char *ref_dataset2()
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _DataSet_key, abbreviation from BIB_DataSet \
-   \nwhere inMGIprocedure is null and isObsolete = 0 \
-   \norder by sequenceNum");
-  return(buf);
-}
-
-char *ref_dataset3(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _Assoc_key, _DataSet_key, isNeverUsed, isIncomplete \
-   \nfrom BIB_DataSet_Assoc where _Refs_key = %s", key);
-  return(buf);
-}
-
 char *ref_select(char *key)
 {
   static char buf[TEXTBUFSIZ];
@@ -1483,60 +1454,6 @@ char *ref_notes(char *key)
   return(buf);
 }
 
-char *ref_go_exists(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select count(e._Annot_key) \
-   \nfrom VOC_Evidence e, VOC_Annot a \
-   \nwhere e._Refs_key = %s \
-   \nand e._Annot_key = a._Annot_key \
-   \nand a._AnnotType_key = 1000", key);
-  return(buf);
-}
-
-char *ref_gxd_exists(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select count(*) from BIB_Refs where \
-   \nexists (select 1 from GXD_Index where _Refs_key = %s ) \
-   \nor exists (select 1 from GXD_Assay where _Refs_key = %s )", key, key);
-  return(buf);
-}
-
-char *ref_mld_exists(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select count(*) from MLD_Expts where _Refs_key = %s", key);
-  return(buf);
-}
-
-char *ref_nom_exists(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select count(*) from MGI_Reference_Marker_View where _Refs_key = %s", key);
-  return(buf);
-}
-
-char *ref_prb_exists(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select count(*) from PRB_Reference where _Refs_key = %s", key);
-  return(buf);
-}
-
-char *ref_allele_exists(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select count(*) from MGI_Reference_Allele_View where _Refs_key = %s", key);
-  return(buf);
-}
-
 char *ref_allele_get(char *key)
 {
   static char buf[TEXTBUFSIZ];
@@ -1556,38 +1473,6 @@ char *ref_allele_get(char *key)
    \nand r._RefAssocType_key in (1012) \
    \nand r._Refs_key = br._Refs_key \
    \nand br.year = y.minyear ", key, key);
-  return(buf);
-}
-
-char *ref_mrk_exists(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select count(*) from MGI_Reference_Marker_View where _Refs_key = %s", key);
-  return(buf);
-}
-
-char *ref_qtl_exists(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select count(*) from MLD_Expts \
-  \nwhere exptType in ('TEXT', 'TEXT-QTL', 'TEXT-QTL-Candidate Genes', 'TEXT-Congenic', 'TEXT-Meta Analysis') \
-  \nand _Refs_key = %s", key);
-  return(buf);
-}
-
-char *ref_pro_exists(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select count(e._Refs_key) \
-   \nfrom VOC_Annot a, VOC_Evidence e, VOC_Evidence_Property p \
-   \nwhere a._AnnotType_key = 1000 \
-   \nand a._Annot_key = e._Annot_key \
-   \nand e._AnnotEvidence_key = p._AnnotEvidence_key \
-   \nand p._PropertyTerm_key = 6481775 \
-   \nand e._Refs_key = %s", key);
   return(buf);
 }
 

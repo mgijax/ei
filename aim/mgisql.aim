@@ -147,7 +147,6 @@ CALLS
 	 verify_marker_intable2("char *", "char *", "char *", "char *")	: "char *";
 
 	 verify_reference("char *")				: "char *";
-	 verify_goreference("char *")			: "char *";
 	 verify_organism("char *")				: "char *";
 	 verify_strainspecies("char *")				: "char *";
 	 verify_strainspeciesmouse()				: "char *";

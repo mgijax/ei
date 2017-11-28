@@ -54,7 +54,6 @@ extern char *global_version;
 #define BIB_REFS		100
 #define BIB_BOOKS		101
 #define BIB_NOTES		102
-#define BIB_DATASET_ASSOC	103
 
 #define MRK_ANCHOR		111
 #define MRK_CHROMOSOME		112

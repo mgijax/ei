@@ -191,23 +191,10 @@ extern char *ri_select(char *);
 
 /* Reference.d */
 
-extern char *ref_dataset1();
-extern char *ref_dataset2();
-extern char *ref_dataset3(char *);
 extern char *ref_select(char *);
 extern char *ref_books(char *);
 extern char *ref_notes(char *);
-extern char *ref_go_exists(char *);
-extern char *ref_gxd_exists(char *);
-extern char *ref_mlc_exists(char *);
-extern char *ref_mld_exists(char *);
-extern char *ref_nom_exists(char *);
-extern char *ref_prb_exists(char *);
-extern char *ref_allele_exists(char *);
 extern char *ref_allele_get(char *);
-extern char *ref_mrk_exists(char *);
-extern char *ref_qtl_exists(char *);
-extern char *ref_pro_exists(char *);
 extern char *ref_allele_count(char *);
 extern char *ref_allele_load(char *);
 extern char *ref_marker_count(char *);

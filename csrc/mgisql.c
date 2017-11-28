@@ -1246,21 +1246,6 @@ char *verify_reference(char *key)
   return(buf);
 }
 
-char *verify_goreference(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select 1 from ACC_Accession a, BIB_DataSet_Assoc ba \
-        \nwhere a._MGIType_key = 1 \
-        \nand a._LogicalDB_key = 1 \
-        \nand a.prefixPart = 'J:' \
-        \nand a.numericPart = %s \
-        \nand a._Object_key = ba._Refs_key \
-        \nand ba._DataSet_key = 1005 \
-        \nand ba.isNeverUsed = 1", key);
-  return(buf);
-}
-
 char *verify_organism(char *key)
 {
   static char buf[TEXTBUFSIZ];

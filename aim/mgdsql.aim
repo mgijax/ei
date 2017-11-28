@@ -156,22 +156,10 @@ CALLS
 
 	 ri_select("char *")				: "char *";
 
-	 ref_dataset1()					: "char *";
-	 ref_dataset2()					: "char *";
-	 ref_dataset3("char *")				: "char *";
 	 ref_select("char *")				: "char *";
 	 ref_books("char *")				: "char *";
 	 ref_notes("char *")				: "char *";
-	 ref_go_exists("char *")			: "char *";
-	 ref_gxd_exists("char *")			: "char *";
-	 ref_mld_exists("char *")			: "char *";
-	 ref_nom_exists("char *")                       : "char *";
-	 ref_prb_exists("char *")			: "char *";
-	 ref_allele_exists("char *")			: "char *";
 	 ref_allele_get("char *")			: "char *";
-	 ref_mrk_exists("char *")			: "char *";
-	 ref_qtl_exists("char *")			: "char *";
-	 ref_pro_exists("char *")			: "char *";
 	 ref_allele_count("char *")		        : "char *";
 	 ref_allele_load("char *")		        : "char *";
 	 ref_marker_count("char *")		        : "char *";

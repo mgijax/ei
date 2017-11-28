@@ -98,29 +98,21 @@ devents:
 	Delete :local [];
 	Exit :local [];
 	Init :local [];
-	InitDataSets [];
 	Modify :local [logOnly : boolean := false;];
 	ModifyBook :local [];
-	ModifyDataSets :local [table : widget;];
 	PrepareSearch :local [];
 	Search :local [];
 	Select :local [item_position : integer;];
-	SetDataSets :local [];
-	VerifyDataSetsStatus :local [];
 
 locals:
 	mgi : widget;			-- Application widget
 	top : widget;			-- Parent widget for this top-level shell
 	ab : widget;
 	accTable : widget;		-- Accession number Table widget
-	statusTable : widget;		-- Statused Data Set Table widget
-	nonstatusTable : widget;	-- Non-Statused Data Set Table widget
 	modTable : widget;		-- Modification Table widget
-	statusTableList : list;		-- List of all Status Table widgets
 
 	currentRecordKey : string;	-- Primary Key value of currently selected record
 					-- Initialized in Select[] and Add[] events
-	assocKeyDeclared : boolean := false;
 
 	cmd : string;
 	from : string;
@@ -189,11 +181,7 @@ rules:
 	  send(InitRefMarkerTable, 0);
 
 	  -- Initialize Global Data Set widgets and string lists
-	  statusTable := top->DataSets->RefDBSStatus->Table;
-	  nonstatusTable := top->DataSets->RefDBSNonStatus->Table;
 	  modTable := top->Control->ModificationHistory->Table;
-
-	  send(InitDataSets, 0);
 
 	end does;
 
@@ -213,10 +201,6 @@ rules:
           tables.append(top->RefAllele->Table);
           tables.append(top->RefMarker->Table);
 
-	  statusTableList := create list("widget");
-	  statusTableList.append(statusTable);
-	  statusTableList.append(nonstatusTable);
-
 	  -- Initialize next J: value
 	  NextJnum.source_widget := top;
 	  send(NextJnum, 0);
@@ -231,79 +215,6 @@ rules:
 
 	  -- Clear form
 	  send(ClearReference, 0);
-
-	  top->DataSets->Query->OR.set := true;
-	  top->DataSets->Query->AND.set := false;
-	end does;
-
---
--- InitDataSets
---
---	Initialize DataSets 
---
---	Assumes use of mgiDataTypes:DataSets template
---
---	Possible columns in DataSets tables:
---
---	"Select"	selects the data set
---	"Used"		the Reference/data set has an entry elsewhere in the DB
---	"Not Used"	the Reference/data set does not have an entry elsewhere in the DB
---	"Never Used"	Data Set never to be cross-referenced to another database entry
---	"Incomplete"	Data Set partially used
---
---	"Used", "Not Used", "Incompelte" are determined by stored procedures which check the current
---	Reference record/data set pair for corresponding entries elsewhere in the DB.
---	
---	The RefDBSStatus table contains "Select", "Used", "Not Used", "Never Used", "Incomplete"
---	columns. 
---
---	The RefDBSNonStatus table contains "Select", "Never Used" columns. 
---
-
-        InitDataSets does
-	  labels : string := "";
-	  row : integer := 0;
-
-	  dbproc : opaque;
-	  
-	  cmd := ref_dataset1();
-	  dbproc := mgi_dbexec(cmd);
-	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      (void) mgi_tblSetCell(statusTable, row, statusTable.dataSetKey, mgi_getstr(dbproc, 1));
-	      (void) mgi_tblSetCell(statusTable, row, statusTable.existsProc, mgi_getstr(dbproc, 3));
-	      labels := labels + mgi_getstr(dbproc, 2) + ",";
-	      row := row + 1;
-	    end while;
-	  end while;
-	  (void) mgi_dbclose(dbproc);
-
-	  -- Set appropriate table attritbutes
-	  statusTable.batch;
-	  statusTable.xrtTblRowLabels := labels->substr(1, labels.length - 1);
-	  statusTable.xrtTblVisibleRows := row;
-	  statusTable.unbatch;
-
-	  labels := "";
-	  row := 0;
-
-	  cmd := ref_dataset2();
-	  dbproc := mgi_dbexec(cmd);
-	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      (void) mgi_tblSetCell(nonstatusTable, row, nonstatusTable.dataSetKey, mgi_getstr(dbproc, 1));
-	      (void) mgi_tblSetCell(nonstatusTable, row, nonstatusTable.existsProc, "");
-	      labels := labels + mgi_getstr(dbproc, 2) + ",";
-	      row := row + 1;
-	    end while;
-	  end while;
-	  (void) mgi_dbclose(dbproc);
-
-	  -- Set appropriate table attritbutes
-	  nonstatusTable.batch;
-	  nonstatusTable.xrtTblRowLabels := labels->substr(1, labels.length - 1);
-	  nonstatusTable.xrtTblVisibleRows := row;
-	  nonstatusTable.unbatch;
 
 	end does;
 
@@ -355,8 +266,6 @@ rules:
 
 	  (void) busy_cursor(top);
 
-	  send(InitDataSets, 0);
-
           -- If adding, then KEYNAME must be used in all Modify events
  
           currentRecordKey := MAX_KEY1 + KEYNAME + MAX_KEY2;
@@ -395,12 +304,6 @@ rules:
 	  if (top->RefTypeMenu.menuHistory.defaultValue = "31576679") then
 	    send(AddBook, 0);
 	  end if;
-
-	  --assocKeyDeclared := false;
-	  --ModifyDataSets.table := statusTable;
-	  --send(ModifyDataSets, 0);
-	  --ModifyDataSets.table := nonstatusTable;
-	  --send(ModifyDataSets, 0);
 
 	  -- Add Notes
 
@@ -579,12 +482,6 @@ rules:
 	    set := set + "abstract = " + mgi_DBprstr2(top->Abstract->text.value) + ",";
 	  end if;
 
-	  --assocKeyDeclared := false;
-	  --ModifyDataSets.table := statusTable;
-	  --send(ModifyDataSets, 0);
-	  --ModifyDataSets.table := nonstatusTable;
-	  --send(ModifyDataSets, 0);
-
 	  ModifyNotes.source_widget := top->Notes;
 	  ModifyNotes.tableID := BIB_NOTES;
 	  ModifyNotes.key := currentRecordKey;
@@ -689,18 +586,11 @@ rules:
 	PrepareSearch does
 	  from_book : boolean := false;
 	  from_notes : boolean := false;
-	  from_dataset : boolean := false;
-	  searchConnector : string;
-	  dataSetKeys : string_list := create string_list();
-	  neverUsedKeys : string_list := create string_list();
-	  isIncompleteKeys : string_list := create string_list();
 	  table : widget;
 	  row : integer;
 
 	  from := "from BIB_All2_View r";
 	  where := "";
-
-	  send(InitDataSets, 0);
 
 	  -- Construct select for any Accession numbers entered
 
@@ -810,63 +700,7 @@ rules:
 	    from_book := true;
 	  end if;
 
-	  -- DataSets
-	  statusTableList.open;
-	  while (statusTableList.more) do
-	    table := statusTableList.next;
-	    row := 0;
-	    while (row < mgi_tblNumRows(table)) do
-	      if (mgi_tblGetCell(table, row, table.selected) != "") then
-	        dataSetKeys.insert(mgi_tblGetCell(table, row, table.dataSetKey), dataSetKeys.count + 1);
-	        if (mgi_tblGetCell(table, row, table.neverUsed) != "") then
-	          neverUsedKeys.insert("1", neverUsedKeys.count + 1);
-	        else
-	          neverUsedKeys.insert("0", neverUsedKeys.count + 1);
-	        end if;
-	        if (mgi_tblGetCell(table, row, table.isIncomplete) != "") then
-	          isIncompleteKeys.insert("1", isIncompleteKeys.count + 1);
-	        else
-	          isIncompleteKeys.insert("0", isIncompleteKeys.count + 1);
-	        end if;
-	        from_dataset := true;
-	      end if;
-	      row := row + 1;
-	    end while;
-	  end while;
-	  statusTableList.close;
-
-	  if (top->DataSets->Query->AND.set) then
-	    searchConnector := "\nand ";
-	  else
-	    searchConnector := "\nor ";
-	  end if;
-
 	  -- Use "exists" clauses to check for data set association and "never used" value
-
-	  if (from_dataset) then
-	    row := 1;
-	    where := where + "\nand (";
-	    while (row <= dataSetKeys.count) do
-
-	      where := where + "exists (select 1 from BIB_DataSet_Assoc ba " +
-			"where r._Refs_key = ba._Refs_key " +
-			"and ba._DataSet_key = " + dataSetKeys[row];
-
-	      -- if "never used" is set, then query for it
-	      if (neverUsedKeys[row] = "1") then
-		where := where + " and ba.isNeverUsed = " + neverUsedKeys[row];
-	      end if;
-
-	      -- if "isIncomplete" is set, then query for it
-	      if (isIncompleteKeys[row] = "1") then
-		where := where + " and ba.isIncomplete = " + isIncompleteKeys[row];
-	      end if;
-
-	      where := where + ")" + searchConnector;
-	      row := row + 1;
-	    end while;
-	    where := where->substr(1, where.length - searchConnector.length) + ")";
-	  end if;
 
 	  if (from_book) then
 	    from := from + ",BIB_Books b";
@@ -1035,231 +869,7 @@ rules:
 	  -- Save the original Reference type
 	  origRefTypeMenu := top->RefTypeMenu.menuHistory.defaultValue;
 
-	  -- Set the appropriate DataSet values
-	  send(SetDataSets, 0);
-
 	  (void) reset_cursor(top);
-	end does;
-
---
--- ModifyDataSets
---
--- Traverse through all DataSets selected by user.
---
-
-	ModifyDataSets does
-          table : widget := ModifyDataSets.table;
-          row : integer := 0;
-          editMode : string;
-          selected : string;
-          assocKey : string;
-          dataSetKey : string;
-	  neverUsed : string;
-	  isIncomplete : string;
-          set : string := "";
-	  keyName : string := "assocKey";
- 
-          -- Process while non-empty rows are found
- 
-          while (row < mgi_tblNumRows(table)) do
-            editMode := mgi_tblGetCell(table, row, table.editMode);
- 
-            dataSetKey := mgi_tblGetCell(table, row, table.dataSetKey);
-            assocKey := mgi_tblGetCell(table, row, table.assocKey);
-            selected := mgi_tblGetCell(table, row, table.selected);
-
-	    if (mgi_tblGetCell(table, row, table.neverUsed) = "") then
-	      neverUsed := NO;
-	    else
-	      neverUsed := YES;
-            end if;
- 
-	    isIncomplete := NO;
-	    if (table.is_defined("isIncomplete") != nil) then
-	      if (mgi_tblGetCell(table, row, table.isIncomplete) = "") then
-	        isIncomplete := NO;
-	      else
-	        isIncomplete := YES;
-	      end if;
-            end if;
- 
-	    -- then it is new
-
-            if (assocKey = "" and selected != "") then 
-	      
-              if (not assocKeyDeclared) then
-                cmd := cmd + mgi_setDBkey(BIB_DATASET_ASSOC, NEWKEY, keyName);
-                assocKeyDeclared := true;
-              else
-                cmd := cmd + mgi_DBincKey(keyName);
-              end if;
-
-              cmd := cmd +
-                     mgi_DBinsert(BIB_DATASET_ASSOC, keyName) +
-		     currentRecordKey + "," +
-		     dataSetKey + "," +
-		     neverUsed + "," +
-		     isIncomplete + "," +
-		     global_userKey + "," + global_userKey + END_VALUE;
-
-	    -- update
-
-            elsif (assocKey != "" and selected != "") then
-              set := "isNeverUsed = " + neverUsed + ",isIncomplete = " + isIncomplete;
-              cmd := cmd + mgi_DBupdate(BIB_DATASET_ASSOC, assocKey, set);
-
-	    -- deletion
-
-            elsif (assocKey != "" and selected = "") then
-               cmd := cmd + mgi_DBdelete(BIB_DATASET_ASSOC, assocKey);
-            end if;
- 
-            row := row + 1;
-	  end while;
-	end does;
-
---
--- SetDataSets
---
--- Set DataSet Table values
---
-
-	SetDataSets does
-	  row : integer := 0;
-
-	  ClearTable.table := statusTable;
-	  send(ClearTable, 0);
-	  ClearTable.table := nonstatusTable;
-	  send(ClearTable, 0);
-	  send(InitDataSets, 0);
-
-	  cmd := ref_dataset3(currentRecordKey);
-
-	  dbproc : opaque := mgi_dbexec(cmd);
-	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-
-	      -- the statusTable ones
-
-	      row := 0;
-	      while (row < mgi_tblNumRows(statusTable)) do
-		-- Determine which data set this is....
-		if (mgi_tblGetCell(statusTable, row, statusTable.dataSetKey) = mgi_getstr(dbproc, 2)) then
-	          (void) mgi_tblSetCell(statusTable, row, statusTable.assocKey, mgi_getstr(dbproc, 1));
-		  if (mgi_getstr(dbproc, 3) = YES) then
-	            (void) mgi_tblSetCell(statusTable, row, statusTable.neverUsed, "X");
-	            (void) mgi_tblSetCell(statusTable, row, statusTable.selected, "X");
-		  else
-	            (void) mgi_tblSetCell(statusTable, row, statusTable.selected, "X");
-		  end if;
-		  if (mgi_getstr(dbproc, 4) = YES) then
-	            (void) mgi_tblSetCell(statusTable, row, statusTable.isIncomplete, "X");
-		  end if;
-		end if;
-	        row := row + 1;
-	      end while;
-
-	      -- the non-statusTable ones
-
-	      row := 0;
-	      while (row < mgi_tblNumRows(nonstatusTable)) do
-		-- Determine which data set this is....
-		if (mgi_tblGetCell(nonstatusTable, row, nonstatusTable.dataSetKey) = mgi_getstr(dbproc, 2)) then
-	          (void) mgi_tblSetCell(nonstatusTable, row, nonstatusTable.assocKey, mgi_getstr(dbproc, 1));
-		  if (mgi_getstr(dbproc, 3) = YES) then
-	            (void) mgi_tblSetCell(nonstatusTable, row, nonstatusTable.neverUsed, "X");
-	            (void) mgi_tblSetCell(nonstatusTable, row, nonstatusTable.selected, "X");
-		  else
-	            (void) mgi_tblSetCell(nonstatusTable, row, nonstatusTable.selected, "X");
-		  end if;
-		end if;
-	        row := row + 1;
-	      end while;
-	    end while;
-	  end while;
-	  (void) mgi_dbclose(dbproc);
-
-	  --
-	  -- Now fill in used/not used values
-	  --
-	  -- TR11654/stored procedures have been obsoleted and moved to mgdsql scripts
-	  --
-	  row := 0;
-	  while (row < mgi_tblNumRows(statusTable)) do
-
-	    -- has this reference been used?
-
-	    cmd := "";
-
-	    if (mgi_tblGetCell(statusTable, row, statusTable.existsProc) != "") then
-	      if (mgi_tblGetCell(statusTable, row, statusTable.existsProc) = "BIB_GO_Exists") then
-	        cmd := ref_go_exists(currentRecordKey);
-	      elsif (mgi_tblGetCell(statusTable, row, statusTable.existsProc) = "BIB_GXD_Exists") then
-	        cmd := ref_gxd_exists(currentRecordKey);
-	      elsif (mgi_tblGetCell(statusTable, row, statusTable.existsProc) = "BIB_MLD_Exists") then
-	        cmd := ref_mld_exists(currentRecordKey);
-              elsif (mgi_tblGetCell(statusTable, row, statusTable.existsProc) = "BIB_NOM_Exists") then
-                cmd := ref_nom_exists(currentRecordKey);
-	      elsif (mgi_tblGetCell(statusTable, row, statusTable.existsProc) = "BIB_PRB_Exists") then
-	        cmd := ref_prb_exists(currentRecordKey);
-	      elsif (mgi_tblGetCell(statusTable, row, statusTable.existsProc) = "BIB_MLC_Exists") then
-	        cmd := ref_allele_exists(currentRecordKey);
-	      elsif (mgi_tblGetCell(statusTable, row, statusTable.existsProc) = "BIB_MRK_Exists") then
-	        cmd := ref_mrk_exists(currentRecordKey);
-	      elsif (mgi_tblGetCell(statusTable, row, statusTable.existsProc) = "BIB_QTL_Exists") then
-	        cmd := ref_qtl_exists(currentRecordKey);
-	      elsif (mgi_tblGetCell(statusTable, row, statusTable.existsProc) = "BIB_PRO_Exists") then
-	        cmd := ref_pro_exists(currentRecordKey);
-	      end if;
-
-	      if (cmd.length = 0) then
-	        (void) mgi_tblSetCell(statusTable, row, statusTable.notUsed, "X");
-	      elsif (mgi_sql1(cmd) != NO) then
-	        (void) mgi_tblSetCell(statusTable, row, statusTable.used, "X");
-	      elsif (mgi_tblGetCell(statusTable, row, statusTable.neverUsed) = "") then
-	        (void) mgi_tblSetCell(statusTable, row, statusTable.notUsed, "X");
-	      end if;
-
-	    end if;
-	    row := row + 1;
-	  end while;
-
-	end does;
-
---
--- VerifyDataSetsStatus
---
--- Verify DBS Status values.  Allow "X" for Select and Never Used categories
--- Implement "radio behavior" for "Used", "Not Used" and "Never Used".  Only
--- one of these categories may be selected at a time.
---
-
-	VerifyDataSetsStatus does
-	  row : integer := VerifyDataSetsStatus.row;
-
-	  statusTable.beginX := statusTable.selected;
-	  statusTable.endX := statusTable.selected;
-
-	  SetCellToX.source_widget := statusTable;
-	  SetCellToX.row := row;
-	  SetCellToX.column := VerifyDataSetsStatus.column;
-	  SetCellToX.reason := VerifyDataSetsStatus.reason;
-	  send(SetCellToX, 0);
-
-	  statusTable.beginX := statusTable.neverUsed;
-	  statusTable.endX := statusTable.neverUsed;
-	  send(SetCellToX, 0);
-
-	  statusTable.beginX := statusTable.isIncomplete;
-	  statusTable.endX := statusTable.isIncomplete;
-	  send(SetCellToX, 0);
-
-	  -- If "Never Used" is selected, then "Used" and "Not Used" are blank
-
-	  if (mgi_tblGetCell(statusTable, row, statusTable.neverUsed) = "X") then
-	    (void) mgi_tblSetCell(statusTable, row, statusTable.used, "");
-	    (void) mgi_tblSetCell(statusTable, row, statusTable.notUsed, "");
-	  end if;
 	end does;
 
 --

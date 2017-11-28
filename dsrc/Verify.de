@@ -50,8 +50,6 @@ VerifyGOInferredFrom [];
 
 VerifyGOIsoform [];
 
-VerifyGOReference [];
-
 VerifyOrganism :translation [ignoreRow : integer := -1;];
 
 VerifyStrainSpecies :translation [];
