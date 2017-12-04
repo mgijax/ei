@@ -159,7 +159,7 @@ CALLS
 	 ref_select("char *")				: "char *";
 	 ref_books("char *")				: "char *";
 	 ref_notes("char *")				: "char *";
-	 ref_allele_get("char *")			: "char *";
+	 ref_allele_getmolecular("char *")		: "char *";
 	 ref_allele_count("char *")		        : "char *";
 	 ref_allele_load("char *")		        : "char *";
 	 ref_marker_count("char *")		        : "char *";

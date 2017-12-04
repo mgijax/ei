@@ -1454,7 +1454,7 @@ char *ref_notes(char *key)
   return(buf);
 }
 
-char *ref_allele_get(char *key)
+char *ref_allele_getmolecular(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));

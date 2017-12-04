@@ -194,7 +194,7 @@ extern char *ri_select(char *);
 extern char *ref_select(char *);
 extern char *ref_books(char *);
 extern char *ref_notes(char *);
-extern char *ref_allele_get(char *);
+extern char *ref_allele_getmolecular(char *);
 extern char *ref_allele_count(char *);
 extern char *ref_allele_load(char *);
 extern char *ref_marker_count(char *);

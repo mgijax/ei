@@ -1664,7 +1664,7 @@ rules:
  
 	    key := mgi_tblGetCell(table, row, table.relCurrentKey);
 	    markerKey := mgi_tblGetCell(table, row, table.markerKey);
-	    molRefKey := mgi_sql1(ref_allele_get(currentRecordKey));
+	    molRefKey := mgi_sql1(ref_allele_getmolecular(currentRecordKey));
 
 	    if (editMode = TBL_ROW_ADD) then
               if (not keyDeclared) then
