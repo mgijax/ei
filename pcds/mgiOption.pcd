@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Mon Nov 20 10:10:39 2017";
+      lastWritten = "Thu Dec 28 09:30:45 2017";
       copy = false;
       inCreateMenu = true;
         {
@@ -498,6 +498,11 @@ Module: mgiOption
                       RGD = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 47;
+                    }
+                    {
+                      ZFIN = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 172;
                     }
                     {
                       NIA = AccToggle : mgiOption;

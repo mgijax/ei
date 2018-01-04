@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Tue Nov 28 07:16:51 2017";
+      lastWritten = "Thu Dec 28 09:31:44 2017";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -469,6 +469,9 @@ Module: MGD
                                                   }
                                                   {
                                                     RGD = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    ZFIN = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NIA = AccToggle : mgiOption;
@@ -1655,6 +1658,9 @@ Module: MGD
                                                   }
                                                   {
                                                     RGD = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    ZFIN = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NIA = AccToggle : mgiOption;
@@ -2854,6 +2860,9 @@ Module: MGD
                                   RGD = AccToggle : mgiOption;
                                 }
                                 {
+                                  ZFIN = AccToggle : mgiOption;
+                                }
+                                {
                                   NIA = AccToggle : mgiOption;
                                   Group: Widget
                                     managed = True;
@@ -3500,6 +3509,9 @@ Module: MGD
                                                   }
                                                   {
                                                     RGD = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    ZFIN = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NIA = AccToggle : mgiOption;
@@ -5987,6 +5999,11 @@ Module: MGD
                                                     Group: Widget
                                                       managed = True;
                                                   }
+                                                  {
+                                                    ZFIN = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
                                             }
                                       }
                                 }
@@ -8108,6 +8125,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     RGD = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    ZFIN = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     NIA = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -8686,6 +8706,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     RGD = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    ZFIN = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NIA = AccToggle : mgiOption;
@@ -9850,6 +9873,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     RGD = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    ZFIN = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     NIA = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -10641,6 +10667,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     RGD = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    ZFIN = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NIA = AccToggle : mgiOption;
