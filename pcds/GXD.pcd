@@ -2583,7 +2583,7 @@ Shift<Key>Tab: prev-tab-group()
                                         Group: Widget
                                           labelString = "Downstream A-rich region primed";
                                         Group: User
-                                          note = "Downstream A-rich primed:  MGI curatorial staff have found evidence of \nartifact in the sequence of this molecular segment. This cDNA clone appears to \nbe the product of reverse transcription primed internally at downstream A-rich \nsequences.";
+                                          note = "Downstream A-rich primed:  MGI curatorial staff have found evidence of artifact in the sequence of this molecular segment. This cDNA clone appears to be the product of reverse transcription primed internally at downstream A-rich sequences.";
                                           noteWidget = MolNote;
                                       }
                                       {
@@ -2591,7 +2591,7 @@ Shift<Key>Tab: prev-tab-group()
                                         Group: Widget
                                           labelString = "Reversed clone";
                                         Group: User
-                                          note = "Reversed clone: MGI curatorial staff have found evidence of artifact in the \nsequence of this molecular segment. The sequence of this cDNA clone appears to be\nreversed.";
+                                          note = "Reversed clone: MGI curatorial staff have found evidence of artifact in the sequence of this molecular segment. The sequence of this cDNA clone appears to be reversed.";
                                           noteWidget = MolNote;
                                       }
                                       {
@@ -2599,7 +2599,7 @@ Shift<Key>Tab: prev-tab-group()
                                         Group: Widget
                                           labelString = "Contaminated clone";
                                         Group: User
-                                          note = "Contaminated clone: MGI curatorial staff have found evidence of artifact in the \nsequence of this molecular segment. The sequence of this cDNA clone appears to \nbe from species other than mouse.";
+                                          note = "Contaminated clone: MGI curatorial staff have found evidence of artifact in the sequence of this molecular segment. The sequence of this cDNA clone appears to be from species other than mouse.";
                                           noteWidget = MolNote;
                                       }
                                 }
