@@ -764,7 +764,6 @@ char *mgi_DBkey(int table)
     case MRK_MARKER:
     case MRK_MOUSE:
     case MRK_ANCHOR:
-    case MRK_CLASSES:
     case MRK_HISTORY:
     case MRK_NOTES:
     case MRK_OFFSET:
@@ -778,9 +777,6 @@ char *mgi_DBkey(int table)
 	    break;
     case MRK_CHROMOSOME:
             strcpy(buf, "_Chromosome_key");
-	    break;
-    case MRK_CLASS:
-            strcpy(buf, "_Class_key");
 	    break;
     case MRK_CURRENT:
             strcpy(buf, "_Current_key");
@@ -1511,9 +1507,6 @@ char *mgi_DBtable(int table)
     case MRK_ALLELE:
             strcpy(buf, "MRK_Allele");
 	    break;
-    case MRK_CLASSES:
-            strcpy(buf, "MRK_Classes");
-	    break;
     case MRK_CURRENT:
             strcpy(buf, "MRK_Current");
 	    break;
@@ -1534,9 +1527,6 @@ char *mgi_DBtable(int table)
 	    break;
     case MRK_CHROMOSOME:
             strcpy(buf, "MRK_Chromosome");
-	    break;
-    case MRK_CLASS:
-            strcpy(buf, "MRK_Class");
 	    break;
     case MRK_TYPE:
             strcpy(buf, "MRK_Types");
@@ -1770,7 +1760,6 @@ char *mgi_DBinsert(int table, char *keyName)
     case MRK_ALIAS:
     case MRK_ANCHOR:
     case MRK_CHROMOSOME:
-    case MRK_CLASSES:
     case MRK_CURRENT:
     case MRK_HISTORY:
     case MRK_NOTES:
@@ -2061,10 +2050,6 @@ char *mgi_DBinsert(int table, char *keyName)
     case MRK_CHROMOSOME:
             sprintf(buf, "insert into %s (%s, _Organism_key, chromosome, sequenceNum, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
-    case MRK_CLASSES:
-	    sprintf(buf, "insert into %s (_Class_key, %s)",
-	      mgi_DBtable(table), mgi_DBkey(table));
- 	    break;
     case MRK_CURRENT:
 	    sprintf(buf, "insert into %s (%s, _Marker_key)",
 	      mgi_DBtable(table), mgi_DBkey(table));
@@ -2566,7 +2551,6 @@ char *mgi_DBcvname(int table)
             strcpy(buf, "journal");
 	    break;
     case BIB_REVIEW_STATUS:
-    case MRK_CLASS:
     case MRK_TYPE:
             strcpy(buf, "name");
 	    break;

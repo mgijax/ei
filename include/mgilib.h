@@ -60,7 +60,6 @@ extern char *global_version;
 #define MRK_MARKER  		113
 #define MRK_ALIAS   		114
 #define MRK_ALLELE		115
-#define MRK_CLASSES		116
 #define MRK_CURRENT		117
 #define MRK_HISTORY		118
 #define MRK_NOTES		119
@@ -170,7 +169,6 @@ extern char *global_version;
 #define GXD_GELRNATYPE		313
 #define GXD_GELUNITS		314
 #define MLD_ASSAY		316
-#define MRK_CLASS    		317
 #define MRK_TYPE		318
 #define CROSS      		320
 #define RISET  			321

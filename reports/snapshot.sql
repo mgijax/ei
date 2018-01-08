@@ -27,13 +27,6 @@ select * from MRK_Anchors where _Marker_key = KEY
 go
 
 print ""
-print "Marker Classes"
-print ""
-
-select * from MRK_Classes_View where _Marker_key = KEY
-go
-
-print ""
 print "GO"
 print ""
 
