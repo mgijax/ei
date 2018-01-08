@@ -150,26 +150,6 @@ Module: mgiLookup
               }
         }
         {
-          ClassList = LookupList;
-          Group: Control
-            vip_x = 90;
-            vip_y = 635;
-          Group: User
-            cmd = "select * from MRK_Class order by name";
-              {
-                Label = LookupLabel;
-                Group: Widget
-                  labelString = Classes;
-                Group: User
-                  defaultLabel = Classes;
-              }
-              {
-                List = list;
-                Group: Widget
-                  singleSelectionCallback = "D:SelectLookupListItem";
-              }
-        }
-        {
           OrganismList = LookupList;
           Group: Control
             vip_x = 90;
