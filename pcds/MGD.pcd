@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Wed Jan 10 06:45:33 2018";
+      lastWritten = "Wed Jan 10 06:51:10 2018";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -7240,7 +7240,7 @@ Shift<Key>Tab: prev-tab-group()
                                         text = text : mgiDataTypes;
                                         Group: Widget
                                           columns = 75;
-                                          maxLength = 60;
+                                          maxLength = 75;
                                         Group: User
                                           required = True;
                                       }
