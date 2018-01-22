@@ -737,7 +737,9 @@ rules:
 		         (string) i + "," + 
 		         noteType + "," +
                          mgi_DBprnotestr(note) + END_VALUE;
-	    elsif (tableID = MLD_NOTES or 
+	    elsif (tableID = BIB_NOTES or
+		   tableID = MRK_NOTES or
+	           tableID = MLD_NOTES or 
 	           tableID = MLD_EXPT_NOTES  or
 		   tableID = PRB_NOTES or
 		   tableID = PRB_REF_NOTES) then

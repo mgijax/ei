@@ -113,8 +113,7 @@ char *allele_notes(char *key)
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select rtrim(m.note) \
    \nfrom ALL_Allele a, MRK_Notes m \
-   \nwhere a._Marker_key = m._Marker_key and a._Allele_key = %s \
-   \norder by m.sequenceNum", key);
+   \nwhere a._Marker_key = m._Marker_key and a._Allele_key = %s", key);
   return(buf);
 }
 
@@ -1445,8 +1444,7 @@ char *ref_notes(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select rtrim(note) from BIB_Notes where _Refs_key = %s \
-   \norder by sequenceNum", key);
+  sprintf(buf,"select rtrim(note) from BIB_Notes where _Refs_key = %s", key);
   return(buf);
 }
 
