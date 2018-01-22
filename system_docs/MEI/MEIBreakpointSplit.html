@@ -1,0 +1,182 @@
+<HTML>
+<HEADER>
+<TITLE>
+MGI: Breakpoint Split
+</TITLE>
+</HEADER>
+
+<BODY BGCOLOR="#FFFFFF">
+
+<H2>MGI: Breakpoint Split</H2>
+
+<H4>Introduction</H4>
+
+The Breakpoint Split process allows the user to split a chromosomal aberration
+(inversion, insertion, deletion, dupliation) which
+has identified more than one breakpoint within one chromosome into two distinct symbols.
+Refer to <A HREF="http://prodwww/wts/searches/tr.detail.cgi?TR_Nr=120">TR#120</A> for 
+further information and detailed requirements of the split process.
+
+<H4>Initiating the Split</H4>
+Before a Breakpoint Split is initiated, the user should review the Editorial procedure for
+Breakpoint Splits.
+<P>
+The user should also verify with Lori Corbani or John Gilbert that she/he has permissions to 
+update all of the data sets involved in the split process.  If the user does not have all 
+of the necessary permissions, then data inconsistency will result.
+<OL>
+<LI>Marker
+</OL>
+
+A Breakpoint Split is initiated from the MGD Editorial Interface's Marker form using the 
+<A HREF="breakpointsplit.gif"><I>Utilities->Breakpoint Split</I></A>
+menu item in the top menu bar.
+<P>
+The user is required to enter:
+<OL>
+<LI>Original Marker Symbol
+</OL>
+
+After the user enters the Marker Symbol and TABS:
+<OL>
+<LI>The Cytogenetic Band of the Marker symbol is displayed.
+<P>
+<LI>The new proximal and distal symbols which will be created are displayed.
+<P>
+<LI>The proximal and distal bands are displayed.  If no distal band is displayed,
+    then the user can enter the distal band value to be assigned to the distal symbol.
+<P>
+<LI>If the Marker symbol entered is not valid, then the user cannot process the split.
+    <P>
+    The message:
+	<PRE>
+	Invalid Symbol.  Must be an inversion, deletion, duplication or insertion.
+	</PRE>
+    indicates that the Marker symbol is of invalid type for this operation.
+    <P>
+    The message:
+	<PRE>
+	Mouse Symbol 'symbol'
+	Invalid Symbol
+	</PRE>
+    indicates that the Marker symbol does not exist in the database.
+<P>
+<LI>The user clicks the <I>Process Split</I> button to process the split.
+<P>
+<LI>The user clicks the <I>Done</I> button to return to the main Marker form.
+</OL>
+
+<H4>What the Breakpoint Split process does</H4>
+<OL>
+<LI>The original symbol's cytogenetic band is parsed into two bands if the original band 
+    is in the format:  <I>band1</I> & <I>band2</I>.
+    <P>
+    If the original marker symbol's cytogenetic band is <B>not</B> in this format, then
+    <I>band1</I> is set to the original symbol's cytogenetic band and <I>band2</I> is set 
+    to NULL unless the user enters a specific value.  If left to NULL, the user must manually 
+    edit the <I>band2</I> value after the split has been processed.
+<P>
+<LI>The original symbol is split into two symbols:
+        <UL>
+        <LI><I>band1</I> is assigned to the proximal (-p) symbol.
+            <BR>The original MGI Accession number is retained for this symbol and all 
+                associated information (Marker, Mapping, References) is retained with 
+                this symbol.
+        <LI><I>band2</I> is assigned to the distal (-d) symbol.
+            <BR>A new MGI Accession number is to be assigned for this symbol and all
+                associated Marker information is copied from
+                the proximal record to the new distal record.
+        </UL>
+   <P>
+   The end result is two symbol records which are identical except for their symbol,
+   cytogenetic offset and MGI Accession number.  In some instances, the cM offset may
+   need to be modified for either or both symbols after the split is processed.
+<P>
+<LI>Creates an <I>Other Name</I> entry of the original symbol for both the proximal and distal symbols.
+    For example, Del(1)27H will become an <I>Other Name</I> for Del(1)27H-p and Del(1)27H-d.
+<P>
+<LI>All edits to Mapping data must be handled <B>manually</B> by the Mapping Editor.
+</OL>
+
+<H4>Manual Edits After the Split</H4>
+It will be necessary to manually edit some information after the split has been processed:
+<OL>
+<LI>The band information for the distal symbol may need to be modified.  If the original
+    symbol's band information is not in the format <I>band1</I> & <I>band2</I>, then the
+    band for the distal symbol is set to NULL by the split process unless the user enters
+    a value in the Broadcast Split dialog before initiating the split.
+<P>
+<LI>Mapping information for proximal symbols will need to be reviewed and modified by
+    the Mapping Editor.  The mapping data may or may not define the proximal or distal marker. 
+    An experiment may map a deletion to Chromosome 5, but it is not mapping a breakpoint, thus 
+    effectively assigning both proximal and distal markers to the chromosome. Or, an experiment 
+    may map one end of the deletion and apply to only one of the new markers. 
+</OL>
+
+<H4>Output from the Breakpoint Split</H4>
+
+The breakpoint split process outputs two files per symbol split.  These files are:
+<OL>
+<LI>Output to the user's <CODE>$HOME/mgireport</CODE> directory 
+<LI>Archived at <CODE>titan:/usr/local/mgi/ei/mgd/mgireport/SPLITS</CODE> where they are
+    available from the <A HREF="http://kelso:4444/qcr.html">Quality Control Reports</A> page.
+</OL>
+
+The output files are:
+<OL>
+<LI><I>&lt;breakpointSplit&gt;&lt;original symbol&gt;.diagnostics</I>
+    <P>Diagnostic listing of all SQL generated during processing.
+       This file is for SEs to debug any problems.
+<P>
+<LI><I>&lt;breakpointSplit&gt;&lt;original symbol&gt;.status</I>
+     <P>Status file of breakpoint split.  This file
+	informs the user of when the split was processed and what
+	records were involved in the split.
+	<P>
+	The status report is mailed to:
+	<UL>
+	<LI>The initiator of the split
+	<LI>Lois Maltais (Nomenclature Coordinator)
+	<LI>Dirck Bradt (Mapping Editor)
+	<LI>John Gilbert (DBA/Chromosome Committee Offset updates)
+	</UL>
+     <P>An example status report:
+     <PRE>
+	To: djr@jax.org
+	Subject: Breakpoint Split In(15)18Rk
+ 
+	This message has been automatically forwarded to you by the
+	Marker Breakpoint Split program (breakpointSplit.py), which was initiated
+	by the sender from the Marker Editing Form.
+ 
+	Please review the band and Mapping information for the proximal and distal symbols.
+ 
+	Breakpoint Split Status Report - Wed Dec 16 09:52:56 1998
+ 
+	Original Marker:  In(15)18Rk    MGI:104182      (key=24171)
+	Proximal Symbol:  In(15)18Rk-p  MGI:104182      (key=24171)
+  	Proximal Band:  A2
+  	Distal Symbol:  In(15)18Rk-d  MGI:1313178     (key=38207)
+    	Distal Band:  E
+       	Mapping : 1 records
+     </PRE>
+<P>
+</OL>
+
+<H4>Source Code</H4>
+The breakpoint split program is:
+<OL>
+<LI><CODE>breakpointSplit.py</CODE>
+    <BR>
+<P>
+</OL>
+
+<H4>Related Documents</H4>
+<OL>
+<LI><A HREF="MEIUtilities.html">MGI Editorial Utilities</A>
+</OL>
+
+<HR>
+
+</BODY>
+</HTML>

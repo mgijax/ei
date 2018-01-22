@@ -1,0 +1,146 @@
+<HTML>
+<HEADER>
+<TITLE>
+MGI EDITING INTERFACE: Design and Requirements - Controlled Vocabulary
+</TITLE>
+</HEADER>
+
+<BODY BGCOLOR="#FFFFFF">
+ 
+<H2>
+MGI EDITING INTERFACE: Design and Requirements - Controlled Vocabulary
+</H2>
+<BR>
+
+<H4>Introduction</H4>
+The Controlled Vocab editing form enables editing of many controlled vocabulary lists in the database.
+<P>
+Some controlled vocabulary correspond to Pulldown Menus:
+        <UL>
+        <LI>Marker Types
+        <LI>Reference Review Status
+        <LI>Molecular Segment Vector Types
+	<LI>Antibody Types 
+	<LI>Antibody Classes 
+	<LI>Antibody Species
+	<LI>Assay Types 
+	<LI>Expression Patterns 
+	<LI>Expression Strengths 
+	<LI>Gel RNA Types 
+	<LI>Gel Units 
+	<LI>Gel Lane Control
+	<LI>Image Field Types 
+	<LI>Antibody/Probe Prep Labels 
+	<LI>Probe Prep Label Coverages 
+	<LI>Probe Prep Sense Values 
+	<LI>Probe Prep Visualized Methods 
+	<LI>Secondary Antibody Preps 
+	<LI>Specimen Embedding Methods 
+	<LI>Specimen Fixation Methods 
+	<LI>Marker Event Reasons
+	<LI>Allele Types
+	<LI>Inheritance Modes
+	<LI>Molecular Mutations
+        </UL>
+<P>
+Some controlled vocabulary correspond to Lists:
+        <UL>
+	<LI>ES Cell Lines
+        <LI>Homology Assays
+        <LI>Mapping Assays
+        <LI>MLC Classes
+        </UL>
+<P>
+Some controlled vocabulary are used internally by the EI to represent the
+data:
+	<UL>
+	<LI>Allele Note Types
+	<LI>Allele Reference Types
+	</UL>
+
+<H4>Editing Form</H4>
+<A HREF="cv.gif">GIF image</A>
+
+<H4>Data Verifications</H4>
+<OL>
+<LI>Table (see <A HREF="MEI.html#dataVerPulldown">Data Verifications section on Pulldown Menus</A>)
+<P>
+<LI>Detects (see <A HREF="MEI.html#dataVerPulldown">Data Verifications section on Pulldown Menus</A>)
+<P>
+<LI>Gel Assay (see <A HREF="MEI.html#dataVerPulldown">Data Verifications section on Pulldown Menus</A>)
+<P>
+</OL>
+
+<H4>Fields</H4>
+As the user selects <I>Table</I> from the option menu, the bottom half of the Controlled Vocab form may change 
+depending on the <I>Table</I> selected and different fields will become available for viewing/editing.
+The <I># Records</I> will also change to reflect the correct row count for the selected <I>Table</I>.
+<UL>
+<LI>Required
+	<OL>
+	<LI>Table
+	<LI>Name
+	</OL>
+<P>
+<LI>Required for <I>Assay Types</I>
+	<OL>
+	<LI>Detects
+	<LI>Gel Assay
+	</OL>
+<P>
+<LI>Required for <I>Homology Assays</I>
+	<OL>
+	<LI>Assay Abbreviation (for Web display)
+	</OL>
+<P>
+<LI>Required for <I>Allele Note Types</I>
+	<OL>
+	<LI>Private - yes/no
+	</OL>
+<P>
+<LI>Required for <I>Allele Reference Types</I>
+	<OL>
+	<LI>Allow Only One - yes/no
+	</OL>
+<P>
+<LI>Required for <I>ES Cell Lines</I>
+	<OL>
+	<LI>Strain
+	</OL>
+<P>
+</UL>
+
+<H4>Defaults</H4>
+None
+
+<H4>Deletions</H4>
+A controlled vocabulary cannot be deleted if it is referenced by an object which cross-references it
+elsewhere in the database.  The following controlled vocabulary can never be modified or deleted:
+<OL>
+<LI>Not Specified
+<LI>Not Applicable
+</OL>
+
+<H4>Miscellaneous</H4>
+<OL>
+<LI>To see edits in the corresponding option menu after a controlled vocabulary table edit,
+    exit and re-enter the form which uses the applicable option menu.
+    <P>
+    For example, if an edit is made to <I>Vector Types</I> and the <I>Molecular Probes & Segments</I> form
+    is currently instantiated, exit the form and re-enter it to view the current edits.
+<P>
+<LI>To see edits in the corresponding list after a controlled vocabulary table edit,
+    click on the <I>label</I> in the applicable list.
+    <P>
+    For example, if an edit is made to <I>Homology Assays</I> and the <I>Homology</I> form
+    is currently instantiated, click on the <I>## Homology Assays</I> label to re-load the
+    list.  The current edit will be reflected in the new list.
+</OL>
+
+<H3>RELATED DOCUMENTS</H3>
+<OL>
+<LI><A HREF="MEI.html#dataVerLookup">Data Verifications section on Controlled Vocabulary Lists</A>
+</OL>
+
+</BODY>
+</HTML>

@@ -1,0 +1,216 @@
+<HTML>
+<HEADER>
+<TITLE>
+MGI EDITING INTERFACE: Design and Requirements - Markers
+</TITLE>
+</HEADER>
+
+<BODY BGCOLOR="#FFFFFF">
+
+<H2>
+MGI EDITING INTERFACE: Design and Requirements - Markers
+</H2>
+<BR>
+
+<H4>Introduction</H4>
+The Markers constitute one of the backbones of the MGI database.  Virtually no data is entered into
+the MGI database without a Marker of some kind associated with it.
+<P>
+Markers make their way into MGI via the Nomenclature process.  Novel and Reserved Markers are 
+<I>broadcast</I> from the Nomenclature module to the Marker module by editors via a broadcast process.
+For more information regarding the Nomenclature and Broadcast process, refer to:
+	<UL>
+	<LI><A HREF="MEINomen.html">Nomenclature Requirements</A>
+	</UL>
+<P>
+
+<H4>Editing Form</H4>
+<A HREF="marker.gif">GIF Image</A>
+
+<H4>Accession Numbers</H4>
+<OL>
+<LI>MGI:, system-generated
+<LI>MGD-MRK, old-style MGI Marker Accession Numbers; retained for backwards compatibility
+<LI>see Editing form for a complete list.
+</OL>
+
+<H4>Data Verifications</H4>
+<OL>
+<LI>J Numbers (see <A HREF="MEI.html#dataVerJnumber">Data Verifications section on J Numbers</A>)
+<P>
+<LI>Markers (see <A HREF="MEI.html#dataVerMarker">Data Verifications section on Markers</A>)
+	<UL>
+	<LI>Marker Histories may include withdrawn symbols
+	</UL>
+<P>
+<LI>Aliases
+	<UL>
+	<LI>If the Chromosome values of the current Symbol and the Alias do not match, then
+	    a warning is displayed to the user and the entry of the Alias is disallowed.
+	</UL>
+<P>
+<LI>Status (see <A HREF="MEI.html#dataVerPulldown">Data Verifications section on Pulldown Menus</A>)
+	<UL>
+	<LI>interim
+	<LI>official
+	<LI>withdrawn
+	</UL>
+<P>
+<LI>Marker Type (see <A HREF="MEI.html#dataVerPulldown">Data Verifications section on Pulldown Menus</A>)
+	<UL>
+	<LI>Gene
+	<LI>DNA segment
+	<LI>Cytogenetic Marker
+	<LI>QTL
+	<LI>...
+	</UL>
+<P>
+<LI>Chromosome (see <A HREF="MEI.html#dataVerPulldown">Data Verifications section on Pulldown Menus</A>)
+	<UL>
+	<LI>1-19
+	<LI>X
+	<LI>Y
+	<LI>XY
+	<LI>UN (<I>unknown</I>)
+	<LI>MT (<I>mitochondrial</I>)
+	</UL>
+<P>
+<LI>History Dates (see <A HREF="MEI.html#dataVerDate">Data Verifications section on Dates</A>)
+        <UL>
+        <LI>The History Date field must contain a valid Year in the format YYYY.  
+            Modifications denied on invalid entries.
+        </UL>
+<P>
+<LI>Marker Event (see <A HREF="MEI.html#dataVerPulldown">Data Verifications section on Pulldown Menus</A>)
+<P>
+<LI>Marker Event Reason (see <A HREF="MEI.html#dataVerPulldown">Data Verifications section on Pulldown Menus</A>)
+<P>
+</OL>
+<P>
+
+<H4>Fields</H4>
+<UL>
+<LI>Required
+	<OL>
+	<LI>Marker Type; (Gene, DNA Segment, QTL, etc.)
+	<LI>Status
+	<LI>Symbol
+	<LI>Chromosome
+	<LI>Current Symbol
+	<LI>Offset
+	<LI>Name
+	<LI>History; Nomenclature history of the Marker symbol
+	</OL>
+<P>
+<LI>Not Required
+	<OL>
+	<LI>Cytogenetic Band
+	<LI>Chromosome Committee (CC) Offset
+	<LI>MIT Offset
+	<LI>Notes
+	<LI>Aliases
+	<LI>Allele Symbol/Name
+	<LI>Synonyms
+	<LI>References
+	</OL>
+</UL>
+
+<H4>Defaults</H4>
+<OL>
+<LI>Status; default is <I>official</I>
+<LI>Current Symbol; default is <I>Symbol</I>
+</OL>
+
+<H4>Deletions</H4>
+A Marker cannot be deleted if it is referenced by a:
+<OL>
+<LI>Experiment
+<LI>Molecular Probe & Segment
+<LI>Orthology
+<LI>MLC entry
+<LI>GO Annotation
+<LI>Expression Assay
+<LI>Another Marker's History
+<LI>Another Marker's Current
+</OL>
+
+<H4>Marker Withdrawal</H4>
+Refer to <A HREF="http://prodwww/wts_projects/1200/1291/userrequirements.pdf">TR 1291 Requirements</A>
+and <A HREF="http://prodwww/wts_projects/1200/1291/design.pdf">TR 1291 Design</A> document
+for complete details on the Withdrawal process.
+
+<H4>Marker Breakpoint Split</H4>
+Refer to the <A HREF="MEIBreakpointSplit.html">MGI Breakpoint Split</A> document for complete details on the
+Breakpoint Split process.
+
+<H4>Modifying Chromosome Values</H4>
+When modifications are made to the Chromosome value of the Marker, certain rules apply:
+<OL>
+<LI>If the Chromosome is being changed to <I>UN</I>, then set the Offset to <I>-999.0</I>.
+<LI>If the Chromosome was known and is changed to another known, then set the MGI and CC Offsets to <I>-1.0</I>.
+    However, if the Marker is an Anchor Locus, then the Anchor record must be deleted before the
+    Chromosome value can be modified.
+</OL>
+
+<H4>Synonyms/References</H4>
+The Synonyms/Reference table can be used to edit:
+<OL>
+<LI>Synonyms which do not have References
+	<UL>
+	<LI>Enter <I>Synonym</I> only.  Modify record.
+	</UL>
+<LI>Synonyms which do have References
+	<UL>
+	<LI>Enter <I>Synonym</I> and <I>J:</I>.  Modify record.
+	</UL>
+<LI>References only (additional references, MLC indexing, etc.)
+	<UL>
+	<LI>Enter <I>J:</I> only.  Modify record.
+	</UL>
+</OL>
+References which are new or are added to existing synonyms will become immediately visible on the
+Marker Reference display in the Web interface (WI).  Deletions (removals) of References may not be
+reflected in the WI until the next day.
+<P>
+This table can also be used to modify the Review Status of a Reference.
+To do so:
+<OL>
+<LI>Search for a marker record.
+<LI>Select the row of the Reference you wish to modify.
+<LI>Use the <I>Review?</I> pulldown menu in the side panel to
+    select the review value you wish to assign to the Reference.
+<LI>Modify the record.
+</OL>
+
+
+<H4>Miscellaneous</H4>
+<OL>
+<LI>The <I>Add</I> function has been disabled on this form.  All new marker symbols
+    must be input into MGI using the <A HREF="MEINomen.html">Nomenclature form</A>.
+<P>
+<LI>Allele symbols and names may be searched using the Marker form, but can only be edited
+    using the <A HREF="MEIAllele.html">Allele form</A>.
+<P>
+<LI>The Withdrawal process will modify the <I>Status</I> to <I>withdrawn</I>.
+<P>
+<LI>Editing of the <I>#</I> column is implemented for the following tables:
+	<UL>
+	<LI>Marker History
+	</UL>
+<P>
+<LI>Editing of certain types of accession numbers added during the electronic data loads is restricted.  These 
+    electronically loaded accession numbers are distinguished by load references.
+    If the user attempts to edit the Accession numbers of a marker record from a data load, 
+    an error message will appear.
+<P>
+</OL>
+
+<H4>Related Documents</H4>
+<OL>
+<LI><A HREF="MEICV.html">Controlled Vocabulary</A>
+</OL>
+
+<HR>
+
+</BODY>
+</HTML>

@@ -1,0 +1,95 @@
+<HTML>
+<HEADER>
+<TITLE>
+MGI EDITING INTERFACE: Design and Requirements - Simple Vocabulary
+</TITLE>
+</HEADER>
+
+<BODY BGCOLOR="#FFFFFF">
+ 
+<H2>
+MGI EDITING INTERFACE: Design and Requirements - Simple Vocabulary
+</H2>
+<BR>
+
+<H4>Introduction</H4>
+The Simple Vocab editing form enables editing of many simple vocabulary lists in the database.
+<P>
+Examples:
+        <UL>
+        <LI>Curation State
+        <LI>GO Evidence Codes
+	<LI>GXD Index Assay
+	<LI>GXD Index Priority
+	<LI>GXD Index Stages
+	<LI>GXD Reporter Gene
+	<LI>InterPro Domains
+	<LI>Nomen Status
+	<LI>PhenoSlim
+	<LI>PhenoSlim Evidence Codes
+	<LI>Segment Type
+	<LI>Super Standard Strain
+        </UL>
+<P>
+
+<H4>Editing Form</H4>
+<A HREF="sv.gif">GIF image</A>
+
+<H4>Data Verifications</H4>
+<OL>
+<LI>Accession ID Type (see <A HREF="MEI.html#dataVerPulldown">Data Verifications section on Pulldown Menus</A>)
+<P>
+<LI>Accession IDs Private? (see <A HREF="MEI.html#dataVerPulldown">Data Verifications section on Pulldown Menus</A>)
+<P>
+<LI>J Number (see <A HREF="MEI.html#dataVerJnumber">Data Verifications section on J Numbers</A>)
+<P>
+</OL>
+
+<H4>Fields</H4>
+<UL>
+<LI>Required
+	<OL>
+	<LI>Term
+	<LI>Obsolete
+	</OL>
+<P>
+<LI>Not Required<I>ES Cell Lines</I>
+	<OL>
+	<LI>Acc ID
+	<LI>Abbr
+	<LI>Definition
+	<LI>Synonyms
+	</OL>
+<P>
+</UL>
+
+<H4>Defaults</H4>
+None
+
+<H4>Deletions</H4>
+A simple vocabulary cannot be deleted if it is referenced by an object which cross-references it
+elsewhere in the database.
+
+<H4>Miscellaneous</H4>
+<OL>
+<LI>To see edits in the corresponding option menu after a simple vocabulary table edit,
+    exit and re-enter the form which uses the applicable option menu.
+    <P>
+    For example, if an edit is made to <I>GXD Index Priority</I> and the <I>Index</I> form
+    is currently instantiated, exit the form and re-enter it to view the current edits.
+<P>
+<LI>To see edits in the corresponding list after a simple vocabulary table edit,
+    click on the <I>label</I> in the applicable list.
+    <P>
+    For example, if an edit is made to <I>GO Evidence Codes</I> and the <I>Vocabulary Annotation</I> form
+    is currently instantiated, click on the <I>## Evidence Codes</I> label to re-load the
+    list.  The current edit will be reflected in the new list.
+</OL>
+
+<H3>RELATED DOCUMENTS</H3>
+<OL>
+<LI><A HREF="MEI.html#dataVerLookup">Data Verifications section on Simple Vocabulary Lists</A>
+</OL>
+
+</BODY>
+</HTML>

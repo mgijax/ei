@@ -1,0 +1,631 @@
+<HEADER>
+<TITLE>
+MGI EDITING INTERFACE: Design and Requirements
+</TITLE>
+</HEADER>
+
+<BODY BGCOLOR="#FFFFFF">
+
+<H2>MGI EDITING INTERFACE: Design and Requirements</H2>
+
+<H4>Introduction:</H4>
+
+The MGI Editorial Interfaces (MEI) provide users with a user-friendly,
+intuitive interface for entering MGD-specific, GXD-specific data and MGI-specific data.
+<P>
+There are currently four MGI Editorial Interface applications:
+<OL>
+<LI>MGD Editing Interface
+<LI>GXD Editing Interface
+<LI>MGI Admin Editing Interface
+<LI>MGI Menu
+</OL>
+<P>
+These interfaces are independent applications which share template components and D code.
+
+<H4>Implementation Requirements:</H4>
+<OL>
+<LI>TeleUSE 3.2 and XRT PDS Volume 13
+</OL>
+
+<H4>Table of Contents</H4>
+<OL>
+<LI><A HREF="#login">Logging In</A>
+<LI><A HREF="#entry">Entry Forms</A>
+<LI><A HREF="#accession">Accession Numbers</A>
+<LI><A HREF="#accessionEditSearch">Editing/Searching Accession Numbers</A>
+<LI><A HREF="#dataver">Data Verifications</A>
+<LI><A HREF="#required">Required Fields</A>
+<LI><A HREF="#defaults">Defaults</A>
+<LI><A HREF="#tableProcessing">Table Processing</A>
+<LI><A HREF="#duplicates">Duplicate Names</A>
+<LI><A HREF="#deletions">Deletions of Cross-Referenced Objects</A>
+<LI><A HREF="MEIUtilities.html">Editorial Utilities</A>
+<LI><A HREF="#logs">Logs</A>
+<LI><A HREF="#runningApps">Running the Applications</A>
+<LI><A HREF="MEIRelease.html">Release Process</A>
+</OL>
+
+<HR>
+<A NAME="login"><H4>Logging In</H4></A>
+Each application will present the user with a Login form.  This provides the user
+with an interface for logging into the Sybase Server.  If the user does not have
+a Sybase account, then the user should request one via WTS from the Database Administrator.
+<P>
+<OL>
+<LI>Logging in to the Sybase Server/Database (<A HREF="login.gif">GIF Image</A>)
+    <P>
+    The first screen presented to the user is the Login screen.
+    The user selects the Server and Database from option menus, enters a User id
+    and Password, and then clicks <I>Login</I>.  For security purposes, the Password is masked 
+    on the screen so that it is not visible to the user.
+    <P>
+    The Server, Database, User and Password are used to establish a connection
+    to the database.  If a connection cannot be made, an error message is displayed and
+    the login process is aborted.  The Login screen remains active after an invalid login
+    attempt so that the user can continue to try to login.
+    <P>
+    Clicking <I>Cancel</I> in the Login screen exits the application.
+    <P>
+    If the user leaves the User and Password fields blank, then a default <I>public</I>
+    login is used.  The <I>public</I> login has read-only permissions.
+    <P>
+<LI>Selecting data entry forms from the Main Menu
+    <P>
+    After a successful login, the Login screen is de-activated and a Main Menu is presented
+    to the user.  Each selection on the Main Menu will instantiate a specific data entry form.
+    As a selection is made and a form is instantiated, the selection button is de-sensitized.
+    This prevents multiple instantiations of the same form.  When a data entry form is exited, 
+    the selection button for that form is re-sensitized so that a new instance of that form can be 
+    created.
+</OL>
+
+<HR>
+<A NAME="entry"><H4>Entry Forms</H4></A>
+There is one entry form for each main component of MGI:
+<H4>MGD (<A HREF="mgd.gif">Main Menu</A>)</H4>
+	<OL>
+	<LI><A HREF = "MEIReference.html">References</A>
+	<LI><A HREF = "MEIMarker.html">Markers</A>
+	<LI><A HREF = "MEIAllele.html">Alleles</A>
+	<LI><A HREF = "GEIGenotype.html">Genotype</A>
+	<LI><A HREF = "MEIMolecular.html">Molecular Probes & Segments</A>
+	<LI><A HREF = "MEIOrthology.html">Orthology</A>
+	<LI><A HREF = "MEIMapping.html">Mapping</A>
+	<LI><A HREF = "MEIMLC.html">MLC</A>
+	<LI><A HREF = "MEINomen.html">Nomenclature</A>
+	<LI><A HREF = "MEIAnnotation.html">Vocabulary Annotations</A>
+	<LI><A HREF = "MEISequence.html">Sequences</A>
+	<LI><A HREF = "MEICloneLibrary.html">Clone Libraries</A>
+	<LI><A HREF = "MEISV.html">Simple Vocabulary</A>
+	<LI><A HREF = "MEICV.html">Controlled Vocabulary</A>
+	<LI><A HREF = "MEIOrganism.html">Organism</A>
+	<LI><A HREF = "MEIStrain.html">Strains</A>
+	<LI><A HREF = "MEITissue.html">Tissues</A>
+	<LI><A HREF = "MEICrosses.html">Crosses</A>
+	<LI><A HREF = "MEIRISets.html">RI Sets</A>
+	<LI><A HREF = "MEITranslation.html">Translations</A>
+	</OL>
+
+<H4>GXD (<A HREF="gxd.gif">Main Menu</A>)</H4>
+	<OL>
+        <LI><A HREF = "GEIAntigen.html">Antigens</A>
+        <LI><A HREF = "GEIAntibody.html">Antibodies</A>
+        <LI><A HREF = "GEIAssay.html">Assays</A>
+                <OL>
+                <LI>Gel
+                <LI>InSitu
+                </OL>
+        <LI><A HREF = "GEIImage.html">Images</A>
+        <LI><A HREF = "GEIadi.html">Anatomical Dictionary</A>
+	<LI><A HREF = "GEIIndex.html">Index/Stages</A>
+	<LI><A HREF = "MEINomen.html">Nomenclature</A>
+	<LI><A HREF = "MEICV.html">Controlled Vocabulary</A>
+	<LI><A HREF = "MEISV.html">Simple Vocabulary</A>
+	</OL>
+<H4>Administration (<A HREF="mgiadmin.gif">Main Menu</A>)</H4>
+	<OL>
+	<LI><A HREF = "ADMINActualLogical.html">Actual/Logical DB</A>
+	<LI><A HREF = "ADMINComments.html">Table/Column Comments</A>
+	</OL>
+Each entry form enables the user to perform the following functions:
+	<OL>
+	<LI>replace by wiki page:  see sw:ei 
+	</OL>
+	<P>
+<P>
+
+<HR>
+<A NAME="accession"><H4>Accession Numbers</H4></A>
+<P>MGI Accession numbers are generated by the system and cannot be altered by the user.
+They are in the format "MGI:#####", where the "MGI:" prefix is always present and the
+numeric suffix is system generated.
+<P>
+The system generates MGI Accession Numbers for the following objects:
+	<OL>
+	<LI>References
+	<LI>Markers
+	<LI>Molecular Probes & Segments
+	<LI>Mapping Experiments
+	<LI>Antigens
+	<LI>Antibodies
+	<LI>Assays
+	<LI>Images
+	<LI>Alleles
+	</OL>
+<P>
+An additional internal Accession Number, the <I>J number</I>, is generated for all
+Reference objects.  The <I>J number</I> is used for internal tracking of References.
+<P>
+External Accession Numbers are Accession Numbers assigned by other data resources
+which can be cross-referenced to MGI objects.  External Accession Numbers can be attached
+and removed from any accessioned MGI object by the user.
+<P>
+Valid external Accession numbers include:
+	<OL>
+	<LI>PubMed IDs can be attached to Reference objects.
+	<LI>GenBank IDs can be attached to Marker objects.
+	<LI>SWISS-PROT numbers can be attached to Marker objects.
+	<LI>ATCC numbers can be attached to Antibody objects.
+	</OL>
+
+<P>
+A full listing of valid accession numbers for each MGI object is provided in the requirements document
+for the MGI object.
+<P>
+
+<HR>
+<A NAME="accessionEditSearch"><H4>Editing/Searching Accession Numbers</H4></A>
+
+Every form which provides primary editing of an Accessionable object (Reference, Marker, Molecular Segment,
+Mapping, Antigen, Antibody, Assay, Image) contains an Accession Table.  Each Accession Table is configured to 
+only allow adds, modifications and searches for a specific set of Accession numbers, determined by the Data 
+Curation process.
+<P>
+The Accession Table of the Marker form is displayed below.  The set of Accession numbers
+for Markers is limited to MGI, EC (Enzyme Commission), and MGD-MRK (old-style MGI Accession 
+numbers).
+<P>
+<IMG SRC="accessionTable.gif" ALT="Accession Table">
+<P>
+All adds, modifications and searches are confined to the Accessionable object type being edited.  In the
+Marker form, only Marker Accession numbers can be modified or searched.
+<P>
+
+<OL>
+<LI>To search:
+	<UL>
+	<LI>The search will be performed on the <B>first</B> Accession number encountered in the
+	    table, starting with the first row.
+	<P>
+	<LI>The search will <B>only</B> search the set of Accession numbers which do not contain 
+	    Reference associations.  Some Accession numbers, such as Nucelotide Sequence
+	    Accession numbers of Molecular Segments, are directly associated with a Reference.
+	    Others, such as EC numbers of Markers, have no Reference associated with the
+	    object/Accession number relationship.
+	<P>
+	<LI>If the Accession number is entered in a row with a label (ex. MGD, EC), then
+	    only that subset of Accession numbers will be searched for the entered value.  For example,
+	    search constraints of "EC" and "3.1.1.5" entered in the Marker form Accession Table will
+	    search for "3.1.1.5" within the EC subset only.
+	    <BR><BR><IMG SRC="accessionSearch1.gif" ALT="Accession Table"></BR>
+	<P>
+	<LI>If the Accession number is entered in a row without a label, then all subsets of
+	    Accession numbers will be searched for the entered value.
+	    For example, a search constraint of "3.1.1.5" entered in the Marker form 
+	    Accession Table in a row without a label will search for "3.1.1.5" within all Marker subsets.
+	    This search may or may not return more results than the previous search, depending on whether
+	    or not different Accession number sources use identical Accession numbers.
+	    <BR><BR><IMG SRC="accessionSearch2.gif" ALT="Accession Table"></BR>
+	</UL>
+<P>
+<LI>To add:
+	<UL>
+	<P>
+	<LI>If a blank row containing the label which corresponds to the type of Accession number to be
+	    added exists in the Accession Table, then enter the Accession number in the second column, TAB,
+	    and click <I>Modify</I>.
+	<P>
+	<LI>If a blank row containing the label which corresponds to the type of Accession number to be
+	    added does not exist in the Accession Table, then select the appropriate label from the
+	    option menu and click <I>Add</I>.  This will add a blank row to the end of the table with the
+	    appropriate label.  Enter the Accession number in the second column of this new row, TAB,
+	    and click <I>Modify</I>.
+	<P>
+	<LI>If an add is disallowed for this type of Accession number, then the following
+	    message will be displayed:
+	    <PRE>
+	    Cannot add this class of Accession Number:  <I>label</I>
+	    </PRE>
+	</UL>
+<P>
+<LI>To modify:
+	<UL>
+	<P>
+	<LI>Perform a search to retrieve the desired object and its Accession numbers.
+	<P>
+	<LI>Modify the Accession number, TAB and click <I>Modify</I>.
+	<P>
+	<LI>If a modification is disallowed for this type of Accession number, then the following
+	    message will be displayed:
+	    <PRE>
+	    Cannot modify this class of Accession Number:  <I>label</I>
+	    </PRE>
+	</UL>
+<P>
+<LI>To delete:
+	<UL>
+	<P>
+	<LI>Perform a search to retrieve the desired object and its Accession numbers.
+	<P>
+	<LI>Click the option menu <I>Delete</I> <B>or</B> remove the Accession number and TAB.  Click
+	    <I>Modify</I>.
+	<P>
+	<LI>If a deletion is disallowed for this type of Accession number, then the following
+	    message will be displayed:
+	    <PRE>
+	    Cannot delete this class of Accession Number:  <I>label</I>
+	    </PRE>
+	</UL>
+<P>
+</OL>
+
+Some forms may also contain an Accession Table which contains References (J:).  The Accession Reference
+Table adheres to the same search and modification rules as the regular Accession Table <B>except</B> that a
+valid Reference is required for all adds and modifications <B>and</B> a search using an Accession number
+entered in the Accession Reference Table will <B>only</B> search the set of Accession numbers which
+contain Reference associations.
+<P>
+If Accession numbers are entered as search constraints in both the Accession Table and the
+Accession Reference Table, only the <B>first</B> Accession number entered in the Accession Table is used
+and <B>any</B> Accession numbers entered into the Accession Reference Table are ignored.
+<P>
+<IMG SRC="accessionReference.gif" ALT="Accession Reference Table"></BR>
+
+<HR>
+<A NAME="dataver"><H4>Data Verifications</H4></A>
+Data verifications are initiated after the user enters the value into the
+validated field and hits the TAB key.  If the validated field is a table cell, then
+a mouse click to another cell in the table also invokes the validation.
+<P>
+<OL>
+<A NAME="dataVerJnumber"><LI>J Numbers</A>
+	<OL>
+	<LI>A J Number is validated against the Reference table (Master Bib).
+	<LI>The Short Citation of the validated J Number is displayed on the form.
+	    There may be exceptions due to the requirements of individual forms
+	    or available space on the form.  Refer to the requirements document
+	    of an individual form for details on any exceptions.
+	<LI>Modifications denied on invalid entries.
+	</OL>
+<P>
+<A NAME="dataVerMarker"><LI>Markers</A>
+	<OL>
+	<LI>All Markers are validated against the Marker table.
+	<LI>All Markers must be Mouse Markers.
+	<LI>All Markers must be <I>official</I> or <I>interim</I>.  Exceptions:
+		<OL>
+		<LI>Marker Histories may include <I>withdrawn</I> symbols.
+		<LI>MLC queries may include <I>withdrawn</I> symbols.
+		<LI>Non-Approved Allele symbols may refer to non-approved Markers 
+		    which only exist in Nomenclature.
+		</OL>
+	<LI>In some instances, additional information such as the chromosome or name of the Marker
+	    is displayed.
+	<LI>If a withdrawn Marker is entered, then valid Marker(s) for the withdrawn Marker are displayed.
+	<LI>If a Marker which appears more than once in the database is entered (i.e. a duplicate),
+	    then a list of the valid Markers from which to choose the appropriate Marker is displayed.  
+	    This includes information (such as chromosome) so that the unique Marker objects can be distinguished.
+	<LI>Modifications denied on invalid entries.
+	</OL>
+<P>
+<A NAME="dataVerAllele"><LI>Marker Alleles</A>
+	<OL>
+	<LI>All Alleles are validated against the Marker Allele table.
+	<LI>The Allele must be defined for the given Marker.
+	<LI>All Alleles must be <I>Approved</I>.
+	<LI>If no Marker is entered and the Allele is unique, then the Marker
+	    associated with the Allele is entered automatically.
+	<LI>Modifications denied on invalid entries.
+	</OL>
+<P>
+<A NAME="dataVerChromosome"><LI>Non-Mouse Marker Chromosomes</A>
+	<OL>
+	<LI>A non-mouse Marker's Chromosome is validated against the master Marker Chromosome
+	    table.
+	<LI>If the Chromosome does not exist in the master Marker Chromosome table,
+	    the user is informed that the Chromosome will be added to the master table when
+	    the current transaction is executed.
+	<LI>Modifications allowed on invalid entries.
+	</OL>
+<P>
+<A NAME="dataVerAcc"><LI>Accession Numbers</A>
+<P>
+Some objects may need to cross reference other MGI objects.  For example, a Molecular
+Probe may have been derived from another Clone.  Therefore, the user may need to enter the
+MGI Accession Number of the Parent Clone used during entry of a Molecular Probe object.
+<P>
+
+	<OL>
+	<LI>An MGI Accession number is validated for a specific type only.
+	    That is, the Parent Clone Accession Number field on the Molecular Probe & Segment
+	    form only accepts valid Clone Accession Numbers.
+	<LI>Accession numbers can be entered with or without the "MGI:" prefix.
+	    That is, both "MGI:123456" and "123456" are valid entries for the same object.
+	<LI>This verification applies to:
+		<OL>
+		<LI>Parent Clone Accession Numbers entered for a Molecular Probe
+		<LI>Antibody Accession Numbers entered for an Assay Antibody Prep
+		<LI>Probe Accession Numbers entered for an Assay Probe Prep
+		</OL>
+	<LI>Modifications denied on invalid entries.
+	</OL>
+<P>
+<LI>Antibodies
+        <OL>
+        <LI>If an Antibody is entered for the Antibody Prep of an Assay object for a
+            given Marker, then there must be a relationship between the Antibody and
+            the Marker (<I>GXD_AntibodyMarker</I>).
+        <LI>If an Antibody is entered for the Antibody Prep of an Assay object with
+            an Assay Type of "Western blot", then the "Recognize Product in Western Blot" 
+            must be equal to "Yes" for the Antibody.
+        <LI>Warning displayed on invalid entries.  Modifications allowed.
+        </OL>
+<P>
+<LI>Probes
+        <OL>
+        <LI>If a Probe is entered for the Probe Prep of an Assay object for a
+            given Marker, then there must be a relationship between the Probe and
+            the Marker (<I>PRB_Marker</I>).
+        <LI>Warning displayed on invalid entries.  Modifications allowed.
+        </OL>
+<P>
+<A NAME="dataVerStrain"><LI>Strains</A>
+	<OL>
+	<LI>A Strain is validated against the Master Strain table.
+	<LI>If a Strain does not exist, the user is asked whether or not
+	    to add the Strain (as a non-standard) to the Master Strain
+	    table.  If the user elects to add the Strain, the new strain is
+	    determined valid, else the strain is invalid.
+	<LI>Modifications denied on invalid entries.
+	<LI>Strains can also be selected from the 
+	    <A HREF="strainlisting.gif"><I>View->Strain Listing</I> dialog</A>.
+	    This listing can be re-loaded by clicking on the label at the top of the dialog.
+	</OL>
+<P>
+<A NAME="dataVerTissue"><LI>Tissues</A>
+	<OL>
+	<LI>A Tissue is validated against the Master Tissue table.
+	<LI>If a Tissue does not exist, the user is asked whether or not
+	    to add the Tissue (as a non-standard) to the Master Tissue
+	    table.  If the user elects to add the Tissue, the new tissue is
+	    determined valid, else the tissue is invalid.
+	<LI>Modifications denied on invalid entries.
+	<LI>Tissues can also be selected from the 
+	    <A HREF="tissuelisting.gif"><I>View->Tissue Listing</I> dialog</A>.
+	    This listing can be re-loaded by clicking on the label at the top of the dialog.
+	</OL>
+<P>
+<A NAME="dataVerCross"><LI>Cross Listing</A>
+	<OL>
+	<LI>A non-anonymous Cross is validated against the Master Cross table.
+	<LI>Non-anonymous Crosses are selected from the 
+	    <A HREF="crosslisting.gif"><I>View->Cross Listing</I> dialog</A>.
+	    This listing can be re-loaded by clicking on the label at the top of the dialog.
+	</OL>
+<P>
+<A NAME="dataVerRI"><LI>RI Listing</A>
+	<OL>
+	<LI>An RI Set is validated against the Master RI Set table.
+	<LI>RI Sets are selected from the 
+	    <A HREF="risetlisting.gif"><I>View->RI Set Listing</I> dialog</A>.
+	    This listing can be re-loaded by clicking on the label at the top of the dialog.
+	</OL>
+<P>
+<A NAME="dataVerAge"><LI>Age</A>
+	<OL>
+	<LI>Age verifications adhere to the requirements discussed in the 
+	    <A HREF = "http://prodwww.informatics.jax.org/software/old_projects/mgi1.0/age.html">MGI 1.0 Enhance Age Representation</A> document.
+	</OL>
+<P>
+<A NAME="dataVerDate"><LI>Dates</A>
+	<OL>
+	<LI>A date must contain the year in the format YYYY.
+	</OL>
+<P>
+<A NAME="dataVerPulldown"><LI>Pulldown Menus</A>
+	<P>
+	Pulldown Menus provide data verification by default, since they provide the user with a single set
+	of pre-defined selections.  Pulldown Menus which correlate to normalized tables in the database are
+	dynamically built at runtime whenever a form is instantiated.  The user must exit and re-enter
+	the form after any modification is made to the controlled vocabulary of the Pulldown Menu to
+	view the recent modification.
+	<P>
+	Most controlled vocabulary is available to the user for editing 
+	(see Controlled Vocabulary and Simple Vocabulary modules).
+	<P>
+	Some controlled vocabulary is not available to the users for editing.
+	This is due to the data storage implementation of this data.  Edits to
+	the menu options for these lists must be handled by an SE.
+	<P>
+	Examples include:
+	<OL>
+	<LI>Reference Types
+	<LI>Mouse Chromosomes
+	<LI>Experiment Types
+	<LI>Cross Types
+	<LI>Organism
+	<LI>Age Prefixes
+	<LI>Sex
+	<LI>MLC Mode
+	<LI>Antibody Recognizes Product in Western Blot
+	<LI>Antibody Recognizes Product in Immunoprecipitation
+	<LI>Probe Prep Type
+	<LI>Specimen Hybridization
+	<LI>Marker Events
+	<LI>Marker Status
+	<LI>Allele Status
+	</OL>
+<P>
+<A NAME="dataVerLookup"><LI>Controlled Vocabulary Lists</A>
+	<P>
+	Lists are another way to implement controlled vocabulary and provide 
+	data verification when an Pulldown Menu does not suffice.  When the number of selections is 
+	greater than 20, a List is used.  The user must <B>always</B> use the List, if one is supplied.
+	The user can refresh, or reload, the List by clicking on the <I>Label</I> of the List.
+	The List must be refreshed after any modification is made to the controlled vocabulary of
+	the List.
+	<P>
+	Examples include:
+	<OL>
+	<LI>MLC Classes*
+	<LI>Molecular Probe & Segment Source Libraries
+	<LI>Mapping Assays*
+	<LI>Orthology Assays*
+	<LI>Orthology Organism
+	<LI>Allele ES Cell Lines*
+	</OL>
+	<P>
+	* this controlled vocabulary list can be modified using the Controlled Vocab form.
+</OL>
+
+<HR>
+<A NAME="required"><H4>Required Fields</H4></A>
+If a field is designated as <I>Required</I>, then a valid value must be entered into
+the field before the modification can be processed.
+<P>
+Fields are designated as <I>Required</I> via a GUI presentation component attribute (widget) and
+can only be changed by an SE.
+<P>
+A full listing of required fields for each MGI object is provided in the requirements document for that MGI object.
+<P>
+
+<HR>
+<A NAME="defaults"><H4>Defaults</H4></A>
+Default values are used if the user clicks the <I>Add</I> button without choosing a value
+for a specific field or if the user selects a specific value in a particular field.
+<P>
+The default for all controlled vocabulary is <I>Not Specified</I>.  Exceptions are noted
+in the requirements documents for individual MGI objects.
+
+<HR>
+<A NAME="tableProcessing"><H4>Table Processing</H4></A>
+<OL>
+<LI>The <I>Table</I> widget treats the mouse click as a TAB.  If the user is in a table, 
+    the user can use either the TAB key or the mouse click to validate the data within a 
+    cell and move to another cell within the table.
+    <P>
+    The only time the user does not have to commit the cell edit is if the table is supporting the
+    entry of "X" in the cell.  In this case, the edit of the cell is committed immediately and the user 
+    does not have to TAB out of the cell.
+<P>
+<LI>To use the arrow keys to move within the <I>Table</I>, the user must depress both the arrow key
+    and the <I>control</I> key.
+<P>
+<LI><I>Add Row</I> adds a row to the bottom of the table.  If the table has an <I>#</I> column, this
+    column has the appropriate value assigned to it.
+<P>
+<LI><I>Delete Row</I> tags the currently selected row for deletion and clears the row so that
+    the user has a visual indication of the deletion.  After the modification is executed,
+    this row no longer appears in the table.
+<P>
+<LI><I>Insert Row</I> adds a row to the table above the currently selected row.  If the table has an <I>#</I> column, this
+    column has the appropriate value assigned to it.
+<P>
+<LI><I>Edit Order</I> allows the user to edit the <I>#</I> column of the table.
+<P>
+When the order, or sequence, of records in a table are significant, then the editing table has an
+<I>#</I> column (usually this is the first column).  The <I>#</I> column is initialized with values
+and usually does not require any further editing by the user.
+<P>
+If the user wishes to edit the <I>#</I> column, then the user turns the <I>Edit Order</I> toggle <B>ON</B>.
+This allows the user to edit the <I>#</I> column only.  This mode is disabled by turning the <I>Edit Order</I>
+toggle <B>OFF</B>, modifying the record, de-selecting the record or clearing the form.
+<P>
+The new orders are verified for uniqueness; duplicate order numbers are not allowed.  Modifications denied on
+invalid entries.
+<P>
+<LI>When the user executes <I>Add</I> or <I>Modify</I>, the table rows are read sequentially.  If the
+    row has been added to, modified or deleted (using <I>Delete Row</I>), then that row is 
+    processed.  When a blank row is reached, the table scan stops and the transaction is executed.  
+    (A deleted row is <I>not</I> considered a blank row because it has been flagged for deletion.)
+    Therefore, do not skip rows when adding new data to a
+    table because the rows after the first blank row will be ignored.
+<P>
+</OL>
+
+<HR>
+<A NAME="duplicates"><H4>Duplicate Names</H4></A>
+No requirement has been specified to disallow duplicate names of:
+<OL>
+<LI>Molecular Probes & Segments
+<LI>Antigens
+<LI>Antibodies
+</OL>
+
+<HR>
+<A NAME="deletions"><H4>Deletions of Cross-Referenced Objects</H4></A>
+Database triggers detect the attempt to delete an object which is referenced by
+another object.  In order to delete the desired object, all cross-references to that
+object must be removed.  A few instances are given below:
+<OL>
+<LI>A Reference which is referenced by a Marker, Molecular Segment, Orthology, Experiment, MLC, or GXD object 
+    cannot be deleted.
+<LI>A Marker which is referenced by a Molecular Segment, Orthology, Experiment, MLC or GXD object cannot be deleted.
+<LI>A Tissue which is referenced by a Molecular Segment object cannot be deleted.
+</OL>
+<P>
+If a database trigger detects the deletion of a record which contains cross-references to other database objects,
+an error message is displayed and the transaction is denied.
+
+<HR>
+<A NAME="logs"><H4>Logs</H4></A>
+All SQL generated from an editing application is logged in a user log file within each
+user's home directory.  The sole purpose of this log is as a diagnostics aid 
+for the SE staff when debugging any problems which may arise with the applications.
+<P>
+<TABLE BORDER=1>
+<TR ALIGN=left><TH>Application<TH>Log File
+<TR><TD>MGD Production<TD><CODE>$HOME/.ei-log</CODE> and <CODE>$HOME/.mgd_stats_log</CODE>
+<TR><TD>GXD Production<TD><CODE>$HOME/.ei-log</CODE>
+<TR><TD>Administration Production<TD><CODE>$HOME/.ei-log</CODE>
+<TR><TD>MGD Development<TD><CODE>$HOME/.eidev-log</CODE> and <CODE>$HOME/.mgd_dev_stats_log</CODE>
+<TR><TD>GXD Development<TD><CODE>$HOME/.eidev-log</CODE>
+<TR><TD>Administration Development<TD><CODE>$HOME/.eidev-log</CODE>
+</TABLE>
+
+<HR>
+<A NAME="runningApps"><H4>Running the Applications</H4></A>
+All applications can be run from a either a Solaris Workstation or a MacIntosh.
+<P>
+To run the Applications from a Solaris Workstation:
+	<OL>
+	<LI><CODE>xhost +</CODE>
+	<LI><CODE>rsh shire</CODE>
+	<LI><CODE>setenv DISPLAY &lt;your hostname&gt;:0</CODE>
+	<LI><TABLE BORDER=1>
+	    <TR ALIGN=left><TH>Application<TH>Script
+	    <TR><TD>Production MGI Menu<TD><CODE>/usr/local/mgi/live/ei/prod/mgi/runmgi&</CODE>
+	    <TR><TD>Production MGI Admin<TD><CODE>/usr/local/mgi/live/ei/prod/runapp mgiadmin&</CODE>
+	    <TR><TD>Development MGI Menu<TD><CODE>/usr/local/mgi/live/ei/dev/mgi/runmgi&</CODE>
+	    <TR><TD>Development MGI Admin<TD><CODE>/usr/local/mgi/live/ei/dev/runapp mgiadmin&</CODE>
+	    </TABLE>
+	<LI>At the application login screen, type in your SYBASE login and password.
+	</OL>
+<P>
+To run the Applications from a MacIntosh:
+	<OL>
+	<LI><TABLE BORDER=1>
+	    <TR ALIGN=left><TH>Application<TH>eXodus connections->
+	    <TR><TD>Production MGI Menu<TD>MGI menu - production
+	    <TR><TD>Development MGI Menu<TD>MGI menu - development
+	    </TABLE>
+	<LI>At the first login screen, type in your UNIX login and password
+	<LI>At the application login screen, type in your SYBASE login and password.
+	</OL>
+<P>
+
+<HR>
+
+</BODY>
+</HTML>

@@ -1,0 +1,82 @@
+<HTML>
+<HEADER>
+<TITLE>
+ADMINISTRATION EDITING INTERFACE: Design and Requirements - Actual/Logical DB
+</TITLE>
+</HEADER>
+
+<BODY BGCOLOR="#FFFFFF">
+ 
+<H2>
+ADMINISTRATION EDITING INTERFACE: Design and Requirements - Actual/Logical DB
+</H2>
+
+<H4>Introduction</H4>
+The Logical and Actual DB tables are used to define logical data resources and actual URL links to 
+these resources so that HTML links can be automatically generated for objects attached to the
+logical data resources.
+<P>
+For example, a logical data resource <I>Sequence DB</I> is defined as a nucleotide data resource.
+There are 4 distinct databases which provide URLs for establishing HTML links to this data resource
+using the same Accession numbers:
+<OL>
+<LI>DDBJ (Japan)
+<LI>EMBL (UK)
+<LI>GenBank (US)
+<LI>GSDB (US)
+</OL>
+
+Sequence accession numbers are attached to this logical data resource via the Editorial interface.
+When the corresponding data object is displayed in the Web interface, a link will be established
+to each of the 4 actual databases described above from the Sequence accession numbers defined.
+See <A HREF="http://www.informatics.jax.org/searches/accession_report.cgi?id=MGI:21151">MGI:21151</A>.
+
+<H4>Editing Form</H4>
+<A HREF="actuallogical.gif">GIF image</A>
+
+<H4>Data Verifications</H4>
+<OL>
+<LI>Species (see <A HREF="MEI.html#dataVerPulldown">Data Verifications section on Pulldown Menus</A>)
+<P>
+</OL>
+ 
+<H4>Fields</H4>
+<UL>
+<LI>Required
+	<OL>
+	<LI>Name
+	<LI>Actual Database Name
+	<LI>Active?
+	<LI>Multiple?
+	</OL>
+<P>
+<LI>Not Required
+	<OL>
+	<LI>Description
+	<LI>Species
+	<LI>URL
+	<LI>Delimiter
+	</OL>
+</UL>
+
+<H4>Defaults</H4>
+<OL>
+<LI>Active?; default is <I>No</I>.
+<LI>Multiple?; default is <I>No</I>.
+</OL>
+ 
+<H4>Deletions</H4>
+A Logical DB cannot be deleted if it is referenced by one of the following objects:
+<OL>
+<LI>Accession
+</OL>
+
+<H4>Miscellaneous</H4>
+<OL>
+<LI>Within the URL, the place holder <I>@@@@</I> is used to designate where the Accession number is
+    to be substituted during dynamic creation of the HTML link.  The Web interface CGI which
+    constructs the link will search for this place holder.
+</OL>
+
+</BODY>
+</HTML>

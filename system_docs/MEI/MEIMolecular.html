@@ -1,0 +1,232 @@
+<HTML>
+<HEADER>
+<TITLE>
+MGI EDITING INTERFACE: Design and Requirements - Molecular Probes & Segments
+</TITLE>
+</HEADER>
+
+<BODY BGCOLOR="#FFFFFF">
+
+<H2>
+MGI EDITING INTERFACE: Design and Requirements - Molecular Probes & Segments
+</H2>
+<BR>
+
+<H4>Introduction</H4>
+Molecular Segments contains:
+	<UL>
+	<LI>cDNA
+	<LI>DNA (construct)
+	<LI>genomic
+	<LI>mitochondrial
+	<LI>oligo
+	<LI>primer
+	</UL>
+<P>
+All Molecular Segments which are not designated as <I>primers</I> have a <I>Library</I> record which defines:
+	<UL>
+	<LI>Organism
+	<LI>Strain
+	<LI>Tissue
+	<LI>Cell Line
+	<LI>Age
+	<LI>Gender
+	<LI>Tissue Treatment
+	</UL>
+<P>
+Molecular Segments have <I>relationships</I> with Markers:
+	<UL>
+	<LI><B>A</B>, a Marker <B>amplifies</B> a primer
+	<LI><B>E</B>, a Marker <B>encodes</B> a probe if it hybridizes 100% to the probe
+	<LI><B>H</B>, a Marker <B>hybridizes</B> to a probe
+	<LI><B>M</B>, designation for <B>MIT</B> primers
+	<LI><B>P</B>, a <B>putative</B> association derived from UniGene or Auto-E
+	</UL>
+<P>
+Each Molecular Segment may have a list of References which may contain RFLP information, including
+nucleotide (GenBank) accession numbers.
+<P>
+
+Molecular Segments are loaded from external sources as well as manual input.  These updates occur
+on a regular basis (quarterly, monthly, etc.):
+<OL>
+<LI>RIKEN
+<LI>IMAGE
+<LI>NIA
+<LI>MKIAA
+</OL>
+
+<H4>Editing Form</H4>
+<OL>
+<LI><A HREF="molsegprobe.gif">Probe GIF image</A>
+<LI><A HREF="molsegprimer.gif">Primer GIF image</A>
+<LI><A HREF="molsegreference.gif">Molecular Segment Reference GIF image</A>
+<LI><A HREF="molseglibrary.gif">Molecular Source Library GIF image</A>
+</OL>
+
+<H4>Accession Numbers</H4>
+<OL>
+<LI>MGI:, system-generated
+<LI>see editing form for a complete list
+</OL>
+
+<H4>Data Verifications</H4>
+<OL>
+<LI>Sequence Type (see <A HREF="MEI.html#dataVerPulldown">Data Verifications section on Pulldown Menus</A>)
+	<UL>
+	<LI>cDNA
+	<LI>genomic
+	<LI>DNA (construct)
+	<LI>mitochondrial
+	<LI>oligo
+	<LI>primer
+	</UL>
+<P>
+<LI>Vector Type (see <A HREF="MEI.html#dataVerPulldown">Data Verifications section on Pulldown Menus</A>)
+	<UL>
+	<LI>BAC
+	<LI>Cosmid
+	<LI>P1
+	<LI>PAC
+	<LI>Phage
+	<LI>Plasmid
+	<LI>Phagemid
+	<LI>YAC
+	</UL>
+<P>
+<LI>J Numbers (see <A HREF="MEI.html#dataVerJnumber">Data Verifications section on J Numbers</A>)
+<P>
+<LI>Markers (see <A HREF="MEI.html#dataVerMarker">Data Verifications section on Markers</A>)
+<P>
+<LI>Parent Clone Accession ID (see <A HREF="MEI.html#dataVerAcc">Data Verifications section on Accession Numbers</A>)
+<P>
+<LI>Library (see <A HREF="MEI.html#dataVerLookup">Data Verifications section on Controlled Vocabulary Lists</A>)
+<P>
+<LI>Organism (see <A HREF="MEI.html#dataVerPulldown">Data Verifications section on Pulldown Menus</A>)
+<P>
+<LI>Strain (see <A HREF="MEI.html#dataVerStrain">Data Verifications section on Strain</A>)
+<P>
+<LI>Tissue (see <A HREF="MEI.html#dataVerTissue">Data Verifications section on Tissue</A>)
+<P>
+<LI>Age (see <A HREF="MEI.html#dataVerAge">Data Verifications section on Age</A>)
+<P>
+<LI>Gender (see <A HREF="MEI.html#dataVerPulldown">Data Verifications section on Pulldown Menus</A>)
+<P>
+</OL>
+
+<H4>Fields</H4>
+As the user selects Sequence Type from the option menu, the middle of the form will change depending on the
+Sequence Type selected and different fields will become available for viewing/editing.
+<UL>
+<LI>Required
+	<OL>
+	<LI>Sequence Type
+	<LI>Name
+	<LI>Non-Primers Only
+		<OL>
+		<LI>Vector Type
+		<LI>Library
+		<LI>Organism
+		<LI>Strain
+		<LI>Tissue
+		<LI>Age
+		<LI>Gender
+		</OL>
+	</OL>
+<P>
+<LI>Not Required
+	<OL>
+	<LI>Region Covered
+	<LI>Non-Primers Only
+		<OL>
+		<LI>Parent Clone Accession ID
+		<LI>Parent Clone
+		<LI>Insert Site
+		<LI>Insert Size
+		<LI>Cell Line
+		<LI>Tissue Treatment
+		</OL>
+	<LI>Primers Only
+		<OL>
+		<LI>Sequence 1
+		<LI>Sequence 2
+		<LI>Product Size
+		</OL>
+	<LI>Marker
+	<LI>Notes
+	</OL>
+</UL>
+
+<H4>Defaults</H4>
+<OL>
+<LI>Organism; default is <I>mouse, laboratory</I>
+<LI>Vector Type; default is <I>Not Specified</I>
+<LI>Age; default is <I>Not Specified</I>
+<LI>Gender; default is <I>Not Specified</I>
+<LI>If <I>Tissue</I> is <I>unfertilized egg</I>, then <I>Age</I> default is <I>Not Applicable</I>
+<LI>If <I>Age</I> is <I>Not Applicable</I>, then <I>Tissue</I> must be <I>unfertilized egg</I>
+</OL>
+
+<H4>Deletions</H4>
+A Molecular Segment cannot be deleted if it is referenced by a:
+<OL>
+<LI>another Molecular Segment
+<LI>Contig Experiment
+<LI>Expression Assay
+</OL>
+
+<H4>Library</H4>
+A Library selection populates the Library text field and performs a lookup of:
+	<UL>
+	<LI>Organism
+	<LI>Strain
+	<LI>Tissue
+	<LI>Cell Line
+	<LI>Age
+	<LI>Gender
+	<LI>Tissue Treatment
+	</UL>
+<P>
+To edit a non-anonymous Library, the user must use the <A HREF="MEICloneLibrary.html">Clone Libraries</A> form.
+<P>
+
+<H4>Miscellaneous</H4>
+<OL>
+<LI>To view/edit Molecular Segment master records, set the <I>References</I> toggle OFF.
+<P>
+<LI>To view/edit Molecular Segment References records, set the <I>References</I> toggle ON.
+<P>
+<LI>The Marker/Probe relationship (<I>R</I> column in the Marker table):
+	<UL>
+	<LI>must be <I>H</I> (hybridizes) for Probes of non-mouse source.
+	    This includes <I>Not Specified</I> and <I>Not Applicable</I> sources.
+	<LI>can only be <I>P</I> during the UniGene putative load.
+	<LI>can be updated to another relationship from <I>P</I>
+	</UL>
+<P>
+<LI>The <I>View Attribute History</I> button will display the last modification date and user
+    for each Molecular Source attribute (Organism, Strain, Tissue, Cell Line, Age, Gender, Tissue Treatment)
+    of the currently selected Molecular Segment.
+<P>
+<LI>The <I>Pick List of Molecular Segment Notes</I> button places special text in the <I>Notes</I> field.
+<P>
+<LI>Strains in the RFLV table on the Reference form must be entered in the following format:
+	<PRE> Strain1, Strain2, Strain3</PRE>
+    <P>The delimiter "comma space" <B>MUST</B> be used to separate two distinct Strains.
+       If the correct delimiter is not used, then the Strains will be treated as one Strain.
+<P>
+<LI>Tabbing through the <I>Endo</I> and <I>Marker</I> columns in the RFLV table will cause the
+    previous row's values to be copied to the current row for those columns.
+<P>
+<LI>The deletion of a master Molecular Segment record will delete the Molecular Segment and all
+    of its References.
+<P>
+</OL>
+
+<H3>RELATED DOCUMENTS</H3>
+<OL>
+<LI><A HREF = "MEICV.html">Controlled Vocabulary</A>
+</OL>
+
+</BODY>
+</HTML>

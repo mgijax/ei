@@ -1826,12 +1826,15 @@ char *mgi_DBinsert(int table, char *keyName)
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case BIB_NOTES:
-    case MLD_NOTES:
-    case MLD_EXPT_NOTES:
     case MRK_NOTES:
     case PRB_NOTES:
     case PRB_REF_NOTES:
 	    sprintf(buf, "insert into %s (%s, sequenceNum, note)",
+	      mgi_DBtable(table), mgi_DBkey(table));
+ 	    break;
+    case MLD_NOTES:
+    case MLD_EXPT_NOTES:
+	    sprintf(buf, "insert into %s (%s, note)",
 	      mgi_DBtable(table), mgi_DBkey(table));
  	    break;
     case CROSS:

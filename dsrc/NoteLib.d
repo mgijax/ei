@@ -737,6 +737,10 @@ rules:
 		         (string) i + "," + 
 		         noteType + "," +
                          mgi_DBprnotestr(note) + END_VALUE;
+	    elsif (tableID = MLD_NOTES or tableID = MLD_EXPT_NOTES) then
+	          cmd := cmd + 
+		       mgi_DBinsert(tableID, NOKEY) + key + "," + 
+                       mgi_DBprnotestr(note) + END_VALUE;
             else
 	          cmd := cmd + 
 		       mgi_DBinsert(tableID, NOKEY) + key + "," + 

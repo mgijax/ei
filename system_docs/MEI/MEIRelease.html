@@ -1,0 +1,62 @@
+<HTML>
+<HEADER>
+<TITLE>
+MGI EDITING INTERFACE - Release Process
+</TITLE>
+</HEADER>
+
+<BODY BGCOLOR="#FFFFFF">
+
+<H2>
+MGI EDITING INTERFACE - Release Process
+</H2>
+
+<H4>Purpose</H4>
+This document provides procedures for preparing and installing a release of an
+Editing Interface Application (MGD, GXD, Nomenclature, MGI Admin).
+<P>
+Read <A HREF="../MGIREADME.html">MGI EDITING INTERFACE - Overview</A> before
+reading this document.  The overview document contains definitions and other terms which
+will are also used in this document.
+
+<H4>Release Procedures</H4>
+<OL>
+<LI>Email <CODE>info-mgi</CODE> to inform everyone in the group of the pending release.
+    Include the following information:
+    <UL>
+    <LI>Ask everyone to exit the application by a certain time prior to installing the new release.
+    <LI>Ask everyone to refrain from entering the application again until you have sent
+	additional email informing them that the release has been successfully installed.
+    <LI>Try to give an approximate time for when the new release will be available.
+    </UL>
+<P>
+<LI>Check the <A HREF="MEI.html#logs">user logs</A>.  At least once a year, the logs should
+    be backed up to tape by the UNIX Sys Admin and then removed so that new logs are created.  As the logs
+    get bigger and bigger, it can be awkward to load them into an editor so that they can be
+    read when debugging problems.
+<P>
+<LI>Check <CODE>titan</CODE> to verify that there are no editing sessions running for the
+    application being released.  For example, to determine if any MGD applications are
+    currently running:
+    <PRE>
+    titan> ps -ef | grep runmgd
+    </PRE>
+    <P>
+    If there are applications still running and you are ready to build the release, either
+    kill the processes (you must be <CODE>root</CODE>) or contact the user and ask him/her to
+    exit the application.
+<P>
+<LI><A HREF="../MGIREADME.html#cvsExport">Export the latest EI version into a build area.</A>
+<P>
+<LI><A HREF="../MGIREADME.html#buildAll">Build and install all EI applications.</A>
+<P>
+<LI><A HREF="../MGIREADME.html#runMGI">Run the installed application.</A>
+<P>
+<LI>Once you are confident that the release has been installed successfully, 
+    email <CODE>info-mgi</CODE> and inform everyone in the group that the application
+    can be used.
+<P>
+</OL>
+
+</BODY>
+</HTML>

@@ -810,8 +810,7 @@ char *mldp_notes1(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select rtrim(note) from MLD_Expt_Notes where _Expt_key = %s \
-   \norder by sequenceNum", key);
+  sprintf(buf,"select rtrim(note) from MLD_Expt_Notes where _Expt_key = %s", key);
   return(buf);
 }
 
@@ -819,8 +818,7 @@ char *mldp_notes2(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select rtrim(note) from MLD_Notes where _Refs_key = %s \
-   \norder by sequenceNum", key);
+  sprintf(buf,"select rtrim(note) from MLD_Notes where _Refs_key = %s", key);
   return(buf);
 }
 
