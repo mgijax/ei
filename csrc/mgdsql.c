@@ -1051,8 +1051,7 @@ char *molecular_notes(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select rtrim(note) from PRB_Notes where _Probe_key = %s \
-   \norder by sequenceNum", key);
+  sprintf(buf,"select rtrim(note) from PRB_Notes where _Probe_key = %s", key);
   return(buf);
 }
 
@@ -1077,8 +1076,7 @@ char *molecular_refnotes(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select rtrim(note) from PRB_Ref_Notes where _Reference_key = %s \
-   \norder by sequenceNum", key);
+  sprintf(buf,"select rtrim(note) from PRB_Ref_Notes where _Reference_key = %s", key);
   return(buf);
 }
 
