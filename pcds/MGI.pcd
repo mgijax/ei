@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Mon Nov 20 10:10:44 2017";
+      lastWritten = "Tue Jan 23 10:28:14 2018";
       copy = false;
       inCreateMenu = true;
         {
@@ -1765,6 +1765,9 @@ Module: MGI
                                                   }
                                                   {
                                                     TAC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    UNC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     RMRC = AccToggle : mgiOption;
@@ -3576,6 +3579,9 @@ Module: MGI
                                                   }
                                                   {
                                                     TAC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    UNC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     RMRC = AccToggle : mgiOption;

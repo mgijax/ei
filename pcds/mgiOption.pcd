@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Mon Nov 20 10:10:39 2017";
+      lastWritten = "Tue Jan 23 10:28:12 2018";
       copy = false;
       inCreateMenu = true;
         {
@@ -694,6 +694,11 @@ Module: mgiOption
                       TAC = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 94;
+                    }
+                    {
+                      UNC = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 208;
                     }
                     {
                       RMRC = AccToggle : mgiOption;
