@@ -634,13 +634,7 @@ rules:
 		       mgi_tblGetCell(termTable, row, termTable.termKey) != mgi_getstr(dbproc, 1)) do
 		  row := row + 1;
 		end while;
-
-		if (mgi_getstr(dbproc, 2) = "1") then
-		  definition := mgi_getstr(dbproc, 3);
-		else
-		  definition := definition + mgi_getstr(dbproc, 3);
-		end if;
-
+		definition := mgi_getstr(dbproc, 2);
 		(void) mgi_tblSetCell(termTable, row, termTable.definition, definition);
 		(void) mgi_tblSetCell(termTable, row, termTable.editMode, TBL_ROW_NOCHG);
             end while;
