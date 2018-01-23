@@ -1,5 +1,14 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-6-0-11-9
+TAG: ei-6-0-11-8
+DATE: 01/23/2018
+STAFF: lec
+CHANGES:
+TR12770/added UNC/208 to Strains/pick list
+
+TAG: ei-6-0-11-5
+DATE: 01/04/2018
 TAG: ei-6-0-11-7
 TAG: ei-6-0-11-6
 DATE: 01/10/2018
