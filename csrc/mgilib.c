@@ -1862,7 +1862,7 @@ char *mgi_DBinsert(int table, char *keyName)
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_ASSAYNOTE:
-            sprintf(buf, "insert into %s (%s, sequenceNum, assayNote)", 
+            sprintf(buf, "insert into %s (%s, assayNote)", 
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_ANTIBODYPREP:

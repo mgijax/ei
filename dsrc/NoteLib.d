@@ -742,7 +742,8 @@ rules:
 	           tableID = MLD_NOTES or 
 	           tableID = MLD_EXPT_NOTES  or
 		   tableID = PRB_NOTES or
-		   tableID = PRB_REF_NOTES) then
+		   tableID = PRB_REF_NOTES or
+		   tableID = GXD_ASSAYNOTE) then
 	          cmd := cmd + 
 		       mgi_DBinsert(tableID, NOKEY) + key + "," + 
                        mgi_DBprnotestr(note) + END_VALUE;

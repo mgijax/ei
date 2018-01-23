@@ -134,8 +134,7 @@ char *assay_notes(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select rtrim(assayNote) from GXD_AssayNote where _Assay_key = %s \
-    \norder by sequenceNum", key);
+  sprintf(buf,"select rtrim(assayNote) from GXD_AssayNote where _Assay_key = %s", key);
   return(buf);
 }
 
