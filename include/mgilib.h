@@ -15,6 +15,7 @@ extern char *mgi_DBincKey(char *);
 extern char *mgi_DBrecordCount(int);
 extern char *mgi_DBaccKey(int);
 extern char *mgi_DBkey(int);
+extern char *mgi_DBautosequence(int);
 extern char *mgi_DBaccTable(int);
 extern char *mgi_DBtable(int);
 extern char *mgi_DBtype(int);

@@ -20,6 +20,7 @@ CALLS
 	 mgi_DBrecordCount("int")                       : "char *";
 	 mgi_DBaccKey("int")				: "char *";
 	 mgi_DBkey("int")				: "char *";
+	 mgi_DBautosequence("int")			: "char *";
 	 mgi_DBaccTable("int")				: "char *";
 	 mgi_DBtable("int")				: "char *";
 	 mgi_DBtype("int")				: "char *";

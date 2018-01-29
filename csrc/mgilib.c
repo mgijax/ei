@@ -391,6 +391,7 @@ char *mgi_DBprkey(char *value)
 	the value of buf is:
 
 	select max(_Term_key) + 1 as termKey into temporary table termKeyMax from VOC_Term
+	select nextval('bib_workflow_status_serial'))
 */
 
 char *mgi_setDBkey(int table, int key, char *keyName)
@@ -400,7 +401,22 @@ char *mgi_setDBkey(int table, int key, char *keyName)
 
   memset(cmd, '\0', sizeof(cmd));
 
-  sprintf(cmd, "select max(%s) + 1 as %s into temporary table %sMax from %s;\n", mgi_DBkey(table), keyName, keyName, mgi_DBtable(table));
+  switch (table)
+  {
+    case ALL_ALLELE_CELLLINE:
+    case IMG_IMAGEPANE_ASSOC:
+    case MGI_REFERENCE_ASSOC:
+    case PRB_STRAIN_GENOTYPE:
+    case PRB_STRAIN_MARKER:
+    case VOC_EVIDENCE:
+  	    sprintf(cmd, "select nextval('%s') as %s into temporary table %sMax from %s;\n", \
+	    	mgi_DBautosequence(table), keyName, keyName, mgi_DBtable(table));
+	    break;
+    default:
+  	    sprintf(cmd, "select max(%s) + 1 as %s into temporary table %sMax from %s;\n", \
+	    	mgi_DBkey(table), keyName, keyName, mgi_DBtable(table));
+	    break;
+  }
 
   return(cmd);
 }
@@ -865,7 +881,57 @@ char *mgi_DBkey(int table)
 	    strcpy(buf, "_Term_key");
 	    break;
     default:
-	    sprintf(buf, "Invalid Table: %d", table);
+	    sprintf(buf, "mgi_DBkey : invalid table: %d", table);
+	    break;
+  }
+
+  return(buf);
+}
+
+/*
+   Determine the autosequence name of the primary key for a given table ID.
+
+   requires:
+	table (int), the table ID from mgilib.h
+
+   returns:
+	a string which contains the autosequence name of the primary key column
+
+   example:
+	buf = mgi_DBautosequence(PRB_STRAIN_MARKER)
+
+	buf contains:
+		prb_strain_marker_serial
+*/
+
+char *mgi_DBautosequence(int table)
+{
+  static char buf[TEXTBUFSIZ];
+
+  memset(buf, '\0', sizeof(buf));
+
+  switch (table)
+  {
+    case ALL_ALLELE_CELLLINE:
+	    strcpy(buf, "all_allele_cellline_serial");
+	    break;
+    case IMG_IMAGEPANE_ASSOC:
+	    strcpy(buf, "img_imagepane_assoc_serial");
+	    break;
+    case MGI_REFERENCE_ASSOC:
+	    strcpy(buf, "mgi_reference_assoc_serial");
+	    break;
+    case PRB_STRAIN_GENOTYPE:
+	    strcpy(buf, "prb_strain_genotype_serial");
+	    break;
+    case PRB_STRAIN_MARKER:
+	    strcpy(buf, "prb_strain_marker_serial");
+	    break;
+    case VOC_EVIDENCE:
+	    strcpy(buf, "voc_evidence_serial");
+	    break;
+    default:
+	    sprintf(buf, "mgi_DBautosequence: invalid table: %d", table);
 	    break;
   }
 
@@ -947,7 +1013,7 @@ char *mgi_DBtype(int table)
 	    strcpy(buf, "Vocabulary Term");
 	    break;
     default:
-	    sprintf(buf, "Invalid Table: %d", table);
+	    sprintf(buf, "mgi_DBtype : invalid table: %d", table);
 	    break;
   }
 
@@ -1047,7 +1113,7 @@ char *mgi_DBaccTable(int table)
 	    strcpy(buf, "VOC_Term_Acc_View");
             break;
     default:
-            sprintf(buf, "Invalid Table: %d", table);
+            sprintf(buf, "mgi_DBaccTable : invalid table: %d", table);
             break;
   }
  
@@ -1665,7 +1731,7 @@ char *mgi_DBtable(int table)
             strcpy(buf, "VOC_VocabDAG_View");
 	    break;
     default:
-	    sprintf(buf, "Invalid Table: %d", table);
+	    sprintf(buf, "mgi_DBtable : invalid table: %d", table);
 	    break;
   }
 
@@ -2633,7 +2699,7 @@ char *mgi_DBcvname(int table)
 	    strcpy(buf, "term");
 	    break;
     default:
-	    sprintf(buf, "Invalid Table: %d", table);
+	    sprintf(buf, "mgi_DBcvname : invalid table: %d", table);
 	    break;
   }
 
