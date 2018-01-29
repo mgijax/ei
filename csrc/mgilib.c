@@ -409,8 +409,8 @@ char *mgi_setDBkey(int table, int key, char *keyName)
     case PRB_STRAIN_GENOTYPE:
     case PRB_STRAIN_MARKER:
     case VOC_EVIDENCE:
-  	    sprintf(cmd, "select nextval('%s') as %s into temporary table %sMax from %s;\n", \
-	    	mgi_DBautosequence(table), keyName, keyName, mgi_DBtable(table));
+  	    sprintf(cmd, "select nextval('%s') as %s into temporary table %sMax;\n", \
+	    	mgi_DBautosequence(table), keyName, keyName);
 	    break;
     default:
   	    sprintf(cmd, "select max(%s) + 1 as %s into temporary table %sMax from %s;\n", \
