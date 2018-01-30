@@ -391,7 +391,7 @@ char *mgi_DBprkey(char *value)
 	the value of buf is:
 
 	select max(_Term_key) + 1 as termKey into temporary table termKeyMax from VOC_Term
-	select nextval('bib_workflow_status_serial'))
+	select nextval('bib_workflow_status_seq'))
 */
 
 char *mgi_setDBkey(int table, int key, char *keyName)
@@ -901,7 +901,7 @@ char *mgi_DBkey(int table)
 	buf = mgi_DBautosequence(PRB_STRAIN_MARKER)
 
 	buf contains:
-		prb_strain_marker_serial
+		prb_strain_marker_seq
 */
 
 char *mgi_DBautosequence(int table)
@@ -913,22 +913,22 @@ char *mgi_DBautosequence(int table)
   switch (table)
   {
     case ALL_ALLELE_CELLLINE:
-	    strcpy(buf, "all_allele_cellline_serial");
+	    strcpy(buf, "all_allele_cellline_seq");
 	    break;
     case IMG_IMAGEPANE_ASSOC:
-	    strcpy(buf, "img_imagepane_assoc_serial");
+	    strcpy(buf, "img_imagepane_assoc_seq");
 	    break;
     case MGI_REFERENCE_ASSOC:
-	    strcpy(buf, "mgi_reference_assoc_serial");
+	    strcpy(buf, "mgi_reference_assoc_seq");
 	    break;
     case PRB_STRAIN_GENOTYPE:
-	    strcpy(buf, "prb_strain_genotype_serial");
+	    strcpy(buf, "prb_strain_genotype_seq");
 	    break;
     case PRB_STRAIN_MARKER:
-	    strcpy(buf, "prb_strain_marker_serial");
+	    strcpy(buf, "prb_strain_marker_seq");
 	    break;
     case VOC_EVIDENCE:
-	    strcpy(buf, "voc_evidence_serial");
+	    strcpy(buf, "voc_evidence_seq");
 	    break;
     default:
 	    sprintf(buf, "mgi_DBautosequence: invalid table: %d", table);
