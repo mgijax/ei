@@ -928,7 +928,7 @@ char *mgi_DBautosequence(int table)
     case PRB_STRAIN_MARKER:
 	    strcpy(buf, "prb_strain_marker_seq");
 	    break;
-    case SEQ_SORUCE_ASSOC:
+    case SEQ_SOURCE_ASSOC:
 	    strcpy(buf, "seq_source_assoc_seq");
 	    break;
     case VOC_EVIDENCE:
