@@ -408,6 +408,7 @@ char *mgi_setDBkey(int table, int key, char *keyName)
     case MGI_REFERENCE_ASSOC:
     case PRB_STRAIN_GENOTYPE:
     case PRB_STRAIN_MARKER:
+    case SEQ_SOURCE_ASSOC:
     case VOC_EVIDENCE:
   	    sprintf(cmd, "select nextval('%s') as %s into temporary table %sMax;\n", \
 	    	mgi_DBautosequence(table), keyName, keyName);
@@ -926,6 +927,9 @@ char *mgi_DBautosequence(int table)
 	    break;
     case PRB_STRAIN_MARKER:
 	    strcpy(buf, "prb_strain_marker_seq");
+	    break;
+    case SEQ_SORUCE_ASSOC:
+	    strcpy(buf, "seq_source_assoc_seq");
 	    break;
     case VOC_EVIDENCE:
 	    strcpy(buf, "voc_evidence_seq");
