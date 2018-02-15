@@ -4,7 +4,7 @@
 -- SimpleVocab.d 12/27/2001
 --
 -- TopLevelShell:		SimpleVocab
--- Database Tables Affected:	VOC_Vocab, VOC_Term, VOC_Text
+-- Database Tables Affected:	VOC_Vocab, VOC_Term
 -- Actions Allowed:		Add, Modify, Delete
 --
 -- Module to process edits for (table).
@@ -362,21 +362,10 @@ rules:
 			currentRecordKey + "," +
 			mgi_DBprstr(term) + "," +
 			mgi_DBprstr(abbrev) + "," +
+			mgi_DBprstr(definition) + "," +
 			newSeqNum + "," +
 			isObsolete + "," +
 			global_userKey + "," + global_userKey + END_VALUE;
-
-	      ModifyNotes.source_widget := termTable;
-	      ModifyNotes.tableID := VOC_TEXT;
-	      ModifyNotes.key := MAX_KEY1 + keyName + MAX_KEY2;
-	      ModifyNotes.row := row;
-	      ModifyNotes.column := termTable.definition;
-	      ModifyNotes.keyDeclared := definitionModified;
-	      send(ModifyNotes, 0);
-	      cmd := cmd + termTable.sqlCmd;
-	      if (termTable.sqlCmd.length > 0) then
-		definitionModified := true;
-	      end if;
 
               mgi_tblSetCell(termTable, row, termTable.termKey, MAX_KEY1 + keyName + MAX_KEY2);
 
@@ -390,23 +379,12 @@ rules:
 		set := "sequenceNum = " + newSeqNum;
               else
                 set := "term = " + mgi_DBprstr(term) + "," +
-		       "abbreviation = " + mgi_DBprstr(abbrev) + "," +
+		       "abbreviation = " + mgi_DBprstr(abbrev) + "," + 
+		       "note = " + mgi_DBprstr(definition) + "," +
 		       "isObsolete = " + isObsolete;
               end if;
 
               cmd := cmd + mgi_DBupdate(VOC_TERM, termKey, set);
-
-	      ModifyNotes.source_widget := termTable;
-	      ModifyNotes.tableID := VOC_TEXT;
-	      ModifyNotes.key := termKey;
-	      ModifyNotes.row := row;
-	      ModifyNotes.column := termTable.definition;
-	      ModifyNotes.keyDeclared := definitionModified;
-	      send(ModifyNotes, 0);
-	      cmd := cmd + termTable.sqlCmd;
-	      if (termTable.sqlCmd.length > 0) then
-		definitionModified := true;
-	      end if;
 
 	      termModified := true;
 
@@ -610,33 +588,17 @@ rules:
 	  dbproc := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-		(void) mgi_tblSetCell(termTable, row, termTable.currentSeqNum, mgi_getstr(dbproc, 5));
-		(void) mgi_tblSetCell(termTable, row, termTable.seqNum, mgi_getstr(dbproc, 5));
+		(void) mgi_tblSetCell(termTable, row, termTable.currentSeqNum, mgi_getstr(dbproc, 6));
+		(void) mgi_tblSetCell(termTable, row, termTable.seqNum, mgi_getstr(dbproc, 6));
 		(void) mgi_tblSetCell(termTable, row, termTable.termKey, mgi_getstr(dbproc, 1));
 		(void) mgi_tblSetCell(termTable, row, termTable.term, mgi_getstr(dbproc, 3));
-		(void) mgi_tblSetCell(termTable, row, termTable.mgiID, mgi_getstr(dbproc, 12));
+		(void) mgi_tblSetCell(termTable, row, termTable.mgiID, mgi_getstr(dbproc, 13));
 		(void) mgi_tblSetCell(termTable, row, termTable.abbreviation, mgi_getstr(dbproc, 4));
-		(void) mgi_tblSetCell(termTable, row, termTable.obsoleteKey, mgi_getstr(dbproc, 6));
-		(void) mgi_tblSetCell(termTable, row, termTable.isObsolete, mgi_getstr(dbproc, 14));
+		(void) mgi_tblSetCell(termTable, row, termTable.definition, mgi_getstr(dbproc, 5));
+		(void) mgi_tblSetCell(termTable, row, termTable.obsoleteKey, mgi_getstr(dbproc, 7));
+		(void) mgi_tblSetCell(termTable, row, termTable.isObsolete, mgi_getstr(dbproc, 15));
 		(void) mgi_tblSetCell(termTable, row, termTable.editMode, TBL_ROW_NOCHG);
 		row := row + 1;
-            end while;
-          end while;
-	  (void) mgi_dbclose(dbproc);
-
-	  row := 0;
-          cmd := simple_select3(currentRecordKey);
-	  dbproc := mgi_dbexec(cmd);
-          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-		row := 0;
-		while (mgi_tblGetCell(termTable, row, termTable.termKey) != "" and
-		       mgi_tblGetCell(termTable, row, termTable.termKey) != mgi_getstr(dbproc, 1)) do
-		  row := row + 1;
-		end while;
-		definition := mgi_getstr(dbproc, 2);
-		(void) mgi_tblSetCell(termTable, row, termTable.definition, definition);
-		(void) mgi_tblSetCell(termTable, row, termTable.editMode, TBL_ROW_NOCHG);
             end while;
           end while;
 	  (void) mgi_dbclose(dbproc);
