@@ -159,7 +159,6 @@ extern char *organism_anchor();
 
 extern char *simple_select1(char *);
 extern char *simple_select2(char *);
-extern char *simple_select3(char *);
 
 /* Verify.d */
 

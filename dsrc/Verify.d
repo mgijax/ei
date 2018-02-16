@@ -1665,7 +1665,7 @@ rules:
 	        cmd := mgi_setDBkey(VOC_TERM, NEWKEY, KEYNAME) +
 		       mgi_DBinsert(VOC_TERM, KEYNAME) +
 		       (string) verify.vocabKey + "," +
-		       mgi_DBprstr(item.value) + ",NULL," +
+		       mgi_DBprstr(item.value) + ",NULL,NULL," +
 		       nextSeqNum + ",0," +
 		       global_userKey + "," + global_userKey + END_VALUE;
 	      else

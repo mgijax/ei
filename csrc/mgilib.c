@@ -859,7 +859,6 @@ char *mgi_DBkey(int table)
 	    strcpy(buf, "_Vocab_key");
 	    break;
     case VOC_TERM:
-    case VOC_TEXT:
 	    strcpy(buf, "_Term_key");
 	    break;
     case VOC_ANNOTHEADER:
@@ -1689,17 +1688,11 @@ char *mgi_DBtable(int table)
     case VOC_TERM:
             strcpy(buf, "VOC_Term");
 	    break;
-    case VOC_TEXT:
-            strcpy(buf, "VOC_Text");
-	    break;
     case VOC_VOCAB_VIEW:
             strcpy(buf, "VOC_Vocab_View");
 	    break;
     case VOC_TERM_VIEW:
             strcpy(buf, "VOC_Term_View");
-	    break;
-    case VOC_TEXT_VIEW:
-            strcpy(buf, "VOC_Text_View");
 	    break;
     case VOC_ANNOTHEADER:
             strcpy(buf, "VOC_AnnotHeader");
@@ -1847,7 +1840,6 @@ char *mgi_DBinsert(int table, char *keyName)
     case SEQ_ALLELE_ASSOC:
     case VOC_ANNOT:
     case VOC_ANNOTHEADER:
-    case VOC_TEXT:
     case VOC_EVIDENCE:
     case VOC_EVIDENCE_PROPERTY:
 	selectKey = 0;
@@ -2189,10 +2181,7 @@ char *mgi_DBinsert(int table, char *keyName)
 	    break;
     case VOC_TERM:
     case VOC_CELLLINE_VIEW:
-            sprintf(buf, "insert into %s (%s, _Vocab_key, term, abbreviation, sequenceNum, isObsolete, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(VOC_TERM), mgi_DBkey(table));
-	    break;
-    case VOC_TEXT:
-            sprintf(buf, "insert into %s (%s, note)", mgi_DBtable(table), mgi_DBkey(table));
+            sprintf(buf, "insert into %s (%s, _Vocab_key, term, abbreviation, note, sequenceNum, isObsolete, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(VOC_TERM), mgi_DBkey(table));
 	    break;
     case VOC_ANNOTHEADER:
             sprintf(buf, "insert into %s (%s, _AnnotType_key, _Object_key, _Term_key, sequenceNum, isNormal,_CreatedBy_key, _ModifiedBy_key, _ApprovedBy_key, approval_date)", mgi_DBtable(table), mgi_DBkey(table));

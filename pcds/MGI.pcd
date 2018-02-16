@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Tue Jan 23 10:28:14 2018";
+      lastWritten = "Thu Feb 15 07:01:37 2018";
       copy = false;
       inCreateMenu = true;
         {
@@ -2131,14 +2131,6 @@ Module: MGI
                                         Group: Widget
                                           visibleItemCount = 15;
                                       }
-                                }
-                                {
-                                  NotePush = NotePush : mgiDataTypes;
-                                  Group: Widget
-                                    labelString = Definition;
-                                  Group: User
-                                    targetWidget = Term;
-                                    targetColumn = 8;
                                 }
                                 {
                                   YesNoFrame = YesNoFrame : mgiOption;

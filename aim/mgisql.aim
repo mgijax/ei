@@ -125,7 +125,6 @@ CALLS
 
 	 simple_select1("char *")				: "char *";
 	 simple_select2("char *")				: "char *";
-	 simple_select3("char *")				: "char *";
 
 	 verify_allele("char *")				: "char *";
 	 verify_alleleid("char *")				: "char *";

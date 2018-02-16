@@ -976,15 +976,6 @@ char *simple_select2(char *key)
   return(buf);
 }
 
-char *simple_select3(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select * from VOC_Text_View where _Vocab_key = %s \
-   order by _Term_key", key);
-  return(buf);
-}
-
 /*
  * Verify.d
 */
