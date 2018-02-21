@@ -1962,7 +1962,7 @@ Module: MGI
                                       {
                                         ACCLogicalPulldown = OptionPulldown;
                                         Group: User
-                                          sql = "select _LogicalDB_key, name from ACC_LogicalDB\nwhere _LogicalDB_key in (-1, 1,15)\norder by name";
+                                          sql = "select a._LogicalDB_key, a.name from ACC_LogicalDB a\nwhere exists (select 1 from VOC_Vocab v where a._LogicalDB_key = v._LogicaldB_key and v.isSimple = 1)\norder by a.name";
                                       }
                                 }
                                 {
