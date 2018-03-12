@@ -539,6 +539,10 @@ rules:
 	  value : string := VerifyAge.value;
 	  agePrefix : string;
 
+	  -- AgeRange copied in Assay/CopySpecimen/CopyGel
+	  -- so, do nothing...just return
+	  return;
+
 	  -- If not in the Age, return
 
 	  if (column != table.ageRange) then

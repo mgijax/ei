@@ -935,11 +935,10 @@ rules:
             return;
           end if;
  
-	  -- Do not copy Results or Age Range or Notes
+	  -- Do not copy these fields
 
 	  if (row = 0 or
 	      column = table.results or
-	      column = table.ageRange or
 	      column = table.ageNote or
 	      column = table.specimenNote) then
 	    return;
@@ -967,6 +966,11 @@ rules:
 
 	    if (column = table.agePrefix) then
 	      mgi_tblSetCell(table, row, table.ageKey, mgi_tblGetCell(table, row - 1, table.ageKey));
+
+	    -- For Age Range, copy Age Range column
+
+	    elsif (column = table.ageRange) then
+	      mgi_tblSetCell(table, row, table.ageRange, mgi_tblGetCell(table, row - 1, table.ageRange));
 
 	    -- Else, copy key column
 
@@ -1071,10 +1075,9 @@ rules:
             return;
           end if;
  
-	  -- Do not copy Age Range or Notes
+	  -- Do not copy these fields
 
 	  if (row = 0 or 
-	      column = table.ageRange or
 	      column = table.ageNote or
 	      column = table.laneNote) then
 	    return;
@@ -1120,6 +1123,11 @@ rules:
 
 	    if (column = table.agePrefix) then
 	      mgi_tblSetCell(table, row, table.ageKey, mgi_tblGetCell(table, row - 1, table.ageKey));
+
+	    -- For Age Range, copy Age Range column
+
+	    elsif (column = table.ageRange) then
+	      mgi_tblSetCell(table, row, table.ageRange, mgi_tblGetCell(table, row - 1, table.ageRange));
 
 	    -- Else, copy key column
 
