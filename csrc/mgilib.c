@@ -447,17 +447,17 @@ char *mgi_DBincKey(char *keyName)
   memset(cmd, '\0', sizeof(cmd));
 
   if (strcmp(keyName, "cellAssocKey") == 0)
-    sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, keyName, mgi_DBautosequence(ALL_ALLELE_CELLLINE));
+    sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(ALL_ALLELE_CELLLINE), mgi_DBautosequence(ALL_ALLELE_CELLLINE));
   else if (strcmp(keyName, "ipAssocKey") == 0)
-    sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, keyName, mgi_DBautosequence(IMG_IMAGEPANE_ASSOC));
+    sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(IMG_IMAGEPANE_ASSOC), mgi_DBautosequence(IMG_IMAGEPANE_ASSOC));
   else if (strcmp(keyName, "refassocKey") == 0)
-    sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, keyName, mgi_DBautosequence(MGI_REFERENCE_ASSOC));
+    sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(MGI_REFERENCE_ASSOC), mgi_DBautosequence(MGI_REFERENCE_ASSOC));
   else if (strcmp(keyName, "genotypeKey") == 0)
-    sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, keyName, mgi_DBautosequence(PRB_STRAIN_GENOTYPE));
+    sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(PRB_STRAIN_GENOTYPE), mgi_DBautosequence(PRB_STRAIN_GENOTYPE));
   else if (strcmp(keyName, "strainMarkerKey") == 0)
-    sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, keyName, mgi_DBautosequence(PRB_STRAIN_MARKER));
+    sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(PRB_STRAIN_MARKER), mgi_DBautosequence(PRB_STRAIN_MARKER));
   else if (strcmp(keyName, "annotEvidenceKey") == 0)
-    sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, keyName, mgi_DBautosequence(VOC_EVIDENCE)); 
+    sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(VOC_EVIDENCE), mgi_DBautosequence(VOC_EVIDENCE)); 
   else
     sprintf(cmd, "update %sMax set %s = %s + 1;\n", keyName, keyName, keyName);
 
