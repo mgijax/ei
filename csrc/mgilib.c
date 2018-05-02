@@ -410,7 +410,7 @@ char *mgi_setDBkey(int table, int key, char *keyName)
     case PRB_STRAIN_MARKER:
     case SEQ_SOURCE_ASSOC:
     case VOC_EVIDENCE:
-  	    sprintf(cmd, "drop table if exists %sMax;\nselect nextval('%s') as %s into temporary table %sMax;\n", \
+  	    sprintf(cmd, "select nextval('%s') as %s into temporary table %sMax;\n", \
 	    	mgi_DBautosequence(table), mgi_DBautosequence(table), keyName, keyName);
 	    break;
     default:
@@ -446,7 +446,20 @@ char *mgi_DBincKey(char *keyName)
 
   memset(cmd, '\0', sizeof(cmd));
 
-  sprintf(cmd, "update %sMax set %s = %s + 1;\n", keyName, keyName, keyName);
+  if (strcmp(keyName, "cellAssocKey") == 0)
+    sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, keyName, mgi_DBautosequence(ALL_ALLELE_CELLLINE));
+  else if (strcmp(keyName, "ipAssocKey") == 0)
+    sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, keyName, mgi_DBautosequence(IMG_IMAGEPANE_ASSOC));
+  else if (strcmp(keyName, "refassocKey") == 0)
+    sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, keyName, mgi_DBautosequence(MGI_REFERENCE_ASSOC));
+  else if (strcmp(keyName, "genotypeKey") == 0)
+    sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, keyName, mgi_DBautosequence(PRB_STRAIN_GENOTYPE));
+  else if (strcmp(keyName, "strainMarkerKey") == 0)
+    sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, keyName, mgi_DBautosequence(PRB_STRAIN_MARKER));
+  else if (strcmp(keyName, "annotEvidenceKey") == 0)
+    sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, keyName, mgi_DBautosequence(VOC_EVIDENCE)); 
+  else
+    sprintf(cmd, "update %sMax set %s = %s + 1;\n", keyName, keyName, keyName);
 
   return(cmd);
 }
