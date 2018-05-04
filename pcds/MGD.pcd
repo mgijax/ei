@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Tue Jan 23 10:29:21 2018";
+      lastWritten = "Thu May  3 11:15:12 2018";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -346,15 +346,6 @@ Module: MGD
                                                   }
                                                   {
                                                     TrEMBL = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    VEGAGeneModel = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    VEGAProtein = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    VEGATranscript = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     AllenBrainAtlas = AccToggle : mgiOption;
@@ -1537,15 +1528,6 @@ Module: MGD
                                                     TrEMBL = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    VEGAGeneModel = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    VEGAProtein = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    VEGATranscript = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     AllenBrainAtlas = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -2726,15 +2708,6 @@ Module: MGD
                                   TrEMBL = AccToggle : mgiOption;
                                 }
                                 {
-                                  VEGAGeneModel = AccToggle : mgiOption;
-                                }
-                                {
-                                  VEGAProtein = AccToggle : mgiOption;
-                                }
-                                {
-                                  VEGATranscript = AccToggle : mgiOption;
-                                }
-                                {
                                   AllenBrainAtlas = AccToggle : mgiOption;
                                 }
                                 {
@@ -3389,15 +3362,6 @@ Module: MGD
                                                   }
                                                   {
                                                     TrEMBL = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    VEGAGeneModel = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    VEGAProtein = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    VEGATranscript = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     AllenBrainAtlas = AccToggle : mgiOption;
@@ -5875,15 +5839,6 @@ Module: MGD
                                                     TrEMBL = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    VEGAGeneModel = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    VEGAProtein = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    VEGATranscript = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     AllenBrainAtlas = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -8008,15 +7963,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     TrEMBL = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    VEGAGeneModel = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    VEGAProtein = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    VEGATranscript = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     AllenBrainAtlas = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -8592,15 +8538,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     TrEMBL = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    VEGAGeneModel = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    VEGAProtein = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    VEGATranscript = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     AllenBrainAtlas = AccToggle : mgiOption;
@@ -9762,15 +9699,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     TrEMBL = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    VEGAGeneModel = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    VEGAProtein = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    VEGATranscript = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     AllenBrainAtlas = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -10561,15 +10489,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     TrEMBL = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    VEGAGeneModel = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    VEGAProtein = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    VEGATranscript = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     AllenBrainAtlas = AccToggle : mgiOption;
@@ -12280,15 +12199,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     TrEMBL = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    VEGAGeneModel = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    VEGAProtein = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    VEGATranscript = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     AllenBrainAtlas = AccToggle : mgiOption;
@@ -14073,21 +13983,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     Group: Widget
                                                       managed = True;
                                                   }
-                                                  {
-                                                    VEGAGeneModel = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
-                                                    VEGAProtein = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
-                                                    VEGATranscript = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
                                                   }
                                                   }
                                             }
@@ -14186,15 +14081,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     TrEMBL = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    VEGAGeneModel = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    VEGAProtein = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    VEGATranscript = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     AllenBrainAtlas = AccToggle : mgiOption;
@@ -14486,15 +14372,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     TrEMBL = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    VEGAGeneModel = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    VEGAProtein = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    VEGATranscript = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     AllenBrainAtlas = AccToggle : mgiOption;

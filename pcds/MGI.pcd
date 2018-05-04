@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Thu Feb 15 07:01:37 2018";
+      lastWritten = "Thu May  3 11:15:10 2018";
       copy = false;
       inCreateMenu = true;
         {
@@ -1537,15 +1537,6 @@ Module: MGI
                                                   }
                                                   {
                                                     TrEMBL = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    VEGAGeneModel = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    VEGAProtein = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    VEGATranscript = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     AllenBrainAtlas = AccToggle : mgiOption;
@@ -3339,15 +3330,6 @@ Module: MGI
                                                   }
                                                   {
                                                     TrEMBL = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    VEGAGeneModel = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    VEGAProtein = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    VEGATranscript = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     AllenBrainAtlas = AccToggle : mgiOption;

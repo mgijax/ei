@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Tue Jan 23 10:28:12 2018";
+      lastWritten = "Thu May  3 11:15:08 2018";
       copy = false;
       inCreateMenu = true;
         {
@@ -204,27 +204,6 @@ Module: mgiOption
                         labelString = TrEMBL;
                       Group: User
                         defaultValue = 41;
-                    }
-                    {
-                      VEGAGeneModel = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = "VEGA Gene Model";
-                      Group: User
-                        defaultValue = 85;
-                    }
-                    {
-                      VEGAProtein = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = "VEGA Protein";
-                      Group: User
-                        defaultValue = 132;
-                    }
-                    {
-                      VEGATranscript = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = "VEGA Transcript";
-                      Group: User
-                        defaultValue = 131;
                     }
                     {
                       AllenBrainAtlas = AccToggle : mgiOption;
