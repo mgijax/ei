@@ -452,6 +452,10 @@ char *mgi_DBincKey(char *keyName)
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(IMG_IMAGEPANE_ASSOC), mgi_DBautosequence(IMG_IMAGEPANE_ASSOC));
   else if (strcmp(keyName, "refassocKey") == 0)
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(MGI_REFERENCE_ASSOC), mgi_DBautosequence(MGI_REFERENCE_ASSOC));
+  else if (strcmp(keyName, "refAlleleKey") == 0)
+    sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(MGI_REFERENCE_ASSOC), mgi_DBautosequence(MGI_REFERENCE_ASSOC));
+  else if (strcmp(keyName, "refMarkerKey") == 0)
+    sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(MGI_REFERENCE_ASSOC), mgi_DBautosequence(MGI_REFERENCE_ASSOC));
   else if (strcmp(keyName, "genotypeKey") == 0)
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(PRB_STRAIN_GENOTYPE), mgi_DBautosequence(PRB_STRAIN_GENOTYPE));
   else if (strcmp(keyName, "strainMarkerKey") == 0)

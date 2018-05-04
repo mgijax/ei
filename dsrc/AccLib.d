@@ -608,11 +608,11 @@ rules:
 		  cmd := cmd + mgi_DBdelete(tableID, accKey);
 
 		-- Disallow edits if:
-		-- NCBI Gene Model (59), Ensembl Gene Model (60), VEGA Gene Model (85)
+		-- NCBI Gene Model (59), Ensembl Gene Model (60)
 		else
-		  if (logicalKey = "59" or logicalKey = "60" or logicalKey = "85") then
+		  if (logicalKey = "59" or logicalKey = "60") then
                     StatusReport.source_widget := table.top;
-                    StatusReport.message := "You cannot delete an Accession id for a gene model (NCBI, Ensembl, VEGA).\n";
+                    StatusReport.message := "You cannot delete an Accession id for a gene model (NCBI, Ensembl).\n";
                     send(StatusReport);
 		  else
                     cmd := cmd + exec_acc_deleteByAccKey(accKey, refsKey);
