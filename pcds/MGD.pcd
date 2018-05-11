@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Thu May  3 11:15:12 2018";
+      lastWritten = "Fri May 11 12:58:07 2018";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -13568,7 +13568,7 @@ Shift<Key>Tab: prev-tab-group()
                                         Table = mgiTable : mgiTable;
                                         Group: Widget
                                           xrtTblColumnLabels = "Mode,Annot key,Term key,TDC ID,Feature Type";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 12)(all 4 30)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 12)(all 4 20)";
                                           xrtTblNumRows = 5;
                                           xrtTblPixelWidthSeries = "(all 0-2 0)";
                                           xrtTblVisibleRows = 2;
@@ -13591,14 +13591,13 @@ Shift<Key>Tab: prev-tab-group()
                                   Current = Table : mgiTable;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
-                                    rightAttachment = attach_form;
+                                    rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
                                     topWidget = TDCVocab;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     leftWidget = TDCVocab;
                                     leftOffset = 5;
-                                    rightOffset = 5;
                                       {
                                         Table = mgiTable;
                                         Group: Widget
@@ -13606,7 +13605,7 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblPixelWidthSeries = "(all 0-2 0)";
                                           xrtTblValidateCellCallback = "D:VerifyMarker,\nD:CommitTableCellEdit";
                                           xrtTblVisibleRows = 2;
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 25)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 20)";
                                           xrtTblMaxLengthSeries = "(all 2 40)";
                                           xrtTblTraversableSeries = "(all 0-2 False)";
                                           userDefinedAttributes = "markerCurrentKey:Int(Int)=\"1\"\nmarkerKey:Int(Int)=\"2\"\nmarkerSymbol:Int(Int)=\"3\"\nmarkerChr:Int(Int)=\"-1\"\nmarkerColumns:Int=\"1\"\n";
