@@ -13565,8 +13565,8 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         text = text;
                                         Group: Widget
-                                          columns = 50;
-                                          maxLength = 40;
+                                          columns = 65;
+                                          maxLength = 100;
                                           translations = "#override
 Shift<Key>Tab: prev-tab-group()
 <Key>Tab: SetDefault() Search()
