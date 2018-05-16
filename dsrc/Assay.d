@@ -944,6 +944,18 @@ rules:
 	    return;
 	  end if;
 
+	  -- If AgePrefix in set, then do skip
+
+	  if (column = table.ageRange and
+	      (mgi_tblGetCell(table, row, table.agePrefix) = "postnatal" or 
+	       mgi_tblGetCell(table, row, table.agePrefix) = "postnatal adult"  or
+               mgi_tblGetCell(table, row, table.agePrefix) = "postnatal newborn" or 
+               mgi_tblGetCell(table, row, table.agePrefix) = "Not Applicable" or
+               mgi_tblGetCell(table, row, table.agePrefix) = "Not Specified"
+	      )) then
+	    return;
+	  end if;
+
 	  if (mgi_tblGetCell(table, row, column) = "" and
 	      mgi_tblGetCell(table, row - 1, column) != "") then
 
@@ -1099,6 +1111,18 @@ rules:
 	    if (controlKey != "1") then
 	      return;
 	    end if;
+	  end if;
+
+	  -- If AgePrefix in set, then do skip
+
+	  if (column = table.ageRange and
+	      (mgi_tblGetCell(table, row, table.agePrefix) = "postnatal" or 
+	       mgi_tblGetCell(table, row, table.agePrefix) = "postnatal adult"  or
+               mgi_tblGetCell(table, row, table.agePrefix) = "postnatal newborn" or 
+               mgi_tblGetCell(table, row, table.agePrefix) = "Not Applicable" or
+               mgi_tblGetCell(table, row, table.agePrefix) = "Not Specified"
+	      )) then
+	    return;
 	  end if;
 
 	  if (mgi_tblGetCell(table, row, column) = "" and

@@ -776,7 +776,6 @@ rules:
 	  -- See if the user has entered any search constraints;
 	  -- If so, then process the user-specified query
 	  --
-	  --from := "from " + mgi_DBtable(GXD_GENOTYPE_VIEW) + " g";
 	  select := "";
 	  from := "from " + mgi_DBtable(GXD_GENOTYPE) + " g, PRB_Strain ps";
 	  where := "";

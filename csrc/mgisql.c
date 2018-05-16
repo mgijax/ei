@@ -1060,6 +1060,20 @@ char *verify_genotype(char *key)
   return(buf);
 }
 
+char *verify_genotype_gxd(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select g._Genotype_key from GXD_Genotype g, ACC_Accession a \
+   \nwhere g._Genotype_key = a._Object_key \
+   \nand a._MGIType_key = 12 \
+   \nand a._LogicalDB_key = 1  \
+   \nand a.prefixPart = 'MGI:' \
+   \nand a.preferred = 1 \
+   \nand a.accID = %s", key);
+  return(buf);
+}
+
 char *verify_imagepane(char *key)
 {
   static char buf[TEXTBUFSIZ];
