@@ -167,6 +167,7 @@ extern char *verify_alleleid(char *);
 extern char *verify_allele_marker(char *);
 extern char *verify_cellline(char *);
 extern char *verify_genotype(char *);
+extern char *verify_genotype_gxd(char *);
 extern char *verify_imagepane(char *);
 
 extern char *verify_marker(char *, char *);

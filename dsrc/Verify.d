@@ -1285,6 +1285,7 @@ rules:
 	  genotypeID : string := "";
 	  genotypeKey : string := "";
 	  genotypeName : string := "";
+	  cmd : string;
 
 	  if (reason = TBL_REASON_VALIDATE_CELL_BEGIN) then
 	    return;
@@ -1320,14 +1321,20 @@ rules:
 
 	  (void) busy_cursor(top);
 
-	  cmd : string := verify_genotype(mgi_DBprstr(genotypeID));
+	  if (table.is_defined("genotypeName") != nil) then
+	    cmd := verify_genotype(mgi_DBprstr(genotypeID));
+	  else
+	    cmd := verify_genotype_gxd(mgi_DBprstr(genotypeID));
+          end if;
 
 	  dbproc : opaque := mgi_dbexec(cmd);
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (mgi_getstr(dbproc, 1) != "") then
 	        genotypeKey := mgi_getstr(dbproc, 1);
-	        genotypeName := mgi_getstr(dbproc, 2);
+	        if (table.is_defined("genotypeName") != nil) then
+	          genotypeName := mgi_getstr(dbproc, 2);
+	        end if;
 	      end if;
 	    end while;
 	  end while;

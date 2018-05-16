@@ -131,6 +131,7 @@ CALLS
 	 verify_allele_marker("char *")				: "char *";
 	 verify_cellline("char *")				: "char *";
 	 verify_genotype("char *")				: "char *";
+	 verify_genotype_gxd("char *")				: "char *";
 	 verify_imagepane("char *")				: "char *";
 	 verify_marker("char *", "char *")			: "char *";
 	 verify_marker_official("char *", "char *")		: "char *";
