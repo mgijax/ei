@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Fri May 11 12:58:07 2018";
+      lastWritten = "Tue May 22 09:10:14 2018";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -13512,10 +13512,10 @@ Shift<Key>Tab: prev-tab-group()
                                 {
                                   Cyto = CharText : mgiDataTypes;
                                   Group: Constraint
-                                    leftAttachment = attach_widget;
+                                    leftAttachment = attach_opposite_widget;
                                     leftWidget = Name;
                                     rightAttachment = attach_none;
-                                    topAttachment = attach_opposite_widget;
+                                    topAttachment = attach_widget;
                                     topWidget = Name;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -13556,11 +13556,11 @@ Shift<Key>Tab: prev-tab-group()
                                 {
                                   TDCVocab = Table : mgiTable;
                                   Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    leftWidget = Symbol;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_opposite_widget;
-                                    topWidget = MarkerTypeFrame;
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = Current;
+                                    rightAttachment = attach_form;
+                                    topAttachment = attach_widget;
+                                    topWidget = Current;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     leftOffset = 2;
@@ -13568,7 +13568,7 @@ Shift<Key>Tab: prev-tab-group()
                                         Table = mgiTable : mgiTable;
                                         Group: Widget
                                           xrtTblColumnLabels = "Mode,Annot key,Term key,TDC ID,Feature Type";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 12)(all 4 20)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 12)(all 4 25)";
                                           xrtTblNumRows = 5;
                                           xrtTblPixelWidthSeries = "(all 0-2 0)";
                                           xrtTblVisibleRows = 2;
@@ -13591,13 +13591,14 @@ Shift<Key>Tab: prev-tab-group()
                                   Current = Table : mgiTable;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
-                                    rightAttachment = attach_none;
+                                    rightAttachment = attach_form;
                                     topAttachment = attach_opposite_widget;
-                                    topWidget = TDCVocab;
+                                    topWidget = MarkerTypeFrame;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    leftWidget = TDCVocab;
-                                    leftOffset = 5;
+                                    leftWidget = Name;
+                                    leftOffset = 15;
+                                    rightOffset = 2;
                                       {
                                         Table = mgiTable;
                                         Group: Widget
@@ -13654,10 +13655,10 @@ Shift<Key>Tab: prev-tab-group()
                                     leftAttachment = attach_opposite_widget;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = Name;
+                                    topWidget = Cyto;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    leftWidget = Name;
+                                    leftWidget = Cyto;
                                     topOffset = 5;
                                 }
                                 {
@@ -13675,7 +13676,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         legend = XmLabelGadget;
                                         Group: Widget
-                                          labelString = "1 = Synonyms, 2 = References\n3 = Accession IDs(Nucleotide Sequence), 4 = Accession IDs(EntrezGene etc.), 5 = Accession IDs(all other)\n6 = Alias, 7 = cM Positions (all)";
+                                          labelString = "1 = Synonyms, 2 = References\n3 = Accession IDs(Nucleotide Sequence), 4 = Accession IDs(EntrezGene etc.), 5 = Accession IDs(all other)\n6 = TSS or Gene, 7 = Alias, 8 = cM Positions (all)";
                                       }
                                       {
                                         notebook = notebook : mgiNoteBook;
@@ -14163,6 +14164,34 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   }
+                                                  }
+                                            }
+                                            {
+                                              TSSGene = Table : mgiTable;
+                                                  {
+                                                    Table = mgiTable : mgiTable;
+                                                    Group: Widget
+                                                      userDefinedAttributes = "markerCurrent:Int=\"1\"\nmarkerKey:Int=\"2\"\nmarkerSymbol:Int=\"3\"\nmarkerColumn:Int=\"1\"\n";
+                                                      xrtTblNumColumns = 4;
+                                                      xrtTblColumnLabels = "Mode,Current key,Marker key,TSS or Gene";
+                                                      xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 20)";
+                                                      xrtTblEditableSeries = "(all 0-2 False)";
+                                                      xrtTblMaxLengthSeries = "(all 3 25)";
+                                                      xrtTblPixelWidthSeries = "(all 0-2 0)";
+                                                      xrtTblTraversableSeries = "(all 0-2 False)";
+                                                      xrtTblValidateCellCallback = "D:VerifyMarker,\nD:CommitTableCellEdit";
+                                                      xrtTblNumRows = 12;
+                                                      xrtTblVisibleRows = 11;
+                                                  }
+                                                  {
+                                                    AddRow = TablePush : mgiTable;
+                                                    Group: Widget
+                                                      managed = False;
+                                                  }
+                                                  {
+                                                    DeleteRow = TablePush : mgiTable;
+                                                    Group: Widget
+                                                      managed = False;
                                                   }
                                             }
                                             {
