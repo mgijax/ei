@@ -706,17 +706,17 @@ char *marker_tssgene(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select m._Marker_key, m.symbol \
+  sprintf(buf,"select r._Object_key_1, m.symbol \
      \nfrom MGI_Relationship r, MRK_Marker m \
-     \nwhere m._Marker_key = r._Object_key_1 \
+     \nwhere r._Object_key_2 = m._Marker_key \
      \nand r._Category_key = 1008 \
-     \nand m._Marker_key = %s \
+     \nand r._Object_key_1 = %s \
      \nunion \
-     \nselect m._Marker_key, m.symbol \
+     \nselect r._Object_key_2, m.symbol \
      \nfrom MGI_Relationship r, MRK_Marker m \
-     \nwhere m._Marker_key = r._Object_key_2 \
+     \nwhere r._Object_key_1 = m._Marker_key \
      \nand r._Category_key = 1008 \
-     \nand m._Marker_key = %s \
+     \nand r._Object_key_2 = %s \
      ", key, key);
   return(buf);
 }
