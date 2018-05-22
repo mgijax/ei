@@ -50,6 +50,7 @@ CALLS
 	 marker_current("char *")			: "char *";
 	 marker_tdc("char *", "char *", "char *")	: "char *";
 	 marker_alias("char *")				: "char *";
+	 marker_tssgene("char *")			: "char *";
 	 marker_mouse("char *")				: "char *";
 	 marker_count("char *")				: "char *";
 	 marker_checkaccid("char *", "char *", "char *"): "char *";

@@ -186,6 +186,7 @@ devents:
 	ModifyCurrent :local [];
 	ModifyHistory :local [mode : string := "modify";];
 	ModifyOffset :local [];
+	ModifyTSSGene :local [];
 
 	PrepareSearch :local [];
 
@@ -341,6 +342,7 @@ rules:
 	  tables.append(top->Current->Table);
 	  tables.append(top->Alias->Table);
 	  tables.append(top->Offset->Table);
+	  tables.append(top->TSSGene->Table);
 	  tables.append(top->AccessionReference1->Table);
 	  tables.append(top->AccessionReference2->Table);
 	  tables.append(top->AccessionReference3->Table);
@@ -990,6 +992,7 @@ rules:
 	  send(ModifyAlias, 0);
 	  send(ModifyCurrent, 0);
 	  send(ModifyOffset, 0);
+	  send(ModifyTSSGene, 0);
 
 	  --  Process References
 
@@ -1373,6 +1376,47 @@ rules:
 	      send(StatusReport);
             elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
               cmd := cmd + mgi_DBdelete(MRK_OFFSET, currentRecordKey + " and source = " + key);
+            end if;
+ 
+            row := row + 1;
+          end while;
+	end does;
+
+--
+-- ModifyTSSGene
+--
+-- Activated from: devent Modify
+--
+-- Construct insert/update/delete for Marker Aliases
+--
+
+	ModifyTSSGene does
+          table : widget := top->TSSGene->Table;
+          row : integer := 0;
+          editMode : string;
+          key : string;
+          newKey : string;
+          set : string := "";
+ 
+          -- Process while non-empty rows are found
+ 
+          while (row < mgi_tblNumRows(table)) do
+            editMode := mgi_tblGetCell(table, row, table.editMode);
+ 
+            key := mgi_tblGetCell(table, row, table.markerCurrentKey);
+            newKey := mgi_tblGetCell(table, row, table.markerKey);
+ 
+            if (editMode = TBL_ROW_EMPTY or newKey = "NULL") then
+              break;
+            end if;
+ 
+            if (editMode = TBL_ROW_ADD) then
+              cmd := cmd + mgi_DBinsert(MRK_ALIAS, NOKEY) + newKey + "," + currentRecordKey + END_VALUE;
+            elsif (editMode = TBL_ROW_MODIFY) then
+              set := "_Marker_key = " + currentRecordKey;
+              cmd := cmd + mgi_DBupdate(MRK_ALIAS, key, set);
+            elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
+               cmd := cmd + mgi_DBdelete(MRK_ALIAS, key);
             end if;
  
             row := row + 1;
@@ -1850,6 +1894,22 @@ rules:
               (void) mgi_tblSetCell(table, row, table.termKey, mgi_getstr(dbproc, 2));
               (void) mgi_tblSetCell(table, row, table.termAccID, mgi_getstr(dbproc, 3));
               (void) mgi_tblSetCell(table, row, table.term, mgi_getstr(dbproc, 4));
+	      row := row + 1;
+	    end while;
+	  end while;
+	  (void) mgi_dbclose(dbproc);
+
+	  row := 0;
+	  table := top->TSSGene->Table;
+	  cmd := marker_tssgene(currentRecordKey);
+	  dbproc := mgi_dbexec(cmd);
+	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+	    row := 0;
+	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+              (void) mgi_tblSetCell(table, row, table.markerCurrentKey, mgi_getstr(dbproc, 1));
+              (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 1));
+              (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 2));
+	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	      row := row + 1;
 	    end while;
 	  end while;

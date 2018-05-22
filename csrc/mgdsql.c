@@ -702,6 +702,25 @@ char *marker_alias(char *key)
   return(buf);
 }
 
+char *marker_tssgene(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select m._Marker_key, m.symbol \
+     \nfrom MGI_Relationship r, MRK_Marker m \
+     \nwhere m._Marker_key = r._Object_key_1 \
+     \nand r._Category_key = 1008 \
+     \nand m._Marker_key = %s \
+     \nunion \
+     \nselect m._Marker_key, m.symbol \
+     \nfrom MGI_Relationship r, MRK_Marker m \
+     \nwhere m._Marker_key = r._Object_key_2 \
+     \nand r._Category_key = 1008 \
+     \nand m._Marker_key = %s \
+     ", key, key);
+  return(buf);
+}
+
 char *marker_mouse(char *key)
 {
   static char buf[TEXTBUFSIZ];
