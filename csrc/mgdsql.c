@@ -717,6 +717,7 @@ char *marker_tssgene(char *key)
      \nwhere r._Object_key_1 = m._Marker_key \
      \nand r._Category_key = 1008 \
      \nand r._Object_key_2 = %s \
+     \norder by m.symbol \
      ", key, key);
   return(buf);
 }
