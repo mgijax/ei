@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Thu May  3 11:15:08 2018";
+      lastWritten = "Fri Jun  8 07:15:56 2018";
       copy = false;
       inCreateMenu = true;
         {
@@ -596,6 +596,11 @@ Module: mgiOption
                       EMS = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 91;
+                    }
+                    {
+                      ENVIGO = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 213;
                     }
                     {
                       EUCOMM = AccToggle : mgiOption;
