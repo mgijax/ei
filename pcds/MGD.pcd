@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Fri Jun  8 07:15:55 2018";
+      lastWritten = "Tue Jul 31 06:13:26 2018";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -525,6 +525,9 @@ Module: MGD
                                                   }
                                                   {
                                                     CRL = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    CWR = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EMMA = AccToggle : mgiOption;
@@ -1903,6 +1906,9 @@ Module: MGD
                                                     CRL = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    CWR = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     EMMA = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -2424,6 +2430,9 @@ Module: MGD
                                                   }
                                                   {
                                                     CRL = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    CWR = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EMMA = AccToggle : mgiOption;
@@ -3517,6 +3526,9 @@ Module: MGD
                                   CRL = AccToggle : mgiOption;
                                 }
                                 {
+                                  CWR = AccToggle : mgiOption;
+                                }
+                                {
                                   EMMA = AccToggle : mgiOption;
                                 }
                                 {
@@ -4346,6 +4358,9 @@ Module: MGD
                                                   }
                                                   {
                                                     CRL = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    CWR = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EMMA = AccToggle : mgiOption;
@@ -6833,6 +6848,9 @@ Module: MGD
                                                     CRL = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    CWR = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     EMMA = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -7285,6 +7303,9 @@ Module: MGD
                                                   }
                                                   {
                                                     CRL = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    CWR = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EMMA = AccToggle : mgiOption;
@@ -8465,6 +8486,9 @@ Module: MGD
                                                   }
                                                   {
                                                     CRL = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    CWR = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EMMA = AccToggle : mgiOption;
@@ -9995,6 +10019,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     CRL = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    CWR = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     EMMA = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -10600,6 +10627,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     CRL = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    CWR = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EMMA = AccToggle : mgiOption;
@@ -11812,6 +11842,11 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
+                                                    CWR = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
                                                     EMMA = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
@@ -11821,7 +11856,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     Group: Widget
                                                       managed = True;
                                                   }
-						  {
+                                                  {
                                                     EMS = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
@@ -11923,108 +11958,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     WTSI = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
-                                                  }
-                                                  {
-                                                    Taxon = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    IMAGELibrary = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    dbESTLibrary = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    IGTC = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    LexiconGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    BayGenomicGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TexasGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TIGEMGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    ModellingHumanGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    ESCDGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    ExchangeableClonesGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    GermanGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    SangerGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    HutchinsonGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    KOMPRegeneron = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    KOMPCSD = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RegeneronOther = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    KOMPRegeneronProject = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    KOMPCSDProject = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NORCOMMProject = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    EUCOMMProject = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    Genentech = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    EUCOMMCellLine = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    EUCOMMSequenceType = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    mirKO = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    mirKOproject = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    PleiadesCellLine = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RuleyHECellLine = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    IshidaYCellLine = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NorCOMM = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    Lexicon = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    EMAP = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    AdultMouseAntatomy = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RRID = AccToggle : mgiOption;
                                                   }
                                             }
                                       }
@@ -12700,6 +12633,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     CRL = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    CWR = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EMMA = AccToggle : mgiOption;
@@ -14456,6 +14392,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     CRL = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    CWR = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EMMA = AccToggle : mgiOption;
@@ -16369,6 +16308,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     CRL = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    CWR = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     EMMA = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -16832,6 +16774,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     CRL = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    CWR = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EMMA = AccToggle : mgiOption;
@@ -17303,6 +17248,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     CRL = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    CWR = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EMMA = AccToggle : mgiOption;
@@ -17857,6 +17805,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     CRL = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    CWR = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EMMA = AccToggle : mgiOption;

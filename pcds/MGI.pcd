@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Fri Jun  8 07:15:53 2018";
+      lastWritten = "Tue Jul 31 06:12:15 2018";
       copy = false;
       inCreateMenu = true;
         {
@@ -1716,6 +1716,9 @@ Module: MGI
                                                     CRL = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    CWR = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     EMMA = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -1875,15 +1878,6 @@ Module: MGI
                                                     RRID = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
-                                                  }
-                                                  {
-                                                    mirKO = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    mirKOproject = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    PleiadesCellLine = AccToggle : mgiOption;
                                                   }
                                             }
                                       }
@@ -3537,6 +3531,9 @@ Module: MGI
                                                     CRL = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    CWR = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     EMMA = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -3685,36 +3682,6 @@ Module: MGI
                                                   }
                                                   {
                                                     Lexicon = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    EntrezGene = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NCBIGeneModel = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NCBIGeneModelEvidence = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    ARC = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    mirKO = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    mirKOproject = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    PleiadesCellLine = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    EMAP = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    AdultMouseAntatomy = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RRID = AccToggle : mgiOption;
                                                   }
                                             }
                                       }

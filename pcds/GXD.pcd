@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Fri Jun  8 07:15:54 2018";
+      lastWritten = "Tue Jul 31 06:12:14 2018";
       copy = false;
       inCreateMenu = true;
         {
@@ -685,6 +685,9 @@ Module: GXD
                                                     CRL = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    CWR = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     EMMA = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -833,36 +836,6 @@ Module: GXD
                                                   }
                                                   {
                                                     Lexicon = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    EntrezGene = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NCBIGeneModel = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NCBIGeneModelEvidence = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    ARC = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    mirKO = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    mirKOproject = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    PleiadesCellLine = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    EMAP = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    AdultMouseAntatomy = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RRID = AccToggle : mgiOption;
                                                   }
                                             }
                                       }
@@ -1731,6 +1704,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     CRL = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    CWR = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     EMMA = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -1879,36 +1855,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     Lexicon = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    EntrezGene = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NCBIGeneModel = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NCBIGeneModelEvidence = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    ARC = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    mirKO = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    mirKOproject = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    PleiadesCellLine = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    EMAP = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    AdultMouseAntatomy = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RRID = AccToggle : mgiOption;
                                                   }
                                             }
                                       }
@@ -3725,172 +3671,13 @@ Shift<Key>Tab: prev-tab-group()
                                                     CRL = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    CWR = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     EMMA = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     ENVIGO = AccToggle : mgiOption;
-                                                  }
-						  {
-                                                    EMS = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    EUCOMM = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    Harwell = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    JPGA = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    genOway = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    KOMP = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NCIMR = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    MPD = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    MTG = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    MUGEN = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NIG = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NMICE = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    OBS = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    ORNL = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RIKENBRC = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    SMOC = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TAC = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    UNC = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RMRC = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    WTSI = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    IMAGELibrary = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    dbESTLibrary = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    IGTC = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    LexiconGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    BayGenomicGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TexasGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TIGEMGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    ModellingHumanGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    ESCDGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    ExchangeableClonesGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    GermanGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    SangerGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    HutchinsonGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    KOMPRegeneron = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    KOMPCSD = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RegeneronOther = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    KOMPRegeneronProject = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    KOMPCSDProject = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NORCOMMProject = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    EUCOMMProject = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    Genentech = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    EUCOMMCellLine = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    EUCOMMSequenceType = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    EUMMCR = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    mirKO = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    mirKOproject = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    PleiadesCellLine = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RuleyHECellLine = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    IshidaYCellLine = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NorCOMM = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    Lexicon = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    EMAP = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    AdultMouseAntatomy = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RRID = AccToggle : mgiOption;
                                                   }
                                             }
                                       }
