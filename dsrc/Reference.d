@@ -180,6 +180,9 @@ rules:
 	  InitRefMarkerTable.table := top->RefMarker->Table;
 	  send(InitRefMarkerTable, 0);
 
+	  InitRefStrainTable.table := top->RefStrain->Table;
+	  send(InitRefStrainTable, 0);
+
 	  -- Initialize Global Data Set widgets and string lists
 	  modTable := top->Control->ModificationHistory->Table;
 
@@ -200,6 +203,7 @@ rules:
 
           tables.append(top->RefAllele->Table);
           tables.append(top->RefMarker->Table);
+          tables.append(top->RefStrain->Table);
 
 	  -- Initialize next J: value
 	  NextJnum.source_widget := top;
@@ -246,6 +250,8 @@ rules:
 	  	send(InitRefAlleleTable, 0);
 	  	InitRefMarkerTable.table := top->RefMarker->Table;
 	  	send(InitRefMarkerTable, 0);
+	  	InitRefStrainTable.table := top->RefStrain->Table;
+	  	send(InitRefStrainTable, 0);
 	  end if;
 
 	end does;
@@ -326,6 +332,13 @@ rules:
           ProcessRefMarkerTable.objectKey := currentRecordKey;
           send(ProcessRefMarkerTable, 0);
 	  cmd := cmd + top->RefMarker->Table.sqlCmd;
+
+	  -- Process Strain associations
+
+          ProcessRefStrainTable.table := top->RefStrain->Table;
+          ProcessRefStrainTable.objectKey := currentRecordKey;
+          send(ProcessRefStrainTable, 0);
+	  cmd := cmd + top->RefStrain->Table.sqlCmd;
 
 	  -- Process Accesion Numbers
 
@@ -514,6 +527,13 @@ rules:
           send(ProcessRefMarkerTable, 0);
 	  cmd := cmd + top->RefMarker->Table.sqlCmd;
 
+	  -- Process Strain associations
+
+          ProcessRefStrainTable.table := top->RefStrain->Table;
+          ProcessRefStrainTable.objectKey := currentRecordKey;
+          send(ProcessRefStrainTable, 0);
+	  cmd := cmd + top->RefStrain->Table.sqlCmd;
+
 	  -- Process Accession numbers
 
 	  ProcessAcc.table := accTable;
@@ -612,6 +632,12 @@ rules:
           send(SearchRefMarkerTable, 0);
           from := from + top->RefMarker->Table.sqlFrom;
           where := where + top->RefMarker->Table.sqlWhere;
+
+          SearchRefStrainTable.table := top->RefStrain->Table;
+          SearchRefStrainTable.join := "r." + mgi_DBkey(BIB_REFS);
+          send(SearchRefStrainTable, 0);
+          from := from + top->RefStrainTable.sqlFrom;
+          where := where + top->RefStrain->Table.sqlWhere;
 
 	  QueryModificationHistory.table := modTable;
 	  QueryModificationHistory.tag := "r";
@@ -763,6 +789,10 @@ rules:
           SetOption.value := top->RefMarker->ReferenceTypeMenu.subMenuId.child(2).defaultValue;
           send(SetOption, 0); 
 
+          SetOption.source_widget := top->RefStrain->ReferenceTypeMenu;
+          SetOption.value := top->RefStrain->ReferenceTypeMenu.subMenuId.child(2).defaultValue;
+          send(SetOption, 0); 
+
 	  -- If no item selected, return
 
 	  if (top->QueryList->List.selectedItemCount = 0) then
@@ -857,6 +887,10 @@ rules:
           LoadRefMarkerTable.table := top->RefMarker->Table;
           LoadRefMarkerTable.objectKey := currentRecordKey;
           send(LoadRefMarkerTable, 0);
+
+          LoadRefStrainTable.table := top->RefStrain->Table;
+          LoadRefStrainTable.objectKey := currentRecordKey;
+          send(LoadRefStrainTable, 0);
 
 	  -- Re-set the modified attributes and the Next J:
 

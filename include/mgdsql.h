@@ -200,6 +200,8 @@ extern char *ref_allele_count(char *);
 extern char *ref_allele_load(char *);
 extern char *ref_marker_count(char *);
 extern char *ref_marker_load(char *);
+extern char *ref_strain_count(char *);
+extern char *ref_strain_load(char *);
 
 /* Sequence.d */
 

@@ -676,6 +676,9 @@ Module: GXD
                                                     CRL = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    CWR = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     EMMA = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -1678,6 +1681,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     CRL = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    CWR = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EMMA = AccToggle : mgiOption;
