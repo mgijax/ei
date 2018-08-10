@@ -168,7 +168,7 @@ rules:
 	      cmd := cmd + mgi_DBinsert(tableID, keyName) +
 		     objectKey + "," +
 		     strainKey + "," +
-		     "2," +
+		     "10," +
 		     refsTypeKey + "," +
 		     global_userKey + "," + global_userKey + END_VALUE;
 
