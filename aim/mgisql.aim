@@ -151,6 +151,7 @@ CALLS
 	 verify_strainspecies("char *")				: "char *";
 	 verify_strainspeciesmouse()				: "char *";
 	 verify_straintype()					: "char *";
+	 verify_strains1("char *")				: "char *";
 	 verify_strains3("char *")				: "char *";
 	 verify_strains4("char *")				: "char *";
 	 verify_structure("char *")				: "char *";

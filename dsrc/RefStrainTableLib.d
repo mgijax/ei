@@ -19,6 +19,7 @@ dmodule RefStrainTableLib is
 #include <mgilib.h>
 #include <dblib.h>
 #include <tables.h>
+#include <utilities.h>
 
 -- See RefStrainTableLib.de for D event declarations
 
@@ -98,7 +99,7 @@ rules:
 	      (void) mgi_tblSetCell(table, row, table.refsTypeKey, mgi_getstr(dbproc, 2));
 	      (void) mgi_tblSetCell(table, row, table.refsType, mgi_getstr(dbproc, 3));
 	      (void) mgi_tblSetCell(table, row, table.strainKey, mgi_getstr(dbproc, 4));
-	      (void) mgi_tblSetCell(table, row, table.strainSymbol, mgi_getstr(dbproc, 5));
+	      (void) mgi_tblSetCell(table, row, table.strain, mgi_getstr(dbproc, 5));
 	      (void) mgi_tblSetCell(table, row, table.strainID, mgi_getstr(dbproc, 6));
 	      (void) mgi_tblSetCell(table, row, table.modifiedBy, mgi_getstr(dbproc, 7));
 	      (void) mgi_tblSetCell(table, row, table.modifiedDate, mgi_getstr(dbproc, 8));
@@ -139,7 +140,7 @@ rules:
 	  set : string := "";
 	  keyName : string := "refStrainKey";
 	  keyDefined : boolean := false;
-	  defaultRefsTypeKey : string := "1018";
+	  defaultRefsTypeKey : string := "1009";
  
  	  tableID : integer := MGI_REFERENCE_ASSOC;
 

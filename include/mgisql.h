@@ -190,6 +190,7 @@ extern char *verify_organism(char *);
 extern char *verify_strainspecies(char *);
 extern char *verify_strainspeciesmouse();
 extern char *verify_straintype();
+extern char *verify_strains1(char *);
 extern char *verify_strains3(char *);
 extern char *verify_strains4(char *);
 extern char *verify_structure(char *);

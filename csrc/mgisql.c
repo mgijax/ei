@@ -1284,6 +1284,14 @@ char *verify_straintype()
   return(buf);
 }
 
+char *verify_strains1(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select _Strain_key, strain, private from PRB_Strain where strain ilike %s", key);
+  return(buf);
+}
+
 char *verify_strains3(char *key)
 {
   static char buf[TEXTBUFSIZ];

@@ -636,7 +636,7 @@ rules:
           SearchRefStrainTable.table := top->RefStrain->Table;
           SearchRefStrainTable.join := "r." + mgi_DBkey(BIB_REFS);
           send(SearchRefStrainTable, 0);
-          from := from + top->RefStrainTable.sqlFrom;
+          from := from + top->RefStrain->Table.sqlFrom;
           where := where + top->RefStrain->Table.sqlWhere;
 
 	  QueryModificationHistory.table := modTable;
