@@ -1609,18 +1609,22 @@ char *strainalleletype_load(char *key, char *from, char *where)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"(select _StrainMarker_key, _Marker_key, _Allele_key, _Qualifier_key, \
-		\nsymbol, chromosome, alleleSymbol, qualifier, \
-		\ncast(chromosome as int) as chrorder \
-		\nfrom %s \
-		\nwhere %s = %s \
-		\nand chromosome not in ('X', 'Y', 'MT', 'UN', 'XY') \
+  sprintf(buf,"(select p._StrainMarker_key, p._Marker_key, p._Allele_key, p._Qualifier_key, \
+		\np.symbol, p.chromosome, p.alleleSymbol, p.qualifier, \
+		\ncast(p.chromosome as int) as chrorder, s.strain \
+		\nfrom %s p, ALL_Allele a, PRB_Strain s \
+		\nwhere p.%s = %s \
+		\nand p.chromosome not in ('X', 'Y', 'MT', 'UN', 'XY') \
+		\nand p._Allele_key = a._Allele_key \
+		\nand a._Strain_key = s._Strain_key \
 		\nunion all \
-		\nselect _StrainMarker_key, _Marker_key, _Allele_key, _Qualifier_key, \
-		\nsymbol, chromosome, alleleSymbol, qualifier, 99 as chrorder \
-		\nfrom %s \
-		\nwhere %s = %s \
-		\nand chromosome in ('X', 'Y', 'MT', 'UN', 'XY')) \
+		\nselect p._StrainMarker_key, p._Marker_key, p._Allele_key, p._Qualifier_key, \
+		\np.symbol, p.chromosome, p.alleleSymbol, p.qualifier, 99 as chrorder, s.strain \
+		\nfrom %s p, ALL_Allele a, PRB_Strain s \
+		\nwhere p.%s = %s \
+		\nand p.chromosome in ('X', 'Y', 'MT', 'UN', 'XY') \
+		\nand p._Allele_key = a._Allele_key \
+		\nand a._Strain_key = s._Strain_key) \
 		\norder by _Qualifier_key, chrorder, symbol", from, where, key, from, where, key);
   return(buf);
 }

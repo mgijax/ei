@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Fri Aug 10 10:56:17 2018";
+      lastWritten = "Tue Aug 14 07:39:21 2018";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -9303,11 +9303,11 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         Table = mgiTable : mgiTable;
                                         Group: Widget
-                                          userDefinedAttributes = "markerColumns:Int(Int)=\"1\"\nmarkerKey:Int(Int)=\"2\"\nmarkerSymbol:Int(Int)=\"7\"\nmarkerChr:Int(Int)=\"6\"\nalleleKey:StringTable(StringTable)=\"3\"\nalleleSymbol:StringTable(StringTable)=\"8\"\nprimaryKey:Int(Int)=\"1\"\nqualifierKey:Int=\"4\"\nqualifier:Int=\"5\"\n";
+                                          userDefinedAttributes = "markerColumns:Int(Int)=\"1\"\nmarkerKey:Int(Int)=\"2\"\nmarkerSymbol:Int(Int)=\"7\"\nmarkerChr:Int(Int)=\"6\"\nalleleKey:StringTable(StringTable)=\"3\"\nalleleSymbol:StringTable(StringTable)=\"8\"\nprimaryKey:Int(Int)=\"1\"\nqualifierKey:Int(Int)=\"4\"\nqualifier:Int(Int)=\"5\"\nstrainOfOrigin:Int(Int)=\"9\"\n";
                                           xrtTblValidateCellCallback = "D:VerifyMarker,\nD:VerifyAllele,\nD:CommitTableCellEdit";
-                                          xrtTblNumColumns = 9;
-                                          xrtTblColumnLabels = "Mode,Key,Key,Key,Key,Type,Chr,Marker,Allele";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-4 10)(all 5 25)(all 6 3)(all 7 30)(all 8 50)";
+                                          xrtTblNumColumns = 10;
+                                          xrtTblColumnLabels = "Mode,Key,Key,Key,Key,Type,Chr,Marker,Allele,Strain Of Origin";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-4 10)(all 5 25)(all 6 3)(all 7 30)(all 8 30)(all 9 30)";
                                           xrtTblEditableSeries = "(all 0-5 False)";
                                           xrtTblTraversableSeries = "(all 0-5 False)";
                                           xrtTblPixelWidthSeries = "(all 0-4 0)";
