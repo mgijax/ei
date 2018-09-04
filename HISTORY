@@ -1,5 +1,12 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-6-0-13-1
+DATE: 09/04/2018
+STAFF: lec
+CHANGES: TR12734/GenFeVah merge
+
+TAG: ei-6-0-12-9
+DATE: 05/18/2018
 TAG: ei-6-0-12-11
 DATE: 07/31/2018
 STAFF: lec
