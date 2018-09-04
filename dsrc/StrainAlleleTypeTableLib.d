@@ -158,6 +158,8 @@ rules:
 	      (void) mgi_tblSetCell(table, row, table.qualifierKey, mgi_getstr(dbproc, 4));
 	      (void) mgi_tblSetCell(table, row, table.qualifier, mgi_getstr(dbproc, 8));
 
+	      (void) mgi_tblSetCell(table, row, table.strainOfOrigin, mgi_getstr(dbproc, 10));
+
 	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
               row := row + 1;
             end while;

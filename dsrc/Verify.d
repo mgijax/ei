@@ -3981,4 +3981,79 @@ rules:
 	  (void) reset_cursor(top);
 	end does;
 
+--
+-- VerifyStrain
+--
+--      Verify Strain entered into Table Row
+--	Assumes use of mgiTable template
+--	UDAS:  strain (integer), strainKey (integer)
+--
+--	Stores the key for the strain in the strainKey UDA
+--
+ 
+        VerifyStrain does
+	  top : widget := VerifyStrain.source_widget.top;
+	  table : widget := VerifyStrain.source_widget;
+	  row : integer := VerifyStrain.row;
+	  column : integer := VerifyStrain.column;
+	  reason : integer := VerifyStrain.reason;
+	  value : string := VerifyStrain.value;
+ 
+	  if (reason = TBL_REASON_VALIDATE_CELL_END) then
+	    return;
+	  end if;
+
+          -- If not in the Strain column, do nothing
+ 
+          if (column != table.strain) then
+            return;
+          end if;
+ 
+          -- If no Strain entered, do nothing
+ 
+          if (value.length = 0) then
+            (void) mgi_tblSetCell(table, row, table.strainKey, "");
+            return;
+          end if;
+ 
+          (void) busy_cursor(top);
+ 
+          keys : xm_string_list := create xm_string_list();
+          results : xm_string_list := create xm_string_list();
+          strainKey : string := "";
+          cmd : string;
+          i : integer;
+ 
+          -- Try to get key from the database
+          -- If the Strain does not exist, then add it
+ 
+          cmd := verify_strains1(mgi_DBprstr(value));
+          dbproc : opaque := mgi_dbexec(cmd);
+          while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
+              keys.insert(mgi_getstr(dbproc, 1), keys.count + 1);
+              results.insert(mgi_getstr(dbproc, 2), results.count + 1);
+            end while;
+          end while;
+          (void) mgi_dbclose(dbproc);
+ 
+          -- Set i to index of string for exact match
+          i := results.find(value);
+ 
+          if (i > 0) then     -- Strain found
+            strainKey := keys[i];
+          end if;
+ 
+	  if (strainKey.length > 0) then
+            (void) mgi_tblSetCell(table, row, table.strainKey, strainKey);
+	  else
+	    VerifyStrain.doit := (integer) false;
+	    (void) mgi_tblSetCell(table, row, table.strainKey, "NULL");
+	    (void) mgi_tblSetCell(table, row, table.strain, "");
+	  end if;
+ 
+          (void) reset_cursor(top);
+
+	end does;
+
 end dmodule;

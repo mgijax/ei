@@ -50,6 +50,7 @@ CALLS
 	 marker_current("char *")			: "char *";
 	 marker_tdc("char *", "char *", "char *")	: "char *";
 	 marker_alias("char *")				: "char *";
+	 marker_tssgene("char *")			: "char *";
 	 marker_mouse("char *")				: "char *";
 	 marker_count("char *")				: "char *";
 	 marker_checkaccid("char *", "char *", "char *"): "char *";
@@ -164,6 +165,8 @@ CALLS
 	 ref_allele_load("char *")		        : "char *";
 	 ref_marker_count("char *")		        : "char *";
 	 ref_marker_load("char *")		        : "char *";
+	 ref_strain_count("char *")		        : "char *";
+	 ref_strain_load("char *")		        : "char *";
 
 	 sequence_selectPrefix()			: "char *";
 	 sequence_select("char *")			: "char *";

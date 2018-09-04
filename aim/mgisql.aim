@@ -151,6 +151,7 @@ CALLS
 	 verify_strainspecies("char *")				: "char *";
 	 verify_strainspeciesmouse()				: "char *";
 	 verify_straintype()					: "char *";
+	 verify_strains1("char *")				: "char *";
 	 verify_strains3("char *")				: "char *";
 	 verify_strains4("char *")				: "char *";
 	 verify_structure("char *")				: "char *";
@@ -178,6 +179,7 @@ CALLS
 	 reftypetable_initallele("char *")			: "char *";
 	 reftypetable_initallele2()				: "char *";
 	 reftypetable_initmarker()				: "char *";
+	 reftypetable_initstrain()				: "char *";
 	 reftypetable_loadorder1()				: "char *";
 	 reftypetable_loadorder2()				: "char *";
 	 reftypetable_loadorder3()				: "char *";

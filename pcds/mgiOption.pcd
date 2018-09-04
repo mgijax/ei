@@ -206,27 +206,6 @@ Module: mgiOption
                         defaultValue = 41;
                     }
                     {
-                      VEGAGeneModel = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = "VEGA Gene Model";
-                      Group: User
-                        defaultValue = 85;
-                    }
-                    {
-                      VEGAProtein = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = "VEGA Protein";
-                      Group: User
-                        defaultValue = 132;
-                    }
-                    {
-                      VEGATranscript = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = "VEGA Transcript";
-                      Group: User
-                        defaultValue = 131;
-                    }
-                    {
                       AllenBrainAtlas = AccToggle : mgiOption;
                       Group: Widget
                         labelString = "Allen Brain Atlas";
@@ -622,11 +601,6 @@ Module: mgiOption
                       EMS = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 91;
-                    }
-                    {
-                      ENVIGO = AccToggle : mgiOption;
-                      Group: User
-                        defaultValue = 213;
                     }
                     {
                       EUCOMM = AccToggle : mgiOption;

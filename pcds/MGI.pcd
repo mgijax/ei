@@ -1539,15 +1539,6 @@ Module: MGI
                                                     TrEMBL = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    VEGAGeneModel = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    VEGAProtein = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    VEGATranscript = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     AllenBrainAtlas = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -1723,9 +1714,6 @@ Module: MGI
                                                   }
                                                   {
                                                     EMS = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    ENVIGO = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EUCOMM = AccToggle : mgiOption;
@@ -3347,15 +3335,6 @@ Module: MGI
                                                     TrEMBL = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    VEGAGeneModel = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    VEGAProtein = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    VEGATranscript = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     AllenBrainAtlas = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -3538,9 +3517,6 @@ Module: MGI
                                                   }
                                                   {
                                                     EMS = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    ENVIGO = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EUCOMM = AccToggle : mgiOption;

@@ -702,6 +702,26 @@ char *marker_alias(char *key)
   return(buf);
 }
 
+char *marker_tssgene(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"(select r._Object_key_1, m.symbol \
+     \nfrom MGI_Relationship r, MRK_Marker m \
+     \nwhere r._Object_key_2 = m._Marker_key \
+     \nand r._Category_key = 1008 \
+     \nand r._Object_key_1 = %s \
+     \nunion \
+     \nselect r._Object_key_2, m.symbol \
+     \nfrom MGI_Relationship r, MRK_Marker m \
+     \nwhere r._Object_key_1 = m._Marker_key \
+     \nand r._Category_key = 1008 \
+     \nand r._Object_key_2 = %s \
+     \n) order by symbol \
+     ", key, key);
+  return(buf);
+}
+
 char *marker_mouse(char *key)
 {
   static char buf[TEXTBUFSIZ];
@@ -1517,6 +1537,31 @@ char *ref_marker_load(char *key)
   \nand a._LogicalDB_key = 1 \
   \nand a.preferred = 1 \
   \norder by m.symbol, r.assocType", key);
+  return(buf);
+}
+
+char *ref_strain_count(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select count(_Assoc_key) from MGI_Reference_Strain_View where _Refs_key = %s", key);
+  return(buf);
+}
+
+char *ref_strain_load(char *key)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf,"select r._Assoc_key, r._RefAssocType_key, r.assocType, r._Object_key, s.strain, a.accID,  \
+  \nr.modifiedBy, r.modification_date \
+  \nfrom MGI_Reference_Strain_View r, PRB_Strain s, ACC_Accession a \
+  \nwhere r._Object_key = s._Strain_key \
+  \nand r._Refs_key = %s \
+  \nand s._Strain_key = a._Object_key \
+  \nand a._MGIType_key = 10 \
+  \nand a._LogicalDB_key = 1 \
+  \nand a.preferred = 1 \
+  \norder by s.strain, r.assocType", key);
   return(buf);
 }
 

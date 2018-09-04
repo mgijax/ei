@@ -622,7 +622,6 @@ rules:
 	  send(ModifyMolecularMutation, 0);
 	  send(ModifyImagePaneAssociation, 0);
 	  send(ModifyMutantCellLine, 0);
-	  send(ModifyAlleleDriver, 0);
 
 	  -- TR 5672
 	  -- always set note modified = true so if user has used
@@ -647,6 +646,11 @@ rules:
 	  ProcessRefTypeTable.objectKey := currentRecordKey;
 	  send(ProcessRefTypeTable, 0);
           cmd := cmd + top->Reference->Table.sqlCmd;
+
+	  -- add only
+	  -- must be done *after* references 
+	  -- because it relies on molecular reference
+	  send(ModifyAlleleDriver, 0);
 
 	  --  Process Synonyms
 
@@ -1665,6 +1669,9 @@ rules:
 	    key := mgi_tblGetCell(table, row, table.relCurrentKey);
 	    markerKey := mgi_tblGetCell(table, row, table.markerKey);
 	    molRefKey := mgi_sql1(ref_allele_getmolecular(currentRecordKey));
+	    if (molRefKey = "") then
+	       molRefKey := top->Reference->Table.molRefKey;
+            end if;
 
 	    if (editMode = TBL_ROW_ADD) then
               if (not keyDeclared) then

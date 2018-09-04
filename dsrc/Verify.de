@@ -54,6 +54,8 @@ VerifyOrganism :translation [ignoreRow : integer := -1;];
 
 VerifyStrainSpecies :translation [];
 
+VerifyStrain :translation [];
+
 VerifyStrains [ignoreRow : integer := -1;];
 
 VerifyStrengthPattern [];

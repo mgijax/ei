@@ -1,0 +1,27 @@
+--
+-- Name    : RefStrainTableLib.de
+-- Creator : lec
+-- Date	   : 08/08/2018
+--
+-- Purpose:
+--
+-- This is the companion D event declarations file for RefStrainTableLib.d.
+--
+
+-- Initialize Reference Type Table
+InitRefStrainTable [table : widget;      -- Reference Type Table
+         clearCells : boolean := true;]; -- Clear Cells flag
+
+-- Load Reference Strain Table
+LoadRefStrainTable [table : widget;      -- Reference Strain Table
+            objectKey : string;];        -- Unique identifier of Object
+
+-- Process Reference Strain Table; Sets table.sqlcmd 
+ProcessRefStrainTable [table : widget;   -- Reference Strain Table
+            objectKey : string;];        -- Unique identifier of Object
+
+-- Search Reference Strain Table
+SearchRefStrainTable [table : widget;    -- Reference Strain Table
+            tableTag : string := "rm";   -- Table Alias Tag for Query
+            join : string;];             -- Join command
+

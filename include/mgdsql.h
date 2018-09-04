@@ -92,6 +92,7 @@ extern char *marker_history2(char *);
 extern char *marker_current(char *);
 extern char *marker_tdc(char *, char *, char *);
 extern char *marker_alias(char *);
+extern char *marker_tssgene(char *);
 extern char *marker_mouse(char *);
 extern char *marker_count(char *);
 extern char *marker_checkaccid(char *, char *, char *);
@@ -199,6 +200,8 @@ extern char *ref_allele_count(char *);
 extern char *ref_allele_load(char *);
 extern char *ref_marker_count(char *);
 extern char *ref_marker_load(char *);
+extern char *ref_strain_count(char *);
+extern char *ref_strain_load(char *);
 
 /* Sequence.d */
 

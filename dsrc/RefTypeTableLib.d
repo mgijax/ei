@@ -254,6 +254,8 @@ rules:
 	    defaultRefsTypeKey := reftypetable_refstype(mgi_DBprstr(table.defaultRefType), mgi_DBtable(tableID));
 	  end if;
 
+	  table.molRefKey := "";
+
           -- Process 
  
           while (row < mgi_tblNumRows(table)) do
@@ -277,6 +279,10 @@ rules:
 		keyDefined := true;
 	      else
 		cmd := cmd + mgi_DBincKey(keyName);
+	      end if;
+
+	      if (table.is_defined("molRefKey") != nil and (refsTypeKey = "1012")) then
+	        table.molRefKey := (string) refsKey;
 	      end if;
 
 	      cmd := cmd + mgi_DBinsert(reftableID, keyName) +
