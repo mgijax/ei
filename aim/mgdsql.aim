@@ -44,7 +44,6 @@ CALLS
 	 cross_search("char *", "char *")		: "char *";
 
 	 marker_select("char *")			: "char *";
-	 marker_offset("char *")			: "char *";
 	 marker_history1("char *")			: "char *";
 	 marker_history2("char *")			: "char *";
 	 marker_current("char *")			: "char *";

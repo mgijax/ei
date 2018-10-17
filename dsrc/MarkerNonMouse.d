@@ -198,7 +198,7 @@ rules:
 	         mgi_DBprstr(top->Symbol->text.value) + "," +
 	         mgi_DBprstr(top->Name->text.value) + "," +
                  mgi_DBprstr(top->Chromosome->text.value) + "," +
-	         mgi_DBprstr(top->Cyto->text.value) + "," +
+	         mgi_DBprstr(top->Cyto->text.value) + ",NULL," +
 		 global_userKey + "," +
 		 global_userKey + END_VALUE;
 

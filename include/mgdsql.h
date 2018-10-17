@@ -86,7 +86,6 @@ extern char *govoc_isoform_exists(char *, char *);
 /* Marker.d */
 
 extern char *marker_select(char *);
-extern char *marker_offset(char *);
 extern char *marker_history1(char *);
 extern char *marker_history2(char *);
 extern char *marker_current(char *);

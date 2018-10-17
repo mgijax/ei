@@ -800,7 +800,6 @@ char *mgi_DBkey(int table)
     case MRK_ANCHOR:
     case MRK_HISTORY:
     case MRK_NOTES:
-    case MRK_OFFSET:
             strcpy(buf, "_Marker_key");
 	    break;
     case MRK_ALIAS:
@@ -1602,9 +1601,6 @@ char *mgi_DBtable(int table)
     case MRK_NOTES:
             strcpy(buf, "MRK_Notes");
 	    break;
-    case MRK_OFFSET:
-            strcpy(buf, "MRK_Offset");
-	    break;
     case MRK_MOUSE:
             strcpy(buf, "MRK_Mouse_View");
 	    break;
@@ -1843,7 +1839,6 @@ char *mgi_DBinsert(int table, char *keyName)
     case MRK_CURRENT:
     case MRK_HISTORY:
     case MRK_NOTES:
-    case MRK_OFFSET:
     case PRB_ALLELE:
     case PRB_ALLELE_STRAIN:
     case PRB_ALIAS:
@@ -2112,7 +2107,7 @@ char *mgi_DBinsert(int table, char *keyName)
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MRK_MARKER:
-	    sprintf(buf, "insert into %s (%s, _Organism_key, _Marker_Status_key, _Marker_Type_key, symbol, name, chromosome, cytogeneticOffset, _CreatedBy_key, _ModifiedBy_key)",
+	    sprintf(buf, "insert into %s (%s, _Organism_key, _Marker_Status_key, _Marker_Type_key, symbol, name, chromosome, cytogeneticOffset, cmOffset,  _CreatedBy_key, _ModifiedBy_key)",
 	      mgi_DBtable(table), mgi_DBkey(table));
  	    break;
     case MRK_ALIAS:
@@ -2135,10 +2130,6 @@ char *mgi_DBinsert(int table, char *keyName)
  	    break;
     case MRK_HISTORY:
 	    sprintf(buf, "insert into %s (%s, _History_key, _Refs_key, _Marker_Event_key, _Marker_EventReason_key, sequenceNum, name, event_date, _CreatedBy_key, _ModifiedBy_key)",
-	      mgi_DBtable(table), mgi_DBkey(table));
- 	    break;
-    case MRK_OFFSET:
-	    sprintf(buf, "insert into %s (%s, source, cmOffset)",
 	      mgi_DBtable(table), mgi_DBkey(table));
  	    break;
     case PRB_ALIAS:
@@ -2419,10 +2410,6 @@ char *mgi_DBupdate2(int table, char *key, char *key2, char *str)
     case MRK_HISTORY:
             sprintf(buf, "update %s set %s, _ModifiedBy_key = %s, modification_date = %s where %s = %s and sequenceNum = %s %s", 
 		mgi_DBtable(table), str, global_userKey, sql_getdate, mgi_DBkey(table), key, key2, END_VALUE_C);
-     	    break;
-    case MRK_OFFSET:
-            sprintf(buf, "update %s set %s, modification_date = %s where %s = %s and source = %s %s", 
-		mgi_DBtable(table), str, sql_getdate, mgi_DBkey(table), key, key2, END_VALUE_C);
      	    break;
     default:
             sprintf(buf, "update %s set modification_date = %s where %s = %s %s", 

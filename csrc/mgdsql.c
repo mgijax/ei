@@ -632,21 +632,10 @@ char *marker_select(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select _Marker_key, _Marker_Type_key, _Marker_Status_key, \
-   \nsymbol, name, chromosome, cytogeneticOffset, \
+   \nsymbol, name, chromosome, cytogeneticOffset, to_char(cmOffset, '9999.99'), \
    \ncreatedBy, creation_date, modifiedBy, modification_date \
    \nfrom MRK_Marker_View \
    \nwhere _Marker_key = %s", key);
-  return(buf);
-}
-
-char *marker_offset(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select source, to_char(cmOffset, '9999.99') \
-   \nfrom MRK_Offset \
-   \nwhere _Marker_key = %s \
-   \norder by source", key);
   return(buf);
 }
 

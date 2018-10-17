@@ -5,7 +5,7 @@
 --
 -- TopLevelShell:		Marker
 -- Database Tables Affected:	MRK_Alias, MRK_Current, MRK_History
---				MRK_Marker, MRK_Offset, MGI_Reference_Assoc, MGI_Synonym
+--				MRK_Marker, MGI_Reference_Assoc, MGI_Synonym
 -- Cross Reference Tables:	
 -- Actions Allowed:		Add, Modify, Delete
 --
@@ -185,7 +185,6 @@ devents:
 	ModifyChromosome :exported [];
 	ModifyCurrent :local [];
 	ModifyHistory :local [mode : string := "modify";];
-	ModifyOffset :local [];
 	ModifyTSSGene :local [];
 
 	PrepareSearch :local [];
@@ -341,7 +340,6 @@ rules:
 	  tables.append(top->History->Table);
 	  tables.append(top->Current->Table);
 	  tables.append(top->Alias->Table);
-	  tables.append(top->Offset->Table);
 	  tables.append(top->TSSGene->Table);
 	  tables.append(top->AccessionReference1->Table);
 	  tables.append(top->AccessionReference2->Table);
@@ -378,6 +376,7 @@ rules:
 --
 
 	Add does
+	  cmOffset : string;
 
 	  if (not top.allowEdit) then
 	    top->QueryList->List.sqlSuccessful := false;
@@ -392,6 +391,12 @@ rules:
  
 	  -- Insert master Marker Record
 
+	  if (top->ChromosomeMenu.menuHistory.defaultValue = "UN") then
+	      cmOffset := "-999.00";
+	  else
+	      cmOffset := "-1.00";
+	  end if;
+
           cmd := mgi_setDBkey(MRK_MARKER, NEWKEY, KEYNAME) +
                  mgi_DBinsert(MRK_MARKER, KEYNAME) +
 		 "1," +
@@ -401,6 +406,7 @@ rules:
 	         mgi_DBprstr(top->Name->text.value) + "," +
                  mgi_DBprstr(top->ChromosomeMenu.menuHistory.defaultValue) + "," +
 	         "NULL," +
+		 cmOffset + "," +
 		 global_userKey + "," + global_userKey + END_VALUE;
 
 	  ModifyHistory.mode := "add";
@@ -852,82 +858,6 @@ rules:
 	end does;
 
 --
--- ModifyChromosome
---
--- Activated from:  widget top->ChromosomeMenu->ChromToggle
---
--- If Chromosome = "UN", then Offset = -999
--- If Chromosome was known and changed to another known, then Offsets = -1
---
-
-	ModifyChromosome does
-	  src : widget := ModifyChromosome.source_widget.root;
-	  isAnchor : string;
-
-	  -- 
-	  -- Do not do anything if not in this module
-	  --
-
-	  if (src.name != "MarkerModule") then
-	    return;
-	  end if;
-
-	  --
-	  -- Do not do anything if de-selecting
-	  --
-
-	  if (not top->ChromosomeMenu.menuHistory.set) then
-	    return;
-	  end if;
-
-	  -- If Chromosome = "UN", then offset = -999
-
-	  if (top->ChromosomeMenu.menuHistory.defaultValue = "UN") then
-	    (void) mgi_tblSetCell(top->Offset->Table, 0, top->Offset->Table.offset, "-999.00");
-
-	  -- Changing from one known chromosome to another, change MGD and CC Offsets to -1
-
-	  elsif (top->QueryList->List.selectedItemCount != 0 and 
-		 currentChr != top->ChromosomeMenu.menuHistory.defaultValue and
-		 currentChr != "UN" and
-		 top->ChromosomeMenu.menuHistory.defaultValue != "UN") then
-
-	    isAnchor := mgi_sql1(mgilib_isAnchor(currentRecordKey));
-
-	    if (isAnchor.length > 0) then
-              StatusReport.source_widget := top;
-	      StatusReport.message := "Symbol is an Anchor Locus.  Remove Anchor record before modifying the Chromosome value.";
-	      send(StatusReport);
-              SetOption.source_widget := top->ChromosomeMenu;
-              SetOption.value := currentChr;
-              send(SetOption, 0);
-	      return;
-	    end if;
-
-            StatusReport.source_widget := top;
-	    StatusReport.message := "Check genome coordinates, cytogenetic band and centiMorgan assignments.";
-	    send(StatusReport);
-
-	    (void) mgi_tblSetCell(top->Offset->Table, 0, top->Offset->Table.offset, "-1.00");
-
-	    if (mgi_tblGetCell(top->Offset->Table, 1, top->Offset->Table.offset) != "") then
-	      (void) mgi_tblSetCell(top->Offset->Table, 1, top->Offset->Table.offset, "-1.00");
-              CommitTableCellEdit.source_widget := top->Offset->Table;
-              CommitTableCellEdit.row := 1;
-              CommitTableCellEdit.reason := TBL_REASON_VALIDATE_CELL_END;
-              CommitTableCellEdit.value_changed := true;
-              send(CommitTableCellEdit, 0);
-	    end if;
-	  end if;
-
-          CommitTableCellEdit.source_widget := top->Offset->Table;
-          CommitTableCellEdit.row := 0;
-          CommitTableCellEdit.reason := TBL_REASON_VALIDATE_CELL_END;
-          CommitTableCellEdit.value_changed := true;
-          send(CommitTableCellEdit, 0);
-	end does;
-
---
 -- Modify
 --
 -- Activated from:  widget top->Control->Modify
@@ -988,10 +918,17 @@ rules:
 	    set := set + "cytogeneticOffset = " + mgi_DBprstr(top->Cyto->text.value) + ",";
 	  end if;
 
+          if (top->cMposition->text.modified) then
+              if (top->ChromosomeMenu.menuHistory.defaultValue = "UN") then
+                  set := set + "cMposition = 999.00,";
+              else
+                  set := set + "cMposition = " + mgi_DBprstr(top->cMposition->text.value) + ",";
+              end if;
+          end if;
+
 	  send(ModifyHistory, 0);
 	  send(ModifyAlias, 0);
 	  send(ModifyCurrent, 0);
-	  send(ModifyOffset, 0);
 	  send(ModifyTSSGene, 0);
 
 	  --  Process References
@@ -1315,74 +1252,6 @@ rules:
 	end does;
 
 --
--- ModifyOffset
---
--- Activated from: devent Modify
---
--- Construct insert/update/delete for Marker Offsets
---
-
-	ModifyOffset does
-          table : widget := top->Offset->Table;
-          row : integer := 0;
-          editMode : string;
-          key : string;
-	  offset : string;
-	  set : string := "";
- 
-          -- Process while non-empty rows are found
- 
-          while (row < mgi_tblNumRows(table)) do
-            editMode := mgi_tblGetCell(table, row, table.editMode);
- 
-            if (row > 0 and editMode = TBL_ROW_EMPTY) then
-              break;
-            end if;
- 
-            key := (string) row;
-            offset := mgi_tblGetCell(table, row, table.offset);
- 
-	    -- If no MGD offset is entered, then add the MGD offset based on Chromosome value
-
-	    if ((editMode= TBL_ROW_EMPTY or editMode = TBL_ROW_ADD) and 
-		 row = 0 and offset.length = 0) then
-	      if (top->ChromosomeMenu.menuHistory.defaultValue = "UN") then
-	        offset := "-999.0";
-	      else
-	        offset := "-1.0";
-	      end if;
-
-              cmd := cmd + mgi_DBinsert(MRK_OFFSET, NOKEY) +
-			   currentRecordKey + "," +
-			   "0," +
-			   offset + END_VALUE;
-            elsif (editMode = TBL_ROW_ADD) then
-              cmd := cmd + mgi_DBinsert(MRK_OFFSET, NOKEY) +
-			   currentRecordKey + "," +
-			   key + "," +
-			   offset + END_VALUE;
-            elsif (editMode = TBL_ROW_MODIFY) then
-	      if (mgi_DBprstr(offset) = "NULL") then
-                StatusReport.source_widget := top;
-	        StatusReport.message := "Cannot modify the offset to a NULL value.";
-	        send(StatusReport);
-              else
-                set := "cmoffset = " + offset;
-                cmd := cmd + mgi_DBupdate2(MRK_OFFSET, currentRecordKey, key, set);
-	      end if;
-            elsif (editMode = TBL_ROW_DELETE and key = "0") then
-              StatusReport.source_widget := top;
-	      StatusReport.message := "Cannot delete the MGD offset.";
-	      send(StatusReport);
-            elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
-              cmd := cmd + mgi_DBdelete(MRK_OFFSET, currentRecordKey + " and source = " + key);
-            end if;
- 
-            row := row + 1;
-          end while;
-	end does;
-
---
 -- ModifyTSSGene
 --
 -- Activated from: devent Modify
@@ -1435,7 +1304,6 @@ rules:
 	  from_alias    : boolean := false;
 	  from_current  : boolean := false;
 	  from_history  : boolean := false;
-	  from_offset   : boolean := false;
 	  from_reference: boolean := false;
 	  from_annot    : boolean := false;
 
@@ -1534,18 +1402,9 @@ rules:
 	  end if;
 
 	  if (top->cMposition->text.modified) then
-	    where := where + "\nand moff.source = 0 and moff.cmoffset = " + top->cMposition->text.value;
-	    from_offset := true;
+	    where := where + "\nand m.cmOffset = " + top->cMposition->text.value;
 	  end if;
 
-	  -- Query for MGD Offset
-          value := mgi_tblGetCell(top->Offset->Table, 0, top->Offset->Table.offset);
-
-          if (value.length > 0) then
-	    where := where + "\nand moff.cmoffset = " + value;
-	    from_offset := true;
-	  end if;
-	    
           value := mgi_tblGetCell(top->Current->Table, 0, top->Current->Table.markerKey);
 
           if (value.length > 0) then
@@ -1649,11 +1508,6 @@ rules:
 	  --
 	  -- concatenate the from/and clauses
 	  --
-
-	  if (from_offset) then
-	    from := from + ",MRK_Offset moff";
-	    where := where + "\nand m._Marker_key = moff._Marker_key";
-	  end if;
 
 	  if (from_current) then
 	    from := from + ",MRK_Current_View mu";
@@ -1761,10 +1615,11 @@ rules:
 	      top->Symbol->text.value       := mgi_getstr(dbproc, 4);
 	      top->Name->text.value         := mgi_getstr(dbproc, 5);
 	      top->Cyto->text.value         := mgi_getstr(dbproc, 7);
-	      (void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 8));
-	      (void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 9));
-	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 10));
-	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 11));
+	      top->cMposition->text.value   := mgi_getstr(dbproc, 8);
+	      (void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 9));
+	      (void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 10));
+	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 11));
+	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 12));
               SetOption.source_widget := top->MarkerTypeMenu;
               SetOption.value := mgi_getstr(dbproc, 2);
               send(SetOption, 0);
@@ -1774,24 +1629,6 @@ rules:
               SetOption.source_widget := top->ChromosomeMenu;
               SetOption.value := mgi_getstr(dbproc, 6);
               send(SetOption, 0);
-	    end while;
-	  end while;
-	  (void) mgi_dbclose(dbproc);
-
-	  table := top->Offset->Table;
-	  cmd := marker_offset(currentRecordKey);
-	  dbproc := mgi_dbexec(cmd);
-	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      source := mgi_getstr(dbproc, 1);
-              (void) mgi_tblSetCell(table, (integer) source, table.sourceKey, source);
-              (void) mgi_tblSetCell(table, (integer) source, table.offset, mgi_getstr(dbproc, 2));
-	      (void) mgi_tblSetCell(table, (integer) source, table.editMode, TBL_ROW_NOCHG);
-
-	      if (integer) source = 0 then
-	          top->cMposition->text.value := mgi_getstr(dbproc, 2);
-              end if;
-
 	    end while;
 	  end while;
 	  (void) mgi_dbclose(dbproc);
@@ -1930,18 +1767,6 @@ rules:
 	    end while;
 	  end while;
 	  (void) mgi_dbclose(dbproc);
-
-	  -- Initialize Offset rows which do not exist
-	  row := 0;
-	  table := top->Offset->Table;
-	  while (row < mgi_tblNumRows(table)) do
-	    if (mgi_tblGetCell(table, row, table.sourceKey) = "") then
-              (void) mgi_tblSetCell(table, row, table.sourceKey, (string) row);
-              (void) mgi_tblSetCell(table, row, table.offset, "");
-	      (void) mgi_tblSetCell(table, row, table.editMode, "");
-	    end if;
-	    row := row + 1;
-	  end while;
 
 	  currentChr := top->ChromosomeMenu.menuHistory.defaultValue;
 	  currentName := top->Name->text.value;

@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Tue Aug 14 13:19:28 2018";
+      lastWritten = "Thu Oct  4 12:37:08 2018";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -13780,7 +13780,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         legend = XmLabelGadget;
                                         Group: Widget
-                                          labelString = "1 = Synonyms, 2 = References\n3 = Accession IDs(Nucleotide Sequence), 4 = Accession IDs(EntrezGene etc.), 5 = Accession IDs(all other)\n6 = TSS or Gene, 7 = Alias, 8 = cM Positions (all)";
+                                          labelString = "1 = Synonyms, 2 = References\n3 = Accession IDs(Nucleotide Sequence), 4 = Accession IDs(EntrezGene etc.), 5 = Accession IDs(all other)\n6 = TSS or Gene, 7 = Alias";
                                       }
                                       {
                                         notebook = notebook : mgiNoteBook;
@@ -14275,7 +14275,7 @@ Shift<Key>Tab: prev-tab-group()
                                                   {
                                                     Table = mgiTable : mgiTable;
                                                     Group: Widget
-                                                      userDefinedAttributes = "markerCurrent:Int=\"1\"\nmarkerKey:Int=\"2\"\nmarkerSymbol:Int=\"3\"\nmarkerColumn:Int=\"1\"\n";
+                                                      userDefinedAttributes = "markerCurrentKey:Int(Int)=\"1\"\nmarkerKey:Int(Int)=\"2\"\nmarkerSymbol:Int(Int)=\"3\"\nmarkerColumn:Int(Int)=\"1\"\n";
                                                       xrtTblNumColumns = 4;
                                                       xrtTblColumnLabels = "Mode,Current key,Marker key,TSS or Gene";
                                                       xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 20)";
@@ -14314,28 +14314,6 @@ Shift<Key>Tab: prev-tab-group()
                                                       xrtTblVisibleRows = 3;
                                                       xrtTblEditableSeries = "(all 0-2 False)";
                                                       xrtTblNumRows = 3;
-                                                  }
-                                            }
-                                            {
-                                              Offset = Table : mgiTable;
-                                                  {
-                                                    Table = mgiTable;
-                                                    Group: Widget
-                                                      xrtTblNumColumns = 3;
-                                                      xrtTblNumRows = 4;
-                                                      xrtTblVisibleRows = 4;
-                                                      xrtTblCharWidthSeries = "(all 0-1 1)(all 2 10)(all label 3)";
-                                                      xrtTblEditableSeries = "(all 0-1 False)";
-                                                      xrtTblRowLabels = "MGD,CC,MIT,Old";
-                                                      xrtTblPixelWidthSeries = "(all 0-1 0)";
-                                                      userDefinedAttributes = "sourceKey:Int(Int)=\"1\"\noffset:Int(Int)=\"2\"\n";
-                                                      xrtTblColumnLabels = "Mode,Source,Offset";
-                                                      xrtTblTraversableSeries = "(all 0-1 False)";
-                                                  }
-                                                  {
-                                                    AddRow = TablePush;
-                                                    Group: Widget
-                                                      sensitive = False;
                                                   }
                                             }
                                       }

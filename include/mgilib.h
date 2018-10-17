@@ -64,7 +64,6 @@ extern char *global_version;
 #define MRK_CURRENT		117
 #define MRK_HISTORY		118
 #define MRK_NOTES		119
-#define MRK_OFFSET		120
 #define MRK_MOUSE  		123
 #define MRK_ACC_REFERENCE	124
 #define MRK_ACC_REFERENCE1	125
