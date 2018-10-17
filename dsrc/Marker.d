@@ -918,11 +918,11 @@ rules:
 	    set := set + "cytogeneticOffset = " + mgi_DBprstr(top->Cyto->text.value) + ",";
 	  end if;
 
-          if (top->cMposition->text.modified) then
+          if (top->cmOffset->text.modified) then
               if (top->ChromosomeMenu.menuHistory.defaultValue = "UN") then
-                  set := set + "cMposition = 999.00,";
+                  set := set + "cmOffset = 999.00,";
               else
-                  set := set + "cMposition = " + mgi_DBprstr(top->cMposition->text.value) + ",";
+                  set := set + "cmOffset = " + mgi_DBprstr(top->cmOffset->text.value) + ",";
               end if;
           end if;
 
@@ -1401,8 +1401,8 @@ rules:
 	    where := where + "\nand m.cytogeneticOffset ilike " + mgi_DBprstr(top->Cyto->text.value);
 	  end if;
 
-	  if (top->cMposition->text.modified) then
-	    where := where + "\nand m.cmOffset = " + top->cMposition->text.value;
+	  if (top->cmOffset->text.modified) then
+	    where := where + "\nand m.cmOffset = " + top->cmOffset->text.value;
 	  end if;
 
           value := mgi_tblGetCell(top->Current->Table, 0, top->Current->Table.markerKey);
@@ -1615,7 +1615,7 @@ rules:
 	      top->Symbol->text.value       := mgi_getstr(dbproc, 4);
 	      top->Name->text.value         := mgi_getstr(dbproc, 5);
 	      top->Cyto->text.value         := mgi_getstr(dbproc, 7);
-	      top->cMposition->text.value   := mgi_getstr(dbproc, 8);
+	      top->cmOffset->text.value     := mgi_getstr(dbproc, 8);
 	      (void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 9));
 	      (void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 10));
 	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 11));

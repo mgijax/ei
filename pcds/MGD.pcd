@@ -13636,7 +13636,7 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  cMposition = CharText : mgiDataTypes;
+                                  cmOffset = CharText : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
                                     leftWidget = Cyto;
