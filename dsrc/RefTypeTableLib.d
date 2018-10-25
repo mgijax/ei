@@ -254,7 +254,9 @@ rules:
 	    defaultRefsTypeKey := reftypetable_refstype(mgi_DBprstr(table.defaultRefType), mgi_DBtable(tableID));
 	  end if;
 
-	  table.molRefKey := "";
+	  if (table.is_defined("molRefKey") != nil then
+	    table.molRefKey := "";
+	  end if;
 
           -- Process 
  
