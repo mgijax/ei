@@ -406,6 +406,7 @@ char *mgi_setDBkey(int table, int key, char *keyName)
     case ALL_ALLELE_CELLLINE:
     case IMG_IMAGEPANE_ASSOC:
     case MGI_REFERENCE_ASSOC:
+    case MGI_SYNONYM:
     case MRK_MARKER:
     case PRB_STRAIN_GENOTYPE:
     case PRB_STRAIN_MARKER:
@@ -457,6 +458,8 @@ char *mgi_DBincKey(char *keyName)
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(MGI_REFERENCE_ASSOC), mgi_DBautosequence(MGI_REFERENCE_ASSOC));
   else if (strcmp(keyName, "refMarkerKey") == 0)
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(MGI_REFERENCE_ASSOC), mgi_DBautosequence(MGI_REFERENCE_ASSOC));
+  else if (strcmp(keyName, "synKey") == 0)
+    sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(MGI_SYNONYM), mgi_DBautosequence(MGI_SYNONYM)); 
   else if (strcmp(keyName, "markerKey") == 0)
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(MRK_MARKER), mgi_DBautosequence(MRK_MARKER)); 
   else if (strcmp(keyName, "genotypeKey") == 0)
@@ -939,6 +942,9 @@ char *mgi_DBautosequence(int table)
 	    break;
     case MGI_REFERENCE_ASSOC:
 	    strcpy(buf, "mgi_reference_assoc_seq");
+	    break;
+    case MGI_SYNONYM:
+	    strcpy(buf, "mgi_synonym_seq");
 	    break;
     case MRK_MARKER:
 	    strcpy(buf, "mrk_marker_seq");
