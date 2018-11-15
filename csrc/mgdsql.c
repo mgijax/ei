@@ -643,7 +643,7 @@ char *marker_history1(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _Marker_Event_key, _Marker_EventReason_key, \
+  sprintf(buf,"select _Assoc_key, _Marker_Event_key, _Marker_EventReason_key, \
    \n_History_key, sequenceNum, name, event_display, event, eventReason, history, modifiedBy \
    \nfrom MRK_History_View  \
    \nwhere _Marker_key = %s \

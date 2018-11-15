@@ -408,6 +408,7 @@ char *mgi_setDBkey(int table, int key, char *keyName)
     case MGI_REFERENCE_ASSOC:
     case MGI_SYNONYM:
     case MRK_MARKER:
+    case MRK_HISTORY:
     case PRB_STRAIN_GENOTYPE:
     case PRB_STRAIN_MARKER:
     case SEQ_SOURCE_ASSOC:
@@ -462,6 +463,8 @@ char *mgi_DBincKey(char *keyName)
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(MGI_SYNONYM), mgi_DBautosequence(MGI_SYNONYM)); 
   else if (strcmp(keyName, "markerKey") == 0)
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(MRK_MARKER), mgi_DBautosequence(MRK_MARKER)); 
+  else if (strcmp(keyName, "historyKey") == 0)
+    sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(MRK_HISTORY), mgi_DBautosequence(MRK_HISTORY)); 
   else if (strcmp(keyName, "genotypeKey") == 0)
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(PRB_STRAIN_GENOTYPE), mgi_DBautosequence(PRB_STRAIN_GENOTYPE));
   else if (strcmp(keyName, "strainMarkerKey") == 0)
@@ -804,7 +807,6 @@ char *mgi_DBkey(int table)
     case MRK_MARKER:
     case MRK_MOUSE:
     case MRK_ANCHOR:
-    case MRK_HISTORY:
     case MRK_NOTES:
             strcpy(buf, "_Marker_key");
 	    break;
@@ -819,6 +821,9 @@ char *mgi_DBkey(int table)
 	    break;
     case MRK_CURRENT:
             strcpy(buf, "_Current_key");
+	    break;
+    case MRK_HISTORY:
+    	    strcpy(buf, "_Assoc_key");
 	    break;
     case MRK_TYPE:
             strcpy(buf, "_Marker_Type_key");
@@ -948,6 +953,9 @@ char *mgi_DBautosequence(int table)
 	    break;
     case MRK_MARKER:
 	    strcpy(buf, "mrk_marker_seq");
+	    break;
+    case MRK_HISTORY:
+	    strcpy(buf, "mrk_history_seq");
 	    break;
     case PRB_STRAIN_GENOTYPE:
 	    strcpy(buf, "prb_strain_genotype_seq");
@@ -2141,7 +2149,7 @@ char *mgi_DBinsert(int table, char *keyName)
 	      mgi_DBtable(table), mgi_DBkey(table));
  	    break;
     case MRK_HISTORY:
-	    sprintf(buf, "insert into %s (%s, _History_key, _Refs_key, _Marker_Event_key, _Marker_EventReason_key, sequenceNum, name, event_date, _CreatedBy_key, _ModifiedBy_key)",
+	    sprintf(buf, "insert into %s (%s, _Marker_key, _History_key, _Refs_key, _Marker_Event_key, _Marker_EventReason_key, sequenceNum, name, event_date, _CreatedBy_key, _ModifiedBy_key)",
 	      mgi_DBtable(table), mgi_DBkey(table));
  	    break;
     case PRB_ALIAS:

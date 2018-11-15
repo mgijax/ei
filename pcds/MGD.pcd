@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Thu Oct  4 12:37:08 2018";
+      lastWritten = "Thu Nov 15 09:46:41 2018";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -13733,22 +13733,22 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         Table = mgiTable;
                                         Group: Widget
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1 3)(all 6 3)(all 7 15)(all 8 20)(all 9-10 10)(all 11 20)(all 12 10)(all 13 15)(all 14 12)";
-                                          xrtTblColumnLabels = "Mode,Current Order,Marker key,Ref key,Event key,Event Reason key,#,Symbol,Name,Date,J#,Citation,Event,Reason,Modified By";
-                                          xrtTblEditableSeries = "(all 0-6 False)";
-                                          xrtTblMaxLengthSeries = "(all 1-6 10)(all 7 40)(all 8 255)(all 9-10 10)(all 11-13 255)";
-                                          xrtTblNumColumns = 15;
-                                          xrtTblPixelWidthSeries = "(all 0-5 0)";
-                                          xrtTblTraversableSeries = "(all 0-6 False)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1 3)(all 7 3)(all 8 15)(all 9 20)(all 10-11 10)(all 12 20)(all 13 10)(all 14 15)(all 15 12)";
+                                          xrtTblColumnLabels = "Mode,Current Order,History key,Marker key,Ref key,Event key,Event Reason key,#,Symbol,Name,Date,J#,Citation,Event,Reason,Modified By";
+                                          xrtTblEditableSeries = "(all 0-7 False)";
+                                          xrtTblMaxLengthSeries = "(all 1-7 10)(all 8 40)(all 9 255)(all 10-11 10)(all 12-14 255)";
+                                          xrtTblNumColumns = 16;
+                                          xrtTblPixelWidthSeries = "(all 0-6 0)";
+                                          xrtTblTraversableSeries = "(all 0-7 False)";
                                           xrtTblValidateCellCallback = "D:VerifyMarker(allowWithdrawn = true, allowReserved = true),\nD:VerifyReference,\nD:CommitTableCellEdit";
-                                          userDefinedAttributes = "markerKey:Int(Int)=\"2\"\nrefsKey:Int(Int)=\"3\"\nmarkerSymbol:Int(Int)=\"7\"\nmarkerName:Int(Int)=\"8\"\neventDate:Int(Int)=\"9\"\njnum:Int(Int)=\"10\"\ncitation:Int(Int)=\"11\"\nevent:Int(Int)=\"12\"\nmarkerChr:Int(Int)=\"-1\"\nmarkerColumns:Int(Int)=\"1\"\ndate:Int(Int)=\"9\"\neventKey:Int(Int)=\"4\"\neventReasonKey:Int(Int)=\"5\"\neventReason:Int(Int)=\"13\"\nmodifiedBy:Int=\"14\"\n";
+                                          userDefinedAttributes = "markerKey:Int(Int)=\"3\"\nrefsKey:Int(Int)=\"4\"\nmarkerSymbol:Int(Int)=\"8\"\nmarkerName:Int(Int)=\"9\"\neventDate:Int(Int)=\"10\"\njnum:Int(Int)=\"11\"\ncitation:Int(Int)=\"12\"\nevent:Int(Int)=\"13\"\nmarkerChr:Int(Int)=\"-1\"\nmarkerColumns:Int(Int)=\"1\"\ndate:Int(Int)=\"10\"\neventKey:Int(Int)=\"5\"\neventReasonKey:Int(Int)=\"6\"\neventReason:Int(Int)=\"14\"\nmodifiedBy:Int(Int)=\"15\"\nhistoryKey:Int(Int)=\"2\"\n";
                                           xrtTblVisibleRows = 5;
                                           xrtTblAllowCellResize = resize_horizontal;
                                           xrtTblEnterCellCallback = "D:SetOptions";
                                         Group: User
-                                          saveTraversableSeries = "(all 0-6 False)";
-                                          saveEditableSeries = "(all 0-6 False)";
-                                          seqNum = 6;
+                                          saveTraversableSeries = "(all 0-7 False)";
+                                          saveEditableSeries = "(all 0-7 False)";
+                                          seqNum = 7;
                                       }
                                 }
                                 {

@@ -1130,6 +1130,10 @@ rules:
           tmpCmd : string := "";
 	  historyModified : boolean := false;
 
+	  key : string;
+	  keyName : string := "historyKey";
+	  keyDefined : boolean := false;
+
           currentSeqNum : string;
           newSeqNum : string;
 	  markerKey : string;
@@ -1173,6 +1177,7 @@ rules:
               break;
             end if;
  
+            key := mgi_tblGetCell(table, row, table.historyKey);
             currentSeqNum := mgi_tblGetCell(table, row, table.currentSeqNum);
             newSeqNum := mgi_tblGetCell(table, row, table.seqNum);
             markerKey := mgi_tblGetCell(table, row, table.markerKey);
@@ -1183,7 +1188,15 @@ rules:
             eventReasonKey := mgi_tblGetCell(table, row, table.eventReasonKey);
  
             if (editMode = TBL_ROW_ADD) then
-              tmpCmd := tmpCmd + mgi_DBinsert(MRK_HISTORY, NOKEY) + 
+
+              if (not keyDefined) then 
+                cmd := cmd + mgi_setDBkey(MRK_HISTORY, NEWKEY, keyName);
+                keyDefined := true;
+              else
+                cmd := cmd + mgi_DBincKey(keyName);
+              end if;
+
+              tmpCmd := tmpCmd + mgi_DBinsert(MRK_HISTORY, keyName) +
 			currentRecordKey + "," +
 			markerKey + "," +
 			mgi_DBprkey(refsKey) + "," +
@@ -1208,7 +1221,7 @@ rules:
 
                 -- Insert new record
  
-                tmpCmd := tmpCmd + mgi_DBinsert(MRK_HISTORY, NOKEY) + 
+                tmpCmd := tmpCmd + mgi_DBinsert(MRK_HISTORY, keyName) +
 			  currentRecordKey + "," +
 			  markerKey + "," +
 			  mgi_DBprkey(refsKey) + "," +
@@ -1229,13 +1242,13 @@ rules:
 		       "_Marker_EventReason_key = " + mgi_DBprkey(eventReasonKey) + "," +
 		       "name = " + mgi_DBprstr(name) + "," +
 		       "event_date = " + mgi_DBprstr(eventDate);
-                tmpCmd := tmpCmd + mgi_DBupdate2(MRK_HISTORY, currentRecordKey, currentSeqNum, set);
+                tmpCmd := tmpCmd + mgi_DBupdate(MRK_HISTORY, key, set);
               end if;
 
 	      historyModified := true;
 
             elsif (editMode = TBL_ROW_DELETE) then
-              tmpCmd := tmpCmd + mgi_DBdelete(MRK_HISTORY, currentRecordKey + " and sequenceNum = " + currentSeqNum);
+              tmpCmd := tmpCmd + mgi_DBdelete(MRK_HISTORY, key);
 	      historyModified := true;
             end if;
  
@@ -1640,22 +1653,23 @@ rules:
 	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    row := 0;
 	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-                (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 4));
-                (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 4));
-                (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 3));
-                (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 9));
-                (void) mgi_tblSetCell(table, row, table.markerName, mgi_getstr(dbproc, 5));
-                (void) mgi_tblSetCell(table, row, table.eventKey, mgi_getstr(dbproc, 1));
-                (void) mgi_tblSetCell(table, row, table.event, mgi_getstr(dbproc, 7));
-                (void) mgi_tblSetCell(table, row, table.eventReasonKey, mgi_getstr(dbproc, 2));
-                (void) mgi_tblSetCell(table, row, table.eventReason, mgi_getstr(dbproc, 8));
-		(void) mgi_tblSetCell(table, row, table.modifiedBy, mgi_getstr(dbproc, 10));
+                (void) mgi_tblSetCell(table, row, table.historyKey, mgi_getstr(dbproc, 1));
+                (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 5));
+                (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 5));
+                (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 4));
+                (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 10));
+                (void) mgi_tblSetCell(table, row, table.markerName, mgi_getstr(dbproc, 6));
+                (void) mgi_tblSetCell(table, row, table.eventKey, mgi_getstr(dbproc, 2));
+                (void) mgi_tblSetCell(table, row, table.event, mgi_getstr(dbproc, 8));
+                (void) mgi_tblSetCell(table, row, table.eventReasonKey, mgi_getstr(dbproc, 3));
+                (void) mgi_tblSetCell(table, row, table.eventReason, mgi_getstr(dbproc, 9));
+		(void) mgi_tblSetCell(table, row, table.modifiedBy, mgi_getstr(dbproc, 11));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 
 		if (mgi_getstr(dbproc, 10) = "01/01/1900") then
                   (void) mgi_tblSetCell(table, row, table.eventDate, "");
 		else
-                  (void) mgi_tblSetCell(table, row, table.eventDate, mgi_getstr(dbproc, 6));
+                  (void) mgi_tblSetCell(table, row, table.eventDate, mgi_getstr(dbproc, 7));
 		end if;
 
           	-- Initialize Option Menus for row 0

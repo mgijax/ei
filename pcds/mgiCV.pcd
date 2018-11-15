@@ -2,7 +2,7 @@ Module: mgiCV
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Mon Feb  8 13:49:38 2016";
+      lastWritten = "Thu Nov 15 09:45:21 2018";
         {
           CVMenu = XmRowColumn;
           Group: Widget
@@ -23,8 +23,8 @@ Module: mgiCV
                       MarkerEventPulldown = OptionPulldown : mgiOption;
                       Group: User
                         tableForm = History;
-                        tableOption = 12;
-                        tableOptionKey = 4;
+                        tableOption = 13;
+                        tableOptionKey = 5;
                     }
               }
               {
@@ -39,8 +39,8 @@ Module: mgiCV
                       MarkerEventReasonPulldown = OptionPulldown : mgiOption;
                       Group: User
                         tableForm = History;
-                        tableOption = 13;
-                        tableOptionKey = 5;
+                        tableOption = 14;
+                        tableOptionKey = 6;
                     }
               }
         }
