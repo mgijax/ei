@@ -16,6 +16,8 @@
 
 dmodule DateLib is
 
+#include <mgilib.h>
+
 locals:
 
 rules:
@@ -51,6 +53,7 @@ rules:
 	  where : string := "";
 	  fieldName : string;
 	  isTable : boolean;
+	  tokens : string_list;
 
 	  isTable := mgi_tblIsTable(dateW);
 
@@ -79,18 +82,15 @@ rules:
 	      where := "\nand " + fieldName + " " +
 		       value->substr(1,1) + " " + 
 		       mgi_DBprstr(value->substr(2, value.length));
-	    --elsif (strstr(value, "..") != nil) then
-	    --  where := "\nand (" + 
---		fieldName + " between substring(" + mgi_DBprstr(value) + ",1,charindex('..'," + mgi_DBprstr(value) + ") - 1) " +
---		" and dateadd(day, 1, substring(" + mgi_DBprstr(value) + ",charindex('..'," + mgi_DBprstr(value) + ") + 2, char_length(" + mgi_DBprstr(value) + "))))";
---
+	    elsif (strstr(value, "..") != nil) then
+	      where := "\nand (" + fieldName + " between ";
+	      tokens := mgi_splitfields(value, "..");
+	      tokens.rewind;
+	      where := where + "'" + tokens[1] + "' and ('" + tokens[0] + "'";
+	      where := where + "::date + '1 day'::interval))";
 	    else
-	      -- creation_date between '2000-08-11' and ('2000-08-11'::date + '1 day'::interval)
-
-	    -- all date/timeq queries
-
-	      where := "\nand (" + fieldName + " between " + mgi_DBprstr(value) + " and (" + mgi_DBprstr(value) + "::date + '1 day'::interval))";
-
+	      where := "\nand (" + fieldName + " between " + mgi_DBprstr(value) + 
+	      		" and (" + mgi_DBprstr(value) + "::date + '1 day'::interval))";
 	    end if;
 	  end if;
 
