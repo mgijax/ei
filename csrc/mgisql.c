@@ -1650,7 +1650,7 @@ char *syntypetable_load(char *key, char *from, char *where)
 	\nmodification_date, modifiedBy \
 	\nfrom %s \
 	\nwhere %s = %s \
-	\norder by  allowOnlyOne desc, _SynonymType_key", from, where, key);
+	\norder by  allowOnlyOne desc, _SynonymType_key, synonym", from, where, key);
   return(buf);
 }
 
