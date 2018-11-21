@@ -1662,7 +1662,7 @@ char *syntypetable_loadref(char *key, char *from, char *where)
 	\nmodification_date, modifiedBy, _Refs_key, jnum, short_citation \
 	\nfrom %s \
 	\nwhere %s = %s \
-	\norder by  allowOnlyOne desc, _SynonymType_key", from, where, key);
+	\norder by  allowOnlyOne desc, _SynonymType_key, synonym", from, where, key);
   return(buf);
 }
 
