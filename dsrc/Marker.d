@@ -1317,7 +1317,6 @@ rules:
 	  from_alias    : boolean := false;
 	  from_current  : boolean := false;
 	  from_history  : boolean := false;
-	  from_reference: boolean := false;
 	  from_annot    : boolean := false;
 
 	  value : string;
@@ -1492,24 +1491,6 @@ rules:
 	    from_alias := true;
 	  end if;
 
-          value := mgi_tblGetCell(top->Reference->Table, 0, top->Reference->Table.refsKey);
-          if (value.length > 0) then
-	    where := where + "\nand mr._Refs_key = " + value;
-	    from_reference := true;
-	  else
-            value := mgi_tblGetCell(top->Reference->Table, 0, top->Reference->Table.citation);
-            if (value.length > 0) then
-	      where := where + "\nand mr.short_citation ilike " + mgi_DBprstr(value);
-	      from_reference := true;
-	    end if;
-	  end if;
-
-          value := mgi_tblGetCell(top->Reference->Table, 0, top->Reference->Table.reviewKey);
-          if (value.length > 0) then
-	    where := where + "\nand mr.isReviewArticle = " + value;
-	    from_reference := true;
-	  end if;
-
 	  -- Annotations
 
 	  value := mgi_tblGetCell(top->TDCVocab->Table, 0, top->TDCVocab->Table.termKey);
@@ -1535,11 +1516,6 @@ rules:
 	  if (from_history) then
 	    from := from + ",MRK_History_View mh";
 	    where := where + "\nand m._Marker_key = mh._Marker_key";
-	  end if;
-
-	  if (from_reference) then
-	    from := from + ",MRK_Reference_View mr";
-	    where := where + "\nand m._Marker_key = mr._Marker_key";
 	  end if;
 
 	  if (from_annot) then
