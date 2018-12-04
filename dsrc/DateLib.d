@@ -74,12 +74,12 @@ rules:
 
 	    if (strstr(value, ">=") != nil or
 	        strstr(value, "<=") != nil ) then
-	      where := "\nand " + fieldName + " " +
+	      where := "\nand " + fieldName + "::date " +
 		       value->substr(1,2) + " " + 
 		       mgi_DBprstr(value->substr(3, value.length));
 	    elsif (strstr(value, ">") != nil or
 	           strstr(value, "<") != nil ) then
-	      where := "\nand " + fieldName + " " +
+	      where := "\nand " + fieldName + "::date " +
 		       value->substr(1,1) + " " + 
 		       mgi_DBprstr(value->substr(2, value.length));
 	    elsif (strstr(value, "..") != nil) then
