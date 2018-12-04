@@ -68,7 +68,6 @@ extern char *global_version;
 #define MRK_ACC_REFERENCE	124
 #define MRK_ACC_REFERENCE1	125
 #define MRK_ACC_REFERENCE2	121
-#define MRK_ACC_REFERENCE3	122
 
 #define PRB_ALIAS		130
 #define PRB_ALLELE		131

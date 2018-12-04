@@ -204,7 +204,6 @@ locals:
 	accTable : widget;
 	accRefTable1 : widget;	-- Nucleotide Sequence, miRBase
 	accRefTable2 : widget;  -- EntrezGene, RefSeq, etc.
-	accRefTable3 : widget;  -- all others
 
 	cmd : string;
 	from : string;
@@ -343,7 +342,6 @@ rules:
 	  tables.append(top->TSSGene->Table);
 	  tables.append(top->AccessionReference1->Table);
 	  tables.append(top->AccessionReference2->Table);
-	  tables.append(top->AccessionReference3->Table);
 	  tables.append(top->Control->ModificationHistory->Table);
 
 	  -- Global Accession number Tables
@@ -351,7 +349,6 @@ rules:
 	  accTable := top->mgiAccessionTable->Table;
 	  accRefTable1 := top->AccessionReference1->Table;
 	  accRefTable2 := top->AccessionReference2->Table;
-	  accRefTable3 := top->AccessionReference3->Table;
 
 	  -- TDC stuff
 	  annotTypeKey := "1011";
@@ -973,12 +970,6 @@ rules:
           send(ProcessAcc, 0);
           cmd := cmd + accRefTable2.sqlCmd;
 
-          ProcessAcc.table := accRefTable3;
-          ProcessAcc.objectKey := currentRecordKey;
-          ProcessAcc.tableID := MRK_ACC_REFERENCE3;
-          send(ProcessAcc, 0);
-          cmd := cmd + accRefTable3.sqlCmd;
-
 	  --
 	  -- If modifying name, then also modify all corresponding History records
 	  --
@@ -995,7 +986,6 @@ rules:
 	  if ((cmd.length > 0 and 
 	       cmd != accRefTable1.sqlCmd and 
 	       cmd != accRefTable2.sqlCmd and 
-	       cmd != accRefTable3.sqlCmd and 
 	       cmd != accTable.sqlCmd) or
 	       set.length > 0) then
 	    cmd := cmd + mgi_DBupdate(MRK_MARKER, currentRecordKey, set);
@@ -1348,13 +1338,6 @@ rules:
             send(SearchAcc, 0);
 	    from := from + accRefTable2.sqlFrom;
 	    where := where + accRefTable2.sqlWhere;
-
-            SearchAcc.table := accRefTable3;
-            SearchAcc.objectKey := "m." + mgi_DBkey(MRK_MARKER);
-	    SearchAcc.tableID := MRK_ACC_REFERENCE3;
-            send(SearchAcc, 0);
-	    from := from + accRefTable3.sqlFrom;
-	    where := where + accRefTable3.sqlWhere;
 	  end if;
 
 	  QueryModificationHistory.table := top->ModificationHistory->Table;
@@ -1565,9 +1548,6 @@ rules:
           send(InitAcc, 0);
  
 	  InitAcc.table := accRefTable2;
-          send(InitAcc, 0);
- 
-	  InitAcc.table := accRefTable3;
           send(InitAcc, 0);
  
 	  tables.open;
@@ -1798,12 +1778,6 @@ rules:
           LoadAcc.table := accRefTable2;
           LoadAcc.objectKey := currentRecordKey;
           LoadAcc.tableID := MRK_ACC_REFERENCE2;
-          LoadAcc.reportError := false;
-          send(LoadAcc, 0);
- 
-          LoadAcc.table := accRefTable3;
-          LoadAcc.objectKey := currentRecordKey;
-          LoadAcc.tableID := MRK_ACC_REFERENCE3;
           LoadAcc.reportError := false;
           send(LoadAcc, 0);
  

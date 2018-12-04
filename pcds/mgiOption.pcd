@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Tue Jul 31 06:12:12 2018";
+      lastWritten = "Tue Dec  4 13:27:55 2018";
       copy = false;
       inCreateMenu = true;
         {
@@ -933,6 +933,16 @@ Module: mgiOption
                         labelString = "RRID:";
                       Group: User
                         defaultValue = 179;
+                    }
+                    {
+                      GEO = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 117;
+                    }
+                    {
+                      GENSAT = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 118;
                     }
               }
         }

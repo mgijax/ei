@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Tue Jul 31 06:12:15 2018";
+      lastWritten = "Tue Dec  4 13:27:58 2018";
       copy = false;
       inCreateMenu = true;
         {

@@ -230,8 +230,7 @@ rules:
 	    orderBy := acclib_orderA();
 	  elsif (tableID = MRK_ACC_REFERENCE or 
 		 tableID = MRK_ACC_REFERENCE1 or
-		 tableID = MRK_ACC_REFERENCE2 or
-		 tableID = MRK_ACC_REFERENCE3) then
+		 tableID = MRK_ACC_REFERENCE2) then
 	    orderBy := acclib_orderB();
 	  elsif (tableID = SEQ_ALLELE_ASSOC_VIEW) then
 	    orderBy := acclib_orderC();

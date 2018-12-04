@@ -1033,7 +1033,6 @@ char *mgi_DBtype(int table)
     case MRK_ACC_REFERENCE:
     case MRK_ACC_REFERENCE1:
     case MRK_ACC_REFERENCE2:
-    case MRK_ACC_REFERENCE3:
             strcpy(buf, "Marker");
 	    break;
     case PRB_PROBE:
@@ -1126,9 +1125,6 @@ char *mgi_DBaccTable(int table)
             break;
     case MRK_ACC_REFERENCE2:
             strcpy(buf, "MRK_AccRef2_View");
-            break;
-    case MRK_ACC_REFERENCE3:
-            strcpy(buf, "MRK_AccRef3_View");
             break;
     case PRB_PROBE:
             strcpy(buf, "PRB_AccNoRef_View");

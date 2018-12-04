@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Wed Nov 28 11:29:45 2018";
+      lastWritten = "Tue Dec  4 13:38:24 2018";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -13780,7 +13780,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         legend = XmLabelGadget;
                                         Group: Widget
-                                          labelString = "1 = Synonyms, 2 = References\n3 = Accession IDs(Nucleotide Sequence), 4 = Accession IDs(EntrezGene etc.), 5 = Accession IDs(all other)\n6 = TSS or Gene, 7 = Alias";
+                                          labelString = "1 = Synonyms, 2 = References\n3 = Accession IDs(Nucleotide Sequence), 4 = Accession IDs(all other), 5 = TSS or Gene, 6 = Alias";
                                       }
                                       {
                                         notebook = notebook : mgiNoteBook;
@@ -14090,105 +14090,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     Group: Widget
                                                       managed = True;
                                                   }
-                                                  }
-                                                  }
-                                            }
-                                            {
-                                              AccessionReference3 = AccessionReference : mgiTable;
-                                              Group: Widget
-                                                rubberPositioning = False;
-                                                resizePolicy = resize_any;
-                                                  {
-                                                    Table = mgiTable;
-                                                    Group: Widget
-                                                      xrtTblValidateCellCallback = "D:VerifyMarkerAcc,\nD:VerifyAcc,\nD:VerifyReference,\nD:CommitTableCellEdit";
-                                                      xrtTblCharWidthSeries = "(all 0 1) (all 5 20) (all 6 20)(all 7 10)(all 8 40)(all 9 12)(all 10 10)";
-                                                      xrtTblNumColumns = 11;
-                                                      xrtTblColumnLabels = "Mode,Logical Key,Acc Key,Ref Current Key,Ref Key,Acc Name,Acc ID,J#,Citation,Modified By,Date";
-                                                      userDefinedAttributes = "modifiedBy:Int=\"9\"\nmodifiedDate:Int=\"10\"\n";
-                                                      xrtTblNumRows = 20;
-                                                      xrtTblVisibleRows = 10;
-                                                    Group: Constraint
-                                                      leftAttachment = attach_form;
-                                                      rightAttachment = attach_form;
-                                                      topAttachment = attach_widget;
-                                                      topWidget = AccSourceFrame;
-                                                      topOffset = 5;
-                                                      bottomAttachment = attach_none;
-                                                      resizable = true;
-                                                  }
-                                                  {
-                                                    Add = TablePush;
-                                                  }
-                                                  {
-                                                    Delete = TablePush;
-                                                  }
-                                                  {
-                                                    AccSourceFrame = AccSourceFrame;
-                                                    Group: Constraint
-                                                      leftAttachment = attach_form;
-                                                      leftOffset = 5;
-                                                      rightAttachment = attach_none;
-                                                      topAttachment = attach_form;
-                                                      topOffset = 5;
-                                                      bottomAttachment = attach_none;
-                                                      resizable = true;
-                                                  {
-                                                    AccSourceMenu = XmOptionMenu;
-                                                    Group: User
-                                                      defaultOption = AllenBrainAtlas;
-                                                  }
-                                                  Popups:
-                                                  {
-                                                    AccSourcePulldown = OptionPulldown;
-                                                  {
-                                                    MGI = AccToggle;
-                                                  }
-                                                  {
-                                                    MRK = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    J = AccToggle;
-                                                  }
-                                                  {
-                                                    PubMed = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    DXDOI = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    GOREF = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NSequence = AccToggle;
-                                                  }
-                                                  {
-                                                    EnsemblGeneModel = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    EnsemblProtein = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    EnsemblTranscript = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    EntrezGene = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NCBIGeneModel = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NCBIGeneModelEvidence = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RefSeq = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    SWISSPROT = AccToggle;
-                                                  }
-                                                  {
-                                                    TrEMBL = AccToggle : mgiOption;
-                                                  }
                                                   {
                                                     AllenBrainAtlas = AccToggle : mgiOption;
                                                     Group: Widget
@@ -14220,7 +14121,7 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
-                                                    EC = AccToggle;
+                                                    EC = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -14267,6 +14168,301 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     QTLArchive = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    InterPro = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    IMAGE = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    MGC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    WashU = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    ATCC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    MGIImage = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    BGEM = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    GUDMAP = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EMAGE = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EUREXPRESS = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    CREX = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    HYEX = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    INEX = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    FSEX = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RIEX = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    TEXT = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    TXEX = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    E = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    HGNC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    OMIM = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RGD = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    ZFIN = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NIA = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NIA7 = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NIA15K = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RPCI23 = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RPCI24 = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    UniSTS = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    BROAD = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Taxon = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    JRS = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    MMRRC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    APB = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    ARC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    BCBC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    CARD = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    CHROMus = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    CMMR = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    CRL = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    CWR = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EMMA = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EMS = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EUCOMM = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Harwell = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    JPGA = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    genOway = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    KOMP = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NCIMR = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    MPD = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    MTG = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    MUGEN = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NIG = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NMICE = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    OBS = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    ORNL = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RIKENBRC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    SMOC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    TAC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    UNC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RMRC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    WTSI = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    IMAGELibrary = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    dbESTLibrary = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    IGTC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    LexiconGeneTrap = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    BayGenomicGeneTrap = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    TexasGeneTrap = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    TIGEMGeneTrap = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    ModellingHumanGeneTrap = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    ESCDGeneTrap = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    ExchangeableClonesGeneTrap = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    GermanGeneTrap = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    SangerGeneTrap = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    HutchinsonGeneTrap = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    KOMPRegeneron = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    KOMPCSD = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RegeneronOther = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    KOMPRegeneronProject = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    KOMPCSDProject = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NORCOMMProject = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EUCOMMProject = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Genentech = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EUCOMMCellLine = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EUCOMMSequenceType = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EUMMCR = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    mirKO = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    mirKOproject = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    PleiadesCellLine = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RuleyHECellLine = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    IshidaYCellLine = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NorCOMM = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Lexicon = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EMAP = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    AdultMouseAntatomy = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RRID = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    GEO = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    GENSAT = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
