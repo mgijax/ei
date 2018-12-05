@@ -62,7 +62,7 @@ char *exec_acc_insert(char *userKey, char *key, char *accid, char *logicalKey, c
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select * from ACC_insertNoChecks (%s,%s,%s,%s,%s,%s,%s,%s);\n", \
+  sprintf(buf,"select * from ACC_insert (%s,%s,%s,%s,%s,%s,%s,%s);\n", \
 	   userKey, key, accid, logicalKey, table, refsKey, isPreferred, isPrivate);
   return(buf);
 }
