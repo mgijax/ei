@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Wed Dec 12 13:59:23 2018";
+      lastWritten = "Tue Dec  4 13:38:24 2018";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -13974,51 +13974,6 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
-                                                    EnsemblGeneModel = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    EnsemblProtein = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    EnsemblTranscript = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    EntrezGene = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NCBIGeneModel = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NCBIGeneModelEvidence = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RefSeq = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    SWISSPROT = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TrEMBL = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    AllenBrainAtlas = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    Affy1 = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    Affy430 = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    AffyU74 = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    ArrayExpress = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    CCDS = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     EC = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
@@ -14672,12 +14627,9 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         AccSourceFrame = AccSourceFrame;
-                                        Group: Widget
-                                          managed = False;
                                             {
                                               AccSourceMenu = XmOptionMenu;
-                                              Group: User
-                                                required = False;
+                                                defaultOption = MGI;
                                             }
                                             Popups:
                                             {
@@ -14689,6 +14641,69 @@ Shift<Key>Tab: prev-tab-group()
                                                     MRK = AccToggle;
                                                     Group: Widget
                                                       managed = True;
+                                                  }
+                                                  {
+                                                    J = AccToggle;
+                                                  }
+                                                  {
+                                                    PubMed = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    DXDOI = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    GOREF = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NSequence = AccToggle;
+                                                  }
+                                                  {
+                                                    EnsemblGeneModel = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EnsemblProtein = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EnsemblTranscript = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EntrezGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NCBIGeneModel = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NCBIGeneModelEvidence = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RefSeq = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    SWISSPROT = AccToggle;
+                                                  }
+                                                  {
+                                                    TrEMBL = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    AllenBrainAtlas = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Affy1 = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Affy430 = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    AffyU74 = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    ArrayExpress = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    CCDS = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EC = AccToggle;
                                                   }
                                             }
                                       }
