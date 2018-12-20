@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Tue Dec  4 13:27:57 2018";
+      lastWritten = "Thu Dec 20 09:26:59 2018";
       copy = false;
       inCreateMenu = true;
         {
@@ -683,6 +683,9 @@ Module: GXD
                                                   }
                                                   {
                                                     EMS = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    ENVIGO = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EUCOMM = AccToggle : mgiOption;
@@ -1690,6 +1693,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     EMS = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    ENVIGO = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EUCOMM = AccToggle : mgiOption;

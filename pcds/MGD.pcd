@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Wed Dec 12 13:59:23 2018";
+      lastWritten = "Thu Dec 20 09:26:58 2018";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -1700,6 +1700,9 @@ Module: MGD
                                                   }
                                                   {
                                                     EMS = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    ENVIGO = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EUCOMM = AccToggle : mgiOption;
@@ -3541,6 +3544,9 @@ Module: MGD
                                                   }
                                                   {
                                                     EMS = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    ENVIGO = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EUCOMM = AccToggle : mgiOption;
@@ -6577,7 +6583,7 @@ Module: MGD
                                               ReferenceTypePulldown = OptionPulldown : mgiOption;
                                               Group: User
                                                 tableForm = RefStrain;
-                                                sql = "select _RefAssocType_key, assocType from MGI_RefType_Strain_View order by _RefAssocType_key";
+                                                sql = "select _RefAssocType_key, assocType from MGI_RefType_Strain_View order by assoctype";
                                                 tableOptionKey = 2;
                                                 tableOption = 4;
                                             }
@@ -8227,6 +8233,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     EMS = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    ENVIGO = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     EUCOMM = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -8805,6 +8814,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     EMS = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    ENVIGO = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EUCOMM = AccToggle : mgiOption;
@@ -9993,6 +10005,11 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
+                                                    ENVIGO = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
                                                     EUCOMM = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -10764,6 +10781,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     EMS = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    ENVIGO = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EUCOMM = AccToggle : mgiOption;
@@ -14344,6 +14364,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     EMS = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    ENVIGO = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EUCOMM = AccToggle : mgiOption;
