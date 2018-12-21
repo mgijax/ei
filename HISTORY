@@ -1,10 +1,12 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-6-0-13-5
 TAG: ei-6-0-13-4
 DATE: 12/21/2018
 STAFF: lec
 CHANGES: 
 TR12979/fix Strain/marker/allele display
+TR12975/fix csrc/mgilib.c/mgiDBincKey/refStrainKey
 
 TAG: ei-6-0-13-3
 DATE: 12/20/2018

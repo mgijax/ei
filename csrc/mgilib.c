@@ -459,6 +459,8 @@ char *mgi_DBincKey(char *keyName)
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(MGI_REFERENCE_ASSOC), mgi_DBautosequence(MGI_REFERENCE_ASSOC));
   else if (strcmp(keyName, "refMarkerKey") == 0)
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(MGI_REFERENCE_ASSOC), mgi_DBautosequence(MGI_REFERENCE_ASSOC));
+  else if (strcmp(keyName, "refStrainKey") == 0)
+    sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(MGI_REFERENCE_ASSOC), mgi_DBautosequence(MGI_REFERENCE_ASSOC));
   else if (strcmp(keyName, "synKey") == 0)
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(MGI_SYNONYM), mgi_DBautosequence(MGI_SYNONYM)); 
   else if (strcmp(keyName, "markerKey") == 0)
