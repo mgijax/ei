@@ -152,13 +152,17 @@ rules:
 	      (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 5));
 	      (void) mgi_tblSetCell(table, row, table.markerChr, mgi_getstr(dbproc, 6));
 
-	      (void) mgi_tblSetCell(table, row, (integer) table.alleleKey[1], mgi_getstr(dbproc, 3));
-	      (void) mgi_tblSetCell(table, row, (integer) table.alleleSymbol[1], mgi_getstr(dbproc, 7));
-
 	      (void) mgi_tblSetCell(table, row, table.qualifierKey, mgi_getstr(dbproc, 4));
 	      (void) mgi_tblSetCell(table, row, table.qualifier, mgi_getstr(dbproc, 8));
 
-	      (void) mgi_tblSetCell(table, row, table.strainOfOrigin, mgi_getstr(dbproc, 10));
+	      if (mgi_getstr(dbproc, 3).length > 0) then
+	        (void) mgi_tblSetCell(table, row, (integer) table.alleleKey[1], mgi_getstr(dbproc, 3));
+	        (void) mgi_tblSetCell(table, row, (integer) table.alleleSymbol[1], mgi_getstr(dbproc, 7));
+	      end if;
+
+	      if (mgi_getstr(dbproc, 10).length > 0) then
+	        (void) mgi_tblSetCell(table, row, table.strainOfOrigin, mgi_getstr(dbproc, 10));
+	      end if;
 
 	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
               row := row + 1;

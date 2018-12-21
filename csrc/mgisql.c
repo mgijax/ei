@@ -1624,8 +1624,23 @@ char *strainalleletype_load(char *key, char *from, char *where)
 		\nwhere p.%s = %s \
 		\nand p.chromosome in ('X', 'Y', 'MT', 'UN', 'XY') \
 		\nand p._Allele_key = a._Allele_key \
-		\nand a._Strain_key = s._Strain_key) \
-		\norder by _Qualifier_key, chrorder, symbol", from, where, key, from, where, key);
+		\nand a._Strain_key = s._Strain_key \
+		\nunion all \
+                \nselect p._StrainMarker_key, p._Marker_key, p._Allele_key, p._Qualifier_key, \
+		\np.symbol, p.chromosome, p.alleleSymbol, p.qualifier, \
+		\ncast(p.chromosome as int) as chrorder, null \
+		\nfrom %s p \
+		\nwhere p.%s = %s \
+		\nand p.chromosome not in ('X', 'Y', 'MT', 'UN', 'XY') \
+		\nand p._Allele_key is null \
+		\nunion all \
+		\nselect p._StrainMarker_key, p._Marker_key, p._Allele_key, p._Qualifier_key, \
+		\np.symbol, p.chromosome, p.alleleSymbol, p.qualifier, 99 as chrorder, null \
+		\nfrom %s p \
+		\nwhere p.%s = %s \
+		\nand p.chromosome in ('X', 'Y', 'MT', 'UN', 'XY') \
+		\nand p._Allele_key is null \
+		\n) order by _Qualifier_key, chrorder, symbol", from, where, key, from, where, key, from, where, key, from, where, key);
   return(buf);
 }
 
