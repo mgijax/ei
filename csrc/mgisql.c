@@ -1532,11 +1532,7 @@ char *reftypetable_initstrain()
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"select _RefAssocType_key, assocType from MGI_RefType_Strain_View \
-<<<<<<< HEAD
 	\nwhere _RefAssocType_key = 1010");
-=======
-	\nwhere assocType in ('Additional')");
->>>>>>> master
   return(buf);
 }
 
