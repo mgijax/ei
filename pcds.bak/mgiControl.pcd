@@ -1,0 +1,254 @@
+Module: mgiControl
+{
+      autoCuil = False;
+      dDialogFile = "mgiControl_dlg.d";
+      release = "TeleUSE v3.2.3 / Solaris 8";
+      lastWritten = "Thu Sep 16 09:08:28 2010";
+        {
+          Control = XmFrame;
+          Group: Control
+            vip_x = 45;
+            vip_y = 30;
+              {
+                ControlForm = XmForm;
+                Group: Widget
+                  rubberPositioning = False;
+                  resizePolicy = resize_any;
+                  x = 0;
+                  y = 0;
+                    {
+                      Search = ControlPush : mgiControl;
+                      Group: Widget
+                        activateCallback = "D:Search,\nD:GoHome";
+                        accelerator = "Ctrl<Key>s";
+                      Group: Constraint
+                        leftAttachment = attach_form;
+                        rightAttachment = attach_none;
+                        topAttachment = attach_form;
+                        bottomAttachment = attach_none;
+                        resizable = true;
+                        topOffset = 2;
+                        leftOffset = 2;
+                    }
+                    {
+                      Clear = ControlPush : mgiControl;
+                      Group: Widget
+                        activateCallback = "D:Clear";
+                        accelerator = "Ctrl<Key>c";
+                      Group: Constraint
+                        leftAttachment = attach_widget;
+                        leftWidget = Search;
+                        leftOffset = 2;
+                        rightAttachment = attach_none;
+                        topAttachment = attach_opposite_widget;
+                        topWidget = Search;
+                        bottomAttachment = attach_none;
+                        resizable = true;
+                    }
+                    {
+                      Modify = ControlPush : mgiControl;
+                      Group: Widget
+                        activateCallback = "D:VerifyEdit(mode = 1),\nD:Modify,\nD:GoHome";
+                        accelerator = "Ctrl<Key>m";
+                      Group: Constraint
+                        leftAttachment = attach_widget;
+                        leftWidget = Clear;
+                        rightAttachment = attach_none;
+                        topAttachment = attach_opposite_widget;
+                        bottomAttachment = attach_none;
+                        resizable = true;
+                        topWidget = Clear;
+                        leftOffset = 2;
+                    }
+                    {
+                      Add = ControlPush : mgiControl;
+                      Group: Widget
+                        activateCallback = "D:VerifyEdit(mode = 2),\nD:Add,\nD:GoHome";
+                        accelerator = "Ctrl<Key>a";
+                      Group: Constraint
+                        leftAttachment = attach_widget;
+                        leftWidget = Modify;
+                        leftOffset = 2;
+                        rightAttachment = attach_none;
+                        topAttachment = attach_opposite_widget;
+                        topWidget = Modify;
+                        bottomAttachment = attach_none;
+                        resizable = true;
+                    }
+                    {
+                      Delete = ControlPush : mgiControl;
+                      Group: Widget
+                        activateCallback = "D:VerifyEdit(mode = 3),\nD:GoHome";
+                        accelerator = "Ctrl<Key>d";
+                        userDefinedAttributes = "deleteReturn:Boolean(Boolean)=\"False\"\n";
+                      Group: Constraint
+                        leftAttachment = attach_widget;
+                        leftWidget = Add;
+                        leftOffset = 2;
+                        rightAttachment = attach_none;
+                        topAttachment = attach_opposite_widget;
+                        topWidget = Add;
+                        bottomAttachment = attach_none;
+                        resizable = true;
+                    }
+                    {
+                      Previous = ControlArrow : mgiControl;
+                      Group: Widget
+                        activateCallback = "D:Previous,\nD:GoHome";
+                      Group: Constraint
+                        leftAttachment = attach_none;
+                        rightAttachment = attach_widget;
+                        topAttachment = attach_opposite_widget;
+                        bottomAttachment = attach_none;
+                        resizable = true;
+                        topWidget = Next;
+                        rightWidget = Next;
+                        rightOffset = 5;
+                    }
+                    {
+                      Next = ControlArrow : mgiControl;
+                      Group: Widget
+                        arrowDirection = arrow_down;
+                        activateCallback = "D:Next,\nD:GoHome";
+                      Group: Constraint
+                        leftAttachment = attach_none;
+                        rightAttachment = attach_widget;
+                        topAttachment = attach_opposite_widget;
+                        topWidget = Bottom;
+                        bottomAttachment = attach_none;
+                        resizable = true;
+                        rightWidget = Bottom;
+                        rightOffset = 5;
+                    }
+                    {
+                      Bottom = ControlArrow : mgiControl;
+                      Group: Widget
+                        arrowDirection = arrow_right;
+                        activateCallback = "D:Bottom,\nD:GoHome";
+                      Group: Constraint
+                        leftAttachment = attach_none;
+                        rightAttachment = attach_opposite_widget;
+                        topAttachment = attach_widget;
+                        topWidget = Delete;
+                        bottomAttachment = attach_none;
+                        resizable = true;
+                        rightWidget = Delete;
+                        rightOffset = 2;
+                    }
+                    {
+                      Clear1 = XmMenuBar;
+                      Group: Widget
+                        marginHeight = 0;
+                        marginWidth = 0;
+                        managed = False;
+                        traversalOn = False;
+                        background = Wheat;
+                      Group: Constraint
+                        leftAttachment = attach_widget;
+                        leftWidget = Search;
+                        leftOffset = 2;
+                        rightAttachment = attach_none;
+                        topAttachment = attach_opposite_widget;
+                        topWidget = Search;
+                        bottomAttachment = attach_none;
+                        resizable = true;
+                        topOffset = 1;
+                          {
+                            Clear = XmCascadeButton;
+                            Group: Widget
+                              traversalOn = False;
+                              marginHeight = 0;
+                              marginWidth = 0;
+                              shadowThickness = 3;
+                              height = 18;
+                              background = Wheat;
+                                Popups:
+                                {
+                                  ClearPulldown = XmPulldownMenu;
+                                  Group: Widget
+                                    background = Wheat;
+                                }
+                          }
+                    }
+                    {
+                      RecordCount = RecordCount : mgiDataTypes;
+                      Group: Constraint
+                        leftAttachment = attach_opposite_widget;
+                        leftWidget = Search;
+                        rightAttachment = attach_none;
+                        topAttachment = attach_widget;
+                        topWidget = Search;
+                        bottomAttachment = attach_none;
+                        resizable = true;
+                        topOffset = 2;
+                    }
+                    {
+                      CreationDate = CreationDate : mgiDataTypes;
+                      Group: Constraint
+                        leftAttachment = attach_opposite_widget;
+                        leftWidget = Search;
+                        rightAttachment = attach_none;
+                        topAttachment = attach_widget;
+                        topWidget = RecordCount;
+                        bottomAttachment = attach_none;
+                        resizable = true;
+                    }
+                    {
+                      ModifiedDate = ModifiedDate : mgiDataTypes;
+                      Group: Constraint
+                        leftAttachment = attach_opposite_widget;
+                        leftWidget = Search;
+                        rightAttachment = attach_form;
+                        topAttachment = attach_widget;
+                        topWidget = CreationDate;
+                        bottomAttachment = attach_form;
+                        resizable = true;
+                        rightOffset = 5;
+                        bottomOffset = 5;
+                    }
+                    {
+                      ModificationHistory = ModificationHistory : mgiTable;
+                      Group: Widget
+                        managed = False;
+                      Group: Constraint
+                        leftAttachment = attach_opposite_widget;
+                        leftWidget = Search;
+                        rightAttachment = attach_none;
+                        topAttachment = attach_widget;
+                        topWidget = RecordCount;
+                        bottomAttachment = attach_none;
+                        resizable = true;
+                    }
+              }
+        }
+        {
+          ControlPush = push : mgiDataTypes;
+          Group: Widget
+            traversalOn = False;
+            activateCallback = "D:GoHome";
+          Group: Control
+            vip_x = 130;
+            vip_y = 30;
+        }
+        {
+          ControlArrow = XmArrowButton;
+          Group: Widget
+            traversalOn = False;
+          Group: Control
+            vip_x = 130;
+            vip_y = 85;
+        }
+        {
+          ViewToggle = XmToggleButton;
+          Group: Widget
+            selectColor = Red;
+            traversalOn = False;
+            userDefinedAttributes = "modified:Boolean(Boolean)=\"False\"\nform1:String(String)\nform2:String(String)\n";
+            valueChangedCallback = "D:ViewForm";
+            accelerator = "Ctrl<Key>v";
+          Group: Control
+            vip_x = 45;
+            vip_y = 85;
+        }
+}
+

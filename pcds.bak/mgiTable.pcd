@@ -1,0 +1,1195 @@
+Module: mgiTable
+{
+      autoCuil = False;
+      release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
+      lastWritten = "Thu Dec 20 09:26:56 2018";
+        {
+          mgiTable = XtXrtTable;
+          Group: Widget
+            xrtTblAllowCellResize = resize_none;
+            xrtTblDisplayHorizScrollBar = dispsb_never;
+            xrtTblNumRows = 6;
+            xrtTblBackgroundSeries = "(all all Wheat) (label all Thistle)(all label Thistle)";
+            xrtTblVisibleRows = 5;
+            xrtTblMarginHeight = 4;
+            userDefinedAttributes = "requiredColumns:StringTable(StringTable)\nrequired:Boolean(Boolean)=\"False\"\nsqlCmd:String(String)\nsqlFrom:String(String)\nsqlWhere:String(String)\neditMode:Int(Int)=\"0\"\naddSeqNum:Boolean(Boolean)=\"False\"\nduplicateSeqNum:Boolean(Boolean)=\"False\"\nsaveBackgroundSeries:String(String)=\"(all all Wheat) (label all Thistle)(all label Thistle)\"\nmodified:Boolean(Boolean)=\"False\"\nsaveEditableSeries:String(String)\nsaveTraversableSeries:String(String)\nrow:Int(Int)=\"0\"\ntraverseOnClear:Boolean(Boolean)=\"True\"\nsqlList:XmString(XmString)\n";
+            xrtTblEditableSeries = "(all 0 False)";
+            xrtTblTraversableSeries = "(all 0 False)";
+            xrtTblPixelWidthSeries = "(all 0 0)";
+            xrtTblCharWidthSeries = "(all 0 1)";
+            xrtTblValidateCellCallback = "D:CommitTableCellEdit";
+            xrtTblTrackCursor = False;
+            xrtTblFontListSeries = "(all all fixed)";
+            xrtTblXmStringGetMode = get_xmstring;
+            xrtTblXmStringSetMode = set_xmstring;
+            xrtTblPreviewScrolling = preview_both;
+            inTabGroup = True;
+          Group: Control
+            vip_x = 75;
+            vip_y = 85;
+        }
+        {
+          TableLabel = XmForm;
+          Group: Widget
+            rubberPositioning = False;
+            resizePolicy = resize_any;
+            nodeAccess = access_any;
+          Group: Control
+            vip_x = 75;
+            vip_y = 195;
+              {
+                Table = mgiTable : mgiTable;
+                Group: Widget
+                  nodeAccess = access_any;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_form;
+                  topAttachment = attach_form;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                    {
+                      label = XtXrtLabel;
+                      Group: Widget
+                        xrtLblBorderType = border_none;
+                        marginHeight = 0;
+                      Group: Constraint
+                        xrtTblLocation = location_top;
+                    }
+              }
+              {
+                AddRow = TablePush : mgiTable;
+                Group: Widget
+                  activateCallback = "D:AddTableRow";
+                  labelString = "Add Row";
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = Table;
+                  topOffset = 2;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  leftWidget = Table;
+              }
+              {
+                DeleteRow = TablePush : mgiTable;
+                Group: Widget
+                  activateCallback = "D:DeleteLogicalTableRow";
+                  labelString = "Delete Row";
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  leftWidget = AddRow;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = AddRow;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+              }
+        }
+        {
+          mgiAccessionTable = Table : mgiTable;
+          Group: Widget
+            rubberPositioning = False;
+            resizePolicy = resize_any;
+          Group: Control
+            vip_x = 75;
+            vip_y = 305;
+              {
+                Table = mgiTable;
+                Group: Widget
+                  xrtTblCharWidthSeries = "(all 0 1) (all 3 15) (all 4 20)";
+                  xrtTblEditableSeries = "(all 0 False) (all 3 False)";
+                  xrtTblNumColumns = 5;
+                  xrtTblPixelWidthSeries = "(all 0-2 0)";
+                  xrtTblTraversableSeries = "(all 0 False) (all 3 False)";
+                  xrtTblVisibleRows = 2;
+                  userDefinedAttributes = "logicalKey:Int(Int)=\"1\"\naccKey:Int(Int)=\"2\"\naccName:Int(Int)=\"3\"\naccID:Int(Int)=\"4\"\nshowMGI:Boolean=\"True\"\n";
+                  xrtTblEnterCellCallback = "D:SetAccSourceMenu";
+                Group: User
+                  requiredColumns = "3\n4";
+              }
+              {
+                Add : AddRow = TablePush;
+                Group: Widget
+                  activateCallback = "D:VerifyAccAdd";
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  leftWidget = AccSourceFrame;
+                  leftOffset = 2;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = AccSourceFrame;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+              }
+              {
+                Delete : DeleteRow = TablePush;
+                Group: Constraint
+                  leftWidget = Add;
+                  topWidget = Add;
+              }
+              {
+                AccSourceFrame = AccSourceFrame : mgiOption;
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  leftWidget = Table;
+                  topWidget = Table;
+                  topOffset = 5;
+                    Popups:
+                    {
+                      AccSourcePulldown = OptionPulldown;
+                      Group: User
+                        tableOptionKey = 1;
+                        tableOption = 3;
+                    }
+              }
+        }
+        {
+          DataSetForm = XmForm;
+          Group: Widget
+            rubberPositioning = False;
+            resizePolicy = resize_any;
+          Group: Control
+            vip_x = 75;
+            vip_y = 250;
+              {
+                Table = mgiTable : mgiTable;
+                Group: Widget
+                  xrtTblNumColumns = 3;
+                  xrtTblColumnLabels = "Mode,Accession #,Data Set";
+                  xrtTblCharWidthSeries = "(all 0 1)(all 1-2 15)";
+                  userDefinedAttributes = "accID:Int=\"1\"\ndataSet:Int=\"2\"\n";
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_form;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                    {
+                      label = XtXrtLabel;
+                      Group: Widget
+                        xrtLblBorderType = border_none;
+                        marginHeight = 0;
+                        labelString = "Data Sets";
+                      Group: Constraint
+                        xrtTblLocation = location_top;
+                    }
+              }
+              {
+                Retrieve = TablePush : mgiTable;
+                Group: Widget
+                  labelString = "Retrieve Info";
+                  activateCallback = "D:SelectDataSets";
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  leftWidget = Table;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = Table;
+                  topOffset = 2;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+              }
+              {
+                Records = XmLabel;
+                Group: Widget
+                  labelString = "0 Records";
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  leftWidget = Retrieve;
+                  leftOffset = 10;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  topWidget = Retrieve;
+                  topOffset = 5;
+              }
+        }
+        {
+          TablePush = XmPushButton;
+          Group: Widget
+            traversalOn = False;
+          Group: Control
+            vip_x = 75;
+            vip_y = 30;
+        }
+        {
+          Table = XmForm;
+          Group: Widget
+            rubberPositioning = False;
+            resizePolicy = resize_any;
+            nodeAccess = access_any;
+          Group: Control
+            vip_x = 75;
+            vip_y = 140;
+              {
+                Table = mgiTable : mgiTable;
+                Group: Widget
+                  nodeAccess = access_any;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_form;
+                  topAttachment = attach_form;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+              }
+              {
+                AddRow = TablePush : mgiTable;
+                Group: Widget
+                  activateCallback = "D:AddTableRow";
+                  labelString = "Add Row";
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  leftWidget = Table;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = Table;
+                  topOffset = 2;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+              }
+              {
+                DeleteRow = TablePush : mgiTable;
+                Group: Widget
+                  activateCallback = "D:DeleteLogicalTableRow";
+                  labelString = "Delete Row";
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  leftWidget = AddRow;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = AddRow;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+              }
+        }
+        {
+          OrderedTable = Table;
+          Group: Widget
+            rubberPositioning = False;
+            resizePolicy = resize_any;
+          Group: Control
+            vip_x = 75;
+            vip_y = 415;
+              {
+                Table = mgiTable;
+                Group: Widget
+                  xrtTblPixelWidthSeries = "(all 0-1 0)";
+                  xrtTblEditableSeries = "(all 0-2 False)";
+                  xrtTblTraversableSeries = "(all 0-2 False)";
+                  xrtTblNumColumns = 3;
+                  xrtTblColumnLabels = "Mode,Current Order,#";
+                  userDefinedAttributes = "currentSeqNum:Int(Int)=\"1\"\nseqNum:Int(Int)=\"2\"\n";
+                  xrtTblCharWidthSeries = "(all 0 1)(all 1-2 3)";
+                Group: User
+                  addSeqNum = True;
+                  saveTraversableSeries = "(all 0-2 False)";
+                  saveEditableSeries = "(all 0-2 False)";
+              }
+              {
+                AddRow = TablePush;
+              }
+              {
+                DeleteRow = TablePush;
+              }
+              {
+                InsertRow = TablePush : mgiTable;
+                Group: Widget
+                  activateCallback = "D:InsertTableRow";
+                  labelString = "Insert Row";
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  leftWidget = DeleteRow;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = DeleteRow;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+              }
+              {
+                EditOrder = toggle : mgiDataTypes;
+                Group: Widget
+                  labelString = "Edit Order";
+                  valueChangedCallback = "D:EditTableOrder,\nD:SetModify";
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  leftWidget = InsertRow;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  topWidget = InsertRow;
+              }
+        }
+        {
+          Statistics = OrderedTable;
+          Group: Control
+            vip_x = 75;
+            vip_y = 1130;
+              {
+                Table = mgiTable;
+                Group: Widget
+                  xrtTblCharWidthSeries = "(all 0 1)(all 1 3)(all 4 3)(all 5-6 20)(all 7-10 6)";
+                  xrtTblColumnLabels = "Mode,Current Order,Marker1 key,Marker 2 key,#,Marker 1,Marker 2,Recomb,Total,PcntRe,Stderr";
+                  xrtTblEditableSeries = "(all 0-4 False)";
+                  xrtTblTraversableSeries = "(all 0-4 False)";
+                  xrtTblMaxLengthSeries = "(all 5-6 25)";
+                  xrtTblNumColumns = 11;
+                  xrtTblPixelWidthSeries = "(all 0-3 0)";
+                  xrtTblValidateCellCallback = "D:VerifyMarker,\nD:CommitTableCellEdit";
+                  userDefinedAttributes = "markerKey:Int=\"2\"\nmarkerSymbol:Int=\"5\"\nmarkerChr:Int=\"-1\"\nmarkerColumns:Int=\"2\"\nrecomb:Int=\"7\"\ntotal:Int=\"8\"\npcntre:Int=\"9\"\nstnderr:Int=\"10\"\n";
+                  xrtTblVisibleRows = 3;
+                Group: User
+                  seqNum = 4;
+                  saveTraversableSeries = "(all 0-4 False)";
+                  saveEditableSeries = "(all 0-4 False)";
+              }
+        }
+        {
+          OrderedTableLabel = OrderedTable;
+          Group: Control
+            vip_x = 75;
+            vip_y = 360;
+              {
+                Table = mgiTable;
+                    {
+                      label = XtXrtLabel;
+                      Group: Widget
+                        marginHeight = 0;
+                        xrtLblBorderType = border_none;
+                      Group: Constraint
+                        xrtTblLocation = location_top;
+                    }
+              }
+        }
+        {
+          ReferenceTable = Table : mgiTable;
+          Group: Control
+            vip_x = 75;
+            vip_y = 855;
+              {
+                Table = mgiTable;
+                Group: Widget
+                  xrtTblMaxLengthSeries = "(all 4 255)";
+                  xrtTblColumnLabels = "Mode,Current Key,New Key,J#,Citation";
+                  xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 60)";
+                  xrtTblEditableSeries = "(all 0-2 False)";
+                  xrtTblPixelWidthSeries = "(all 0-2 0)";
+                  xrtTblTraversableSeries = "(all 0-2 False)";
+                  xrtTblVisibleRows = 3;
+                  xrtTblValidateCellCallback = "D:VerifyReference,\nD:CommitTableCellEdit";
+                  userDefinedAttributes = "refsCurrentKey:Int(Int)=\"1\"\nrefsKey:Int(Int)=\"2\"\njnum:Int(Int)=\"3\"\ncitation:Int(Int)=\"4\"\n";
+              }
+        }
+        {
+          RefDBSStatus = Table;
+          Group: Control
+            vip_x = 75;
+            vip_y = 1075;
+              {
+                Table = mgiTable;
+                Group: Widget
+                  xrtTblNumColumns = 9;
+                  xrtTblColumnLabels = "Mode,DS Key,Prod,Assoc Key,Selected,Used,Not Used,Never Used,Incomplete";
+                  xrtTblCharWidthSeries = "(all 0 1)(all 4 8)(all 5 4)(all 6 8)(all 7 10)(all 8 10)";
+                  xrtTblSelectCallback = "D:VerifyDataSetsStatus";
+                  xrtTblSelectedBackground = None;
+                  xrtTblSelectedForeground = None;
+                  xrtTblSelectionPolicy = select_single;
+                  xrtTblEditableSeries = "(all all False)(all 4 True)(all 7 True)(all 8 True)";
+                  xrtTblTraversableSeries = "(all all False)";
+                  userDefinedAttributes = "selected:Int(Int)=\"4\"\nused:Int(Int)=\"5\"\nnotUsed:Int(Int)=\"6\"\nneverUsed:Int(Int)=\"7\"\nexistsProc:Int(Int)=\"2\"\nbeginX:Int(Int)\nendX:Int(Int)\ndataSetKey:Int(Int)=\"1\"\nassocKey:Int(Int)=\"3\"\nisIncomplete:Int(Int)=\"8\"\n";
+                  xrtTblPixelWidthSeries = "(all 0-3 0)";
+              }
+              {
+                AddRow = TablePush;
+                Group: Widget
+                  managed = False;
+              }
+              {
+                DeleteRow = TablePush;
+                Group: Widget
+                  managed = False;
+              }
+        }
+        {
+          RefDBSNonStatus = Table;
+          Group: Control
+            vip_x = 75;
+            vip_y = 1020;
+              {
+                Table = mgiTable;
+                Group: Widget
+                  xrtTblNumColumns = 5;
+                  xrtTblColumnLabels = "Mode,Key,Key,Selected,Never Used";
+                  xrtTblCharWidthSeries = "(all label 20)(all 0 1)(all 3 8)(all 4 10)";
+                  xrtTblSelectCallback = "D:SetCellToX";
+                  xrtTblSelectedBackground = None;
+                  xrtTblSelectedForeground = None;
+                  xrtTblSelectionPolicy = select_single;
+                  xrtTblTraversableSeries = "(all all False)";
+                  userDefinedAttributes = "selected:Int(Int)=\"3\"\nneverUsed:Int(Int)=\"4\"\nexistsProc:String(String)\nbeginX:Int(Int)=\"3\"\nendX:Int(Int)=\"4\"\ndataSetKey:Int(Int)=\"1\"\nassocKey:Int(Int)=\"2\"\n";
+                  xrtTblPixelWidthSeries = "(all 0-2 0)";
+              }
+              {
+                AddRow = TablePush;
+                Group: Widget
+                  managed = False;
+              }
+              {
+                DeleteRow = TablePush;
+                Group: Widget
+                  managed = False;
+              }
+        }
+        {
+          AccessionReference = mgiAccessionTable : mgiTable;
+          Group: Widget
+            rubberPositioning = False;
+            resizePolicy = resize_any;
+          Group: Control
+            vip_x = 75;
+            vip_y = 525;
+              {
+                Table = mgiTable;
+                Group: Widget
+                  xrtTblNumColumns = 9;
+                  xrtTblColumnLabels = "Mode,Logical Key,Acc Key,Ref Current Key,Ref Key,Acc Name,Acc ID,J#,Citation";
+                  xrtTblCharWidthSeries = "(all 0 1) (all 5 20) (all 6 20)(all 7 10)(all 8 60)";
+                  xrtTblEditableSeries = "(all 0 False) (all 5 False)";
+                  xrtTblPixelWidthSeries = "(all 0-4 0)";
+                  xrtTblTraversableSeries = "(all 0 False) (all 5 False)";
+                  userDefinedAttributes = "refsCurrentKey:Int(Int)=\"3\"\nrefsKey:Int(Int)=\"4\"\njnum:Int(Int)=\"7\"\ncitation:Int(Int)=\"8\"\n";
+                  xrtTblVisibleRows = 5;
+                  xrtTblValidateCellCallback = "D:VerifyReference,\nD:CommitTableCellEdit";
+                Group: User
+                  accName = 5;
+                  accID = 6;
+                  requiredColumns = "4\n6";
+              }
+              {
+                Add = TablePush;
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  leftWidget = AccSourceFrame;
+                  leftOffset = 2;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = AccSourceFrame;
+                  topOffset = 2;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+              }
+              {
+                Delete = TablePush;
+              }
+              {
+                AccSourceFrame = AccSourceFrame : mgiOption;
+                    Popups:
+                    {
+                      AccSourcePulldown = OptionPulldown;
+                      Group: User
+                        tableOptionKey = 1;
+                        tableOption = 5;
+                    }
+              }
+        }
+        {
+          ModificationHistory = Table;
+          Group: Control
+            vip_x = 75;
+            vip_y = 690;
+              {
+                Table = mgiTable : mgiTable;
+                Group: Widget
+                  xrtTblNumColumns = 3;
+                  xrtTblColumnLabels = "Mode,By,Date";
+                  xrtTblVisibleRows = 2;
+                  xrtTblCharWidthSeries = "(all 0 1)(all 1 15)(all 2 10)";
+                  xrtTblRowLabels = "Created,Modified";
+                  userDefinedAttributes = "createdBy:Int(Int)=\"0\"\nmodifiedBy:Int(Int)=\"1\"\nbyUser:Int(Int)=\"1\"\nbyDate:Int(Int)=\"2\"\ncreatedFieldName:String(String)=\"creation_date\"\nmodifiedFieldName:String(String)=\"modification_date\"\n";
+                  xrtTblNumRows = 3;
+              }
+              {
+                AddRow = TablePush : mgiTable;
+                Group: Widget
+                  managed = False;
+              }
+              {
+                DeleteRow = TablePush : mgiTable;
+                Group: Widget
+                  managed = False;
+              }
+        }
+        {
+          ReferenceTypeTable = ReferenceTable;
+          Group: Widget
+            rubberPositioning = False;
+            resizePolicy = resize_any;
+          Group: Control
+            vip_x = 75;
+            vip_y = 910;
+              {
+                Table = mgiTable;
+                Group: Widget
+                  userDefinedAttributes = "refsType:Int(Int)=\"5\"\nassocKey:Int(Int)=\"1\"\nmgiTypeKey:Int(Int)=\"-1\"\nrefsTypeKey:Int(Int)=\"3\"\nreviewKey:Int(Int)=\"4\"\nreview:Int(Int)=\"8\"\nuseDefaultRefType:Boolean(Boolean)=\"False\"\ndefaultRefType:String\n";
+                  xrtTblNumColumns = 9;
+                  xrtTblColumnLabels = "Mode,Assoc Key,Ref key,Type key,Review key,Type,J#,Citation,Review?";
+                  xrtTblCharWidthSeries = "(all 0 1)(all 1-6 10)(all 7 60)";
+                  xrtTblMaxLengthSeries = "(all 7 255)";
+                  xrtTblPixelWidthSeries = "(all 0-4 0)(all 8 0)";
+                  xrtTblEditableSeries = "(all 0-5 False)(all 7-8 False)";
+                  xrtTblTraversableSeries = "(all 0-5 False)(all 7-8 False)";
+                Group: User
+                  citation = 7;
+                  jnum = 6;
+                  refsKey = 2;
+                  requiredColumns = "2\n3";
+                  refsType = 5;
+                  saveEditableSeries = "(all 0-5 False)(all 7-8 False)";
+                  saveTraversableSeries = "(all 0-5 False)(all 7-8 False)";
+              }
+              {
+                AddRow = TablePush : mgiTable;
+                Group: Widget
+                  activateCallback = "D:AddRefTypeRow";
+                  labelString = "Add Ref Type";
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  leftWidget = ReferenceTypeFrame;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = ReferenceTypeFrame;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  leftOffset = 5;
+                  topOffset = 2;
+              }
+              {
+                DeleteRow = TablePush : mgiTable;
+              }
+              {
+                ReferenceTypeFrame = ReferenceTypeFrame : mgiOption;
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  leftWidget = Table;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = Table;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  topOffset = 2;
+                    Popups:
+                    {
+                      ReferenceTypePulldown = OptionPulldown : mgiOption;
+                      Group: User
+                        tableOption = 5;
+                        tableOptionKey = 3;
+                    }
+              }
+              {
+                ReviewFrame = YesNoFrame : mgiOption;
+                Group: Constraint
+                  leftAttachment = attach_none;
+                  rightAttachment = attach_opposite_widget;
+                  rightWidget = Table;
+                  topAttachment = attach_widget;
+                  topWidget = Table;
+                  topOffset = 2;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                    {
+                      ReviewMenu : YesNoMenu = XmOptionMenu;
+                      Group: Widget
+                        subMenuId = ReviewPulldown;
+                        labelString = "Review?";
+                      Group: User
+                        defaultOption = No;
+                    }
+                    Popups:
+                    {
+                      ReviewPulldown : YesNoPulldown = OptionPulldown : mgiOption;
+                      Group: User
+                        tableForm = Reference;
+                        tableOptionKey = 4;
+                        tableOption = 8;
+                          {
+                            SearchAll = SearchAll : mgiOption;
+                            Group: Widget
+                              managed = False;
+                          }
+                    }
+              }
+        }
+        {
+          ObjectAssociationTable = Table;
+          Group: Control
+            vip_x = 75;
+            vip_y = 800;
+              {
+                Table = mgiTable : mgiTable;
+                Group: Widget
+                  xrtTblColumnLabels = "Mode,Object key,Refs key,Type,MGI ID,Name,J#";
+                  xrtTblNumColumns = 7;
+                  xrtTblPixelWidthSeries = "(all 0-2 0)";
+                  xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 10)(all 4 25)(all 5 30)(all 6 10)";
+                  userDefinedAttributes = "refsKey:Int(Int)=\"2\"\nmgiID:Int(Int)=\"4\"\njnum:Int(Int)=\"6\"\nobjectKey:Int(Int)=\"1\"\nobjectName:Int(Int)=\"5\"\nobjectType:Int=\"3\"\n";
+                  xrtTblDisplayVertScrollBar = dispsb_always;
+                    {
+                      label = XtXrtLabel;
+                      Group: Widget
+                        xrtLblBorderType = border_none;
+                        marginHeight = 0;
+                      Group: Constraint
+                        xrtTblLocation = location_top;
+                    }
+              }
+              {
+                AddRow = TablePush : mgiTable;
+                Group: Widget
+                  managed = False;
+              }
+              {
+                DeleteRow = TablePush : mgiTable;
+                Group: Widget
+                  managed = False;
+              }
+        }
+        {
+          Accession = mgiAccessionTable : mgiTable;
+          Group: Widget
+            rubberPositioning = False;
+            resizePolicy = resize_any;
+          Group: Control
+            vip_x = 75;
+            vip_y = 470;
+              {
+                Table = mgiTable;
+                Group: Widget
+                  xrtTblNumColumns = 5;
+                  xrtTblColumnLabels = "Mode,Logical Key,Acc Key,Acc Name,Acc ID";
+                  xrtTblCharWidthSeries = "(all 0 1) (all 3 30) (all 4 30)";
+                  xrtTblEditableSeries = "(all 0 False) (all 3 False)";
+                  xrtTblPixelWidthSeries = "(all 0-2 0)";
+                  xrtTblTraversableSeries = "(all 0 False) (all 3 False)";
+                  xrtTblVisibleRows = 5;
+                Group: User
+                  requiredColumns = 4;
+                    {
+                      label = XtXrtLabel;
+                      Group: Widget
+                        xrtLblBorderType = border_none;
+                        marginHeight = 0;
+                      Group: Constraint
+                        xrtTblLocation = location_top;
+                    }
+              }
+              {
+                Add = TablePush;
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  leftWidget = AccSourceFrame;
+                  leftOffset = 2;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = AccSourceFrame;
+                  topOffset = 2;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+              }
+              {
+                Delete = TablePush;
+              }
+              {
+                AccSourceFrame = AccSourceFrame : mgiOption;
+                    Popups:
+                    {
+                      AccSourcePulldown = OptionPulldown;
+                      Group: User
+                        tableForm = Accession;
+                    }
+              }
+        }
+        {
+          SynonymTypeTable = Table : mgiTable;
+          Group: Widget
+            rubberPositioning = False;
+            resizePolicy = resize_any;
+          Group: Control
+            vip_x = 75;
+            vip_y = 1185;
+              {
+                Table = mgiTable : mgiTable;
+                Group: Widget
+                  xrtTblColumnLabels = "Mode,Key,Type key,Ref key,Type,Synonym,J#,Citation,Modified By,Date";
+                  xrtTblPixelWidthSeries = "(all 0-3 0)";
+                  xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 20)(all 5 50)(all 6 10)(all 7 30)(all 8 12)(all 9 10)";
+                  xrtTblEditableSeries = "(all 0-4 False)";
+                  xrtTblTraversableSeries = "(all 0-4 False)";
+                  userDefinedAttributes = "synKey:Int(Int)=\"1\"\nsynTypeKey:Int(Int)=\"2\"\nsynType:Int(Int)=\"4\"\nsynName:Int(Int)=\"5\"\nmgiTypeKey:String(String)\nrefsKey:Int(Int)=\"3\"\njnum:Int(Int)=\"6\"\ncitation:Int(Int)=\"7\"\nmodifiedBy:Int(Int)=\"8\"\nmodifiedDate:Int(Int)=\"9\"\nuseDefaultSynType:Boolean(Boolean)=\"False\"\n";
+                  xrtTblNumColumns = 10;
+                  xrtTblValidateCellCallback = "D:VerifyReference,\nD:CommitTableCellEdit";
+                  xrtTblMaxLengthSeries = "(all 5 255)";
+                  xrtTblVisibleRows = 3;
+                  xrtTblDisplayHorizScrollBar = dispsb_as_needed;
+                Group: User
+                  requiredColumns = "2\n3\n5";
+              }
+              {
+                AddRow = TablePush : mgiTable;
+                Group: Widget
+                  activateCallback = "D:AddSynTypeRow";
+                  labelString = "Add Syn Type";
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  leftWidget = SynonymTypeFrame;
+                  leftOffset = 5;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = SynonymTypeFrame;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  topOffset = 2;
+              }
+              {
+                DeleteRow = TablePush : mgiTable;
+              }
+              {
+                SynonymTypeFrame = SynonymTypeFrame : mgiOption;
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  leftWidget = Table;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  topWidget = Table;
+                  topOffset = 2;
+                    Popups:
+                    {
+                      SynonymTypePulldown = OptionPulldown : mgiOption;
+                      Group: User
+                        tableOption = 4;
+                        tableOptionKey = 2;
+                    }
+              }
+        }
+        {
+          NoteTable = OrderedTableLabel;
+          Group: Widget
+            rubberPositioning = False;
+            resizePolicy = resize_any;
+          Group: Control
+            vip_x = 75;
+            vip_y = 745;
+              {
+                Table = mgiTable;
+                Group: Widget
+                  xrtTblColumnLabels = "Mode,Key,Type key,Current Order,#,Type,Note";
+                  xrtTblNumColumns = 7;
+                  xrtTblPixelWidthSeries = "(all 0-4 0)";
+                  xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 3)(all 5 25)(all 6 125)";
+                  width = 800;
+                  xrtTblFrozenColumns = 6;
+                  xrtTblEditableSeries = "(all 0-5 False)";
+                  xrtTblTraversableSeries = "(all 0-5 False)";
+                  userDefinedAttributes = "noteTypeKey:Int(Int)=\"2\"\nnoteType:Int(Int)=\"5\"\nnote:Int(Int)=\"6\"\nmgiTypeKey:Int(Int)\nnoteKey:Int(Int)=\"1\"\nnotesLoaded:Boolean(Boolean)=\"False\"\nuseDefaultNoteType:Boolean=\"False\"\ndefaultNoteType:String\n";
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_form;
+                  topAttachment = attach_form;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  topOffset = 5;
+                  rightOffset = 5;
+                Group: User
+                  saveEditableSeries = "(all 0-5 False)";
+                  saveTraversableSeries = "(all 0-5 False)";
+                  currentSeqNum = 3;
+                  seqNum = 4;
+                    {
+                      label = XtXrtLabel;
+                      Group: Widget
+                        labelString = Notes;
+                    }
+              }
+              {
+                AddRow = TablePush;
+                Group: Widget
+                  activateCallback = "D:AddNoteTypeRow";
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  leftWidget = NoteTypeFrame;
+                  leftOffset = 2;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = NoteTypeFrame;
+                  topOffset = 2;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+              }
+              {
+                DeleteRow = TablePush;
+              }
+              {
+                InsertRow = TablePush : mgiTable;
+                Group: Widget
+                  managed = False;
+              }
+              {
+                EditOrder = toggle : mgiDataTypes;
+                Group: Widget
+                  managed = False;
+              }
+              {
+                NoteTypeFrame = NoteTypeFrame : mgiOption;
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  leftWidget = Table;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = Table;
+                  topOffset = 2;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+              }
+              {
+                NotePush = NotePush : mgiDataTypes;
+                Group: Widget
+                  labelString = "Edit Notes";
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  leftWidget = DeleteRow;
+                  leftOffset = 5;
+                  topWidget = DeleteRow;
+                Group: User
+                  targetColumn = 6;
+                  targetWidget = NoteTable;
+              }
+              {
+                frame = XmFrame;
+                Group: Widget
+                  shadowType = shadow_etched_in;
+                  marginWidth = 2;
+                  shadowThickness = 1;
+                  managed = False;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_form;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  leftOffset = 5;
+                  topOffset = 5;
+                    {
+                      rowColumn = XmRowColumn;
+                      Group: Widget
+                        orientation = vertical;
+                          {
+                            label = XmLabel;
+                            Group: Widget
+                              labelString = "jump to note...";
+                          }
+                          {
+                            note1 = XmPushButtonGadget;
+                            Group: Widget
+                              labelString = General;
+                          }
+                          {
+                            note2 = XmPushButtonGadget;
+                            Group: Widget
+                              labelString = "Background-Sensitivity";
+                          }
+                    }
+              }
+        }
+        {
+          ImagePane = TableLabel : mgiTable;
+          Group: Widget
+            rubberPositioning = False;
+            resizePolicy = resize_any;
+          Group: Control
+            vipComment = "";
+            vip_x = 75;
+            vip_y = 635;
+              {
+                Table = mgiTable : mgiTable;
+                Group: Widget
+                  xrtTblColumnLabels = "Mode,Key,Key,Key,Key,MGI ID,PIX ID,Figure,Primary?,Image Class";
+                  xrtTblNumColumns = 10;
+                  xrtTblPixelWidthSeries = "(all 0-4 0)";
+                  xrtTblVisibleRows = 3;
+                  xrtTblCharWidthSeries = "(all 0 1)(all 5 15)(all 6 10)(all 7 10)(all 9 12)(all 8 8)";
+                  xrtTblEditableSeries = "(all 0-4 False)";
+                  userDefinedAttributes = "assocKey:Int(Int)=\"1\"\npaneKey:Int(Int)=\"2\"\nmgiID:Int(Int)=\"5\"\nfigureLabel:Int(Int)=\"7\"\nisPrimary:Int(Int)=\"8\"\nisPrimaryKey:Int(Int)=\"3\"\nmgiTypeKey:String(String)\npixID:Int(Int)=\"6\"\nimageClassKey:Int(Int)=\"4\"\nimageClass:Int(Int)=\"9\"\n";
+                  xrtTblValidateCellCallback = "D:VerifyImagePane\nD:CommitTableCellEdit";
+                    {
+                      label = XtXrtLabel;
+                      Group: Widget
+                        labelString = "Image Associations";
+                    }
+              }
+              {
+                AddRow = TablePush : mgiTable;
+              }
+              {
+                DeleteRow = TablePush : mgiTable;
+              }
+              {
+                IsPrimaryFrame = YesNoFrame : mgiOption;
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  leftWidget = DeleteRow;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = DeleteRow;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  leftOffset = 5;
+                    {
+                      IsPrimaryMenu : YesNoMenu = XmOptionMenu;
+                      Group: Widget
+                        subMenuId = IsPrimaryPulldown;
+                      Group: User
+                        defaultOption = Yes;
+                    }
+                    Popups:
+                    {
+                      IsPrimaryPulldown : YesNoPulldown = OptionPulldown;
+                      Group: User
+                        tableOption = 8;
+                        tableOptionKey = 3;
+                        tableForm = ImagePane;
+                          {
+                            SearchAll = SearchAll : mgiOption;
+                            Group: Widget
+                              managed = False;
+                          }
+                    }
+              }
+        }
+        {
+          ReferenceTypeTable1 = ReferenceTable;
+          Group: Widget
+            rubberPositioning = False;
+            resizePolicy = resize_any;
+          Group: Control
+            vip_x = 75;
+            vip_y = 965;
+              {
+                Table = mgiTable;
+                Group: Widget
+                  userDefinedAttributes = "refsType:Int(Int)=\"5\"\nassocKey:Int(Int)=\"1\"\nmgiTypeKey:Int(Int)=\"-1\"\nrefsTypeKey:Int(Int)=\"3\"\nreviewKey:Int(Int)=\"4\"\nreview:Int(Int)=\"8\"\nuseDefaultRefType:Boolean(Boolean)=\"False\"\ndefaultRefType:String\n";
+                  xrtTblNumColumns = 9;
+                  xrtTblColumnLabels = "Mode,Assoc Key,Ref key,Type key,Review key,Type,J#,Citation,Review?";
+                  xrtTblCharWidthSeries = "(all 0 1)(all 1-6 10)(all 7 60)";
+                  xrtTblMaxLengthSeries = "(all 7 255)";
+                  xrtTblPixelWidthSeries = "(all 0-4 0)(all 8 0)";
+                  xrtTblEditableSeries = "(all 0-5 False)(all 7-8 False)";
+                  xrtTblTraversableSeries = "(all 0-5 False)(all 7-8 False)";
+                Group: User
+                  citation = 7;
+                  jnum = 6;
+                  refsKey = 2;
+                  requiredColumns = "2\n3";
+                  refsType = 5;
+                  saveEditableSeries = "(all 0-5 False)(all 7-8 False)";
+                  saveTraversableSeries = "(all 0-5 False)(all 7-8 False)";
+                    {
+                      label = XtXrtLabel;
+                      Group: Widget
+                        xrtLblBorderType = border_none;
+                        marginHeight = 0;
+                      Group: Constraint
+                        xrtTblLocation = location_top;
+                    }
+              }
+              {
+                AddRow = TablePush : mgiTable;
+                Group: Widget
+                  activateCallback = "D:AddRefTypeRow";
+                  labelString = "Add Ref Type";
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  leftWidget = ReferenceTypeFrame;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = ReferenceTypeFrame;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  leftOffset = 5;
+                  topOffset = 2;
+              }
+              {
+                DeleteRow = TablePush : mgiTable;
+              }
+              {
+                ReferenceTypeFrame = ReferenceTypeFrame : mgiOption;
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  leftWidget = Table;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = Table;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  topOffset = 2;
+                    Popups:
+                    {
+                      ReferenceTypePulldown = OptionPulldown : mgiOption;
+                      Group: User
+                        tableOption = 5;
+                        tableOptionKey = 3;
+                        tableForm = Reference;
+                    }
+              }
+              {
+                ReviewFrame = YesNoFrame : mgiOption;
+                Group: Constraint
+                  leftAttachment = attach_none;
+                  rightAttachment = attach_opposite_widget;
+                  rightWidget = Table;
+                  topAttachment = attach_widget;
+                  topWidget = Table;
+                  topOffset = 2;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                    {
+                      ReviewMenu : YesNoMenu = XmOptionMenu;
+                      Group: Widget
+                        subMenuId = ReviewPulldown;
+                        labelString = "Review?";
+                      Group: User
+                        defaultOption = No;
+                    }
+                    Popups:
+                    {
+                      ReviewPulldown : YesNoPulldown = OptionPulldown : mgiOption;
+                      Group: User
+                        tableForm = Reference;
+                        tableOptionKey = 4;
+                        tableOption = 8;
+                          {
+                            SearchAll = SearchAll : mgiOption;
+                            Group: Widget
+                              managed = False;
+                          }
+                    }
+              }
+        }
+        {
+          EvidencePropertyTable = OrderedTableLabel;
+          Group: Widget
+            rubberPositioning = False;
+            resizePolicy = resize_any;
+          Group: Control
+            vip_x = 75;
+            vip_y = 580;
+              {
+                Table = mgiTable;
+                Group: Widget
+                  xrtTblColumnLabels = "Mode,Key,AnnotEvidence Key,Term key,#,Stanza,Property,Value";
+                  xrtTblNumColumns = 8;
+                  xrtTblPixelWidthSeries = "(all 0-4 0)";
+                  xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 3)(all 5 6)(all 6 25)(all 7 125)";
+                  width = 800;
+                  xrtTblFrozenColumns = 7;
+                  xrtTblEditableSeries = "(all 0-4 False)(all 6 False)";
+                  xrtTblTraversableSeries = "(all 0-4 False)(all 6 False)";
+                  userDefinedAttributes = "propertyTermKey:Int(Int)=\"3\"\npropertyTerm:Int(Int)=\"6\"\npropertyValue:Int(Int)=\"7\"\npropertyKey:Int(Int)=\"1\"\npropertyLoaded:Boolean(Boolean)=\"False\"\nuseDefaultPropertyTerm:Boolean(Boolean)=\"False\"\ndefaultPropertyTerm:String(String)\npropertyStanza:Int(Int)=\"5\"\nannotEvidenceKey:Int(Int)=\"2\"\n";
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_form;
+                  topAttachment = attach_form;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  topOffset = 5;
+                  rightOffset = 5;
+                Group: User
+                  saveEditableSeries = "(all 0-4 False)(all 6 False)";
+                  saveTraversableSeries = "(all 0-4 False)(all 6 False)";
+                  seqNum = 4;
+                    {
+                      label = XtXrtLabel;
+                      Group: Widget
+                        labelString = Properties;
+                        alignment = alignment_beginning;
+                    }
+              }
+              {
+                AddRow = TablePush;
+                Group: Widget
+                  activateCallback = "D:AddEvidencePropertyRow";
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  leftWidget = EvidencePropertyFrame;
+                  leftOffset = 2;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = EvidencePropertyFrame;
+                  topOffset = 2;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+              }
+              {
+                DeleteRow = TablePush;
+              }
+              {
+                InsertRow = TablePush : mgiTable;
+              }
+              {
+                EditOrder = toggle : mgiDataTypes;
+                Group: Widget
+                  managed = False;
+              }
+              {
+                EvidencePropertyFrame = EvidencePropertyFrame : mgiOption;
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  leftWidget = Table;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = Table;
+                  topOffset = 2;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                    Popups:
+                    {
+                      EvidencePropertyPulldown = OptionPulldown;
+                      Group: User
+                        tableOption = 6;
+                        tableOptionKey = 3;
+                          {
+                            SearchAll = SearchAll : mgiOption;
+                            Group: Widget
+                              managed = False;
+                          }
+                    }
+              }
+              {
+                Save = ControlPush : mgiControl;
+                Group: Widget
+                  labelString = "Save Properties";
+                  activateCallback = "D:ModifyGOProperty";
+                Group: Constraint
+                  leftAttachment = attach_none;
+                  rightAttachment = attach_opposite_widget;
+                  rightWidget = Table;
+                  topAttachment = attach_widget;
+                  topWidget = Table;
+                  topOffset = 2;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+              }
+        }
+}
+

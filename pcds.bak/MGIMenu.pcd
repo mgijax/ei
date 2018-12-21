@@ -1,0 +1,73 @@
+Module: MGIMenu
+{
+      autoCuil = False;
+      release = "TeleUSE v3.2.3 / Solaris 8";
+      lastWritten = "Wed May 19 11:15:51 2010";
+        {
+          MGIMenu = TopLevelShell;
+          Group: Widget
+            closeWindowCallback = "D:Exit";
+          Group: Control
+            vipComment = "";
+            vip_x = 30;
+            vip_y = 30;
+              {
+                MGIForm = XmForm;
+                    {
+                      MGIMenu = MenuBar : mgiMenu;
+                      Group: Constraint
+                        leftAttachment = attach_form;
+                        rightAttachment = attach_form;
+                        topAttachment = attach_form;
+                        bottomAttachment = attach_none;
+                        resizable = true;
+                          {
+                            File = File : mgiMenu;
+                                Popups:
+                                {
+                                  FilePulldown = MenuPulldown;
+                                      {
+                                        Exit = MenuPush;
+                                        Group: Widget
+                                          activateCallback = "D:Exit";
+                                      }
+                                }
+                          }
+                    }
+                    {
+                      MGIFrame = XmFrame;
+                      Group: Constraint
+                        leftAttachment = attach_opposite_widget;
+                        leftWidget = MGIMenu;
+                        rightAttachment = attach_form;
+                        topAttachment = attach_widget;
+                        topWidget = MGIMenu;
+                        bottomAttachment = attach_form;
+                        resizable = true;
+                          {
+                            mgiModules = XmRowColumn;
+                            Group: Widget
+                              entryAlignment = alignment_center;
+                              spacing = 5;
+                                {
+                                  MGD = XmPushButton;
+                                  Group: Widget
+                                    activateCallback = "D:ForkIt(app = \"runapp mgd\")";
+                                    traversalOn = False;
+                                    managed = True;
+                                    labelString = "Mouse Genome Database (MGD)";
+                                }
+                                {
+                                  GXD = XmPushButton;
+                                  Group: Widget
+                                    activateCallback = "D:ForkIt(app = \"runapp gxd\")";
+                                    traversalOn = False;
+                                    managed = True;
+                                    labelString = "Gene Expression Database (GXD)";
+                                }
+                          }
+                    }
+              }
+        }
+}
+

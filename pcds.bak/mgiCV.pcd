@@ -1,0 +1,523 @@
+Module: mgiCV
+{
+      autoCuil = False;
+      release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
+      lastWritten = "Thu Nov 15 09:45:21 2018";
+        {
+          CVMenu = XmRowColumn;
+          Group: Widget
+            entryAlignment = alignment_center;
+          Group: Control
+            vip_x = 50;
+            vip_y = 30;
+        }
+        {
+          CVMarker = CVMenu;
+          Group: Control
+            vip_x = 150;
+            vip_y = 30;
+              {
+                MarkerEventFrame = MarkerEventFrame : mgiOption;
+                    Popups:
+                    {
+                      MarkerEventPulldown = OptionPulldown : mgiOption;
+                      Group: User
+                        tableForm = History;
+                        tableOption = 13;
+                        tableOptionKey = 5;
+                    }
+              }
+              {
+                MarkerEventReasonFrame = MarkerEventReasonFrame : mgiOption;
+                    {
+                      MarkerEventReasonMenu = XmOptionMenu;
+                      Group: Widget
+                        labelString = "Event\nReason";
+                    }
+                    Popups:
+                    {
+                      MarkerEventReasonPulldown = OptionPulldown : mgiOption;
+                      Group: User
+                        tableForm = History;
+                        tableOption = 14;
+                        tableOptionKey = 6;
+                    }
+              }
+        }
+        {
+          CVInSituResult = CVMenu;
+          Group: Control
+            vip_x = 50;
+            vip_y = 85;
+              {
+                StrengthFrame = StrengthFrame : mgiOption;
+                    Popups:
+                    {
+                      StrengthPulldown = OptionPulldown : mgiOption;
+                      Group: User
+                        tableOption = 9;
+                        tableOptionKey = 5;
+                        tableForm = Results;
+                        sql = "select * from GXD_Strength where _Strength_key > -1 order by strength";
+                        childTemplate = StrengthPatternToggle;
+                    }
+              }
+              {
+                PatternFrame = PatternFrame : mgiOption;
+                    Popups:
+                    {
+                      PatternPulldown = OptionPulldown : mgiOption;
+                      Group: User
+                        tableForm = Results;
+                        tableOption = 10;
+                        tableOptionKey = 6;
+                        childTemplate = StrengthPatternToggle;
+                          {
+                            SearhAllNoShow = SearhAllNoShow : mgiOption;
+                          }
+                    }
+              }
+              {
+                NotePush = NotePushShort : mgiDataTypes;
+                Group: User
+                  targetWidget = Results;
+                  targetColumn = 12;
+              }
+        }
+        {
+          CVGel = XmFrame;
+          Group: Control
+            vip_x = 150;
+            vip_y = 85;
+            vipComment = "";
+              {
+                panedWindow = XmPanedWindow;
+                    {
+                      EMAPAClipboard = EMAPAClipboard : mgiLookup;
+                      Group: User
+                        orderBy = "";
+                        cmdMaster = "";
+                          {
+                            Label = LookupLabel;
+                          }
+                          {
+                            List = list;
+                            Group: Widget
+                              visibleItemCount = 3;
+                            Group: User
+                              targetWidget = GelLane;
+                              targetKey = 5;
+                              targetText = 15;
+                          }
+                    }
+                    {
+                      GenotypeGelClipboard = GenotypeGelClipboard : mgiLookup;
+                          {
+                            Label = LookupLabel : mgiLookup;
+                          }
+                          {
+                            List = list : mgiDataTypes;
+                            Group: Widget
+                              visibleItemCount = 3;
+                          }
+                    }
+                    {
+                      CVMenu1 = CVMenu;
+                          {
+                            GelControlFrame = GelControlFrame : mgiOption;
+                                Popups:
+                                {
+                                  GelControlPulldown = OptionPulldown : mgiOption;
+                                  Group: User
+                                    tableForm = GelLane;
+                                    tableOption = 13;
+                                    tableOptionKey = 3;
+                                }
+                          }
+                          {
+                            GelRNATypeFrame = GelRNATypeFrame : mgiOption;
+                                Popups:
+                                {
+                                  GelRNATypePulldown = OptionPulldown : mgiOption;
+                                  Group: User
+                                    tableForm = GelLane;
+                                    tableOptionKey = 6;
+                                    tableOption = 17;
+                                }
+                          }
+                          {
+                            AgeFrame = AgeFrame : mgiOption;
+                                {
+                                  AgeMenu = XmOptionMenu;
+                                  Group: User
+                                    defaultOption = embryonicDay;
+                                }
+                                Popups:
+                                {
+                                  AgePulldown = OptionPulldown : mgiOption;
+                                  Group: User
+                                    tableForm = GelLane;
+                                    tableOption = 18;
+                                    tableOptionKey = 7;
+                                      {
+                                        SearchAll = SearchAll : mgiOption;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                      {
+                                        embryonic = AgeToggle : mgiOption;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                      {
+                                        embryonicDay = AgeToggle : mgiOption;
+                                      }
+                                      {
+                                        postnatal = AgeToggle : mgiOption;
+                                      }
+                                      {
+                                        postnatalDay = AgeToggle : mgiOption;
+                                      }
+                                      {
+                                        postnatalWeek = AgeToggle : mgiOption;
+                                      }
+                                      {
+                                        postnatalMonth = AgeToggle : mgiOption;
+                                      }
+                                      {
+                                        postnatalYear = AgeToggle : mgiOption;
+                                      }
+                                      {
+                                        postnatalAdult = AgeToggle : mgiOption;
+                                      }
+                                      {
+                                        postnatalNewborn = AgeToggle : mgiOption;
+                                      }
+                                      {
+                                        NotSpecified = AgeToggle : mgiOption;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                      {
+                                        NotApplicable = AgeToggle : mgiOption;
+                                      }
+                                      {
+                                        NotResolved = AgeToggle : mgiOption;
+                                      }
+                                      {
+                                        NotLoaded = AgeToggle : mgiOption;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                }
+                          }
+                          {
+                            SexFrame = SexFrame : mgiOption;
+                                Popups:
+                                {
+                                  SexPulldown = OptionPulldown;
+                                  Group: User
+                                    tableForm = GelLane;
+                                    tableOption = 21;
+                                    tableOptionKey = 10;
+                                      {
+                                        SearchAll = SearchAll : mgiOption;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                }
+                          }
+                          {
+                            GelUnitsFrame = GelUnitsFrame : mgiOption;
+                                Popups:
+                                {
+                                  GelUnitsPulldown = OptionPulldown : mgiOption;
+                                  Group: User
+                                    tableForm = GelRow;
+                                    tableOptionKey = 2;
+                                    tableOption = 5;
+                                }
+                          }
+                          {
+                            StrengthFrame = StrengthFrame : mgiOption;
+                                Popups:
+                                {
+                                  StrengthPulldown = OptionPulldown : mgiOption;
+                                  Group: User
+                                    tableForm = GelRow;
+                                    tableOption = "-1";
+                                    tableOptionKey = "-1";
+                                }
+                          }
+                          {
+                            CVMenu = CVMenu;
+                            Group: Widget
+                              packing = pack_column;
+                              adjustLast = False;
+                              orientation = horizontal;
+                              numColumns = 2;
+                                {
+                                  RowNote = NotePushShort : mgiDataTypes;
+                                  Group: Widget
+                                    labelString = "Row Notes";
+                                  Group: User
+                                    targetWidget = GelRow;
+                                    targetColumn = 6;
+                                }
+                                {
+                                  BandNote = NotePushShort : mgiDataTypes;
+                                  Group: Widget
+                                    labelString = "Band Notes";
+                                  Group: User
+                                    targetWidget = GelRow;
+                                    targetColumn = "-1";
+                                }
+                          }
+                    }
+              }
+        }
+        {
+          CVSpecimen = XmFrame;
+          Group: Control
+            vip_x = 150;
+            vip_y = 140;
+            vipComment = "";
+              {
+                panedWindow = XmPanedWindow;
+                    {
+                      GenotypeSpecimenClipboard = GenotypeSpecimenClipboard : mgiLookup;
+                    }
+                    {
+                      CVMenu = CVMenu;
+                          {
+                            AgeFrame = AgeFrame : mgiOption;
+                                {
+                                  AgeMenu = XmOptionMenu;
+                                  Group: User
+                                    defaultOption = embryonicDay;
+                                }
+                                Popups:
+                                {
+                                  AgePulldown = OptionPulldown : mgiOption;
+                                  Group: User
+                                    tableForm = Specimen;
+                                    tableOption = 14;
+                                    tableOptionKey = 5;
+                                      {
+                                        SearchAll = SearchAll : mgiOption;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                      {
+                                        embryonic = AgeToggle : mgiOption;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                      {
+                                        embryonicDay = AgeToggle : mgiOption;
+                                      }
+                                      {
+                                        postnatal = AgeToggle : mgiOption;
+                                      }
+                                      {
+                                        postnatalDay = AgeToggle : mgiOption;
+                                      }
+                                      {
+                                        postnatalWeek = AgeToggle : mgiOption;
+                                      }
+                                      {
+                                        postnatalMonth = AgeToggle : mgiOption;
+                                      }
+                                      {
+                                        postnatalYear = AgeToggle : mgiOption;
+                                      }
+                                      {
+                                        postnatalAdult = AgeToggle : mgiOption;
+                                      }
+                                      {
+                                        postnatalNewborn = AgeToggle : mgiOption;
+                                      }
+                                      {
+                                        NotSpecified = AgeToggle : mgiOption;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                      {
+                                        NotApplicable = AgeToggle : mgiOption;
+                                      }
+                                      {
+                                        NotResolved = AgeToggle : mgiOption;
+                                      }
+                                      {
+                                        NotLoaded = AgeToggle : mgiOption;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                }
+                          }
+                          {
+                            SexFrame = SexFrame : mgiOption;
+                                Popups:
+                                {
+                                  SexPulldown = OptionPulldown;
+                                  Group: User
+                                    tableForm = Specimen;
+                                    tableOption = 17;
+                                    tableOptionKey = 8;
+                                      {
+                                        SearchAll = SearchAll : mgiOption;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                }
+                          }
+                          {
+                            FixationFrame = FixationFrame : mgiOption;
+                                Popups:
+                                {
+                                  FixationPulldown = OptionPulldown : mgiOption;
+                                  Group: User
+                                    tableOption = 18;
+                                    tableOptionKey = 9;
+                                    tableForm = Specimen;
+                                }
+                          }
+                          {
+                            EmbeddingFrame = EmbeddingFrame : mgiOption;
+                                Popups:
+                                {
+                                  EmbeddingPulldown = OptionPulldown : mgiOption;
+                                  Group: User
+                                    tableOption = 19;
+                                    tableOptionKey = 10;
+                                    tableForm = Specimen;
+                                }
+                          }
+                          {
+                            HybridizationFrame = HybridizationFrame : mgiOption;
+                                Popups:
+                                {
+                                  HybridizationPulldown = OptionPulldown : mgiOption;
+                                  Group: User
+                                    tableOption = 20;
+                                    tableOptionKey = 11;
+                                    tableForm = Specimen;
+                                }
+                          }
+                          {
+                            NotePush = NotePush : mgiDataTypes;
+                            Group: Widget
+                              labelString = "Specimen Notes";
+                            Group: User
+                              targetWidget = Specimen;
+                              targetColumn = 22;
+                          }
+                          {
+                            ResultsPush = TableDialogPush : mgiDataTypes;
+                            Group: Widget
+                              activateCallback = "D:VerifyEdit(mode = 1),\nD:InSituResultInit";
+                              labelString = Results;
+                            Group: User
+                              targetWidget = Specimen;
+                              tableColumn = 21;
+                              tableKeyColumn = 3;
+                              mgiDialogName = InSituResultsDialog;
+                          }
+                    }
+                    {
+                      EMAPAClipboard = EMAPAClipboard : mgiLookup;
+                      Group: Widget
+                        managed = False;
+                      Group: User
+                        orderBy = "";
+                        cmdMaster = "";
+                          {
+                            Label = LookupLabel;
+                          }
+                          {
+                            List = list;
+                            Group: User
+                              targetWidget = Results;
+                              targetKey = 4;
+                              targetText = 8;
+                          }
+                    }
+              }
+        }
+        {
+          CVStagingNote = XmRowColumn;
+          Group: Widget
+            orientation = horizontal;
+          Group: Control
+            vipComment = "";
+            vip_x = 50;
+            vip_y = 140;
+              {
+                AgeNotSpecified = AppendNotePush : mgiDataTypes;
+                Group: Widget
+                  labelString = "Age Not Specified";
+                Group: User
+                  note = "Age of embryo at noon of plug day not specified in reference.";
+              }
+              {
+                AgeNormalized = AppendNotePush : mgiDataTypes;
+                Group: Widget
+                  labelString = "Age Normalized";
+                Group: User
+                  note = "Age normalized so that noon of plug day = E0.5.";
+              }
+              {
+                AgeAssigned = AppendNotePush : mgiDataTypes;
+                Group: Widget
+                  labelString = "Age Assigned";
+                Group: User
+                  note = "Age assigned by curator based on morphological criteria supplied by authors.";
+              }
+        }
+        {
+          CVSequence = XmRowColumn;
+          Group: Control
+            vipComment = "";
+            vip_x = 50;
+            vip_y = 195;
+              {
+                AgeFrame = AgeFrame : mgiOption;
+                    Popups:
+                    {
+                      AgePulldown = OptionPulldown;
+                      Group: User
+                        tableForm = SourceInfo;
+                        tableOption = 16;
+                        tableOptionKey = 7;
+                    }
+              }
+              {
+                GenderFrame = GenderFrame : mgiOption;
+                    Popups:
+                    {
+                      GenderPulldown = OptionPulldown;
+                      Group: User
+                        tableForm = SourceInfo;
+                        tableOption = 18;
+                        tableOptionKey = 10;
+                    }
+              }
+        }
+        {
+          CVAntibodyNote = XmRowColumn;
+          Group: Widget
+            orientation = horizontal;
+          Group: Control
+            vipComment = "";
+            vip_x = 150;
+            vip_y = 195;
+              {
+                AntibodyObtained = AppendNotePush : mgiDataTypes;
+                Group: Widget
+                  labelString = "Antibody Obtained";
+                Group: User
+                  note = "This antibody was obtained from * but no details were provided; multiple antibodies that recognize this protein are available from this vendor.";
+              }
+        }
+}
+

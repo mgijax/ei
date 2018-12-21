@@ -1,0 +1,1590 @@
+Module: mgiDialog
+{
+      autoCuil = False;
+      dDialogFile = "mgiDialog_dlg.d";
+      release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
+      lastWritten = "Tue Aug  1 07:45:05 2017";
+        {
+          StatusDialog = XmWarningDialog;
+          Group: Widget
+            dialogStyle = dialog_primary_application_modal;
+            showCancelButton = False;
+            showHelpButton = False;
+            dialogTitle = "Status Report";
+            managed = False;
+            okCallback = "D:StatusReportOK";
+          Group: Control
+            vip_x = 105;
+            vip_y = 415;
+        }
+        {
+          DeleteDialog = XmQuestionDialog;
+          Group: Widget
+            showHelpButton = False;
+            dialogStyle = dialog_primary_application_modal;
+            dialogTitle = "Are You Sure?";
+            managed = False;
+            messageString = "Are you sure you want to delete this record?";
+            okCallback = "D:Delete";
+            okLabelString = Yes;
+            cancelLabelString = No;
+          Group: Control
+            vip_x = 105;
+            vip_y = 470;
+        }
+        {
+          FileSelection = XmFileSelectionBox;
+          Group: Widget
+            resizePolicy = resize_none;
+            cancelCallback = "C: TuUnmanage";
+            showHelpButton = False;
+          Group: Control
+            vip_x = 105;
+            vip_y = 30;
+              {
+                filler = XmSeparator;
+                Group: Widget
+                  managed = False;
+              }
+        }
+        {
+          SearchDialog = XmWorkingDialog;
+          Group: Widget
+            showOkButton = False;
+            showHelpButton = False;
+            showDefaultButton = False;
+            messageString = "Search In Progress";
+            dialogTitle = "Search Dialog";
+            managed = False;
+            dialogStyle = dialog_primary_application_modal;
+            autoUnmanage = False;
+          Group: Control
+            vip_x = 105;
+            vip_y = 360;
+        }
+        {
+          ReportDialog = FileDialog : mgiDialog;
+          Group: Widget
+            userDefinedAttributes = "select:String(String)\nuseReportDir:Boolean(Boolean)=\"True\"\nprintSelect:String\n";
+            dialogTitle = Reports;
+            mapCallback = "D:ReportInit";
+            width = 600;
+          Group: Control
+            vip_x = 105;
+            vip_y = 1295;
+              {
+                FileSelection = FileSelection;
+                Group: Widget
+                  okCallback = "D:ReportGenerate";
+                  okLabelString = Generate;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_form;
+                  bottomAttachment = attach_form;
+                  resizable = true;
+              }
+              {
+                Lookup = XmFrame;
+                    {
+                      panedWindow = XmPanedWindow;
+                          {
+                            ReportList = LookupList : mgiLookup;
+                                {
+                                  Label = LookupLabel;
+                                  Group: Widget
+                                    labelString = Reports;
+                                }
+                                {
+                                  List = list;
+                                  Group: Widget
+                                    singleSelectionCallback = "D:ReportSelect";
+                                }
+                          }
+                          {
+                            Output = XmScrolledText;
+                            Group: Widget
+                              rows = 5;
+                          }
+                    }
+              }
+        }
+        {
+          FileDialog = XmFormDialog;
+          Group: Widget
+            dialogStyle = dialog_primary_application_modal;
+            managed = False;
+            rubberPositioning = False;
+            resizePolicy = resize_any;
+          Group: Control
+            vip_x = 105;
+            vip_y = 1350;
+              {
+                FileSelection = FileSelection : mgiDialog;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_form;
+                  bottomAttachment = attach_form;
+                  resizable = true;
+                    {
+                      filler = XmSeparator;
+                    }
+                    {
+                      Delete = XmPushButton;
+                      Group: Widget
+                        activateCallback = "D: DeleteFile";
+                    }
+              }
+              {
+                Lookup = XmFrame;
+                Group: Widget
+                  traversalOn = False;
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  leftWidget = FileSelection;
+                  rightAttachment = attach_form;
+                  topAttachment = attach_form;
+                  bottomAttachment = attach_form;
+                  resizable = true;
+                    {
+                      panedWindow = XmPanedWindow;
+                          {
+                            Output = XmScrolledText;
+                            Group: Widget
+                              editable = False;
+                              editMode = multi_line_edit;
+                              background = Wheat;
+                              rows = 5;
+                          }
+                    }
+              }
+        }
+        {
+          VerifyDialog = XmQuestionDialog;
+          Group: Widget
+            dialogStyle = dialog_primary_application_modal;
+            showHelpButton = False;
+            managed = False;
+            cancelLabelString = No;
+            okLabelString = Yes;
+          Group: Control
+            vip_x = 105;
+            vip_y = 690;
+        }
+        {
+          WhichItem = XmFormDialog;
+          Group: Widget
+            dialogStyle = dialog_primary_application_modal;
+            managed = False;
+            rubberPositioning = False;
+            resizePolicy = resize_any;
+            dialogTitle = "Which Item?";
+          Group: Control
+            vip_x = 105;
+            vip_y = 1405;
+              {
+                ItemList = LookupList : mgiLookup;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_form;
+                  topAttachment = attach_form;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  leftOffset = 2;
+                  rightOffset = 2;
+                    {
+                      Label = LookupLabel;
+                      Group: Widget
+                        labelString = Items;
+                        managed = False;
+                    }
+                    {
+                      List = list;
+                      Group: Widget
+                        width = 300;
+                        singleSelectionCallback = "D:WhichItem,\nC:TuUnmanage";
+                        visibleItemCount = 10;
+                    }
+              }
+              {
+                separator = XmSeparator;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_form;
+                  topAttachment = attach_widget;
+                  topWidget = ItemList;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  topOffset = 5;
+              }
+              {
+                Buttons = XmRowColumn;
+                Group: Widget
+                  orientation = horizontal;
+                  entryAlignment = alignment_center;
+                  inTabGroup = True;
+                  packing = pack_column;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = separator;
+                  bottomAttachment = attach_form;
+                  resizable = true;
+                  topOffset = 5;
+                  leftOffset = 100;
+                  bottomOffset = 5;
+                    {
+                      Cancel = DialogPush : mgiDialog;
+                      Group: Widget
+                        activateCallback = "C: TuUnmanage";
+                    }
+              }
+        }
+        {
+          DialogPush = XmPushButton;
+          Group: Widget
+            marginHeight = 5;
+            marginWidth = 10;
+            traversalOn = False;
+          Group: Control
+            vip_x = 105;
+            vip_y = 85;
+        }
+        {
+          WorkingDialog = XmWorkingDialog;
+          Group: Widget
+            autoUnmanage = False;
+            managed = False;
+            showCancelButton = False;
+            showDefaultButton = False;
+            showHelpButton = False;
+            showOkButton = False;
+            showSeparator = False;
+            dialogTitle = "Working Dialog";
+          Group: Control
+            vip_x = 105;
+            vip_y = 305;
+        }
+        {
+          VerifyItemAdd = VerifyDialog : mgiDialog;
+          Group: Widget
+            dialogTitle = "Add Item?";
+            messageString = "This item does not exist in the database.\nDo you want to ADD this item?";
+            okCallback = "D:VerifyItemAdd";
+            userDefinedAttributes = "doAdd:Boolean=\"False\"\n";
+          Group: Control
+            vip_x = 105;
+            vip_y = 855;
+        }
+        {
+          SelectDialog = XmFormDialog;
+          Group: Widget
+            managed = False;
+            dialogTitle = "Selection List";
+            userDefinedAttributes = "editForm:Widget\n";
+            rubberPositioning = False;
+            resizePolicy = resize_any;
+          Group: Control
+            vip_x = 105;
+            vip_y = 1625;
+              {
+                ItemList = LookupList : mgiLookup;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_form;
+                  topAttachment = attach_form;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                    {
+                      Label = LookupLabel;
+                      Group: Widget
+                        labelString = "0 Items";
+                      Group: User
+                        defaultLabel = Items;
+                    }
+                    {
+                      List = list;
+                      Group: Widget
+                        width = 250;
+                        visibleItemCount = 25;
+                        singleSelectionCallback = "D:SelectListItem,\nD:CopySelectionItem";
+                    }
+              }
+              {
+                Selection = CharText : mgiDataTypes;
+                Group: Widget
+                  xrtGearOrientation = vertical;
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  leftWidget = ItemList;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = ItemList;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                    {
+                      label = XmLabel;
+                      Group: Widget
+                        labelString = Selection;
+                    }
+                    {
+                      text = text;
+                      Group: Widget
+                        columns = 40;
+                    }
+              }
+              {
+                SelectionKey = ID : mgiDataTypes;
+              }
+              {
+                separator = XmSeparator;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_form;
+                  topAttachment = attach_widget;
+                  topWidget = Selection;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  topOffset = 5;
+              }
+              {
+                Buttons = Buttons : mgiDialog;
+                Group: Constraint
+                  leftAttachment = attach_position;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = separator;
+                  bottomAttachment = attach_form;
+                  resizable = true;
+                  leftPosition = 15;
+                  bottomOffset = 2;
+                    {
+                      OK = DialogPush;
+                      Group: Widget
+                        activateCallback = "D:FindSelectionItem";
+                        labelString = Find;
+                    }
+              }
+        }
+        {
+          StrainDialog = SelectDialog : mgiDialog;
+          Group: Widget
+            rubberPositioning = False;
+            resizePolicy = resize_any;
+          Group: Control
+            vip_x = 105;
+            vip_y = 1680;
+              {
+                ItemList = LookupList : mgiLookup;
+                Group: User
+                  cmd = "select _Strain_key, strain from PRB_Strain where private = 0 order by strain";
+                    {
+                      Label = LookupLabel;
+                      Group: Widget
+                        labelString = "0 Strains";
+                      Group: User
+                        defaultLabel = Strains;
+                    }
+              }
+              {
+                Selection = CharText : mgiDataTypes;
+              }
+              {
+                SelectionKey = ID : mgiDataTypes;
+              }
+              {
+                separator = XmSeparator;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_form;
+                  topAttachment = attach_widget;
+                  topWidget = Selection;
+                  topOffset = 5;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+              }
+        }
+        {
+          TissueDialog = SelectDialog : mgiDialog;
+          Group: Widget
+            dialogTitle = Tissues;
+            rubberPositioning = False;
+            resizePolicy = resize_any;
+          Group: Control
+            vip_x = 105;
+            vip_y = 1790;
+              {
+                ItemList = LookupList : mgiLookup;
+                Group: User
+                  cmd = "select _Tissue_key, tissue from PRB_Tissue order by tissue";
+                    {
+                      Label = LookupLabel;
+                      Group: Widget
+                        labelString = "0 Tissues";
+                      Group: User
+                        defaultLabel = Tissues;
+                    }
+              }
+              {
+                Selection = CharText : mgiDataTypes;
+              }
+              {
+                SelectionKey = ID : mgiDataTypes;
+              }
+              {
+                separator = XmSeparator;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_form;
+                  topAttachment = attach_widget;
+                  topWidget = Selection;
+                  topOffset = 5;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+              }
+        }
+        {
+          NoteDialog = XmFormDialog;
+          Group: Widget
+            managed = False;
+            userDefinedAttributes = "targetWidget:Widget(Widget)\ntargetColumn:Int(Int)\n";
+            rubberPositioning = False;
+            resizePolicy = resize_any;
+            dialogTitle = "Notes Dialog";
+          Group: Control
+            vip_x = 105;
+            vip_y = 1570;
+              {
+                label = XmLabel;
+                Group: Widget
+                  labelString = Notes;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_form;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  leftOffset = 5;
+                  topOffset = 5;
+              }
+              {
+                Note = Notes : mgiDataTypes;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  topWidget = label;
+                  topOffset = 5;
+                    {
+                      label = XmLabel;
+                      Group: Widget
+                        managed = False;
+                    }
+                    {
+                      text = scrolledText;
+                      Group: Widget
+                        columns = 75;
+                        userDefinedAttributes = "saveMaxNoteLength:Int(Int)=\"0\"\nsaveRows:Int=\"0\"\n";
+                        rows = 15;
+                    }
+              }
+              {
+                separator = XmSeparator;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_form;
+                  topAttachment = attach_widget;
+                  topWidget = Note;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+              }
+              {
+                Buttons = Buttons : mgiDialog;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_form;
+                  topAttachment = attach_widget;
+                  bottomAttachment = attach_form;
+                  resizable = true;
+                  topWidget = separator;
+                  leftOffset = 50;
+                  bottomOffset = 5;
+                  topOffset = 5;
+                  rightOffset = 50;
+                    {
+                      OK = DialogPush;
+                      Group: Widget
+                        activateCallback = "D:NoteCommit";
+                        labelString = "Save Changes";
+                    }
+                    {
+                      Cancel = DialogPush;
+                      Group: Widget
+                        activateCallback = "D:NoteCancel";
+                        labelString = "Cancel Changes";
+                    }
+                    {
+                      addNote1 = AppendNotePush : mgiDataTypes;
+                      Group: Widget
+                        activateCallback = "D:AppendNoteButton(note = \"\\Acc(MGI:||)\")";
+                        labelString = "Add Acc/MGI";
+                        managed = False;
+                    }
+              }
+        }
+        {
+          Buttons = XmRowColumn;
+          Group: Widget
+            orientation = horizontal;
+            entryAlignment = alignment_center;
+            inTabGroup = True;
+            packing = pack_column;
+            spacing = 50;
+            traversalOn = False;
+          Group: Control
+            vip_x = 105;
+            vip_y = 140;
+              {
+                OK = DialogPush : mgiDialog;
+              }
+              {
+                Cancel = DialogPush : mgiDialog;
+                Group: Widget
+                  activateCallback = "C: TuUnmanage";
+                  labelString = Close;
+              }
+        }
+        {
+          EditDialog = XmFormDialog;
+          Group: Widget
+            managed = False;
+            userDefinedAttributes = "targetWidget:Widget(Widget)\ntargetColumn:Int(Int)\ntargetKeyColumn:Int(Int)\nclearForms:StringTable(StringTable)=\"EditForm\"\nhomeWidget:Widget(Widget)\nallowEdit:Boolean(Boolean)=\"True\"\n";
+            dialogStyle = dialog_primary_application_modal;
+            rubberPositioning = False;
+            resizePolicy = resize_any;
+          Group: Control
+            vip_x = 105;
+            vip_y = 1240;
+            vipComment = "XmFormDialog is a convenience widget combining an unmanaged XmForm within an XmDialogShell parent. It is used for interactions not supported by the standard dialog set. No labels, buttons or other dialog components are automatically available.";
+              {
+                EditForm = EditForm : MGI;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_form;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+              }
+              {
+                separator = XmSeparator;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_form;
+                  topAttachment = attach_widget;
+                  topWidget = EditForm;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  topOffset = 5;
+              }
+              {
+                Buttons = Buttons : mgiDialog;
+                Group: Constraint
+                  leftAttachment = attach_position;
+                  leftPosition = 30;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = separator;
+                  topOffset = 5;
+                  bottomAttachment = attach_form;
+                  resizable = true;
+                  bottomOffset = 5;
+                    {
+                      OK = DialogPush;
+                      Group: Widget
+                        labelString = "Save Edits\nand Quit";
+                    }
+              }
+        }
+        {
+          InSituResultDialog = EditDialog;
+          Group: Widget
+            dialogTitle = "InSitu Results";
+            dialogStyle = dialog_modeless;
+            rubberPositioning = False;
+            closeWindowCallback = "D:InSituResultCancel";
+            resizePolicy = resize_any;
+            height = 500;
+          Group: Control
+            vip_x = 105;
+            vip_y = 1515;
+              {
+                EditForm = EditForm : MGI;
+                Group: Widget
+                  rubberPositioning = False;
+                  resizePolicy = resize_none;
+                  width = 700;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_form;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                    {
+                      ID = ID;
+                    }
+                    {
+                      Results = OrderedTableLabel : mgiTable;
+                      Group: Widget
+                        rubberPositioning = False;
+                        resizePolicy = resize_any;
+                      Group: Constraint
+                        leftAttachment = attach_form;
+                        leftOffset = 5;
+                        rightAttachment = attach_form;
+                        topAttachment = attach_form;
+                        bottomAttachment = attach_form;
+                        resizable = true;
+                        rightOffset = 5;
+                          {
+                            Table = mgiTable;
+                            Group: Widget
+                              userDefinedAttributes = "resultKey:Int(Int)=\"3\"\nstrengthKey:Int(Int)=\"5\"\npatternKey:Int(Int)=\"6\"\nimagePaneKeys:Int(Int)=\"7\"\nstructures:Int(Int)=\"8\"\nstrength:Int(Int)=\"9\"\npattern:Int(Int)=\"10\"\nimagePanes:Int(Int)=\"11\"\nnotes:Int(Int)=\"12\"\nstructureKeys:Int(Int)=\"4\"\nclipboard:String=\"Lookup\"\n";
+                              xrtTblCharWidthSeries = "(all 0 1)(all 1-2 3)(all 8 10)(all 9 11)(all 10-11 15)(all 12 100)";
+                              xrtTblColumnLabels = "Mode,Current Order,#,Result key,Struct keys,Strength key,Pattern key,Image Pane keys,EMAPA,Strength,Pattern,Image Panes,Notes";
+                              xrtTblNumColumns = 13;
+                              xrtTblEditableSeries = "(all 0-2 False)(all 8-11 False)";
+                              xrtTblEnterCellCallback = "D:EMAPAClipboardSetItems,\nD:SetImageResultOptions,\nD:SetImagePane";
+                              xrtTblPixelWidthSeries = "(all 0-1 0)(all 3-7 0)";
+                              xrtTblTraversableSeries = "(all 0-7 False)";
+                              xrtTblValidateCellCallback = "D:CopyInSituRow,\nD:CommitTableCellEdit";
+                              xrtTblNumRows = 10;
+                              xrtTblVisibleRows = 8;
+                              xrtTblAllowCellResize = resize_horizontal;
+                              xrtTblFrozenColumns = 9;
+                              xrtTblDisplayHorizScrollBar = dispsb_always;
+                              xrtTblMinCellVisibility = 0;
+                              xrtTblDisplayVertScrollBar = dispsb_always;
+                            Group: User
+                              requiredColumns = "5\n9";
+                              saveTraversableSeries = "(all 0-7 False)";
+                              saveEditableSeries = "(all 0-2 False)(all 8-11 False)";
+                                {
+                                  label = XtXrtLabel;
+                                  Group: Widget
+                                    labelString = "InSitu Results";
+                                }
+                          }
+                          {
+                            AddRow = TablePush;
+                          }
+                          {
+                            DeleteRow = TablePush;
+                          }
+                          {
+                            InsertRow = TablePush : mgiTable;
+                          }
+                          {
+                            EditOrder = toggle : mgiDataTypes;
+                            Group: Constraint
+                              leftAttachment = attach_widget;
+                              leftWidget = CopyColumn;
+                              rightAttachment = attach_none;
+                              topAttachment = attach_opposite_widget;
+                              topWidget = CopyColumn;
+                              bottomAttachment = attach_none;
+                              resizable = true;
+                          }
+                          {
+                            CopyColumn = TablePush : mgiTable;
+                            Group: Widget
+                              activateCallback = "D:CopyInSituColumn,\nD:GoHome";
+                              labelString = "Copy Column";
+                            Group: Constraint
+                              leftAttachment = attach_widget;
+                              leftWidget = InsertRow;
+                              rightAttachment = attach_none;
+                              topAttachment = attach_opposite_widget;
+                              topWidget = InsertRow;
+                              bottomAttachment = attach_none;
+                              resizable = true;
+                          }
+                    }
+              }
+              {
+                separator = XmSeparator;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_widget;
+                  rightWidget = Lookup;
+                  topAttachment = attach_none;
+                  bottomAttachment = attach_widget;
+                  resizable = true;
+                  bottomWidget = Buttons;
+                  bottomOffset = 5;
+              }
+              {
+                Buttons = Buttons;
+                Group: Constraint
+                  leftAttachment = attach_position;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_none;
+                  bottomAttachment = attach_form;
+                  resizable = true;
+                  leftPosition = 20;
+                  bottomOffset = 5;
+                    {
+                      OK = DialogPush;
+                      Group: Widget
+                        activateCallback = "D:InSituResultCommit(quit = true)";
+                        labelString = "Save Edits\nand Close";
+                    }
+                    {
+                      Save = DialogPush : mgiDialog;
+                      Group: Widget
+                        labelString = "Save Edits";
+                        activateCallback = "D:InSituResultCommit";
+                    }
+                    {
+                      Cancel = DialogPush;
+                      Group: Widget
+                        activateCallback = "D:InSituResultCancel";
+                        labelString = Close;
+                    }
+              }
+              {
+                Lookup = Lookup : mgiLookup;
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  leftWidget = EditForm;
+                  rightAttachment = attach_form;
+                  topAttachment = attach_form;
+                  bottomAttachment = attach_form;
+                  resizable = true;
+                    {
+                      panedWindow = XmPanedWindow;
+                          {
+                            QueryList = QueryList;
+                            Group: Widget
+                              managed = False;
+                          }
+                          {
+                            CVInSituResult = CVInSituResult : mgiCV;
+                          }
+                          {
+                            ImagePaneList = LookupList : mgiLookup;
+                            Group: User
+                              cmd = "select _ImagePane_key, paneLabel from IMG_ImagePaneGXD_View where _Refs_key =";
+                                {
+                                  Label = LookupLabel;
+                                  Group: Widget
+                                    labelString = "Image Panes";
+                                    activateCallback = "D:LoadImagePaneList";
+                                  Group: User
+                                    defaultLabel = "Image Panes";
+                                }
+                                {
+                                  List = list;
+                                  Group: Widget
+                                    selectionPolicy = multiple_select;
+                                    multipleSelectionCallback = "D:SelectImagePane";
+                                    visibleItemCount = 5;
+                                }
+                          }
+                          {
+                            EMAPAClipboard = EMAPAClipboard : mgiLookup;
+                            Group: Widget
+                              userDefinedAttributes = "cmdMaster:String(String)\n";
+                            Group: User
+                              cmdMaster = "";
+                              orderBy = "";
+                                {
+                                  Label = LookupLabel;
+                                }
+                                {
+                                  List = list;
+                                  Group: Widget
+                                    visibleItemCount = 30;
+                                    multipleSelectionCallback = "D:SelectLookupListItem(scrollToRow = false)";
+                                    singleSelectionCallback = "D:SelectLookupListItem(scrollToRow = false)";
+                                  Group: User
+                                    targetWidget = Results;
+                                    targetKey = 4;
+                                    targetText = 8;
+                                }
+                          }
+                    }
+              }
+              Popups:
+              {
+                ExitDialog = ExitDialog : mgiDialog;
+                Group: Widget
+                  okCallback = "D:InSituResultExit";
+              }
+        }
+        {
+          StrainMergeDialog = XmFormDialog;
+          Group: Widget
+            dialogStyle = dialog_primary_application_modal;
+            dialogTitle = "Strain Merge";
+            managed = False;
+            rubberPositioning = False;
+            resizePolicy = resize_any;
+          Group: Control
+            vip_x = 105;
+            vip_y = 1735;
+              {
+                Strain1 = Strain : mgiDataTypes;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  leftOffset = 5;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_form;
+                  topOffset = 5;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                Group: User
+                  verifyAdd = False;
+                  verifyPrivate = False;
+                    {
+                      StrainID = ID;
+                    }
+                    {
+                      Verify = CharText;
+                          {
+                            label = XmLabel;
+                            Group: Widget
+                              labelString = "Incorrect Strain";
+                          }
+                    }
+              }
+              {
+                Strain2 = Strain : mgiDataTypes;
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  leftWidget = Strain1;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = Strain1;
+                  topOffset = 5;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                Group: User
+                  verifyAdd = False;
+                  verifyPrivate = False;
+                    {
+                      StrainID = ID;
+                    }
+                    {
+                      Verify = CharText;
+                          {
+                            label = XmLabel;
+                            Group: Widget
+                              labelString = "Correct Strain";
+                          }
+                    }
+              }
+              {
+                separator = XmSeparator;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_form;
+                  topAttachment = attach_widget;
+                  topWidget = Strain2;
+                  topOffset = 2;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  leftOffset = 2;
+                  rightOffset = 2;
+              }
+              {
+                Buttons = XmWorkArea;
+                Group: Widget
+                  orientation = horizontal;
+                  entryAlignment = alignment_center;
+                  inTabGroup = True;
+                  spacing = 25;
+                  packing = pack_column;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  leftOffset = 2;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = separator;
+                  bottomAttachment = attach_form;
+                  bottomOffset = 2;
+                  resizable = true;
+                    {
+                      Process = DialogPush : mgiDialog;
+                      Group: Widget
+                        labelString = "Process Merge";
+                        activateCallback = "D:StrainMerge";
+                        traversalOn = False;
+                    }
+                    {
+                      Done = DialogPush : mgiDialog;
+                      Group: Widget
+                        activateCallback = "C: TuUnmanage";
+                        traversalOn = False;
+                    }
+              }
+        }
+        {
+          PromptDialog = XmPromptDialog;
+          Group: Widget
+            dialogStyle = dialog_primary_application_modal;
+            managed = False;
+            showHelpButton = False;
+          Group: Control
+            vip_x = 105;
+            vip_y = 250;
+        }
+        {
+          ExitDialog = VerifyDialog;
+          Group: Widget
+            dialogTitle = "Exiting Form";
+            messageString = "Changes have not been saved!\nAre you sure you want to exit this form?";
+          Group: Control
+            vip_x = 105;
+            vip_y = 635;
+        }
+        {
+          VerifyRecord = VerifyDialog;
+          Group: Widget
+            dialogTitle = "Verify Record Modifications";
+            messageString = "Changes which have been made to this record have not been saved.\nDo you wish to CANCEL these modifications?";
+            okCallback = "C: TuUnmanage";
+          Group: Control
+            vip_x = 105;
+            vip_y = 745;
+        }
+        {
+          SelectionDialog = XmSelectionDialog;
+          Group: Widget
+            dialogStyle = dialog_primary_application_modal;
+            managed = False;
+            showHelpButton = False;
+            showApplyButton = False;
+            cancelLabelString = Close;
+          Group: Control
+            vip_x = 105;
+            vip_y = 195;
+        }
+        {
+          ClearDialog = VerifyDialog;
+          Group: Widget
+            dialogTitle = "Are You Sure?";
+            messageString = "Clearing will discard your most recent edits for the current record.\nAre you sure you want to Clear?";
+            cancelCallback = "C: TuUnmanage";
+          Group: Control
+            vip_x = 105;
+            vip_y = 525;
+        }
+        {
+          NextRecordDialog = VerifyDialog;
+          Group: Widget
+            messageString = "Changes have not been saved!\nAre you sure you want to continue to the next record?";
+            dialogTitle = "Continue to Next Record?";
+          Group: Control
+            vip_x = 105;
+            vip_y = 580;
+        }
+        {
+          VerifyValueChange = VerifyDialog;
+          Group: Widget
+            dialogTitle = "Change Value?";
+            messageString = "Are you sure you want to change this value?";
+            cancelCallback = "D:ResetModificationFlags";
+          Group: Control
+            vip_x = 105;
+            vip_y = 800;
+        }
+        {
+          WithdrawalDialog = XmFormDialog;
+          Group: Widget
+            dialogStyle = dialog_primary_application_modal;
+            dialogTitle = "Marker Withdrawal";
+            managed = False;
+            fractionBase = 3;
+            rubberPositioning = False;
+            resizePolicy = resize_any;
+            userDefinedAttributes = "eventKey:String(String)\neventLabel:String\n";
+          Group: Control
+            vipComment = "XmFormDialog is a convenience widget combining an unmanaged XmForm within an XmDialogShell parent. It is used for interactions not supported by the standard dialog set. No labels, buttons or other dialog components are automatically available.";
+            vip_x = 105;
+            vip_y = 1845;
+              {
+                currentMarker = mgiMarker : mgiDataTypes;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  leftOffset = 5;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_form;
+                  topOffset = 5;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                    {
+                      ObjectID = ID;
+                    }
+                    {
+                      Marker = CharText;
+                          {
+                            label = XmLabel;
+                          }
+                          {
+                            text = text;
+                            Group: Widget
+                              editable = False;
+                              traversalOn = False;
+                          }
+                    }
+              }
+              {
+                ChromosomeFrame = ChromosomeFrame : mgiOption;
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  leftWidget = currentMarker;
+                  leftOffset = 5;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = currentMarker;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  topOffset = 10;
+              }
+              {
+                hasAlleles = toggle : mgiDataTypes;
+                Group: Widget
+                  labelString = "The Marker being withdrawn has alleles.";
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  leftWidget = currentMarker;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = currentMarker;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  topOffset = 5;
+              }
+              {
+                addAsSynonym = toggle : mgiDataTypes;
+                Group: Widget
+                  labelString = "Add Marker being withdrawn as synonym.";
+                  set = True;
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = hasAlleles;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  leftWidget = hasAlleles;
+                  topOffset = 5;
+              }
+              {
+                MarkerEventReasonFrame = MarkerEventReasonFrame : mgiOption;
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  leftWidget = addAsSynonym;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = addAsSynonym;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  topOffset = 5;
+                    {
+                      MarkerEventReasonMenu = XmOptionMenu;
+                      Group: Widget
+                        labelString = "Event\nReason";
+                    }
+              }
+              {
+                nonVerified = mgiMarker : mgiDataTypes;
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  leftWidget = MarkerEventReasonFrame;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = MarkerEventReasonFrame;
+                  topOffset = 5;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                    {
+                      ObjectID = ID;
+                    }
+                    {
+                      Marker = CharText;
+                          {
+                            label = XmLabel;
+                            Group: Widget
+                              labelString = "New Symbol";
+                          }
+                          {
+                            text = text;
+                            Group: Widget
+                              translations = "#override
+Shift<Key>Tab: prev-tab-group()";
+                          }
+                    }
+              }
+              {
+                Name = CharText : mgiDataTypes;
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  rightAttachment = attach_form;
+                  topAttachment = attach_widget;
+                  topWidget = nonVerified;
+                  topOffset = 10;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  leftWidget = nonVerified;
+                  rightOffset = 5;
+                    {
+                      label = XmLabel;
+                      Group: Widget
+                        labelString = "New Name";
+                    }
+                    {
+                      text = text;
+                      Group: Widget
+                        columns = 70;
+                    }
+              }
+              {
+                mgiMarker = mgiMarker : mgiDataTypes;
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  leftWidget = MarkerEventReasonFrame;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = MarkerEventReasonFrame;
+                  topOffset = 5;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                Group: User
+                  accessionWidget = markerAccession;
+                    {
+                      ObjectID = ID;
+                    }
+                    {
+                      Marker = CharText;
+                          {
+                            label = XmLabel;
+                            Group: Widget
+                              labelString = "New Symbol";
+                          }
+                          {
+                            text = text;
+                            Group: Widget
+                              translations = "#override
+Shift<Key>Tab: prev-tab-group()
+<Key>Tab: VerifyMarker() VerifyMarkerChromosome()";
+                          }
+                    }
+              }
+              {
+                markerAccession = mgiAccession : mgiDataTypes;
+                Group: Widget
+                  managed = False;
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  leftWidget = mgiMarker;
+                  leftOffset = 5;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = mgiMarker;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                Group: User
+                  tableID = 113;
+                    {
+                      ObjectID = ID : mgiDataTypes;
+                    }
+                    {
+                      AccessionID = CharText : mgiDataTypes;
+                          {
+                            label = XmLabel;
+                          }
+                          {
+                            text = text;
+                            Group: Widget
+                              translations = "#override
+Shift<Key>Tab: prev-tab-group()
+<Key>Tab: VerifyMGIAcc() DisplayMarker()";
+                          }
+                    }
+                    {
+                      AccessionName = CharSText : mgiDataTypes;
+                      Group: Widget
+                        managed = False;
+                    }
+              }
+              {
+                NewMarker = Table : mgiTable;
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  leftWidget = Name;
+                  topWidget = Name;
+                  topOffset = 5;
+                  leftOffset = 25;
+                    {
+                      Table = mgiTable;
+                      Group: Widget
+                        xrtTblNumColumns = 3;
+                        xrtTblColumnLabels = "Mode,Key,New Symbols";
+                        xrtTblPixelWidthSeries = "(all 0-1 0)";
+                        xrtTblEditableSeries = "(all 0-1 False)";
+                        xrtTblTraversableSeries = "(all 0-1 False)";
+                        xrtTblCharWidthSeries = "(all 0 1)(all 1 10)(all 2 25)";
+                        xrtTblMaxLengthSeries = "(all 2 25)";
+                        userDefinedAttributes = "markerKey:Int(Int)=\"1\"\nmarkerSymbol:Int(Int)=\"2\"\nmarkerChr:Int(Int)=\"-1\"\nmarkerColumns:Int(Int)=\"1\"\n";
+                        xrtTblVisibleRows = 4;
+                        xrtTblNumRows = 4;
+                    }
+                    {
+                      AddRow = TablePush;
+                      Group: Widget
+                        managed = False;
+                    }
+                    {
+                      DeleteRow = TablePush;
+                      Group: Widget
+                        managed = False;
+                    }
+              }
+              {
+                mgiCitation = mgiCitation : mgiDataTypes;
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = NewMarker;
+                  topOffset = 5;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  leftWidget = MarkerEventReasonFrame;
+                    {
+                      ObjectID = ID;
+                    }
+                    {
+                      Jnum = Jnum;
+                    }
+                    {
+                      Citation = Citation;
+                          {
+                            label = XmLabel;
+                          }
+                          {
+                            text = text;
+                            Group: Widget
+                              columns = 50;
+                              editable = False;
+                              traversalOn = False;
+                          }
+                    }
+              }
+              {
+                separator = XmSeparator;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  leftOffset = 2;
+                  rightAttachment = attach_form;
+                  topAttachment = attach_widget;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  rightOffset = 2;
+                  topWidget = mgiCitation;
+                  topOffset = 5;
+              }
+              {
+                Buttons = Buttons : mgiDialog;
+                Group: Widget
+                  spacing = 40;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  leftOffset = 5;
+                  rightAttachment = attach_form;
+                  topAttachment = attach_widget;
+                  bottomAttachment = attach_form;
+                  bottomOffset = 2;
+                  resizable = true;
+                  topWidget = separator;
+                    {
+                      OK = DialogPush;
+                      Group: Widget
+                        activateCallback = "D:MarkerWithdrawal";
+                        labelString = Process;
+                    }
+                    {
+                      Cancel = DialogPush;
+                      Group: Widget
+                        activateCallback = "D:MarkerWithdrawalCancel";
+                    }
+              }
+              {
+                Output = scrolledText : mgiDataTypes;
+                Group: Widget
+                  managed = False;
+              }
+              Popups:
+              {
+                StatusDialog = StatusDialog : mgiDialog;
+              }
+        }
+        {
+          VerifyMutantParentStrain = VerifyDialog;
+          Group: Widget
+            userDefinedAttributes = "doModify:Boolean(Boolean)=\"False\"\n";
+            dialogTitle = "Are You Sure?";
+            okCallback = "D:VerifyMutantParentStrain";
+            messageString = "You are about to modify the Mutant Cell Line, Parent Cell Line or Strain of Origin.\nAre you sure you want to modify these values?";
+          Group: Control
+            vip_x = 105;
+            vip_y = 1185;
+        }
+        {
+          AssayGenotypeReplaceDialog = XmFormDialog;
+          Group: Widget
+            dialogStyle = dialog_modeless;
+            dialogTitle = "Replace Genotype";
+            managed = False;
+            rubberPositioning = False;
+            resizePolicy = resize_any;
+          Group: Control
+            vip_x = 105;
+            vip_y = 1460;
+            vipComment = "";
+              {
+                mgiCitation = mgiCitation : mgiDataTypes;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_form;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  leftOffset = 5;
+                  topOffset = 5;
+                    {
+                      ObjectID = ID : mgiDataTypes;
+                    }
+                    {
+                      Jnum = Jnum : mgiDataTypes;
+                    }
+                    {
+                      Citation = Citation : mgiDataTypes;
+                      Group: Widget
+                        traversalOn = False;
+                    }
+              }
+              {
+                mgiAccessionOld = mgiAccession : mgiDataTypes;
+                Group: Widget
+                  orientation = horizontal;
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  rightAttachment = attach_form;
+                  topAttachment = attach_widget;
+                  topOffset = 5;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  leftWidget = mgiCitation;
+                  topWidget = mgiCitation;
+                  rightOffset = 5;
+                Group: User
+                  tableID = 210;
+                    {
+                      ObjectID = ID : mgiDataTypes;
+                    }
+                    {
+                      AccessionID = CharText;
+                          {
+                            label = XmLabel;
+                            Group: Widget
+                              labelString = "Current Genotype Acc ID";
+                          }
+                          {
+                            text = text;
+                            Group: Widget
+                              translations = "#override
+Shift<Key>Tab: prev-tab-group()
+<Key>Tab: VerifyMGIAcc()";
+                            Group: User
+                              required = True;
+                          }
+                    }
+                    {
+                      AccessionName = CharSText : mgiDataTypes;
+                      Group: Widget
+                        traversalOn = False;
+                          {
+                            label = XmLabel;
+                            Group: Widget
+                              labelString = " ";
+                          }
+                          {
+                            text = scrolledText : mgiDataTypes;
+                            Group: Widget
+                              columns = 100;
+                          }
+                    }
+              }
+              {
+                mgiAccessionNew = mgiAccession : mgiDataTypes;
+                Group: Widget
+                  orientation = horizontal;
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  leftWidget = mgiAccessionOld;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = mgiAccessionOld;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  topOffset = 5;
+                Group: User
+                  tableID = 210;
+                    {
+                      ObjectID = ID : mgiDataTypes;
+                    }
+                    {
+                      AccessionID = CharText;
+                          {
+                            label = XmLabel;
+                            Group: Widget
+                              labelString = "New Genotype Acc ID";
+                          }
+                          {
+                            text = text;
+                            Group: Widget
+                              translations = "#override
+Shift<Key>Tab: prev-tab-group()
+<Key>Tab: VerifyMGIAcc()";
+                            Group: User
+                              required = True;
+                          }
+                    }
+                    {
+                      AccessionName = CharSText : mgiDataTypes;
+                      Group: Widget
+                        traversalOn = False;
+                          {
+                            label = XmLabel;
+                            Group: Widget
+                              labelString = " ";
+                          }
+                          {
+                            text = scrolledText : mgiDataTypes;
+                            Group: Widget
+                              columns = 100;
+                          }
+                    }
+              }
+              {
+                separator = XmSeparator;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_form;
+                  topAttachment = attach_widget;
+                  topWidget = mgiAccessionNew;
+                  topOffset = 2;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  leftOffset = 2;
+                  rightOffset = 2;
+              }
+              {
+                Buttons = XmWorkArea;
+                Group: Widget
+                  orientation = horizontal;
+                  entryAlignment = alignment_center;
+                  inTabGroup = True;
+                  spacing = 25;
+                  packing = pack_column;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  leftOffset = 2;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = separator;
+                  bottomAttachment = attach_form;
+                  bottomOffset = 2;
+                  resizable = true;
+                    {
+                      Process = DialogPush : mgiDialog;
+                      Group: Widget
+                        labelString = Process;
+                        traversalOn = False;
+                        activateCallback = "D:AssayGenotypeReplace";
+                    }
+                    {
+                      Done = DialogPush : mgiDialog;
+                      Group: Widget
+                        activateCallback = "C: TuUnmanage";
+                        traversalOn = False;
+                    }
+              }
+        }
+        {
+          VerifyAlleleStatusStrain = VerifyDialog;
+          Group: Widget
+            userDefinedAttributes = "doModify:Boolean(Boolean)=\"False\"\n";
+            dialogTitle = "Are You Sure?";
+            okCallback = "D:VerifyAlleleStatusStrain";
+            messageString = "You are about to modify the Allele Status of this Not Specified Strain.\nAre you sure you want to modify this value?";
+          Group: Control
+            vip_x = 105;
+            vip_y = 1020;
+        }
+        {
+          VerifyMCLDuplicateName = VerifyDialog;
+          Group: Widget
+            userDefinedAttributes = "doModify:Boolean(Boolean)=\"False\"\n";
+            dialogTitle = "Are You Sure?";
+            okCallback = "D:VerifyMCLDuplicateName";
+            messageString = "You are about to add/modify a Mutant Cell Line Name that already exists.\nAre you sure you want to add/modify this value?";
+          Group: Control
+            vip_x = 105;
+            vip_y = 1075;
+        }
+        {
+          VerifyMCLName = VerifyDialog;
+          Group: Widget
+            userDefinedAttributes = "doModify:Boolean(Boolean)=\"False\"\n";
+            dialogTitle = "Are You Sure?";
+            okCallback = "D:VerifyMCLName";
+            messageString = "You are about to modify the Mutant Cell Line Name.\nAre you sure you want to modify this value?";
+          Group: Control
+            vip_x = 105;
+            vip_y = 1130;
+        }
+        {
+          VerifyAlleleMixed = VerifyDialog;
+          Group: Widget
+            userDefinedAttributes = "doModify:Boolean(Boolean)=\"False\"\n";
+            dialogTitle = "Are You Sure?";
+            okCallback = "D:VerifyAlleleMixed";
+            messageString = "You are about to modify the Allele Mixed reference or status.\nAre you sure you want to modify this value?";
+          Group: Control
+            vip_x = 105;
+            vip_y = 965;
+        }
+        {
+          VerifyAlleleGermlineTransmission = VerifyDialog;
+          Group: Widget
+            userDefinedAttributes = "doModify:Boolean(Boolean)=\"False\"\n";
+            dialogTitle = "Are You Sure?";
+            okCallback = "D:VerifyAlleleGermlineTransmission";
+            messageString = "You are about to modify the Germline Transmission reference or status.\nAre you sure you want to modify this value?";
+          Group: Control
+            vip_x = 105;
+            vip_y = 910;
+        }
+}
+

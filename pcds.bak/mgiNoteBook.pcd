@@ -1,0 +1,41 @@
+Module: mgiNoteBook
+{
+      autoCuil = False;
+      release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
+      lastWritten = "Mon Jul 20 08:47:52 2015";
+        {
+          notebook = XmNotebook;
+          Group: Widget
+            backPageBackground = Thistle;
+            bindingType = none;
+            backPageSize = 10;
+            frameShadowThickness = 3;
+            backPagePlacement = bottom_left;
+          Group: Control
+            vipComment = "XmNotebook widget manages other widgets on browsable pages with tabs, simulating a real notebook.";
+            vip_x = 135;
+            vip_y = 30;
+        }
+        {
+          notebookForm = XmRowColumn;
+          Group: Control
+            vipComment = "";
+            vip_x = 45;
+            vip_y = 30;
+              {
+                separator = XmSeparatorGadget;
+                Group: Control
+                  vipComment = "The XmRowColumn widget is a general purpose manager capable of containing any widget type as a child. In general, it requires no special knowledge about how its children function and provides nothing beyond support for several different layout styles. However, it can be configured as a menu, in which case, it expects only certain children, and it configures to a particular layout. The menus supported are XmMenuBar, XmPulldownMenu, XmPopupMenu, and XmOptionMenu.";
+              }
+              {
+                legend = XmLabelGadget;
+              }
+              {
+                notebook = notebook : mgiNoteBook;
+                Group: Widget
+                  backPageBackground = Thistle;
+                  bindingType = none;
+              }
+        }
+}
+
