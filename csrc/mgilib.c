@@ -412,6 +412,7 @@ char *mgi_setDBkey(int table, int key, char *keyName)
     case PRB_STRAIN_GENOTYPE:
     case PRB_STRAIN_MARKER:
     case SEQ_SOURCE_ASSOC:
+    case VOC_ANNOT:
     case VOC_EVIDENCE:
   	    sprintf(cmd, "select nextval('%s') as %s into temporary table %sMax;\n", \
 	    	mgi_DBautosequence(table), mgi_DBautosequence(table), keyName, keyName);
@@ -471,6 +472,8 @@ char *mgi_DBincKey(char *keyName)
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(PRB_STRAIN_GENOTYPE), mgi_DBautosequence(PRB_STRAIN_GENOTYPE));
   else if (strcmp(keyName, "strainMarkerKey") == 0)
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(PRB_STRAIN_MARKER), mgi_DBautosequence(PRB_STRAIN_MARKER));
+  else if (strcmp(keyName, "annotKey") == 0)
+    sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(VOC_ANNOT), mgi_DBautosequence(VOC_ANNOT)); 
   else if (strcmp(keyName, "annotEvidenceKey") == 0)
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(VOC_EVIDENCE), mgi_DBautosequence(VOC_EVIDENCE)); 
   else
@@ -967,6 +970,9 @@ char *mgi_DBautosequence(int table)
 	    break;
     case SEQ_SOURCE_ASSOC:
 	    strcpy(buf, "seq_source_assoc_seq");
+	    break;
+    case VOC_ANNOT:
+	    strcpy(buf, "voc_annot_seq");
 	    break;
     case VOC_EVIDENCE:
 	    strcpy(buf, "voc_evidence_seq");
