@@ -1133,11 +1133,6 @@ rules:
 	  eventReasonKey : string;
 	  eventDate : string;
 
-	  -- Check for duplicate Seq # assignments
-
-          DuplicateSeqNumInTable.table := table;
-          send(DuplicateSeqNumInTable, 0);
- 
           if (table.duplicateSeqNum) then
             return;
           end if;
@@ -1179,7 +1174,6 @@ rules:
  
             if (editMode = TBL_ROW_ADD) then
 
-              --tmpCmd := tmpCmd + mgi_DBinsert(MRK_HISTORY, keyName) +
               tmpCmd := mgi_setDBkey(MRK_HISTORY, NEWKEY, keyName) +
 	                mgi_DBinsert(MRK_HISTORY, keyName) +
 			currentRecordKey + "," +
@@ -1197,39 +1191,14 @@ rules:
 
             elsif (editMode = TBL_ROW_MODIFY) then
  
-              -- If current Seq # not equal to new Seq #, then re-ordering is taking place
- 
-              if (currentSeqNum != newSeqNum) then
-                -- Delete records with current Seq # (cannot have duplicate Seq #)
- 
-                deleteCmd := deleteCmd + mgi_DBdelete(MRK_HISTORY, currentRecordKey + " and sequenceNum = " + currentSeqNum);
-
-                -- Insert new record
- 
-                tmpCmd := mgi_setDBkey(MRK_HISTORY, NEWKEY, keyName) +
-                          mgi_DBinsert(MRK_HISTORY, keyName) +
-			  currentRecordKey + "," +
-			  markerKey + "," +
-			  mgi_DBprkey(refsKey) + "," +
-			  mgi_DBprkey(eventKey) + "," +
-			  mgi_DBprkey(eventReasonKey) + "," +
-			  newSeqNum + "," +
-			  mgi_DBprstr(name) + "," +
-			  mgi_DBprstr(eventDate) + "," +
-			  global_userKey + "," +
-			  global_userKey + END_VALUE;
-
-              -- Else, a simple update
- 
-              else
-                set := "_History_key = " + markerKey + "," +
-		       "_Refs_key = " + mgi_DBprkey(refsKey) + "," +
-		       "_Marker_Event_key = " + mgi_DBprkey(eventKey) + "," +
-		       "_Marker_EventReason_key = " + mgi_DBprkey(eventReasonKey) + "," +
-		       "name = " + mgi_DBprstr(name) + "," +
-		       "event_date = " + mgi_DBprstr(eventDate);
-                tmpCmd := tmpCmd + mgi_DBupdate(MRK_HISTORY, key, set);
-              end if;
+              set := "_History_key = " + markerKey + "," +
+		     "_Refs_key = " + mgi_DBprkey(refsKey) + "," +
+		     "_Marker_Event_key = " + mgi_DBprkey(eventKey) + "," +
+		     "_Marker_EventReason_key = " + mgi_DBprkey(eventReasonKey) + "," +
+		     "name = " + mgi_DBprstr(name) + "," +
+		     "event_date = " + mgi_DBprstr(eventDate) + "," +
+		     "sequenceNum = " + newSeqNum;
+              tmpCmd := tmpCmd + mgi_DBupdate(MRK_HISTORY, key, set);
 
 	      historyModified := true;
 
