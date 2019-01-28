@@ -1179,14 +1179,9 @@ rules:
  
             if (editMode = TBL_ROW_ADD) then
 
-              if (not keyDefined) then 
-                cmd := cmd + mgi_setDBkey(MRK_HISTORY, NEWKEY, keyName);
-                keyDefined := true;
-              else
-                cmd := cmd + mgi_DBincKey(keyName);
-              end if;
-
-              tmpCmd := tmpCmd + mgi_DBinsert(MRK_HISTORY, keyName) +
+              --tmpCmd := tmpCmd + mgi_DBinsert(MRK_HISTORY, keyName) +
+              tmpCmd := mgi_setDBkey(MRK_HISTORY, NEWKEY, keyName) +
+	                mgi_DBinsert(MRK_HISTORY, keyName) +
 			currentRecordKey + "," +
 			markerKey + "," +
 			mgi_DBprkey(refsKey) + "," +
@@ -1211,7 +1206,8 @@ rules:
 
                 -- Insert new record
  
-                tmpCmd := tmpCmd + mgi_DBinsert(MRK_HISTORY, keyName) +
+                tmpCmd := mgi_setDBkey(MRK_HISTORY, NEWKEY, keyName) +
+                          mgi_DBinsert(MRK_HISTORY, keyName) +
 			  currentRecordKey + "," +
 			  markerKey + "," +
 			  mgi_DBprkey(refsKey) + "," +
