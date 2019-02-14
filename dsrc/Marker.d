@@ -620,8 +620,8 @@ rules:
 	    return;
 	  end if;
 
-	  ClearTable.table := dialog->NewMarker->Table;
-	  send(ClearTable, 0);
+	  --ClearTable.table := dialog->NewMarker->Table;
+	  --send(ClearTable, 0);
 
 	  dialog.dialogTitle := "Marker Withdrawal: " + dialog.eventLabel;
 
@@ -634,13 +634,6 @@ rules:
 	  send(SetOption, 0);
 
 	  dialog->currentMarker->Marker->text.value := top->Symbol->text.value;
-	  alleleCount : string;
-	  alleleCount := mgi_sql1(marker_count(currentRecordKey));
-	  if ((integer) alleleCount > 0) then
-	    dialog->hasAlleles.set := true;
-          else
-	    dialog->hasAlleles.set := false;
-	  end if;
 	  dialog->addAsSynonym.set := true;
 
 	  dialog->nonVerified->ObjectID->text.value := "";
@@ -666,21 +659,21 @@ rules:
 	    dialog->Name.sensitive := true;
 	    dialog->mgiMarker.managed := false;
 	    dialog->markerAccession.managed := false;
-	    dialog->NewMarker.sensitive := false;
+	    --dialog->NewMarker.sensitive := false;
 	  elsif (dialog.eventKey = EVENT_MERGE or dialog.eventKey = EVENT_ALLELEOF) then
 	    dialog->nonVerified.managed := false;
 	    dialog->nonVerified.sensitive := true;
 	    dialog->Name.sensitive := false;
 	    dialog->mgiMarker.managed := true;
 	    dialog->markerAccession.managed := true;
-	    dialog->NewMarker.sensitive := false;
+	    --dialog->NewMarker.sensitive := false;
 	  elsif (dialog.eventKey = EVENT_DELETED) then
 	    dialog->nonVerified.managed := false;
 	    dialog->nonVerified.sensitive := true;
 	    dialog->Name.sensitive := false;
 	    dialog->mgiMarker.managed := false;
 	    dialog->markerAccession.managed := false;
-	    dialog->NewMarker.sensitive := false;
+	    --dialog->NewMarker.sensitive := false;
 	  end if;
 
 	end does;
@@ -693,7 +686,7 @@ rules:
 
 	MarkerWithdrawal does
 	  dialog : widget := top->WithdrawalDialog;
-	  table : widget := dialog->NewMarker->Table;
+	  --table : widget := dialog->NewMarker->Table;
 	  symbol : string;
 	  eventReason : string;
 	  ok : boolean := true;
@@ -799,7 +792,7 @@ rules:
  
 	MarkerWithdrawalEnd does
 	  dialog : widget := top->WithdrawalDialog;
-	  table : widget := dialog->NewMarker->Table;
+	  --table : widget := dialog->NewMarker->Table;
 	  row : integer;
 	  symbol : string;
 

@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Tue Aug  1 07:45:05 2017";
+      lastWritten = "Thu Feb 14 13:06:15 2019";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -1056,20 +1056,6 @@ Module: mgiDialog
                   topOffset = 10;
               }
               {
-                hasAlleles = toggle : mgiDataTypes;
-                Group: Widget
-                  labelString = "The Marker being withdrawn has alleles.";
-                Group: Constraint
-                  leftAttachment = attach_opposite_widget;
-                  leftWidget = currentMarker;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_widget;
-                  topWidget = currentMarker;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-                  topOffset = 5;
-              }
-              {
                 addAsSynonym = toggle : mgiDataTypes;
                 Group: Widget
                   labelString = "Add Marker being withdrawn as synonym.";
@@ -1078,10 +1064,10 @@ Module: mgiDialog
                   leftAttachment = attach_opposite_widget;
                   rightAttachment = attach_none;
                   topAttachment = attach_widget;
-                  topWidget = hasAlleles;
+                  topWidget = currentMarker;
                   bottomAttachment = attach_none;
                   resizable = true;
-                  leftWidget = hasAlleles;
+                  leftWidget = currentMarker;
                   topOffset = 5;
               }
               {
@@ -1223,49 +1209,12 @@ Shift<Key>Tab: prev-tab-group()
                     }
               }
               {
-                NewMarker = Table : mgiTable;
-                Group: Constraint
-                  leftAttachment = attach_opposite_widget;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_widget;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-                  leftWidget = Name;
-                  topWidget = Name;
-                  topOffset = 5;
-                  leftOffset = 25;
-                    {
-                      Table = mgiTable;
-                      Group: Widget
-                        xrtTblNumColumns = 3;
-                        xrtTblColumnLabels = "Mode,Key,New Symbols";
-                        xrtTblPixelWidthSeries = "(all 0-1 0)";
-                        xrtTblEditableSeries = "(all 0-1 False)";
-                        xrtTblTraversableSeries = "(all 0-1 False)";
-                        xrtTblCharWidthSeries = "(all 0 1)(all 1 10)(all 2 25)";
-                        xrtTblMaxLengthSeries = "(all 2 25)";
-                        userDefinedAttributes = "markerKey:Int(Int)=\"1\"\nmarkerSymbol:Int(Int)=\"2\"\nmarkerChr:Int(Int)=\"-1\"\nmarkerColumns:Int(Int)=\"1\"\n";
-                        xrtTblVisibleRows = 4;
-                        xrtTblNumRows = 4;
-                    }
-                    {
-                      AddRow = TablePush;
-                      Group: Widget
-                        managed = False;
-                    }
-                    {
-                      DeleteRow = TablePush;
-                      Group: Widget
-                        managed = False;
-                    }
-              }
-              {
                 mgiCitation = mgiCitation : mgiDataTypes;
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
                   rightAttachment = attach_none;
                   topAttachment = attach_widget;
-                  topWidget = NewMarker;
+                  topWidget = Name;
                   topOffset = 5;
                   bottomAttachment = attach_none;
                   resizable = true;

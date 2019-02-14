@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Thu Dec 20 09:26:58 2018";
+      lastWritten = "Thu Feb 14 13:06:16 2019";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -12105,33 +12105,9 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   ExptInSituForm = ExptInSituForm;
-                                      {
-                                        Strain = Strain : mgiDataTypes;
-                                            {
-                                              StrainID = XmXrtAligner;
-                                            }
-                                            {
-                                              Verify = CharText;
-                                            }
-                                            {
-                                              StrainID = XmXrtAligner;
-                                            }
-                                      }
                                 }
                                 {
                                   ExptFISHForm = ExptFISHForm;
-                                      {
-                                        Strain = Strain : mgiDataTypes;
-                                            {
-                                              StrainID = XmXrtAligner;
-                                            }
-                                            {
-                                              Verify = CharText;
-                                            }
-                                            {
-                                              StrainID = XmXrtAligner;
-                                            }
-                                      }
                                 }
                                 {
                                   ExptCrossForm = ExptCrossForm;
