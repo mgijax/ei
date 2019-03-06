@@ -19,13 +19,14 @@ source ${MGICONFIG}/master.config.csh
 unsetenv OPENWINHOME
 unsetenv XKEYSYMDB
 
-setenv GITHUB_TAG  ei-6-0-13-5
+setenv GITHUB_TAG  ei-6-0-13-6
 
 switch (`whoami`)
     case lec:
     case sc:
     case jeffc:
     case oblod:
+    case jer:
     case mgiadmin:
         setenv GLOBAL_USER "mgd_dbo"
         breaksw

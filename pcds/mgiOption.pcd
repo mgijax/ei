@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Thu Dec 20 09:33:32 2018";
+      lastWritten = "Wed Mar  6 10:31:10 2019";
       copy = false;
       inCreateMenu = true;
         {
@@ -613,6 +613,16 @@ Module: mgiOption
                         defaultValue = 137;
                     }
                     {
+                      genOway = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 206;
+                    }
+                    {
+                      GPT = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 216;
+                    }
+                    {
                       Harwell = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 39;
@@ -621,11 +631,6 @@ Module: mgiOption
                       JPGA = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 84;
-                    }
-                    {
-                      genOway = AccToggle : mgiOption;
-                      Group: User
-                        defaultValue = 206;
                     }
                     {
                       KOMP = AccToggle : mgiOption;
