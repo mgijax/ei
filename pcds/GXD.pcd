@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Wed Mar  6 10:31:12 2019";
+      lastWritten = "Wed Mar  6 10:47:55 2019";
       copy = false;
       inCreateMenu = true;
         {

@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Wed Mar  6 10:33:06 2019";
+      lastWritten = "Wed Mar  6 10:48:52 2019";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -12125,9 +12125,33 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   ExptInSituForm = ExptInSituForm;
+                                      {
+                                        Strain = Strain : mgiDataTypes;
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                            {
+                                              Verify = CharText;
+                                            }
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                      }
                                 }
                                 {
                                   ExptFISHForm = ExptFISHForm;
+                                      {
+                                        Strain = Strain : mgiDataTypes;
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                            {
+                                              Verify = CharText;
+                                            }
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                      }
                                 }
                                 {
                                   ExptCrossForm = ExptCrossForm;
@@ -14368,13 +14392,16 @@ Shift<Key>Tab: prev-tab-group()
                                                     EUCOMM = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    genOway = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    GPT = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     Harwell = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     JPGA = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    genOway = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     KOMP = AccToggle : mgiOption;
