@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Thu Dec 20 09:26:59 2018";
+      lastWritten = "Wed Mar  6 10:31:12 2019";
       copy = false;
       inCreateMenu = true;
         {
@@ -691,13 +691,16 @@ Module: GXD
                                                     EUCOMM = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    genOway = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    GPT = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     Harwell = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     JPGA = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    genOway = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     KOMP = AccToggle : mgiOption;
@@ -1701,13 +1704,16 @@ Shift<Key>Tab: prev-tab-group()
                                                     EUCOMM = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    genOway = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    GPT = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     Harwell = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     JPGA = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    genOway = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     KOMP = AccToggle : mgiOption;

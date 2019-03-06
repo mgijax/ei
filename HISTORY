@@ -1,5 +1,10 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-6-0-13-6
+DATE: 03/06/2019
+STAFF: lec
+CHANGES: TR13053/add GPT logicaldb/Strain module
+
 TAG: ei-6-0-13-5
 TAG: ei-6-0-13-4
 DATE: 12/21/2018
