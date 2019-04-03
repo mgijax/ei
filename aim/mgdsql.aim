@@ -47,7 +47,6 @@ CALLS
 	 marker_history1("char *")			: "char *";
 	 marker_history2("char *")			: "char *";
 	 marker_current("char *")			: "char *";
-	 marker_tdc("char *", "char *", "char *")	: "char *";
 	 marker_alias("char *")				: "char *";
 	 marker_tssgene("char *")			: "char *";
 	 marker_mouse("char *")				: "char *";
@@ -188,14 +187,6 @@ CALLS
 	 strain_genotype("char *")			: "char *";
 	 strain_addtoexecref()				: "char *";
 	 strain_count("char *")				: "char *";
-
-	 tdcv_accession("char *", "char *")		: "char *";
-	 tdcv_select("char *", "char *", "char *")	: "char *";
-	 tdcv_notes("char *")				: "char *";
-	 tdcv_markertype("char *")			: "char *";
-	 tdcv_evidencecode("char *")			: "char *";
-	 tdcv_qualifier("char *")			: "char *";
-	 tdcv_dbview("char *")				: "char *";
 
 	 translation_accession1("char *", "char *")	: "char *";
 	 translation_accession2("char *", "char *")	: "char *";

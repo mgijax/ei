@@ -89,7 +89,6 @@ extern char *marker_select(char *);
 extern char *marker_history1(char *);
 extern char *marker_history2(char *);
 extern char *marker_current(char *);
-extern char *marker_tdc(char *, char *, char *);
 extern char *marker_alias(char *);
 extern char *marker_tssgene(char *);
 extern char *marker_mouse(char *);
@@ -227,16 +226,6 @@ extern char *strain_needsreview(char *);
 extern char *strain_genotype(char *);
 extern char *strain_addtoexecref();
 extern char *strain_count();
-
-/* TDCVocabAnnot.d */
-
-extern char *tdcv_accession(char *, char *);
-extern char *tdcv_select(char *, char *, char *);
-extern char *tdcv_notes(char *);
-extern char *tdcv_markertype(char *);
-extern char *tdcv_evidencecode(char *);
-extern char *tdcv_qualifier(char *);
-extern char *tdcv_dbview(char *);
 
 /* Translation.d */
 

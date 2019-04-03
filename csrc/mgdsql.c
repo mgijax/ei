@@ -671,18 +671,6 @@ char *marker_current(char *key)
   return(buf);
 }
 
-char *marker_tdc(char *annotTypeKey, char *logicalDBKey, char *objectKey)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select tdc._Annot_key, tdc._Term_key, tdc.accID, tdc.term \
-   \nfrom VOC_Annot_View tdc \
-   \nwhere tdc._AnnotType_key = %s \
-   \nand tdc._LogicalDB_key = %s \
-   \nand tdc._Object_key = %s", annotTypeKey, logicalDBKey, objectKey);
-  return(buf);
-}
-
 char *marker_alias(char *key)
 {
   static char buf[TEXTBUFSIZ];
@@ -1755,82 +1743,6 @@ char *strain_count(char *key)
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
   sprintf(buf,"\nselect count(*) from PRB_Strain where strain = %s", key);
-  return(buf);
-}
-
-/*
- * TDCVocabAnnot.d
-*/
-
-char *tdcv_accession(char *key, char *table)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _Object_key, accID, description, short_description \
-	\nfrom %s \
-	\nwhere _Object_key = %s \
-	\nand prefixPart = 'MGI:' and preferred = 1 \
-	\norder by description", table, key);
-  return(buf);
-}
-
-char *tdcv_select(char *key, char *annotTypeKey, char *defautlLogicalDBKey)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier, e.* \
-  	\nfrom VOC_Annot_View a, VOC_Evidence_View e \
- 	\nwhere a._AnnotType_key = %s \
- 	\nand a._LogicalDB_key = %s \
- 	\nand a._Object_key = %s \
- 	\nand a._Annot_key = e._Annot_key \
- 	\norder by a.term", annotTypeKey, defautlLogicalDBKey, key);
-  return(buf);
-}
-
-char *tdcv_notes(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select distinct n._Note_key, n._Object_key, n.note, n.sequenceNum \
-        \nfrom VOC_Annot a, VOC_Evidence e, MGI_Note_VocEvidence_View n \
-        \nwhere a._Object_key = %s \
-        \nand a._Annot_key = e._Annot_key \
-        \nand e._AnnotEvidence_key = n._Object_key \
-        \norder by n._Object_key, n.sequenceNum", key);
-  return(buf);
-}
-
-char *tdcv_markertype(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _Marker_Type_key from MRK_Marker where _Marker_key = %s", key);
-  return(buf);
-}
-
-char *tdcv_evidencecode(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _Term_key, abbreviation from VOC_Term where _Vocab_key = %s \
-	\norder by abbreviation", key);
-  return(buf);
-}
-
-char *tdcv_qualifier(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select _Term_key from VOC_Term where term is null and _Vocab_key = %s", key);
-  return(buf);
-}
-
-char *tdcv_dbview(char *key)
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select dbView from ACC_MGIType where _MGIType_key = %s", key);
   return(buf);
 }
 

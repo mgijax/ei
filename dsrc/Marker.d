@@ -218,10 +218,6 @@ locals:
 
         currentRecordKey : string;      -- Primary Key value of currently selected record
                                         -- Initialized in Select[] and Add[] events
-
-	annotTypeKey : string;
-	defaultLogicalDBKey : string := "146";
- 
 rules:
 
 --
@@ -308,9 +304,6 @@ rules:
 	  InitNoteForm.tableID := MGI_NOTETYPE_MARKER_VIEW;
 	  send(InitNoteForm, 0);
 
-          LoadList.list := top->TDCList;
-          send(LoadList, 0);
-
           top->WithdrawalDialog->MarkerEventReasonMenu.subMenuId.sql := marker_eventreason();
 	  InitOptionMenu.option := top->WithdrawalDialog->MarkerEventReasonMenu;
 	  send(InitOptionMenu, 0);
@@ -335,7 +328,6 @@ rules:
 
 	  -- List of all Table widgets used in form
 
-	  tables.append(top->TDCVocab->Table);
 	  tables.append(top->History->Table);
 	  tables.append(top->Current->Table);
 	  tables.append(top->Alias->Table);
@@ -349,10 +341,6 @@ rules:
 	  accTable := top->mgiAccessionTable->Table;
 	  accRefTable1 := top->AccessionReference1->Table;
 	  accRefTable2 := top->AccessionReference2->Table;
-
-	  -- TDC stuff
-	  annotTypeKey := "1011";
-	  top->TDCVocab->Table.vocabKey := "79";
 
           -- Set Row Count
           SetRowCount.source_widget := top;
@@ -1265,7 +1253,6 @@ rules:
 	  from_alias    : boolean := false;
 	  from_current  : boolean := false;
 	  from_history  : boolean := false;
-	  from_annot    : boolean := false;
 
 	  value : string;
 
@@ -1432,14 +1419,6 @@ rules:
 	    from_alias := true;
 	  end if;
 
-	  -- Annotations
-
-	  value := mgi_tblGetCell(top->TDCVocab->Table, 0, top->TDCVocab->Table.termKey);
-	  if (value.length > 0 and value != "NULL") then
-	    where := where + "\nand tdc._Term_key = " + value;
-	    from_annot := true;
-	  end if;
-
 	  --
 	  -- concatenate the from/and clauses
 	  --
@@ -1457,12 +1436,6 @@ rules:
 	  if (from_history) then
 	    from := from + ",MRK_History_View mh";
 	    where := where + "\nand m._Marker_key = mh._Marker_key";
-	  end if;
-
-	  if (from_annot) then
-	    from := from + "," + mgi_DBtable(VOC_ANNOT) + " tdc";
-	    where := where + "\nand m._Marker_key = tdc._Object_key";
-	    where := where + "\nand tdc._AnnotType_key = " + annotTypeKey;
 	  end if;
 
 	end does;
@@ -1643,22 +1616,6 @@ rules:
               (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 1));
               (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 2));
 	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-	      row := row + 1;
-	    end while;
-	  end while;
-	  (void) mgi_dbclose(dbproc);
-
-	  row := 0;
-	  table := top->TDCVocab->Table;
-	  cmd := marker_tdc(annotTypeKey, defaultLogicalDBKey, currentRecordKey);
-	  dbproc := mgi_dbexec(cmd);
-	  while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
-	    row := 0;
-	    while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-              (void) mgi_tblSetCell(table, row, table.annotKey, mgi_getstr(dbproc, 1));
-              (void) mgi_tblSetCell(table, row, table.termKey, mgi_getstr(dbproc, 2));
-              (void) mgi_tblSetCell(table, row, table.termAccID, mgi_getstr(dbproc, 3));
-              (void) mgi_tblSetCell(table, row, table.term, mgi_getstr(dbproc, 4));
 	      row := row + 1;
 	    end while;
 	  end while;
