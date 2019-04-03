@@ -3,7 +3,7 @@ Module: mgiLookup
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Thu Mar 28 10:06:50 2019";
+      lastWritten = "Mon Jan 25 10:10:28 2016";
         {
           LookupLabel = XmPushButton;
           Group: Widget
@@ -660,6 +660,26 @@ Module: mgiLookup
                 List = list : mgiDataTypes;
                 Group: Widget
                   singleSelectionCallback = "D:SelectLookupListItem,\nD:DisplayDerivation";
+              }
+        }
+        {
+          TDCList = LookupList;
+          Group: Control
+            vip_x = 90;
+            vip_y = 1680;
+          Group: User
+            cmd = "select _Term_key, term, accID\nfrom VOC_Term_MCV_View\norder by term\n";
+              {
+                Label = LookupLabel;
+                Group: Widget
+                  labelString = "0 TDC List";
+                Group: User
+                  defaultLabel = "TDC List";
+              }
+              {
+                List = list : mgiDataTypes;
+                Group: Widget
+                  singleSelectionCallback = "D:SelectLookupListItem";
               }
         }
         {
