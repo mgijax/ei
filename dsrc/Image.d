@@ -117,6 +117,7 @@ locals:
 	fullImageTypeKey : string;
 	thumbnailImageTypeKey : string;
 	defaultThumbNailKey : string;
+	imagekeyName : string := "imageKey";
 	panekeyName : string := "paneKey";
 	panekeyDeclared : boolean := false;
 	xydim : string := "NULL,NULL,";
@@ -279,11 +280,11 @@ rules:
 		mgi_sql1(image_getCopyright(top->mgiCitation->ObjectID->text.value));
           end if;
 
-	  currentRecordKey := MAX_KEY1 + KEYNAME + MAX_KEY2;
+	  currentRecordKey := MAX_KEY1 + imagekeyName + MAX_KEY2;
 	  panekeyDeclared := false;
 	  refsKey := top->mgiCitation->ObjectID->text.value;
 
-          cmd := mgi_setDBkey(IMG_IMAGE, NEWKEY, KEYNAME);
+          cmd := mgi_setDBkey(IMG_IMAGE, NEWKEY, imagekeyName);
 
 	  -- TR11350/do not create thumbnails for expression images
 	  if (defaultImageClassKey = "6481781") then
@@ -297,7 +298,7 @@ rules:
 	    defaultThumbNailKey := "NULL";
 	    defaultImageTypeKey := thumbnailImageTypeKey;
 
-            cmd := cmd + mgi_DBinsert(IMG_IMAGE, KEYNAME) +
+            cmd := cmd + mgi_DBinsert(IMG_IMAGE, imagekeyName) +
 		   defaultMGITypeKey + "," +
 		   top->ImageClassMenu.menuHistory.defaultValue + "," +
 		   defaultImageTypeKey + "," +
@@ -312,7 +313,7 @@ rules:
 
 	    send(ModifyImagePane, 0);
 
-            cmd := cmd + mgi_DBincKey(KEYNAME);
+            cmd := cmd + mgi_DBincKey(imagekeyName);
 
 	    -- The Full Size record will be created next...and needs to reference the Thumbnail record
 
@@ -326,7 +327,7 @@ rules:
 
 	  defaultImageTypeKey := fullImageTypeKey;
 
-          cmd := cmd + mgi_DBinsert(IMG_IMAGE, KEYNAME) +
+          cmd := cmd + mgi_DBinsert(IMG_IMAGE, imagekeyName) +
 		 defaultMGITypeKey + "," +
 		 top->ImageClassMenu.menuHistory.defaultValue + "," +
 		 defaultImageTypeKey + "," +

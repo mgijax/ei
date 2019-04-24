@@ -111,7 +111,13 @@ rules:
 	  -- calling event can set AddSQL.transaction = false
 
 	  if (AddSQL.transaction) then
-	    cmd := AddSQL.cmd + "select * from keyMax;\n";
+	    if (AddSQL.tableID = MRK_MARKER) then
+	        cmd := AddSQL.cmd + "select * from markerKeyMax;\n";
+	    elsif (AddSQL.tableID = IMG_IMAGE) then
+	        cmd := AddSQL.cmd + "select * from imageKeyMax;\n";
+	    else
+	        cmd := AddSQL.cmd + "select * from keyMax;\n";
+	    end if;
 	  else
 	    cmd := AddSQL.cmd;
 	  end if;

@@ -404,6 +404,8 @@ char *mgi_setDBkey(int table, int key, char *keyName)
   switch (table)
   {
     case ALL_ALLELE_CELLLINE:
+    case IMG_IMAGE:
+    case IMG_IMAGEPANE:
     case IMG_IMAGEPANE_ASSOC:
     case MGI_REFERENCE_ASSOC:
     case MGI_SYNONYM:
@@ -452,6 +454,10 @@ char *mgi_DBincKey(char *keyName)
 
   if (strcmp(keyName, "cellAssocKey") == 0)
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(ALL_ALLELE_CELLLINE), mgi_DBautosequence(ALL_ALLELE_CELLLINE));
+  else if (strcmp(keyName, "imageKey") == 0)
+    sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(IMG_IMAGE), mgi_DBautosequence(IMG_IMAGE));
+  else if (strcmp(keyName, "paneKey") == 0)
+    sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(IMG_IMAGEPANE), mgi_DBautosequence(IMG_IMAGEPANE));
   else if (strcmp(keyName, "ipAssocKey") == 0)
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(IMG_IMAGEPANE_ASSOC), mgi_DBautosequence(IMG_IMAGEPANE_ASSOC));
   else if (strcmp(keyName, "refassocKey") == 0)
@@ -946,6 +952,12 @@ char *mgi_DBautosequence(int table)
   {
     case ALL_ALLELE_CELLLINE:
 	    strcpy(buf, "all_allele_cellline_seq");
+	    break;
+    case IMG_IMAGE:
+	    strcpy(buf, "img_image_seq");
+	    break;
+    case IMG_IMAGEPANE:
+	    strcpy(buf, "img_imagepane_seq");
 	    break;
     case IMG_IMAGEPANE_ASSOC:
 	    strcpy(buf, "img_imagepane_assoc_seq");

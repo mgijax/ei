@@ -2412,14 +2412,14 @@ rules:
 		end if;
 	      end if;
 
-	      if (global_application = "GXD") then
-	        if (top->CreativeCommons != nil) then
-	          creativecommons := mgi_sp(image_creativecommons(key));
-		  if (creativecommons.length > 0) then
-		      top->CreativeCommons.managed := true;
-		  end if;
-	        end if;
-	      end if;
+--	      if (global_application = "GXD") then
+--	        if (top->CreativeCommons != nil) then
+--	          creativecommons := mgi_sp(image_creativecommons(key));
+--		  if (creativecommons.length > 0) then
+--		      top->CreativeCommons.managed := true;
+--		  end if;
+--	        end if;
+--	      end if;
 
               (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
 
