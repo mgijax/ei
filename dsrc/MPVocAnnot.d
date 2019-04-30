@@ -389,7 +389,8 @@ rules:
 
 	  annotKeyDeclared : boolean := false;
 	  keyDeclared : boolean := false;
-	  keyName : string := "annotEvidenceKey";
+	  keyNameAnnot : string := "annotKey";
+	  keyNameEvidence : string := "annotEvidenceKey";
 	  keyNameProperty : string := "propertyKey";
  
 	  (void) busy_cursor(top);
@@ -464,7 +465,7 @@ rules:
 	      -- _Annot_key value, else generate a new one.
 
   	      dupAnnot := false;
-	      annotKey := MAX_KEY1 + KEYNAME + MAX_KEY2;
+	      annotKey := MAX_KEY1 + keyNameAnnot + MAX_KEY2;
 
 	      if (row > 0) then
 	        if (termKey = mgi_tblGetCell(annotTable, row - 1, annotTable.termKey) and
@@ -485,11 +486,11 @@ rules:
 	      -- Declare primary key name, or increment
 
 	      if (not keyDeclared) then
-                  cmd := cmd + mgi_setDBkey(VOC_EVIDENCE, NEWKEY, keyName);
+                  cmd := cmd + mgi_setDBkey(VOC_EVIDENCE, NEWKEY, keyNameEvidence);
                   cmd := cmd + mgi_setDBkey(VOC_EVIDENCE_PROPERTY, NEWKEY, keyNameProperty);
                   keyDeclared := true;
 	      else
-                  cmd := cmd + mgi_DBincKey(keyName);
+                  cmd := cmd + mgi_DBincKey(keyNameEvidence);
                   cmd := cmd + mgi_DBincKey(keyNameProperty);
 	      end if;
 
@@ -499,14 +500,14 @@ rules:
 
 		-- if the key def was not already declared, declare it
                 if (not annotKeyDeclared) then
-                  cmd := cmd + mgi_setDBkey(VOC_ANNOT, NEWKEY, KEYNAME);
+                  cmd := cmd + mgi_setDBkey(VOC_ANNOT, NEWKEY, keyNameAnnot);
                   annotKeyDeclared := true;
                 else
-                  cmd := cmd + mgi_DBincKey(KEYNAME);
+                  cmd := cmd + mgi_DBincKey(keyNameAnnot);
                 end if;
 
                 cmd := cmd +
-                       mgi_DBinsert(VOC_ANNOT, KEYNAME) +
+                       mgi_DBinsert(VOC_ANNOT, keyNameAnnot) +
 		       annotTypeKey + "," +
 		       top->mgiAccession->ObjectID->text.value + "," +
 		       termKey + "," +
@@ -514,7 +515,7 @@ rules:
 	      end if;
 
               cmd := cmd +
-		       mgi_DBinsert(VOC_EVIDENCE, keyName) +
+		       mgi_DBinsert(VOC_EVIDENCE, keyNameEvidence) +
 		       annotKey + "," +
 		       evidenceKey + "," +
 		       refsKey + "," +
@@ -522,7 +523,7 @@ rules:
 		       global_userKey + "," + global_userKey + END_VALUE;
 
               cmd := cmd + mgi_DBinsert(VOC_EVIDENCE_PROPERTY, keyNameProperty) + 
-                        MAX_KEY1 + keyName + MAX_KEY2 + "," +
+                        MAX_KEY1 + keyNameEvidence + MAX_KEY2 + "," +
                         defaultSexSpecificKey + ",1,1," +
                         mgi_DBprstr(sex) + "," +
                         global_userKey + "," +
@@ -530,7 +531,7 @@ rules:
 
 	      if (clipAnnotEvidenceKey.length > 0) then
 		-- add notes
-		cmd := cmd + exec_voc_copyAnnotEvidenceNotes(global_userKey, clipAnnotEvidenceKey, MAX_KEY1 + keyName + MAX_KEY2);
+		cmd := cmd + exec_voc_copyAnnotEvidenceNotes(global_userKey, clipAnnotEvidenceKey, MAX_KEY1 + keyNameEvidence + MAX_KEY2);
 		isUsingCopyAnnotEvidenceNotes := true;
 	      end if;
 
