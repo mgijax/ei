@@ -253,7 +253,7 @@ rules:
 	  notes : string;
           set : string := "";
 	  keyDeclared : boolean := false;
-	  keyNameAnnot : string := "annotAnnotKey";
+	  keyNameAnnot : string := "annotKey";
 	  keyNameEvidence : string := "annotEvidenceKey";
 	  annotKeyDeclared : boolean := false;
 	  dupAnnot : boolean;
