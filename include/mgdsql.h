@@ -83,20 +83,6 @@ extern char *govoc_tracking(char *);
 extern char *govoc_xref(char *, char *);
 extern char *govoc_isoform_exists(char *, char *);
 
-/* Marker.d */
-
-extern char *marker_select(char *);
-extern char *marker_history1(char *);
-extern char *marker_history2(char *);
-extern char *marker_current(char *);
-extern char *marker_alias(char *);
-extern char *marker_tssgene(char *);
-extern char *marker_mouse(char *);
-extern char *marker_count(char *);
-extern char *marker_checkaccid(char *, char *, char *);
-extern char *marker_checkseqaccid(char *, char *);
-extern char *marker_eventreason();
-
 /* MarkerNonMouse.d */
 
 extern char *nonmouse_term();
@@ -200,21 +186,6 @@ extern char *ref_marker_count(char *);
 extern char *ref_marker_load(char *);
 extern char *ref_strain_count(char *);
 extern char *ref_strain_load(char *);
-
-/* Sequence.d */
-
-extern char *sequence_selectPrefix();
-extern char *sequence_select(char *);
-extern char *sequence_raw(char *);
-extern char *sequence_probesource(char *);
-extern char *sequence_organism(char *);
-extern char *sequence_strain(char *);
-extern char *sequence_tissue(char *);
-extern char *sequence_gender(char *);
-extern char *sequence_cellline(char *);
-extern char *sequence_marker(char *);
-extern char *sequence_probe(char *);
-extern char *sequence_allele(char *);
 
 /* Strain.d */
 

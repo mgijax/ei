@@ -59,10 +59,7 @@ extern char *global_version;
 #define MRK_ANCHOR		111
 #define MRK_CHROMOSOME		112
 #define MRK_MARKER  		113
-#define MRK_ALIAS   		114
 #define MRK_ALLELE		115
-#define MRK_CURRENT		117
-#define MRK_HISTORY		118
 #define MRK_NOTES		119
 #define MRK_MOUSE  		123
 #define MRK_ACC_REFERENCE	124
@@ -168,16 +165,12 @@ extern char *global_version;
 #define GXD_GELRNATYPE		313
 #define GXD_GELUNITS		314
 #define MLD_ASSAY		316
-#define MRK_TYPE		318
 #define CROSS      		320
 #define RISET  			321
 #define STRAIN     		322
 #define TISSUE     		323
 #define BIB_REVIEW_STATUS	324
-#define MRK_EVENT		327
 #define GXD_GELCONTROL		329
-#define MRK_EVENTREASON		330
-#define MRK_STATUS		331
 #define RISET_VIEW		332
 #define VOC_CELLLINE_VIEW	333
 

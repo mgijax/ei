@@ -43,18 +43,6 @@ CALLS
 	 cross_select("char *")				: "char *";
 	 cross_search("char *", "char *")		: "char *";
 
-	 marker_select("char *")			: "char *";
-	 marker_history1("char *")			: "char *";
-	 marker_history2("char *")			: "char *";
-	 marker_current("char *")			: "char *";
-	 marker_alias("char *")				: "char *";
-	 marker_tssgene("char *")			: "char *";
-	 marker_mouse("char *")				: "char *";
-	 marker_count("char *")				: "char *";
-	 marker_checkaccid("char *", "char *", "char *"): "char *";
-	 marker_checkseqaccid("char *", "char *")	: "char *";
-	 marker_eventreason()				: "char *";
-
 	 genotype_orderby()				: "char *";
 	 genotype_search1("char *", "char *")		: "char *";
 	 genotype_search2("char *")			: "char *";
@@ -165,19 +153,6 @@ CALLS
 	 ref_marker_load("char *")		        : "char *";
 	 ref_strain_count("char *")		        : "char *";
 	 ref_strain_load("char *")		        : "char *";
-
-	 sequence_selectPrefix()			: "char *";
-	 sequence_select("char *")			: "char *";
-	 sequence_raw("char *")				: "char *";
-	 sequence_probesource("char *")			: "char *";
-	 sequence_organism("char *")			: "char *";
-	 sequence_strain("char *")			: "char *";
-	 sequence_tissue("char *")			: "char *";
-	 sequence_gender("char *")			: "char *";
-	 sequence_cellline("char *")			: "char *";
-	 sequence_marker("char *")			: "char *";
-	 sequence_probe("char *")			: "char *";
-	 sequence_allele("char *")			: "char *";
 
 	 strain_speciesNS()				: "char *";
 	 strain_strainNS()				: "char *";

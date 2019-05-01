@@ -410,7 +410,6 @@ char *mgi_setDBkey(int table, int key, char *keyName)
     case MGI_REFERENCE_ASSOC:
     case MGI_SYNONYM:
     case MRK_MARKER:
-    case MRK_HISTORY:
     case PRB_STRAIN_GENOTYPE:
     case PRB_STRAIN_MARKER:
     case SEQ_SOURCE_ASSOC:
@@ -472,8 +471,6 @@ char *mgi_DBincKey(char *keyName)
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(MGI_SYNONYM), mgi_DBautosequence(MGI_SYNONYM)); 
   else if (strcmp(keyName, "markerKey") == 0)
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(MRK_MARKER), mgi_DBautosequence(MRK_MARKER)); 
-  else if (strcmp(keyName, "historyKey") == 0)
-    sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(MRK_HISTORY), mgi_DBautosequence(MRK_HISTORY)); 
   else if (strcmp(keyName, "genotypeKey") == 0)
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(PRB_STRAIN_GENOTYPE), mgi_DBautosequence(PRB_STRAIN_GENOTYPE));
   else if (strcmp(keyName, "strainMarkerKey") == 0)
@@ -823,32 +820,11 @@ char *mgi_DBkey(int table)
     case MRK_NOTES:
             strcpy(buf, "_Marker_key");
 	    break;
-    case MRK_ALIAS:
-            strcpy(buf, "_Alias_key");
-	    break;
     case MRK_ALLELE:
             strcpy(buf, "_Allele_key");
 	    break;
     case MRK_CHROMOSOME:
             strcpy(buf, "_Chromosome_key");
-	    break;
-    case MRK_CURRENT:
-            strcpy(buf, "_Current_key");
-	    break;
-    case MRK_HISTORY:
-    	    strcpy(buf, "_Assoc_key");
-	    break;
-    case MRK_TYPE:
-            strcpy(buf, "_Marker_Type_key");
-	    break;
-    case MRK_EVENT:
-            strcpy(buf, "_Marker_Event_key");
-	    break;
-    case MRK_EVENTREASON:
-            strcpy(buf, "_Marker_EventReason_key");
-	    break;
-    case MRK_STATUS:
-            strcpy(buf, "_Marker_Status_key");
 	    break;
     case PRB_ALIAS:
             strcpy(buf, "_Alias_key");
@@ -972,9 +948,6 @@ char *mgi_DBautosequence(int table)
 	    break;
     case MRK_MARKER:
 	    strcpy(buf, "mrk_marker_seq");
-	    break;
-    case MRK_HISTORY:
-	    strcpy(buf, "mrk_history_seq");
 	    break;
     case PRB_STRAIN_GENOTYPE:
 	    strcpy(buf, "prb_strain_genotype_seq");
@@ -1624,17 +1597,8 @@ char *mgi_DBtable(int table)
     case MRK_MARKER:
             strcpy(buf, "MRK_Marker");
 	    break;
-    case MRK_ALIAS:
-            strcpy(buf, "MRK_Alias");
-	    break;
     case MRK_ALLELE:
             strcpy(buf, "MRK_Allele");
-	    break;
-    case MRK_CURRENT:
-            strcpy(buf, "MRK_Current");
-	    break;
-    case MRK_HISTORY:
-            strcpy(buf, "MRK_History");
 	    break;
     case MRK_NOTES:
             strcpy(buf, "MRK_Notes");
@@ -1647,18 +1611,6 @@ char *mgi_DBtable(int table)
 	    break;
     case MRK_CHROMOSOME:
             strcpy(buf, "MRK_Chromosome");
-	    break;
-    case MRK_TYPE:
-            strcpy(buf, "MRK_Types");
-	    break;
-    case MRK_EVENT:
-	    strcpy(buf, "MRK_Event");
-	    break;
-    case MRK_EVENTREASON:
-	    strcpy(buf, "MRK_EventReason");
-	    break;
-    case MRK_STATUS:
-	    strcpy(buf, "MRK_Status");
 	    break;
     case PRB_ALIAS:
             strcpy(buf, "PRB_Alias");
@@ -1871,11 +1823,8 @@ char *mgi_DBinsert(int table, char *keyName)
     case MLD_RIHAPLOTYPE:
     case MLD_RI2POINT:
     case MLD_STATISTICS:
-    case MRK_ALIAS:
     case MRK_ANCHOR:
     case MRK_CHROMOSOME:
-    case MRK_CURRENT:
-    case MRK_HISTORY:
     case MRK_NOTES:
     case PRB_ALLELE:
     case PRB_ALLELE_STRAIN:
@@ -2148,10 +2097,6 @@ char *mgi_DBinsert(int table, char *keyName)
 	    sprintf(buf, "insert into %s (%s, _Organism_key, _Marker_Status_key, _Marker_Type_key, symbol, name, chromosome, cytogeneticOffset, cmOffset,  _CreatedBy_key, _ModifiedBy_key)",
 	      mgi_DBtable(table), mgi_DBkey(table));
  	    break;
-    case MRK_ALIAS:
-	    sprintf(buf, "insert into %s (%s, _Marker_key)",
-	      mgi_DBtable(table), mgi_DBkey(table));
- 	    break;
     case MRK_ALLELE:
 	    sprintf(buf, "insert into %s (%s, _Marker_key, symbol, name)",
 	      mgi_DBtable(table), mgi_DBkey(table));
@@ -2162,14 +2107,6 @@ char *mgi_DBinsert(int table, char *keyName)
     case MRK_CHROMOSOME:
             sprintf(buf, "insert into %s (%s, _Organism_key, chromosome, sequenceNum, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
-    case MRK_CURRENT:
-	    sprintf(buf, "insert into %s (%s, _Marker_key)",
-	      mgi_DBtable(table), mgi_DBkey(table));
- 	    break;
-    case MRK_HISTORY:
-	    sprintf(buf, "insert into %s (%s, _Marker_key, _History_key, _Refs_key, _Marker_Event_key, _Marker_EventReason_key, sequenceNum, name, event_date, _CreatedBy_key, _ModifiedBy_key)",
-	      mgi_DBtable(table), mgi_DBkey(table));
- 	    break;
     case PRB_ALIAS:
             sprintf(buf, "insert into %s (%s, _Reference_key, alias, _CreatedBy_key, _ModifiedBy_key)",
 		mgi_DBtable(table), mgi_DBkey(table));
@@ -2338,7 +2275,6 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case MGI_TRANSLATIONTYPE:
       case MGI_USERROLE:
       case MRK_CHROMOSOME:
-      case MRK_HISTORY:
       case MRK_MARKER:
       case PRB_ALIAS:
       case PRB_ALLELE:
@@ -2401,7 +2337,6 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case MGI_TRANSLATION:
       case MGI_TRANSLATIONTYPE:
       case MGI_USERROLE:
-      case MRK_HISTORY:
       case MRK_MARKER:
       case PRB_ALIAS:
       case PRB_ALLELE:
@@ -2445,10 +2380,6 @@ char *mgi_DBupdate2(int table, char *key, char *key2, char *str)
 
   switch (table)
   {
-    case MRK_HISTORY:
-            sprintf(buf, "update %s set %s, _ModifiedBy_key = %s, modification_date = %s where %s = %s and sequenceNum = %s %s", 
-		mgi_DBtable(table), str, global_userKey, sql_getdate, mgi_DBkey(table), key, key2, END_VALUE_C);
-     	    break;
     default:
             sprintf(buf, "update %s set modification_date = %s where %s = %s %s", 
 	        mgi_DBtable(table), sql_getdate, mgi_DBkey(table), key, END_VALUE_C);
@@ -2652,9 +2583,6 @@ char *mgi_DBcvname(int table)
             strcpy(buf, "journal");
 	    break;
     case BIB_REVIEW_STATUS:
-    case MRK_TYPE:
-            strcpy(buf, "name");
-	    break;
     case CROSS:
             strcpy(buf, "whoseCross");
 	    break;
@@ -2711,15 +2639,6 @@ char *mgi_DBcvname(int table)
 	    break;
     case GXD_GELCONTROL:
             strcpy(buf, "gelLaneContent");
-	    break;
-    case MRK_EVENT:
-            strcpy(buf, "event");
-	    break;
-    case MRK_EVENTREASON:
-            strcpy(buf, "eventReason");
-	    break;
-    case MRK_STATUS:
-            strcpy(buf, "status");
 	    break;
     case RISET:
             strcpy(buf, "designation");
