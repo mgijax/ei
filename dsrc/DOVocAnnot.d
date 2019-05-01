@@ -253,7 +253,8 @@ rules:
 	  notes : string;
           set : string := "";
 	  keyDeclared : boolean := false;
-	  keyName : string := "annotEvidenceKey";
+	  keyNameAnnotKey : string := "annotAnnotKey";
+	  keyNameEvidenceKey : string := "annotEvidenceKey";
 	  annotKeyDeclared : boolean := false;
 	  dupAnnot : boolean;
 	  editTerm : boolean := false;
@@ -321,7 +322,7 @@ rules:
 	      -- _Annot_key value, else generate a new one.
 
   	      dupAnnot := false;
-	      annotKey := MAX_KEY1 + KEYNAME + MAX_KEY2;
+	      annotKey := MAX_KEY1 + keyNameAnnotKey + MAX_KEY2;
 
 	      if (row > 0) then
 	        if (termKey = mgi_tblGetCell(annotTable, row - 1, annotTable.termKey) and
@@ -342,24 +343,24 @@ rules:
 	      -- Declare primary key name, or increment
 
 	      if (not keyDeclared) then
-                  cmd := cmd + mgi_setDBkey(VOC_EVIDENCE, NEWKEY, keyName);
+                  cmd := cmd + mgi_setDBkey(VOC_EVIDENCE, NEWKEY, keyNameEvidenceKey);
                   keyDeclared := true;
 	      else
-                  cmd := cmd + mgi_DBincKey(keyName);
+                  cmd := cmd + mgi_DBincKey(keyNameEvidenceKey);
 	      end if;
 
 	      if (not dupAnnot) then
 
 		-- if the key def was not already declared, declare it
                 if (not annotKeyDeclared) then
-                  cmd := cmd + mgi_setDBkey(VOC_ANNOT, NEWKEY, KEYNAME);
+                  cmd := cmd + mgi_setDBkey(VOC_ANNOT, NEWKEY, keyNameAnnotKey);
                   annotKeyDeclared := true;
                 else
-                  cmd := cmd + mgi_DBincKey(KEYNAME);
+                  cmd := cmd + mgi_DBincKey(keyNameAnnotKey);
                 end if;
 
                 cmd := cmd +
-                       mgi_DBinsert(VOC_ANNOT, KEYNAME) +
+                       mgi_DBinsert(VOC_ANNOT, keyNameAnnotKey) +
 		       annotTypeKey + "," +
 		       top->mgiAccession->ObjectID->text.value + "," +
 		       termKey + "," +
@@ -367,7 +368,7 @@ rules:
 	      end if;
 
               cmd := cmd +
-		       mgi_DBinsert(VOC_EVIDENCE, keyName) +
+		       mgi_DBinsert(VOC_EVIDENCE, keyNameEvidenceKey) +
 		       annotKey + "," +
 		       evidenceKey + "," +
 		       refsKey + "," +
@@ -376,7 +377,7 @@ rules:
 
 	      ModifyNotes.source_widget := annotTable;
 	      ModifyNotes.tableID := MGI_NOTE;
-	      ModifyNotes.key := MAX_KEY1 + keyName + MAX_KEY2;
+	      ModifyNotes.key := MAX_KEY1 + keyNameEvidenceKey + MAX_KEY2;
 	      ModifyNotes.row := row;
 	      ModifyNotes.column := annotTable.notes;
 	      ModifyNotes.keyDeclared := notesModified;
