@@ -238,7 +238,7 @@ rules:
           set : string := "";
 	  keyDeclared : boolean := false;
           annotKeyDeclared : boolean := false;
-	  keyNameAnnot : string := "annotAnnotKey";
+	  keyNameAnnot : string := "annotKey";
 	  keyNameEvidence : string := "annotEvidenceKey";
 	  editTerm : boolean := false;
 	  notesModified : boolean := false;
