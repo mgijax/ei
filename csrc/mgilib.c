@@ -474,6 +474,8 @@ char *mgi_DBincKey(char *keyName)
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(PRB_STRAIN_MARKER), mgi_DBautosequence(PRB_STRAIN_MARKER));
   else if (strcmp(keyName, "attributeAnnotKey") == 0)
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(VOC_ANNOT), mgi_DBautosequence(VOC_ANNOT)); 
+  else if (strcmp(keyName, "reviewAnnotKey") == 0)
+    sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(VOC_ANNOT), mgi_DBautosequence(VOC_ANNOT)); 
   else if (strcmp(keyName, "annotKey") == 0)
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(VOC_ANNOT), mgi_DBautosequence(VOC_ANNOT)); 
   else if (strcmp(keyName, "annotEvidenceKey") == 0)
