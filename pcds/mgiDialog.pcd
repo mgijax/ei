@@ -530,7 +530,7 @@ Module: mgiDialog
                     {
                       addNote1 = AppendNotePush : mgiDataTypes;
                       Group: Widget
-                        activateCallback = "D:AppendNoteButton(note = \"\\Acc(MGI:||)\")";
+                        activateCallback = "D:AppendNoteButton(note = \"(assay \\Acc(MGI:||))\")";
                         labelString = "Add Acc/MGI";
                         managed = False;
                     }
