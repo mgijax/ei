@@ -28,7 +28,7 @@ cd `dirname $0` && source ./Configuration
 setenv LOG `pwd`/Install.log
 rm -f $LOG
 
-switch (`uname -n`)
+switch (`uname -n | cut -d'.' -f1`)
 
 	case bhmgiei01:
 		echo "building for linux/production..." >>& ${LOG}

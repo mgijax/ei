@@ -19,7 +19,7 @@ source ${MGICONFIG}/master.config.csh
 unsetenv OPENWINHOME
 unsetenv XKEYSYMDB
 
-setenv GITHUB_TAG  ei-6-0-14-8
+setenv GITHUB_TAG  ei-6-0-14-9
 
 switch (`whoami`)
     case lec:
@@ -37,7 +37,7 @@ switch (`whoami`)
         breaksw
 endsw
 
-switch (`uname -n`)
+switch (`uname -n | cut -d'.' -f1`)
     case bhmgiei01:
 	setenv USERLOG	${HOME}/.ei-log
         breaksw
