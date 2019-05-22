@@ -111,8 +111,7 @@ extern char *image_getCopyright(char *);
 extern char *image_copyright(char *);
 extern char *image_creativecommons(char *);
 extern char *image_pane(char *);
-extern char *image_orderByJnum();
-extern char *image_orderByImageType();
+extern char *image_order();
 extern char *image_thumbnail(char *);
 extern char *image_byRef(char *);
 

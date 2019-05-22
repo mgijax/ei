@@ -680,19 +680,11 @@ char *image_pane(char *key)
   return(buf);
 }
 
-char *image_orderByJnum()
+char *image_order()
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"\norder by i.jnum\n");
-  return(buf);
-}
-
-char *image_orderByImageType()
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"\norder by i.imageType, i.jnum, i.figureLabel\n");
+  sprintf(buf,"\norder by i.jnum, i.figureLabel, i.imageType\n");
   return(buf);
 }
 

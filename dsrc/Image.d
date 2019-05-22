@@ -231,7 +231,7 @@ rules:
 
 	  fullImageTypeKey := top->ImageTypePulldown->Full.defaultValue;
 	  thumbnailImageTypeKey := top->ImageTypePulldown->Thumbnail.defaultValue;
-	  orderBy := image_orderByImageType();
+	  orderBy := image_order();
 
 	  if (global_application = "MGD") then
 	      defaultImageClassKey := "6481782";
