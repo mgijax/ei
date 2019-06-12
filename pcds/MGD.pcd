@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Wed May  1 08:07:32 2019";
+      lastWritten = "Wed Jun 12 13:25:58 2019";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -417,7 +417,7 @@ Module: MGD
                                                     MGIImage = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    BGEM = AccToggle : mgiOption;
+                                                    GenePaint = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     GUDMAP = AccToggle : mgiOption;
@@ -1597,7 +1597,7 @@ Module: MGD
                                                     MGIImage = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    BGEM = AccToggle : mgiOption;
+                                                    GenePaint = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     GUDMAP = AccToggle : mgiOption;
@@ -2800,7 +2800,7 @@ Module: MGD
                                   MGIImage = AccToggle : mgiOption;
                                 }
                                 {
-                                  BGEM = AccToggle : mgiOption;
+                                  GenePaint = AccToggle : mgiOption;
                                 }
                                 {
                                   GUDMAP = AccToggle : mgiOption;
@@ -3442,7 +3442,7 @@ Module: MGD
                                                     MGIImage = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    BGEM = AccToggle : mgiOption;
+                                                    GenePaint = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     GUDMAP = AccToggle : mgiOption;
@@ -5913,7 +5913,7 @@ Module: MGD
                                                     MGIImage = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    BGEM = AccToggle : mgiOption;
+                                                    GenePaint = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     GUDMAP = AccToggle : mgiOption;
@@ -8119,7 +8119,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     MGIImage = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    BGEM = AccToggle : mgiOption;
+                                                    GenePaint = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     GUDMAP = AccToggle : mgiOption;
@@ -8705,7 +8705,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     MGIImage = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    BGEM = AccToggle : mgiOption;
+                                                    GenePaint = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     GUDMAP = AccToggle : mgiOption;
@@ -9873,7 +9873,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     MGIImage = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    BGEM = AccToggle : mgiOption;
+                                                    GenePaint = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     GUDMAP = AccToggle : mgiOption;
@@ -10680,7 +10680,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     MGIImage = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    BGEM = AccToggle : mgiOption;
+                                                    GenePaint = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     GUDMAP = AccToggle : mgiOption;
@@ -12402,7 +12402,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     MGIImage = AccToggle;
                                                   }
                                                   {
-                                                    BGEM = AccToggle : mgiOption;
+                                                    GenePaint = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     GUDMAP = AccToggle : mgiOption;

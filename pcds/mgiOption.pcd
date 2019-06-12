@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Wed May  1 09:45:52 2019";
+      lastWritten = "Wed Jun 12 13:25:55 2019";
       copy = false;
       inCreateMenu = true;
         {
@@ -366,11 +366,11 @@ Module: mgiOption
                         allowModify = False;
                     }
                     {
-                      BGEM = AccToggle : mgiOption;
+                      GenePaint = AccToggle : mgiOption;
                       Group: Widget
-                        labelString = BGEM;
+                        labelString = GenePaint;
                       Group: User
-                        defaultValue = 159;
+                        defaultValue = 105;
                         allowAdd = False;
                         allowModify = False;
                     }
