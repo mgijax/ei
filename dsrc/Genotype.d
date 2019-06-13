@@ -857,7 +857,7 @@ rules:
           value := mgi_tblGetCell(top->AllelePair->Table, 0, (integer) top->AllelePair->Table.alleleKey[1]);
 
           if (value.length > 0 and value != "NULL") then
-	    where := where + "\nand (ap._Allele_key_1 = " + value + " and ap._Allele_key_2 = " + value + ")";
+	    where := where + "\nand (ap._Allele_key_1 = " + value + " or ap._Allele_key_2 = " + value + ")";
 	    from_allele := true;
 	  else
             value := mgi_tblGetCell(top->AllelePair->Table, 0, (integer) top->AllelePair->Table.alleleSymbol[1]);
@@ -871,12 +871,12 @@ rules:
           value := mgi_tblGetCell(top->AllelePair->Table, 0, (integer) top->AllelePair->Table.alleleKey[2]);
 
           if (value.length > 0 and value != "NULL") then
-	    where := where + "\nand (ap._Allele_key_2 = " + value + " and ap._Allele_key_1 = " + value + ")";
+	    where := where + "\nand (ap._Allele_key_2 = " + value + " or ap._Allele_key_1 = " + value + ")";
 	    from_allele := true;
 	  else
             value := mgi_tblGetCell(top->AllelePair->Table, 0, (integer) top->AllelePair->Table.alleleSymbol[2]);
             if (value.length > 0) then
-	      where := where + "\nand (a1.symbol ilike " + mgi_DBprstr(value) + " and a2.symbol ilike " + mgi_DBprstr(value) + ")";
+	      where := where + "\nand (a1.symbol ilike " + mgi_DBprstr(value) + " or a2.symbol ilike " + mgi_DBprstr(value) + ")";
 	      from_allele := true;
 	    end if;
 	  end if;
