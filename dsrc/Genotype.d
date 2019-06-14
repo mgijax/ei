@@ -1265,8 +1265,8 @@ rules:
 	    row := 0;
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 1));
-	      (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 2));
-	      (void) mgi_tblSetCell(table, row, table.dataSet, mgi_getstr(dbproc, 3));
+	      (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 3));
+	      (void) mgi_tblSetCell(table, row, table.dataSet, mgi_getstr(dbproc, 4));
 	      row := row + 1;
 	    end while;
 	  end while;
