@@ -345,44 +345,7 @@ char *genotype_search2(char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"(select distinct v._Genotype_key, \
-   \nCONCAT(ps.strain,',',a1.symbol,',',a2.symbol) as strain \
-   \nfrom GXD_Expression v, GXD_Genotype g, PRB_Strain ps, ALL_Allele a1, \
-   \n	GXD_AllelePair ap LEFT OUTER JOIN ALL_Allele a2 on (ap._Allele_key_2 = a2._Allele_key) \
-   \nwhere v._Refs_key = %s \
-   \nand v._Genotype_key = g._Genotype_key \
-   \nand g._Strain_key = ps._Strain_key \
-   \nand g._Genotype_key = ap._Genotype_key \
-   \nand ap._Allele_key_1 = a1._Allele_key \
-   \nunion all \
-   \nselect distinct t._Object_key, \
-   \nCONCAT(ps.strain,',',a1.symbol,',',a2.symbol) as strain \
-   \nfrom VOC_Evidence v, VOC_Annot t, GXD_Genotype g, PRB_Strain ps, ALL_Allele a1, \
-   \n	GXD_AllelePair ap LEFT OUTER JOIN ALL_Allele a2 on (ap._Allele_key_2 = a2._Allele_key) \
-   \nwhere v._Refs_key = %s \
-   \nand v._Annot_key = t._Annot_key \
-   \nand t._AnnotType_key in (1002,1020) \
-   \nand t._Object_key = g._Genotype_key \
-   \nand g._Strain_key = ps._Strain_key \
-   \nand g._Genotype_key = ap._Genotype_key \
-   \nand ap._Allele_key_1 = a1._Allele_key \
-   \nunion all \
-   \nselect distinct v._Genotype_key, ps.strain \
-   \nfrom GXD_Expression v, GXD_Genotype g, PRB_Strain ps \
-   \nwhere v._Refs_key = %s \
-   \nand v._Genotype_key = g._Genotype_key \
-   \nand g._Strain_key = ps._Strain_key \
-   \nand not exists (select 1 from GXD_AllelePair ap where g._Genotype_key = ap._Genotype_key) \
-   \nunion all \
-   \nselect distinct t._Object_key, ps.strain \
-   \nfrom VOC_Evidence v, VOC_Annot t, GXD_Genotype g, PRB_Strain ps \
-   \nwhere v._Refs_key = %s \
-   \nand v._Annot_key = t._Annot_key \
-   \nand t._AnnotType_key in (1002,1020) \
-   \nand t._Object_key = g._Genotype_key \
-   \nand g._Strain_key = ps._Strain_key \
-   \nand not exists (select 1 from GXD_AllelePair ap where g._Genotype_key = ap._Genotype_key) \
-   )\norder by strain", key, key, key, key);
+  sprintf(buf,"select * from GXD_Genotype_DataSet_View where _Refs_key = %s", key);
   return(buf);
 }
 
