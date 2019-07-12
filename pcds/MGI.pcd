@@ -3378,8 +3378,6 @@ Module: MGI
                                                   }
                                                   {
                                                     EMAGE = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
                                                   }
                                                   {
                                                     EUREXPRESS = AccToggle : mgiOption;
