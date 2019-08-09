@@ -2,13 +2,13 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Fri Aug  9 09:31:55 2019";
+      lastWritten = "Tue Apr  9 09:07:00 2019";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
           Group: Control
             vip_x = 90;
-            vip_y = 855;
+            vip_y = 910;
           Group: User
             homeWidget = Latin;
             activateButtonName = Organism;
@@ -417,7 +417,7 @@ Module: MGD
                                                     MGIImage = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    GenePaint = AccToggle : mgiOption;
+                                                    BGEM = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     GUDMAP = AccToggle : mgiOption;
@@ -519,7 +519,7 @@ Module: MGD
             title = "RI Sets";
           Group: Control
             vip_x = 90;
-            vip_y = 965;
+            vip_y = 1020;
           Group: User
             homeWidget = Designation;
             activateButtonName = RISet;
@@ -1063,7 +1063,7 @@ Module: MGD
           TissueModule = Module : MGI;
           Group: Control
             vip_x = 90;
-            vip_y = 1075;
+            vip_y = 1130;
           Group: User
             homeWidget = Name;
             activateButtonName = Tissue;
@@ -1188,7 +1188,7 @@ Module: MGD
           MolecularSegmentModule = Module1 : MGI;
           Group: Control
             vip_x = 90;
-            vip_y = 580;
+            vip_y = 635;
           Group: User
             homeWidget = Name;
             editForms = "ControlForm\nMolMasterForm\nMolDetailForm\nMolMarkerForm\nMolPrimerForm\nSourceForm\nMolReferenceForm";
@@ -1597,7 +1597,7 @@ Module: MGD
                                                     MGIImage = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    GenePaint = AccToggle : mgiOption;
+                                                    BGEM = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     GUDMAP = AccToggle : mgiOption;
@@ -1718,9 +1718,6 @@ Module: MGD
                                                   }
                                                   {
                                                     JPGA = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    KMPC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     KOMP = AccToggle : mgiOption;
@@ -2067,7 +2064,7 @@ Module: MGD
             width = 600;
           Group: Control
             vip_x = 90;
-            vip_y = 1790;
+            vip_y = 1845;
               {
                 ID = ID;
               }
@@ -2393,7 +2390,7 @@ Module: MGD
             width = 600;
           Group: Control
             vip_x = 90;
-            vip_y = 1735;
+            vip_y = 1790;
               {
                 Marker = ReferenceTable : mgiTable;
                 Group: Constraint
@@ -2599,7 +2596,7 @@ Module: MGD
             managed = False;
           Group: Control
             vip_x = 90;
-            vip_y = 1900;
+            vip_y = 1955;
           Group: User
             homeWidget = Jnum;
             queryList = ReferenceList;
@@ -2803,7 +2800,7 @@ Module: MGD
                                   MGIImage = AccToggle : mgiOption;
                                 }
                                 {
-                                  GenePaint = AccToggle : mgiOption;
+                                  BGEM = AccToggle : mgiOption;
                                 }
                                 {
                                   GUDMAP = AccToggle : mgiOption;
@@ -3021,7 +3018,7 @@ Module: MGD
             width = 600;
           Group: Control
             vip_x = 90;
-            vip_y = 1845;
+            vip_y = 1900;
               {
                 Sequence1 = CharText : mgiDataTypes;
                 Group: Constraint
@@ -3098,7 +3095,7 @@ Module: MGD
             closeWindowCallback = "D:MolecularSourceExit";
           Group: Control
             vip_x = 90;
-            vip_y = 635;
+            vip_y = 690;
           Group: User
             editForms = "ControlForm\nEditForm\nSourceForm";
             clearForms = "ControlForm\nEditForm\nSourceForm";
@@ -3445,7 +3442,7 @@ Module: MGD
                                                     MGIImage = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    GenePaint = AccToggle : mgiOption;
+                                                    BGEM = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     GUDMAP = AccToggle : mgiOption;
@@ -3570,9 +3567,6 @@ Module: MGD
                                                     JPGA = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    KMPC = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     KOMP = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -3643,7 +3637,7 @@ Module: MGD
             resizePolicy = resize_any;
           Group: Control
             vip_x = 90;
-            vip_y = 1570;
+            vip_y = 1625;
               {
                 ID = ID;
               }
@@ -3678,7 +3672,7 @@ Module: MGD
             resizePolicy = resize_any;
           Group: Control
             vip_x = 90;
-            vip_y = 1295;
+            vip_y = 1350;
               {
                 ID = ID;
               }
@@ -3715,7 +3709,7 @@ Module: MGD
             height = 700;
           Group: Control
             vip_x = 90;
-            vip_y = 1405;
+            vip_y = 1460;
               {
                 ID = ID;
               }
@@ -3799,7 +3793,7 @@ Module: MGD
             height = 700;
           Group: Control
             vip_x = 90;
-            vip_y = 1460;
+            vip_y = 1515;
               {
                 ID = ID;
               }
@@ -4076,7 +4070,7 @@ Module: MGD
             height = 700;
           Group: Control
             vip_x = 90;
-            vip_y = 1350;
+            vip_y = 1405;
               {
                 ID = ID;
               }
@@ -4336,7 +4330,7 @@ Module: MGD
             height = 700;
           Group: Control
             vip_x = 90;
-            vip_y = 1515;
+            vip_y = 1570;
               {
                 ID = ID;
               }
@@ -4507,7 +4501,7 @@ Module: MGD
             height = 700;
           Group: Control
             vip_x = 90;
-            vip_y = 1130;
+            vip_y = 1185;
               {
                 ID = ID;
               }
@@ -4890,7 +4884,7 @@ Module: MGD
             height = 775;
           Group: Control
             vip_x = 90;
-            vip_y = 1625;
+            vip_y = 1680;
           Group: User
             homeWidget = Jnum;
               {
@@ -5001,7 +4995,7 @@ Module: MGD
             height = 1000;
           Group: Control
             vip_x = 90;
-            vip_y = 1240;
+            vip_y = 1295;
           Group: User
             homeWidget = Chromosome;
             queryList = ExperimentList;
@@ -5310,6 +5304,13 @@ Module: MGD
                                     traversalOn = False;
                                 }
                                 {
+                                  Marker = XmPushButton;
+                                  Group: Widget
+                                    activateCallback = "D:CreateMGIModule(name = \"Marker\")";
+                                    labelString = Markers;
+                                    traversalOn = False;
+                                }
+                                {
                                   Allele = XmPushButton;
                                   Group: Widget
                                     activateCallback = "D:CreateMGIModule(name = \"Allele\")";
@@ -5483,7 +5484,7 @@ Module: MGD
           MarkerNonMouseModule = Module : MGI;
           Group: Control
             vip_x = 90;
-            vip_y = 525;
+            vip_y = 580;
           Group: User
             homeWidget = Symbol;
             activateButtonName = MarkerNonMouse;
@@ -5919,7 +5920,7 @@ Module: MGD
                                                     MGIImage = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    GenePaint = AccToggle : mgiOption;
+                                                    BGEM = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     GUDMAP = AccToggle : mgiOption;
@@ -6007,7 +6008,7 @@ Module: MGD
             title = "Master Bibliography";
           Group: Control
             vip_x = 90;
-            vip_y = 910;
+            vip_y = 965;
           Group: User
             homeWidget = Authors;
             clearForms = "ControlForm\nEditForm\nBookForm";
@@ -6893,7 +6894,7 @@ Module: MGD
             width = 600;
           Group: Control
             vip_x = 90;
-            vip_y = 1680;
+            vip_y = 1735;
               {
                 ParentClone = mgiAccession : mgiDataTypes;
                 Group: Widget
@@ -8125,7 +8126,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     MGIImage = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    GenePaint = AccToggle : mgiOption;
+                                                    BGEM = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     GUDMAP = AccToggle : mgiOption;
@@ -8246,9 +8247,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     JPGA = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    KMPC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     KOMP = AccToggle : mgiOption;
@@ -8714,7 +8712,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     MGIImage = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    GenePaint = AccToggle : mgiOption;
+                                                    BGEM = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     GUDMAP = AccToggle : mgiOption;
@@ -8835,9 +8833,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     JPGA = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    KMPC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     KOMP = AccToggle : mgiOption;
@@ -9076,7 +9071,7 @@ Shift<Key>Tab: prev-tab-group()
           StrainModule = Module : MGI;
           Group: Control
             vip_x = 90;
-            vip_y = 1020;
+            vip_y = 1075;
           Group: User
             homeWidget = Name;
             activateButtonName = Strain;
@@ -9885,7 +9880,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     MGIImage = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    GenePaint = AccToggle : mgiOption;
+                                                    BGEM = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     GUDMAP = AccToggle : mgiOption;
@@ -10043,11 +10038,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     JPGA = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
-                                                    KMPC = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -10245,7 +10235,7 @@ Shift<Key>Tab: prev-tab-group()
           MutantCellLineModule = Module : MGI;
           Group: Control
             vip_x = 90;
-            vip_y = 745;
+            vip_y = 800;
             vip_show_name = true;
           Group: User
             homeWidget = CellLine;
@@ -10697,7 +10687,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     MGIImage = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    GenePaint = AccToggle : mgiOption;
+                                                    BGEM = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     GUDMAP = AccToggle : mgiOption;
@@ -10820,9 +10810,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     JPGA = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    KMPC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     KOMP = AccToggle : mgiOption;
@@ -11095,7 +11082,7 @@ Shift<Key>Tab: prev-tab-group()
             closeWindowCallback = "D:MPVocAnnotExit";
           Group: Control
             vip_x = 90;
-            vip_y = 690;
+            vip_y = 745;
           Group: User
             activateButtonName = MPVocAnnot;
             homeWidget = mgiAccession;
@@ -11719,7 +11706,7 @@ Shift<Key>Tab: prev-tab-group()
             height = 900;
           Group: Control
             vip_x = 90;
-            vip_y = 1185;
+            vip_y = 1240;
           Group: User
             homeWidget = Jnum;
               {
@@ -12422,7 +12409,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     MGIImage = AccToggle;
                                                   }
                                                   {
-                                                    GenePaint = AccToggle : mgiOption;
+                                                    BGEM = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     GUDMAP = AccToggle : mgiOption;
@@ -12534,7 +12521,7 @@ Shift<Key>Tab: prev-tab-group()
           NonMutantCellLineModule = Module : MGI;
           Group: Control
             vip_x = 90;
-            vip_y = 800;
+            vip_y = 855;
           Group: User
             homeWidget = CellLine;
               {
@@ -13076,8 +13063,6 @@ Shift<Key>Tab: prev-tab-group()
               }
         }
         {
-<<<<<<< HEAD
-=======
           MarkerModule = Module : MGI;
           Group: Control
             vip_x = 90;
@@ -13980,9 +13965,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     JPGA = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    KMPC = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     KOMP = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -14369,7 +14351,6 @@ Shift<Key>Tab: prev-tab-group()
               }
         }
         {
->>>>>>> master
           AlleleDiseaseVocAnnotModule = Module : MGI;
           Group: Widget
             width = 1225;
