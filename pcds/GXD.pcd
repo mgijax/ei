@@ -3,7 +3,11 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
+<<<<<<< HEAD
       lastWritten = "Wed Jun 12 13:25:58 2019";
+=======
+      lastWritten = "Fri Aug  9 09:30:41 2019";
+>>>>>>> master
       copy = false;
       inCreateMenu = true;
         {
@@ -701,6 +705,9 @@ Module: GXD
                                                   }
                                                   {
                                                     JPGA = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    KMPC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     KOMP = AccToggle : mgiOption;
@@ -1714,6 +1721,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     JPGA = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    KMPC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     KOMP = AccToggle : mgiOption;

@@ -2,7 +2,7 @@ Module: mgiTable
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Wed Jun 12 13:26:00 2019";
+      lastWritten = "Fri Aug  9 09:30:42 2019";
         {
           mgiTable = XtXrtTable;
           Group: Widget
