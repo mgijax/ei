@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Fri Aug  9 09:58:56 2019";
+      lastWritten = "Mon Aug 19 12:25:00 2019";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -5307,13 +5307,6 @@ Module: MGD
                                   Group: Widget
                                     activateCallback = "D:CreateMGIModule(name = \"Reference\")";
                                     labelString = References;
-                                    traversalOn = False;
-                                }
-                                {
-                                  Marker = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"Marker\")";
-                                    labelString = Markers;
                                     traversalOn = False;
                                 }
                                 {
