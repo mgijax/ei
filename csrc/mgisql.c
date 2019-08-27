@@ -46,7 +46,7 @@ char *exec_acc_assignJ(char *userKey, char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select * from ACC_assignJ (%s,%s);\n", userKey, key);
+  sprintf(buf,"select * from ACC_assignJ (%s,%s,-1);\n", userKey, key);
   return(buf);
 }
 

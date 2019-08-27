@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Mon Aug 19 12:25:00 2019";
+      lastWritten = "Tue Aug 27 11:01:59 2019";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -6036,9 +6036,13 @@ Module: MGD
                                       }
                                       {
                                         Add = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          sensitive = False;
                                       }
                                       {
                                         Delete = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          sensitive = False;
                                       }
                                       {
                                         separator1 = XmSeparator;
@@ -6781,9 +6785,13 @@ Module: MGD
                                 }
                                 {
                                   Add = ControlPush;
+                                  Group: Widget
+                                    sensitive = False;
                                 }
                                 {
                                   Delete = ControlPush;
+                                  Group: Widget
+                                    sensitive = False;
                                 }
                                 {
                                   Previous = ControlArrow;
