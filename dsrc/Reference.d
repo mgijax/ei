@@ -265,6 +265,7 @@ rules:
 	Add does
 	  jnum : string := "";
 	  jnumRow : integer := 0;	-- J# is in first row of Accession table
+	  refsKey : string := "refsKey";
 
           if (not top.allowEdit) then 
             return; 
@@ -272,12 +273,12 @@ rules:
 
 	  (void) busy_cursor(top);
 
-          -- If adding, then KEYNAME must be used in all Modify events
+          -- If adding, then refsKey must be used in all Modify events
  
-          currentRecordKey := MAX_KEY1 + KEYNAME + MAX_KEY2;
+          currentRecordKey := MAX_KEY1 + refsKey + MAX_KEY2;
  
-          cmd := mgi_setDBkey(BIB_REFS, NEWKEY, KEYNAME) +
-                 mgi_DBinsert(BIB_REFS, KEYNAME) +
+          cmd := mgi_setDBkey(BIB_REFS, NEWKEY, refsKey) +
+                 mgi_DBinsert(BIB_REFS, refsKey) +
                  mgi_DBprstr(top->RefTypeMenu.menuHistory.defaultValue) + "," +
 	         mgi_DBprstr(top->Authors->text.value) + ",";
 

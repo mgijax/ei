@@ -416,6 +416,7 @@ char *mgi_setDBkey(int table, int key, char *keyName)
     case SEQ_SOURCE_ASSOC:
     case VOC_ANNOT:
     case VOC_EVIDENCE:
+    case VOC_EVIDENCE_PROPERTY:
   	    sprintf(cmd, "select nextval('%s') as %s into temporary table %sMax;\n", \
 	    	mgi_DBautosequence(table), mgi_DBautosequence(table), keyName, keyName);
 	    break;
@@ -484,6 +485,8 @@ char *mgi_DBincKey(char *keyName)
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(VOC_ANNOT), mgi_DBautosequence(VOC_ANNOT)); 
   else if (strcmp(keyName, "annotEvidenceKey") == 0)
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(VOC_EVIDENCE), mgi_DBautosequence(VOC_EVIDENCE)); 
+  else if (strcmp(keyName, "propertyKey") == 0)
+    sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(VOC_EVIDENCE_PROPERTY), mgi_DBautosequence(VOC_EVIDENCE_PROPERTY)); 
   else
     sprintf(cmd, "update %sMax set %s = %s + 1;\n", keyName, keyName, keyName);
 
@@ -969,6 +972,9 @@ char *mgi_DBautosequence(int table)
 	    break;
     case VOC_EVIDENCE:
 	    strcpy(buf, "voc_evidence_seq");
+	    break;
+    case VOC_EVIDENCE_PROPERTY:
+	    strcpy(buf, "voc_evidence_property_seq");
 	    break;
     default:
 	    sprintf(buf, "mgi_DBautosequence: invalid table: %d", table);
@@ -2184,7 +2190,6 @@ char *mgi_DBinsert(int table, char *keyName)
     case VOC_EVIDENCE:
             sprintf(buf, "insert into %s (%s, _Annot_key, _EvidenceTerm_key, _Refs_key, inferredFrom, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
-
     case VOC_EVIDENCE_PROPERTY:
             sprintf(buf, "insert into %s (%s, _AnnotEvidence_key, _PropertyTerm_key, stanza, sequenceNum, value, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
