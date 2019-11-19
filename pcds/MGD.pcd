@@ -5303,13 +5303,6 @@ Module: MGD
                               entryAlignment = alignment_center;
                               spacing = 5;
                                 {
-                                  Reference = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"Reference\")";
-                                    labelString = References;
-                                    traversalOn = False;
-                                }
-                                {
                                   Allele = XmPushButton;
                                   Group: Widget
                                     activateCallback = "D:CreateMGIModule(name = \"Allele\")";
@@ -5357,13 +5350,6 @@ Module: MGD
                                     activateCallback = "D:CreateMGIModule(name = \"DOVocAnnot\")";
                                     labelString = "DO Vocabulary Annotations";
                                     traversalOn = False;
-                                }
-                                {
-                                  Image = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"Image\")";
-                                    traversalOn = False;
-                                    labelString = Images;
                                 }
                                 {
                                   AlleleDerivation = XmPushButton;

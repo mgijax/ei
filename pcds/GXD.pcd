@@ -2772,13 +2772,6 @@ Shift<Key>Tab: prev-tab-group()
                                     traversalOn = False;
                                 }
                                 {
-                                  Image = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"Image\")";
-                                    traversalOn = False;
-                                    labelString = Images;
-                                }
-                                {
                                   Assay = XmPushButton;
                                   Group: Widget
                                     activateCallback = "D:CreateMGIModule(name = \"Assay\")";
