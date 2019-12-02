@@ -2779,13 +2779,6 @@ Shift<Key>Tab: prev-tab-group()
                                     labelString = Assays;
                                 }
                                 {
-                                  Reference = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"Reference\")";
-                                    labelString = References;
-                                    traversalOn = False;
-                                }
-                                {
                                   MolecularSource = XmPushButton;
                                   Group: Widget
                                     activateCallback = "D:CreateMGIModule(name = \"MolecularSource\")";
