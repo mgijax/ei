@@ -710,7 +710,7 @@ rules:
 	  qualifierKey : string;
 	  set : string := "";
 	  keyDeclared : boolean := false;
-	  keyName : string := "genotypeKey";
+	  keyName : string := "straingenotypeKey";
  
 	  -- Process while non-empty rows are found
  

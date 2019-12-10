@@ -404,11 +404,14 @@ char *mgi_setDBkey(int table, int key, char *keyName)
   switch (table)
   {
     case ALL_ALLELE_CELLLINE:
+    case GXD_GENOTYPE:
+    case GXD_ALLELEPAIR:
     case IMG_IMAGEPANE_ASSOC:
     case MGI_REFERENCE_ASSOC:
     case MGI_SYNONYM:
     case MRK_MARKER:
     case MRK_HISTORY:
+    case STRAIN:
     case PRB_STRAIN_GENOTYPE:
     case PRB_STRAIN_MARKER:
     case SEQ_SOURCE_ASSOC:
@@ -452,6 +455,10 @@ char *mgi_DBincKey(char *keyName)
 
   if (strcmp(keyName, "cellAssocKey") == 0)
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(ALL_ALLELE_CELLLINE), mgi_DBautosequence(ALL_ALLELE_CELLLINE));
+  else if (strcmp(keyName, "genotypeKey") == 0)
+    sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(GXD_GENOTYPE), mgi_DBautosequence(GXD_GENOTYPE));
+  else if (strcmp(keyName, "allelepairKey") == 0)
+    sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(GXD_ALLELEPAIR), mgi_DBautosequence(GXD_ALLELEPAIR));
   else if (strcmp(keyName, "ipAssocKey") == 0)
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(IMG_IMAGEPANE_ASSOC), mgi_DBautosequence(IMG_IMAGEPANE_ASSOC));
   else if (strcmp(keyName, "refassocKey") == 0)
@@ -468,7 +475,9 @@ char *mgi_DBincKey(char *keyName)
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(MRK_MARKER), mgi_DBautosequence(MRK_MARKER)); 
   else if (strcmp(keyName, "historyKey") == 0)
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(MRK_HISTORY), mgi_DBautosequence(MRK_HISTORY)); 
-  else if (strcmp(keyName, "genotypeKey") == 0)
+  else if (strcmp(keyName, "strainKey") == 0)
+    sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(STRAIN), mgi_DBautosequence(STRAIN));
+  else if (strcmp(keyName, "straingenotypeKey") == 0)
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(PRB_STRAIN_GENOTYPE), mgi_DBautosequence(PRB_STRAIN_GENOTYPE));
   else if (strcmp(keyName, "strainMarkerKey") == 0)
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(PRB_STRAIN_MARKER), mgi_DBautosequence(PRB_STRAIN_MARKER));
@@ -951,6 +960,12 @@ char *mgi_DBautosequence(int table)
     case ALL_ALLELE_CELLLINE:
 	    strcpy(buf, "all_allele_cellline_seq");
 	    break;
+    case GXD_GENOTYPE:
+	    strcpy(buf, "gxd_genotype_seq");
+	    break;
+    case GXD_ALLELEPAIR:
+	    strcpy(buf, "gxd_allelepair_seq");
+	    break;
     case IMG_IMAGEPANE_ASSOC:
 	    strcpy(buf, "img_imagepane_assoc_seq");
 	    break;
@@ -965,6 +980,9 @@ char *mgi_DBautosequence(int table)
 	    break;
     case MRK_HISTORY:
 	    strcpy(buf, "mrk_history_seq");
+	    break;
+    case STRAIN:
+	    strcpy(buf, "prb_strain_seq");
 	    break;
     case PRB_STRAIN_GENOTYPE:
 	    strcpy(buf, "prb_strain_genotype_seq");
