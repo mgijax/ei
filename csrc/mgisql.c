@@ -309,11 +309,11 @@ char *exec_prb_processSequenceSource(\
   return(buf);
 }
 
-char *exec_voc_copyAnnotEvidenceNotes(char *userKey, char *key, char *keyName)
+char *exec_voc_copyAnnotEvidenceNotes(char *userKey, char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select * from VOC_copyAnnotEvidenceNotes (%s, %s, %s);\n", userKey, key, keyName);
+  sprintf(buf,"select * from VOC_copyAnnotEvidenceNotes (%s, %s);\n", userKey, key);
   return(buf);
 }
 

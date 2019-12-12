@@ -45,7 +45,7 @@ CALLS
 	 exec_prb_processProbeSource("char *", "char *", "char *", "char *", "char *", "char *", "char *", "char *", "char *", "char *", "char *")		: "char *";
 	 exec_prb_processSequenceSource("char *", "char *", "char *", "char *", "char *", "char *", "char *", "char *", "char *", "char *", "char *")		: "char *";
 
-	 exec_voc_copyAnnotEvidenceNotes("char *", "char *", "char *")	: "char *";
+	 exec_voc_copyAnnotEvidenceNotes("char *", "char *")	: "char *";
 	 exec_voc_processAnnotHeader("char *", "char *", "char *")	: "char *";
 
 	 exec_gxd_addemapaset("char *", "char *")               : "char *";
