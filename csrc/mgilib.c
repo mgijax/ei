@@ -406,21 +406,16 @@ char *mgi_setDBkey(int table, int key, char *keyName)
     case ALL_ALLELE_CELLLINE:
     case GXD_GENOTYPE:
     case GXD_ALLELEPAIR:
-    case BIB_REFS:
-    case IMG_IMAGE:
-    case IMG_IMAGEPANE:
     case IMG_IMAGEPANE_ASSOC:
     case MGI_REFERENCE_ASSOC:
     case MGI_SYNONYM:
     case MRK_MARKER:
-    case MRK_HISTORY:
     case STRAIN:
     case PRB_STRAIN_GENOTYPE:
     case PRB_STRAIN_MARKER:
     case SEQ_SOURCE_ASSOC:
     case VOC_ANNOT:
     case VOC_EVIDENCE:
-    case VOC_EVIDENCE_PROPERTY:
   	    sprintf(cmd, "select nextval('%s') as %s into temporary table %sMax;\n", \
 	    	mgi_DBautosequence(table), mgi_DBautosequence(table), keyName, keyName);
 	    break;
@@ -459,19 +454,10 @@ char *mgi_DBincKey(char *keyName)
 
   if (strcmp(keyName, "cellAssocKey") == 0)
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(ALL_ALLELE_CELLLINE), mgi_DBautosequence(ALL_ALLELE_CELLLINE));
-<<<<<<< HEAD
   else if (strcmp(keyName, "genotypeKey") == 0)
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(GXD_GENOTYPE), mgi_DBautosequence(GXD_GENOTYPE));
   else if (strcmp(keyName, "allelepairKey") == 0)
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(GXD_ALLELEPAIR), mgi_DBautosequence(GXD_ALLELEPAIR));
-=======
-  else if (strcmp(keyName, "refsKey") == 0)
-    sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(BIB_REFS), mgi_DBautosequence(BIB_REFS));
-  else if (strcmp(keyName, "imageKey") == 0)
-    sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(IMG_IMAGE), mgi_DBautosequence(IMG_IMAGE));
-  else if (strcmp(keyName, "paneKey") == 0)
-    sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(IMG_IMAGEPANE), mgi_DBautosequence(IMG_IMAGEPANE));
->>>>>>> master
   else if (strcmp(keyName, "ipAssocKey") == 0)
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(IMG_IMAGEPANE_ASSOC), mgi_DBautosequence(IMG_IMAGEPANE_ASSOC));
   else if (strcmp(keyName, "refassocKey") == 0)
@@ -486,26 +472,20 @@ char *mgi_DBincKey(char *keyName)
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(MGI_SYNONYM), mgi_DBautosequence(MGI_SYNONYM)); 
   else if (strcmp(keyName, "markerKey") == 0)
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(MRK_MARKER), mgi_DBautosequence(MRK_MARKER)); 
-<<<<<<< HEAD
-  else if (strcmp(keyName, "historyKey") == 0)
-    sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(MRK_HISTORY), mgi_DBautosequence(MRK_HISTORY)); 
   else if (strcmp(keyName, "strainKey") == 0)
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(STRAIN), mgi_DBautosequence(STRAIN));
   else if (strcmp(keyName, "straingenotypeKey") == 0)
-=======
-  else if (strcmp(keyName, "genotypeKey") == 0)
->>>>>>> master
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(PRB_STRAIN_GENOTYPE), mgi_DBautosequence(PRB_STRAIN_GENOTYPE));
   else if (strcmp(keyName, "strainMarkerKey") == 0)
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(PRB_STRAIN_MARKER), mgi_DBautosequence(PRB_STRAIN_MARKER));
   else if (strcmp(keyName, "attributeAnnotKey") == 0)
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(VOC_ANNOT), mgi_DBautosequence(VOC_ANNOT)); 
+  else if (strcmp(keyName, "reviewAnnotKey") == 0)
+    sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(VOC_ANNOT), mgi_DBautosequence(VOC_ANNOT)); 
   else if (strcmp(keyName, "annotKey") == 0)
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(VOC_ANNOT), mgi_DBautosequence(VOC_ANNOT)); 
   else if (strcmp(keyName, "annotEvidenceKey") == 0)
     sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(VOC_EVIDENCE), mgi_DBautosequence(VOC_EVIDENCE)); 
-  else if (strcmp(keyName, "propertyKey") == 0)
-    sprintf(cmd, "update %sMax set %s = nextval('%s');\n", keyName, mgi_DBautosequence(VOC_EVIDENCE_PROPERTY), mgi_DBautosequence(VOC_EVIDENCE_PROPERTY)); 
   else
     sprintf(cmd, "update %sMax set %s = %s + 1;\n", keyName, keyName, keyName);
 
@@ -956,22 +936,11 @@ char *mgi_DBautosequence(int table)
     case ALL_ALLELE_CELLLINE:
 	    strcpy(buf, "all_allele_cellline_seq");
 	    break;
-<<<<<<< HEAD
     case GXD_GENOTYPE:
 	    strcpy(buf, "gxd_genotype_seq");
 	    break;
     case GXD_ALLELEPAIR:
 	    strcpy(buf, "gxd_allelepair_seq");
-=======
-    case BIB_REFS:
-	    strcpy(buf, "bib_refs_seq");
-	    break;
-    case IMG_IMAGE:
-	    strcpy(buf, "img_image_seq");
-	    break;
-    case IMG_IMAGEPANE:
-	    strcpy(buf, "img_imagepane_seq");
->>>>>>> master
 	    break;
     case IMG_IMAGEPANE_ASSOC:
 	    strcpy(buf, "img_imagepane_assoc_seq");
@@ -985,15 +954,9 @@ char *mgi_DBautosequence(int table)
     case MRK_MARKER:
 	    strcpy(buf, "mrk_marker_seq");
 	    break;
-<<<<<<< HEAD
-    case MRK_HISTORY:
-	    strcpy(buf, "mrk_history_seq");
-	    break;
     case STRAIN:
 	    strcpy(buf, "prb_strain_seq");
 	    break;
-=======
->>>>>>> master
     case PRB_STRAIN_GENOTYPE:
 	    strcpy(buf, "prb_strain_genotype_seq");
 	    break;
@@ -1008,9 +971,6 @@ char *mgi_DBautosequence(int table)
 	    break;
     case VOC_EVIDENCE:
 	    strcpy(buf, "voc_evidence_seq");
-	    break;
-    case VOC_EVIDENCE_PROPERTY:
-	    strcpy(buf, "voc_evidence_property_seq");
 	    break;
     default:
 	    sprintf(buf, "mgi_DBautosequence: invalid table: %d", table);
@@ -2025,7 +1985,7 @@ char *mgi_DBinsert(int table, char *keyName)
 	    sprintf(buf, "insert into %s (_Index_key, _IndexAssay_key, _StageID_key, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table));
 	    break;
     case IMG_IMAGE:
-            sprintf(buf, "insert into %s (%s, _ImageClass_key, _ImageType_key, _Refs_key, _ThumbnailImage_key, xDim, yDim, figureLabel, _CreatedBy_key, _ModifiedBy_key)", 
+            sprintf(buf, "insert into %s (%s, _MGIType_key, _ImageClass_key, _ImageType_key, _Refs_key, _ThumbnailImage_key, xDim, yDim, figureLabel, _CreatedBy_key, _ModifiedBy_key)", 
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case IMG_IMAGEPANE:
@@ -2226,6 +2186,7 @@ char *mgi_DBinsert(int table, char *keyName)
     case VOC_EVIDENCE:
             sprintf(buf, "insert into %s (%s, _Annot_key, _EvidenceTerm_key, _Refs_key, inferredFrom, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
+
     case VOC_EVIDENCE_PROPERTY:
             sprintf(buf, "insert into %s (%s, _AnnotEvidence_key, _PropertyTerm_key, stanza, sequenceNum, value, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
@@ -2630,6 +2591,8 @@ char *mgi_DBcvname(int table)
             strcpy(buf, "journal");
 	    break;
     case BIB_REVIEW_STATUS:
+            strcpy(buf, "name");
+	    break;
     case CROSS:
             strcpy(buf, "whoseCross");
 	    break;
