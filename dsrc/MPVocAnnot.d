@@ -523,7 +523,7 @@ rules:
 		       global_userKey + "," + global_userKey + END_VALUE;
 
               cmd := cmd + mgi_DBinsert(VOC_EVIDENCE_PROPERTY, keyNameProperty) + 
-                        MAX_KEY1 + keyNameEvidence + MAX_KEY2 + "," +
+                        "(select last_value from voc_evidence_seq)," +
                         defaultSexSpecificKey + ",1,1," +
                         mgi_DBprstr(sex) + "," +
                         global_userKey + "," +
@@ -531,7 +531,7 @@ rules:
 
 	      if (clipAnnotEvidenceKey.length > 0) then
 		-- add notes
-		cmd := cmd + exec_voc_copyAnnotEvidenceNotes(global_userKey, clipAnnotEvidenceKey, MAX_KEY1 + keyNameEvidence + MAX_KEY2);
+		cmd := cmd + exec_voc_copyAnnotEvidenceNotes(global_userKey, clipAnnotEvidenceKey);
 		isUsingCopyAnnotEvidenceNotes := true;
 	      end if;
 

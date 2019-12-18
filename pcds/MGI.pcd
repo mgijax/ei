@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Fri Aug  9 09:30:40 2019";
+      lastWritten = "Fri Aug  9 09:58:26 2019";
       copy = false;
       inCreateMenu = true;
         {
@@ -1608,7 +1608,7 @@ Module: MGI
                                                     MGIImage = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    BGEM = AccToggle : mgiOption;
+                                                    GenePaint = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     GUDMAP = AccToggle : mgiOption;
@@ -2835,51 +2835,6 @@ Module: MGI
                                       }
                                 }
                                 {
-                                  MGITypeFrame = MGITypeFrame : mgiOption;
-                                  Group: Widget
-                                    managed = False;
-                                  Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    leftWidget = FigureLabel;
-                                    rightAttachment = attach_form;
-                                    topAttachment = attach_opposite_widget;
-                                    topWidget = FigureLabel;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    rightOffset = 2;
-                                      {
-                                        MGITypeMenu = XmOptionMenu;
-                                        Group: Widget
-                                          labelString = "Image used in\n(search only)";
-                                          managed = False;
-                                        Group: User
-                                          required = False;
-                                      }
-                                      Popups:
-                                      {
-                                        MGITypePulldown = OptionPulldown;
-                                            {
-                                              SearchAll = SearchAll : mgiOption;
-                                            }
-                                            {
-                                              Expression = OptionToggle : mgiOption;
-                                              Group: Widget
-                                                labelString = Expression;
-                                              Group: User
-                                                defaultValue = 8;
-                                                searchValue = 8;
-                                            }
-                                            {
-                                              Alleles = OptionToggle : mgiOption;
-                                              Group: Widget
-                                                labelString = "Alleles & Phenotypes";
-                                              Group: User
-                                                defaultValue = 11;
-                                                searchValue = 11;
-                                            }
-                                      }
-                                }
-                                {
                                   ImageClassFrame = ImageClassFrame : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
@@ -3415,7 +3370,7 @@ Module: MGI
                                                       managed = True;
                                                   }
                                                   {
-                                                    BGEM = AccToggle : mgiOption;
+                                                    GenePaint = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -3426,8 +3381,6 @@ Module: MGI
                                                   }
                                                   {
                                                     EMAGE = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
                                                   }
                                                   {
                                                     EUREXPRESS = AccToggle : mgiOption;

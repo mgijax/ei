@@ -766,6 +766,7 @@ rules:
 	  from_allele : boolean := false;
 	  from_cellline : boolean := false;
 	  from_marker : boolean := false;
+	  from_image : boolean := false;
 	  manualSearch : boolean := false;
 	  includeUnion : string;
 	  includeNotExists : string;
@@ -853,6 +854,20 @@ rules:
 	      from_marker := true;
 	  end if;
 
+          -- Image
+
+          value := mgi_tblGetCell(imgTable, 0, imgTable.mgiID);
+          if (value.length > 0 and value != "NULL") then
+            where := where + "\nand i.mgiID ilike " + mgi_DBprstr(value);
+            from_image := true; 
+          end if;
+
+          value := mgi_tblGetCell(imgTable, 0, imgTable.pixID);
+          if (value.length > 0 and value != "NULL") then
+            where := where + "\nand i.pixID ilike " + mgi_DBprstr(value);
+            from_image := true; 
+          end if;
+
 	  -- Allele 1
           value := mgi_tblGetCell(top->AllelePair->Table, 0, (integer) top->AllelePair->Table.alleleKey[1]);
 
@@ -862,7 +877,7 @@ rules:
 	  else
             value := mgi_tblGetCell(top->AllelePair->Table, 0, (integer) top->AllelePair->Table.alleleSymbol[1]);
             if (value.length > 0) then
-	      where := where + "\nand (a1.symbol ilike " + mgi_DBprstr(value) + " or a2.symbol ilike " + mgi_DBprstr(value) + ")";
+	      where := where + "\nand (a1.symbol ilike " + mgi_DBprstr(value) + " and a2.symbol ilike " + mgi_DBprstr(value) + ")";
 	      from_allele := true;
 	    end if;
 	  end if;
@@ -910,6 +925,7 @@ rules:
 	      from_cellline := true;
 	    end if;
 	  end if;
+
           value := mgi_tblGetCell(top->AllelePair->Table, 0, top->AllelePair->Table.stateKey);
 	  if (value.length > 0 and value != "%") then
 	      where := where + "\nand ap._PairState_key = " + value;
@@ -936,7 +952,7 @@ rules:
 	  --
 
 	  -- where allele pair does *not* exist
-	  if (not from_allele and not from_cellline) then
+	  if (not from_allele and not from_cellline and not from_image) then
 	    includeUnion := "\nunion all\n" + \
 	  	"select distinct g._Genotype_key, ps.strain, ps.strain, null\n" + from;
 	    includeNotExists := "\nwhere g._Strain_key = ps._Strain_key and not exists (select 1 from GXD_AllelePair ap where g._Genotype_key = ap._Genotype_key)" + \
@@ -956,6 +972,12 @@ rules:
 	  if (from_marker) then
 	      from := from + "," + mgi_DBtable(MRK_MARKER) + " m";
 	      where := where + "\nand ap._Marker_key = m._Marker_key";
+          end if;
+
+          if (from_image) then 
+            from := from + "," + mgi_DBtable(IMG_IMAGEPANE_ASSOC_VIEW) + " i";
+            where := where + "\nand g." + mgi_DBkey(GXD_GENOTYPE) + " = i._Object_key" +
+                "\nand i._MGIType_key = 12"; 
           end if;
 
 	  -- begin: Attach statements for Assay
@@ -1242,9 +1264,9 @@ rules:
           while (mgi_dbresults(dbproc) != NO_MORE_RESULTS) do
 	    row := 0;
             while (mgi_dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 1));
-	      (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 2));
-	      (void) mgi_tblSetCell(table, row, table.dataSet, mgi_getstr(dbproc, 3));
+	      (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 2));
+	      (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 4));
+	      (void) mgi_tblSetCell(table, row, table.dataSet, mgi_getstr(dbproc, 5));
 	      row := row + 1;
 	    end while;
 	  end while;

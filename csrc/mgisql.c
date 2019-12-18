@@ -46,7 +46,7 @@ char *exec_acc_assignJ(char *userKey, char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select * from ACC_assignJ (%s,%s);\n", userKey, key);
+  sprintf(buf,"select * from ACC_assignJ (%s,%s,-1);\n", userKey, key);
   return(buf);
 }
 
@@ -309,11 +309,11 @@ char *exec_prb_processSequenceSource(\
   return(buf);
 }
 
-char *exec_voc_copyAnnotEvidenceNotes(char *userKey, char *key, char *keyName)
+char *exec_voc_copyAnnotEvidenceNotes(char *userKey, char *key)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select * from VOC_copyAnnotEvidenceNotes (%s, %s, %s);\n", userKey, key, keyName);
+  sprintf(buf,"select * from VOC_copyAnnotEvidenceNotes (%s, %s);\n", userKey, key);
   return(buf);
 }
 
@@ -680,19 +680,11 @@ char *image_pane(char *key)
   return(buf);
 }
 
-char *image_orderByJnum()
+char *image_order()
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"\norder by i.jnum\n");
-  return(buf);
-}
-
-char *image_orderByImageType()
-{
-  static char buf[TEXTBUFSIZ];
-  memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"\norder by i.imageType, i.jnum, i.figureLabel\n");
+  sprintf(buf,"\norder by i.jnum, i.figureLabel, i.imageType\n");
   return(buf);
 }
 

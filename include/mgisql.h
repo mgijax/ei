@@ -47,7 +47,7 @@ extern char *exec_prb_processAntigenAnonSource(char *, char *, char *, char *, c
 extern char *exec_prb_processProbeSource(char *, char *, char *, char *, char *, char *, char *, char *, char *, char *, char *);
 extern char *exec_prb_processSequenceSource(char *, char *, char *, char *, char *, char *, char *, char *, char *, char *, char *);
 
-extern char *exec_voc_copyAnnotEvidenceNotes(char *, char *, char *);
+extern char *exec_voc_copyAnnotEvidenceNotes(char *, char *);
 extern char *exec_voc_processAnnotHeader(char *, char *, char *);
 
 extern char *exec_gxd_addemapaset(char *, char *);
@@ -111,8 +111,7 @@ extern char *image_getCopyright(char *);
 extern char *image_copyright(char *);
 extern char *image_creativecommons(char *);
 extern char *image_pane(char *);
-extern char *image_orderByJnum();
-extern char *image_orderByImageType();
+extern char *image_order();
 extern char *image_thumbnail(char *);
 extern char *image_byRef(char *);
 

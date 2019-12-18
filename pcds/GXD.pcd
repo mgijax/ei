@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Fri Aug  9 09:30:41 2019";
+      lastWritten = "Fri Aug  9 09:58:26 2019";
       copy = false;
       inCreateMenu = true;
         {
@@ -580,7 +580,7 @@ Module: GXD
                                                     MGIImage = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    BGEM = AccToggle : mgiOption;
+                                                    GenePaint = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     GUDMAP = AccToggle : mgiOption;
@@ -1596,7 +1596,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     MGIImage = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    BGEM = AccToggle : mgiOption;
+                                                    GenePaint = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     GUDMAP = AccToggle : mgiOption;
@@ -2772,25 +2772,11 @@ Shift<Key>Tab: prev-tab-group()
                                     traversalOn = False;
                                 }
                                 {
-                                  Image = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"Image\")";
-                                    traversalOn = False;
-                                    labelString = Images;
-                                }
-                                {
                                   Assay = XmPushButton;
                                   Group: Widget
                                     activateCallback = "D:CreateMGIModule(name = \"Assay\")";
                                     traversalOn = False;
                                     labelString = Assays;
-                                }
-                                {
-                                  Reference = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"Reference\")";
-                                    labelString = References;
-                                    traversalOn = False;
                                 }
                                 {
                                   MolecularSource = XmPushButton;

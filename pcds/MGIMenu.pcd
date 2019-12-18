@@ -1,8 +1,8 @@
 Module: MGIMenu
 {
       autoCuil = False;
-      release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed May 19 11:15:51 2010";
+      release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
+      lastWritten = "Wed May  1 08:15:35 2019";
         {
           MGIMenu = TopLevelShell;
           Group: Widget

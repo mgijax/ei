@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE version 4.0.0 rev 1 build 0001 / RedHat Enterprise Linux 5.0 AMD64";
-      lastWritten = "Fri Aug  9 09:31:55 2019";
+      lastWritten = "Tue Aug 27 11:01:59 2019";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -5303,20 +5303,6 @@ Module: MGD
                               entryAlignment = alignment_center;
                               spacing = 5;
                                 {
-                                  Reference = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"Reference\")";
-                                    labelString = References;
-                                    traversalOn = False;
-                                }
-                                {
-                                  Marker = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"Marker\")";
-                                    labelString = Markers;
-                                    traversalOn = False;
-                                }
-                                {
                                   Allele = XmPushButton;
                                   Group: Widget
                                     activateCallback = "D:CreateMGIModule(name = \"Allele\")";
@@ -5364,13 +5350,6 @@ Module: MGD
                                     activateCallback = "D:CreateMGIModule(name = \"DOVocAnnot\")";
                                     labelString = "DO Vocabulary Annotations";
                                     traversalOn = False;
-                                }
-                                {
-                                  Image = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"Image\")";
-                                    traversalOn = False;
-                                    labelString = Images;
                                 }
                                 {
                                   AlleleDerivation = XmPushButton;
@@ -6043,9 +6022,13 @@ Module: MGD
                                       }
                                       {
                                         Add = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          sensitive = False;
                                       }
                                       {
                                         Delete = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          sensitive = False;
                                       }
                                       {
                                         separator1 = XmSeparator;
@@ -6788,9 +6771,13 @@ Module: MGD
                                 }
                                 {
                                   Add = ControlPush;
+                                  Group: Widget
+                                    sensitive = False;
                                 }
                                 {
                                   Delete = ControlPush;
+                                  Group: Widget
+                                    sensitive = False;
                                 }
                                 {
                                   Previous = ControlArrow;
@@ -11704,7 +11691,7 @@ Shift<Key>Tab: prev-tab-group()
                     {
                       VerifyItemAdd = VerifyItemAdd : mgiDialog;
                       Group: Widget
-                        messageString = "This reference is not associated to all Alleles of this Genotype.\nDo you want to the system to add a 'Used-FC' reference association for these Alleles?";
+                        messageString = "This reference is not associated to all Alleles of this Genotype.\nDo you want the system to add a 'Used-FC' reference association for these Alleles?";
                         dialogTitle = "Add Reference Associations?";
                     }
                     {
@@ -15815,7 +15802,7 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblPixelWidthSeries = "(all 0-7 0)";
                                           xrtTblCharWidthSeries = "(all 0 1)(all 1-7 10)(all 8 15)(all 9 40)(all 10 4)(all 12 10)(all 13 3)(all 14 20)(all 15 10)(all 17 10)(all 16 10)(all 18 10)";
                                           xrtTblDisplayHorizScrollBar = dispsb_never;
-                                          userDefinedAttributes = "annotKey:Int(Int)=\"2\"\ntermKey:Int(Int)=\"3\"\nqualifierKey:Int(Int)=\"4\"\nrefsKey:Int(Int)=\"5\"\nevidenceKey:Int(Int)=\"6\"\ntermAccID:Int(Int)=\"8\"\nterm:Int(Int)=\"9\"\nqualifier:Int(Int)=\"10\"\njnum:Int(Int)=\"11\"\ncitation:Int(Int)=\"12\"\nevidence:Int(Int)=\"13\"\neditor:Int(Int)=\"15\"\nmodifiedDate:Int(Int)=\"16\"\nvocabKey:Int(Int)=\"0\"\nvocabEvidenceKey:Int(Int)=\"0\"\nannotVocab:String(String)\ncreatedBy:Int(Int)=\"17\"\ncreatedDate:Int(Int)=\"18\"\nannotEvidenceKey:Int(Int)=\"1\"\nmgiTypeKey:Int(Int)=\"12\"\nnoteKey:Int(Int)=\"7\"\nnotes:Int(Int)=\"14\"\nnoteTypeKey:Int(Int)=\"1008\"\nvocabQualifierKey:Int=\"0\"\n";
+                                          userDefinedAttributes = "annotKey:Int(Int)=\"2\"\ntermKey:Int(Int)=\"3\"\nqualifierKey:Int(Int)=\"4\"\nrefsKey:Int(Int)=\"5\"\nevidenceKey:Int(Int)=\"6\"\ntermAccID:Int(Int)=\"8\"\nterm:Int(Int)=\"9\"\nqualifier:Int(Int)=\"10\"\njnum:Int(Int)=\"11\"\ncitation:Int(Int)=\"12\"\nevidence:Int(Int)=\"13\"\neditor:Int(Int)=\"15\"\nmodifiedDate:Int(Int)=\"16\"\nvocabKey:Int(Int)=\"0\"\nvocabEvidenceKey:Int(Int)=\"0\"\nannotVocab:String(String)\ncreatedBy:Int(Int)=\"17\"\ncreatedDate:Int(Int)=\"18\"\nannotEvidenceKey:Int(Int)=\"1\"\nmgiTypeKey:Int(Int)=\"25\"\nnoteKey:Int(Int)=\"7\"\nnotes:Int(Int)=\"14\"\nnoteTypeKey:Int(Int)=\"1008\"\nvocabQualifierKey:Int=\"0\"\n";
                                           xrtTblValidateCellCallback = "D:VerifyVocabTermAccID,\nD:VerifyReference,\nD:CommitTableCellEdit";
                                           xrtTblTraversableSeries = "(all 0-7 False)(all 9-10 False)(all 12 False)";
                                           xrtTblEnterCellCallback = "D:SetOptions";
