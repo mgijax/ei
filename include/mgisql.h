@@ -257,4 +257,8 @@ extern char *insitu_emapa_byassay_clipboard(char *);
 extern char *insitu_emapa_byassayset_clipboard(char *, char *);
 extern char *insitu_emapa_byset_clipboard(char *);
 
+extern char *gellane_genotype_byunion_clipboard(char *, char *);
+extern char *insitu_genotype_byunion_clipboard(char *, char *);
+extern char *gxd_genotype_byset_clipboard(char *);
+
 #endif

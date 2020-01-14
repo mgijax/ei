@@ -223,9 +223,30 @@ rules:
 	    send(EMAPAClipboardSetItems, 0);
 	    return;
 
+	  elsif (clipboard.name = "GenotypeGelClipboard" and top->GelForm != nil and key.length > 0) then
+	    clipboard.cmd := gellane_genotype_byunion_clipboard(key, global_userKey);
+            LoadList.list := clipboard;
+	    LoadList.allowDups := ClipboardLoad.allowDups;
+            send(LoadList, 0);
+	    return;
+
+	  elsif (clipboard.name = "GenotypeSpecimenClipboard" and key.length > 0) then
+	    clipboard.cmd := insitu_genotype_byunion_clipboard(key, global_userKey);
+            LoadList.list := clipboard;
+	    LoadList.allowDups := ClipboardLoad.allowDups;
+            send(LoadList, 0);
+	    return;
+
+	  elsif ((clipboard.name = "GenotypeGelClipboard" or clipboard.name = "GenotypeSpecimenClipboard") and key.length = 0) then
+	    clipboard.cmd := gxd_genotype_byset_clipboard(global_userKey);
+            LoadList.list := clipboard;
+	    LoadList.allowDups := ClipboardLoad.allowDups;
+            send(LoadList, 0);
+	    return;
+
 	  end if;
 
-	  -- else...Genotype clipboard (old style)
+	  -- else...
 
 	  if (key.length > 0) then
 	    clipboard.cmd := clipboard.cmd + clipboard.cmdMaster + " " + key;

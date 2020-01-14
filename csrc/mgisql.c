@@ -1829,3 +1829,73 @@ char *insitu_emapa_byset_clipboard(char *createdByKey)
   return(buf);
 }
 
+char *gellane_genotype_byunion_clipboard(char *key, char *createdByKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf, "(select distinct g._Genotype_key, g.displayIt, g.mgiID, 0 as isClipboard \
+  	\nfrom GXD_Genotype_View g, GXD_GelLane s \
+  	\nwhere s._Genotype_key = g._Genotype_key \
+	\nand s._Assay_key = %s \
+	\nunion all \
+  	\nselect distinct s._Object_key, \
+        \n'*['||a.accID||'] '||s.label, \
+	\na.accID, \
+        \n1 as isClipboard \
+        \nfrom mgi_setmember s, acc_accession a \
+        \nwhere s._set_key = 1055 \
+        \nand s._object_key = a._object_key \
+        \nand s._createdby_key = %s \
+	\nand a._mgitype_key = 12 \
+	\nand a._logicaldb_key = 1 \
+	\nand a.prefixPart = 'MGI:' \
+	\nand a.preferred = 1 \
+        \n) order by isClipboard, displayIt", key, createdByKey);
+  return(buf);
+}
+
+char *insitu_genotype_byunion_clipboard(char *key, char *createdByKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf, "(select distinct g._Genotype_key, g.displayIt, g.mgiID , 0 as isClipboard\
+  	\nfrom GXD_Genotype_View g, GXD_Specimen s \
+  	\nwhere s._Genotype_key = g._Genotype_key \
+	\nand s._Assay_key = %s \
+	\nunion all \
+  	\nselect distinct s._Object_key, \
+        \n'*['||a.accID||'] '||s.label, \
+	\na.accID, \
+        \n1 as isClipboard \
+        \nfrom mgi_setmember s, acc_accession a \
+        \nwhere s._set_key = 1055 \
+        \nand s._object_key = a._object_key \
+        \nand s._createdby_key = %s \
+	\nand a._mgitype_key = 12 \
+	\nand a._logicaldb_key = 1 \
+	\nand a.prefixPart = 'MGI:' \
+	\nand a.preferred = 1 \
+        \n) order by isClipboard, displayIt", key, createdByKey, key);
+  return(buf);
+}
+
+char *gxd_genotype_byset_clipboard(char *createdByKey)
+{
+  static char buf[TEXTBUFSIZ];
+  memset(buf, '\0', sizeof(buf));
+  sprintf(buf, "(select distinct s._Object_key, \
+        \n'*['||a.accID||'] '||s.label as displayIt, \
+	\na.accID, \
+        \n1 as isClipboard \
+        \nfrom mgi_setmember s, acc_accession a \
+        \nwhere s._set_key = 1055 \
+        \nand s._object_key = a._object_key \
+        \nand s._createdby_key = %s \
+	\nand a._mgitype_key = 12 \
+	\nand a._logicaldb_key = 1 \
+	\nand a.prefixPart = 'MGI:' \
+	\nand a.preferred = 1 \
+        \n) order by isClipboard, displayIt", createdByKey);
+  return(buf);
+}
+

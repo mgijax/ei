@@ -351,6 +351,7 @@ rules:
 	    --end if;
 	  end if;
 
+	  (void) mgi_writeLog("\n\nRESULTS COUNT: " + (string) list_w->List.itemCount + "\n\n");
 	  (void) reset_cursor(Query.source_widget);
 
         end does;
@@ -395,6 +396,7 @@ rules:
 	    end if;
 	  end if;
 
+	  (void) mgi_writeLog("\n\nRESULTS COUNT: " + (string) list_w->List.itemCount + "\n\n");
 	  (void) reset_cursor(QueryNoInterrupt.source_widget);
 
         end does;

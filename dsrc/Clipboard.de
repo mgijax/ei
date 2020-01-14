@@ -32,5 +32,7 @@ EMAPAClipboardSetItems [source_widget : widget;
 		   row : integer;
 		   reason : integer;];
 
-GenotypeClipboardSetItems [source_widget : widget;];
+GenotypeClipboardSetItems [source_widget : widget;
+		   row : integer;
+		   reason : integer;];
 
