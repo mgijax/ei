@@ -1833,10 +1833,12 @@ char *gellane_genotype_byunion_clipboard(char *key, char *createdByKey)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf, "(select distinct g._Genotype_key, g.displayIt, g.mgiID, 0 as isClipboard \
-  	\nfrom GXD_Genotype_View g, GXD_GelLane s \
-  	\nwhere s._Genotype_key = g._Genotype_key \
-	\nand s._Assay_key = %s \
+  sprintf(buf, "(select distinct g._Genotype_key, CONCAT(g.displayIt,',',a1.symbol,',',a2.symbol) as displayIt, g.mgiID, 0 as isClipboard \
+        \nfrom GXD_Genotype_View g \
+	\nINNER JOIN GXD_GelLane s on (g._Genotype_key = s._Genotype_key), \
+	\nGXD_AllelePair ap INNER JOIN ALL_Allele a1 on (ap._Allele_key_1 = a1._Allele_key) \
+	\nLEFT OUTER JOIN ALL_Allele a2 on (ap._Allele_key_2 = a2._Allele_key) \
+	\nwhere g._Genotype_key = ap._Genotype_key\nand s._Assay_key = %s \
 	\nunion all \
   	\nselect distinct s._Object_key, \
         \n'*['||a.accID||'] '||s.label, \
@@ -1858,9 +1860,12 @@ char *insitu_genotype_byunion_clipboard(char *key, char *createdByKey)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf, "(select distinct g._Genotype_key, g.displayIt, g.mgiID , 0 as isClipboard\
-  	\nfrom GXD_Genotype_View g, GXD_Specimen s \
-  	\nwhere s._Genotype_key = g._Genotype_key \
+  sprintf(buf, "(select distinct g._Genotype_key, CONCAT(g.displayIt,',',a1.symbol,',',a2.symbol) as displayIt, g.mgiID, 0 as isClipboard \
+	\nfrom GXD_Genotype_View g \
+	\nINNER JOIN GXD_Specimen s on (g._Genotype_key = s._Genotype_key), \ 
+	\nGXD_AllelePair ap INNER JOIN ALL_Allele a1 on (ap._Allele_key_1 = a1._Allele_key) \
+	\nLEFT OUTER JOIN ALL_Allele a2 on (ap._Allele_key_2 = a2._Allele_key) \
+	\nwhere g._Genotype_key = ap._Genotype_key \
 	\nand s._Assay_key = %s \
 	\nunion all \
   	\nselect distinct s._Object_key, \
