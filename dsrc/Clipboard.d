@@ -223,7 +223,7 @@ rules:
 	    send(EMAPAClipboardSetItems, 0);
 	    return;
 
-	  elsif (clipboard.name = "GenotypeGelClipboard" and top->GelForm != nil and key.length > 0) then
+	  elsif (clipboard.name = "GenotypeGelClipboard" and key.length > 0) then
 	    clipboard.cmd := gellane_genotype_byunion_clipboard(key, global_userKey);
             LoadList.list := clipboard;
 	    LoadList.allowDups := ClipboardLoad.allowDups;
