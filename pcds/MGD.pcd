@@ -5310,13 +5310,6 @@ Module: MGD
                                     traversalOn = False;
                                 }
                                 {
-                                  Genotypes = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"Genotype\")";
-                                    labelString = Genotypes;
-                                    traversalOn = False;
-                                }
-                                {
                                   MolecularSegment = XmPushButton;
                                   Group: Widget
                                     activateCallback = "D:CreateMGIModule(name = \"MolecularSegment\")";
@@ -5335,20 +5328,6 @@ Module: MGD
                                   Group: Widget
                                     activateCallback = "D:CreateMGIModule(name = \"GOVocAnnot\")";
                                     labelString = "GO Vocabulary Annotations";
-                                    traversalOn = False;
-                                }
-                                {
-                                  MPVocAnnot = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"MPVocAnnot\")";
-                                    labelString = "MP Vocabulary Annotations";
-                                    traversalOn = False;
-                                }
-                                {
-                                  DOVocAnnot = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"DOVocAnnot\")";
-                                    labelString = "DO Vocabulary Annotations";
                                     traversalOn = False;
                                 }
                                 {
@@ -5439,14 +5418,6 @@ Module: MGD
                                     labelString = "User Permissions";
                                     activateCallback = "D:CreateMGIModule(name = \"UserRole\")";
                                     traversalOn = False;
-                                }
-                                {
-                                  ActualLogical = XmPushButton;
-                                  Group: Widget
-                                    labelString = "Actual/Logical DBs";
-                                    activateCallback = "D:CreateMGIModule(name = \"ActualLogical\")";
-                                    traversalOn = False;
-                                    managed = True;
                                 }
                           }
                     }
