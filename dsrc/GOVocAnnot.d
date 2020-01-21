@@ -176,6 +176,9 @@ locals:
 
 	goNoteTemplate : string := "evidence:\nanatomy:\ncell type:\ngene product:\nmodification:\ntarget:\nexternal ref:\ntext:";
 
+	performQuery : boolean := true;
+
+
 rules:
 
 --
@@ -719,15 +722,17 @@ rules:
 
 	PrepareSearch does
 	  value : string;
+	  from_accession : boolean := false;
 	  from_annot : boolean := false;
 	  from_evidence : boolean := false;
 	  from_property : boolean := false;
 	  from_user1 : boolean := false;
 	  from_user2 : boolean := false;
 	  from_tracking : boolean := false;
+	  performQuery := true;
 
-	  from := "from " + dbView + " v";
-	  where := "";
+	  from := "from " + dbView + " v, mrk_marker m";
+	  where := "where v._object_key = m._marker_key and m._marker_status_key = 1";
 
           QueryDate.source_widget := top->CreationDate;
           send(QueryDate, 0);
@@ -740,12 +745,14 @@ rules:
 	  value := top->mgiAccession->ObjectID->text.value;
 	  if (value.length > 0 and value != "NULL") then
 	    where := where + "\nand v._Object_key = " + value;
+	    from_accession := true;
 	  else
 	    value := top->mgiAccession->AccessionName->text.value;
 	    if (value.length > 0) then
 	      where := where + "\nand v._LogicalDB_key = 1";
 	      where := where + "\nand v.preferred = 1";
 	      where := where + "\nand v.short_description ilike " + mgi_DBprstr(value);
+	      from_accession := true;
 	    end if;
 	  end if;
 
@@ -826,18 +833,21 @@ rules:
               top->ReferenceGeneMenu.menuHistory.searchValue != "%") then
 	    where := where + "\nand t.isReferenceGene = " + top->ReferenceGeneMenu.menuHistory.defaultValue;
 	    from_tracking := true;
+	    from_annot := true;
 	  end if;
 
 	  if (top->CompleteMenu.menuHistory.modified and
               top->CompleteMenu.menuHistory.searchValue = YES) then
 	    where := where + "\nand t.completion_date is not null";
 	    from_tracking := true;
+	    from_annot := true;
 	  end if;
 
 	  if (top->CompleteMenu.menuHistory.modified and
               top->CompleteMenu.menuHistory.searchValue = NO) then
 	    where := where + "\nand t.completion_date is null";
 	    from_tracking := true;
+	    from_annot := true;
 	  end if;
 
           QueryDate.source_widget := top->CompleteDate;
@@ -846,6 +856,7 @@ rules:
           where := where + top->CompleteDate.sql;
 	  if (top->CompleteDate.sql.length > 0) then
 	    from_tracking := true;
+	    from_annot := true;
 	  end if;
  
 	  -- Modification date
@@ -913,9 +924,19 @@ rules:
 	    where := where + "\nand v._Object_key = t._Marker_key";
 	  end if;
 
-          if (where.length > 0) then
-            where := "where" + where->substr(5, where.length);
-          end if;
+	  if (from_accession = false and
+	      from_annot = false and
+	      from_evidence = false and
+	      from_property = false and
+	      from_user1 = false and
+	      from_user2 = false and
+	      from_tracking = false) then
+	  	performQuery := false;
+	  end if;
+
+          --if (where.length > 0) then
+            --where := "where" + where->substr(5, where.length);
+          --end if;
 	end does;
 
 --
@@ -935,11 +956,16 @@ rules:
 	    send(PrepareSearch, 0);
 	  end if;
 
-	  Query.source_widget := top;
-	  Query.select := govoc_search(from, where);
-	  Query.table := VOC_ANNOT_VIEW;
-	  send(Query, 0);
-	  (void) reset_cursor(top);
+	  if (performQuery) then
+	  	Query.source_widget := top;
+	  	Query.select := govoc_search(from, where);
+	  	Query.table := VOC_ANNOT_VIEW;
+	  	send(Query, 0);
+	  	(void) reset_cursor(top);
+	  else
+          	send(ClearGO, 0);
+	  end if;
+
 	end does;
 
 --
