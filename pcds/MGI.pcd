@@ -714,18 +714,6 @@ Module: MGI
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                      Popups:
-                                      {
-                                        ControlledVocabPulldown = OptionPulldown;
-                                            {
-                                              MappingAssay = ControlledVocabToggle;
-                                            }
-                                            {
-                                              EventReason = ControlledVocabToggle;
-                                              Group: Widget
-                                                managed = True;
-                                            }
-                                      }
                                 }
                                 {
                                   Name = CharText : mgiDataTypes;
