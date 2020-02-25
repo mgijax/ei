@@ -5412,6 +5412,27 @@ Module: MGD
                                     activateCallback = "D:CreateMGIModule(name = \"UserRole\")";
                                     traversalOn = False;
                                 }
+                                {
+                                  Genotypes = XmPushButton;
+                                  Group: Widget
+                                    activateCallback = "D:CreateMGIModule(name = \"Genotype\")";
+                                    labelString = Genotypes;
+                                    traversalOn = False;
+                                }
+                                {
+                                  MPVocAnnot = XmPushButton;
+                                  Group: Widget
+                                    activateCallback = "D:CreateMGIModule(name = \"MPVocAnnot\")";
+                                    labelString = "MP Vocabulary Annotations";
+                                    traversalOn = False;
+                                }
+                                {
+                                  DOVocAnnot = XmPushButton;
+                                  Group: Widget
+                                    activateCallback = "D:CreateMGIModule(name = \"DOVocAnnot\")";
+                                    labelString = "DO Vocabulary Annotations";
+                                    traversalOn = False;
+                                }
                           }
                     }
               }

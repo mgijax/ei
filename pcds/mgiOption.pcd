@@ -1574,50 +1574,11 @@ Module: mgiOption
                 Group: User
                   childTemplate = ControlledVocabToggle;
                     {
-                      MappingAssay = ControlledVocabToggle : mgiOption;
+                      Labels = ControlledVocabToggle : mgiOption;
                       Group: Widget
-                        labelString = "Mapping Assays";
+                        labelString = "Antibody/Probe Labels";
                       Group: User
-                        dbTable = 316;
-                    }
-                    {
-                      EventReason = ControlledVocabToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Marker Event Reason";
-                        managed = False;
-                      Group: User
-                        dbTable = 330;
-                    }
-                    {
-                      ReviewStatus = ControlledVocabToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Reference Review Status";
-                      Group: User
-                        dbTable = 324;
-                    }
-                    {
-                      NoteType = ControlledVocabToggle : mgiOption;
-                      Group: Widget
-                        labelString = "MGI Note Type";
-                      Group: User
-                        dbTable = 604;
-                    }
-                    {
-                      RefAssocType = ControlledVocabToggle : mgiOption;
-                      Group: Widget
-                        labelString = "MGI Reference Association Type";
-                      Group: User
-                        dbTable = 606;
-                    }
-                    {
-                      SynType = ControlledVocabToggle : mgiOption;
-                      Group: Widget
-                        labelString = "MGI Synonym Type";
-                      Group: User
-                        dbTable = 630;
-                    }
-                    {
-                      separator = XmSeparator;
+                        dbTable = 302;
                     }
                     {
                       AntibodyClass = ControlledVocabToggle : mgiOption;
@@ -1627,46 +1588,11 @@ Module: mgiOption
                         dbTable = 300;
                     }
                     {
-                      AntibodyType = ControlledVocabToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Antibody Types";
-                      Group: User
-                        dbTable = 312;
-                    }
-                    {
-                      AssayType = ControlledVocabToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Assay Types";
-                      Group: User
-                        dbTable = 306;
-                    }
-                    {
                       ExpPattern = ControlledVocabToggle : mgiOption;
                       Group: Widget
                         labelString = "Expression Patterns";
                       Group: User
                         dbTable = 310;
-                    }
-                    {
-                      ExpStrength = ControlledVocabToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Expression Strengths";
-                      Group: User
-                        dbTable = 307;
-                    }
-                    {
-                      GelRNAType = ControlledVocabToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Gel RNA Types";
-                      Group: User
-                        dbTable = 313;
-                    }
-                    {
-                      GelUnit = ControlledVocabToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Gel Units";
-                      Group: User
-                        dbTable = 314;
                     }
                     {
                       GelControl = ControlledVocabToggle : mgiOption;
@@ -1676,32 +1602,11 @@ Module: mgiOption
                         dbTable = 329;
                     }
                     {
-                      Labels = ControlledVocabToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Antibody/Probe Labels";
-                      Group: User
-                        dbTable = 302;
-                    }
-                    {
-                      ProbeSense = ControlledVocabToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Probe Sense Values";
-                      Group: User
-                        dbTable = 301;
-                    }
-                    {
                       ProbeVisualization = ControlledVocabToggle : mgiOption;
                       Group: Widget
                         labelString = "Probe Visualization Methods";
                       Group: User
                         dbTable = 304;
-                    }
-                    {
-                      Secondary = ControlledVocabToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Secondary Antibody Preps";
-                      Group: User
-                        dbTable = 305;
                     }
                     {
                       EmbeddingMethod = ControlledVocabToggle : mgiOption;
