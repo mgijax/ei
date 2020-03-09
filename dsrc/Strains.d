@@ -395,7 +395,8 @@ rules:
 	  --  Process Accession numbers
 
           ProcessAcc.table := accTable;
-          ProcessAcc.objectKey := currentRecordKey;
+          --ProcessAcc.objectKey := currentRecordKey;
+          ProcessAcc.objectKey := "(select prb_strain_seq::integer from keyMax)";
           ProcessAcc.tableID := STRAIN;
           send(ProcessAcc, 0);
           cmd := cmd + accTable.sqlCmd;
