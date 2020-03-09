@@ -1,6 +1,12 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-6-0-15-6
+DATE: 03/09/2020
+STAFF: lec
+CHANGES: TR13278/Teluse EI strain module ADD bug
+dsrc/Strains.d/Add()/ProcessAcc()
+
 TAG: ei-6-0-15-5
 TAG: ei-6-0-15-4
 DATE: 01/29/2020
