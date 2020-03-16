@@ -1971,7 +1971,7 @@ rules:
 	  else
 	    value := mgi_tblGetCell(driverTable, 0, driverTable.markerSymbol);
 	    if (value.length > 0) then
-	      where := where + "\nand driver.symbol ilike " + mgi_DBprstr(value);
+	      where := where + "\nand driver.markerSymbol ilike " + mgi_DBprstr(value);
 	      from_driver := true;
 	    end if;
 	  end if;
