@@ -1969,9 +1969,9 @@ rules:
 	    where := where + "\nand driver._Marker_key = " + value;
 	    from_driver := true;
 	  else
-	    value := mgi_tblGetCell(driverTable, 0, driverTable.markerSymbol);
+	    value := mgi_tblGetCell(driverTable, 0, driverTable.symbol);
 	    if (value.length > 0) then
-	      where := where + "\nand driver.markerSymbol ilike " + mgi_DBprstr(value);
+	      where := where + "\nand driver.symbol ilike " + mgi_DBprstr(value);
 	      from_driver := true;
 	    end if;
 	  end if;
