@@ -5303,13 +5303,6 @@ Module: MGD
                               entryAlignment = alignment_center;
                               spacing = 5;
                                 {
-                                  Allele = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"Allele\")";
-                                    labelString = Alleles;
-                                    traversalOn = False;
-                                }
-                                {
                                   MolecularSegment = XmPushButton;
                                   Group: Widget
                                     activateCallback = "D:CreateMGIModule(name = \"MolecularSegment\")";
@@ -5321,13 +5314,6 @@ Module: MGD
                                   Group: Widget
                                     activateCallback = "D:CreateMGIModule(name = \"MLDP\")";
                                     labelString = Mapping;
-                                    traversalOn = False;
-                                }
-                                {
-                                  GOVocAnnot = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"GOVocAnnot\")";
-                                    labelString = "GO Vocabulary Annotations";
                                     traversalOn = False;
                                 }
                                 {
@@ -5349,13 +5335,6 @@ Module: MGD
                                   Group: Widget
                                     separatorType = shadow_etched_out;
                                     shadowThickness = 5;
-                                }
-                                {
-                                  SimpleVocab = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"SimpleVocab\")";
-                                    labelString = "Simple Vocabulary";
-                                    traversalOn = False;
                                 }
                                 {
                                   ControlledVocab = XmPushButton;
@@ -5410,27 +5389,6 @@ Module: MGD
                                   Group: Widget
                                     labelString = "User Permissions";
                                     activateCallback = "D:CreateMGIModule(name = \"UserRole\")";
-                                    traversalOn = False;
-                                }
-                                {
-                                  Genotypes = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"Genotype\")";
-                                    labelString = Genotypes;
-                                    traversalOn = False;
-                                }
-                                {
-                                  MPVocAnnot = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"MPVocAnnot\")";
-                                    labelString = "MP Vocabulary Annotations";
-                                    traversalOn = False;
-                                }
-                                {
-                                  DOVocAnnot = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"DOVocAnnot\")";
-                                    labelString = "DO Vocabulary Annotations";
                                     traversalOn = False;
                                 }
                           }

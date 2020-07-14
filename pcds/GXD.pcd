@@ -2792,13 +2792,6 @@ Shift<Key>Tab: prev-tab-group()
                                     labelString = "Controlled Vocab";
                                     traversalOn = False;
                                 }
-                                {
-                                  SimpleVocab = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"SimpleVocab\")";
-                                    labelString = "Simple Vocabulary";
-                                    traversalOn = False;
-                                }
                           }
                     }
               }
