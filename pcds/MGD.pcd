@@ -10039,6 +10039,11 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
+                                                    RMRC = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
                                                     SMOC = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
@@ -10054,7 +10059,7 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
-                                                    RMRC = AccToggle : mgiOption;
+                                                    VCMR = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
