@@ -5317,13 +5317,6 @@ Module: MGD
                                     traversalOn = False;
                                 }
                                 {
-                                  AlleleDerivation = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"AlleleDerivation\")";
-                                    labelString = "Allele Derivations";
-                                    traversalOn = False;
-                                }
-                                {
                                   Strain = XmPushButton;
                                   Group: Widget
                                     activateCallback = "D:CreateMGIModule(name = \"Strains\")";
