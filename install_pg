@@ -8,6 +8,8 @@
 # Output: install_pg
 #
 
+unsetenv MGICONFIG
+
 source ./Configuration
 
 setenv LOG $0.log

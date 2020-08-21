@@ -705,6 +705,11 @@ Module: mgiOption
                         defaultValue = 208;
                     }
                     {
+                      VCMR = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 219;
+                    }
+                    {
                       RMRC = AccToggle : mgiOption;
                       Group: Widget
                         labelString = "RMRC-NLAC";

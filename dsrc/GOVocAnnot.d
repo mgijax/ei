@@ -1008,7 +1008,8 @@ rules:
 
 	  -- Set the ReportDialog.select to query the currently selected record only
 
-	  top->ReportDialog.select := govoc_select1(currentRecordKey, dbView);
+	  --top->ReportDialog.select := govoc_select1(currentRecordKey, dbView);
+	  top->ReportDialog.select := global_login + " " + currentRecordKey;
 
 	  -- start the query
 

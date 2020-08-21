@@ -2751,20 +2751,6 @@ Shift<Key>Tab: prev-tab-group()
                               entryAlignment = alignment_center;
                               spacing = 5;
                                 {
-                                  Antigen = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"Antigen\")";
-                                    traversalOn = False;
-                                    labelString = Antigens;
-                                }
-                                {
-                                  Antibody = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"Antibody\")";
-                                    traversalOn = False;
-                                    labelString = Antibodies;
-                                }
-                                {
                                   MolecularSegment = XmPushButton;
                                   Group: Widget
                                     activateCallback = "D:CreateMGIModule(name = \"MolecularSegment\")";
@@ -2790,13 +2776,6 @@ Shift<Key>Tab: prev-tab-group()
                                   Group: Widget
                                     activateCallback = "D:CreateMGIModule(name = \"ControlledVocab\")";
                                     labelString = "Controlled Vocab";
-                                    traversalOn = False;
-                                }
-                                {
-                                  SimpleVocab = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"SimpleVocab\")";
-                                    labelString = "Simple Vocabulary";
                                     traversalOn = False;
                                 }
                           }

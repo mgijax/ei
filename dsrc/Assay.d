@@ -369,7 +369,7 @@ locals:
 	ageMax : string := "NULL";
 
 	mgiTypeKey : string := "6";
-	refsType : string := "Related";
+	refsTypeKey : string := "1027";
 
 	assay_image_lookup : string;
 	python_image_cache : string;
@@ -786,7 +786,7 @@ rules:
 		prepDetailForm->AntibodyAccession->ObjectID->text.value, \
 		mgiTypeKey, \
 	        top->mgiCitation->ObjectID->text.value, \
-	        mgi_DBprstr(refsType));
+	        refsTypeKey);
 	end
 
 --

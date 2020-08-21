@@ -133,11 +133,11 @@ char *exec_mgi_checkUserTask(char *taskType, char *userKey)
   return(buf);
 }
 
-char *exec_mgi_insertReferenceAssoc_antibody(char *userKey, char *key, char *mgiTypeKey, char *refKey, char *refType)
+char *exec_mgi_insertReferenceAssoc_antibody(char *userKey, char *key, char *mgiTypeKey, char *refKey, char *refTypeKey)
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select MGI_insertReferenceAssoc (%s, %s, %s, %s, %s);\n", userKey, mgiTypeKey, key, refKey, refType);
+  sprintf(buf,"select MGI_insertReferenceAssoc (%s, %s, %s, %s, %s);\n", userKey, mgiTypeKey, key, refKey, refTypeKey);
   return(buf);
 }
 
@@ -145,7 +145,7 @@ char *exec_mgi_insertReferenceAssoc_usedFC(char *userKey, char *key, char *refKe
 {
   static char buf[TEXTBUFSIZ];
   memset(buf, '\0', sizeof(buf));
-  sprintf(buf,"select MGI_insertReferenceAssoc (%s, 11, %s, %s, 'Used-FC');\n", userKey, key, refKey);
+  sprintf(buf,"select MGI_insertReferenceAssoc (%s, 11, %s, %s, 1017);\n", userKey, key, refKey);
   return(buf);
 }
 
