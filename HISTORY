@@ -1,6 +1,11 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-6-0-16-1
+DATE: 08/21/2020
+STAFF: lec
+TR13204/Infrastructure Release
+
 TAG: ei-6-0-15-5
 TAG: ei-6-0-15-4
 DATE: 01/29/2020
