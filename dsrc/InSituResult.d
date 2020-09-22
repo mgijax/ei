@@ -368,6 +368,8 @@ rules:
 	  resultNote : string;
 	  paneList : string_list;
 	  keysDeclared : boolean := false;
+          imagekeyName : string := "imageKey";
+	  imagekeysDeclared : boolean := false;
  
 	  -- Check for duplicate Seq # assignments
 
@@ -445,7 +447,14 @@ rules:
 	      -- Add Image Panes
 	      paneList.rewind;
 	      while paneList.more do
-		cmd := cmd + mgi_DBinsert(imageID, NOKEY) +
+	        if (not imagekeysDeclared) then
+                  cmd := cmd + mgi_setDBkey(imageID, NEWKEY, imagekeyName);
+		  imagekeysDeclared := true;
+	        else
+		  cmd := cmd + mgi_DBincKey(imagekeyName);
+	        end if;
+
+		cmd := cmd + "insert into GXD_InSituResultImage values((select * from imageKeyMax)," +
 		       MAX_KEY1 + KEYNAME + MAX_KEY2 + "," +
 		       paneList.next + END_VALUE;
 	      end while;
@@ -473,12 +482,19 @@ rules:
                 cmd := cmd + mgi_DBupdate(primaryID, key, set);
 
 	        -- Delete all Image Panes and re-add
-	        cmd := cmd + mgi_DBdelete(imageID, key);
+	        cmd := cmd + "delete from GXD_InSituResultImage where _Result_key = " + key + ";\n";
 	        paneList.rewind;
 	        while paneList.more do
-		  cmd := cmd + mgi_DBinsert(imageID, NOKEY) +
-		         key + "," +
-		         paneList.next + END_VALUE;
+	          if (not imagekeysDeclared) then
+                    cmd := cmd + mgi_setDBkey(imageID, NEWKEY, imagekeyName);
+		    imagekeysDeclared := true;
+	          else
+		    cmd := cmd + mgi_DBincKey(imagekeyName);
+	          end if;
+
+		  cmd := cmd + "insert into GXD_InSituResultImage values((select * from imageKeyMax)," +
+		       key + "," +
+		       paneList.next + END_VALUE;
 	        end while;
 
 	        -- Process Structures

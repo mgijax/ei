@@ -69,6 +69,7 @@ rules:
 	  primaryID : integer := ModifyStructure.primaryID;
 	  key : string := ModifyStructure.key;
 	  row : integer := ModifyStructure.row;
+	  keysDeclared : boolean := false;
 	  structures1 : string_list;
 	  structures2 : string_list;
 	  cmd : string;
@@ -81,7 +82,11 @@ rules:
 
           -- Delete existing Structure records
  
-          cmd := mgi_DBdelete(primaryID, key);
+          if (primaryID = 214) then
+	    cmd := cmd + "delete from GXD_ISResultStructure where _Result_key = " + key + ";\n";
+          else
+	    cmd := cmd + "delete from GXD_GelLaneStructure where _Result_key = " + key + ";\n";
+          end if;
 
           -- Add each Structure selected
 	  -- structures1 = split table.strutureKeys  by "," -> emaps key:stage key
@@ -90,10 +95,26 @@ rules:
 	  structures1 := mgi_splitfields(mgi_tblGetCell(table, row, table.structureKeys), ",");
 	  structures1.rewind;
 	  while (structures1.more) do
+
 	    structures2 := mgi_splitfields(structures1.next, ":");
 	    --(void) mgi_writeLog(structures2[0] + "\n");
 	    --(void) mgi_writeLog(structures2[1] + "\n");
-            cmd := cmd + mgi_DBinsert(primaryID, NOKEY) + key + "," + structures2[1] + "," + structures2[0] + END_VALUE;
+
+	    if (not keysDeclared) then
+              cmd := cmd + mgi_setDBkey(primaryID, NEWKEY, "structureKey");
+	      keysDeclared := true;
+	    else
+	      cmd := cmd + mgi_DBincKey("structureKey");
+	    end if;
+
+            if (primaryID = 214) then
+	      cmd := cmd + "insert into GXD_ISResultStructure values((select * from structureKeyMax),"
+                  + key + "," + structures2[1] + "," + structures2[0] + END_VALUE;
+            else
+	      cmd := cmd + "insert into GXD_ISResultStructure values((select * from structureKeyMax),"
+                  + key + "," + structures2[1] + "," + structures2[0] + END_VALUE;
+            end if;
+
           end while;
  
 	  clipboard.updateCmd := cmd;

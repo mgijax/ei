@@ -1395,6 +1395,7 @@ rules:
 	  duplicate : integer := DuplicateAssay.duplicate;
 
 	  (void) busy_cursor(top);
+	  (void) mgi_writeLog("calling select * from GXD_duplicateAssay(" + global_userKey + "," + currentAssay + "," + (string) duplicate + ")\n");
 	  newAssayKey := (string) mgi_sp(exec_gxd_duplicateAssay(global_userKey, currentAssay, (string) duplicate));
 	  (void) reset_cursor(top);
 

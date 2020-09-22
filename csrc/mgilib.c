@@ -637,8 +637,10 @@ char *mgi_DBkey(int table)
             strcpy(buf, "_AntibodyAlias_key");
 	    break;
     case GXD_ASSAY:
-    case GXD_ASSAYNOTE:
             strcpy(buf, "_Assay_key");
+	    break;
+    case GXD_ASSAYNOTE:
+            strcpy(buf, "_AssayNote_key");
 	    break;
     case GXD_ANTIBODYPREP:
             strcpy(buf, "_AntibodyPrep_key");
@@ -698,9 +700,13 @@ char *mgi_DBkey(int table)
             strcpy(buf, "_Specimen_key");
 	    break;
     case GXD_ISRESULT:
-    case GXD_ISRESULTIMAGE:
-    case GXD_ISRESULTSTRUCTURE:
             strcpy(buf, "_Result_key");
+	    break;
+    case GXD_ISRESULTIMAGE:
+            strcpy(buf, "_ResultImage_key");
+	    break;
+    case GXD_ISRESULTSTRUCTURE:
+            strcpy(buf, "_ResultStructure_key");
 	    break;
     case GXD_GELBAND:
             strcpy(buf, "_GelBand_key");
@@ -712,7 +718,7 @@ char *mgi_DBkey(int table)
             strcpy(buf, "_GelRow_key");
 	    break;
     case GXD_GELLANESTRUCTURE:
-            strcpy(buf, "_GelLane_key");
+            strcpy(buf, "_GelLaneStructure_key");
 	    break;
     case GXD_INDEX:
     case GXD_INDEXSTAGES:
@@ -1937,7 +1943,7 @@ char *mgi_DBinsert(int table, char *keyName)
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_ASSAYNOTE:
-            sprintf(buf, "insert into %s (%s, assayNote)", 
+            sprintf(buf, "insert into %s (%s, _Assay_key, assayNote)", 
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_ANTIBODYPREP:
@@ -1964,10 +1970,10 @@ char *mgi_DBinsert(int table, char *keyName)
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_ISRESULTSTRUCTURE:
-            sprintf(buf, "insert into %s (_Result_key, _EMAPA_Term_key, _Stage_key)", mgi_DBtable(table));
+            sprintf(buf, "insert into %s (%s, _Result_key, _EMAPA_Term_key, _Stage_key)", mgi_DBtable(table));
 	    break;
     case GXD_ISRESULTIMAGE:
-            sprintf(buf, "insert into %s (_Result_key, _ImagePane_key)", mgi_DBtable(table));
+            sprintf(buf, "insert into %s (%s, _Result_key, _ImagePane_key)", mgi_DBtable(table));
 	    break;
     case GXD_GELBAND:
             sprintf(buf, "insert into %s (%s, _GelLane_key, _GelRow_key, _Strength_key, bandNote)", 
@@ -1982,7 +1988,7 @@ char *mgi_DBinsert(int table, char *keyName)
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_GELLANESTRUCTURE:
-            sprintf(buf, "insert into %s (_GelLane_key, _EMAPA_Term_key, _Stage_key)", mgi_DBtable(table));
+            sprintf(buf, "insert into %s (%s, _GelLane_key, _EMAPA_Term_key, _Stage_key)", mgi_DBtable(table));
 	    break;
     case GXD_INDEX:
 	    sprintf(buf, "insert into %s (_Index_key, _Refs_key, _Marker_key, _Priority_key, _ConditionalMutants_key, comments, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table));

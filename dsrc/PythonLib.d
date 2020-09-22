@@ -64,11 +64,11 @@ rules:
 	  buf : string;
 
 	  if (pythonevent = EVENT_ALLELECOMB_BYALLELE) then
-	    cmds.insert(getenv("ALLCACHELOAD") + "/allelecombinationByAllele.py", cmds.count + 1);
+	    cmds.insert("/opt/python3.7/bin/python3 " + getenv("ALLCACHELOAD") + "/allelecombinationByAllele.py", cmds.count + 1);
 	  elsif (pythonevent = EVENT_ALLELECOMB_BYMARKER) then
-	    cmds.insert(getenv("ALLCACHELOAD") + "/allelecombinationByMarker.py", cmds.count + 1);
+	    cmds.insert(getenv("/opt/python3.7/bin/python3 " +  "ALLCACHELOAD") + "/allelecombinationByMarker.py", cmds.count + 1);
 	  elsif (pythonevent = EVENT_ALLELECOMB_BYGENOTYPE) then
-	    cmds.insert(getenv("ALLCACHELOAD") + "/allelecombinationByGenotype.py", cmds.count + 1);
+	    cmds.insert("/opt/python3.7/bin/python3 " +  getenv("ALLCACHELOAD") + "/allelecombinationByGenotype.py", cmds.count + 1);
 	  end if;
 
 	  cmds.insert("-S" + global_server, cmds.count + 1);
@@ -113,7 +113,7 @@ rules:
 	  cmds : string_list := create string_list();
 	  buf : string;
 
-	  cmds.insert(getenv("MRKCACHELOAD") + "/mrkmcv.py", cmds.count + 1);
+	  cmds.insert("/opt/python3.7/bin/python3 " +  getenv("MRKCACHELOAD") + "/mrkmcv.py", cmds.count + 1);
 	  cmds.insert("-S" + global_server, cmds.count + 1);
 	  cmds.insert("-D" + global_database, cmds.count + 1);
 	  cmds.insert("-U" + global_login, cmds.count + 1);
@@ -154,7 +154,7 @@ rules:
 	  cmds : string_list := create string_list();
 	  buf : string;
 
-	  cmds.insert(getenv("MGICACHELOAD") + "/inferredfrom.py", cmds.count + 1);
+	  cmds.insert("/opt/python3.7/bin/python3 " +  getenv("MGICACHELOAD") + "/inferredfrom.py", cmds.count + 1);
 	  cmds.insert("-S" + global_server, cmds.count + 1);
 	  cmds.insert("-D" + global_database, cmds.count + 1);
 	  cmds.insert("-U" + global_login, cmds.count + 1);
@@ -197,7 +197,7 @@ rules:
 	  cmds : string_list := create string_list();
 	  buf : string;
 
-	  cmds.insert(getenv("MGICACHELOAD") + "/gxdexpression.py", cmds.count + 1);
+	  cmds.insert("/opt/python3.7/bin/python3 " +  getenv("MGICACHELOAD") + "/gxdexpression.py", cmds.count + 1);
 	  cmds.insert("-S" + global_server, cmds.count + 1);
 	  cmds.insert("-D" + global_database, cmds.count + 1);
 	  cmds.insert("-U" + global_login, cmds.count + 1);

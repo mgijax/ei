@@ -737,17 +737,10 @@ rules:
 		         (string) i + "," + 
 		         noteType + "," +
                          mgi_DBprnotestr(note) + END_VALUE;
-	    --elsif (tableID = BIB_NOTES or
-		   --tableID = MRK_NOTES or
-	           --tableID = MLD_NOTES or 
-	           --tableID = MLD_EXPT_NOTES  or
-		   --tableID = PRB_NOTES or
-		   --tableID = PRB_REF_NOTES or
-		   --tableID = GXD_ASSAYNOTE or
-		   --tableID = VOC_TEXT) then
-	          --cmd := cmd + 
-		       --mgi_DBinsert(tableID, NOKEY) + key + "," + 
-                       --mgi_DBprnotestr(note) + END_VALUE;
+	    elsif (tableID = GXD_ASSAYNOTE) then
+	          cmd := cmd + 
+		       mgi_DBinsert(tableID, keyName) + key + "," + 
+                       mgi_DBprnotestr(note) + END_VALUE;
             else
 		       --(string) i + "," + 
 	          cmd := cmd + 

@@ -140,6 +140,7 @@ rules:
 	  set : string := "";
 	  keyName : string := "refStrainKey";
 	  keyDefined : boolean := false;
+	  --defaultRefsTypeKey : string := "1031";
 	  defaultRefsTypeKey : string := "1010";
  
  	  tableID : integer := MGI_REFERENCE_ASSOC;

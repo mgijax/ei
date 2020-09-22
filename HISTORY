@@ -1,6 +1,12 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-6-0-16-2
+DATE: 09/22/2020
+STAFF: lec
+GXD/fix GXD_AssayNote, GXD_GelLaneStructure, GXD_ISReseultStructure, GXD_InSituResultImage
+due to schema changes
+
 TAG: ei-6-0-16-1
 DATE: 08/21/2020
 STAFF: lec
