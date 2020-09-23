@@ -690,7 +690,9 @@ rules:
 	    end if;
 	  end if;
 
-	  if (tableID != MGI_NOTE) then
+	  if (tableID = GXD_ASSAYNOTE) then
+            deleteCmd := "delete from GXD_AssayNote where _Assay_key = " + key + ";\n";
+	  elsif (tableID != MGI_NOTE) then
             deleteCmd := mgi_DBdelete(tableID, key);
 
 	    if (isTable and noteType.length > 0) then
