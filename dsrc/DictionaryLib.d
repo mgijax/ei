@@ -85,7 +85,7 @@ rules:
           if (primaryID = 214) then
 	    cmd := cmd + "delete from GXD_ISResultStructure where _Result_key = " + key + ";\n";
           else
-	    cmd := cmd + "delete from GXD_GelLaneStructure where _Result_key = " + key + ";\n";
+	    cmd := cmd + "delete from GXD_GelLaneStructure where _GelLane_key = " + key + ";\n";
           end if;
 
           -- Add each Structure selected
