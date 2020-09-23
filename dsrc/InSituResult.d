@@ -465,6 +465,7 @@ rules:
 	      ModifyStructure.primaryID := structureID;
 	      ModifyStructure.key := MAX_KEY1 + KEYNAME + MAX_KEY2;
 	      ModifyStructure.row := row;
+              ModifyStructure.keysDeclared := keysDeclared;
 	      send(ModifyStructure, 0);
 	      cmd := cmd + top->EMAPAClipboard.updateCmd;
 
@@ -503,6 +504,7 @@ rules:
 	        ModifyStructure.primaryID := structureID;
 	        ModifyStructure.key := key;
 	        ModifyStructure.row := row;
+                ModifyStructure.keysDeclared := keysDeclared;
 	        send(ModifyStructure, 0);
 	        cmd := cmd + top->EMAPAClipboard.updateCmd;
 	      end if;

@@ -69,7 +69,7 @@ rules:
 	  primaryID : integer := ModifyStructure.primaryID;
 	  key : string := ModifyStructure.key;
 	  row : integer := ModifyStructure.row;
-	  keysDeclared : boolean := false;
+	  keysDeclared : boolean := ModifyStructure.keysDeclared;
 	  structures1 : string_list;
 	  structures2 : string_list;
 	  cmd : string;
