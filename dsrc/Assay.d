@@ -1926,7 +1926,6 @@ rules:
               ModifyStructure.primaryID := GXD_GELLANESTRUCTURE;
               ModifyStructure.key := MAX_KEY1 + keyName + MAX_KEY2;
               ModifyStructure.row := row;
-              ModifyStructure.keysDeclared := false;
               send(ModifyStructure, 0);
               cmd := cmd + top->CVGel->EMAPAClipboard.updateCmd;
  
@@ -1951,7 +1950,6 @@ rules:
               ModifyStructure.primaryID := GXD_GELLANESTRUCTURE;
               ModifyStructure.key := key;
               ModifyStructure.row := row;
-              ModifyStructure.keysDeclared := false;
               send(ModifyStructure, 0);
               cmd := cmd + top->CVGel->EMAPAClipboard.updateCmd;
 

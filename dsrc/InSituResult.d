@@ -368,7 +368,6 @@ rules:
 	  resultNote : string;
 	  paneList : string_list;
 	  keysDeclared : boolean := false;
-	  skeysDeclared : boolean := false;
           imagekeyName : string := "imageKey";
 	  imagekeysDeclared : boolean := false;
  
@@ -466,9 +465,7 @@ rules:
 	      ModifyStructure.primaryID := structureID;
 	      ModifyStructure.key := MAX_KEY1 + KEYNAME + MAX_KEY2;
 	      ModifyStructure.row := row;
-              ModifyStructure.keysDeclared := skeysDeclared;
 	      send(ModifyStructure, 0);
-              skeysDeclared := true;
 	      cmd := cmd + top->EMAPAClipboard.updateCmd;
 
             elsif (editMode = TBL_ROW_MODIFY) then
@@ -506,9 +503,7 @@ rules:
 	        ModifyStructure.primaryID := structureID;
 	        ModifyStructure.key := key;
 	        ModifyStructure.row := row;
-                ModifyStructure.keysDeclared := skeysDeclared;
 	        send(ModifyStructure, 0);
-                skeysDeclared := true;
 	        cmd := cmd + top->EMAPAClipboard.updateCmd;
 	      end if;
 

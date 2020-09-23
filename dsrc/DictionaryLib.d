@@ -69,7 +69,6 @@ rules:
 	  primaryID : integer := ModifyStructure.primaryID;
 	  key : string := ModifyStructure.key;
 	  row : integer := ModifyStructure.row;
-	  keysDeclared : boolean := ModifyStructure.keysDeclared;
 	  structures1 : string_list;
 	  structures2 : string_list;
 	  cmd : string;
@@ -100,18 +99,11 @@ rules:
 	    --(void) mgi_writeLog(structures2[0] + "\n");
 	    --(void) mgi_writeLog(structures2[1] + "\n");
 
-	    if (not keysDeclared) then
-              cmd := cmd + mgi_setDBkey(primaryID, NEWKEY, "structureKey");
-	      keysDeclared := true;
-	    else
-	      cmd := cmd + mgi_DBincKey("structureKey");
-	    end if;
-
             if (primaryID = 214) then
-	      cmd := cmd + "insert into GXD_ISResultStructure values((select * from structureKeyMax),"
+	      cmd := cmd + "insert into GXD_ISResultStructure values(nextval('gxd_isresultstructure_seq'),"
                   + key + "," + structures2[1] + "," + structures2[0] + END_VALUE;
             else
-	      cmd := cmd + "insert into GXD_ISResultStructure values((select * from structureKeyMax),"
+	      cmd := cmd + "insert into GXD_GelLaneStructure values(nextval('gxd_gellanestructure_seq'),"
                   + key + "," + structures2[1] + "," + structures2[0] + END_VALUE;
             end if;
 

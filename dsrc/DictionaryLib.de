@@ -12,6 +12,5 @@
 ModifyStructure [source_widget : widget;	-- Modify Structure records
 		 primaryID : integer;
 		 key : string;
-		 row : integer;
-                 keysDeclared : boolean;];
+		 row : integer;];
 

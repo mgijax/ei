@@ -853,6 +853,7 @@ rules:
 	  tableName : string := form.name;
 
 	  top : widget := table.root;
+          return;
  
 	  -- If table is required, then there must be at least one
 	  -- non-empty, non-deleted row in the table.
