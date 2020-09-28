@@ -383,11 +383,12 @@ rules:
 	    -- Insert to PRB_Source occurs in batch prior to insert into PRB_Probe
 	    -- So, if no key, then get max Source key
 
-            if (top->MolDetailForm->SourceForm.sql.length > 0) then
-	      cmd := cmd + MAX_KEY1 + sourceKeyName + MAX_KEY2 + ",";
-	    else
-	      cmd := cmd + detailForm->SourceForm->SourceID->text.value + ",";
-	    end if;
+            cmd := cmd + "currval('prb_source_seq'),";
+            --if (top->MolDetailForm->SourceForm.sql.length > 0) then
+	      --cmd := cmd + MAX_KEY1 + sourceKeyName + MAX_KEY2 + ",";
+	    --else
+	      --cmd := cmd + detailForm->SourceForm->SourceID->text.value + ",";
+	    --end if;
 
 	    cmd := cmd + top->MolDetailForm->VectorTypeMenu.menuHistory.defaultValue + "," +
 			 top->MolMasterForm->SegmentTypeMenu.menuHistory.defaultValue + "," +
@@ -644,7 +645,8 @@ rules:
 	        end if;
                 cmd := cmd + detailForm->SourceForm.sql;
 	        set := set + "derivedFrom = NULL,";
-	        set := set + "_Source_key = " + MAX_KEY1 + sourceKeyName + MAX_KEY2 + ",";
+	        --set := set + "_Source_key = " + MAX_KEY1 + sourceKeyName + MAX_KEY2 + ",";
+	        set := set + "_Source_key = currval('prb_source_seq'),";
 	      end if;
 
 	    -- Parent Clone has not been modified, so process any Source modifications

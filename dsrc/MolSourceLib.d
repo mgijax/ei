@@ -107,13 +107,13 @@ rules:
 
 	  top.sql := "";
 
-          if (AddMolecularSource.master) then
-            add := mgi_setDBkey(PRB_SOURCE_MASTER, NEWKEY, keyLabel) +
-                   mgi_DBinsert(PRB_SOURCE_MASTER, keyLabel);
-	  else
-            add := mgi_setDBkey(PRB_SOURCE, NEWKEY, keyLabel) +
-                   mgi_DBinsert(PRB_SOURCE, keyLabel);
-	  end if;
+          --if (AddMolecularSource.master) then
+            --add := mgi_setDBkey(PRB_SOURCE_MASTER, NEWKEY, keyLabel) +
+                   --mgi_DBinsert(PRB_SOURCE_MASTER, keyLabel);
+	  --else
+            --add := mgi_setDBkey(PRB_SOURCE, NEWKEY, keyLabel) +
+                   --mgi_DBinsert(PRB_SOURCE, keyLabel);
+	  --end if;
 
 	  if (top->SourceSegmentTypeMenu.menuHistory.defaultValue = nil) then
 	    segmentType := mgi_sql1(molsource_segment(top->SourceSegmentTypeMenu.defaultValue));
@@ -191,7 +191,7 @@ rules:
              send(StatusReport, 0);
           end if;
 
-	  add := add +
+          add := "insert into PRB_Source values(nextval('prb_source_seq')," +
                  segmentType + "," +
                  vectorType + "," +
                  top->ProbeOrganismMenu.menuHistory.defaultValue + "," +
@@ -208,7 +208,8 @@ rules:
           add := add + mgi_DBprstr(age) + ",-1,-1," +
             	       isCuratorEdited + "," +
 		       global_userKey + "," + global_userKey + END_VALUE +
-		       exec_mgi_resetAgeMinMax(MAX_KEY1 + keyLabel + MAX_KEY2, mgi_DBprstr(mgi_DBtable(PRB_SOURCE)));
+		       exec_mgi_resetAgeMinMax("currval('prb_source_seq')::int", mgi_DBprstr(mgi_DBtable(PRB_SOURCE)));
+		       --exec_mgi_resetAgeMinMax(MAX_KEY1 + keyLabel + MAX_KEY2, mgi_DBprstr(mgi_DBtable(PRB_SOURCE)));
 
 	  top.sql := add;
  

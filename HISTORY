@@ -1,6 +1,14 @@
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 ## Remember to update Configuration:CVS_TAG with most recent tag number
 
+TAG: ei-6-0-16-9
+DATE: 09/28/2020
+STAFF: lec
+Probe/ProbeSource/autosequence
+
+TAG: ei-6-0-16-7
+TAG: ei-6-0-16-6
+TAG: ei-6-0-16-5
 TAG: ei-6-0-16-8
 DATE: 09/24/2020
 STAFF: lec
