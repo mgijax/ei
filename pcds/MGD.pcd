@@ -5303,13 +5303,6 @@ Module: MGD
                               entryAlignment = alignment_center;
                               spacing = 5;
                                 {
-                                  MolecularSegment = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"MolecularSegment\")";
-                                    labelString = "Molecular Probes & Segments";
-                                    traversalOn = False;
-                                }
-                                {
                                   Mapping = XmPushButton;
                                   Group: Widget
                                     activateCallback = "D:CreateMGIModule(name = \"MLDP\")";
