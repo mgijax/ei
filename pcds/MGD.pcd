@@ -5343,27 +5343,6 @@ Module: MGD
                                     traversalOn = False;
                                 }
                                 {
-                                  Cross = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"Cross\")";
-                                    labelString = Crosses;
-                                    traversalOn = False;
-                                }
-                                {
-                                  RISet = XmPushButton;
-                                  Group: Widget
-                                    labelString = "RI Sets";
-                                    activateCallback = "D:CreateMGIModule(name = \"RISet\")";
-                                    traversalOn = False;
-                                }
-                                {
-                                  Tissue = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"Tissues\")";
-                                    traversalOn = False;
-                                    labelString = Tissues;
-                                }
-                                {
                                   Translation = XmPushButton;
                                   Group: Widget
                                     labelString = Translations;
