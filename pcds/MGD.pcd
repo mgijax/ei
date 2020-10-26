@@ -5330,19 +5330,6 @@ Module: MGD
                                     traversalOn = False;
                                 }
                                 {
-                                  MolecularSource = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"MolecularSource\")";
-                                    labelString = "Clone Libraries";
-                                    traversalOn = False;
-                                }
-                                {
-                                  Organism = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"Organism\")";
-                                    traversalOn = False;
-                                }
-                                {
                                   Translation = XmPushButton;
                                   Group: Widget
                                     labelString = Translations;

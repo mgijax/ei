@@ -2758,13 +2758,6 @@ Shift<Key>Tab: prev-tab-group()
                                     labelString = Assays;
                                 }
                                 {
-                                  MolecularSource = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"MolecularSource\")";
-                                    labelString = "Clone Libraries";
-                                    traversalOn = False;
-                                }
-                                {
                                   ControlledVocab = XmPushButton;
                                   Group: Widget
                                     activateCallback = "D:CreateMGIModule(name = \"ControlledVocab\")";
