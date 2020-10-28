@@ -5323,13 +5323,6 @@ Module: MGD
                                     shadowThickness = 5;
                                 }
                                 {
-                                  ControlledVocab = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"ControlledVocab\")";
-                                    labelString = "Controlled Vocab";
-                                    traversalOn = False;
-                                }
-                                {
                                   Translation = XmPushButton;
                                   Group: Widget
                                     labelString = Translations;
