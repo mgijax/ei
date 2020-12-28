@@ -50,14 +50,6 @@ Module: MGIMenu
                               entryAlignment = alignment_center;
                               spacing = 5;
                                 {
-                                  MGD = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:ForkIt(app = \"runapp mgd\")";
-                                    traversalOn = False;
-                                    managed = True;
-                                    labelString = "Mouse Genome Database (MGD)";
-                                }
-                                {
                                   GXD = XmPushButton;
                                   Group: Widget
                                     activateCallback = "D:ForkIt(app = \"runapp gxd\")";
